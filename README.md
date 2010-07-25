@@ -27,20 +27,25 @@ Each log event message may contain the following common fields:
 In addition, each message contains a site-defined Protocol Buffer message,
 which can be anything you want.
 
-## Deploying
-
 ### Requirements
 
 You'll need to [install][http://code.google.com/apis/protocolbuffers/]
-Google Protocol Buffers. On Debian and Ubuntu, you can accomplish this via
+Google Protocol Buffers, version 2.3.0 or later. Be sure to install the Python
+bits in addition to the C++ tools and libraries.
+
+In theory, on Debian and Ubuntu, you could run:
 
  > apt-get install protobuf-compiler python-protobuf
 
-If on another distro, check your package repository or compile the package
-yourself.
+But as of this typing, the repositories only had version 2.2.x, which is not
+compatible at this time.
 
 You'll also need Python 2.6 or later, as that is what the current tools are
 written in.
+
+## Deploying and Running
+
+TODO (when things stabilize)
 
 ## Shortcomings
 
@@ -94,7 +99,7 @@ _char *_ to a named bucket. Yes, _string_ types in Thrift are simply byte
 sequences of a specific length, so you could have the _message_ parameter be
 a binary-encoded Thrift struct. I did try this. But it felt really hacky.
 Because of the tightly-coupled architecture of Thrift's protocol and transport
-classes, I had to create a custom transport that held the encoded data in a
+layers, I had to create a custom transport that held the encoded data in a
 buffer and double Thrift-encode data. It just didn't feel right.
 
 In addition, I also don't like the Scribe model for writing logs. Your
