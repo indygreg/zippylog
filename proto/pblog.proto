@@ -1,0 +1,54 @@
+import "pblog-messagetypes.proto";
+
+package pblog;
+
+// every log message in a stream is an instance of this.
+// each instance contains common metadata and 1 or more domain-specific
+// messages, which are defined as extensions and are managed by pblog
+message LogEvent {
+    // fields 1 to 100 are reserved by pblog
+    // not all fields are relevant for all users
+
+    // time event was created, in microseconds since UNIX epoch
+    optional uint64 create_time = 1;
+
+    // a key used to correlate related events
+    optional bytes primary_key = 2;
+
+    // list of optional secondary correlation keys. these will likely be domain
+    // specific
+    repeated bytes secondary_keys = 3;
+
+    // list of all agents that wrote out this log event
+    // index 0 will be the original producer. not all agents may update this
+    // field, but it is nice to have
+    repeated WriterInfo writers = 4;
+
+    // numeric log level. string values such as DEBUG, INFO, etc, could be
+    // mapped to this
+    optional uint32 level = 5;
+
+    repeated pblog.site.MessageType message_types = 6;
+
+    // reserved forembeddable message types    
+    extensions 100 to max;
+}
+
+// Metadata describing who/how a message was written
+message WriterInfo {
+    // time event was written, in microseconds since UNIX epoch
+    optional uint64 write_time = 1;
+
+    // sequence ID to help identify duplicates
+    optional uint64 sequence_id = 2;
+
+    // hostname of machine that wrote event
+    optional string hostname = 3;
+
+    // alternate identifier of machine that wrote event
+    // use this instead of hostname if 1) it is smaller 2) you have such a system
+    optional bytes host_id = 4;
+
+    // identifier of application writing event
+    optional bytes app_id = 5;
+}

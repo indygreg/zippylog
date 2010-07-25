@@ -1,0 +1,23 @@
+package acme.webapp;
+
+// represents a user login attempt
+message LoginAttempt {
+    optional string username = 1;
+}
+
+// a successful login
+message LoginSuccess {
+    optional string username = 1;
+}
+
+// a login failure
+message LoginFailure {
+    optional string username = 1;
+    enum FailureReason {
+        NO_USER = 1;
+        USER_DISABLED = 2;
+        PASSWORD_MISMATCH = 3;
+    }
+    optional FailureReason reason = 2;
+}
+
