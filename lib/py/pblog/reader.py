@@ -12,9 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from google.protobuf.internal.decoder import _DecodeVarint
 from pblog.event import LogEvent as EventWrapper
 from pblog.pblog_pb2 import LogEvent, WriterInfo
-import struct
 
 class IReader():
     '''Interface for all pblog readers'''
@@ -24,8 +24,7 @@ class IReader():
 
 Default constructor.'''
 
-        # TODO use variants on wire
-        self.unpack_struct = struct.Struct('>I')
+        self.varint_decoder = _DecodeVarint
 
     def read(self):
         '''read()
@@ -37,21 +36,42 @@ Read and return a single event.'''
 class FileObjectReader(IReader):
     '''A simple writer that reads from an opened file object handle'''
 
-    def __init__(self, handle):
+    def __init__(self, handle, has_read=False, stream_version=None):
         '''FileObjectReader(fh)
 
 Initialize a new reader instance that associated with a File Object'''
         IReader.__init__(self)
         self.handle = handle
         
+        # if we haven't read yet, do that now to verify we can understand the
+        # stream
+        if not has_read:
+            version = ord(self.handle.read(1))
+
+            if version != 1:
+                raise Exception('stream version %d not supported' % version)
+
+            self.stream_version = version
+
+        elif has_read and not stream_version:
+            raise Exception('stream version must be defined if has_read is True')
+        elif stream_version != 1:
+            raise Exception('stream version %d not supported' % stream_version)
+        else:
+            self.stream_version = stream_version
+
     def read(self):
         '''read()
 
 Read and return the next event on the stream.'''
-        buf = self.handle.read(4)
-        size = self.unpack_struct.unpack(buf)[0]
 
-        buf = self.handle.read(size)
+        # the Google varint decoder works on a buffer. So, we grab some data
+        # and let it loose. We later grab more data as we need it
+        # TODO '4' will surely lead to a bug somewhere
+        buf = self.handle.read(4)
+
+        (size, pos) = self.varint_decoder(buf, 0)
+        buf = buf[pos:] + self.handle.read(size)
 
         e = EventWrapper(serialized=buf)
         return e

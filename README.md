@@ -38,6 +38,15 @@ data format is the same across all data, so it is only a matter of implementing
 the business logic to decide how to treat pieces of data, which you have to do
 anyway.
 
+## Supported Programming Languages
+
+pblog is a light layer on top of Protocol Buffers. Therefore, it should be
+possible to write pblog logs from any programming language that
+[supports](http://code.google.com/p/protobuf/wiki/ThirdPartyAddOns) Protocl
+Buffers.
+
+To produce pblogs, you'll need a pblog writer.
+
 ## Technical Info
 
 ### Common Message Container
