@@ -61,32 +61,12 @@ Buffer definitions. The
 [Language Guide](http://code.google.com/apis/protocolbuffers/docs/proto.html)
 is a great source for this.
 
-Currently, pblog requires that **each .proto file have a _package_
-definition**. The package name should resemble the the directory structure.
-
-e.g. _/acme/WebApplication/basic.proto_ might look like
-
-> package acme.WebApplication.basic;
->
-> message SampleEvent {
-> ...
-
-This arbitrary restriction may be lifted in the future.
-
 Once you have defined your messages, you'll need to generate some more .proto
 files, which are used by pblog. You do this by running the _pblog_compile_
 program, which is distributed as part of pblog.
 
 > pblog_compile --help
-> Usage: pblog_compile [options] /path/to/messages /output/path
->
-> Generates Protocol Buffer extensions for all defined messages
-
->Options:
->  -h, --help            show this help message and exit
->  -p PROTOC, --protoc=PROTOC
->                        Path to protoc binary
-
+> <grok output here>
 > pblog_compile ~/pblog-messages ~/pblog-generated
 
 Like the message source directory, you'll likely want to have the output

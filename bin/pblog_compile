@@ -59,46 +59,34 @@ if exists(state_file):
         state = json.load(f)
 
 message_files = []
-for root, dirs, files in os.walk(args[0]):
+for root, dirs, files in os.walk(messages_dir):
     for f in filter(lambda x: x[-6:] == '.proto', files):
         message_files.append(os.path.join(root, f))
 
-re_package = re.compile(r'package\s(?P<package>[^;]+)')
 re_message = re.compile(r'message\s(?P<message>[^\s]+)')
 
 state_changed = False
 
-for file in sorted(message_files):
-    with open(file, 'r') as f:
-        package = None
+for filename in sorted(message_files):
+    with open(filename, 'r') as f:
+        package = filename[len(messages_dir)+1:].replace('.proto', '').replace('/', '.')
         for line in f:
-            match = re_package.match(line)
-            if match:
-                package = match.group('package')
-                continue
-
             match = re_message.match(line)
             if not match:
                 continue
-
-            if not package:
-                raise Exception('message definition seen in %s before package declaration' % file)
 
             message = '.'.join([package, match.group('message')])
             if message in state['message_names']:
                 continue
 
             state_changed = True
-            print 'new message: %s found in %s' % ( message, file )
+            print 'new message: %s found in %s' % ( message, filename )
             
             # add it to the list
             state['key_message_map'].append( ( state['next_key_index'], message ) )
             state['message_names'].append(message)
 
             state['next_key_index'] = state['next_key_index'] + 1
-
-        if not package:
-            raise Exception('%s does not define a package' % file)                
 
 # write out state file
 if state_changed:
