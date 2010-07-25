@@ -29,7 +29,7 @@ which can be anything you want.
 
 ### Requirements
 
-You'll need to [install][http://code.google.com/apis/protocolbuffers/]
+You'll need to [install](http://code.google.com/apis/protocolbuffers/)
 Google Protocol Buffers, version 2.3.0 or later. Be sure to install the Python
 bits in addition to the C++ tools and libraries.
 
@@ -87,13 +87,13 @@ various parsing scripts, etc.
 
 When I set out to create a better logging system, there were a number of
 technologies I could have used. The most compelling was
-[Apache Thrift][http://incubator.apache.org/thrift/] and
-[Facebook Scribe][http://github.com/facebook/scribe]. Thrift can be thought of
+[Apache Thrift](http://incubator.apache.org/thrift/) and
+[Facebook Scribe](http://github.com/facebook/scribe). Thrift can be thought of
 as Facebook's/ASF's version of Protocol Buffers. And, Scribe is a nifty little
 server that aggregates logs. Perfect, right? Well, no.
 
 Unfortunately, Scribe subscribes to the _unstructed text logging_ model, as its
-[Log() interface][http://wiki.github.com/facebook/scribe/logging-messages]
+[Log() interface](http://wiki.github.com/facebook/scribe/logging-messages)
 takes a string category and string message. In other words, you write a
 _char *_ to a named bucket. Yes, _string_ types in Thrift are simply byte
 sequences of a specific length, so you could have the _message_ parameter be
