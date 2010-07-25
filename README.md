@@ -103,13 +103,13 @@ layer, to help with grouping.
 
 Some common layouts include:
 
-> /<application1>/
-> /<application2>/
+> /:application1/
+> /:application2/
 
 or
 
-> /<org name>/<application1>
-> /<org name>/<application2>
+> /:org name/:application1
+> /:org name/:application2
 
 For example,
 
