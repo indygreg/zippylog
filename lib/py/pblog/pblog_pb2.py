@@ -10,7 +10,7 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/pblog.proto',
   package='pblog',
-  serialized_pb='\n\x11pblog/pblog.proto\x12\x05pblog\x1a\x1dpblog/site/MessageTypes.proto\"\xbe\x01\n\x08LogEvent\x12\x13\n\x0b\x63reate_time\x18\x01 \x01(\x04\x12\x13\n\x0bprimary_key\x18\x02 \x01(\x0c\x12\x16\n\x0esecondary_keys\x18\x03 \x03(\x0c\x12\"\n\x07writers\x18\x04 \x03(\x0b\x32\x11.pblog.WriterInfo\x12\r\n\x05level\x18\x05 \x01(\r\x12\x33\n\x12present_extensions\x18\x06 \x03(\x0e\x32\x17.pblog.site.MessageType*\x08\x08\x64\x10\x80\x80\x80\x80\x02\"h\n\nWriterInfo\x12\x12\n\nwrite_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x05 \x01(\x0c')
+  serialized_pb='\n\x11pblog/pblog.proto\x12\x05pblog\x1a\x1dpblog/site/MessageTypes.proto\"\xc7\x01\n\x08LogEvent\x12\x13\n\x0b\x63reate_time\x18\x01 \x01(\x04\x12\x13\n\x0bprimary_key\x18\x02 \x01(\x0c\x12\x16\n\x0esecondary_keys\x18\x03 \x03(\x0c\x12\"\n\x07writers\x18\x04 \x03(\x0b\x32\x11.pblog.WriterInfo\x12\r\n\x05level\x18\x05 \x01(\r\x12,\n\x0b\x65vent_types\x18\x06 \x03(\x0e\x32\x17.pblog.site.MessageType\x12\x0e\n\x06\x65vents\x18\x07 \x03(\x0c*\x08\x08\x64\x10\x80\x80\x80\x80\x02\"h\n\nWriterInfo\x12\x12\n\nwrite_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x05 \x01(\x0c')
 
 
 
@@ -58,8 +58,15 @@ _LOGEVENT = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='present_extensions', full_name='pblog.LogEvent.present_extensions', index=5,
+      name='event_types', full_name='pblog.LogEvent.event_types', index=5,
       number=6, type=14, cpp_type=8, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='events', full_name='pblog.LogEvent.events', index=6,
+      number=7, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -74,7 +81,7 @@ _LOGEVENT = descriptor.Descriptor(
   is_extendable=True,
   extension_ranges=[(100, 536870912), ],
   serialized_start=60,
-  serialized_end=250,
+  serialized_end=259,
 )
 
 
@@ -129,14 +136,14 @@ _WRITERINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=252,
-  serialized_end=356,
+  serialized_start=261,
+  serialized_end=365,
 )
 
 import pblog.site.MessageTypes_pb2
 
 _LOGEVENT.fields_by_name['writers'].message_type = _WRITERINFO
-_LOGEVENT.fields_by_name['present_extensions'].enum_type = pblog.site.MessageTypes_pb2._MESSAGETYPE
+_LOGEVENT.fields_by_name['event_types'].enum_type = pblog.site.MessageTypes_pb2._MESSAGETYPE
 
 class LogEvent(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

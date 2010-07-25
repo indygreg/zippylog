@@ -13,14 +13,14 @@
 #  limitations under the License.
 
 from pblog.pblog_pb2 import LogEvent, WriterInfo
-import pblog.site.extensions_pb2
 import socket
+import struct
 import time
 
 class IWriter():
     '''Interface for all pblog writers'''
 
-    def __init__(self):
+    def __init__(self, write_hostname=False):
         '''IWriter()
 
 Default constructor. Sets some reasonable defaults'''
@@ -29,6 +29,10 @@ Default constructor. Sets some reasonable defaults'''
         self.hostname = socket.gethostname()
         self.host_id = None
         self.app_id = None
+        self.write_hostname = write_hostname
+
+        # TODO encode using variant
+        self.pack_struct = struct.Struct('>I')
 
     def write(self, e):
         '''write(event)
@@ -50,8 +54,14 @@ Initialize a new writer instance that associated with a File Object'''
         self.app_id = 'py_fileobjectwriter'
         
         self.writer_info = WriterInfo()
-        self.writer_info.hostname = self.hostname
+        
+        if self.write_hostname:
+            self.writer_info.hostname = self.hostname
+   
         self.writer_info.app_id = self.app_id
+
+    def flush(self):
+        self.handle.flush()
 
     def write(self, e):
         '''write(event)
@@ -65,7 +75,8 @@ Returns the number of bytes written.'''
 
         e.add_writer_info(self.writer_info)
         binary = e.serialize()
+        self.handle.write(self.pack_struct.pack(len(binary)))
         self.handle.write(binary)
 
-        return len(binary)
+        return len(binary) + 4
 

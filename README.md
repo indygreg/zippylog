@@ -1,31 +1,71 @@
 # pblog - Structured Event Logging Using Protocol Buffers
 
-pblog aims to build a logging system that uses Google's Protocol Buffers for
-encoding.
+pblog aims to build a logging system utilizing Google's Protocol Buffers.
+
+The goals are to create a logging system that is:
+
+* fast
+* robust (in terms of reliability)
+* easy-to-use
 
 ## Overview
 
-pblog defines a Protocol Buffer message type which represents individual log
-events. The type instance contains common fields that are frequently associated
-with log events and a site-specific message. This site-specific message is
-itself a Protocol Buffer message type, which you define in your local
-deployment. In other words, for each event you wish to log (e.g. _user login_,
-_update profile_, etc), you define a new Protocol Buffer message that contains
-metadata for that specific message. Inside your application, you create a new
-instance of that message type and send it to an instantiated pblog logger.
+For each event type you wish to log, you define a Protocol Buffer message
+type that describes it. For example, a _user login_ action might have an
+_username_ and _last login_ field. You register these custom events with
+pblog. At application run time, you instantiate instances of your messages,
+populate the fields, and pass them along to pblog. pblog optionally adds some
+useful metadata that is common for logging systems and writes out the message
+_somewhere_.
 
-### Event Messages
+pblog contains a server process that allows clients to interact with
+written log data. Clients can pull log data, push data between servers, etc.
+This provides the necessary infrastructure to create a log aggregation and
+distribution network.
 
-Each log event message may contain the following common fields:
+## Why Use pblog?
 
- * create_time - time event was produced
- * primary_key - arbitrary key used to correlate events
- * secondary_keys - list of additional keys used to correlate events
- * writers - metadata describing writers that touched event
- * level - numeric logging level
+1. It is structured. This makes it extremely simple for machines to consume.
+This means you can easily pipe it into your data warehouse, monitoring
+infrastructure, etc.
 
-In addition, each message contains a site-defined Protocol Buffer message,
-which can be anything you want.
+2. It is fast. It is because Protocol Buffers are
+[fast](http://wiki.github.com/eishay/jvm-serializers/).
+
+I can't overstate the structured bit enough. How many times have you toiled
+trying to import yet another data source into some system? With pblogs, the
+data format is the same across all data, so it is only a matter of implementing
+the business logic to decide how to treat pieces of data, which you have to do
+anyway.
+
+## Technical Info
+
+### Common Message Container
+
+Each custom message you write is wrapped in a common message container. This
+container, which is strongly defined by the pblog project, contains numerous
+optional fields which are useful for logging. All fields are optional, and
+because of the Protocol Buffer wire format, there is no penalty for defining
+but not using them.
+
+Common fields include:
+
+* create time - the time the event occurred, in microseconds since UNIX epoch.
+You almost certainly want to use this, for hopefully obvious reasons.
+
+* primary and secondary keys - you can associate one primary and multiple
+secondary keys (arbitrary byte sequences) with each event. These keys can be
+used to correlate events.
+
+* level - numeric log level. Many existing loggers (especially in the log4*
+family) associate a numeric level (often mapped to a string like _INFO_,
+_WARN_, etc) to each event. pblog allows you to do the same. We don't want
+to enforce any numeric convention on you, so you just get an unsigned 32 bit
+integer to do whatever you want.
+
+* writer metadata - This allows log writers to put their _stamp_ on the event.
+This _stamp_ may include the time the event was written, the hostname the
+event was written on, the application that caused the event to be written, etc.
 
 ### Requirements
 
@@ -40,12 +80,85 @@ In theory, on Debian and Ubuntu, you could run:
 But as of this typing, the repositories only had version 2.2.x, which is not
 compatible at this time.
 
-You'll also need Python 2.6 or later, as that is what the current tools are
-written in.
+You'll also need Python 2.6 or later, as pblog relies on a few features
+introduced in 2.6 (although I'm hard-pressed to name them).
 
 ## Deploying and Running
 
-TODO (when things stabilize)
+Step 1 is to grab the code. Either clone the git repository or find the
+_Download Source_ link github to grab an archive. Hopefully that's a
+one-time process.
+
+Next, you'll need to create Protocol Buffer message definitions for the events
+you wish to log.
+
+Start by creating a directory to hold your definitions.
+
+`mkdir ~/pblog-messages`
+`cd ~/pblog-messages`
+
+The directory structure under this root directory determines the namespace of
+sorts for message types. You'll probably want to have at least one additional
+layer, to help with grouping.
+
+Some common layouts include:
+
+> /<application1>/
+> /<application2>/
+
+or
+
+> /<org name>/<application1>
+> /<org name>/<application2>
+
+For example,
+
+> /WebApplication/
+> /DatabaseApplication/
+
+or
+
+> /acme/NetworkData/
+> /acme/Monitoring/
+
+The number of layers is unlimited.
+
+In the created directories, you'll create _.proto_ files containing Protocol
+Buffer definitions. The
+[Language Guide](http://code.google.com/apis/protocolbuffers/docs/proto.html)
+is a great source for this.
+
+Currently, pblog requires that **each .proto file have a _package_
+definition**. The package name should resemble the the directory structure.
+
+e.g. _/acme/WebApplication/basic.proto_ might look like
+
+> package acme.WebApplication.basic;
+>
+> message SampleEvent {
+> ...
+
+This arbitrary restriction may be lifted in the future.
+
+Once you have defined your messages, you'll need to generate some more .proto
+files, which are used by pblog. You do this by running the _pblog_compile_
+program, which is distributed as part of pblog.
+
+> pblog_compile --help
+> Usage: pblog_compile [options] /path/to/messages /output/path
+>
+> Generates Protocol Buffer extensions for all defined messages
+
+>Options:
+>  -h, --help            show this help message and exit
+>  -p PROTOC, --protoc=PROTOC
+>                        Path to protoc binary
+
+> pblog_compile ~/pblog-messages ~/pblog-generated
+
+Like the message source directory, you'll likely want to have the output
+directory under version control. That way, in case you do something silly,
+you can easily revert changes.
 
 ## Shortcomings
 
@@ -57,6 +170,12 @@ a problem. But, if we move out to the internet, exchange of event information
 across multiple users of pblog will likely be problematic, as two companies
 _X_ and _Y_ will likely have two different message types having numeric id
 _N_.
+
+Logging data is typically site-specific and it would be trivial to write
+a _proxy_ that translated event ids on the fly, so I'm not too concerned
+about this shortcoming at the moment. That being said, I can see the desire
+to exchange log events between sites with little effort, so supporting
+this is definitely a desirable feature.
 
 ## Background
 
@@ -76,7 +195,7 @@ The real meat of this event is the data:
  * how long (_0.24 seconds_)
 
 That took 82 bytes to encode. And, it is relatively difficult for a computer
-to parse it. In fact, a human needs to instruct a computer how to parse, likely
+to parse. In fact, a human needs to instruct a computer how to parse it, likely
 by using regular expressions (which are relatively slow), or tools such as
 _cat_, _grep_, _awk_, _sed_, etc. This works for a while, but it doesn't scale
 to large datasets. You'll quickly find things bogged down by network
@@ -85,7 +204,7 @@ various parsing scripts, etc.
 
 ### Why Protocol Buffers?
 
-When I set out to create a better logging system, there were a number of
+When I set out to create a structured logging system, there were a number of
 technologies I could have used. The most compelling was
 [Apache Thrift](http://incubator.apache.org/thrift/) and
 [Facebook Scribe](http://github.com/facebook/scribe). Thrift can be thought of
@@ -111,5 +230,8 @@ and service dependency perspective, I didn't like it. I'll just write logs
 to disk or similar so-simple-it-won't-fail backend, thank you.
 
 Finally, I found the documentation and ease-of-use of Protocol Buffers to
-be superior to Thrift's. Extensions, in particular, make my life much
-more pleasant.
+be superior to Thrift's. 
+
+Also, I could have just written out JSON, YAML, XML, etc, but since Protocol
+Buffers are so fast and small, I couldn't live with myself if I had sacrificed
+those qualities.
