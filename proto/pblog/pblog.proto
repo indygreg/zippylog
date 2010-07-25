@@ -1,4 +1,4 @@
-import "pblog-messagetypes.proto";
+import "pblog/site/MessageTypes.proto";
 
 package pblog;
 
@@ -28,7 +28,8 @@ message LogEvent {
     // mapped to this
     optional uint32 level = 5;
 
-    repeated pblog.site.MessageType message_types = 6;
+    // list of extensions present in the message
+    repeated pblog.site.MessageType present_extensions = 6;
 
     // reserved forembeddable message types    
     extensions 100 to max;
