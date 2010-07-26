@@ -12,8 +12,11 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+from calendar import timegm
+
 # TODO we probably should not be using an internal module
 from google.protobuf.internal.encoder import _VarintEncoder
+import os.path
 from pblog.event import LogEvent
 from pblog.pblog_pb2 import WriterInfo
 import socket
@@ -43,6 +46,13 @@ Writes the passed event.
 
 This must be defined in child classes.'''
         raise Exception('method must be defined in derived classes')
+
+    def _prepare_message(self, e):
+        # convert to wrapped message automagically
+        if not isinstance(e, LogEvent):
+            e = LogEvent(message=e)
+
+        return e
 
 class FileObjectWriter(IWriter):
     '''A simple writer that writes out to an opened file object handle'''
@@ -88,15 +98,20 @@ class FileObjectWriter(IWriter):
         automatically.
         '''
 
-        # convert to wrapped message automagically
-        if not isinstance(e, LogEvent):
-            e = LogEvent(message=e)
+        e = self._prepare_message(e)
+        self._write(e)
 
-        self.writer_info.write_time = int(time.time() * 1000000)
+    def _write(self, e, t = None):
+
+        if not t:
+            t = time.time()
+
+        self.writer_info.write_time = int(t * 1000000)
         self.writer_info.sequence_id = self.sequence
-        self.sequence = self.sequence + 1
+        self.sequence += 1
 
         e.add_writer_info(self.writer_info)
+
         binary = e.serialize()
 
         # the first byte of the stream is the stream version
@@ -107,4 +122,91 @@ class FileObjectWriter(IWriter):
         self.varint_encoder(self.handle.write, len(binary))
         self.handle.write(binary)
 
+class FileSystemStreamStoreWriter(IWriter):
+    '''Writes streams in a filesystem-backed stream store.'''
 
+    def __init__(self, root_directory, default_bucket, default_streamset, seconds_per_file=3600):
+        if not os.path.exists(root_directory):
+            raise Exception('root directory does not exists: %s' % root_directory)
+
+        self.root_directory = os.path.realpath(root_directory)
+        
+        bucket_dir = os.path.realpath(os.path.join(self.root_directory, default_bucket))
+
+        if not os.path.exists(bucket_dir):
+            raise Exception('default bucket directory does not exist: %s' % bucket_dir)
+
+        # TODO verify bucket_dir is a subdir of root_directory
+
+        self.default_bucket = default_bucket
+        self.default_streamset = default_streamset
+
+        self.writer = None
+        self.active_file = None
+        self.next_switch_time = 0
+        self.seconds_per_file = seconds_per_file
+
+    def write(self, e):
+        t = time.time()
+
+        if t >= self.next_switch_time:
+            timepart, self.next_switch_time = file_for_time(int(t), self.seconds_per_file)
+            self.active_file = os.path.join(self.root_directory, self.default_bucket, self.default_streamset, timepart)
+       
+            # TODO check if file exists so we flag has_written properly
+            fh = open(self.active_file, 'wb')
+            self.writer = FileObjectWriter(fh)
+
+        self.writer._write(self._prepare_message(e), t)
+
+
+    def flush(self):
+        if self.writer:
+            self.writer.flush()
+
+def file_for_time(t, seconds_per_file):
+    '''Determine the file to write to for the given time.
+
+    Returns a typle consiting of a string filename and the next integer
+    corresponding to a new time.'''
+    st = time.gmtime(t)
+
+    # TODO compiled formatters
+
+    # daily
+    if seconds_per_file == 86400:
+        filename = '%04d-%02d-%02d.pblog' % (st[0], st[1], st[2])
+
+        tomorrow = t + 86400
+        st = time.gmtime(tomorrow)
+
+        return filename, timegm((st[0], st[1], st[2], 0, 0, 0))
+
+    # hourly
+    elif seconds_per_file == 3600:
+        filename = '%04d-%02d-%02d-%02d.pblog' % (st[0], st[1], st[2], st[3])
+
+        next_time = t + 3600
+        st = time.gmtime(next_time)
+
+        return filename, timegm((st[0], st[1], st[2], st[3], 0, 0))
+
+    elif seconds_per_file > 3600 or seconds_per_file < 4:
+        raise Exception('%d is not an allowed seconds_per_file value' % seconds_per_file)
+
+    else:
+        # TODO switch to a lookup table for efficiency?
+        if 3600 % seconds_per_file > 0:
+            raise Exception('%d does not divide into 3600 evenly' % seconds_per_file)
+
+        series_max = 3600 / seconds_per_file
+        seconds_since_hour = st[4] * st[5]
+
+        current = seconds_since_hour / seconds_per_file + 1
+
+        filename = '%04d-%02d-%02d-%02d-%03d-%03d.pblog' % ( st[0], st[1], st[2], st[3], current, series_max)
+
+        t = timegm((st[0], st[1], st[2], st[3], 0, 0))
+            
+        return filename, t + current * seconds_per_file
+            
