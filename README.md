@@ -37,21 +37,25 @@ layer, to help with grouping.
 Some common layouts include:
 
 > /:application1/
+
 > /:application2/
 
 or
 
 > /:org name/:application1
+
 > /:org name/:application2
 
 For example,
 
 > /WebApplication/
+
 > /DatabaseApplication/
 
 or
 
 > /acme/NetworkData/
+
 > /acme/Monitoring/
 
 The number of layers is unlimited.
@@ -66,7 +70,9 @@ files, which are used by pblog. You do this by running the _pblog_compile_
 program, which is distributed as part of pblog.
 
 > pblog_compile --help
+
 > <grok output here>
+
 > pblog_compile ~/pblog-messages ~/pblog-generated
 
 Like the message source directory, you'll likely want to have the output
