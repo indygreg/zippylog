@@ -13,11 +13,21 @@
 #  limitations under the License.
 
 from pblog.pblog_pb2 import LogEvent as PBEvent
-import pblog.site.MessageTypes_pb2
-from pblog.site.types import TYPES_BY_INDEX
+import sys
 import time
 
-import acme.webapp_pb2
+_types_numeric = {}
+_types_fullname = {}
+
+def register_types(d):
+    '''Registers a dictionary of types with the event system.
+
+    The passed argument should be the TYPES_BY_INDEX module variable from
+    automatically generated module built by pblog.'''
+
+    for k,v in d.iteritems():
+        _types_numeric[k] = v
+        _types_fullname[v[2]] = k
 
 class LogEvent():
     '''An individual Protocol Buffer Log Event
@@ -61,15 +71,17 @@ All other options have no defaults.'''
     def add_message(self, m):
         '''add_message(m)
 
-Adds a message to this event. The parameter should be protocol buffer
-class instance and should be registered with the pblog.site package.'''
+        Adds a message to this event. The parameter should be protocol buffer
+        class instance and should be registered with the pblog.site package.'''
 
         # we simply add the binary data directly to the messages list and recorded
         # the enumerated type of the message
-        enum_c = eval('pblog.site.MessageTypes_pb2.%s' % m.DESCRIPTOR.full_name.replace('.', '_'))
+        name = m.DESCRIPTOR.full_name
+        if name not in _types_fullname:
+            raise Exception('%s type not registered with pblog')
 
         self.event.events.append(m.SerializeToString())
-        self.event.event_types.append(enum_c)
+        self.event.event_types.append(_types_fullname[name])
 
     def get_message(self, index=0):
         '''get_message(i)
@@ -81,13 +93,19 @@ Get the message at specified index.'''
 
         b = self.event.events[index]
 
-        # TODO holy hack, batman
-        cl = TYPES_BY_INDEX[self.event.event_types[index]]
-        m = cl.split('.')[:-1]
-        m = '.'.join(m) + '_pb2'
-        cl = cl.split('.')[-1]
+        type_constant = self.event.event_types[index]
+        if type_constant not in _types_numeric:
+            raise Exception('type constant not registered: %d' % type_constant)
 
-        e = eval('%s.%s()' % (m, cl) )
+        t = _types_numeric[type_constant]
+
+        mod_name = t[0]
+        if mod_name not in sys.modules:
+            raise Exception('type constant is imported but the module is not present, weird')
+
+        mod = sys.modules[mod_name]
+        cl = t[1]
+        e = eval('mod.%s()' % cl)
         e.MergeFromString(b)
 
         return e
