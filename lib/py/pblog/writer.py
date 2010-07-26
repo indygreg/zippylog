@@ -14,8 +14,8 @@
 
 # TODO we probably should not be using an internal module
 from google.protobuf.internal.encoder import _VarintEncoder
-
-from pblog.pblog_pb2 import LogEvent, WriterInfo
+from pblog.event import LogEvent
+from pblog.pblog_pb2 import WriterInfo
 import socket
 import time
 
@@ -50,16 +50,16 @@ class FileObjectWriter(IWriter):
     def __init__(self, handle, has_written=False, stream_version=1):
         '''FileObjectWriter(fh, [has_written=False])
 
-Initialize a new writer instance that associated with a File Object.
+        Initialize a new writer instance that associated with a File Object.
 
-The has_written parameter tells the writer if the output stream has been
-written to. This is used to properly encode the stream with the stream
-output version.
+        The has_written parameter tells the writer if the output stream has been
+        written to. This is used to properly encode the stream with the stream
+        output version.
 
-stream_version is the pblog stream version encoding to use. Currently, only
-version 1 is supported. If writing to new streams, you almost always want to
-leave this as the default
-'''
+        stream_version is the pblog stream version encoding to use. Currently, only
+        version 1 is supported. If writing to new streams, you almost always want to
+        leave this as the default
+        '''
         IWriter.__init__(self)
         self.handle = handle
         self.has_written = has_written
@@ -81,9 +81,17 @@ leave this as the default
         self.handle.flush()
 
     def write(self, e):
-        '''write(event)
+        '''Write an individual event to the writer.
 
-Write an individual event to the writer.'''
+        If the message is not a pblog.event.LogEvent() but is a
+        google.protobuf.message, it will be wrapped in a LogEvent()
+        automatically.
+        '''
+
+        # convert to wrapped message automagically
+        if not isinstance(e, LogEvent):
+            e = LogEvent(message=e)
+
         self.writer_info.write_time = int(time.time() * 1000000)
         self.writer_info.sequence_id = self.sequence
         self.sequence = self.sequence + 1
