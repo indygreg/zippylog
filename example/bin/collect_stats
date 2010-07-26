@@ -1,0 +1,88 @@
+#!/usr/bin/python
+
+#  Copyright 2010 Gregory Szorc
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+'''
+This is an example process that collects system load average and memory stats
+from the current system. It likely only runs on Linux 2.6.
+
+'''
+
+from pblog.writer import FileSystemStreamStoreWriter
+import os.path
+import re
+import sys
+import time
+
+from acme.os_pb2 import LoadAvg, MemoryInfo
+
+import acme.pblog_types
+
+if len(sys.argv) != 2:
+    print 'Usage: collect_stats /path/to/output/directory\n'
+    sys.exit(1)
+
+out_sets_dir = os.path.join(sys.argv[1], 'example', 'collect_stats')
+
+if not os.path.exists(out_sets_dir):
+    os.makedirs(out_sets_dir)
+
+w = FileSystemStreamStoreWriter(sys.argv[1], 'example', 'collect_stats')
+
+re_load = re.compile(r'(?P<min1>[^\s]+)\s(?P<min5>[^\s]+)\s(?P<min15>[^\s]+)')
+re_memory = re.compile(r'(?P<thing>[^:]+):\s+(?P<value>[^\s]+)\s?(?P<unit>.*)')
+
+mem_map = {
+    'MemFree': 'mem_free',
+    'Buffers': 'buffers',
+    'Cached': 'cached',
+    'SwapCached': 'swap_cached',
+    'Active': 'active',
+    'InActive': 'inactive'
+}
+
+while True:
+    with open('/proc/loadavg', 'r') as fh:
+        l = fh.readline()
+        match = re_load.match(l)
+
+        if match is not None:
+            msg = LoadAvg(
+                min1=float(match.group('min1')),
+                min5=float(match.group('min5')),
+                min15=float(match.group('min15'))
+            )
+            w.write(msg)
+
+    with open('/proc/meminfo', 'r') as fh:
+        stats = {}
+        for line in fh:
+            match = re_memory.match(line)
+            if match:
+                thing, value, unit = match.group('thing'), match.group('value'), match.group('unit')
+                value = int(value)
+                if unit and unit == 'kB':
+                    value *= 1024
+
+                stats[thing] = value
+
+        msg = MemoryInfo()
+        for k,v in mem_map.iteritems():
+            if k in stats:
+                msg.__setattr__(v, stats[k])
+
+        w.write(msg)
+
+    time.sleep(5)
