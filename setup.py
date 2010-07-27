@@ -17,7 +17,7 @@ from setuptools import setup, find_packages
 setup(
     name         = 'pblog',
     version      = '0.0.0.dev',
-    packages     = find_packages('lib/py'),
+    packages     = [ 'pblog' ],
     package_dir  = {'':'lib/py'},
     scripts      = ['bin/pblog_compile'],
     test_suite   = 'pblog.test.all_tests_suite',
