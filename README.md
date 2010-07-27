@@ -23,12 +23,20 @@ introduced in 2.6.
 
 ## Installing
 
-Step 1 is to grab the code. Either clone the git repository or find the
-_Download Source_ link github to grab an archive. Hopefully that's a
+1. Grab the source code. Either clone the git repository or find the
+_Download Source_ link on github to grab an archive. Hopefully that's a
 one-time process.
 
-Next, you'll need to create Protocol Buffer message definitions for the events
-you wish to log.
+2. Install Python tools and modules.
+
+`python setup.py install`
+
+You should now have a `binlog_compile` script available on your system.
+
+## Defining Messages
+
+Next, you'll need to create your domain-specific Protocol Buffer message
+definitions for the events, messages, etc you wish to record.
 
 Start by creating a directory to hold your definitions.
 
@@ -36,48 +44,45 @@ Start by creating a directory to hold your definitions.
 
 `cd ~/pblog-messages`
 
-The directory structure under this root directory determines the namespace of
-sorts for message types. You'll probably want to have at least one additional
-layer, to help with grouping.
+You'll create .proto files in this directory.
 
-Some common layouts include:
+The directory structure in this directory determines the namespace of
+messages. The first directory level is the message namespace. This likely
+corresponds with your company or organization name. i.e. if you are the
+_ACME_ company, you'll probably want to create an _acme_ directory at
+the root.
 
-> /:application1/
+Under your namespace directory, create additional directory layers as are
+necessary.
 
-> /:application2/
+At any directory, create .proto files containing your message definitions.
+The name of the file will form a final namespace member.
 
-or
+For small organizations with limited amounts of message types, you may want
+a flat namespace:
 
-> /:org name/:application1
+* /acme/webapp.proto
+* /acme/db.proto
 
-> /:org name/:application2
+Or, if there are many message types per application, you may wish to group them
+additionally:
 
-For example,
+* /acme/webapp/errors.proto
+* /acme/webapp/billing.proto
+* /acme/webapp/performance.proto
 
-> /WebApplication/
+For larger organizations, you may wish to add some corporate hierarchy:
 
-> /DatabaseApplication/
+* /acme/operations/router_stats.proto
+* /acme/operations/system_stats.proto
+* /acme/sales/purchase_order.proto
 
-or
-
-> /acme/NetworkData/
-
-> /acme/Monitoring/
-
-The number of layers is unlimited.
-
-In the created directories, you'll create _.proto_ files containing Protocol
-Buffer definitions. The
+The protocol buffer
 [Language Guide](http://code.google.com/apis/protocolbuffers/docs/proto.html)
-is a great source for this.
+is the definitive source for creating .proto files.
 
-Once you have defined your messages, you'll need to generate some more .proto
-files, which are used by pblog. You do this by running the _pblog_compile_
-program, which is distributed as part of pblog.
-
-> pblog_compile --help
-
-> <grok output here>
+Once you have defined your messages, you'll need to run _pblog_compile_ to
+generate bindings to pblog.
 
 > pblog_compile ~/pblog-messages ~/pblog-generated
 
