@@ -12,18 +12,22 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from setuptools import setup, find_packages
 
-setup(
-    name         = 'pblog',
-    version      = '0.0.0.dev',
-    packages     = find_packages('lib/py'),
-    package_dir  = {'':'lib/py'},
-    scripts      = ['bin/pblog_compile'],
-    test_suite   = 'pblog.test.all_tests_suite',
-    author       = 'Gregory Szorc',
-    author_email = 'gregory.szorc@gmail.com',
-    description  = 'structured message logging system',
-    license      = 'Apache 2.0',
-    url          = 'http://github.com/indygreg/pblog'
-)
+import unittest
+
+def all_tests_suite():
+    suite = unittest.TestLoader().loadTestsFromNames([
+        'pblog.writer_test',
+    ])
+
+    return suite
+        
+if __name__ == '__main__':
+    import sys
+    import os.path
+
+    sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+
+    runner = unittest.TextTestRunner()
+    suite = all_tests_suite()
+    runner.run(suite) 

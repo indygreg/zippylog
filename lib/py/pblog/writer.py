@@ -204,7 +204,7 @@ def file_for_time(t, seconds_per_file):
             raise Exception('%d does not divide into 3600 evenly' % seconds_per_file)
 
         series_max = 3600 / seconds_per_file
-        seconds_since_hour = st[4] * st[5]
+        seconds_since_hour = st[4] * 60 + st[5]
 
         current = seconds_since_hour / seconds_per_file + 1
 
