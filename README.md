@@ -1,6 +1,11 @@
 # pblog - Structured Event Logging Using Protocol Buffers
 
-## Requirements
+This document is targeted to end users wishing to install pblog on a system.
+
+For details about the pblog project, including why you may want to use it,
+visit the [project wiki](http://wiki.github.com/indygreg/pblog/).
+
+## System Requirements
 
 You'll need to [install](http://code.google.com/apis/protocolbuffers/)
 Google Protocol Buffers, version 2.3.0 or later. Be sure to install the Python
@@ -14,9 +19,9 @@ But as of this typing, the repositories only had version 2.2.x, which is not
 compatible at this time.
 
 You'll also need Python 2.6 or later, as pblog relies on a few features
-introduced in 2.6 (although I'm hard-pressed to name them).
+introduced in 2.6.
 
-## Deploying and Running
+## Installing
 
 Step 1 is to grab the code. Either clone the git repository or find the
 _Download Source_ link github to grab an archive. Hopefully that's a
@@ -28,6 +33,7 @@ you wish to log.
 Start by creating a directory to hold your definitions.
 
 `mkdir ~/pblog-messages`
+
 `cd ~/pblog-messages`
 
 The directory structure under this root directory determines the namespace of
