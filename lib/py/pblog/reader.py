@@ -13,8 +13,7 @@
 #  limitations under the License.
 
 from google.protobuf.internal.decoder import _DecodeVarint
-from pblog.event import LogEvent as EventWrapper
-from pblog.pblog_pb2 import LogEvent, WriterInfo
+from pblog.message import Message
 
 class IReader():
     '''Interface for all pblog readers'''
@@ -73,5 +72,5 @@ Read and return the next event on the stream.'''
         (size, pos) = self.varint_decoder(buf, 0)
         buf = buf[pos:] + self.handle.read(size)
 
-        e = EventWrapper(serialized=buf)
+        e = Message(serialized=buf)
         return e

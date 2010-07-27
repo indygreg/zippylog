@@ -17,18 +17,20 @@ from calendar import timegm
 # TODO we probably should not be using an internal module
 from google.protobuf.internal.encoder import _VarintEncoder
 import os.path
-from pblog.event import LogEvent
-from pblog.pblog_pb2 import WriterInfo
+from pblog.message import Message
+from pblog.pblog_pb2 import AgentInfo
 import socket
 import time
 
 class IWriter():
     '''Interface for all pblog writers'''
 
-    def __init__(self, write_hostname=False):
+    def __init__(self,
+                 write_hostname=False,
+                 write_namespaces=False):
         '''IWriter()
 
-Default constructor. Sets some reasonable defaults'''
+        Default constructor. Sets some reasonable defaults.'''
 
         self.sequence = 0
         self.hostname = socket.gethostname()
@@ -39,20 +41,20 @@ Default constructor. Sets some reasonable defaults'''
 
         self.varint_encoder = _VarintEncoder()
 
-    def write(self, e):
-        '''write(event)
+    def write(self, m):
+        '''write(message)
 
-Writes the passed event.
+        Writes the passed event.
 
-This must be defined in child classes.'''
+        This must be defined in child classes.'''
         raise Exception('method must be defined in derived classes')
 
-    def _prepare_message(self, e):
+    def _prepare_message(self, m):
         # convert to wrapped message automagically
-        if not isinstance(e, LogEvent):
-            e = LogEvent(message=e)
+        if not isinstance(m, Message):
+            m = Message(message=m)
 
-        return e
+        return m
 
 class FileObjectWriter(IWriter):
     '''A simple writer that writes out to an opened file object handle'''
@@ -68,7 +70,9 @@ class FileObjectWriter(IWriter):
 
         stream_version is the pblog stream version encoding to use. Currently, only
         version 1 is supported. If writing to new streams, you almost always want to
-        leave this as the default
+        leave this as the default.
+
+        File objects should be opened in binary mode.
         '''
         IWriter.__init__(self)
         self.handle = handle
@@ -80,37 +84,37 @@ class FileObjectWriter(IWriter):
         self.stream_version = stream_version
         self.app_id = 'py_fileobjectwriter'
         
-        self.writer_info = WriterInfo()
+        self.agent_info = AgentInfo()
         
         if self.write_hostname:
-            self.writer_info.hostname = self.hostname
+            self.agent_info.hostname = self.hostname
    
-        self.writer_info.app_id = self.app_id
+        self.agent_info.app_id = self.app_id
 
     def flush(self):
         self.handle.flush()
 
-    def write(self, e):
-        '''Write an individual event to the writer.
+    def write(self, message):
+        '''Write an individual message.
 
-        If the message is not a pblog.event.LogEvent() but is a
-        google.protobuf.message, it will be wrapped in a LogEvent()
+        If the message is not a pblog.event.Message() but is a
+        google.protobuf.message, it will be wrapped in a pblog.event.Message
         automatically.
         '''
 
-        e = self._prepare_message(e)
-        self._write(e)
+        message = self._prepare_message(message)
+        self._write(message)
 
-    def _write(self, e, t = None):
+    def _write(self, e, t=None):
 
         if not t:
             t = time.time()
 
-        self.writer_info.write_time = int(t * 1000000)
-        self.writer_info.sequence_id = self.sequence
+        self.agent_info.touch_time = int(t * 1000000)
+        self.agent_info.sequence_id = self.sequence
         self.sequence += 1
 
-        e.add_writer_info(self.writer_info)
+        e.add_agent_info(self.agent_info)
 
         binary = e.serialize()
 

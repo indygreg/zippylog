@@ -1,56 +1,59 @@
 package pblog;
 
+// this is the basic message type of pblog
+// it is a common container for all data encoded by pblog
+// this message contains various common fields that commonly
+// describe embedded messages
+
 // every log message in a stream is an instance of this.
 // each instance contains common metadata and 1 or more domain-specific
 // messages, which are defined as extensions and are managed by pblog
-message LogEvent {
-    // fields 1 to 100 are reserved by pblog
-    // not all fields are relevant for all users
+message Message {
+    // list of protocol buffer serialized messages
+    repeated bytes messages = 1;
 
-    // time event was created, in microseconds since UNIX epoch
-    optional uint64 create_time = 1;
+    // describe the embedded messages' types
+    // if there are N messages, there will be N entries in event_types
+    // event_namespaces is optional. if present, will have same number of
+    // elements as messages
+    repeated uint32 message_namespaces = 2 [packed=true];
+    repeated uint32 message_types = 3 [packed=true];
 
-    // a key used to correlate related events
-    optional bytes primary_key = 2;
+    // time message was created, in microseconds since UNIX epoch
+    optional uint64 create_time = 4;
 
-    // list of optional secondary correlation keys. these will likely be domain
-    // specific
-    repeated bytes secondary_keys = 3;
+    // list of values that are intended to correlate messages
+    // the data encoded and order is defined however you want
+    repeated bytes tags = 5;
 
-    // list of all agents that wrote out this log event
-    // index 0 will be the original producer. not all agents may update this
-    // field, but it is nice to have
-    repeated WriterInfo writers = 4;
+    // metadata deposited by agents that touched this message
+    // as agents touch the message, they may append to this list
+    // not all agents may update this field
+    repeated AgentInfo agents = 6;
 
-    // numeric log level. string values such as DEBUG, INFO, etc, could be
-    // mapped to this
-    optional uint32 level = 5;
-
-    // list of event message types embedded in this message
-    repeated uint32 event_types = 6;
-    
-    // encoded events
-    repeated bytes events = 7;
-
-    // reserved forembeddable message types    
-    extensions 100 to max;
+    // numeric value associated with message
+    // there are a number of applications for this field:
+    //   - for logging, value could be associated with a log level (DEBUG, INFO, etc)
+    //   - a message priority
+    //   - recording a single numeric value (instead of adding an event)
+    optional uint64 numeric_value = 7;
 }
 
-// Metadata describing who/how a message was written
-message WriterInfo {
-    // time event was written, in microseconds since UNIX epoch
-    optional uint64 write_time = 1;
+// metadata describing agents that touched a message
+message AgentInfo {
+    // time event was touched, in microseconds since UNIX epoch
+    // for writers, this is the time the event was written
+    optional uint64 touch_time = 1;
 
     // sequence ID to help identify duplicates
     optional uint64 sequence_id = 2;
 
-    // hostname of machine that wrote event
+    // hostname of agent
     optional string hostname = 3;
 
-    // alternate identifier of machine that wrote event
-    // use this instead of hostname if 1) it is smaller 2) you have such a system
+    // alternate identifier of agent host
     optional bytes host_id = 4;
 
-    // identifier of application writing event
+    // identify the agent
     optional bytes app_id = 5;
 }

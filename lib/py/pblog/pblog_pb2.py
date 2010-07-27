@@ -10,64 +10,64 @@ from google.protobuf import descriptor_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/pblog.proto',
   package='pblog',
-  serialized_pb='\n\x11pblog/pblog.proto\x12\x05pblog\"\xae\x01\n\x08LogEvent\x12\x13\n\x0b\x63reate_time\x18\x01 \x01(\x04\x12\x13\n\x0bprimary_key\x18\x02 \x01(\x0c\x12\x16\n\x0esecondary_keys\x18\x03 \x03(\x0c\x12\"\n\x07writers\x18\x04 \x03(\x0b\x32\x11.pblog.WriterInfo\x12\r\n\x05level\x18\x05 \x01(\r\x12\x13\n\x0b\x65vent_types\x18\x06 \x03(\r\x12\x0e\n\x06\x65vents\x18\x07 \x03(\x0c*\x08\x08\x64\x10\x80\x80\x80\x80\x02\"h\n\nWriterInfo\x12\x12\n\nwrite_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x05 \x01(\x0c')
+  serialized_pb='\n\x11pblog/pblog.proto\x12\x05pblog\"\xb2\x01\n\x07Message\x12\x10\n\x08messages\x18\x01 \x03(\x0c\x12\x1e\n\x12message_namespaces\x18\x02 \x03(\rB\x02\x10\x01\x12\x19\n\rmessage_types\x18\x03 \x03(\rB\x02\x10\x01\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\x04\x12\x0c\n\x04tags\x18\x05 \x03(\x0c\x12 \n\x06\x61gents\x18\x06 \x03(\x0b\x32\x10.pblog.AgentInfo\x12\x15\n\rnumeric_value\x18\x07 \x01(\x04\"g\n\tAgentInfo\x12\x12\n\ntouch_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x05 \x01(\x0c')
 
 
 
 
-_LOGEVENT = descriptor.Descriptor(
-  name='LogEvent',
-  full_name='pblog.LogEvent',
+_MESSAGE = descriptor.Descriptor(
+  name='Message',
+  full_name='pblog.Message',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='create_time', full_name='pblog.LogEvent.create_time', index=0,
-      number=1, type=4, cpp_type=4, label=1,
+      name='messages', full_name='pblog.Message.messages', index=0,
+      number=1, type=12, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='message_namespaces', full_name='pblog.Message.message_namespaces', index=1,
+      number=2, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
+    descriptor.FieldDescriptor(
+      name='message_types', full_name='pblog.Message.message_types', index=2,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
+    descriptor.FieldDescriptor(
+      name='create_time', full_name='pblog.Message.create_time', index=3,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='primary_key', full_name='pblog.LogEvent.primary_key', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='secondary_keys', full_name='pblog.LogEvent.secondary_keys', index=2,
-      number=3, type=12, cpp_type=9, label=3,
+      name='tags', full_name='pblog.Message.tags', index=4,
+      number=5, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='writers', full_name='pblog.LogEvent.writers', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='agents', full_name='pblog.Message.agents', index=5,
+      number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='level', full_name='pblog.LogEvent.level', index=4,
-      number=5, type=13, cpp_type=3, label=1,
+      name='numeric_value', full_name='pblog.Message.numeric_value', index=6,
+      number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='event_types', full_name='pblog.LogEvent.event_types', index=5,
-      number=6, type=13, cpp_type=3, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='events', full_name='pblog.LogEvent.events', index=6,
-      number=7, type=12, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -78,50 +78,50 @@ _LOGEVENT = descriptor.Descriptor(
   enum_types=[
   ],
   options=None,
-  is_extendable=True,
-  extension_ranges=[(100, 536870912), ],
+  is_extendable=False,
+  extension_ranges=[],
   serialized_start=29,
-  serialized_end=203,
+  serialized_end=207,
 )
 
 
-_WRITERINFO = descriptor.Descriptor(
-  name='WriterInfo',
-  full_name='pblog.WriterInfo',
+_AGENTINFO = descriptor.Descriptor(
+  name='AgentInfo',
+  full_name='pblog.AgentInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='write_time', full_name='pblog.WriterInfo.write_time', index=0,
+      name='touch_time', full_name='pblog.AgentInfo.touch_time', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='sequence_id', full_name='pblog.WriterInfo.sequence_id', index=1,
+      name='sequence_id', full_name='pblog.AgentInfo.sequence_id', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='hostname', full_name='pblog.WriterInfo.hostname', index=2,
+      name='hostname', full_name='pblog.AgentInfo.hostname', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='host_id', full_name='pblog.WriterInfo.host_id', index=3,
+      name='host_id', full_name='pblog.AgentInfo.host_id', index=3,
       number=4, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='app_id', full_name='pblog.WriterInfo.app_id', index=4,
+      name='app_id', full_name='pblog.AgentInfo.app_id', index=4,
       number=5, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
@@ -136,23 +136,23 @@ _WRITERINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=205,
-  serialized_end=309,
+  serialized_start=209,
+  serialized_end=312,
 )
 
 
-_LOGEVENT.fields_by_name['writers'].message_type = _WRITERINFO
+_MESSAGE.fields_by_name['agents'].message_type = _AGENTINFO
 
-class LogEvent(message.Message):
+class Message(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _LOGEVENT
+  DESCRIPTOR = _MESSAGE
   
-  # @@protoc_insertion_point(class_scope:pblog.LogEvent)
+  # @@protoc_insertion_point(class_scope:pblog.Message)
 
-class WriterInfo(message.Message):
+class AgentInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _WRITERINFO
+  DESCRIPTOR = _AGENTINFO
   
-  # @@protoc_insertion_point(class_scope:pblog.WriterInfo)
+  # @@protoc_insertion_point(class_scope:pblog.AgentInfo)
 
 # @@protoc_insertion_point(module_scope)
