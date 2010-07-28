@@ -16,10 +16,10 @@
 import unittest
 import pblog.store
 
-class WriterTest(unittest.TestCase):
+class StoreTest(unittest.TestCase):
 
     def test_file_for_time(self):
-        f = pblog.store.file_for_time
+        f = pblog.store.stream_name_for_time
         
         self.assertRaises(Exception, f, 1280210699, 86401)
         self.assertRaises(Exception, f, 1280210699, 34234234)
