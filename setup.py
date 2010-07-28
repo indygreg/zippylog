@@ -15,15 +15,16 @@
 from setuptools import setup, find_packages
 
 setup(
-    name         = 'pblog',
-    version      = '0.0.0.dev',
-    packages     = [ 'pblog' ],
-    package_dir  = {'':'lib/py'},
-    scripts      = ['bin/pblog_compile'],
-    test_suite   = 'pblog.test.all_tests_suite',
-    author       = 'Gregory Szorc',
-    author_email = 'gregory.szorc@gmail.com',
-    description  = 'structured message logging system',
-    license      = 'Apache 2.0',
-    url          = 'http://github.com/indygreg/pblog'
+    name             = 'pblog',
+    version          = '0.0.0.dev',
+    packages         = [ 'pblog' ],
+    package_dir      = {'':'lib/py'},
+    scripts          = ['bin/pblog_compile'],
+    test_suite       = 'pblog.test.all_tests_suite',
+    install_requires = [ 'protobuf>=2.3.0' ],
+    author           = 'Gregory Szorc',
+    author_email     = 'gregory.szorc@gmail.com',
+    description      = 'structured message logging system',
+    license          = 'Apache 2.0',
+    url              = 'http://github.com/indygreg/pblog'
 )
