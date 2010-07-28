@@ -1,4 +1,4 @@
-# pblog - Structured Event Logging Using Protocol Buffers
+# pblog - Message Bus and Store Using Protocol Buffers
 
 This document is targeted to end users wishing to install pblog on a system.
 
@@ -36,7 +36,7 @@ You should now have a `binlog_compile` script available on your system.
 ## Defining Messages
 
 Next, you'll need to create your domain-specific Protocol Buffer message
-definitions for the events, messages, etc you wish to record.
+definitions for the messages you wish to record.
 
 Start by creating a directory to hold your definitions.
 

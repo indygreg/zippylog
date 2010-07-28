@@ -21,14 +21,14 @@ class IReader():
     def __init__(self):
         '''IReader()
 
-Default constructor.'''
+        Default constructor.'''
 
         self.varint_decoder = _DecodeVarint
 
     def read(self):
         '''read()
 
-Read and return a single event.'''
+        Read and return a single message.'''
 
         raise Exception('method must be defined in derived classes')
 
@@ -38,7 +38,7 @@ class FileObjectReader(IReader):
     def __init__(self, handle, has_read=False, stream_version=None):
         '''FileObjectReader(fh)
 
-Initialize a new reader instance that associated with a File Object'''
+        Initialize a new reader instance that associated with a File Object'''
         IReader.__init__(self)
         self.handle = handle
         
@@ -62,7 +62,7 @@ Initialize a new reader instance that associated with a File Object'''
     def read(self):
         '''read()
 
-Read and return the next event on the stream.'''
+        Read and return the next message on the stream.'''
 
         # the Google varint decoder works on a buffer. So, we grab some data
         # and let it loose. We later grab more data as we need it

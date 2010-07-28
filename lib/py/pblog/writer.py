@@ -44,7 +44,7 @@ class IWriter():
     def write(self, m):
         '''write(message)
 
-        Writes the passed event.
+        Writes the passed message.
 
         This must be defined in child classes.'''
         raise Exception('method must be defined in derived classes')
@@ -97,8 +97,8 @@ class FileObjectWriter(IWriter):
     def write(self, message):
         '''Write an individual message.
 
-        If the message is not a pblog.event.Message() but is a
-        google.protobuf.message, it will be wrapped in a pblog.event.Message
+        If the message is not a pblog.message.Message() but is a
+        google.protobuf.message, it will be wrapped in a pblog.message.Message
         automatically.
         '''
 

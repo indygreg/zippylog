@@ -20,7 +20,7 @@ _types_numeric = {}
 _types_fullname = {}
 
 def register_types(d):
-    '''Registers a dictionary of types with the event system.
+    '''Registers a dictionary of types with message system.
 
     The passed argument should be the TYPES_BY_INDEX module variable from
     automatically generated module built by pblog.'''

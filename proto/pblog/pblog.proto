@@ -13,8 +13,8 @@ message Message {
     repeated bytes messages = 1;
 
     // describe the embedded messages' types
-    // if there are N messages, there will be N entries in event_types
-    // event_namespaces is optional. if present, will have same number of
+    // if there are N messages, there will be N entries in message_types
+    // message_namespaces is optional. if present, will have same number of
     // elements as messages
     repeated uint32 message_namespaces = 2 [packed=true];
     repeated uint32 message_types = 3 [packed=true];
@@ -35,14 +35,14 @@ message Message {
     // there are a number of applications for this field:
     //   - for logging, value could be associated with a log level (DEBUG, INFO, etc)
     //   - a message priority
-    //   - recording a single numeric value (instead of adding an event)
+    //   - recording a single numeric value (instead of adding a message)
     optional uint64 numeric_value = 7;
 }
 
 // metadata describing agents that touched a message
 message AgentInfo {
-    // time event was touched, in microseconds since UNIX epoch
-    // for writers, this is the time the event was written
+    // time message was touched, in microseconds since UNIX epoch
+    // for writers, this is the time the message was written
     optional uint64 touch_time = 1;
 
     // sequence ID to help identify duplicates
