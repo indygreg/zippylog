@@ -14,12 +14,12 @@
 
 
 import unittest
-import pblog.writer
+import pblog.store
 
 class WriterTest(unittest.TestCase):
 
     def test_file_for_time(self):
-        f = pblog.writer.file_for_time
+        f = pblog.store.file_for_time
         
         self.assertRaises(Exception, f, 1280210699, 86401)
         self.assertRaises(Exception, f, 1280210699, 34234234)
@@ -27,10 +27,10 @@ class WriterTest(unittest.TestCase):
         self.assertRaises(Exception, f, 1280210699, -1)
         self.assertRaises(Exception, f, 1280210699, 13)
 
-        self.assertEqual(f(1280210699, 86400), ('2010-07-27.pblog', 1280275200))
-        self.assertEqual(f(1280212529, 3600), ('2010-07-27-06.pblog', 1280214000))
-        self.assertEqual(f(1280275200, 60), ('2010-07-28-00-001-060.pblog', 1280275260))
-        self.assertEqual(f(1280275260, 60), ('2010-07-28-00-002-060.pblog', 1280275320))
+        self.assertEqual(f(1280210699, 86400), ('2010-07-27', 1280275200))
+        self.assertEqual(f(1280212529, 3600), ('2010-07-27-06', 1280214000))
+        self.assertEqual(f(1280275200, 60), ('2010-07-28-00-001-060', 1280275260))
+        self.assertEqual(f(1280275260, 60), ('2010-07-28-00-002-060', 1280275320))
 
         
 if __name__ == '__main__':

@@ -12,22 +12,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+class PBException(Exception):
+    '''Base class for all exceptions in the pblog package.'''
+    pass
 
-import unittest
-
-def all_tests_suite():
-    suite = unittest.TestLoader().loadTestsFromNames([
-        'pblog.test.store_test',
-    ])
-
-    return suite
-        
-if __name__ == '__main__':
-    import sys
-    import os.path
-
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-
-    runner = unittest.TextTestRunner()
-    suite = all_tests_suite()
-    runner.run(suite) 

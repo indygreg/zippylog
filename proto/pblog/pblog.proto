@@ -26,10 +26,10 @@ message Message {
     // the data encoded and order is defined however you want
     repeated bytes tags = 5;
 
-    // metadata deposited by agents that touched this message
-    // as agents touch the message, they may append to this list
-    // not all agents may update this field
-    repeated AgentInfo agents = 6;
+    // metadata deposited by actors that touched this message
+    // as actors touch the message, they may append to this list
+    // not all actors may update this field
+    repeated ActorInfo actors = 6;
 
     // numeric value associated with message
     // there are a number of applications for this field:
@@ -40,7 +40,7 @@ message Message {
 }
 
 // metadata describing agents that touched a message
-message AgentInfo {
+message ActorInfo {
     // time message was touched, in microseconds since UNIX epoch
     // for writers, this is the time the message was written
     optional uint64 touch_time = 1;
@@ -54,6 +54,9 @@ message AgentInfo {
     // alternate identifier of agent host
     optional bytes host_id = 4;
 
-    // identify the agent
-    optional bytes app_id = 5;
+    // identify the actor type
+    optional bytes actor_id = 5;
+
+    // identify the application associated with actor
+    optional bytes app_id = 6;
 }
