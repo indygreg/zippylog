@@ -99,7 +99,7 @@ class IActor:
         '''Write multiple pblog.message.Message instances.'''
         for m in messages:
             if not isinstance(m, Message):
-                raise PBException('object is not a pblog.message.Message type: %s' % type(m)
+                raise PBException('object is not a pblog.message.Message type: %s' % type(m))
 
             self.write_message(m)
 
