@@ -12,22 +12,59 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from pblog.pblog_pb2 import Message as PBMessage
 import sys
 import time
 
-_types_numeric = {}
-_types_fullname = {}
+from pblog.exception import PBException
+from pblog.pblog_pb2 import Message as PBMessage
 
-def register_types(d):
-    '''Registers a dictionary of types with message system.
+_messages = {}
 
-    The passed argument should be the TYPES_BY_INDEX module variable from
-    automatically generated module built by pblog.'''
+def register_message(namespace, value, module, name):
+    '''Registers a message type.
 
-    for k,v in d.iteritems():
-        _types_numeric[k] = v
-        _types_fullname[v[2]] = k
+    For every message type, this function is called so the pblog system knows
+    how to handle a specific message when it is encountered in a stream.
+
+    The name argument is the message name, like 'MyEvent'. This corresponds
+    to the 'message' type in a .proto file.
+
+    The value argument is the numeric value pblog assigns to the message
+    (via pblog_compile).
+
+    The namespace argument defines the numeric message namespace to which the
+    message belongs. A namespace of 0 (the default value) is the global
+    namespace. When a message without an encoded namespace is encountered, the
+    global namespace will be searched.
+
+    Attempts to overwrite a previously-defined message will raise an
+    exception.'''
+
+    if value < 1:
+        raise PBException('message value for %s is < 1' % name)
+
+    if namespace < 0:
+        raise PBException('namespace %d for message %s can not be negative' % ( namespace, name ))
+
+    if namespace not in _messages:
+        _messages[namespace] = {}
+
+    if value in _messages[namespace]:
+        raise PBException('namespace %d already contains message with value %d' % ( namespace, value ) )
+
+    _messages[namespace][value] = ( module, name )
+
+def register_all_messages(state):
+    '''Registers all known messages so everything can be read.
+
+    The passed object should be the loaded pblog state file contents.
+
+    This should eventually grab the file from a package resource.'''
+    for namespace, i in state['namespaces'].iteritems():
+        for full, enum in state['messages'][namespace].iteritems():
+            module, name = full.rsplit('.', 1)
+            module += '_pb2'
+            register_message(i, enum, module, name)
 
 class Message():
     '''An individual pblog message
@@ -93,39 +130,49 @@ class Message():
         # we simply add the binary data directly to the messages list and recorded
         # the enumerated type of the message
         name = m.DESCRIPTOR.full_name
-        if name not in _types_fullname:
-            raise Exception('%s type not registered with pblog')
 
         self.message.messages.append(m.SerializeToString())
-        self.message.message_types.append(_types_fullname[name])
+        self.message.message_types.append(m.PBLOG_ENUMERATION)
+        self.message.message_namespaces.append(m.PBLOG_NAMESPACE)
 
-        # TODO implement namespaces
-
-    def get_message(self, index=0):
+    def get_message(self, index=0, default_namespace=None):
         '''get_message(i)
 
         Get the message at specified index.'''
 
         if index > len(self.message.message_types) - 1:
-            raise Exception('message not available at index %d' % index)
+            raise PBException('message not available at index %d' % index)
 
         b = self.message.messages[index]
+        type_enumeration = self.message.message_types[index]
+        namespace = None
+        
+        if len(self.message.message_namespaces):
+            namespace = self.message.message_namespaces[index]
+        else:
+            namespace = default_namespace
 
-        type_constant = self.message.message_types[index]
-        if type_constant not in _types_numeric:
-            raise Exception('type constant not registered: %d' % type_constant)
+        if not namespace:
+            raise PBException('unknown namespace')
 
-        t = _types_numeric[type_constant]
+        if namespace not in _messages:
+            raise PBException('seen namespace not registered with pblog: %d' % namespace )
 
-        mod_name = t[0]
-        if mod_name not in sys.modules:
-            raise Exception('type constant is imported but the module is not present, weird')
+        if type_enumeration not in _messages[namespace]:
+            raise PBException(
+                'type enumeration %d not registered for namespace %d'
+                % ( type_enumeration, namespace )
+            )
 
-        mod = sys.modules[mod_name]
-        cl = t[1]
-        e = eval('mod.%s()' % cl)
+        module, name = _messages[namespace][type_enumeration]
+
+        if module not in sys.modules:
+            raise PBException('module not loaded: %s' % module)
+
+        mod = sys.modules[module]
+
+        e = eval('mod.%s()' % name)
         e.MergeFromString(b)
-
         return e
 
     def add_agent_info(self, i):

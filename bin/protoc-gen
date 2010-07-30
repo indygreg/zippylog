@@ -1,0 +1,132 @@
+#!/usr/bin/python
+
+#  Copyright 2010 Gregory Szorc
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+# this is a compiler plugin for protoc
+# see http://code.google.com/apis/protocolbuffers/docs/reference/other.html
+#
+# this plugin is likely executed by pblog_compile
+# it inserts the pblog enumerations into the generated files built by protoc
+# currently, it only supports Python, but that will change as things mature
+
+from json import dump, load 
+from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGeneratorResponse
+from os import environ
+from os.path import dirname, exists
+from sys import stdin, stdout, stderr
+
+def get_python_output_name(filename):
+    return filename.replace('.proto', '_pb2.py')
+
+serialized = stdin.read()
+
+request = CodeGeneratorRequest()
+request.ParseFromString(serialized)
+
+response = CodeGeneratorResponse()
+
+# this will be set by pblog_compile
+if 'PBLOG_STATE_FILE' not in environ:
+    response.error = 'PBLOG_STATE_FILE environment variable not defined'
+    stdout.write(response.SerializeToString())
+    exit(0)
+
+state_file = environ['PBLOG_STATE_FILE']
+
+state = { 'namespaces': {} }
+namespaces = { 'by_index': {}, 'by_name': {} }
+messages = {}
+if exists(state_file):
+    with open(state_file, 'r') as fh:
+        state = load(fh)
+
+        # hackery to get around JSON ints as keys issues
+        # beats casting later on, IMO
+        for k, v in state['namespaces'].iteritems():
+            namespaces['by_index'][int(v)] = k
+            namespaces['by_name'][k] = v
+            messages[k] = {}
+
+            for name, enum in state['messages'][k].iteritems():
+                messages[k][name] = int(enum) 
+
+# TODO do we care about the deterministic nature of these loops?
+for i in range(0, len(request.file_to_generate)):
+    filename = request.file_to_generate[i]
+    description = request.proto_file[i]
+
+    # TODO should be first path only
+    namespace = dirname(filename)
+
+    if namespace == 'pblog':
+        response.error = 'pblog namespace is special and cannot be processed'
+        stdout.write(response.SerializeToString())
+        exit(0)
+
+    package = description.package
+    py_module = description.name.replace('.proto', '_pb2').replace('/', '.')
+
+    ns_index = None
+
+    if namespace not in namespaces['by_name']:
+        ns_index = len(namespaces['by_name']) + 1
+        if ns_index in namespaces['by_index']:
+            response.error = 'namespace index (%d) already seen' % ns_index
+            stdout.write(response.SerializeToString())
+            exit(0)
+
+        namespaces['by_name'][namespace] = ns_index
+        namespaces['by_index'][ns_index] = namespace
+        messages[namespace] = {}
+    else:
+        ns_index = namespaces['by_name'][namespace]
+
+    for message in description.message_type:
+        name = message.name
+        full = '%s.%s' % ( package, name )
+
+        message_index = None
+        if full in messages[namespace]:
+            message_index = messages[namespace][full]
+        else:
+            message_index = len(messages[namespace]) + 1
+            messages[namespace][full] = message_index
+
+        f = response.file.add()
+        f.insertion_point = 'class_scope:%s.%s' % ( package, name )
+        f.name = get_python_output_name(filename)
+        f.content = 'PBLOG_NAMESPACE = %d\nPBLOG_ENUMERATION = %d' % ( ns_index, message_index )
+
+        f = response.file.add()
+        f.insertion_point = 'module_scope'
+        f.name = get_python_output_name(filename)
+        f.content = "register_message(%d, %d, '%s', '%s')" % ( ns_index, message_index, py_module, name )
+
+    f = response.file.add()
+    f.insertion_point = 'imports'
+    f.name = get_python_output_name(filename)
+    f.content = 'from pblog.message import register_message'
+
+state = {
+    'messages': messages,
+    'namespaces': namespaces['by_name']
+}
+
+with open(state_file, 'w') as fh:
+    dump(state, fh, indent=2)
+
+stdout.write(response.SerializeToString())
+exit(0)
+

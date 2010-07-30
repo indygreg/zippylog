@@ -19,6 +19,7 @@ setup(
     version          = '0.0.0.dev',
     packages         = [ 'pblog' ],
     package_dir      = {'':'lib/py'},
+    package_data     = { 'pblog': ['proto/*.proto'] },
     scripts          = ['bin/pblog_compile'],
     test_suite       = 'pblog.test.all_tests_suite',
     install_requires = [ 'protobuf>=2.3.0' ],
