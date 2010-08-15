@@ -10,7 +10,7 @@ message StoreInfo {
 
 // start streaming events as they hit the remote store
 // this is not reliable
-message StartStream {
+message Stream {
     // list of paths to subscribe to
     // string value is a store path (e.g. '/bucket/set')
     repeated string paths = 1;
