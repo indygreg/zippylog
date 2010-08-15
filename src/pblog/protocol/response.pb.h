@@ -34,19 +34,36 @@ void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
 
-class StartStream;
-class Get;
+class Error;
 
+enum ErrorCode {
+  INVALID_REQUEST_PAYLOAD = 1
+};
+bool ErrorCode_IsValid(int value);
+const ErrorCode ErrorCode_MIN = INVALID_REQUEST_PAYLOAD;
+const ErrorCode ErrorCode_MAX = INVALID_REQUEST_PAYLOAD;
+const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
+inline const ::std::string& ErrorCode_Name(ErrorCode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ErrorCode_descriptor(), value);
+}
+inline bool ErrorCode_Parse(
+    const ::std::string& name, ErrorCode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ErrorCode>(
+    ErrorCode_descriptor(), name, value);
+}
 // ===================================================================
 
-class StartStream : public ::google::protobuf::Message {
+class Error : public ::google::protobuf::Message {
  public:
-  StartStream();
-  virtual ~StartStream();
+  Error();
+  virtual ~Error();
   
-  StartStream(const StartStream& from);
+  Error(const Error& from);
   
-  inline StartStream& operator=(const StartStream& from) {
+  inline Error& operator=(const Error& from) {
     CopyFrom(from);
     return *this;
   }
@@ -60,17 +77,17 @@ class StartStream : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StartStream& default_instance();
+  static const Error& default_instance();
   
-  void Swap(StartStream* other);
+  void Swap(Error* other);
   
   // implements Message ----------------------------------------------
   
-  StartStream* New() const;
+  Error* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StartStream& from);
-  void MergeFrom(const StartStream& from);
+  void CopyFrom(const Error& from);
+  void MergeFrom(const Error& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -93,139 +110,31 @@ class StartStream : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated string paths = 1;
-  inline int paths_size() const;
-  inline void clear_paths();
-  static const int kPathsFieldNumber = 1;
-  inline const ::std::string& paths(int index) const;
-  inline ::std::string* mutable_paths(int index);
-  inline void set_paths(int index, const ::std::string& value);
-  inline void set_paths(int index, const char* value);
-  inline void set_paths(int index, const char* value, size_t size);
-  inline ::std::string* add_paths();
-  inline void add_paths(const ::std::string& value);
-  inline void add_paths(const char* value);
-  inline void add_paths(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
+  // optional .pblog.protocol.response.ErrorCode code = 1;
+  inline bool has_code() const;
+  inline void clear_code();
+  static const int kCodeFieldNumber = 1;
+  inline pblog::protocol::response::ErrorCode code() const;
+  inline void set_code(pblog::protocol::response::ErrorCode value);
   
-  // @@protoc_insertion_point(class_scope:pblog.protocol.response.StartStream)
+  // optional string msg = 2;
+  inline bool has_msg() const;
+  inline void clear_msg();
+  static const int kMsgFieldNumber = 2;
+  inline const ::std::string& msg() const;
+  inline void set_msg(const ::std::string& value);
+  inline void set_msg(const char* value);
+  inline void set_msg(const char* value, size_t size);
+  inline ::std::string* mutable_msg();
+  
+  // @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::std::string> paths_;
-  friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
-  friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
-  friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
-  
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
-  
-  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
-  inline bool _has_bit(int index) const {
-    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
-  }
-  inline void _set_bit(int index) {
-    _has_bits_[index / 32] |= (1u << (index % 32));
-  }
-  inline void _clear_bit(int index) {
-    _has_bits_[index / 32] &= ~(1u << (index % 32));
-  }
-  
-  void InitAsDefaultInstance();
-  static StartStream* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class Get : public ::google::protobuf::Message {
- public:
-  Get();
-  virtual ~Get();
-  
-  Get(const Get& from);
-  
-  inline Get& operator=(const Get& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Get& default_instance();
-  
-  void Swap(Get* other);
-  
-  // implements Message ----------------------------------------------
-  
-  Get* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Get& from);
-  void MergeFrom(const Get& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // repeated string paths = 1;
-  inline int paths_size() const;
-  inline void clear_paths();
-  static const int kPathsFieldNumber = 1;
-  inline const ::std::string& paths(int index) const;
-  inline ::std::string* mutable_paths(int index);
-  inline void set_paths(int index, const ::std::string& value);
-  inline void set_paths(int index, const char* value);
-  inline void set_paths(int index, const char* value, size_t size);
-  inline ::std::string* add_paths();
-  inline void add_paths(const ::std::string& value);
-  inline void add_paths(const char* value);
-  inline void add_paths(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
-  
-  // repeated uint64 stream_offsets = 2;
-  inline int stream_offsets_size() const;
-  inline void clear_stream_offsets();
-  static const int kStreamOffsetsFieldNumber = 2;
-  inline ::google::protobuf::uint64 stream_offsets(int index) const;
-  inline void set_stream_offsets(int index, ::google::protobuf::uint64 value);
-  inline void add_stream_offsets(::google::protobuf::uint64 value);
-  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-      stream_offsets() const;
-  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-      mutable_stream_offsets();
-  
-  // @@protoc_insertion_point(class_scope:pblog.protocol.response.Get)
- private:
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  mutable int _cached_size_;
-  
-  ::google::protobuf::RepeatedPtrField< ::std::string> paths_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > stream_offsets_;
+  int code_;
+  ::std::string* msg_;
+  static const ::std::string _default_msg_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
@@ -244,130 +153,72 @@ class Get : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static Get* default_instance_;
+  static Error* default_instance_;
 };
 // ===================================================================
 
 
 // ===================================================================
 
-// StartStream
+// Error
 
-// repeated string paths = 1;
-inline int StartStream::paths_size() const {
-  return paths_.size();
+// optional .pblog.protocol.response.ErrorCode code = 1;
+inline bool Error::has_code() const {
+  return _has_bit(0);
 }
-inline void StartStream::clear_paths() {
-  paths_.Clear();
+inline void Error::clear_code() {
+  code_ = 1;
+  _clear_bit(0);
 }
-inline const ::std::string& StartStream::paths(int index) const {
-  return paths_.Get(index);
+inline pblog::protocol::response::ErrorCode Error::code() const {
+  return static_cast< pblog::protocol::response::ErrorCode >(code_);
 }
-inline ::std::string* StartStream::mutable_paths(int index) {
-  return paths_.Mutable(index);
-}
-inline void StartStream::set_paths(int index, const ::std::string& value) {
-  paths_.Mutable(index)->assign(value);
-}
-inline void StartStream::set_paths(int index, const char* value) {
-  paths_.Mutable(index)->assign(value);
-}
-inline void StartStream::set_paths(int index, const char* value, size_t size) {
-  paths_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StartStream::add_paths() {
-  return paths_.Add();
-}
-inline void StartStream::add_paths(const ::std::string& value) {
-  paths_.Add()->assign(value);
-}
-inline void StartStream::add_paths(const char* value) {
-  paths_.Add()->assign(value);
-}
-inline void StartStream::add_paths(const char* value, size_t size) {
-  paths_.Add()->assign(reinterpret_cast<const char*>(value), size);
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-StartStream::paths() const {
-  return paths_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-StartStream::mutable_paths() {
-  return &paths_;
+inline void Error::set_code(pblog::protocol::response::ErrorCode value) {
+  GOOGLE_DCHECK(pblog::protocol::response::ErrorCode_IsValid(value));
+  _set_bit(0);
+  code_ = value;
 }
 
-// -------------------------------------------------------------------
-
-// Get
-
-// repeated string paths = 1;
-inline int Get::paths_size() const {
-  return paths_.size();
+// optional string msg = 2;
+inline bool Error::has_msg() const {
+  return _has_bit(1);
 }
-inline void Get::clear_paths() {
-  paths_.Clear();
+inline void Error::clear_msg() {
+  if (msg_ != &_default_msg_) {
+    msg_->clear();
+  }
+  _clear_bit(1);
 }
-inline const ::std::string& Get::paths(int index) const {
-  return paths_.Get(index);
+inline const ::std::string& Error::msg() const {
+  return *msg_;
 }
-inline ::std::string* Get::mutable_paths(int index) {
-  return paths_.Mutable(index);
+inline void Error::set_msg(const ::std::string& value) {
+  _set_bit(1);
+  if (msg_ == &_default_msg_) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(value);
 }
-inline void Get::set_paths(int index, const ::std::string& value) {
-  paths_.Mutable(index)->assign(value);
+inline void Error::set_msg(const char* value) {
+  _set_bit(1);
+  if (msg_ == &_default_msg_) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(value);
 }
-inline void Get::set_paths(int index, const char* value) {
-  paths_.Mutable(index)->assign(value);
+inline void Error::set_msg(const char* value, size_t size) {
+  _set_bit(1);
+  if (msg_ == &_default_msg_) {
+    msg_ = new ::std::string;
+  }
+  msg_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline void Get::set_paths(int index, const char* value, size_t size) {
-  paths_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* Get::add_paths() {
-  return paths_.Add();
-}
-inline void Get::add_paths(const ::std::string& value) {
-  paths_.Add()->assign(value);
-}
-inline void Get::add_paths(const char* value) {
-  paths_.Add()->assign(value);
-}
-inline void Get::add_paths(const char* value, size_t size) {
-  paths_.Add()->assign(reinterpret_cast<const char*>(value), size);
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Get::paths() const {
-  return paths_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Get::mutable_paths() {
-  return &paths_;
-}
-
-// repeated uint64 stream_offsets = 2;
-inline int Get::stream_offsets_size() const {
-  return stream_offsets_.size();
-}
-inline void Get::clear_stream_offsets() {
-  stream_offsets_.Clear();
-}
-inline ::google::protobuf::uint64 Get::stream_offsets(int index) const {
-  return stream_offsets_.Get(index);
-}
-inline void Get::set_stream_offsets(int index, ::google::protobuf::uint64 value) {
-  stream_offsets_.Set(index, value);
-}
-inline void Get::add_stream_offsets(::google::protobuf::uint64 value) {
-  stream_offsets_.Add(value);
-}
-inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-Get::stream_offsets() const {
-  return stream_offsets_;
-}
-inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-Get::mutable_stream_offsets() {
-  return &stream_offsets_;
+inline ::std::string* Error::mutable_msg() {
+  _set_bit(1);
+  if (msg_ == &_default_msg_) {
+    msg_ = new ::std::string;
+  }
+  return msg_;
 }
 
 
@@ -381,6 +232,10 @@ Get::mutable_stream_offsets() {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< pblog::protocol::response::ErrorCode>() {
+  return pblog::protocol::response::ErrorCode_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf
