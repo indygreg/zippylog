@@ -5,4 +5,3 @@ build/*.suo
 build/*.i
 build/Debug
 build/Release
-external/*
