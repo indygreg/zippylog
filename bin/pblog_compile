@@ -28,6 +28,7 @@ parser = OptionParser(
 )
 
 parser.add_option('-p', '--protoc', default='/usr/bin/protoc', help='Path to protoc binary')
+parser.add_option('--cpp-namespace', help='C++ namespace for generated message registry file')
 
 (options, args) = parser.parse_args()
 
@@ -72,14 +73,18 @@ protoc_args.append('--python_out=%s' % py_out)
 protoc_args.append('--cpp_out=%s' % cpp_out)
 protoc_args.append('--java_out=%s' % java_out)
 
-# our custom generator
+# our custom generators
 protoc_args.append('--python_pb_out=%s' % py_out)
+protoc_args.append('--cpp_pb_out=%s' % cpp_out)
 
 protoc_args.extend(message_files)
 
 env = os.environ
 env['PBLOG_STATE_FILE'] = state_file
 env['PATH'] = ':'.join([dirname(__file__), env['PATH']])
+
+if options.cpp_namespace:
+    env['PBLOG_CPP_MESSAGES_NAMESPACE'] = options.cpp_namespace
 
 print 'executing protoc: %s' % ' '.join(protoc_args)
 p = subprocess.Popen(protoc_args, env=env)
