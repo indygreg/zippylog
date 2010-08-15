@@ -1,0 +1,23 @@
+// this file describes protocol buffer messages sent by the server to clients
+
+package pblog.protocol.response;
+
+
+
+// start streaming events as they hit the remote store
+// this is not reliable
+message StartStream {
+    // list of paths to subscribe to
+    // string value is a store path (e.g. '/bucket/set')
+    repeated string paths = 1;
+}
+
+// download stream(s) from the server
+message Get {
+    // list of streams to download
+    repeated string paths = 1;
+    
+    // list of offsets within the remote stream at which to start the download
+    repeated uint64 stream_offsets = 2;
+}
+
