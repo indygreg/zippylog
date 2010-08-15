@@ -19,9 +19,9 @@ namespace {
 const ::google::protobuf::Descriptor* StoreInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StoreInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* StartStream_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* Stream_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  StartStream_reflection_ = NULL;
+  Stream_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Get_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Get_reflection_ = NULL;
@@ -49,21 +49,21 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StoreInfo));
-  StartStream_descriptor_ = file->message_type(1);
-  static const int StartStream_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StartStream, paths_),
+  Stream_descriptor_ = file->message_type(1);
+  static const int Stream_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, paths_),
   };
-  StartStream_reflection_ =
+  Stream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      StartStream_descriptor_,
-      StartStream::default_instance_,
-      StartStream_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StartStream, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StartStream, _unknown_fields_),
+      Stream_descriptor_,
+      Stream::default_instance_,
+      Stream_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(StartStream));
+      sizeof(Stream));
   Get_descriptor_ = file->message_type(2);
   static const int Get_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, paths_),
@@ -95,7 +95,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StoreInfo_descriptor_, &StoreInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    StartStream_descriptor_, &StartStream::default_instance());
+    Stream_descriptor_, &Stream::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Get_descriptor_, &Get::default_instance());
 }
@@ -105,8 +105,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto() {
   delete StoreInfo::default_instance_;
   delete StoreInfo_reflection_;
-  delete StartStream::default_instance_;
-  delete StartStream_reflection_;
+  delete Stream::default_instance_;
+  delete Stream_reflection_;
   delete Get::default_instance_;
   delete Get_reflection_;
 }
@@ -119,16 +119,16 @@ void protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\034pblog/protocol/request.proto\022\026pblog.pr"
-    "otocol.request\"\013\n\tStoreInfo\"\034\n\013StartStre"
-    "am\022\r\n\005paths\030\001 \003(\t\",\n\003Get\022\r\n\005paths\030\001 \003(\t\022"
-    "\026\n\016stream_offsets\030\002 \003(\004", 143);
+    "otocol.request\"\013\n\tStoreInfo\"\027\n\006Stream\022\r\n"
+    "\005paths\030\001 \003(\t\",\n\003Get\022\r\n\005paths\030\001 \003(\t\022\026\n\016st"
+    "ream_offsets\030\002 \003(\004", 138);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
-  StartStream::default_instance_ = new StartStream();
+  Stream::default_instance_ = new Stream();
   Get::default_instance_ = new Get();
   StoreInfo::default_instance_->InitAsDefaultInstance();
-  StartStream::default_instance_->InitAsDefaultInstance();
+  Stream::default_instance_->InitAsDefaultInstance();
   Get::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto);
 }
@@ -299,64 +299,64 @@ void StoreInfo::Swap(StoreInfo* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int StartStream::kPathsFieldNumber;
+const int Stream::kPathsFieldNumber;
 #endif  // !_MSC_VER
 
-StartStream::StartStream()
+Stream::Stream()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void StartStream::InitAsDefaultInstance() {
+void Stream::InitAsDefaultInstance() {
 }
 
-StartStream::StartStream(const StartStream& from)
+Stream::Stream(const Stream& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void StartStream::SharedCtor() {
+void Stream::SharedCtor() {
   _cached_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-StartStream::~StartStream() {
+Stream::~Stream() {
   SharedDtor();
 }
 
-void StartStream::SharedDtor() {
+void Stream::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void StartStream::SetCachedSize(int size) const {
+void Stream::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* StartStream::descriptor() {
+const ::google::protobuf::Descriptor* Stream::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return StartStream_descriptor_;
+  return Stream_descriptor_;
 }
 
-const StartStream& StartStream::default_instance() {
+const Stream& Stream::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-StartStream* StartStream::default_instance_ = NULL;
+Stream* Stream::default_instance_ = NULL;
 
-StartStream* StartStream::New() const {
-  return new StartStream;
+Stream* Stream::New() const {
+  return new Stream;
 }
 
-void StartStream::Clear() {
+void Stream::Clear() {
   paths_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool StartStream::MergePartialFromCodedStream(
+bool Stream::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -396,7 +396,7 @@ bool StartStream::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void StartStream::SerializeWithCachedSizes(
+void Stream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // repeated string paths = 1;
   for (int i = 0; i < this->paths_size(); i++) {
@@ -413,7 +413,7 @@ void StartStream::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* StartStream::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* Stream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // repeated string paths = 1;
   for (int i = 0; i < this->paths_size(); i++) {
@@ -431,7 +431,7 @@ void StartStream::SerializeWithCachedSizes(
   return target;
 }
 
-int StartStream::ByteSize() const {
+int Stream::ByteSize() const {
   int total_size = 0;
   
   // repeated string paths = 1;
@@ -452,10 +452,10 @@ int StartStream::ByteSize() const {
   return total_size;
 }
 
-void StartStream::MergeFrom(const ::google::protobuf::Message& from) {
+void Stream::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const StartStream* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const StartStream*>(
+  const Stream* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Stream*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -464,30 +464,30 @@ void StartStream::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void StartStream::MergeFrom(const StartStream& from) {
+void Stream::MergeFrom(const Stream& from) {
   GOOGLE_CHECK_NE(&from, this);
   paths_.MergeFrom(from.paths_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void StartStream::CopyFrom(const ::google::protobuf::Message& from) {
+void Stream::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void StartStream::CopyFrom(const StartStream& from) {
+void Stream::CopyFrom(const Stream& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool StartStream::IsInitialized() const {
+bool Stream::IsInitialized() const {
   
   return true;
 }
 
-void StartStream::Swap(StartStream* other) {
+void Stream::Swap(Stream* other) {
   if (other != this) {
     paths_.Swap(&other->paths_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -496,11 +496,11 @@ void StartStream::Swap(StartStream* other) {
   }
 }
 
-::google::protobuf::Metadata StartStream::GetMetadata() const {
+::google::protobuf::Metadata Stream::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = StartStream_descriptor_;
-  metadata.reflection = StartStream_reflection_;
+  metadata.descriptor = Stream_descriptor_;
+  metadata.reflection = Stream_reflection_;
   return metadata;
 }
 

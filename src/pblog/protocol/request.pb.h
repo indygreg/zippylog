@@ -35,7 +35,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
 
 class StoreInfo;
-class StartStream;
+class Stream;
 class Get;
 
 // ===================================================================
@@ -121,14 +121,14 @@ class StoreInfo : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class StartStream : public ::google::protobuf::Message {
+class Stream : public ::google::protobuf::Message {
  public:
-  StartStream();
-  virtual ~StartStream();
+  Stream();
+  virtual ~Stream();
   
-  StartStream(const StartStream& from);
+  Stream(const Stream& from);
   
-  inline StartStream& operator=(const StartStream& from) {
+  inline Stream& operator=(const Stream& from) {
     CopyFrom(from);
     return *this;
   }
@@ -142,17 +142,17 @@ class StartStream : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StartStream& default_instance();
+  static const Stream& default_instance();
   
-  void Swap(StartStream* other);
+  void Swap(Stream* other);
   
   // implements Message ----------------------------------------------
   
-  StartStream* New() const;
+  Stream* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StartStream& from);
-  void MergeFrom(const StartStream& from);
+  void CopyFrom(const Stream& from);
+  void MergeFrom(const Stream& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -191,7 +191,7 @@ class StartStream : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
   
-  // @@protoc_insertion_point(class_scope:pblog.protocol.request.StartStream)
+  // @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -215,7 +215,7 @@ class StartStream : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static StartStream* default_instance_;
+  static Stream* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -337,49 +337,49 @@ class Get : public ::google::protobuf::Message {
 
 // -------------------------------------------------------------------
 
-// StartStream
+// Stream
 
 // repeated string paths = 1;
-inline int StartStream::paths_size() const {
+inline int Stream::paths_size() const {
   return paths_.size();
 }
-inline void StartStream::clear_paths() {
+inline void Stream::clear_paths() {
   paths_.Clear();
 }
-inline const ::std::string& StartStream::paths(int index) const {
+inline const ::std::string& Stream::paths(int index) const {
   return paths_.Get(index);
 }
-inline ::std::string* StartStream::mutable_paths(int index) {
+inline ::std::string* Stream::mutable_paths(int index) {
   return paths_.Mutable(index);
 }
-inline void StartStream::set_paths(int index, const ::std::string& value) {
+inline void Stream::set_paths(int index, const ::std::string& value) {
   paths_.Mutable(index)->assign(value);
 }
-inline void StartStream::set_paths(int index, const char* value) {
+inline void Stream::set_paths(int index, const char* value) {
   paths_.Mutable(index)->assign(value);
 }
-inline void StartStream::set_paths(int index, const char* value, size_t size) {
+inline void Stream::set_paths(int index, const char* value, size_t size) {
   paths_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StartStream::add_paths() {
+inline ::std::string* Stream::add_paths() {
   return paths_.Add();
 }
-inline void StartStream::add_paths(const ::std::string& value) {
+inline void Stream::add_paths(const ::std::string& value) {
   paths_.Add()->assign(value);
 }
-inline void StartStream::add_paths(const char* value) {
+inline void Stream::add_paths(const char* value) {
   paths_.Add()->assign(value);
 }
-inline void StartStream::add_paths(const char* value, size_t size) {
+inline void Stream::add_paths(const char* value, size_t size) {
   paths_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-StartStream::paths() const {
+Stream::paths() const {
   return paths_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-StartStream::mutable_paths() {
+Stream::mutable_paths() {
   return &paths_;
 }
 
