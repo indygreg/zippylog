@@ -20,15 +20,14 @@ from the current system. It likely only runs on Linux 2.6.
 
 '''
 
-from pblog.writer import FileSystemStreamStoreWriter
+from pblog.message import Message
+from pblog.store import FilesystemStreamStore
 import os.path
 import re
 import sys
 import time
 
 from acme.os_pb2 import LoadAvg, MemoryInfo
-
-import acme.pblog_types
 
 if len(sys.argv) != 2:
     print 'Usage: collect_stats /path/to/output/directory\n'
@@ -39,7 +38,8 @@ out_sets_dir = os.path.join(sys.argv[1], 'example', 'collect_stats')
 if not os.path.exists(out_sets_dir):
     os.makedirs(out_sets_dir)
 
-w = FileSystemStreamStoreWriter(sys.argv[1], 'example', 'collect_stats')
+store = FilesystemStreamStore(sys.argv[1])
+ss = store.get_stream_set('example', 'collect_stats')
 
 re_load = re.compile(r'(?P<min1>[^\s]+)\s(?P<min5>[^\s]+)\s(?P<min15>[^\s]+)')
 re_memory = re.compile(r'(?P<thing>[^:]+):\s+(?P<value>[^\s]+)\s?(?P<unit>.*)')
@@ -64,7 +64,7 @@ while True:
                 min5=float(match.group('min5')),
                 min15=float(match.group('min15'))
             )
-            w.write(msg)
+            ss.write_message(Message(message=msg))
 
     with open('/proc/meminfo', 'r') as fh:
         stats = {}
@@ -83,6 +83,6 @@ while True:
             if k in stats:
                 msg.__setattr__(v, stats[k])
 
-        w.write(msg)
+        ss.write_message(Message(message=msg))
 
     time.sleep(5)

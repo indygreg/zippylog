@@ -1,0 +1,12 @@
+// this file describes protocol buffer messages sent by the server to clients
+
+package pblog.protocol.response;
+
+message Error {
+    optional ErrorCode code = 1;
+    optional string msg = 2;
+}
+
+enum ErrorCode {
+    INVALID_REQUEST_PAYLOAD = 1;
+}

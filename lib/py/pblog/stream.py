@@ -66,6 +66,7 @@ class Stream:
             return None
 
         (size, pos) = self.varint_decoder(buf, 0)
-        buf = buf[pos:] + self.fh.read(size)
+
+        buf = buf[pos:] + self.fh.read(size - 4 + pos)
 
         return Message(serialized=buf)
