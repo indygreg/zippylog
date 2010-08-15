@@ -130,8 +130,9 @@ for i in range(0, len(request.file_to_generate)):
     filename = request.file_to_generate[i]
     description = request.proto_file[i]
 
-    # TODO should be first path only
     namespace = dirname(filename)
+    if namespace.find('/') > 0:
+        namespace = namespace[:namespace.find('/')]
 
     if namespace == 'pblog':
         response.error = 'pblog namespace is special and cannot be processed'
