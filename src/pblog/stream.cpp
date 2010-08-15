@@ -57,12 +57,12 @@ InputStream::~InputStream() {
     _close(this->_fd);
 }
 
-bool InputStream::ReadMessage(Message *m)
+bool InputStream::ReadEnvelope(Envelope *e)
 {
     uint32 size;
     if (!_cis->ReadVarint32(&size)) return false;
     CodedInputStream::Limit limit = _cis->PushLimit(size);
-    if (!m->ParseFromCodedStream(_cis)) return false;
+    if (!e->ParseFromCodedStream(_cis)) return false;
     if (!_cis->ConsumedEntireMessage()) return false;
     _cis->PopLimit(limit);
 
