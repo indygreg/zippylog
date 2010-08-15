@@ -17,7 +17,7 @@ from google.protobuf.internal.decoder import _DecodeVarint
 from google.protobuf.internal.encoder import _VarintEncoder
 
 from pblog.exception import PBException
-from pblog.message import Message
+from pblog.envelope import Envelope
 
 class Stream:
     def __init__(self, fh, version=1, is_empty=False, read_mode=None):
@@ -35,21 +35,21 @@ class Stream:
         self.varint_encoder = _VarintEncoder()
         self.varint_decoder = _DecodeVarint
 
-    def write_messages(self, *messages):
-        '''Writes populated pblog.message.Message instances to the stream.
+    def write_envelopes(self, *envelopes):
+        '''Writes populated pblog.envelope.Envelope instances to the stream.
 
-        Typically called by another module within pblog so messages can be
+        Typically called by another module within pblog so envelopes can be
         "prepared" before being written.'''
 
         if self.is_empty:
             self.fh.write(chr(0x01))
             self.is_empty = False
 
-        for m in messages:
-            if not isinstance(m, Message):
-                raise PBException('passed message not a pblog.message.Message: %s' % type(m))
+        for e in envelopes:
+            if not isinstance(e, Envelope):
+                raise PBException('passed argument not a pblog.envelope.Envelope: %s' % type(m))
 
-            encoded = m.serialize()
+            encoded = e.serialize()
             l = len(encoded)
 
             self.varint_encoder(self.fh.write, l)
@@ -59,7 +59,7 @@ class Stream:
         '''Flush the underlying stream.'''
         return self.fh.flush()
 
-    def read_message(self):
+    def read_envelope(self):
         buf = self.fh.read(4)
 
         if not len(buf):
@@ -69,4 +69,4 @@ class Stream:
 
         buf = buf[pos:] + self.fh.read(size - 4 + pos)
 
-        return Message(serialized=buf)
+        return Envelope(serialized=buf)

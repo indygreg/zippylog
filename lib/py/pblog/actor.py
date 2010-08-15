@@ -15,8 +15,8 @@
 import time
 
 from pblog.exception import PBException
-from pblog.message import Message
-from pblog.pblog_pb2 import ActorInfo
+from pblog.envelope import Envelope
+from pblog.message.pblog_pb2 import ActorInfo
 
 class IActor:
     def __init__(self, write_namespaces=False, write_actor_info=True):
@@ -32,7 +32,7 @@ class IActor:
         self.actor_info = ActorInfo()
 
     '''Interface for pblog actors.'''
-    def write_messages(self, *messages):
+    def write_envelopes(self, *envelopes):
         raise PBException('must be implemented in derived classes')
 
     def add_read_stream(self, name, stream):
@@ -75,10 +75,11 @@ class IActor:
     def set_write_namespaces(self, b):
         self.write_namespaces = bool(b)
 
-    def write_message(self, message):
-        if not isinstance(message, Message):
-            m = Message(message=m)
-
+    def write_envelope(self, envelope):
+        envelope = None
+        if not isinstance(message, Envelope):
+            envelope = Envelope(message=envelope)
+            
         t = time.time()
 
         if self.write_actor_info:
@@ -93,21 +94,21 @@ class IActor:
         # TODO namespace support
 
         for s in self.out_streams.itervalues():
-            s.write_messages(message)
+            s.write_envelopes(message)
             
-    def write_pblog_messages(self, *messages):
+    def write_pblog_envelopes(self, *envelops):
         '''Write multiple pblog.message.Message instances.'''
-        for m in messages:
-            if not isinstance(m, Message):
-                raise PBException('object is not a pblog.message.Message type: %s' % type(m))
+        for m in envelopes:
+            if not isinstance(m, Envelope):
+                raise PBException('object is not a pblog.envelope type: %s' % type(m))
 
-            self.write_message(m)
+            self.write_envelope(m)
 
     def combine_and_write_messages(self, *messages):
-        '''Write multiple protocol buffer messages to a pblog message.
+        '''Write multiple protocol buffer messages to a pblog envelopes.
 
         This takes multiple protocol buffer messages, embeds them in a pblog
-        message container, and writes that single message.'''
-        # TODO support additional parameters for common message container
+        envelope, and writes that single envelope.'''
+        # TODO support additional parameters for envelope
         raise PBException('not yet implemented')
 

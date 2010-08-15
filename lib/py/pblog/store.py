@@ -18,7 +18,7 @@ import os.path
 import time
 
 from pblog.exception import PBException
-from pblog.message import Message
+from pblog.envelope import Envelope
 from pblog.stream import Stream
 
 class IStreamStore:
@@ -111,7 +111,7 @@ class StreamSet:
         self.seconds_per_file = 3600
         self.active_out_stream = None
 
-    def write_message(self, message, t=None):
+    def write_envelope(self, envelope, t=None):
         if t is None:
             t = time.time()
 
@@ -121,7 +121,7 @@ class StreamSet:
             # TODO error checking
             self.active_out_stream = self.get_write_stream(self.active_stream_name)
 
-        self.active_out_stream.write_messages(message)
+        self.active_out_stream.write_envelopes(envelope)
 
     def set_open_write_stream_callback(self, callback):
         self.get_write_stream = callback

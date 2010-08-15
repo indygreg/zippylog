@@ -1,4 +1,4 @@
-package pblog;
+package pblog.message;
 
 // this is the basic message type of pblog
 // it is a common container for all data encoded by pblog
@@ -8,7 +8,7 @@ package pblog;
 // every log message in a stream is an instance of this.
 // each instance contains common metadata and 1 or more domain-specific
 // messages, which are defined as extensions and are managed by pblog
-message Message {
+message Envelope {
     // list of protocol buffer serialized messages
     repeated bytes messages = 1;
 

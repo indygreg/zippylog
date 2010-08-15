@@ -8,64 +8,64 @@ from google.protobuf import descriptor_pb2
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
-  name='pblog/pblog.proto',
-  package='pblog',
-  serialized_pb='\n\x11pblog/pblog.proto\x12\x05pblog\"\xb2\x01\n\x07Message\x12\x10\n\x08messages\x18\x01 \x03(\x0c\x12\x1e\n\x12message_namespaces\x18\x02 \x03(\rB\x02\x10\x01\x12\x19\n\rmessage_types\x18\x03 \x03(\rB\x02\x10\x01\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\x04\x12\x0c\n\x04tags\x18\x05 \x03(\x0c\x12 \n\x06\x61\x63tors\x18\x06 \x03(\x0b\x32\x10.pblog.ActorInfo\x12\x15\n\rnumeric_value\x18\x07 \x01(\x04\"y\n\tActorInfo\x12\x12\n\ntouch_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x10\n\x08\x61\x63tor_id\x18\x05 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x06 \x01(\x0c')
+  name='pblog/message.proto',
+  package='pblog.message',
+  serialized_pb='\n\x13pblog/message.proto\x12\rpblog.message\"\xbb\x01\n\x08\x45nvelope\x12\x10\n\x08messages\x18\x01 \x03(\x0c\x12\x1e\n\x12message_namespaces\x18\x02 \x03(\rB\x02\x10\x01\x12\x19\n\rmessage_types\x18\x03 \x03(\rB\x02\x10\x01\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\x04\x12\x0c\n\x04tags\x18\x05 \x03(\x0c\x12(\n\x06\x61\x63tors\x18\x06 \x03(\x0b\x32\x18.pblog.message.ActorInfo\x12\x15\n\rnumeric_value\x18\x07 \x01(\x04\"y\n\tActorInfo\x12\x12\n\ntouch_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x10\n\x08\x61\x63tor_id\x18\x05 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x06 \x01(\x0c')
 
 
 
 
-_MESSAGE = descriptor.Descriptor(
-  name='Message',
-  full_name='pblog.Message',
+_ENVELOPE = descriptor.Descriptor(
+  name='Envelope',
+  full_name='pblog.message.Envelope',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='messages', full_name='pblog.Message.messages', index=0,
+      name='messages', full_name='pblog.message.Envelope.messages', index=0,
       number=1, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='message_namespaces', full_name='pblog.Message.message_namespaces', index=1,
+      name='message_namespaces', full_name='pblog.message.Envelope.message_namespaces', index=1,
       number=2, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
     descriptor.FieldDescriptor(
-      name='message_types', full_name='pblog.Message.message_types', index=2,
+      name='message_types', full_name='pblog.message.Envelope.message_types', index=2,
       number=3, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
     descriptor.FieldDescriptor(
-      name='create_time', full_name='pblog.Message.create_time', index=3,
+      name='create_time', full_name='pblog.message.Envelope.create_time', index=3,
       number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='tags', full_name='pblog.Message.tags', index=4,
+      name='tags', full_name='pblog.message.Envelope.tags', index=4,
       number=5, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='actors', full_name='pblog.Message.actors', index=5,
+      name='actors', full_name='pblog.message.Envelope.actors', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='numeric_value', full_name='pblog.Message.numeric_value', index=6,
+      name='numeric_value', full_name='pblog.message.Envelope.numeric_value', index=6,
       number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -80,55 +80,55 @@ _MESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=29,
-  serialized_end=207,
+  serialized_start=39,
+  serialized_end=226,
 )
 
 
 _ACTORINFO = descriptor.Descriptor(
   name='ActorInfo',
-  full_name='pblog.ActorInfo',
+  full_name='pblog.message.ActorInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='touch_time', full_name='pblog.ActorInfo.touch_time', index=0,
+      name='touch_time', full_name='pblog.message.ActorInfo.touch_time', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='sequence_id', full_name='pblog.ActorInfo.sequence_id', index=1,
+      name='sequence_id', full_name='pblog.message.ActorInfo.sequence_id', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='hostname', full_name='pblog.ActorInfo.hostname', index=2,
+      name='hostname', full_name='pblog.message.ActorInfo.hostname', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='host_id', full_name='pblog.ActorInfo.host_id', index=3,
+      name='host_id', full_name='pblog.message.ActorInfo.host_id', index=3,
       number=4, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='actor_id', full_name='pblog.ActorInfo.actor_id', index=4,
+      name='actor_id', full_name='pblog.message.ActorInfo.actor_id', index=4,
       number=5, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='app_id', full_name='pblog.ActorInfo.app_id', index=5,
+      name='app_id', full_name='pblog.message.ActorInfo.app_id', index=5,
       number=6, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
@@ -143,23 +143,23 @@ _ACTORINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=209,
-  serialized_end=330,
+  serialized_start=228,
+  serialized_end=349,
 )
 
 
-_MESSAGE.fields_by_name['actors'].message_type = _ACTORINFO
+_ENVELOPE.fields_by_name['actors'].message_type = _ACTORINFO
 
-class Message(message.Message):
+class Envelope(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _MESSAGE
+  DESCRIPTOR = _ENVELOPE
   
-  # @@protoc_insertion_point(class_scope:pblog.Message)
+  # @@protoc_insertion_point(class_scope:pblog.message.Envelope)
 
 class ActorInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ACTORINFO
   
-  # @@protoc_insertion_point(class_scope:pblog.ActorInfo)
+  # @@protoc_insertion_point(class_scope:pblog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)

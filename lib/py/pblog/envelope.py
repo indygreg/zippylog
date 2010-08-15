@@ -16,7 +16,7 @@ import sys
 import time
 
 from pblog.exception import PBException
-from pblog.pblog_pb2 import Message as PBMessage
+from pblog.message_pb2 import Envelope as PBEnvelope
 
 _messages = {}
 
@@ -66,11 +66,11 @@ def register_all_messages(state):
             module += '_pb2'
             register_message(i, enum, module, name)
 
-class Message():
-    '''An individual pblog message
+class Envelope():
+    '''An individual pblog envelope
 
     This class provides a convenient wrapper around the
-    pblog.pblog_pb2.Message class. It allows you to quickly fill in fields
+    pblog.message.pblog_pb2.Envelope class. It allows you to quickly fill in fields
     without having to worry too much about implementation details.'''
 
     def __init__(self,
@@ -80,7 +80,7 @@ class Message():
                  numeric=None,
                  message=None,
                  write_namespaces=False):
-        '''Message(create_time=None,primary_key=None,secondary_keys=None,level=None,message=None)
+        '''Envelope(create_time=None,primary_key=None,secondary_keys=None,level=None,message=None)
 
         serialized contains a byte array of protocol buffer serialized data,
         which can be used to recreate a message.
@@ -95,15 +95,15 @@ class Message():
         if message is defined and is a protocol buffer message, it will be
         added to the message.
         '''
-        self.message = PBMessage()
+        self.envelope = PBEnvelope()
         if serialized:
-            self.message.MergeFromString(serialized)
+            self.envelope.MergeFromString(serialized)
             return
 
         if create_time >= 0:
-            self.message.create_time = create_time
+            self.envelope.create_time = create_time
         elif create_time:
-            self.message.create_time = int(time.time() * 1000000)
+            self.envelope.create_time = int(time.time() * 1000000)
 
         self.tags = []
 
@@ -118,8 +118,8 @@ class Message():
 
         self.write_namespaces = write_namespaces
 
-    def get_message(self):
-        return self.message
+    def get_envelope(self):
+        return self.envelope
 
     def add_message(self, m):
         '''add_message(m)
@@ -131,24 +131,24 @@ class Message():
         # the enumerated type of the message
         name = m.DESCRIPTOR.full_name
 
-        self.message.messages.append(m.SerializeToString())
-        self.message.message_types.append(m.PBLOG_ENUMERATION)
-        self.message.message_namespaces.append(m.PBLOG_NAMESPACE)
+        self.envelope.messages.append(m.SerializeToString())
+        self.envelope.message_types.append(m.PBLOG_ENUMERATION)
+        self.envelope.message_namespaces.append(m.PBLOG_NAMESPACE)
 
     def get_message(self, index=0, default_namespace=None):
         '''get_message(i)
 
         Get the message at specified index.'''
 
-        if index > len(self.message.message_types) - 1:
+        if index > len(self.envelope.message_types) - 1:
             raise PBException('message not available at index %d' % index)
 
-        b = self.message.messages[index]
-        type_enumeration = self.message.message_types[index]
+        b = self.envelope.messages[index]
+        type_enumeration = self.envelope.message_types[index]
         namespace = None
         
-        if len(self.message.message_namespaces):
-            namespace = self.message.message_namespaces[index]
+        if len(self.envelope.message_namespaces):
+            namespace = self.envelope.message_namespaces[index]
         else:
             namespace = default_namespace
 
@@ -178,9 +178,9 @@ class Message():
     def add_agent_info(self, i):
         '''add_agent_info(info)
 
-        Add a pblog.pblog_pb2.AgentInfo instance to the message
+        Add a pblog.message.pblog_pb2.AgentInfo instance to the envelope
         '''
-        new_info = self.message.agents.add()
+        new_info = self.envelope.agents.add()
        
         for field in i.ListFields():
             new_info.__setattr__(field[0].name, field[1]) 
@@ -189,4 +189,4 @@ class Message():
         '''serialize()
 
         Return the binary serialization of the message instance'''
-        return self.message.SerializeToString()
+        return self.envelope.SerializeToString()
