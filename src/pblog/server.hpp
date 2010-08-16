@@ -24,11 +24,17 @@
 namespace pblog {
 namespace server {
 
+// this is sent to new workers as they are started. it gives them all the
+// info they need to start servicing requests
 typedef struct worker_start_data {
+    // for ZMQ initialization on new threads
     ::zmq::context_t *ctx;
-    apr_pool_t *p;
-    long client_timeout;
+
+    // store worker operates on
     pblog::Store *store;
+
+    // where to connect to receive requests
+    const char *socket_endpoint;
 } worker_start_data;
 
 PBLOG_EXPORT void * __stdcall worker(apr_thread_t *thread, void *data);

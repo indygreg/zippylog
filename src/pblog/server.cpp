@@ -58,7 +58,6 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
     int state = CREATE_SOCKET;
     worker_start_data *d = (worker_start_data *)data;
 
-    apr_pool_create(&p, d->p);
     socket_t *socket = NULL;
 
     /* variables used across states */
@@ -76,7 +75,7 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
         switch (state) {
             case CREATE_SOCKET:
                 socket = new socket_t(*d->ctx, ZMQ_XREP);
-                socket->connect("inproc://tcp_requests");
+                socket->connect(d->socket_endpoint);
                 state = WAITING;
                 break;
 
@@ -240,8 +239,6 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
     }
 
     if (socket) { delete socket; }
-
-    apr_pool_destroy(p);
 
     return NULL;
 

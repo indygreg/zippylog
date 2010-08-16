@@ -35,6 +35,9 @@ using namespace ::pblog::server;
 
 #define MEMORY_ERROR "out of memory" APR_EOL_STR
 
+// where workers bind to
+#define WORKER_ENDPOINT "inproc://worker_requests"
+
 void _exit()
 {
     apr_terminate2();
@@ -116,7 +119,7 @@ int main(int argc, const char * const argv[])
     /* this socket code is almost as easy as a scripting language! */
     zmq::context_t zctx(1);
     zmq::socket_t zworkers(zctx, ZMQ_XREQ);
-    zworkers.bind("inproc://tcp_requests");
+    zworkers.bind(WORKER_ENDPOINT);
 
     zmq::socket_t zsock(zctx, ZMQ_XREP);
     char * slisten = apr_psprintf(p, "tcp://%s:%d", listen_address, listen_port);
@@ -127,9 +130,8 @@ int main(int argc, const char * const argv[])
     worker_start_data data;
 
     data.ctx = &zctx;
-    data.p = p;
-    data.client_timeout = 5000000; /* 5 seconds */
     data.store = &store;
+    data.socket_endpoint = WORKER_ENDPOINT;
 
     /* set up our request handling threads */
     /* TODO make into thread pool */
