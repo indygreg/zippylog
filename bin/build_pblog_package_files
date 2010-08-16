@@ -20,16 +20,45 @@
 # it is assumed this script is executed from within a source distribution
 
 from json import dump, load
-from os.path import exists, join, dirname
+from os import walk
+from os.path import exists, join, dirname, splitext
+from shutil import copy2, rmtree
 from subprocess import Popen
 from sys import path
+from tempfile import mkdtemp
 
 base_dir = dirname(dirname(__file__))
 
 path.insert(0, join(base_dir, 'lib', 'py'))
 
-proto_dir = join(base_dir, 'proto', 'pblog')
-lib_dir = join(base_dir, 'lib', 'py', 'pblog')
+proto_dir = join(base_dir, 'proto')
 pblog_compile = join(base_dir, 'bin', 'pblog_compile')
-state_file = join(lib_dir, 'state.json')
+state_file = join(proto_dir, 'pblog-state.json')
 
+out_dir = mkdtemp()
+print 'temp output directory: %s' % out_dir
+
+if exists(state_file):
+    copy2(state_file, join(out_dir, 'pblog-state.json'))
+
+compile_args = [ pblog_compile, '--cpp-namespace', 'pblog' ]
+compile_args.append(proto_dir)
+compile_args.append(out_dir)
+p = Popen(compile_args)
+p.wait()
+
+copy2(join(out_dir, 'pblog-state.json'), state_file)
+
+for root, dirs, files in walk(join(out_dir, 'py', 'pblog')):
+    for f in filter(lambda x: x[-3:] == '.py', files):
+        src = join(root, f)
+        dst = src[len(out_dir)+1:]
+        copy2(src, join(base_dir, 'lib', dst))
+
+for root, dirs, files in walk(join(out_dir, 'cpp', 'pblog')):
+    for f in filter(lambda x: splitext(x)[1] in ['.h', '.cc'], files):
+        src = join(root, f)
+        dst = src[len(out_dir)+5:]
+        copy2(src, join(base_dir, 'src', dst))
+
+rmtree(out_dir)
