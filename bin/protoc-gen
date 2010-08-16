@@ -197,7 +197,7 @@ for i in range(0, len(request.file_to_generate)):
                 f = response.file.add()
                 f.name = cpp_output_header(filename)
                 f.insertion_point = 'class_scope:%s.%s' % ( package, name )
-                f.content = 'inline bool add_to_envelope(::pblog::Envelope *envelope);';
+                f.content = 'bool add_to_envelope(::pblog::Envelope *envelope);';
 
                 f = response.file.add()
                 f.name = cpp_output_source(filename)

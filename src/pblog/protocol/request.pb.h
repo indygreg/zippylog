@@ -97,7 +97,7 @@ class StoreInfo : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 8;
-  inline bool add_to_envelope(::pblog::Envelope *envelope);
+  bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.StoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -197,7 +197,7 @@ class Stream : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 9;
-  inline bool add_to_envelope(::pblog::Envelope *envelope);
+  bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -310,7 +310,7 @@ class Get : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 10;
-  inline bool add_to_envelope(::pblog::Envelope *envelope);
+  bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
