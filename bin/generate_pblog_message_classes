@@ -56,7 +56,7 @@ for root, dirs, files in walk(join(out_dir, 'py', 'pblog')):
         copy2(src, join(base_dir, 'lib', dst))
 
 for root, dirs, files in walk(join(out_dir, 'cpp', 'pblog')):
-    for f in filter(lambda x: splitext(x)[1] in ['.h', '.cc'], files):
+    for f in filter(lambda x: splitext(x)[1] in ['.h', '.hpp', '.cc', '.cpp'], files):
         src = join(root, f)
         dst = src[len(out_dir)+5:]
         copy2(src, join(base_dir, 'src', dst))
