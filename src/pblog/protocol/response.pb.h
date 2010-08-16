@@ -38,11 +38,15 @@ void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
 class Error;
 
 enum ErrorCode {
-  INVALID_REQUEST_PAYLOAD = 1
+  ENVELOPE_PARSE_FAILURE = 1,
+  INVALID_MESSAGE_NAMESPACE = 2,
+  UNKNOWN_REQUEST_TYPE = 3,
+  EMPTY_ENVELOPE = 4,
+  MISSING_ENUMERATIONS = 5
 };
 bool ErrorCode_IsValid(int value);
-const ErrorCode ErrorCode_MIN = INVALID_REQUEST_PAYLOAD;
-const ErrorCode ErrorCode_MAX = INVALID_REQUEST_PAYLOAD;
+const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
+const ErrorCode ErrorCode_MAX = MISSING_ENUMERATIONS;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();

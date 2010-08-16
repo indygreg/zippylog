@@ -80,8 +80,10 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
     "rotocol.response\"F\n\005Error\0220\n\004code\030\001 \001(\0162"
     "\".pblog.protocol.response.ErrorCode\022\013\n\003m"
-    "sg\030\002 \001(\t*(\n\tErrorCode\022\033\n\027INVALID_REQUEST"
-    "_PAYLOAD\020\001", 170);
+    "sg\030\002 \001(\t*\216\001\n\tErrorCode\022\032\n\026ENVELOPE_PARSE"
+    "_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020"
+    "\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENV"
+    "ELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005", 273);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
   Error::default_instance_ = new Error();
@@ -103,6 +105,10 @@ const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor() {
 bool ErrorCode_IsValid(int value) {
   switch(value) {
     case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
       return true;
     default:
       return false;

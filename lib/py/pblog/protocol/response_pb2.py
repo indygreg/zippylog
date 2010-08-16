@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/response.proto',
   package='pblog.protocol.response',
-  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*(\n\tErrorCode\x12\x1b\n\x17INVALID_REQUEST_PAYLOAD\x10\x01')
+  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\x8e\x01\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -20,18 +20,38 @@ _ERRORCODE = descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     descriptor.EnumValueDescriptor(
-      name='INVALID_REQUEST_PAYLOAD', index=0, number=1,
+      name='ENVELOPE_PARSE_FAILURE', index=0, number=1,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='INVALID_MESSAGE_NAMESPACE', index=1, number=2,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='UNKNOWN_REQUEST_TYPE', index=2, number=3,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='EMPTY_ENVELOPE', index=3, number=4,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='MISSING_ENUMERATIONS', index=4, number=5,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
-  serialized_start=130,
-  serialized_end=170,
+  serialized_start=131,
+  serialized_end=273,
 )
 
 
-INVALID_REQUEST_PAYLOAD = 1
+ENVELOPE_PARSE_FAILURE = 1
+INVALID_MESSAGE_NAMESPACE = 2
+UNKNOWN_REQUEST_TYPE = 3
+EMPTY_ENVELOPE = 4
+MISSING_ENUMERATIONS = 5
 
 
 

@@ -8,5 +8,19 @@ message Error {
 }
 
 enum ErrorCode {
-    INVALID_REQUEST_PAYLOAD = 1;
+    // server could not parse received envelope
+    ENVELOPE_PARSE_FAILURE = 1;
+
+    // received message not from the pblog namespace
+    INVALID_MESSAGE_NAMESPACE = 2;
+
+    // server does not know how to handle requested message type
+    UNKNOWN_REQUEST_TYPE = 3;
+
+    // server received an envelope but it had no messages telling it what to do
+    EMPTY_ENVELOPE = 4;
+
+    // server received a message but its enumerations were not defined, so it
+    // does not know how to handle it
+    MISSING_ENUMERATIONS = 5;
 }
