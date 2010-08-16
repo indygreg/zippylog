@@ -12,9 +12,20 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+/*
+
+This file implements routines for the server-side processing of client
+requests.
+
+The main worker routine implements a crude state machine to help make things
+easier to grok.
+
+*/
+
 #include <pblog/server.hpp>
 #include <pblog/message.pb.h>
 #include <pblog/protocol.pb.h>
+#include <pblog/protocol/request.pb.h>
 #include <pblog/protocol/response.pb.h>
 
 #include <string>
@@ -26,12 +37,18 @@ namespace server {
 using namespace ::zmq;
 using namespace ::google::protobuf;
 
+using ::std::string;
+
 enum worker_state {
     CREATE_SOCKET = 1,
     WAITING = 2,
     RESET_CONNECTION = 3,
     PROCESS_REQUEST = 4,
-    PARSE_REQUEST_ERROR = 5,
+    SEND_ENVELOPE_AND_DONE = 5,
+    SEND_ERROR_RESPONSE = 6,
+    PROCESS_STOREINFO = 7,
+    PROCESS_GET = 8,
+    PROCESS_STREAM = 9,
 };
 
 void * __stdcall worker(apr_thread_t *thread, void *data)
@@ -39,16 +56,21 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
     apr_pool_t *p;
     int loop = 1;
     int state = CREATE_SOCKET;
-    message_t identities[2];
     worker_start_data *d = (worker_start_data *)data;
-    int64 more;
-    size_t moresz;
-    pollitem_t poll[1];
-
-    moresz = sizeof(more);
 
     apr_pool_create(&p, d->p);
     socket_t *socket = NULL;
+
+    /* variables used across states */
+    Envelope response_envelope;
+    protocol::response::ErrorCode error_code;
+    string error_message;
+    message_t identities[2];
+
+    /* common variables used frequently enough to warrant declaration */
+    int64 more;
+    size_t moresz = sizeof(more);
+    pollitem_t poll[1];
 
     while (loop) {
         switch (state) {
@@ -108,65 +130,93 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
 
                 socket->recv(&msg, 0);
                 if (!envelope.ParseFromArray(msg.data(), msg.size())) {
-                    state = PARSE_REQUEST_ERROR;
+                    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
+                    error_message = "could not parse received envelope";
+                    state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
-                printf("received pblog message!\n");
+                if (envelope.message_size() < 1) {
+                    error_code = protocol::response::EMPTY_ENVELOPE;
+                    error_message = "envelope contains no messages";
+                    state = SEND_ERROR_RESPONSE;
+                    break;
+                }
 
                 if (envelope.message_namespace_size() < 1 || envelope.message_type_size() < 1) {
-                    state = PARSE_REQUEST_ERROR;
+                    error_code = protocol::response::MISSING_ENUMERATIONS;
+                    error_message = "message received without namespace or type enumerations";
+                    state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
                 /* must be in the pblog namespace */
                 if (envelope.message_namespace(0) != 1) {
-                    state = PARSE_REQUEST_ERROR;
+                    error_code = protocol::response::INVALID_MESSAGE_NAMESPACE;
+                    error_message = "message namespace is not pblog's";
+                    state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
                 uint32 request_type = envelope.message_type(0);
-                if (request_type == 8) {
-                    printf("processing store info request\n");
-
-                    protocol::StoreInfo info = d->store->store_info();
-
-                    Envelope e = Envelope();
-                    info.add_to_envelope(&e);
-                    message_t *msg = e.to_zmq_message();
-
-                    if (!socket->send(identities[0], ZMQ_SNDMORE)) {
-                        state = RESET_CONNECTION;
-                        break;
-                    }
-
-                    if (!socket->send(identities[1], ZMQ_SNDMORE)) {
-                        state = RESET_CONNECTION;
-                        break;
-                    }
-
-                    if (!socket->send(*msg, 0)) {
-                        state = RESET_CONNECTION;
-                        break;
-                    }
-
-                    state = WAITING;
+                if (request_type == protocol::request::StoreInfo::pblog_enumeration) {
+                    state = PROCESS_STOREINFO;
+                    break;
+                }
+                else if (request_type == protocol::request::Get::pblog_enumeration) {
+                    state = PROCESS_GET;
+                    break;
+                }
+                else if (request_type == protocol::request::Stream::pblog_enumeration) {
+                    state = PROCESS_STREAM;
                     break;
                 }
                 else {
-                    state = PARSE_REQUEST_ERROR;
+                    error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
+                    error_message = "server does not know how to process the request";
+                    state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
                 break;
             }
 
-            case PARSE_REQUEST_ERROR:
+            case PROCESS_STOREINFO:
             {
-                protocol::response::Error pb = protocol::response::Error();
+                protocol::StoreInfo info = d->store->store_info();
 
-                pb.set_code(protocol::response::INVALID_REQUEST_PAYLOAD);
-                pb.set_msg("unable to parse request message");
+                response_envelope = Envelope();
+                info.add_to_envelope(&response_envelope);
+                state = SEND_ENVELOPE_AND_DONE;
+                break;
+            }
+
+            case PROCESS_STREAM:
+                error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
+                error_message = "streaming requests are currently not implemented";
+                state = SEND_ERROR_RESPONSE;
+                break;
+
+            case PROCESS_GET:
+                error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
+                error_message = "stream download is not yet implemented";
+                state = SEND_ERROR_RESPONSE;
+                break;
+
+            case SEND_ERROR_RESPONSE:
+            {
+                protocol::response::Error error = protocol::response::Error();
+                error.set_code(error_code);
+                error.set_msg(error_message);
+                response_envelope = Envelope();
+                error.add_to_envelope(&response_envelope);
+                state = SEND_ENVELOPE_AND_DONE;
+                break;
+            }
+
+            case SEND_ENVELOPE_AND_DONE:
+            {
+                message_t *msg = response_envelope.to_zmq_message();
 
                 if (!socket->send(identities[0], ZMQ_SNDMORE)) {
                     state = RESET_CONNECTION;
@@ -178,14 +228,13 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
                     break;
                 }
 
-                string serialized;
-                assert(pb.SerializeToString(&serialized));
-
-                message_t msg(serialized.length());
-                memcpy(msg.data(), (void *)serialized.c_str(), serialized.length());
-                socket->send(msg, 0);
+                if (!socket->send(*msg, 0)) {
+                    state = RESET_CONNECTION;
+                    break;
+                }
 
                 state = WAITING;
+                break;
             }
         }
     }
