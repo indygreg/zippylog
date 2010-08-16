@@ -4,6 +4,7 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
+from pblog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
@@ -104,18 +105,27 @@ class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 8
   # @@protoc_insertion_point(class_scope:pblog.protocol.request.StoreInfo)
 
 class Stream(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAM
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 9
   # @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
 
 class Get(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _GET
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 10
   # @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
 
+register_message(1, 8, 'pblog.protocol.request_pb2', 'StoreInfo')
+register_message(1, 9, 'pblog.protocol.request_pb2', 'Stream')
+register_message(1, 10, 'pblog.protocol.request_pb2', 'Get')
 # @@protoc_insertion_point(module_scope)

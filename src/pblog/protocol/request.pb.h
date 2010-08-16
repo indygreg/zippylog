@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <pblog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace pblog {
@@ -94,6 +95,8 @@ class StoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 8;
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.StoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -191,6 +194,8 @@ class Stream : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 9;
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -301,6 +306,8 @@ class Get : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
       mutable_stream_offsets();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 10;
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

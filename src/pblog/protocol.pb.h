@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <pblog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace pblog {
@@ -111,6 +112,8 @@ class StreamInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 length() const;
   inline void set_length(::google::protobuf::uint64 value);
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 5;
   // @@protoc_insertion_point(class_scope:pblog.protocol.StreamInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -217,6 +220,8 @@ class StreamSetInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo >*
       mutable_streams();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 5;
   // @@protoc_insertion_point(class_scope:pblog.protocol.StreamSetInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -323,6 +328,8 @@ class BucketInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo >*
       mutable_stream_sets();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 3;
   // @@protoc_insertion_point(class_scope:pblog.protocol.BucketInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -419,6 +426,8 @@ class StoreInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo >*
       mutable_buckets();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 4;
   // @@protoc_insertion_point(class_scope:pblog.protocol.StoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

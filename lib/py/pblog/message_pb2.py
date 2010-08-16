@@ -154,12 +154,16 @@ class Envelope(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ENVELOPE
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 1
   # @@protoc_insertion_point(class_scope:pblog.message.Envelope)
 
 class ActorInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ACTORINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 2
   # @@protoc_insertion_point(class_scope:pblog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)

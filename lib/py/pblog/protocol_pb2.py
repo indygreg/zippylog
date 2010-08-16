@@ -4,6 +4,7 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
+from pblog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
@@ -156,24 +157,36 @@ class StreamInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 5
   # @@protoc_insertion_point(class_scope:pblog.protocol.StreamInfo)
 
 class StreamSetInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSETINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 5
   # @@protoc_insertion_point(class_scope:pblog.protocol.StreamSetInfo)
 
 class BucketInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BUCKETINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 3
   # @@protoc_insertion_point(class_scope:pblog.protocol.BucketInfo)
 
 class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREINFO
   
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 4
   # @@protoc_insertion_point(class_scope:pblog.protocol.StoreInfo)
 
+register_message(1, 5, 'pblog.protocol_pb2', 'StreamInfo')
+register_message(1, 5, 'pblog.protocol_pb2', 'StreamSetInfo')
+register_message(1, 3, 'pblog.protocol_pb2', 'BucketInfo')
+register_message(1, 4, 'pblog.protocol_pb2', 'StoreInfo')
 # @@protoc_insertion_point(module_scope)

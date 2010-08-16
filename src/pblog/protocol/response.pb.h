@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <pblog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace pblog {
@@ -127,6 +128,8 @@ class Error : public ::google::protobuf::Message {
   inline void set_msg(const char* value, size_t size);
   inline ::std::string* mutable_msg();
   
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 7;
   // @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
