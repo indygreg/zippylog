@@ -13,7 +13,7 @@
 //  limitations under the License.
 
 #include <pblog/server.hpp>
-#include <pblog/pblog.pb.h>
+#include <pblog/message.pb.h>
 #include <pblog/protocol/response.pb.h>
 
 #include <string>
@@ -103,10 +103,10 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
             {
                 /* we've already verified message is available, so we grab it */
                 message_t msg;
-                ::pblog::Message pb = ::pblog::Message();
+                ::pblog::message::Envelope envelope = ::pblog::message::Envelope();
 
                 socket->recv(&msg, 0);
-                if (!pb.ParseFromArray(msg.data(), msg.size())) {
+                if (!envelope.ParseFromArray(msg.data(), msg.size())) {
                     state = PARSE_REQUEST_ERROR;
                     break;
                 }

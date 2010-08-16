@@ -20,19 +20,20 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
-#include <pblog/pblog.pb.h>
+#include <pblog/message.pb.h>
 
 namespace pblog {
 
 using namespace ::google::protobuf;
 using namespace ::google::protobuf::io;
+using namespace message;
 
 class PBLOG_EXPORT InputStream {
     public:
         InputStream(const char *file, int64 seek_bytes=0);
         ~InputStream();
 
-        bool ReadMessage(Message *);
+        bool ReadEnvelope(Envelope *);
 
     private:
         int _fd;
