@@ -193,7 +193,7 @@ for i in range(0, len(request.file_to_generate)):
             f.insertion_point = 'class_scope:%s.%s' % ( package, name )
             f.content = 'static const ::google::protobuf::uint32 pblog_enumeration = %d;' % message_index
             
-            if package != 'pblog.message':
+            if package != 'pblog.message' and package[0:6] != 'google':
                 f = response.file.add()
                 f.name = cpp_output_header(filename)
                 f.insertion_point = 'class_scope:%s.%s' % ( package, name )
@@ -207,23 +207,24 @@ bool %s::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);
 }''' % name
             
-            f = response.file.add()
-            f.name = cpp_messages_source
-            f.insertion_point = 'message_registration'
-            f.content = 'registrar->register_message(%d, %d, new %s::%s());' % ( ns_index, message_index, cpp_namespace, name)
+                f = response.file.add()
+                f.name = cpp_messages_source
+                f.insertion_point = 'message_registration'
+                f.content = 'registrar->register_message(%d, %d, new %s::%s());' % ( ns_index, message_index, cpp_namespace, name)
 
-    if package != 'pblog.message':
-        if mode == 'python':
+    if mode == 'python' and package != 'pblog.message':
             f = response.file.add()
             f.insertion_point = 'imports'
             f.name = python_output_name(filename)
             f.content = 'from pblog.envelope import register_message'
-        elif mode == 'cpp':
+    elif mode == 'cpp':
+        if package != 'pblog.message':
             f = response.file.add()
             f.insertion_point = 'includes'
             f.name = cpp_output_header(filename)
             f.content = '#include <pblog/envelope.hpp>'
 
+        if package[0:6] != 'google':
             f = response.file.add()
             f.name = cpp_messages_header
             f.insertion_point = 'includes'
