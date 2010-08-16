@@ -130,6 +130,7 @@ class Error : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 7;
+  inline bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

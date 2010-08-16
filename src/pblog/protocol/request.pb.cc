@@ -762,6 +762,18 @@ void Get::Swap(Get* other) {
 }
 
 
+
+bool StoreInfo::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool Stream::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool Get::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace request

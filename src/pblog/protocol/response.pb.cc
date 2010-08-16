@@ -381,6 +381,10 @@ void Error::Swap(Error* other) {
 }
 
 
+
+bool Error::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace response

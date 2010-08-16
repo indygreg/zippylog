@@ -192,7 +192,21 @@ for i in range(0, len(request.file_to_generate)):
             f.name = cpp_output_header(filename)
             f.insertion_point = 'class_scope:%s.%s' % ( package, name )
             f.content = 'static const ::google::protobuf::uint32 pblog_enumeration = %d;' % message_index
+            
+            if package != 'pblog.message':
+                f = response.file.add()
+                f.name = cpp_output_header(filename)
+                f.insertion_point = 'class_scope:%s.%s' % ( package, name )
+                f.content = 'inline bool add_to_envelope(::pblog::Envelope *envelope);';
 
+                f = response.file.add()
+                f.name = cpp_output_source(filename)
+                f.insertion_point = 'namespace_scope'
+                f.content = '''
+bool %s::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}''' % name
+            
             f = response.file.add()
             f.name = cpp_messages_source
             f.insertion_point = 'message_registration'

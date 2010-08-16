@@ -1168,6 +1168,22 @@ void StoreInfo::Swap(StoreInfo* other) {
 }
 
 
+
+bool StreamInfo::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool StreamSetInfo::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool BucketInfo::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool StoreInfo::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace protocol
