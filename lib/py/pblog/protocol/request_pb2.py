@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/request.proto',
   package='pblog.protocol.request',
-  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x17\n\x06Stream\x12\r\n\x05paths\x18\x01 \x03(\t\",\n\x03Get\x12\r\n\x05paths\x18\x01 \x03(\t\x12\x16\n\x0estream_offsets\x18\x02 \x03(\x04')
+  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x16\n\x06Stream\x12\x0c\n\x04path\x18\x01 \x03(\t\"*\n\x03Get\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x15\n\rstream_offset\x18\x02 \x03(\x04')
 
 
 
@@ -45,7 +45,7 @@ _STREAM = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='paths', full_name='pblog.protocol.request.Stream.paths', index=0,
+      name='path', full_name='pblog.protocol.request.Stream.path', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -61,7 +61,7 @@ _STREAM = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=69,
-  serialized_end=92,
+  serialized_end=91,
 )
 
 
@@ -73,14 +73,14 @@ _GET = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='paths', full_name='pblog.protocol.request.Get.paths', index=0,
+      name='path', full_name='pblog.protocol.request.Get.path', index=0,
       number=1, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='stream_offsets', full_name='pblog.protocol.request.Get.stream_offsets', index=1,
+      name='stream_offset', full_name='pblog.protocol.request.Get.stream_offset', index=1,
       number=2, type=4, cpp_type=4, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -95,8 +95,8 @@ _GET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=94,
-  serialized_end=138,
+  serialized_start=93,
+  serialized_end=135,
 )
 
 

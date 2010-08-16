@@ -13,15 +13,15 @@ message StoreInfo {
 message Stream {
     // list of paths to subscribe to
     // string value is a store path (e.g. '/bucket/set')
-    repeated string paths = 1;
+    repeated string path = 1;
 }
 
 // download stream(s) from the server
 message Get {
     // list of streams to download
-    repeated string paths = 1;
+    repeated string path = 1;
     
     // list of offsets within the remote stream at which to start the download
-    repeated uint64 stream_offsets = 2;
+    repeated uint64 stream_offset = 2;
 }
 

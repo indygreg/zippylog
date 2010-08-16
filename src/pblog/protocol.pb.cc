@@ -56,7 +56,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2eproto() {
   StreamSetInfo_descriptor_ = file->message_type(1);
   static const int StreamSetInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSetInfo, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSetInfo, streams_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSetInfo, stream_),
   };
   StreamSetInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -72,7 +72,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2eproto() {
   BucketInfo_descriptor_ = file->message_type(2);
   static const int BucketInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BucketInfo, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BucketInfo, stream_sets_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BucketInfo, stream_set_),
   };
   BucketInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -87,7 +87,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2eproto() {
       sizeof(BucketInfo));
   StoreInfo_descriptor_ = file->message_type(3);
   static const int StoreInfo_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreInfo, buckets_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreInfo, bucket_),
   };
   StoreInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -144,12 +144,12 @@ void protobuf_AddDesc_pblog_2fprotocol_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\024pblog/protocol.proto\022\016pblog.protocol\"*"
     "\n\nStreamInfo\022\014\n\004path\030\001 \001(\t\022\016\n\006length\030\002 \001"
-    "(\004\"J\n\rStreamSetInfo\022\014\n\004path\030\001 \001(\t\022+\n\007str"
-    "eams\030\002 \003(\0132\032.pblog.protocol.StreamInfo\"N"
-    "\n\nBucketInfo\022\014\n\004path\030\001 \001(\t\0222\n\013stream_set"
-    "s\030\002 \003(\0132\035.pblog.protocol.StreamSetInfo\"8"
-    "\n\tStoreInfo\022+\n\007buckets\030\001 \003(\0132\032.pblog.pro"
-    "tocol.BucketInfo", 296);
+    "(\004\"I\n\rStreamSetInfo\022\014\n\004path\030\001 \001(\t\022*\n\006str"
+    "eam\030\002 \003(\0132\032.pblog.protocol.StreamInfo\"M\n"
+    "\nBucketInfo\022\014\n\004path\030\001 \001(\t\0221\n\nstream_set\030"
+    "\002 \003(\0132\035.pblog.protocol.StreamSetInfo\"7\n\t"
+    "StoreInfo\022*\n\006bucket\030\001 \003(\0132\032.pblog.protoc"
+    "ol.BucketInfo", 293);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol.proto", &protobuf_RegisterTypes);
   StreamInfo::default_instance_ = new StreamInfo();
@@ -441,7 +441,7 @@ void StreamInfo::Swap(StreamInfo* other) {
 const ::std::string StreamSetInfo::_default_path_;
 #ifndef _MSC_VER
 const int StreamSetInfo::kPathFieldNumber;
-const int StreamSetInfo::kStreamsFieldNumber;
+const int StreamSetInfo::kStreamFieldNumber;
 #endif  // !_MSC_VER
 
 StreamSetInfo::StreamSetInfo()
@@ -504,7 +504,7 @@ void StreamSetInfo::Clear() {
       }
     }
   }
-  streams_.Clear();
+  stream_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -527,21 +527,21 @@ bool StreamSetInfo::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_streams;
+        if (input->ExpectTag(18)) goto parse_stream;
         break;
       }
       
-      // repeated .pblog.protocol.StreamInfo streams = 2;
+      // repeated .pblog.protocol.StreamInfo stream = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_streams:
+         parse_stream:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_streams()));
+                input, add_stream()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_streams;
+        if (input->ExpectTag(18)) goto parse_stream;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -573,10 +573,10 @@ void StreamSetInfo::SerializeWithCachedSizes(
       1, this->path(), output);
   }
   
-  // repeated .pblog.protocol.StreamInfo streams = 2;
-  for (int i = 0; i < this->streams_size(); i++) {
+  // repeated .pblog.protocol.StreamInfo stream = 2;
+  for (int i = 0; i < this->stream_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->streams(i), output);
+      2, this->stream(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -597,11 +597,11 @@ void StreamSetInfo::SerializeWithCachedSizes(
         1, this->path(), target);
   }
   
-  // repeated .pblog.protocol.StreamInfo streams = 2;
-  for (int i = 0; i < this->streams_size(); i++) {
+  // repeated .pblog.protocol.StreamInfo stream = 2;
+  for (int i = 0; i < this->stream_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->streams(i), target);
+        2, this->stream(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -623,12 +623,12 @@ int StreamSetInfo::ByteSize() const {
     }
     
   }
-  // repeated .pblog.protocol.StreamInfo streams = 2;
-  total_size += 1 * this->streams_size();
-  for (int i = 0; i < this->streams_size(); i++) {
+  // repeated .pblog.protocol.StreamInfo stream = 2;
+  total_size += 1 * this->stream_size();
+  for (int i = 0; i < this->stream_size(); i++) {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->streams(i));
+        this->stream(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -656,7 +656,7 @@ void StreamSetInfo::MergeFrom(const ::google::protobuf::Message& from) {
 
 void StreamSetInfo::MergeFrom(const StreamSetInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
-  streams_.MergeFrom(from.streams_);
+  stream_.MergeFrom(from.stream_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
       set_path(from.path());
@@ -685,7 +685,7 @@ bool StreamSetInfo::IsInitialized() const {
 void StreamSetInfo::Swap(StreamSetInfo* other) {
   if (other != this) {
     std::swap(path_, other->path_);
-    streams_.Swap(&other->streams_);
+    stream_.Swap(&other->stream_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -706,7 +706,7 @@ void StreamSetInfo::Swap(StreamSetInfo* other) {
 const ::std::string BucketInfo::_default_path_;
 #ifndef _MSC_VER
 const int BucketInfo::kPathFieldNumber;
-const int BucketInfo::kStreamSetsFieldNumber;
+const int BucketInfo::kStreamSetFieldNumber;
 #endif  // !_MSC_VER
 
 BucketInfo::BucketInfo()
@@ -769,7 +769,7 @@ void BucketInfo::Clear() {
       }
     }
   }
-  stream_sets_.Clear();
+  stream_set_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -792,21 +792,21 @@ bool BucketInfo::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_stream_sets;
+        if (input->ExpectTag(18)) goto parse_stream_set;
         break;
       }
       
-      // repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
+      // repeated .pblog.protocol.StreamSetInfo stream_set = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stream_sets:
+         parse_stream_set:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_stream_sets()));
+                input, add_stream_set()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_stream_sets;
+        if (input->ExpectTag(18)) goto parse_stream_set;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -838,10 +838,10 @@ void BucketInfo::SerializeWithCachedSizes(
       1, this->path(), output);
   }
   
-  // repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
-  for (int i = 0; i < this->stream_sets_size(); i++) {
+  // repeated .pblog.protocol.StreamSetInfo stream_set = 2;
+  for (int i = 0; i < this->stream_set_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      2, this->stream_sets(i), output);
+      2, this->stream_set(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -862,11 +862,11 @@ void BucketInfo::SerializeWithCachedSizes(
         1, this->path(), target);
   }
   
-  // repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
-  for (int i = 0; i < this->stream_sets_size(); i++) {
+  // repeated .pblog.protocol.StreamSetInfo stream_set = 2;
+  for (int i = 0; i < this->stream_set_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        2, this->stream_sets(i), target);
+        2, this->stream_set(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -888,12 +888,12 @@ int BucketInfo::ByteSize() const {
     }
     
   }
-  // repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
-  total_size += 1 * this->stream_sets_size();
-  for (int i = 0; i < this->stream_sets_size(); i++) {
+  // repeated .pblog.protocol.StreamSetInfo stream_set = 2;
+  total_size += 1 * this->stream_set_size();
+  for (int i = 0; i < this->stream_set_size(); i++) {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->stream_sets(i));
+        this->stream_set(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -921,7 +921,7 @@ void BucketInfo::MergeFrom(const ::google::protobuf::Message& from) {
 
 void BucketInfo::MergeFrom(const BucketInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
-  stream_sets_.MergeFrom(from.stream_sets_);
+  stream_set_.MergeFrom(from.stream_set_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
       set_path(from.path());
@@ -950,7 +950,7 @@ bool BucketInfo::IsInitialized() const {
 void BucketInfo::Swap(BucketInfo* other) {
   if (other != this) {
     std::swap(path_, other->path_);
-    stream_sets_.Swap(&other->stream_sets_);
+    stream_set_.Swap(&other->stream_set_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -969,7 +969,7 @@ void BucketInfo::Swap(BucketInfo* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int StoreInfo::kBucketsFieldNumber;
+const int StoreInfo::kBucketFieldNumber;
 #endif  // !_MSC_VER
 
 StoreInfo::StoreInfo()
@@ -1021,7 +1021,7 @@ StoreInfo* StoreInfo::New() const {
 }
 
 void StoreInfo::Clear() {
-  buckets_.Clear();
+  bucket_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1032,17 +1032,17 @@ bool StoreInfo::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .pblog.protocol.BucketInfo buckets = 1;
+      // repeated .pblog.protocol.BucketInfo bucket = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_buckets:
+         parse_bucket:
           DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_buckets()));
+                input, add_bucket()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_buckets;
+        if (input->ExpectTag(10)) goto parse_bucket;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -1065,10 +1065,10 @@ bool StoreInfo::MergePartialFromCodedStream(
 
 void StoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated .pblog.protocol.BucketInfo buckets = 1;
-  for (int i = 0; i < this->buckets_size(); i++) {
+  // repeated .pblog.protocol.BucketInfo bucket = 1;
+  for (int i = 0; i < this->bucket_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->buckets(i), output);
+      1, this->bucket(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1079,11 +1079,11 @@ void StoreInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated .pblog.protocol.BucketInfo buckets = 1;
-  for (int i = 0; i < this->buckets_size(); i++) {
+  // repeated .pblog.protocol.BucketInfo bucket = 1;
+  for (int i = 0; i < this->bucket_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        1, this->buckets(i), target);
+        1, this->bucket(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1096,12 +1096,12 @@ void StoreInfo::SerializeWithCachedSizes(
 int StoreInfo::ByteSize() const {
   int total_size = 0;
   
-  // repeated .pblog.protocol.BucketInfo buckets = 1;
-  total_size += 1 * this->buckets_size();
-  for (int i = 0; i < this->buckets_size(); i++) {
+  // repeated .pblog.protocol.BucketInfo bucket = 1;
+  total_size += 1 * this->bucket_size();
+  for (int i = 0; i < this->bucket_size(); i++) {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->buckets(i));
+        this->bucket(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -1129,7 +1129,7 @@ void StoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
 
 void StoreInfo::MergeFrom(const StoreInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
-  buckets_.MergeFrom(from.buckets_);
+  bucket_.MergeFrom(from.bucket_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1152,7 +1152,7 @@ bool StoreInfo::IsInitialized() const {
 
 void StoreInfo::Swap(StoreInfo* other) {
   if (other != this) {
-    buckets_.Swap(&other->buckets_);
+    bucket_.Swap(&other->bucket_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

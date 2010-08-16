@@ -92,45 +92,45 @@ class Envelope : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated bytes messages = 1;
-  inline int messages_size() const;
-  inline void clear_messages();
-  static const int kMessagesFieldNumber = 1;
-  inline const ::std::string& messages(int index) const;
-  inline ::std::string* mutable_messages(int index);
-  inline void set_messages(int index, const ::std::string& value);
-  inline void set_messages(int index, const char* value);
-  inline void set_messages(int index, const void* value, size_t size);
-  inline ::std::string* add_messages();
-  inline void add_messages(const ::std::string& value);
-  inline void add_messages(const char* value);
-  inline void add_messages(const void* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& messages() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_messages();
+  // repeated bytes message = 1;
+  inline int message_size() const;
+  inline void clear_message();
+  static const int kMessageFieldNumber = 1;
+  inline const ::std::string& message(int index) const;
+  inline ::std::string* mutable_message(int index);
+  inline void set_message(int index, const ::std::string& value);
+  inline void set_message(int index, const char* value);
+  inline void set_message(int index, const void* value, size_t size);
+  inline ::std::string* add_message();
+  inline void add_message(const ::std::string& value);
+  inline void add_message(const char* value);
+  inline void add_message(const void* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& message() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_message();
   
-  // repeated uint32 message_namespaces = 2 [packed = true];
-  inline int message_namespaces_size() const;
-  inline void clear_message_namespaces();
-  static const int kMessageNamespacesFieldNumber = 2;
-  inline ::google::protobuf::uint32 message_namespaces(int index) const;
-  inline void set_message_namespaces(int index, ::google::protobuf::uint32 value);
-  inline void add_message_namespaces(::google::protobuf::uint32 value);
+  // repeated uint32 message_namespace = 2 [packed = true];
+  inline int message_namespace_size() const;
+  inline void clear_message_namespace();
+  static const int kMessageNamespaceFieldNumber = 2;
+  inline ::google::protobuf::uint32 message_namespace(int index) const;
+  inline void set_message_namespace(int index, ::google::protobuf::uint32 value);
+  inline void add_message_namespace(::google::protobuf::uint32 value);
   inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-      message_namespaces() const;
+      message_namespace() const;
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-      mutable_message_namespaces();
+      mutable_message_namespace();
   
-  // repeated uint32 message_types = 3 [packed = true];
-  inline int message_types_size() const;
-  inline void clear_message_types();
-  static const int kMessageTypesFieldNumber = 3;
-  inline ::google::protobuf::uint32 message_types(int index) const;
-  inline void set_message_types(int index, ::google::protobuf::uint32 value);
-  inline void add_message_types(::google::protobuf::uint32 value);
+  // repeated uint32 message_type = 3 [packed = true];
+  inline int message_type_size() const;
+  inline void clear_message_type();
+  static const int kMessageTypeFieldNumber = 3;
+  inline ::google::protobuf::uint32 message_type(int index) const;
+  inline void set_message_type(int index, ::google::protobuf::uint32 value);
+  inline void add_message_type(::google::protobuf::uint32 value);
   inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-      message_types() const;
+      message_type() const;
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-      mutable_message_types();
+      mutable_message_type();
   
   // optional uint64 create_time = 4;
   inline bool has_create_time() const;
@@ -139,33 +139,33 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 create_time() const;
   inline void set_create_time(::google::protobuf::uint64 value);
   
-  // repeated bytes tags = 5;
-  inline int tags_size() const;
-  inline void clear_tags();
-  static const int kTagsFieldNumber = 5;
-  inline const ::std::string& tags(int index) const;
-  inline ::std::string* mutable_tags(int index);
-  inline void set_tags(int index, const ::std::string& value);
-  inline void set_tags(int index, const char* value);
-  inline void set_tags(int index, const void* value, size_t size);
-  inline ::std::string* add_tags();
-  inline void add_tags(const ::std::string& value);
-  inline void add_tags(const char* value);
-  inline void add_tags(const void* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& tags() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_tags();
+  // repeated bytes tag = 5;
+  inline int tag_size() const;
+  inline void clear_tag();
+  static const int kTagFieldNumber = 5;
+  inline const ::std::string& tag(int index) const;
+  inline ::std::string* mutable_tag(int index);
+  inline void set_tag(int index, const ::std::string& value);
+  inline void set_tag(int index, const char* value);
+  inline void set_tag(int index, const void* value, size_t size);
+  inline ::std::string* add_tag();
+  inline void add_tag(const ::std::string& value);
+  inline void add_tag(const char* value);
+  inline void add_tag(const void* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& tag() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_tag();
   
-  // repeated .pblog.message.ActorInfo actors = 6;
-  inline int actors_size() const;
-  inline void clear_actors();
-  static const int kActorsFieldNumber = 6;
-  inline const ::pblog::message::ActorInfo& actors(int index) const;
-  inline ::pblog::message::ActorInfo* mutable_actors(int index);
-  inline ::pblog::message::ActorInfo* add_actors();
+  // repeated .pblog.message.ActorInfo actor = 6;
+  inline int actor_size() const;
+  inline void clear_actor();
+  static const int kActorFieldNumber = 6;
+  inline const ::pblog::message::ActorInfo& actor(int index) const;
+  inline ::pblog::message::ActorInfo* mutable_actor(int index);
+  inline ::pblog::message::ActorInfo* add_actor();
   inline const ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo >&
-      actors() const;
+      actor() const;
   inline ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo >*
-      mutable_actors();
+      mutable_actor();
   
   // optional uint64 numeric_value = 7;
   inline bool has_numeric_value() const;
@@ -181,14 +181,14 @@ class Envelope : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::std::string> messages_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > message_namespaces_;
-  mutable int _message_namespaces_cached_byte_size_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > message_types_;
-  mutable int _message_types_cached_byte_size_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> message_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > message_namespace_;
+  mutable int _message_namespace_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > message_type_;
+  mutable int _message_type_cached_byte_size_;
   ::google::protobuf::uint64 create_time_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> tags_;
-  ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo > actors_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> tag_;
+  ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo > actor_;
   ::google::protobuf::uint64 numeric_value_;
   friend void  protobuf_AddDesc_pblog_2fmessage_2eproto();
   friend void protobuf_AssignDesc_pblog_2fmessage_2eproto();
@@ -364,98 +364,98 @@ class ActorInfo : public ::google::protobuf::Message {
 
 // Envelope
 
-// repeated bytes messages = 1;
-inline int Envelope::messages_size() const {
-  return messages_.size();
+// repeated bytes message = 1;
+inline int Envelope::message_size() const {
+  return message_.size();
 }
-inline void Envelope::clear_messages() {
-  messages_.Clear();
+inline void Envelope::clear_message() {
+  message_.Clear();
 }
-inline const ::std::string& Envelope::messages(int index) const {
-  return messages_.Get(index);
+inline const ::std::string& Envelope::message(int index) const {
+  return message_.Get(index);
 }
-inline ::std::string* Envelope::mutable_messages(int index) {
-  return messages_.Mutable(index);
+inline ::std::string* Envelope::mutable_message(int index) {
+  return message_.Mutable(index);
 }
-inline void Envelope::set_messages(int index, const ::std::string& value) {
-  messages_.Mutable(index)->assign(value);
+inline void Envelope::set_message(int index, const ::std::string& value) {
+  message_.Mutable(index)->assign(value);
 }
-inline void Envelope::set_messages(int index, const char* value) {
-  messages_.Mutable(index)->assign(value);
+inline void Envelope::set_message(int index, const char* value) {
+  message_.Mutable(index)->assign(value);
 }
-inline void Envelope::set_messages(int index, const void* value, size_t size) {
-  messages_.Mutable(index)->assign(
+inline void Envelope::set_message(int index, const void* value, size_t size) {
+  message_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Envelope::add_messages() {
-  return messages_.Add();
+inline ::std::string* Envelope::add_message() {
+  return message_.Add();
 }
-inline void Envelope::add_messages(const ::std::string& value) {
-  messages_.Add()->assign(value);
+inline void Envelope::add_message(const ::std::string& value) {
+  message_.Add()->assign(value);
 }
-inline void Envelope::add_messages(const char* value) {
-  messages_.Add()->assign(value);
+inline void Envelope::add_message(const char* value) {
+  message_.Add()->assign(value);
 }
-inline void Envelope::add_messages(const void* value, size_t size) {
-  messages_.Add()->assign(reinterpret_cast<const char*>(value), size);
+inline void Envelope::add_message(const void* value, size_t size) {
+  message_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Envelope::messages() const {
-  return messages_;
+Envelope::message() const {
+  return message_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Envelope::mutable_messages() {
-  return &messages_;
+Envelope::mutable_message() {
+  return &message_;
 }
 
-// repeated uint32 message_namespaces = 2 [packed = true];
-inline int Envelope::message_namespaces_size() const {
-  return message_namespaces_.size();
+// repeated uint32 message_namespace = 2 [packed = true];
+inline int Envelope::message_namespace_size() const {
+  return message_namespace_.size();
 }
-inline void Envelope::clear_message_namespaces() {
-  message_namespaces_.Clear();
+inline void Envelope::clear_message_namespace() {
+  message_namespace_.Clear();
 }
-inline ::google::protobuf::uint32 Envelope::message_namespaces(int index) const {
-  return message_namespaces_.Get(index);
+inline ::google::protobuf::uint32 Envelope::message_namespace(int index) const {
+  return message_namespace_.Get(index);
 }
-inline void Envelope::set_message_namespaces(int index, ::google::protobuf::uint32 value) {
-  message_namespaces_.Set(index, value);
+inline void Envelope::set_message_namespace(int index, ::google::protobuf::uint32 value) {
+  message_namespace_.Set(index, value);
 }
-inline void Envelope::add_message_namespaces(::google::protobuf::uint32 value) {
-  message_namespaces_.Add(value);
+inline void Envelope::add_message_namespace(::google::protobuf::uint32 value) {
+  message_namespace_.Add(value);
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-Envelope::message_namespaces() const {
-  return message_namespaces_;
+Envelope::message_namespace() const {
+  return message_namespace_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-Envelope::mutable_message_namespaces() {
-  return &message_namespaces_;
+Envelope::mutable_message_namespace() {
+  return &message_namespace_;
 }
 
-// repeated uint32 message_types = 3 [packed = true];
-inline int Envelope::message_types_size() const {
-  return message_types_.size();
+// repeated uint32 message_type = 3 [packed = true];
+inline int Envelope::message_type_size() const {
+  return message_type_.size();
 }
-inline void Envelope::clear_message_types() {
-  message_types_.Clear();
+inline void Envelope::clear_message_type() {
+  message_type_.Clear();
 }
-inline ::google::protobuf::uint32 Envelope::message_types(int index) const {
-  return message_types_.Get(index);
+inline ::google::protobuf::uint32 Envelope::message_type(int index) const {
+  return message_type_.Get(index);
 }
-inline void Envelope::set_message_types(int index, ::google::protobuf::uint32 value) {
-  message_types_.Set(index, value);
+inline void Envelope::set_message_type(int index, ::google::protobuf::uint32 value) {
+  message_type_.Set(index, value);
 }
-inline void Envelope::add_message_types(::google::protobuf::uint32 value) {
-  message_types_.Add(value);
+inline void Envelope::add_message_type(::google::protobuf::uint32 value) {
+  message_type_.Add(value);
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-Envelope::message_types() const {
-  return message_types_;
+Envelope::message_type() const {
+  return message_type_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-Envelope::mutable_message_types() {
-  return &message_types_;
+Envelope::mutable_message_type() {
+  return &message_type_;
 }
 
 // optional uint64 create_time = 4;
@@ -474,73 +474,73 @@ inline void Envelope::set_create_time(::google::protobuf::uint64 value) {
   create_time_ = value;
 }
 
-// repeated bytes tags = 5;
-inline int Envelope::tags_size() const {
-  return tags_.size();
+// repeated bytes tag = 5;
+inline int Envelope::tag_size() const {
+  return tag_.size();
 }
-inline void Envelope::clear_tags() {
-  tags_.Clear();
+inline void Envelope::clear_tag() {
+  tag_.Clear();
 }
-inline const ::std::string& Envelope::tags(int index) const {
-  return tags_.Get(index);
+inline const ::std::string& Envelope::tag(int index) const {
+  return tag_.Get(index);
 }
-inline ::std::string* Envelope::mutable_tags(int index) {
-  return tags_.Mutable(index);
+inline ::std::string* Envelope::mutable_tag(int index) {
+  return tag_.Mutable(index);
 }
-inline void Envelope::set_tags(int index, const ::std::string& value) {
-  tags_.Mutable(index)->assign(value);
+inline void Envelope::set_tag(int index, const ::std::string& value) {
+  tag_.Mutable(index)->assign(value);
 }
-inline void Envelope::set_tags(int index, const char* value) {
-  tags_.Mutable(index)->assign(value);
+inline void Envelope::set_tag(int index, const char* value) {
+  tag_.Mutable(index)->assign(value);
 }
-inline void Envelope::set_tags(int index, const void* value, size_t size) {
-  tags_.Mutable(index)->assign(
+inline void Envelope::set_tag(int index, const void* value, size_t size) {
+  tag_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Envelope::add_tags() {
-  return tags_.Add();
+inline ::std::string* Envelope::add_tag() {
+  return tag_.Add();
 }
-inline void Envelope::add_tags(const ::std::string& value) {
-  tags_.Add()->assign(value);
+inline void Envelope::add_tag(const ::std::string& value) {
+  tag_.Add()->assign(value);
 }
-inline void Envelope::add_tags(const char* value) {
-  tags_.Add()->assign(value);
+inline void Envelope::add_tag(const char* value) {
+  tag_.Add()->assign(value);
 }
-inline void Envelope::add_tags(const void* value, size_t size) {
-  tags_.Add()->assign(reinterpret_cast<const char*>(value), size);
+inline void Envelope::add_tag(const void* value, size_t size) {
+  tag_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Envelope::tags() const {
-  return tags_;
+Envelope::tag() const {
+  return tag_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Envelope::mutable_tags() {
-  return &tags_;
+Envelope::mutable_tag() {
+  return &tag_;
 }
 
-// repeated .pblog.message.ActorInfo actors = 6;
-inline int Envelope::actors_size() const {
-  return actors_.size();
+// repeated .pblog.message.ActorInfo actor = 6;
+inline int Envelope::actor_size() const {
+  return actor_.size();
 }
-inline void Envelope::clear_actors() {
-  actors_.Clear();
+inline void Envelope::clear_actor() {
+  actor_.Clear();
 }
-inline const ::pblog::message::ActorInfo& Envelope::actors(int index) const {
-  return actors_.Get(index);
+inline const ::pblog::message::ActorInfo& Envelope::actor(int index) const {
+  return actor_.Get(index);
 }
-inline ::pblog::message::ActorInfo* Envelope::mutable_actors(int index) {
-  return actors_.Mutable(index);
+inline ::pblog::message::ActorInfo* Envelope::mutable_actor(int index) {
+  return actor_.Mutable(index);
 }
-inline ::pblog::message::ActorInfo* Envelope::add_actors() {
-  return actors_.Add();
+inline ::pblog::message::ActorInfo* Envelope::add_actor() {
+  return actor_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo >&
-Envelope::actors() const {
-  return actors_;
+Envelope::actor() const {
+  return actor_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::pblog::message::ActorInfo >*
-Envelope::mutable_actors() {
-  return &actors_;
+Envelope::mutable_actor() {
+  return &actor_;
 }
 
 // optional uint64 numeric_value = 7;

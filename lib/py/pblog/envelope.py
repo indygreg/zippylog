@@ -131,24 +131,24 @@ class Envelope():
         # the enumerated type of the message
         name = m.DESCRIPTOR.full_name
 
-        self.envelope.messages.append(m.SerializeToString())
-        self.envelope.message_types.append(m.PBLOG_ENUMERATION)
-        self.envelope.message_namespaces.append(m.PBLOG_NAMESPACE)
+        self.envelope.message.append(m.SerializeToString())
+        self.envelope.message_type.append(m.PBLOG_ENUMERATION)
+        self.envelope.message_namespace.append(m.PBLOG_NAMESPACE)
 
     def get_message(self, index=0, default_namespace=None):
         '''get_message(i)
 
         Get the message at specified index.'''
 
-        if index > len(self.envelope.message_types) - 1:
+        if index > len(self.envelope.message_type) - 1:
             raise PBException('message not available at index %d' % index)
 
-        b = self.envelope.messages[index]
-        type_enumeration = self.envelope.message_types[index]
+        b = self.envelope.message[index]
+        type_enumeration = self.envelope.message_type[index]
         namespace = None
         
-        if len(self.envelope.message_namespaces):
-            namespace = self.envelope.message_namespaces[index]
+        if len(self.envelope.message_namespace):
+            namespace = self.envelope.message_namespace[index]
         else:
             namespace = default_namespace
 
@@ -180,7 +180,7 @@ class Envelope():
 
         Add a pblog.message.pblog_pb2.AgentInfo instance to the envelope
         '''
-        new_info = self.envelope.agents.add()
+        new_info = self.envelope.agent.add()
        
         for field in i.ListFields():
             new_info.__setattr__(field[0].name, field[1]) 

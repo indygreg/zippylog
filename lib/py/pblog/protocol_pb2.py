@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol.proto',
   package='pblog.protocol',
-  serialized_pb='\n\x14pblog/protocol.proto\x12\x0epblog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"J\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12+\n\x07streams\x18\x02 \x03(\x0b\x32\x1a.pblog.protocol.StreamInfo\"N\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x32\n\x0bstream_sets\x18\x02 \x03(\x0b\x32\x1d.pblog.protocol.StreamSetInfo\"8\n\tStoreInfo\x12+\n\x07\x62uckets\x18\x01 \x03(\x0b\x32\x1a.pblog.protocol.BucketInfo')
+  serialized_pb='\n\x14pblog/protocol.proto\x12\x0epblog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"I\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12*\n\x06stream\x18\x02 \x03(\x0b\x32\x1a.pblog.protocol.StreamInfo\"M\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x31\n\nstream_set\x18\x02 \x03(\x0b\x32\x1d.pblog.protocol.StreamSetInfo\"7\n\tStoreInfo\x12*\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1a.pblog.protocol.BucketInfo')
 
 
 
@@ -66,7 +66,7 @@ _STREAMSETINFO = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='streams', full_name='pblog.protocol.StreamSetInfo.streams', index=1,
+      name='stream', full_name='pblog.protocol.StreamSetInfo.stream', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -82,7 +82,7 @@ _STREAMSETINFO = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=84,
-  serialized_end=158,
+  serialized_end=157,
 )
 
 
@@ -101,7 +101,7 @@ _BUCKETINFO = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='stream_sets', full_name='pblog.protocol.BucketInfo.stream_sets', index=1,
+      name='stream_set', full_name='pblog.protocol.BucketInfo.stream_set', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -116,8 +116,8 @@ _BUCKETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=160,
-  serialized_end=238,
+  serialized_start=159,
+  serialized_end=236,
 )
 
 
@@ -129,7 +129,7 @@ _STOREINFO = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='buckets', full_name='pblog.protocol.StoreInfo.buckets', index=0,
+      name='bucket', full_name='pblog.protocol.StoreInfo.bucket', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -144,14 +144,14 @@ _STOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=240,
-  serialized_end=296,
+  serialized_start=238,
+  serialized_end=293,
 )
 
 
-_STREAMSETINFO.fields_by_name['streams'].message_type = _STREAMINFO
-_BUCKETINFO.fields_by_name['stream_sets'].message_type = _STREAMSETINFO
-_STOREINFO.fields_by_name['buckets'].message_type = _BUCKETINFO
+_STREAMSETINFO.fields_by_name['stream'].message_type = _STREAMINFO
+_BUCKETINFO.fields_by_name['stream_set'].message_type = _STREAMSETINFO
+_STOREINFO.fields_by_name['bucket'].message_type = _BUCKETINFO
 
 class StreamInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

@@ -51,7 +51,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto() {
       sizeof(StoreInfo));
   Stream_descriptor_ = file->message_type(1);
   static const int Stream_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, paths_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, path_),
   };
   Stream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -66,8 +66,8 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto() {
       sizeof(Stream));
   Get_descriptor_ = file->message_type(2);
   static const int Get_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, paths_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, stream_offsets_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, stream_offset_),
   };
   Get_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -119,9 +119,9 @@ void protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\034pblog/protocol/request.proto\022\026pblog.pr"
-    "otocol.request\"\013\n\tStoreInfo\"\027\n\006Stream\022\r\n"
-    "\005paths\030\001 \003(\t\",\n\003Get\022\r\n\005paths\030\001 \003(\t\022\026\n\016st"
-    "ream_offsets\030\002 \003(\004", 138);
+    "otocol.request\"\013\n\tStoreInfo\"\026\n\006Stream\022\014\n"
+    "\004path\030\001 \003(\t\"*\n\003Get\022\014\n\004path\030\001 \003(\t\022\025\n\rstre"
+    "am_offset\030\002 \003(\004", 135);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
@@ -299,7 +299,7 @@ void StoreInfo::Swap(StoreInfo* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int Stream::kPathsFieldNumber;
+const int Stream::kPathFieldNumber;
 #endif  // !_MSC_VER
 
 Stream::Stream()
@@ -351,7 +351,7 @@ Stream* Stream::New() const {
 }
 
 void Stream::Clear() {
-  paths_.Clear();
+  path_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -362,20 +362,20 @@ bool Stream::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated string paths = 1;
+      // repeated string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_paths:
+         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_paths()));
+                input, this->add_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->paths(0).data(), this->paths(0).length(),
+            this->path(0).data(), this->path(0).length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_paths;
+        if (input->ExpectTag(10)) goto parse_path;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -398,13 +398,13 @@ bool Stream::MergePartialFromCodedStream(
 
 void Stream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated string paths = 1;
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
   ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-    this->paths(i).data(), this->paths(i).length(),
+    this->path(i).data(), this->path(i).length(),
     ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->paths(i), output);
+      1, this->path(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -415,13 +415,13 @@ void Stream::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Stream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated string paths = 1;
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->paths(i).data(), this->paths(i).length(),
+      this->path(i).data(), this->path(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(1, this->paths(i), target);
+      WriteStringToArray(1, this->path(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -434,11 +434,11 @@ void Stream::SerializeWithCachedSizes(
 int Stream::ByteSize() const {
   int total_size = 0;
   
-  // repeated string paths = 1;
-  total_size += 1 * this->paths_size();
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  total_size += 1 * this->path_size();
+  for (int i = 0; i < this->path_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->paths(i));
+      this->path(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -466,7 +466,7 @@ void Stream::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Stream::MergeFrom(const Stream& from) {
   GOOGLE_CHECK_NE(&from, this);
-  paths_.MergeFrom(from.paths_);
+  path_.MergeFrom(from.path_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -489,7 +489,7 @@ bool Stream::IsInitialized() const {
 
 void Stream::Swap(Stream* other) {
   if (other != this) {
-    paths_.Swap(&other->paths_);
+    path_.Swap(&other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -508,8 +508,8 @@ void Stream::Swap(Stream* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int Get::kPathsFieldNumber;
-const int Get::kStreamOffsetsFieldNumber;
+const int Get::kPathFieldNumber;
+const int Get::kStreamOffsetFieldNumber;
 #endif  // !_MSC_VER
 
 Get::Get()
@@ -561,8 +561,8 @@ Get* Get::New() const {
 }
 
 void Get::Clear() {
-  paths_.Clear();
-  stream_offsets_.Clear();
+  path_.Clear();
+  stream_offset_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -573,42 +573,42 @@ bool Get::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated string paths = 1;
+      // repeated string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_paths:
+         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_paths()));
+                input, this->add_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->paths(0).data(), this->paths(0).length(),
+            this->path(0).data(), this->path(0).length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_paths;
-        if (input->ExpectTag(16)) goto parse_stream_offsets;
+        if (input->ExpectTag(10)) goto parse_path;
+        if (input->ExpectTag(16)) goto parse_stream_offset;
         break;
       }
       
-      // repeated uint64 stream_offsets = 2;
+      // repeated uint64 stream_offset = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stream_offsets:
+         parse_stream_offset:
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 1, 16, input, this->mutable_stream_offsets())));
+                 1, 16, input, this->mutable_stream_offset())));
         } else if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag)
                    == ::google::protobuf::internal::WireFormatLite::
                       WIRETYPE_LENGTH_DELIMITED) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitiveNoInline<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, this->mutable_stream_offsets())));
+                 input, this->mutable_stream_offset())));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_stream_offsets;
+        if (input->ExpectTag(16)) goto parse_stream_offset;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -631,19 +631,19 @@ bool Get::MergePartialFromCodedStream(
 
 void Get::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated string paths = 1;
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
   ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-    this->paths(i).data(), this->paths(i).length(),
+    this->path(i).data(), this->path(i).length(),
     ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->paths(i), output);
+      1, this->path(i), output);
   }
   
-  // repeated uint64 stream_offsets = 2;
-  for (int i = 0; i < this->stream_offsets_size(); i++) {
+  // repeated uint64 stream_offset = 2;
+  for (int i = 0; i < this->stream_offset_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(
-      2, this->stream_offsets(i), output);
+      2, this->stream_offset(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -654,19 +654,19 @@ void Get::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Get::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated string paths = 1;
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->paths(i).data(), this->paths(i).length(),
+      this->path(i).data(), this->path(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(1, this->paths(i), target);
+      WriteStringToArray(1, this->path(i), target);
   }
   
-  // repeated uint64 stream_offsets = 2;
-  for (int i = 0; i < this->stream_offsets_size(); i++) {
+  // repeated uint64 stream_offset = 2;
+  for (int i = 0; i < this->stream_offset_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteUInt64ToArray(2, this->stream_offsets(i), target);
+      WriteUInt64ToArray(2, this->stream_offset(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -679,21 +679,21 @@ void Get::SerializeWithCachedSizes(
 int Get::ByteSize() const {
   int total_size = 0;
   
-  // repeated string paths = 1;
-  total_size += 1 * this->paths_size();
-  for (int i = 0; i < this->paths_size(); i++) {
+  // repeated string path = 1;
+  total_size += 1 * this->path_size();
+  for (int i = 0; i < this->path_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->paths(i));
+      this->path(i));
   }
   
-  // repeated uint64 stream_offsets = 2;
+  // repeated uint64 stream_offset = 2;
   {
     int data_size = 0;
-    for (int i = 0; i < this->stream_offsets_size(); i++) {
+    for (int i = 0; i < this->stream_offset_size(); i++) {
       data_size += ::google::protobuf::internal::WireFormatLite::
-        UInt64Size(this->stream_offsets(i));
+        UInt64Size(this->stream_offset(i));
     }
-    total_size += 1 * this->stream_offsets_size() + data_size;
+    total_size += 1 * this->stream_offset_size() + data_size;
   }
   
   if (!unknown_fields().empty()) {
@@ -721,8 +721,8 @@ void Get::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Get::MergeFrom(const Get& from) {
   GOOGLE_CHECK_NE(&from, this);
-  paths_.MergeFrom(from.paths_);
-  stream_offsets_.MergeFrom(from.stream_offsets_);
+  path_.MergeFrom(from.path_);
+  stream_offset_.MergeFrom(from.stream_offset_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -745,8 +745,8 @@ bool Get::IsInitialized() const {
 
 void Get::Swap(Get* other) {
   if (other != this) {
-    paths_.Swap(&other->paths_);
-    stream_offsets_.Swap(&other->stream_offsets_);
+    path_.Swap(&other->path_);
+    stream_offset_.Swap(&other->stream_offset_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

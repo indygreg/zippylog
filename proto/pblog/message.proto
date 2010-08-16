@@ -10,26 +10,26 @@ package pblog.message;
 // messages, which are defined as extensions and are managed by pblog
 message Envelope {
     // list of protocol buffer serialized messages
-    repeated bytes messages = 1;
+    repeated bytes message = 1;
 
     // describe the embedded messages' types
     // if there are N messages, there will be N entries in message_types
     // message_namespaces is optional. if present, will have same number of
     // elements as messages
-    repeated uint32 message_namespaces = 2 [packed=true];
-    repeated uint32 message_types = 3 [packed=true];
+    repeated uint32 message_namespace = 2 [packed=true];
+    repeated uint32 message_type = 3 [packed=true];
 
     // time message was created, in microseconds since UNIX epoch
     optional uint64 create_time = 4;
 
     // list of values that are intended to correlate messages
     // the data encoded and order is defined however you want
-    repeated bytes tags = 5;
+    repeated bytes tag = 5;
 
     // metadata deposited by actors that touched this message
     // as actors touch the message, they may append to this list
     // not all actors may update this field
-    repeated ActorInfo actors = 6;
+    repeated ActorInfo actor = 6;
 
     // numeric value associated with message
     // there are a number of applications for this field:
