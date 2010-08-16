@@ -12,26 +12,34 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_SERVER_HPP_
-#define PBLOG_SERVER_HPP_
+#ifndef PBLOG_CLIENT_HPP_
+#define PBLOG_CLIENT_HPP_
 
 #include <pblog/pblog.h>
-#include <pblog/store.hpp>
+#include <pblog/protocol.pb.h>
 
-#include <apr_thread_proc.h>
 #include <zmq.hpp>
 
 namespace pblog {
-namespace server {
+namespace client {
 
-typedef struct worker_start_data {
-    ::zmq::context_t *ctx;
-    apr_pool_t *p;
-    long client_timeout;
-    pblog::Store *store;
-} worker_start_data;
+using protocol::StoreInfo;
+using ::std::string;
+using ::zmq::socket_t;
+using ::zmq::context_t;
 
-PBLOG_EXPORT void * __stdcall worker(apr_thread_t *thread, void *data);
+class PBLOG_EXPORT Client {
+    public:
+        /* establish a client client and bind to the location specified */
+        Client(context_t *ctx, string bind);
+
+        ~Client();
+
+        StoreInfo * store_info();
+
+    protected:
+        socket_t *_sock;
+};
 
 }} // namespaces
 

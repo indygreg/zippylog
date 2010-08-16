@@ -14,6 +14,7 @@
 
 #include <pblog/server.hpp>
 #include <pblog/message.pb.h>
+#include <pblog/protocol.pb.h>
 #include <pblog/protocol/response.pb.h>
 
 #include <string>
@@ -112,6 +113,50 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
                 }
 
                 printf("received pblog message!\n");
+
+                if (envelope.message_namespace_size() < 1 || envelope.message_type_size() < 1) {
+                    state = PARSE_REQUEST_ERROR;
+                    break;
+                }
+
+                /* must be in the pblog namespace */
+                if (envelope.message_namespace(0) != 1) {
+                    state = PARSE_REQUEST_ERROR;
+                    break;
+                }
+
+                uint32 request_type = envelope.message_type(0);
+                if (request_type == 8) {
+                    printf("processing store info request\n");
+
+                    protocol::StoreInfo info = d->store->store_info();
+
+                    Envelope e = Envelope();
+                    info.add_to_envelope(&e);
+                    message_t *msg = e.to_zmq_message();
+
+                    if (!socket->send(identities[0], ZMQ_SNDMORE)) {
+                        state = RESET_CONNECTION;
+                        break;
+                    }
+
+                    if (!socket->send(identities[1], ZMQ_SNDMORE)) {
+                        state = RESET_CONNECTION;
+                        break;
+                    }
+
+                    if (!socket->send(*msg, 0)) {
+                        state = RESET_CONNECTION;
+                        break;
+                    }
+
+                    state = WAITING;
+                    break;
+                }
+                else {
+                    state = PARSE_REQUEST_ERROR;
+                    break;
+                }
 
                 break;
             }

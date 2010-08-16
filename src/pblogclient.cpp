@@ -12,27 +12,27 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_SERVER_HPP_
-#define PBLOG_SERVER_HPP_
+#pragma once
 
-#include <pblog/pblog.h>
-#include <pblog/store.hpp>
+#include <pblog/client.hpp>
 
-#include <apr_thread_proc.h>
+#include <google/protobuf/text_format.h>
+#include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <zmq.hpp>
 
-namespace pblog {
-namespace server {
+using namespace pblog;
+using ::zmq::context_t;
 
-typedef struct worker_start_data {
-    ::zmq::context_t *ctx;
-    apr_pool_t *p;
-    long client_timeout;
-    pblog::Store *store;
-} worker_start_data;
+int main(int argc, const char * const argv[])
+{
+    context_t zctx(1);
+    client::Client c(&zctx, "tcp://localhost:52483");
 
-PBLOG_EXPORT void * __stdcall worker(apr_thread_t *thread, void *data);
+    protocol::StoreInfo *info = c.store_info();
 
-}} // namespaces
+    ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
+    ::google::protobuf::io::FileOutputStream os(1, -1);
+    printer.Print(*info, &os);
 
-#endif
+    return 0;
+}

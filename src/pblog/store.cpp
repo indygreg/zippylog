@@ -143,6 +143,39 @@ string Store::path_to_filesystem_path(const char *path)
     return s;
 }
 
+protocol::StoreInfo Store::store_info()
+{
+    protocol::StoreInfo info = protocol::StoreInfo();
+
+    vector<string> * buckets = this->buckets();
+
+    for (size_t i = 0; i < buckets->size(); i++) {
+        protocol::BucketInfo *bucket = info.add_bucket();
+        bucket->set_path(buckets->at(i));
+
+        vector<string> * sets = this->stream_sets_in_bucket(buckets->at(i).c_str());
+        for (size_t j = 0; j < sets->size(); j++) {
+            protocol::StreamSetInfo *ss = bucket->add_stream_set();
+            ss->set_path(sets->at(j));
+
+            vector<string> *streams = this->streams_in_stream_set(buckets->at(i).c_str(), sets->at(j).c_str());
+            for (size_t k = 0; k < streams->size(); k++) {
+                protocol::StreamInfo *stream = ss->add_stream();
+                stream->set_path(streams->at(k));
+            }
+
+            delete streams;
+
+        }
+
+        delete sets;
+    }
+
+    delete buckets;
+
+    return info;
+}
+
 vector<string> * Store::directories_in_directory(const char *dir)
 {
     apr_status_t st;

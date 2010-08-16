@@ -16,6 +16,7 @@
 
 #include <pblog/pblog.h>
 #include <pblog/server.hpp>
+#include <pblog/store.hpp>
 
 #include <io.h>
 #include <stdio.h>
@@ -33,13 +34,6 @@ using namespace ::pblog;
 using namespace ::pblog::server;
 
 #define MEMORY_ERROR "out of memory" APR_EOL_STR
-
-#define WORKER_ENDING 0
-#define WORKER_WAITING 1
-#define WORKER_RESET_CONNECTION 2
-#define WORKER_CREATE_SOCKET 3
-#define WORKER_PROCESS_REQUEST 4
-#define WORKER_PARSE_REQUEST_ERROR 5
 
 void _exit()
 {
@@ -117,6 +111,8 @@ int main(int argc, const char * const argv[])
     }
     apr_pool_destroy(p_opts);
 
+    Store store = Store(store_path, p);
+
     /* this socket code is almost as easy as a scripting language! */
     zmq::context_t zctx(1);
     zmq::socket_t zworkers(zctx, ZMQ_XREQ);
@@ -133,6 +129,7 @@ int main(int argc, const char * const argv[])
     data.ctx = &zctx;
     data.p = p;
     data.client_timeout = 5000000; /* 5 seconds */
+    data.store = &store;
 
     /* set up our request handling threads */
     /* TODO make into thread pool */

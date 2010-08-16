@@ -15,7 +15,9 @@
 #ifndef PBLOG_STORE_HPP_
 #define PBLOG_STORE_HPP_
 
-#include "pblog/pblog.h"
+#include <pblog/pblog.h>
+
+#include <pblog/protocol.pb.h>
 
 #include <cstddef>
 #include <vector>
@@ -53,6 +55,8 @@ class PBLOG_EXPORT Store {
         string stream_set_directory(const char *bucket, const char *stream_set);
         string stream_path(const char *bucket, const char *stream_set, const char *stream);
         string path_to_filesystem_path(const char *path);
+
+        protocol::StoreInfo store_info();
 
     protected:
         vector<string> * directories_in_directory(const char *dir);
