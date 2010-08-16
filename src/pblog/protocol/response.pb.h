@@ -42,11 +42,12 @@ enum ErrorCode {
   INVALID_MESSAGE_NAMESPACE = 2,
   UNKNOWN_REQUEST_TYPE = 3,
   EMPTY_ENVELOPE = 4,
-  MISSING_ENUMERATIONS = 5
+  MISSING_ENUMERATIONS = 5,
+  REQUEST_NOT_IMPLEMENTED = 6
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = MISSING_ENUMERATIONS;
+const ErrorCode ErrorCode_MAX = REQUEST_NOT_IMPLEMENTED;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();

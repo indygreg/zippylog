@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/response.proto',
   package='pblog.protocol.response',
-  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\x8e\x01\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05')
+  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xab\x01\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -39,11 +39,15 @@ _ERRORCODE = descriptor.EnumDescriptor(
       name='MISSING_ENUMERATIONS', index=4, number=5,
       options=None,
       type=None),
+    descriptor.EnumValueDescriptor(
+      name='REQUEST_NOT_IMPLEMENTED', index=5, number=6,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=131,
-  serialized_end=273,
+  serialized_end=302,
 )
 
 
@@ -52,6 +56,7 @@ INVALID_MESSAGE_NAMESPACE = 2
 UNKNOWN_REQUEST_TYPE = 3
 EMPTY_ENVELOPE = 4
 MISSING_ENUMERATIONS = 5
+REQUEST_NOT_IMPLEMENTED = 6
 
 
 

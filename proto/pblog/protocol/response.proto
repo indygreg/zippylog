@@ -23,4 +23,7 @@ enum ErrorCode {
     // server received a message but its enumerations were not defined, so it
     // does not know how to handle it
     MISSING_ENUMERATIONS = 5;
+
+    // server understood the request type, but does not know how to fulfill it
+    REQUEST_NOT_IMPLEMENTED = 6;
 }
