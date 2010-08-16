@@ -208,17 +208,17 @@ class StreamSetInfo : public ::google::protobuf::Message {
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // repeated .pblog.protocol.StreamInfo streams = 2;
-  inline int streams_size() const;
-  inline void clear_streams();
-  static const int kStreamsFieldNumber = 2;
-  inline const ::pblog::protocol::StreamInfo& streams(int index) const;
-  inline ::pblog::protocol::StreamInfo* mutable_streams(int index);
-  inline ::pblog::protocol::StreamInfo* add_streams();
+  // repeated .pblog.protocol.StreamInfo stream = 2;
+  inline int stream_size() const;
+  inline void clear_stream();
+  static const int kStreamFieldNumber = 2;
+  inline const ::pblog::protocol::StreamInfo& stream(int index) const;
+  inline ::pblog::protocol::StreamInfo* mutable_stream(int index);
+  inline ::pblog::protocol::StreamInfo* add_stream();
   inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo >&
-      streams() const;
+      stream() const;
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo >*
-      mutable_streams();
+      mutable_stream();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 5;
@@ -229,7 +229,7 @@ class StreamSetInfo : public ::google::protobuf::Message {
   
   ::std::string* path_;
   static const ::std::string _default_path_;
-  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo > streams_;
+  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo > stream_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2eproto();
@@ -316,17 +316,17 @@ class BucketInfo : public ::google::protobuf::Message {
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
-  inline int stream_sets_size() const;
-  inline void clear_stream_sets();
-  static const int kStreamSetsFieldNumber = 2;
-  inline const ::pblog::protocol::StreamSetInfo& stream_sets(int index) const;
-  inline ::pblog::protocol::StreamSetInfo* mutable_stream_sets(int index);
-  inline ::pblog::protocol::StreamSetInfo* add_stream_sets();
+  // repeated .pblog.protocol.StreamSetInfo stream_set = 2;
+  inline int stream_set_size() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::pblog::protocol::StreamSetInfo& stream_set(int index) const;
+  inline ::pblog::protocol::StreamSetInfo* mutable_stream_set(int index);
+  inline ::pblog::protocol::StreamSetInfo* add_stream_set();
   inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo >&
-      stream_sets() const;
+      stream_set() const;
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo >*
-      mutable_stream_sets();
+      mutable_stream_set();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 3;
@@ -337,7 +337,7 @@ class BucketInfo : public ::google::protobuf::Message {
   
   ::std::string* path_;
   static const ::std::string _default_path_;
-  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo > stream_sets_;
+  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo > stream_set_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2eproto();
@@ -414,17 +414,17 @@ class StoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated .pblog.protocol.BucketInfo buckets = 1;
-  inline int buckets_size() const;
-  inline void clear_buckets();
-  static const int kBucketsFieldNumber = 1;
-  inline const ::pblog::protocol::BucketInfo& buckets(int index) const;
-  inline ::pblog::protocol::BucketInfo* mutable_buckets(int index);
-  inline ::pblog::protocol::BucketInfo* add_buckets();
+  // repeated .pblog.protocol.BucketInfo bucket = 1;
+  inline int bucket_size() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::pblog::protocol::BucketInfo& bucket(int index) const;
+  inline ::pblog::protocol::BucketInfo* mutable_bucket(int index);
+  inline ::pblog::protocol::BucketInfo* add_bucket();
   inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo >&
-      buckets() const;
+      bucket() const;
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo >*
-      mutable_buckets();
+      mutable_bucket();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 4;
@@ -433,7 +433,7 @@ class StoreInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo > buckets_;
+  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo > bucket_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2eproto();
@@ -565,29 +565,29 @@ inline ::std::string* StreamSetInfo::mutable_path() {
   return path_;
 }
 
-// repeated .pblog.protocol.StreamInfo streams = 2;
-inline int StreamSetInfo::streams_size() const {
-  return streams_.size();
+// repeated .pblog.protocol.StreamInfo stream = 2;
+inline int StreamSetInfo::stream_size() const {
+  return stream_.size();
 }
-inline void StreamSetInfo::clear_streams() {
-  streams_.Clear();
+inline void StreamSetInfo::clear_stream() {
+  stream_.Clear();
 }
-inline const ::pblog::protocol::StreamInfo& StreamSetInfo::streams(int index) const {
-  return streams_.Get(index);
+inline const ::pblog::protocol::StreamInfo& StreamSetInfo::stream(int index) const {
+  return stream_.Get(index);
 }
-inline ::pblog::protocol::StreamInfo* StreamSetInfo::mutable_streams(int index) {
-  return streams_.Mutable(index);
+inline ::pblog::protocol::StreamInfo* StreamSetInfo::mutable_stream(int index) {
+  return stream_.Mutable(index);
 }
-inline ::pblog::protocol::StreamInfo* StreamSetInfo::add_streams() {
-  return streams_.Add();
+inline ::pblog::protocol::StreamInfo* StreamSetInfo::add_stream() {
+  return stream_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo >&
-StreamSetInfo::streams() const {
-  return streams_;
+StreamSetInfo::stream() const {
+  return stream_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamInfo >*
-StreamSetInfo::mutable_streams() {
-  return &streams_;
+StreamSetInfo::mutable_stream() {
+  return &stream_;
 }
 
 // -------------------------------------------------------------------
@@ -636,58 +636,58 @@ inline ::std::string* BucketInfo::mutable_path() {
   return path_;
 }
 
-// repeated .pblog.protocol.StreamSetInfo stream_sets = 2;
-inline int BucketInfo::stream_sets_size() const {
-  return stream_sets_.size();
+// repeated .pblog.protocol.StreamSetInfo stream_set = 2;
+inline int BucketInfo::stream_set_size() const {
+  return stream_set_.size();
 }
-inline void BucketInfo::clear_stream_sets() {
-  stream_sets_.Clear();
+inline void BucketInfo::clear_stream_set() {
+  stream_set_.Clear();
 }
-inline const ::pblog::protocol::StreamSetInfo& BucketInfo::stream_sets(int index) const {
-  return stream_sets_.Get(index);
+inline const ::pblog::protocol::StreamSetInfo& BucketInfo::stream_set(int index) const {
+  return stream_set_.Get(index);
 }
-inline ::pblog::protocol::StreamSetInfo* BucketInfo::mutable_stream_sets(int index) {
-  return stream_sets_.Mutable(index);
+inline ::pblog::protocol::StreamSetInfo* BucketInfo::mutable_stream_set(int index) {
+  return stream_set_.Mutable(index);
 }
-inline ::pblog::protocol::StreamSetInfo* BucketInfo::add_stream_sets() {
-  return stream_sets_.Add();
+inline ::pblog::protocol::StreamSetInfo* BucketInfo::add_stream_set() {
+  return stream_set_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo >&
-BucketInfo::stream_sets() const {
-  return stream_sets_;
+BucketInfo::stream_set() const {
+  return stream_set_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::StreamSetInfo >*
-BucketInfo::mutable_stream_sets() {
-  return &stream_sets_;
+BucketInfo::mutable_stream_set() {
+  return &stream_set_;
 }
 
 // -------------------------------------------------------------------
 
 // StoreInfo
 
-// repeated .pblog.protocol.BucketInfo buckets = 1;
-inline int StoreInfo::buckets_size() const {
-  return buckets_.size();
+// repeated .pblog.protocol.BucketInfo bucket = 1;
+inline int StoreInfo::bucket_size() const {
+  return bucket_.size();
 }
-inline void StoreInfo::clear_buckets() {
-  buckets_.Clear();
+inline void StoreInfo::clear_bucket() {
+  bucket_.Clear();
 }
-inline const ::pblog::protocol::BucketInfo& StoreInfo::buckets(int index) const {
-  return buckets_.Get(index);
+inline const ::pblog::protocol::BucketInfo& StoreInfo::bucket(int index) const {
+  return bucket_.Get(index);
 }
-inline ::pblog::protocol::BucketInfo* StoreInfo::mutable_buckets(int index) {
-  return buckets_.Mutable(index);
+inline ::pblog::protocol::BucketInfo* StoreInfo::mutable_bucket(int index) {
+  return bucket_.Mutable(index);
 }
-inline ::pblog::protocol::BucketInfo* StoreInfo::add_buckets() {
-  return buckets_.Add();
+inline ::pblog::protocol::BucketInfo* StoreInfo::add_bucket() {
+  return bucket_.Add();
 }
 inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo >&
-StoreInfo::buckets() const {
-  return buckets_;
+StoreInfo::bucket() const {
+  return bucket_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::BucketInfo >*
-StoreInfo::mutable_buckets() {
-  return &buckets_;
+StoreInfo::mutable_bucket() {
+  return &bucket_;
 }
 
 

@@ -14,7 +14,7 @@ message StreamSetInfo {
     optional string path = 1;
     
     // describes streams within this set
-    repeated StreamInfo streams = 2;
+    repeated StreamInfo stream = 2;
 }
 
 // describes an individual bucket
@@ -23,11 +23,11 @@ message BucketInfo {
     optional string path = 1;
     
     // describes stream sets within this bucket
-    repeated StreamSetInfo stream_sets = 2;
+    repeated StreamSetInfo stream_set = 2;
 }
 
 // describes a stream store
 message StoreInfo {
     // describes buckets within the store
-    repeated BucketInfo buckets = 1;
+    repeated BucketInfo bucket = 1;
 }

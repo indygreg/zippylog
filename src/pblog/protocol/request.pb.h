@@ -178,21 +178,21 @@ class Stream : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated string paths = 1;
-  inline int paths_size() const;
-  inline void clear_paths();
-  static const int kPathsFieldNumber = 1;
-  inline const ::std::string& paths(int index) const;
-  inline ::std::string* mutable_paths(int index);
-  inline void set_paths(int index, const ::std::string& value);
-  inline void set_paths(int index, const char* value);
-  inline void set_paths(int index, const char* value, size_t size);
-  inline ::std::string* add_paths();
-  inline void add_paths(const ::std::string& value);
-  inline void add_paths(const char* value);
-  inline void add_paths(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
+  // repeated string path = 1;
+  inline int path_size() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path(int index) const;
+  inline ::std::string* mutable_path(int index);
+  inline void set_path(int index, const ::std::string& value);
+  inline void set_path(int index, const char* value);
+  inline void set_path(int index, const char* value, size_t size);
+  inline ::std::string* add_path();
+  inline void add_path(const ::std::string& value);
+  inline void add_path(const char* value);
+  inline void add_path(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 9;
@@ -201,7 +201,7 @@ class Stream : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::std::string> paths_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> path_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
@@ -278,33 +278,33 @@ class Get : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated string paths = 1;
-  inline int paths_size() const;
-  inline void clear_paths();
-  static const int kPathsFieldNumber = 1;
-  inline const ::std::string& paths(int index) const;
-  inline ::std::string* mutable_paths(int index);
-  inline void set_paths(int index, const ::std::string& value);
-  inline void set_paths(int index, const char* value);
-  inline void set_paths(int index, const char* value, size_t size);
-  inline ::std::string* add_paths();
-  inline void add_paths(const ::std::string& value);
-  inline void add_paths(const char* value);
-  inline void add_paths(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& paths() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_paths();
+  // repeated string path = 1;
+  inline int path_size() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path(int index) const;
+  inline ::std::string* mutable_path(int index);
+  inline void set_path(int index, const ::std::string& value);
+  inline void set_path(int index, const char* value);
+  inline void set_path(int index, const char* value, size_t size);
+  inline ::std::string* add_path();
+  inline void add_path(const ::std::string& value);
+  inline void add_path(const char* value);
+  inline void add_path(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
-  // repeated uint64 stream_offsets = 2;
-  inline int stream_offsets_size() const;
-  inline void clear_stream_offsets();
-  static const int kStreamOffsetsFieldNumber = 2;
-  inline ::google::protobuf::uint64 stream_offsets(int index) const;
-  inline void set_stream_offsets(int index, ::google::protobuf::uint64 value);
-  inline void add_stream_offsets(::google::protobuf::uint64 value);
+  // repeated uint64 stream_offset = 2;
+  inline int stream_offset_size() const;
+  inline void clear_stream_offset();
+  static const int kStreamOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 stream_offset(int index) const;
+  inline void set_stream_offset(int index, ::google::protobuf::uint64 value);
+  inline void add_stream_offset(::google::protobuf::uint64 value);
   inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-      stream_offsets() const;
+      stream_offset() const;
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-      mutable_stream_offsets();
+      mutable_stream_offset();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 10;
@@ -313,8 +313,8 @@ class Get : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::std::string> paths_;
-  ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > stream_offsets_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> path_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint64 > stream_offset_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
@@ -346,121 +346,121 @@ class Get : public ::google::protobuf::Message {
 
 // Stream
 
-// repeated string paths = 1;
-inline int Stream::paths_size() const {
-  return paths_.size();
+// repeated string path = 1;
+inline int Stream::path_size() const {
+  return path_.size();
 }
-inline void Stream::clear_paths() {
-  paths_.Clear();
+inline void Stream::clear_path() {
+  path_.Clear();
 }
-inline const ::std::string& Stream::paths(int index) const {
-  return paths_.Get(index);
+inline const ::std::string& Stream::path(int index) const {
+  return path_.Get(index);
 }
-inline ::std::string* Stream::mutable_paths(int index) {
-  return paths_.Mutable(index);
+inline ::std::string* Stream::mutable_path(int index) {
+  return path_.Mutable(index);
 }
-inline void Stream::set_paths(int index, const ::std::string& value) {
-  paths_.Mutable(index)->assign(value);
+inline void Stream::set_path(int index, const ::std::string& value) {
+  path_.Mutable(index)->assign(value);
 }
-inline void Stream::set_paths(int index, const char* value) {
-  paths_.Mutable(index)->assign(value);
+inline void Stream::set_path(int index, const char* value) {
+  path_.Mutable(index)->assign(value);
 }
-inline void Stream::set_paths(int index, const char* value, size_t size) {
-  paths_.Mutable(index)->assign(
+inline void Stream::set_path(int index, const char* value, size_t size) {
+  path_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Stream::add_paths() {
-  return paths_.Add();
+inline ::std::string* Stream::add_path() {
+  return path_.Add();
 }
-inline void Stream::add_paths(const ::std::string& value) {
-  paths_.Add()->assign(value);
+inline void Stream::add_path(const ::std::string& value) {
+  path_.Add()->assign(value);
 }
-inline void Stream::add_paths(const char* value) {
-  paths_.Add()->assign(value);
+inline void Stream::add_path(const char* value) {
+  path_.Add()->assign(value);
 }
-inline void Stream::add_paths(const char* value, size_t size) {
-  paths_.Add()->assign(reinterpret_cast<const char*>(value), size);
+inline void Stream::add_path(const char* value, size_t size) {
+  path_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Stream::paths() const {
-  return paths_;
+Stream::path() const {
+  return path_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Stream::mutable_paths() {
-  return &paths_;
+Stream::mutable_path() {
+  return &path_;
 }
 
 // -------------------------------------------------------------------
 
 // Get
 
-// repeated string paths = 1;
-inline int Get::paths_size() const {
-  return paths_.size();
+// repeated string path = 1;
+inline int Get::path_size() const {
+  return path_.size();
 }
-inline void Get::clear_paths() {
-  paths_.Clear();
+inline void Get::clear_path() {
+  path_.Clear();
 }
-inline const ::std::string& Get::paths(int index) const {
-  return paths_.Get(index);
+inline const ::std::string& Get::path(int index) const {
+  return path_.Get(index);
 }
-inline ::std::string* Get::mutable_paths(int index) {
-  return paths_.Mutable(index);
+inline ::std::string* Get::mutable_path(int index) {
+  return path_.Mutable(index);
 }
-inline void Get::set_paths(int index, const ::std::string& value) {
-  paths_.Mutable(index)->assign(value);
+inline void Get::set_path(int index, const ::std::string& value) {
+  path_.Mutable(index)->assign(value);
 }
-inline void Get::set_paths(int index, const char* value) {
-  paths_.Mutable(index)->assign(value);
+inline void Get::set_path(int index, const char* value) {
+  path_.Mutable(index)->assign(value);
 }
-inline void Get::set_paths(int index, const char* value, size_t size) {
-  paths_.Mutable(index)->assign(
+inline void Get::set_path(int index, const char* value, size_t size) {
+  path_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Get::add_paths() {
-  return paths_.Add();
+inline ::std::string* Get::add_path() {
+  return path_.Add();
 }
-inline void Get::add_paths(const ::std::string& value) {
-  paths_.Add()->assign(value);
+inline void Get::add_path(const ::std::string& value) {
+  path_.Add()->assign(value);
 }
-inline void Get::add_paths(const char* value) {
-  paths_.Add()->assign(value);
+inline void Get::add_path(const char* value) {
+  path_.Add()->assign(value);
 }
-inline void Get::add_paths(const char* value, size_t size) {
-  paths_.Add()->assign(reinterpret_cast<const char*>(value), size);
+inline void Get::add_path(const char* value, size_t size) {
+  path_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Get::paths() const {
-  return paths_;
+Get::path() const {
+  return path_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Get::mutable_paths() {
-  return &paths_;
+Get::mutable_path() {
+  return &path_;
 }
 
-// repeated uint64 stream_offsets = 2;
-inline int Get::stream_offsets_size() const {
-  return stream_offsets_.size();
+// repeated uint64 stream_offset = 2;
+inline int Get::stream_offset_size() const {
+  return stream_offset_.size();
 }
-inline void Get::clear_stream_offsets() {
-  stream_offsets_.Clear();
+inline void Get::clear_stream_offset() {
+  stream_offset_.Clear();
 }
-inline ::google::protobuf::uint64 Get::stream_offsets(int index) const {
-  return stream_offsets_.Get(index);
+inline ::google::protobuf::uint64 Get::stream_offset(int index) const {
+  return stream_offset_.Get(index);
 }
-inline void Get::set_stream_offsets(int index, ::google::protobuf::uint64 value) {
-  stream_offsets_.Set(index, value);
+inline void Get::set_stream_offset(int index, ::google::protobuf::uint64 value) {
+  stream_offset_.Set(index, value);
 }
-inline void Get::add_stream_offsets(::google::protobuf::uint64 value) {
-  stream_offsets_.Add(value);
+inline void Get::add_stream_offset(::google::protobuf::uint64 value) {
+  stream_offset_.Add(value);
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >&
-Get::stream_offsets() const {
-  return stream_offsets_;
+Get::stream_offset() const {
+  return stream_offset_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint64 >*
-Get::mutable_stream_offsets() {
-  return &stream_offsets_;
+Get::mutable_stream_offset() {
+  return &stream_offset_;
 }
 
 
