@@ -80,13 +80,13 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
     "rotocol.response\"F\n\005Error\0220\n\004code\030\001 \001(\0162"
     "\".pblog.protocol.response.ErrorCode\022\013\n\003m"
-    "sg\030\002 \001(\t*\364\001\n\tErrorCode\022\032\n\026ENVELOPE_PARSE"
+    "sg\030\002 \001(\t*\210\002\n\tErrorCode\022\032\n\026ENVELOPE_PARSE"
     "_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020"
     "\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENV"
     "ELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQ"
     "UEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022"
     "\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID_"
-    "STREAM_OFFSET\020\t", 375);
+    "STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n", 395);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
   Error::default_instance_ = new Error();
@@ -116,6 +116,7 @@ bool ErrorCode_IsValid(int value) {
     case 7:
     case 8:
     case 9:
+    case 10:
       return true;
     default:
       return false;

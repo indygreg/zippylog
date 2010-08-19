@@ -36,4 +36,7 @@ enum ErrorCode {
 
     // a specified stream offset is not valid
     INVALID_STREAM_OFFSET = 9;
+    
+    // offset is invalid
+    INVALID_OFFSET = 10;
 }
