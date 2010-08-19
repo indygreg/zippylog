@@ -61,7 +61,8 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
     socket_t *socket = NULL;
 
     /* variables used across states */
-    Envelope response_envelope;
+    pblog::Envelope request_envelope;
+    pblog::Envelope response_envelope;
     protocol::response::ErrorCode error_code;
     string error_message;
     message_t identities[2];
@@ -125,24 +126,24 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
             {
                 /* we've already verified message is available, so we grab it */
                 message_t msg;
-                ::pblog::message::Envelope envelope = ::pblog::message::Envelope();
 
                 socket->recv(&msg, 0);
-                if (!envelope.ParseFromArray(msg.data(), msg.size())) {
-                    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
-                    error_message = "could not parse received envelope";
-                    state = SEND_ERROR_RESPONSE;
-                    break;
-                }
+                request_envelope = ::pblog::Envelope(&msg);
+                //{
+                //    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
+                //    error_message = "could not parse received envelope";
+                //    state = SEND_ERROR_RESPONSE;
+                //    break;
+                //}
 
-                if (envelope.message_size() < 1) {
+                if (request_envelope.envelope.message_size() < 1) {
                     error_code = protocol::response::EMPTY_ENVELOPE;
                     error_message = "envelope contains no messages";
                     state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
-                if (envelope.message_namespace_size() < 1 || envelope.message_type_size() < 1) {
+                if (request_envelope.envelope.message_namespace_size() < 1 || request_envelope.envelope.message_type_size() < 1) {
                     error_code = protocol::response::MISSING_ENUMERATIONS;
                     error_message = "message received without namespace or type enumerations";
                     state = SEND_ERROR_RESPONSE;
@@ -150,14 +151,14 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
                 }
 
                 /* must be in the pblog namespace */
-                if (envelope.message_namespace(0) != 1) {
+                if (request_envelope.envelope.message_namespace(0) != 1) {
                     error_code = protocol::response::INVALID_MESSAGE_NAMESPACE;
                     error_message = "message namespace is not pblog's";
                     state = SEND_ERROR_RESPONSE;
                     break;
                 }
 
-                uint32 request_type = envelope.message_type(0);
+                uint32 request_type = request_envelope.envelope.message_type(0);
                 if (request_type == protocol::request::StoreInfo::pblog_enumeration) {
                     state = PROCESS_STOREINFO;
                     break;
@@ -185,7 +186,7 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
                 protocol::StoreInfo info = protocol::StoreInfo();
                 d->store->store_info(info);
 
-                response_envelope = Envelope();
+                response_envelope = pblog::Envelope();
                 info.add_to_envelope(&response_envelope);
                 state = SEND_ENVELOPE_AND_DONE;
                 break;
@@ -198,17 +199,51 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
                 break;
 
             case PROCESS_GET:
+            {
+                Message *msg = request_envelope.get_message(0);
+                if (!msg) {
+                    error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
+                    error_message = "error parsing get message... weird";
+                    state = SEND_ERROR_RESPONSE;
+                    break;
+                }
+                protocol::request::Get *get = (protocol::request::Get *)msg;
+
+                if (get->path_size() < 1) {
+                    error_code = protocol::response::EMPTY_FIELD;
+                    error_message = "path repeated field is empty";
+                    state = SEND_ERROR_RESPONSE;
+                    delete get;
+                    break;
+                }
+
+                if (get->stream_offset_size() < 1) {
+                    error_code = protocol::response::EMPTY_FIELD;
+                    error_message = "stream_offset repeated field is empty";
+                    state = SEND_ERROR_RESPONSE;
+                    delete get;
+                    break;
+                }
+
+                if (get->path_size() != get->stream_offset_size()) {
+                    error_code = protocol::response::FIELD_LENGTHS_DIFFERENT;
+                    error_message = "path and stream_offset fields don't have same number of elements";
+                    state = SEND_ERROR_RESPONSE;
+                    delete get;
+                    break;
+                }
                 error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
                 error_message = "stream download is not yet implemented";
                 state = SEND_ERROR_RESPONSE;
                 break;
+            }
 
             case SEND_ERROR_RESPONSE:
             {
                 protocol::response::Error error = protocol::response::Error();
                 error.set_code(error_code);
                 error.set_msg(error_message);
-                response_envelope = Envelope();
+                response_envelope = pblog::Envelope();
                 error.add_to_envelope(&response_envelope);
                 state = SEND_ENVELOPE_AND_DONE;
                 break;
