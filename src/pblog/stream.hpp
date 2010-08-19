@@ -33,7 +33,7 @@ class PBLOG_EXPORT InputStream {
         InputStream(const char *file, int64 seek_bytes=0);
         ~InputStream();
 
-        bool ReadEnvelope(Envelope *);
+        bool ReadEnvelope(::pblog::Envelope *);
 
     private:
         int _fd;
