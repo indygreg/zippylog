@@ -46,11 +46,12 @@ enum ErrorCode {
   REQUEST_NOT_IMPLEMENTED = 6,
   EMPTY_FIELD = 7,
   FIELD_LENGTHS_DIFFERENT = 8,
-  INVALID_STREAM_OFFSET = 9
+  INVALID_STREAM_OFFSET = 9,
+  INVALID_OFFSET = 10
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = INVALID_STREAM_OFFSET;
+const ErrorCode ErrorCode_MAX = INVALID_OFFSET;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
