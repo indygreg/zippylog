@@ -51,12 +51,12 @@ enum worker_state {
     PROCESS_STREAM = 9,
 };
 
-void * __stdcall worker(apr_thread_t *thread, void *data)
+void * __stdcall request_processor(apr_thread_t *thread, void *data)
 {
     apr_pool_t *p;
     int loop = 1;
     int state = CREATE_SOCKET;
-    worker_start_data *d = (worker_start_data *)data;
+    request_processor_start_data *d = (request_processor_start_data *)data;
 
     socket_t *socket = NULL;
 
@@ -182,7 +182,8 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
 
             case PROCESS_STOREINFO:
             {
-                protocol::StoreInfo info = d->store->store_info();
+                protocol::StoreInfo info = protocol::StoreInfo();
+                d->store->store_info(info);
 
                 response_envelope = Envelope();
                 info.add_to_envelope(&response_envelope);
@@ -242,6 +243,27 @@ void * __stdcall worker(apr_thread_t *thread, void *data)
 
     return NULL;
 
+}
+
+/*
+
+The stream processor handles streaming of events to all interested clients
+
+*/
+void * __stdcall stream_processor(apr_thread_t *thread, void *start_data)
+{
+    stream_processor_start_data *start = (stream_processor_start_data *)start_data;
+
+    // first, bind to client queue so we can send messages
+    socket_t *sock = new socket_t(*start->ctx, ZMQ_XREP);
+    sock->connect(start->socket_endpoint);
+
+    bool loop = true;
+    while (loop) {
+
+    }
+
+    return NULL;
 }
 
 }} // namespaces

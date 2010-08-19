@@ -24,20 +24,34 @@
 namespace pblog {
 namespace server {
 
+using ::zmq::context_t;
+
 // this is sent to new workers as they are started. it gives them all the
 // info they need to start servicing requests
-typedef struct worker_start_data {
+typedef struct request_processor_start_data {
     // for ZMQ initialization on new threads
-    ::zmq::context_t *ctx;
+    context_t *ctx;
 
     // store worker operates on
     pblog::Store *store;
 
     // where to connect to receive requests
     const char *socket_endpoint;
-} worker_start_data;
+} request_processor_start_data;
 
-PBLOG_EXPORT void * __stdcall worker(apr_thread_t *thread, void *data);
+typedef struct stream_processor_start_data {
+    context_t *ctx;
+    pblog::Store *store;
+    const char *socket_endpoint;
+} stream_processor_start_data;
+
+// function that waits and processes client requests as they arrive
+// suitable to be called upon thread initialization
+PBLOG_EXPORT void * __stdcall request_processor(apr_thread_t *thread, void *data);
+
+// the stream processor handles streaming to all clients that have requested it
+// it frees the request processors to do more important things
+PBLOG_EXPORT void * __stdcall stream_processor(apr_thread_t *thread, void *data);
 
 }} // namespaces
 

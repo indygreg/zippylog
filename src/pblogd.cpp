@@ -127,7 +127,7 @@ int main(int argc, const char * const argv[])
 
     threads = apr_array_make(p, (int)max_threads, sizeof(apr_thread_t *));
 
-    worker_start_data data;
+    request_processor_start_data data;
 
     data.ctx = &zctx;
     data.store = &store;
@@ -138,10 +138,19 @@ int main(int argc, const char * const argv[])
     for ( ; max_threads; --max_threads) {
         thread = APR_ARRAY_PUSH(threads, apr_thread_t *);
         st = apr_threadattr_create(&threadattr, p);
-        st = apr_thread_create(&thread, threadattr, ::pblog::server::worker, &data, p);
+        st = apr_thread_create(&thread, threadattr, ::pblog::server::request_processor, &data, p);
     }
 
-    /* this blocks forever */
+    /* create thread to handle streaming */
+    stream_processor_start_data stream_data;
+    stream_data.ctx = &zctx;
+    stream_data.store = &store;
+    stream_data.socket_endpoint = WORKER_ENDPOINT;
+    apr_threadattr_create(&threadattr, p);
+    apr_thread_t *stream_thread = NULL;
+    //apr_thread_create(&stream_thread, threadattr, ::pblog::server::stream_processor, &stream_data, p);
+
+    /* this blocks forever, if successful */
     st = zmq_device(ZMQ_QUEUE, zsock, zworkers);
     if (st) {
         printf("unable to create ZMQ queue device\n");
