@@ -45,14 +45,14 @@ vector<string> * Store::buckets()
     return this->directories_in_directory(this->_path);
 }
 
-vector<string> * Store::stream_sets_in_bucket(const char *bucket)
+vector<string> * Store::stream_sets_in_bucket(const string bucket)
 {
-    return this->directories_in_directory(this->bucket_directory(bucket).c_str());
+    return this->directories_in_directory(this->bucket_directory(bucket));
 }
 
-vector<string> * Store::streams_in_stream_set(const char *bucket, const char *stream_set)
+vector<string> * Store::streams_in_stream_set(const string bucket, const string stream_set)
 {
-    vector<string> *files = this->files_in_directory(this->stream_set_directory(bucket, stream_set).c_str());
+    vector<string> *files = this->files_in_directory(this->stream_set_directory(bucket, stream_set));
 
     for (size_t i = files->size() - 1; i; --i) {
         if (files->at(i).substr(-6, 6).compare(".pblog")) {
@@ -69,16 +69,16 @@ vector<string> * Store::stream_paths()
     vector<string> *buckets = this->buckets();
 
     for (size_t i = buckets->size(); i; --i) {
-        vector<string> *sets = this->stream_sets_in_bucket(buckets->at(i-1).c_str());
+        vector<string> *sets = this->stream_sets_in_bucket(buckets->at(i-1));
 
         for (size_t j = sets->size(); j; --j) {
-            vector<string> *streams = this->streams_in_stream_set(buckets->at(i-1).c_str(), sets->at(j-1).c_str());
+            vector<string> *streams = this->streams_in_stream_set(buckets->at(i-1), sets->at(j-1));
 
             for (size_t k = streams->size(); k; --k) {
                 l->push_back(this->stream_path(
-                    buckets->at(i-1).c_str(),
-                    sets->at(j-1).c_str(),
-                    streams->at(k-1).c_str()
+                    buckets->at(i-1),
+                    sets->at(j-1),
+                    streams->at(k-1)
                 ));
             }
 
@@ -93,14 +93,14 @@ vector<string> * Store::stream_paths()
     return l;
 }
 
-string Store::bucket_path(const char *bucket)
+string Store::bucket_path(const string bucket)
 {
     string s = "/";
     s.append(bucket);
     return s;
 }
 
-string Store::bucket_directory(const char *bucket)
+string Store::bucket_directory(const string bucket)
 {
     string s;
     s.append(this->_path);
@@ -109,7 +109,7 @@ string Store::bucket_directory(const char *bucket)
     return s;
 }
 
-string Store::stream_set_path(const char *bucket, const char *stream_set)
+string Store::stream_set_path(const string bucket, const string stream_set)
 {
     string s = this->bucket_path(bucket);
     s.append("/");
@@ -117,7 +117,7 @@ string Store::stream_set_path(const char *bucket, const char *stream_set)
     return s;
 }
 
-string Store::stream_set_directory(const char *bucket, const char *stream_set)
+string Store::stream_set_directory(const string bucket, const string stream_set)
 {
     string s = this->bucket_directory(bucket);
     s.append("/");
@@ -125,7 +125,7 @@ string Store::stream_set_directory(const char *bucket, const char *stream_set)
     return s;
 }
 
-string Store::stream_path(const char *bucket, const char *stream_set, const char *filename)
+string Store::stream_path(const string bucket, const string stream_set, const string filename)
 {
     string s = this->stream_set_path(bucket, stream_set);
     s.append("/");
@@ -134,7 +134,7 @@ string Store::stream_path(const char *bucket, const char *stream_set, const char
     return s;
 }
 
-string Store::path_to_filesystem_path(const char *path)
+string Store::path_to_filesystem_path(const string path)
 {
     string s = string(this->_path);
     s.append("/");
@@ -143,40 +143,56 @@ string Store::path_to_filesystem_path(const char *path)
     return s;
 }
 
-protocol::StoreInfo Store::store_info()
+bool Store::stream_info(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info)
 {
-    protocol::StoreInfo info = protocol::StoreInfo();
+    info.set_path(stream);
+    // TODO verify stream exists and populate other stuff
 
-    vector<string> * buckets = this->buckets();
-
-    for (size_t i = 0; i < buckets->size(); i++) {
-        protocol::BucketInfo *bucket = info.add_bucket();
-        bucket->set_path(buckets->at(i));
-
-        vector<string> * sets = this->stream_sets_in_bucket(buckets->at(i).c_str());
-        for (size_t j = 0; j < sets->size(); j++) {
-            protocol::StreamSetInfo *ss = bucket->add_stream_set();
-            ss->set_path(sets->at(j));
-
-            vector<string> *streams = this->streams_in_stream_set(buckets->at(i).c_str(), sets->at(j).c_str());
-            for (size_t k = 0; k < streams->size(); k++) {
-                protocol::StreamInfo *stream = ss->add_stream();
-                stream->set_path(streams->at(k));
-            }
-
-            delete streams;
-
-        }
-
-        delete sets;
-    }
-
-    delete buckets;
-
-    return info;
+    return true;
 }
 
-vector<string> * Store::directories_in_directory(const char *dir)
+bool Store::stream_set_info(const string bucket, const string stream_set, protocol::StreamSetInfo &info)
+{
+    info.set_path(stream_set);
+
+    vector<string> *streams = this->streams_in_stream_set(bucket, stream_set);
+
+    for (size_t i = 0; i < streams->size(); i++) {
+        protocol::StreamInfo * new_si = info.add_stream();
+        this->stream_info(bucket, stream_set, streams->at(i), *new_si);
+    }
+
+    delete streams;
+    return true;
+}
+
+bool Store::bucket_info(const string bucket, protocol::BucketInfo &info)
+{
+    info.set_path(bucket);
+
+    vector<string> *stream_sets = this->stream_sets_in_bucket(bucket);
+    for (size_t i = 0; i < stream_sets->size(); i++) {
+        protocol::StreamSetInfo *ss = info.add_stream_set();
+        this->stream_set_info(bucket, stream_sets->at(i), *ss);
+    }
+    delete stream_sets;
+
+    return true;
+}
+
+bool Store::store_info(protocol::StoreInfo &info)
+{
+    vector<string> * buckets = this->buckets();
+    for (size_t i = 0; i < buckets->size(); i++) {
+        protocol::BucketInfo *bucket = info.add_bucket();
+        this->bucket_info(buckets->at(i), *bucket);
+    }
+    delete buckets;
+
+    return true;
+}
+
+vector<string> * Store::directories_in_directory(const string dir)
 {
     apr_status_t st;
     apr_dir_t *e;
@@ -184,7 +200,7 @@ vector<string> * Store::directories_in_directory(const char *dir)
 
     vector<string> *v = new vector<string>();
 
-    st = apr_dir_open(&e, dir, this->_p);
+    st = apr_dir_open(&e, dir.c_str(), this->_p);
     if (st != APR_SUCCESS) {
         return v;
     }
@@ -204,7 +220,7 @@ vector<string> * Store::directories_in_directory(const char *dir)
     return v;
 }
 
-vector<string> * Store::files_in_directory(const char *dir)
+vector<string> * Store::files_in_directory(const string dir)
 {
     apr_status_t st;
     apr_dir_t *e;
@@ -212,7 +228,7 @@ vector<string> * Store::files_in_directory(const char *dir)
 
     vector<string> *v = new vector<string>();
 
-    st = apr_dir_open(&e, dir, this->_p);
+    st = apr_dir_open(&e, dir.c_str(), this->_p);
     if (st != APR_SUCCESS) {
         return v;
     }

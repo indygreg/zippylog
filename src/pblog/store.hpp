@@ -42,25 +42,28 @@ class PBLOG_EXPORT Store {
         vector<string> * buckets();
 
         /** list of stream sets in a bucket */
-        vector<string> * stream_sets_in_bucket(const char *bucket);
+        vector<string> * stream_sets_in_bucket(const string bucket);
 
         /** list of streams in stream set */
-        vector<string> * streams_in_stream_set(const char *bucket, const char *stream_set);
+        vector<string> * streams_in_stream_set(const string bucket, const string stream_set);
 
         vector<string> * stream_paths();
 
-        string bucket_path(const char *bucket);
-        string bucket_directory(const char *bucket);
-        string stream_set_path(const char *bucket, const char *stream_set);
-        string stream_set_directory(const char *bucket, const char *stream_set);
-        string stream_path(const char *bucket, const char *stream_set, const char *stream);
-        string path_to_filesystem_path(const char *path);
+        string bucket_path(const string bucket);
+        string bucket_directory(const string bucket);
+        string stream_set_path(const string bucket, string stream_set);
+        string stream_set_directory(const string bucket, const string stream_set);
+        string stream_path(const string bucket, const string stream_set, const string stream);
+        string path_to_filesystem_path(const string path);
 
-        protocol::StoreInfo store_info();
+        bool stream_info(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info);
+        bool stream_set_info(const string bucket, string stream_set, protocol::StreamSetInfo &info);
+        bool bucket_info(const string bucket, protocol::BucketInfo &info);
+        bool store_info(protocol::StoreInfo &info);
 
     protected:
-        vector<string> * directories_in_directory(const char *dir);
-        vector<string> * files_in_directory(const char *dir);
+        vector<string> * directories_in_directory(const string dir);
+        vector<string> * files_in_directory(const string dir);
 
     private:
         const char* _path;
