@@ -10,6 +10,7 @@
       "pblog.protocol.request.StoreInfo": 8, 
       "pblog.protocol.response.Error": 7, 
       "pblog.protocol.StreamSetInfo": 5, 
+      "pblog.protocol.request.GetStreamDescription": 11, 
       "pblog.message.ActorInfo": 2, 
       "pblog.protocol.request.Get": 10
     }, 
