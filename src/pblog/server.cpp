@@ -209,29 +209,31 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
                 }
                 protocol::request::Get *get = (protocol::request::Get *)msg;
 
-                if (get->path_size() < 1) {
+                if (get->stream_size() < 1) {
                     error_code = protocol::response::EMPTY_FIELD;
-                    error_message = "path repeated field is empty";
+                    error_message = "stream repeated field is empty";
                     state = SEND_ERROR_RESPONSE;
                     delete get;
                     break;
                 }
 
-                if (get->stream_offset_size() < 1) {
-                    error_code = protocol::response::EMPTY_FIELD;
-                    error_message = "stream_offset repeated field is empty";
-                    state = SEND_ERROR_RESPONSE;
-                    delete get;
-                    break;
+                for (int i = 0; i < get->stream_size(); i++) {
+                    protocol::request::GetStreamDescription d = get->stream(i);
+
+                    if (d.start_byte_offset() >= d.end_byte_offset()) {
+                        error_code = protocol::response::INVALID_OFFSET;
+                        error_message = "start_byte_offset must be less than end_byte_offset";
+                        state = SEND_ERROR_RESPONSE;
+                        delete get;
+                        break;
+                    }
                 }
 
-                if (get->path_size() != get->stream_offset_size()) {
-                    error_code = protocol::response::FIELD_LENGTHS_DIFFERENT;
-                    error_message = "path and stream_offset fields don't have same number of elements";
-                    state = SEND_ERROR_RESPONSE;
-                    delete get;
-                    break;
+                for (int i = 0; i < get->stream_size(); i++) {
+                    // TODO implement
+                    ;
                 }
+
                 error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
                 error_message = "stream download is not yet implemented";
                 state = SEND_ERROR_RESPONSE;
