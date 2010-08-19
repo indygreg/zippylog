@@ -43,11 +43,13 @@ enum ErrorCode {
   UNKNOWN_REQUEST_TYPE = 3,
   EMPTY_ENVELOPE = 4,
   MISSING_ENUMERATIONS = 5,
-  REQUEST_NOT_IMPLEMENTED = 6
+  REQUEST_NOT_IMPLEMENTED = 6,
+  EMPTY_FIELD = 7,
+  FIELD_LENGTHS_DIFFERENT = 8
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = REQUEST_NOT_IMPLEMENTED;
+const ErrorCode ErrorCode_MAX = FIELD_LENGTHS_DIFFERENT;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
