@@ -19,6 +19,7 @@ namespace pblog {
         registrar->register_message(1, 8, new ::pblog::protocol::request::StoreInfo());
         registrar->register_message(1, 9, new ::pblog::protocol::request::Stream());
         registrar->register_message(1, 10, new ::pblog::protocol::request::Get());
+        registrar->register_message(1, 11, new ::pblog::protocol::request::GetStreamDescription());
         // @@protoc_insertion_point(message_registration)
     }
 }

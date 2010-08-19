@@ -33,4 +33,7 @@ enum ErrorCode {
     // a set of related fields which are required to have the same number of
     // elements don't
     FIELD_LENGTHS_DIFFERENT = 8;
+
+    // a specified stream offset is not valid
+    INVALID_STREAM_OFFSET = 9;
 }

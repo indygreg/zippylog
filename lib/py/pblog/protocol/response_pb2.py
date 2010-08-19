@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/response.proto',
   package='pblog.protocol.response',
-  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xd9\x01\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08')
+  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xf4\x01\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -51,11 +51,15 @@ _ERRORCODE = descriptor.EnumDescriptor(
       name='FIELD_LENGTHS_DIFFERENT', index=7, number=8,
       options=None,
       type=None),
+    descriptor.EnumValueDescriptor(
+      name='INVALID_STREAM_OFFSET', index=8, number=9,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=131,
-  serialized_end=348,
+  serialized_end=375,
 )
 
 
@@ -67,6 +71,7 @@ MISSING_ENUMERATIONS = 5
 REQUEST_NOT_IMPLEMENTED = 6
 EMPTY_FIELD = 7
 FIELD_LENGTHS_DIFFERENT = 8
+INVALID_STREAM_OFFSET = 9
 
 
 

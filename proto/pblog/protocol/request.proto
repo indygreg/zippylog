@@ -18,10 +18,20 @@ message Stream {
 
 // download stream(s) from the server
 message Get {
-    // list of streams to download
-    repeated string path = 1;
+    // list of streams to get
+    // each includes metadata on how to get it
+    repeated GetStreamDescription stream = 1;
+}
+
+// describes how to get an individual stream
+message GetStreamDescription {
+    // path to stream to get
+    optional string path = 1;
     
-    // list of offsets within the remote stream at which to start the download
-    repeated uint64 stream_offset = 2;
+    // offsets within stream to fetch, in bytes
+    // end_byte_offset is typically discovered by querying the server to see
+    // what offsets are available
+    optional uint64 start_byte_offset = 2;
+    optional uint64 end_byte_offset = 3;
 }
 

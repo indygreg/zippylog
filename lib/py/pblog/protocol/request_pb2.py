@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/request.proto',
   package='pblog.protocol.request',
-  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x16\n\x06Stream\x12\x0c\n\x04path\x18\x01 \x03(\t\"*\n\x03Get\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x15\n\rstream_offset\x18\x02 \x03(\x04')
+  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x16\n\x06Stream\x12\x0c\n\x04path\x18\x01 \x03(\t\"C\n\x03Get\x12<\n\x06stream\x18\x01 \x03(\x0b\x32,.pblog.protocol.request.GetStreamDescription\"X\n\x14GetStreamDescription\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x19\n\x11start_byte_offset\x18\x02 \x01(\x04\x12\x17\n\x0f\x65nd_byte_offset\x18\x03 \x01(\x04')
 
 
 
@@ -73,15 +73,8 @@ _GET = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='pblog.protocol.request.Get.path', index=0,
-      number=1, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='stream_offset', full_name='pblog.protocol.request.Get.stream_offset', index=1,
-      number=2, type=4, cpp_type=4, label=3,
+      name='stream', full_name='pblog.protocol.request.Get.stream', index=0,
+      number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -96,10 +89,53 @@ _GET = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=93,
-  serialized_end=135,
+  serialized_end=160,
 )
 
 
+_GETSTREAMDESCRIPTION = descriptor.Descriptor(
+  name='GetStreamDescription',
+  full_name='pblog.protocol.request.GetStreamDescription',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='path', full_name='pblog.protocol.request.GetStreamDescription.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='start_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.start_byte_offset', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='end_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.end_byte_offset', index=2,
+      number=3, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=162,
+  serialized_end=250,
+)
+
+
+_GET.fields_by_name['stream'].message_type = _GETSTREAMDESCRIPTION
 
 class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -125,7 +161,16 @@ class Get(message.Message):
   PBLOG_ENUMERATION = 10
   # @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
 
+class GetStreamDescription(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _GETSTREAMDESCRIPTION
+  
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 11
+  # @@protoc_insertion_point(class_scope:pblog.protocol.request.GetStreamDescription)
+
 register_message(1, 8, 'pblog.protocol.request_pb2', 'StoreInfo')
 register_message(1, 9, 'pblog.protocol.request_pb2', 'Stream')
 register_message(1, 10, 'pblog.protocol.request_pb2', 'Get')
+register_message(1, 11, 'pblog.protocol.request_pb2', 'GetStreamDescription')
 # @@protoc_insertion_point(module_scope)
