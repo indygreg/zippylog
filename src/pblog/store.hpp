@@ -18,8 +18,8 @@
 #include <pblog/pblog.h>
 
 #include <pblog/protocol.pb.h>
+#include <pblog/stream.hpp>
 
-#include <cstddef>
 #include <vector>
 #include <apr_pools.h>
 
@@ -60,6 +60,8 @@ class PBLOG_EXPORT Store {
         bool stream_set_info(const string bucket, string stream_set, protocol::StreamSetInfo &info);
         bool bucket_info(const string bucket, protocol::BucketInfo &info);
         bool store_info(protocol::StoreInfo &info);
+
+        bool parse_stream_path(const string path, string &bucket, string &set, string &stream);
 
     protected:
         vector<string> * directories_in_directory(const string dir);

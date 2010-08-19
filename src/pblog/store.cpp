@@ -192,6 +192,31 @@ bool Store::store_info(protocol::StoreInfo &info)
     return true;
 }
 
+bool Store::parse_stream_path(const string path, string &bucket, string &set, string &stream)
+{
+    string::size_type offsets[3];
+
+    if (path.at(0) != '/') {
+        return false;
+    }
+
+    string::size_type off = 1;
+    for (size_t i = 0; i < 3; i++) {
+        off = path.find_first_of("/", off);
+        if (off == string::npos) {
+            return false;
+        }
+
+        offsets[i] = off++;
+    }
+
+    bucket = path.substr(0, offsets[0] - 1);
+    set = path.substr(offsets[0] + 1, offsets[1] - offsets[0]);
+    stream = path.substr(offsets[1] + 1, offsets[2] - offsets[1]);
+
+    return true;
+}
+
 vector<string> * Store::directories_in_directory(const string dir)
 {
     apr_status_t st;
