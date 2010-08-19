@@ -58,15 +58,15 @@ Message * Envelope::get_message(int index)
 {
     Message *msg = NULL;
 
-    if (this->envelope.message_size() < index - 1) {
+    if (this->envelope.message_size() < index + 1) {
         return NULL;
     }
 
-    if (this->envelope.message_namespace_size() < index - 1) {
+    if (this->envelope.message_namespace_size() < index + 1) {
         return NULL;
     }
 
-    if (this->envelope.message_type_size() < index -1) {
+    if (this->envelope.message_type_size() < index + 1) {
         return NULL;
     }
 
