@@ -39,4 +39,7 @@ enum ErrorCode {
     
     // offset is invalid
     INVALID_OFFSET = 10;
+    
+    // requested path does not exist in the store
+    PATH_NOT_FOUND = 11;
 }
