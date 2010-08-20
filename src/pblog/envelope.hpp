@@ -47,6 +47,7 @@ class PBLOG_EXPORT Envelope {
 
         /* adds the envelope to a ZMQ message and returns the message */
         message_t * to_zmq_message();
+        bool merge_from_zmq_message(message_t *msg);
 
         Message * get_message(int index);
 };

@@ -41,12 +41,7 @@ StoreInfo * Client::store_info()
     request::StoreInfo req = request::StoreInfo();
     req.add_to_envelope(&e);
 
-    string buffer;
-    e.envelope.SerializeToString(&buffer);
-    message_t zreq(buffer.length());
-    memcpy(zreq.data(), (void *)buffer.c_str(), buffer.length());
-
-    this->_sock->send(zreq, 0);
+    this->_send_envelope(e);
 
     int64 more;
     size_t moresz = sizeof(more);
@@ -69,6 +64,49 @@ StoreInfo * Client::store_info()
     Message *m = e2.get_message(0);
 
     return (StoreInfo *)m;
+}
+
+void Client::get_stream(const string bucket, const string set, const string stream)
+{
+    request::Get get = request::Get();
+    request::GetStreamDescription *desc = get.add_stream();
+
+    desc->set_bucket(bucket);
+    desc->set_stream_set(set);
+    desc->set_stream(stream);
+    desc->set_start_byte_offset(0);
+    desc->set_end_byte_offset(10000000);
+
+    ::pblog::Envelope e = ::pblog::Envelope();
+    get.add_to_envelope(&e);
+    this->_send_envelope(e);
+}
+
+bool Client::read_envelope(pblog::Envelope &envelope)
+{
+    message_t res;
+
+    int64 more;
+    size_t moresz = sizeof(more);
+
+    while (true) {
+        if (!this->_sock->recv(&res, ZMQ_NOBLOCK)) break;
+        printf("received message with %d bytes\n", res.size());
+        this->_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+        if (!more) break;
+    }
+
+    //return envelope.merge_from_zmq_message(&res);
+    return false;
+}
+
+bool Client::_send_envelope(::pblog::Envelope &envelope)
+{
+    string buffer;
+    envelope.envelope.SerializeToString(&buffer);
+    message_t *req = new message_t(buffer.length());
+    memcpy(req->data(), (void *)buffer.c_str(), buffer.length());
+    return this->_sock->send(*req, 0);
 }
 
 }} // namespaces

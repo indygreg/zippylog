@@ -230,13 +230,39 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
                 }
 
                 for (int i = 0; i < get->stream_size(); i++) {
-                    // TODO implement
-                    ;
+                    protocol::request::GetStreamDescription desc = get->stream(i);
+
+                    InputStream stream = InputStream();
+                    if (!d->store->get_input_stream(desc.bucket(), desc.stream_set(), desc.stream(), stream)) {
+                        // TODO assumption not always valid for simple bool return code
+                        error_code = protocol::response::PATH_NOT_FOUND;
+                        error_message = "requested stream not found";
+                        state = SEND_ERROR_RESPONSE;
+                        delete get;
+                        break;
+                    }
+
+                    stream.Seek(desc.start_byte_offset());
+
+                    pblog::Envelope m = pblog::Envelope();
+                    for (;;) {
+                        if (!stream.ReadEnvelope(m)) break;
+
+                        // TODO factor out into something better
+                        message_t *msg = m.to_zmq_message();
+                        socket->send(identities[0], ZMQ_SNDMORE);
+                        socket->send(identities[1], ZMQ_SNDMORE);
+                        printf("sending envelope...\n");
+                        if (!socket->send(*msg, 0)) {
+                            printf("error sending envelope!\n");
+                        }
+
+
+                    }
                 }
 
-                error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
-                error_message = "stream download is not yet implemented";
-                state = SEND_ERROR_RESPONSE;
+                delete get;
+                state = WAITING;
                 break;
             }
 

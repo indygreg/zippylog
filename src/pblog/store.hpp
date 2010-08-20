@@ -63,6 +63,9 @@ class PBLOG_EXPORT Store {
 
         bool parse_stream_path(const string path, string &bucket, string &set, string &stream);
 
+        bool get_input_stream(const string path, InputStream &s);
+        bool get_input_stream(const string bucket, const string stream_set, const string stream, InputStream &s);
+
     protected:
         vector<string> * directories_in_directory(const string dir);
         vector<string> * files_in_directory(const string dir);

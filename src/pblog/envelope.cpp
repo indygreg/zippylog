@@ -54,6 +54,11 @@ message_t * Envelope::to_zmq_message()
     return msg;
 }
 
+bool Envelope::merge_from_zmq_message(message_t *msg)
+{
+    return this->envelope.ParseFromArray(msg->data(), msg->size());
+}
+
 Message * Envelope::get_message(int index)
 {
     Message *msg = NULL;

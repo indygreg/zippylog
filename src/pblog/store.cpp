@@ -217,6 +217,18 @@ bool Store::parse_stream_path(const string path, string &bucket, string &set, st
     return true;
 }
 
+bool Store::get_input_stream(const string path, InputStream &s)
+{
+    return s.OpenFile(this->path_to_filesystem_path(path));
+}
+
+bool Store::get_input_stream(const string bucket, const string stream_set, const string stream, InputStream &s)
+{
+    string path = this->path_to_filesystem_path(this->stream_path(bucket, stream_set, stream));
+
+    return s.OpenFile(path);
+}
+
 vector<string> * Store::directories_in_directory(const string dir)
 {
     apr_status_t st;

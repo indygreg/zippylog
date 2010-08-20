@@ -18,6 +18,7 @@
 #include <pblog/pblog.h>
 #include <pblog/protocol.pb.h>
 
+#include <string>
 #include <zmq.hpp>
 
 namespace pblog {
@@ -37,8 +38,13 @@ class PBLOG_EXPORT Client {
 
         StoreInfo * store_info();
 
+        void get_stream(const string bucket, const string stream_set, const string stream);
+        bool read_envelope(pblog::Envelope &envelope);
+
     protected:
         socket_t *_sock;
+
+        bool _send_envelope(::pblog::Envelope &envelope);
 };
 
 }} // namespaces

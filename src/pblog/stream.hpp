@@ -16,29 +16,41 @@
 #define PBLOG_STREAM_HPP_
 
 #include <pblog/pblog.h>
+#include <pblog/envelope.hpp>
 
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
-
-#include <pblog/message.pb.h>
+#include <string>
 
 namespace pblog {
 
-using namespace ::google::protobuf;
-using namespace ::google::protobuf::io;
-using namespace message;
+using ::google::protobuf::int64;
+using ::google::protobuf::io::FileInputStream;
+using ::google::protobuf::io::CodedInputStream;
+using ::std::string;
 
 class PBLOG_EXPORT InputStream {
     public:
-        InputStream(const char *file, int64 seek_bytes=0);
+        InputStream();
+        InputStream(string file, int64 seek_bytes=0);
         ~InputStream();
 
-        bool ReadEnvelope(::pblog::Envelope *);
+        bool OpenFile(string file, int64 start_offset = 0);
+        bool ReadEnvelope(::pblog::Envelope &envelope);
+        bool Seek(int64 offset);
 
     private:
         int _fd;
         FileInputStream *_is;
         CodedInputStream *_cis;
+};
+
+class PBLOG_EXPORT OutputStream {
+    public:
+        OutputStream();
+        ~OutputStream();
+
+        bool WriteEnvelope(::pblog::Envelope &envelope);
 };
 
 } // namespace
