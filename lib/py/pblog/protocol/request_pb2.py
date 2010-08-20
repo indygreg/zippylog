@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/request.proto',
   package='pblog.protocol.request',
-  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x16\n\x06Stream\x12\x0c\n\x04path\x18\x01 \x03(\t\"C\n\x03Get\x12<\n\x06stream\x18\x01 \x03(\x0b\x32,.pblog.protocol.request.GetStreamDescription\"X\n\x14GetStreamDescription\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x19\n\x11start_byte_offset\x18\x02 \x01(\x04\x12\x17\n\x0f\x65nd_byte_offset\x18\x03 \x01(\x04')
+  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"\x16\n\x06Stream\x12\x0c\n\x04path\x18\x01 \x03(\t\"C\n\x03Get\x12<\n\x06stream\x18\x01 \x03(\x0b\x32,.pblog.protocol.request.GetStreamDescription\"\x8c\x01\n\x14GetStreamDescription\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06\x62ucket\x18\x02 \x01(\t\x12\x12\n\nstream_set\x18\x03 \x01(\t\x12\x0e\n\x06stream\x18\x04 \x01(\t\x12\x19\n\x11start_byte_offset\x18\x05 \x01(\x04\x12\x17\n\x0f\x65nd_byte_offset\x18\x06 \x01(\x04')
 
 
 
@@ -108,15 +108,36 @@ _GETSTREAMDESCRIPTION = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='start_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.start_byte_offset', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='bucket', full_name='pblog.protocol.request.GetStreamDescription.bucket', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream_set', full_name='pblog.protocol.request.GetStreamDescription.stream_set', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream', full_name='pblog.protocol.request.GetStreamDescription.stream', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='start_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.start_byte_offset', index=4,
+      number=5, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='end_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.end_byte_offset', index=2,
-      number=3, type=4, cpp_type=4, label=1,
+      name='end_byte_offset', full_name='pblog.protocol.request.GetStreamDescription.end_byte_offset', index=5,
+      number=6, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -130,8 +151,8 @@ _GETSTREAMDESCRIPTION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=162,
-  serialized_end=250,
+  serialized_start=163,
+  serialized_end=303,
 )
 
 
