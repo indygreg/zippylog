@@ -96,8 +96,7 @@ bool Client::read_envelope(pblog::Envelope &envelope)
         if (!more) break;
     }
 
-    //return envelope.merge_from_zmq_message(&res);
-    return false;
+    return envelope.merge_from_zmq_message(&res);
 }
 
 bool Client::_send_envelope(::pblog::Envelope &envelope)
