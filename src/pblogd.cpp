@@ -138,7 +138,7 @@ int main(int argc, const char * const argv[])
     for ( ; max_threads; --max_threads) {
         thread = APR_ARRAY_PUSH(threads, apr_thread_t *);
         st = apr_threadattr_create(&threadattr, p);
-        st = apr_thread_create(&thread, threadattr, ::pblog::server::request_processor, &data, p);
+        st = apr_thread_create(&thread, threadattr, ::pblog::server::Request::request_processor, &data, p);
     }
 
     /* create thread to handle streaming */
