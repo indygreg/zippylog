@@ -19,20 +19,54 @@
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <zmq.hpp>
+#include <iostream>
 
 using namespace pblog;
 using ::zmq::context_t;
+using namespace ::std;
 
 int main(int argc, const char * const argv[])
 {
     context_t zctx(1);
-    client::Client c(&zctx, "tcp://localhost:52483");
+    //client::Client c(&zctx, "tcp://192.168.1.69:52483");
+    client::Client c(&zctx, "tcp://localhost:5000");
 
-    protocol::StoreInfo *info = c.store_info();
+    int i = 0;
 
     ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
     ::google::protobuf::io::FileOutputStream os(1, -1);
-    printer.Print(*info, &os);
+
+    while (true) {
+        printf("%d\n", i++);
+        protocol::StoreInfo *info = c.store_info();
+
+        for (size_t i = 0; i < info->bucket_size(); i++) {
+            protocol::BucketInfo binfo = info->bucket(i);
+            string bucket = binfo.path();
+
+            for (size_t j = 0; j < binfo.stream_set_size(); j++) {
+                protocol::StreamSetInfo ssinfo = binfo.stream_set(j);
+                string stream_set = ssinfo.path();
+
+                for (size_t k = 0; k < ssinfo.stream_size(); k++) {
+                    protocol::StreamInfo sinfo = ssinfo.stream(k);
+                    string stream = sinfo.path();
+
+                    cout << bucket << '/' << stream_set << '/' << stream << endl;
+
+                    c.get_stream(bucket, stream_set, stream);
+
+                    while (true) {
+                        ::pblog::Envelope e;
+                        if (c.read_envelope(e)) {
+                            printer.Print(e.envelope, &os);
+                            os.Flush();
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return 0;
 }
