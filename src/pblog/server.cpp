@@ -250,8 +250,17 @@ void * __stdcall request_processor(apr_thread_t *thread, void *data)
 
                         // TODO factor out into something better
                         message_t *msg = m.to_zmq_message();
-                        socket->send(identities[0], ZMQ_SNDMORE);
-                        socket->send(identities[1], ZMQ_SNDMORE);
+
+                        // need to copy identity messages b/c that's how 0MQ works
+                        message_t i1;
+                        i1.copy(&identities[0]);
+
+                        message_t i2;
+                        i2.copy(&identities[1]);
+
+                        socket->send(i1, ZMQ_SNDMORE);
+                        socket->send(i2, ZMQ_SNDMORE);
+
                         printf("sending envelope...\n");
                         if (!socket->send(*msg, 0)) {
                             printf("error sending envelope!\n");
