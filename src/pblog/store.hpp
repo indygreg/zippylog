@@ -28,6 +28,8 @@ namespace pblog {
 using ::std::vector;
 using ::std::string;
 
+// represents a stream store
+// functions are reentrant and thread-safe unless otherwise specified
 class PBLOG_EXPORT Store {
     public:
         /** construct a store from a filesystem path */
