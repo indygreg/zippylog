@@ -49,6 +49,15 @@ class PBLOG_EXPORT Envelope {
         message_t * to_zmq_message();
         bool merge_from_zmq_message(message_t *msg);
 
+        int number_messages();
+        inline uint32 message_namespace(int index)
+        {
+            return this->envelope.message_namespace(index);
+        }
+        inline uint32 message_type(int index)
+        {
+            return this->envelope.message_type(index);
+        }
         Message * get_message(int index);
 };
 
