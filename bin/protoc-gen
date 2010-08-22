@@ -132,9 +132,9 @@ if mode == 'cpp':
 ''' % ( cpp_messages_header, namespace_header, namespace_footer )
 
 # TODO do we care about the deterministic nature of these loops?
-for i in range(0, len(request.file_to_generate)):
-    filename = request.file_to_generate[i]
+for i in range(0, len(request.proto_file)):
     description = request.proto_file[i]
+    filename = description.name
 
     namespace = dirname(filename)
     if namespace.find('/') > 0:
