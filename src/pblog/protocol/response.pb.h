@@ -35,6 +35,7 @@ void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
 
+class Get;
 class Error;
 
 enum ErrorCode {
@@ -66,6 +67,90 @@ inline bool ErrorCode_Parse(
     ErrorCode_descriptor(), name, value);
 }
 // ===================================================================
+
+class Get : public ::google::protobuf::Message {
+ public:
+  Get();
+  virtual ~Get();
+  
+  Get(const Get& from);
+  
+  inline Get& operator=(const Get& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Get& default_instance();
+  
+  void Swap(Get* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Get* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Get& from);
+  void MergeFrom(const Get& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 9;
+  bool add_to_envelope(::pblog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:pblog.protocol.response.Get)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static Get* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class Error : public ::google::protobuf::Message {
  public:
@@ -139,7 +224,7 @@ class Error : public ::google::protobuf::Message {
   inline ::std::string* mutable_msg();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 7;
+  static const ::google::protobuf::uint32 pblog_enumeration = 10;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
  private:
@@ -173,6 +258,10 @@ class Error : public ::google::protobuf::Message {
 
 
 // ===================================================================
+
+// Get
+
+// -------------------------------------------------------------------
 
 // Error
 

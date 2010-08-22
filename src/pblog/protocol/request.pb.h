@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include "pblog/protocol.pb.h"
 #include <pblog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
@@ -38,7 +39,6 @@ void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
 class StoreInfo;
 class Stream;
 class Get;
-class GetStreamDescription;
 
 // ===================================================================
 
@@ -97,7 +97,7 @@ class StoreInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 8;
+  static const ::google::protobuf::uint32 pblog_enumeration = 11;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.StoreInfo)
  private:
@@ -197,7 +197,7 @@ class Stream : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 9;
+  static const ::google::protobuf::uint32 pblog_enumeration = 12;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
  private:
@@ -281,32 +281,40 @@ class Get : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated .pblog.protocol.request.GetStreamDescription stream = 1;
+  // repeated .pblog.protocol.GetStreamDescription stream = 1;
   inline int stream_size() const;
   inline void clear_stream();
   static const int kStreamFieldNumber = 1;
-  inline const ::pblog::protocol::request::GetStreamDescription& stream(int index) const;
-  inline ::pblog::protocol::request::GetStreamDescription* mutable_stream(int index);
-  inline ::pblog::protocol::request::GetStreamDescription* add_stream();
-  inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::request::GetStreamDescription >&
+  inline const ::pblog::protocol::GetStreamDescription& stream(int index) const;
+  inline ::pblog::protocol::GetStreamDescription* mutable_stream(int index);
+  inline ::pblog::protocol::GetStreamDescription* add_stream();
+  inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >&
       stream() const;
-  inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::request::GetStreamDescription >*
+  inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >*
       mutable_stream();
   
+  // optional uint32 bytes_per_response = 2;
+  inline bool has_bytes_per_response() const;
+  inline void clear_bytes_per_response();
+  static const int kBytesPerResponseFieldNumber = 2;
+  inline ::google::protobuf::uint32 bytes_per_response() const;
+  inline void set_bytes_per_response(::google::protobuf::uint32 value);
+  
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 10;
+  static const ::google::protobuf::uint32 pblog_enumeration = 13;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::request::GetStreamDescription > stream_;
+  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription > stream_;
+  ::google::protobuf::uint32 bytes_per_response_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -321,154 +329,6 @@ class Get : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static Get* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class GetStreamDescription : public ::google::protobuf::Message {
- public:
-  GetStreamDescription();
-  virtual ~GetStreamDescription();
-  
-  GetStreamDescription(const GetStreamDescription& from);
-  
-  inline GetStreamDescription& operator=(const GetStreamDescription& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const GetStreamDescription& default_instance();
-  
-  void Swap(GetStreamDescription* other);
-  
-  // implements Message ----------------------------------------------
-  
-  GetStreamDescription* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const GetStreamDescription& from);
-  void MergeFrom(const GetStreamDescription& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // optional string path = 1;
-  inline bool has_path() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path() const;
-  inline void set_path(const ::std::string& value);
-  inline void set_path(const char* value);
-  inline void set_path(const char* value, size_t size);
-  inline ::std::string* mutable_path();
-  
-  // optional string bucket = 2;
-  inline bool has_bucket() const;
-  inline void clear_bucket();
-  static const int kBucketFieldNumber = 2;
-  inline const ::std::string& bucket() const;
-  inline void set_bucket(const ::std::string& value);
-  inline void set_bucket(const char* value);
-  inline void set_bucket(const char* value, size_t size);
-  inline ::std::string* mutable_bucket();
-  
-  // optional string stream_set = 3;
-  inline bool has_stream_set() const;
-  inline void clear_stream_set();
-  static const int kStreamSetFieldNumber = 3;
-  inline const ::std::string& stream_set() const;
-  inline void set_stream_set(const ::std::string& value);
-  inline void set_stream_set(const char* value);
-  inline void set_stream_set(const char* value, size_t size);
-  inline ::std::string* mutable_stream_set();
-  
-  // optional string stream = 4;
-  inline bool has_stream() const;
-  inline void clear_stream();
-  static const int kStreamFieldNumber = 4;
-  inline const ::std::string& stream() const;
-  inline void set_stream(const ::std::string& value);
-  inline void set_stream(const char* value);
-  inline void set_stream(const char* value, size_t size);
-  inline ::std::string* mutable_stream();
-  
-  // optional uint64 start_byte_offset = 5;
-  inline bool has_start_byte_offset() const;
-  inline void clear_start_byte_offset();
-  static const int kStartByteOffsetFieldNumber = 5;
-  inline ::google::protobuf::uint64 start_byte_offset() const;
-  inline void set_start_byte_offset(::google::protobuf::uint64 value);
-  
-  // optional uint64 end_byte_offset = 6;
-  inline bool has_end_byte_offset() const;
-  inline void clear_end_byte_offset();
-  static const int kEndByteOffsetFieldNumber = 6;
-  inline ::google::protobuf::uint64 end_byte_offset() const;
-  inline void set_end_byte_offset(::google::protobuf::uint64 value);
-  
-  static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 11;
-  bool add_to_envelope(::pblog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:pblog.protocol.request.GetStreamDescription)
- private:
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  mutable int _cached_size_;
-  
-  ::std::string* path_;
-  static const ::std::string _default_path_;
-  ::std::string* bucket_;
-  static const ::std::string _default_bucket_;
-  ::std::string* stream_set_;
-  static const ::std::string _default_stream_set_;
-  ::std::string* stream_;
-  static const ::std::string _default_stream_;
-  ::google::protobuf::uint64 start_byte_offset_;
-  ::google::protobuf::uint64 end_byte_offset_;
-  friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
-  friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
-  friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
-  
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
-  
-  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
-  inline bool _has_bit(int index) const {
-    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
-  }
-  inline void _set_bit(int index) {
-    _has_bits_[index / 32] |= (1u << (index % 32));
-  }
-  inline void _clear_bit(int index) {
-    _has_bits_[index / 32] &= ~(1u << (index % 32));
-  }
-  
-  void InitAsDefaultInstance();
-  static GetStreamDescription* default_instance_;
 };
 // ===================================================================
 
@@ -529,233 +389,45 @@ Stream::mutable_path() {
 
 // Get
 
-// repeated .pblog.protocol.request.GetStreamDescription stream = 1;
+// repeated .pblog.protocol.GetStreamDescription stream = 1;
 inline int Get::stream_size() const {
   return stream_.size();
 }
 inline void Get::clear_stream() {
   stream_.Clear();
 }
-inline const ::pblog::protocol::request::GetStreamDescription& Get::stream(int index) const {
+inline const ::pblog::protocol::GetStreamDescription& Get::stream(int index) const {
   return stream_.Get(index);
 }
-inline ::pblog::protocol::request::GetStreamDescription* Get::mutable_stream(int index) {
+inline ::pblog::protocol::GetStreamDescription* Get::mutable_stream(int index) {
   return stream_.Mutable(index);
 }
-inline ::pblog::protocol::request::GetStreamDescription* Get::add_stream() {
+inline ::pblog::protocol::GetStreamDescription* Get::add_stream() {
   return stream_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::request::GetStreamDescription >&
+inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >&
 Get::stream() const {
   return stream_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::request::GetStreamDescription >*
+inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >*
 Get::mutable_stream() {
   return &stream_;
 }
 
-// -------------------------------------------------------------------
-
-// GetStreamDescription
-
-// optional string path = 1;
-inline bool GetStreamDescription::has_path() const {
-  return _has_bit(0);
-}
-inline void GetStreamDescription::clear_path() {
-  if (path_ != &_default_path_) {
-    path_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& GetStreamDescription::path() const {
-  return *path_;
-}
-inline void GetStreamDescription::set_path(const ::std::string& value) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(value);
-}
-inline void GetStreamDescription::set_path(const char* value) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(value);
-}
-inline void GetStreamDescription::set_path(const char* value, size_t size) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetStreamDescription::mutable_path() {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  return path_;
-}
-
-// optional string bucket = 2;
-inline bool GetStreamDescription::has_bucket() const {
+// optional uint32 bytes_per_response = 2;
+inline bool Get::has_bytes_per_response() const {
   return _has_bit(1);
 }
-inline void GetStreamDescription::clear_bucket() {
-  if (bucket_ != &_default_bucket_) {
-    bucket_->clear();
-  }
+inline void Get::clear_bytes_per_response() {
+  bytes_per_response_ = 0u;
   _clear_bit(1);
 }
-inline const ::std::string& GetStreamDescription::bucket() const {
-  return *bucket_;
+inline ::google::protobuf::uint32 Get::bytes_per_response() const {
+  return bytes_per_response_;
 }
-inline void GetStreamDescription::set_bucket(const ::std::string& value) {
+inline void Get::set_bytes_per_response(::google::protobuf::uint32 value) {
   _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
-  }
-  bucket_->assign(value);
-}
-inline void GetStreamDescription::set_bucket(const char* value) {
-  _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
-  }
-  bucket_->assign(value);
-}
-inline void GetStreamDescription::set_bucket(const char* value, size_t size) {
-  _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
-  }
-  bucket_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetStreamDescription::mutable_bucket() {
-  _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
-  }
-  return bucket_;
-}
-
-// optional string stream_set = 3;
-inline bool GetStreamDescription::has_stream_set() const {
-  return _has_bit(2);
-}
-inline void GetStreamDescription::clear_stream_set() {
-  if (stream_set_ != &_default_stream_set_) {
-    stream_set_->clear();
-  }
-  _clear_bit(2);
-}
-inline const ::std::string& GetStreamDescription::stream_set() const {
-  return *stream_set_;
-}
-inline void GetStreamDescription::set_stream_set(const ::std::string& value) {
-  _set_bit(2);
-  if (stream_set_ == &_default_stream_set_) {
-    stream_set_ = new ::std::string;
-  }
-  stream_set_->assign(value);
-}
-inline void GetStreamDescription::set_stream_set(const char* value) {
-  _set_bit(2);
-  if (stream_set_ == &_default_stream_set_) {
-    stream_set_ = new ::std::string;
-  }
-  stream_set_->assign(value);
-}
-inline void GetStreamDescription::set_stream_set(const char* value, size_t size) {
-  _set_bit(2);
-  if (stream_set_ == &_default_stream_set_) {
-    stream_set_ = new ::std::string;
-  }
-  stream_set_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetStreamDescription::mutable_stream_set() {
-  _set_bit(2);
-  if (stream_set_ == &_default_stream_set_) {
-    stream_set_ = new ::std::string;
-  }
-  return stream_set_;
-}
-
-// optional string stream = 4;
-inline bool GetStreamDescription::has_stream() const {
-  return _has_bit(3);
-}
-inline void GetStreamDescription::clear_stream() {
-  if (stream_ != &_default_stream_) {
-    stream_->clear();
-  }
-  _clear_bit(3);
-}
-inline const ::std::string& GetStreamDescription::stream() const {
-  return *stream_;
-}
-inline void GetStreamDescription::set_stream(const ::std::string& value) {
-  _set_bit(3);
-  if (stream_ == &_default_stream_) {
-    stream_ = new ::std::string;
-  }
-  stream_->assign(value);
-}
-inline void GetStreamDescription::set_stream(const char* value) {
-  _set_bit(3);
-  if (stream_ == &_default_stream_) {
-    stream_ = new ::std::string;
-  }
-  stream_->assign(value);
-}
-inline void GetStreamDescription::set_stream(const char* value, size_t size) {
-  _set_bit(3);
-  if (stream_ == &_default_stream_) {
-    stream_ = new ::std::string;
-  }
-  stream_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* GetStreamDescription::mutable_stream() {
-  _set_bit(3);
-  if (stream_ == &_default_stream_) {
-    stream_ = new ::std::string;
-  }
-  return stream_;
-}
-
-// optional uint64 start_byte_offset = 5;
-inline bool GetStreamDescription::has_start_byte_offset() const {
-  return _has_bit(4);
-}
-inline void GetStreamDescription::clear_start_byte_offset() {
-  start_byte_offset_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(4);
-}
-inline ::google::protobuf::uint64 GetStreamDescription::start_byte_offset() const {
-  return start_byte_offset_;
-}
-inline void GetStreamDescription::set_start_byte_offset(::google::protobuf::uint64 value) {
-  _set_bit(4);
-  start_byte_offset_ = value;
-}
-
-// optional uint64 end_byte_offset = 6;
-inline bool GetStreamDescription::has_end_byte_offset() const {
-  return _has_bit(5);
-}
-inline void GetStreamDescription::clear_end_byte_offset() {
-  end_byte_offset_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(5);
-}
-inline ::google::protobuf::uint64 GetStreamDescription::end_byte_offset() const {
-  return end_byte_offset_;
-}
-inline void GetStreamDescription::set_end_byte_offset(::google::protobuf::uint64 value) {
-  _set_bit(5);
-  end_byte_offset_ = value;
+  bytes_per_response_ = value;
 }
 
 
