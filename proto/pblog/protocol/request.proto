@@ -1,6 +1,8 @@
 // this file describes protocol buffer messages sent by the client when
 // communicating with a pblog server
 
+import "pblog/protocol.proto";
+
 package pblog.protocol.request;
 
 // requesting status of the pblog server's store
@@ -17,28 +19,15 @@ message Stream {
 }
 
 // download stream(s) from the server
+// once accepted, the server acks via a Get response message
+// next, the server sends a bunch of envelopes as separate 0MQ messages
 message Get {
     // list of streams to get
     // each includes metadata on how to get it
     repeated GetStreamDescription stream = 1;
-}
 
-// describes how to get an individual stream
-message GetStreamDescription {
-    // path to stream to get
-    optional string path = 1;
-    
-    // OR
-    
-    // components of path to retrieve
-    optional string bucket = 2;
-    optional string stream_set = 3;
-    optional string stream = 4;
-    
-    // offsets within stream to fetch, in bytes
-    // end_byte_offset is typically discovered by querying the server to see
-    // what offsets are available
-    optional uint64 start_byte_offset = 5;
-    optional uint64 end_byte_offset = 6;
+    // tells the server how many bytes you would like in each response
+    // message set. normally, the default value will be sufficient. in some
+    // situations, it may be desirable to adjust this for better performance
+    optional uint32 bytes_per_response = 2;
 }
-

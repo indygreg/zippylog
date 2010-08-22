@@ -11,15 +11,17 @@ namespace pblog {
     {
         ::pblog::MessageRegistrar *registrar = ::pblog::MessageRegistrar::instance();
 
-        registrar->register_message(1, 5, new ::pblog::protocol::StreamInfo());
-        registrar->register_message(1, 5, new ::pblog::protocol::StreamSetInfo());
+        registrar->register_message(1, 1, new ::pblog::protocol::StreamInfo());
+        registrar->register_message(1, 2, new ::pblog::protocol::StreamSetInfo());
         registrar->register_message(1, 3, new ::pblog::protocol::BucketInfo());
         registrar->register_message(1, 4, new ::pblog::protocol::StoreInfo());
-        registrar->register_message(1, 7, new ::pblog::protocol::response::Error());
-        registrar->register_message(1, 8, new ::pblog::protocol::request::StoreInfo());
-        registrar->register_message(1, 9, new ::pblog::protocol::request::Stream());
-        registrar->register_message(1, 10, new ::pblog::protocol::request::Get());
-        registrar->register_message(1, 11, new ::pblog::protocol::request::GetStreamDescription());
+        registrar->register_message(1, 5, new ::pblog::protocol::GetStreamDescription());
+        registrar->register_message(1, 6, new ::pblog::pblogd::GetRequest());
+        registrar->register_message(1, 9, new ::pblog::protocol::response::Get());
+        registrar->register_message(1, 10, new ::pblog::protocol::response::Error());
+        registrar->register_message(1, 11, new ::pblog::protocol::request::StoreInfo());
+        registrar->register_message(1, 12, new ::pblog::protocol::request::Stream());
+        registrar->register_message(1, 13, new ::pblog::protocol::request::Get());
         // @@protoc_insertion_point(message_registration)
     }
 }

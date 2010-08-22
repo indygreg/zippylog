@@ -2,6 +2,9 @@
 
 package pblog.protocol.response;
 
+// acknowledges Get request acceptance
+message Get { }
+
 message Error {
     optional ErrorCode code = 1;
     optional string msg = 2;

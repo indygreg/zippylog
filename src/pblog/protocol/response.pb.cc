@@ -16,6 +16,9 @@ namespace response {
 
 namespace {
 
+const ::google::protobuf::Descriptor* Get_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Get_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Error_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Error_reflection_ = NULL;
@@ -30,7 +33,21 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "pblog/protocol/response.proto");
   GOOGLE_CHECK(file != NULL);
-  Error_descriptor_ = file->message_type(0);
+  Get_descriptor_ = file->message_type(0);
+  static const int Get_offsets_[1] = {
+  };
+  Get_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Get_descriptor_,
+      Get::default_instance_,
+      Get_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Get));
+  Error_descriptor_ = file->message_type(1);
   static const int Error_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, code_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, msg_),
@@ -60,12 +77,16 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Get_descriptor_, &Get::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Error_descriptor_, &Error::default_instance());
 }
 
 }  // namespace
 
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto() {
+  delete Get::default_instance_;
+  delete Get_reflection_;
   delete Error::default_instance_;
   delete Error_reflection_;
 }
@@ -78,19 +99,21 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
-    "rotocol.response\"F\n\005Error\0220\n\004code\030\001 \001(\0162"
-    "\".pblog.protocol.response.ErrorCode\022\013\n\003m"
-    "sg\030\002 \001(\t*\234\002\n\tErrorCode\022\032\n\026ENVELOPE_PARSE"
-    "_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020"
-    "\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENV"
-    "ELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQ"
-    "UEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022"
-    "\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID_"
-    "STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016P"
-    "ATH_NOT_FOUND\020\013", 415);
+    "rotocol.response\"\005\n\003Get\"F\n\005Error\0220\n\004code"
+    "\030\001 \001(\0162\".pblog.protocol.response.ErrorCo"
+    "de\022\013\n\003msg\030\002 \001(\t*\234\002\n\tErrorCode\022\032\n\026ENVELOP"
+    "E_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAM"
+    "ESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EM"
+    "PTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005"
+    "\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_F"
+    "IELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025I"
+    "NVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET"
+    "\020\n\022\022\n\016PATH_NOT_FOUND\020\013", 422);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
+  Get::default_instance_ = new Get();
   Error::default_instance_ = new Error();
+  Get::default_instance_->InitAsDefaultInstance();
   Error::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto);
 }
@@ -123,6 +146,161 @@ bool ErrorCode_IsValid(int value) {
     default:
       return false;
   }
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+Get::Get()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Get::InitAsDefaultInstance() {
+}
+
+Get::Get(const Get& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Get::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Get::~Get() {
+  SharedDtor();
+}
+
+void Get::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Get::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Get::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Get_descriptor_;
+}
+
+const Get& Get::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
+}
+
+Get* Get::default_instance_ = NULL;
+
+Get* Get::New() const {
+  return new Get;
+}
+
+void Get::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Get::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void Get::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Get::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Get::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Get::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Get* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Get*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Get::MergeFrom(const Get& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Get::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Get::CopyFrom(const Get& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Get::IsInitialized() const {
+  
+  return true;
+}
+
+void Get::Swap(Get* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Get::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Get_descriptor_;
+  metadata.reflection = Get_reflection_;
+  return metadata;
 }
 
 
@@ -397,6 +575,10 @@ void Error::Swap(Error* other) {
 }
 
 
+
+bool Get::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
 
 bool Error::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);

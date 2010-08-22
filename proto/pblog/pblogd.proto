@@ -1,0 +1,12 @@
+// messages used internally by pblogd
+
+import "pblog/protocol.proto";
+
+package pblog.pblogd;
+
+// sent from request processor to stream download worker to describe a get
+message GetRequest {
+    repeated pblog.protocol.GetStreamDescription stream = 1;
+    optional uint32 bytes_per_response = 2;
+    repeated bytes socket_identity = 3;
+}
