@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/pblogd.proto',
   package='pblog.pblogd',
-  serialized_pb='\n\x12pblog/pblogd.proto\x12\x0cpblog.pblogd\x1a\x14pblog/protocol.proto\"w\n\nGetRequest\x12\x34\n\x06stream\x18\x01 \x03(\x0b\x32$.pblog.protocol.GetStreamDescription\x12\x1a\n\x12\x62ytes_per_response\x18\x02 \x01(\r\x12\x17\n\x0fsocket_identity\x18\x03 \x03(\x0c')
+  serialized_pb='\n\x12pblog/pblogd.proto\x12\x0cpblog.pblogd\x1a\x14pblog/protocol.proto\"~\n\nGetRequest\x12\x34\n\x06stream\x18\x01 \x03(\x0b\x32$.pblog.protocol.GetStreamDescription\x12!\n\x12\x62ytes_per_response\x18\x02 \x01(\r:\x05\x36\x35\x35\x33\x35\x12\x17\n\x0fsocket_identity\x18\x03 \x03(\x0c')
 
 
 
@@ -33,7 +33,7 @@ _GETREQUEST = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='bytes_per_response', full_name='pblog.pblogd.GetRequest.bytes_per_response', index=1,
       number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
+      has_default_value=True, default_value=65535,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -54,7 +54,7 @@ _GETREQUEST = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=58,
-  serialized_end=177,
+  serialized_end=184,
 )
 
 import pblog.protocol_pb2
