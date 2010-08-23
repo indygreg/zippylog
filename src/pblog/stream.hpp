@@ -25,6 +25,7 @@
 namespace pblog {
 
 using ::google::protobuf::int64;
+using ::google::protobuf::int32;
 using ::google::protobuf::io::FileInputStream;
 using ::google::protobuf::io::CodedInputStream;
 using ::std::string;
@@ -36,13 +37,21 @@ class PBLOG_EXPORT InputStream {
         ~InputStream();
 
         bool OpenFile(string file, int64 start_offset = 0);
-        bool ReadEnvelope(::pblog::Envelope &envelope);
+
+        // Size (in bytes) of the next envelope in the stream
+        // does NOT include size of envelope size encoding
+        uint32 NextEnvelopeSize();
+
+        bool ReadEnvelope(::pblog::Envelope &envelope, uint32 &bytes_read);
         bool Seek(int64 offset);
 
     private:
         int _fd;
         FileInputStream *_is;
         CodedInputStream *_cis;
+        bool _have_next_size;
+        uint32 _next_envelope_size;
+
 };
 
 class PBLOG_EXPORT OutputStream {

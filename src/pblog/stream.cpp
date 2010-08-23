@@ -54,6 +54,8 @@ bool InputStream::OpenFile(string file, int64 start_offset)
 
     if (this->_is) delete this->_is;
     if (this->_cis) delete this->_cis;
+    this->_have_next_size = false;
+    this->_next_envelope_size = 0;
 
     this->_fd = open(file.c_str(), O_RDONLY | O_BINARY);
     if (this->_fd < 0) {
@@ -83,14 +85,52 @@ bool InputStream::OpenFile(string file, int64 start_offset)
     return true;
 }
 
-bool InputStream::ReadEnvelope(::pblog::Envelope &e)
+uint32 InputStream::NextEnvelopeSize()
 {
-    uint32 size;
-    if (!_cis->ReadVarint32(&size)) return false;
+    if (this->_have_next_size) {
+        return this->_next_envelope_size;
+    }
+
+    if (!this->_cis->ReadVarint32(&this->_next_envelope_size)) {
+        return 0;
+    }
+
+    this->_have_next_size = true;
+
+    return this->_next_envelope_size;
+}
+
+bool InputStream::ReadEnvelope(::pblog::Envelope &e, uint32 &bytes_read)
+{
+    uint32 size = this->NextEnvelopeSize();
+    if (!size) {
+        bytes_read = 0;
+        return false;
+    }
+
     CodedInputStream::Limit limit = _cis->PushLimit(size);
-    if (!e.envelope.ParseFromCodedStream(_cis)) return false;
-    if (!_cis->ConsumedEntireMessage()) return false;
+    if (!e.envelope.ParseFromCodedStream(_cis) || !_cis->ConsumedEntireMessage()) {
+        this->_have_next_size = false;
+        bytes_read = 0;
+        return false;
+    }
+
+    this->_have_next_size = false;
+
     _cis->PopLimit(limit);
+
+    if (size <= 0x7f) {          // 127
+        bytes_read = size + 1;
+    }
+    else if (size <= 0x3fff) {   // 16,383
+        bytes_read = size + 2;
+    }
+    else if (size <= 0x1fffff) { // 2,097,151
+        bytes_read = size + 3;
+    }
+    else {                       // 2,684,35,455 (well, actually a little less due to 32 bit limit
+        bytes_read = size + 4;
+    }
 
     return true;
 }
