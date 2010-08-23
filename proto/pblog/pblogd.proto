@@ -7,6 +7,6 @@ package pblog.pblogd;
 // sent from request processor to stream download worker to describe a get
 message GetRequest {
     repeated pblog.protocol.GetStreamDescription stream = 1;
-    optional uint32 bytes_per_response = 2;
+    optional uint32 bytes_per_response = 2 [default=65535];
     repeated bytes socket_identity = 3;
 }
