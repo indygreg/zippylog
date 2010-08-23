@@ -121,10 +121,10 @@ void protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\034pblog/protocol/request.proto\022\026pblog.pr"
     "otocol.request\032\024pblog/protocol.proto\"\013\n\t"
-    "StoreInfo\"\026\n\006Stream\022\014\n\004path\030\001 \003(\t\"W\n\003Get"
+    "StoreInfo\"\026\n\006Stream\022\014\n\004path\030\001 \003(\t\"^\n\003Get"
     "\0224\n\006stream\030\001 \003(\0132$.pblog.protocol.GetStr"
-    "eamDescription\022\032\n\022bytes_per_response\030\002 \001"
-    "(\r", 202);
+    "eamDescription\022!\n\022bytes_per_response\030\002 \001"
+    "(\r:\00565535", 209);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
@@ -531,7 +531,7 @@ Get::Get(const Get& from)
 
 void Get::SharedCtor() {
   _cached_size_ = 0;
-  bytes_per_response_ = 0u;
+  bytes_per_response_ = 65535u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -566,7 +566,7 @@ Get* Get::New() const {
 
 void Get::Clear() {
   if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
-    bytes_per_response_ = 0u;
+    bytes_per_response_ = 65535u;
   }
   stream_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -594,7 +594,7 @@ bool Get::MergePartialFromCodedStream(
         break;
       }
       
-      // optional uint32 bytes_per_response = 2;
+      // optional uint32 bytes_per_response = 2 [default = 65535];
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -634,7 +634,7 @@ void Get::SerializeWithCachedSizes(
       1, this->stream(i), output);
   }
   
-  // optional uint32 bytes_per_response = 2;
+  // optional uint32 bytes_per_response = 2 [default = 65535];
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->bytes_per_response(), output);
   }
@@ -654,7 +654,7 @@ void Get::SerializeWithCachedSizes(
         1, this->stream(i), target);
   }
   
-  // optional uint32 bytes_per_response = 2;
+  // optional uint32 bytes_per_response = 2 [default = 65535];
   if (_has_bit(1)) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->bytes_per_response(), target);
   }
@@ -670,7 +670,7 @@ int Get::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
-    // optional uint32 bytes_per_response = 2;
+    // optional uint32 bytes_per_response = 2 [default = 65535];
     if (has_bytes_per_response()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
