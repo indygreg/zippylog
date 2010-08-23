@@ -15,7 +15,7 @@
 #pragma once
 
 #include <pblog/pblog.h>
-#include <pblog/server.hpp>
+#include <pblog/broker.hpp>
 #include <pblog/store.hpp>
 
 #include <io.h>
@@ -23,20 +23,15 @@
 #include <stdlib.h>
 
 #include <apr.h>
-#include <apr_tables.h>
 #include <apr_general.h>
 #include <apr_getopt.h>
 #include <apr_strings.h>
-#include <apr_thread_proc.h>
 #include <zmq.hpp>
 
 using namespace ::pblog;
 using namespace ::pblog::server;
 
 #define MEMORY_ERROR "out of memory" APR_EOL_STR
-
-// where workers bind to
-#define WORKER_ENDPOINT "inproc://worker_requests"
 
 void _exit()
 {
@@ -55,9 +50,6 @@ int main(int argc, const char * const argv[])
     apr_status_t st;
     apr_pool_t *p, *p_opts;
     apr_getopt_t *opt;
-    apr_array_header_t *threads;
-    apr_thread_t *thread;
-    apr_threadattr_t *threadattr;
     char option;
     const char *arg;
     apr_int64_t max_threads = 10;
@@ -116,46 +108,9 @@ int main(int argc, const char * const argv[])
 
     Store store = Store(store_path, p);
 
-    /* this socket code is almost as easy as a scripting language! */
-    zmq::context_t zctx(1);
-    zmq::socket_t zworkers(zctx, ZMQ_XREQ);
-    zworkers.bind(WORKER_ENDPOINT);
-
-    zmq::socket_t zsock(zctx, ZMQ_XREP);
-    char * slisten = apr_psprintf(p, "tcp://%s:%d", listen_address, listen_port);
-    zsock.bind(slisten);
-
-    threads = apr_array_make(p, (int)max_threads, sizeof(apr_thread_t *));
-
-    request_processor_start_data data;
-
-    data.ctx = &zctx;
-    data.store = &store;
-    data.socket_endpoint = WORKER_ENDPOINT;
-
-    /* set up our request handling threads */
-    /* TODO make into thread pool */
-    for ( ; max_threads; --max_threads) {
-        thread = APR_ARRAY_PUSH(threads, apr_thread_t *);
-        st = apr_threadattr_create(&threadattr, p);
-        st = apr_thread_create(&thread, threadattr, ::pblog::server::Request::request_processor, &data, p);
-    }
-
-    /* create thread to handle streaming */
-    stream_processor_start_data stream_data;
-    stream_data.ctx = &zctx;
-    stream_data.store = &store;
-    stream_data.socket_endpoint = WORKER_ENDPOINT;
-    apr_threadattr_create(&threadattr, p);
-    apr_thread_t *stream_thread = NULL;
-    //apr_thread_create(&stream_thread, threadattr, ::pblog::server::stream_processor, &stream_data, p);
-
-    /* this blocks forever, if successful */
-    st = zmq_device(ZMQ_QUEUE, zsock, zworkers);
-    if (st) {
-        printf("unable to create ZMQ queue device\n");
-        exit(1);
-    }
+    Broker broker = Broker(&store, p);
+    broker.add_listen_endpoint(apr_psprintf(p, "tcp://%s:%d", listen_address, listen_port));
+    broker.run();
 
     return 0;
 }

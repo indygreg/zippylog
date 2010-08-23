@@ -69,7 +69,7 @@ StoreInfo * Client::store_info()
 void Client::get_stream(const string bucket, const string set, const string stream)
 {
     request::Get get = request::Get();
-    request::GetStreamDescription *desc = get.add_stream();
+    GetStreamDescription *desc = get.add_stream();
 
     desc->set_bucket(bucket);
     desc->set_stream_set(set);

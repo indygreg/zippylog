@@ -83,6 +83,7 @@ public:
         WAITING = 1,
         RESET = 2,
         PARSE_RECEIVED = 3,
+        PROCESS_GET = 4,
     };
 
     // thread start function for download worker

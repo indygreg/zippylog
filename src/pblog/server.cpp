@@ -24,6 +24,7 @@ easier to grok.
 
 #include <pblog/server.hpp>
 #include <pblog/message.pb.h>
+#include <pblog/pblogd.pb.h>
 #include <pblog/protocol.pb.h>
 #include <pblog/protocol/request.pb.h>
 #include <pblog/protocol/response.pb.h>
@@ -56,8 +57,8 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
     socket_t *socket = NULL;
     socket_t *dsock = NULL;
 
-    dsock = new socket_t(*d->ctx, ZMQ_PUB);
-    dsock->bind(d->download_endpoint);
+    dsock = new socket_t(*d->ctx, ZMQ_XREQ);
+    dsock->connect(d->download_endpoint);
 
     /* variables used across states */
     pblog::Envelope request_envelope;
@@ -94,6 +95,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                 /* 2nd identity message */
                 socket->recv(&identities[1], 0);
                 socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+
 
                 if (!more) {
                     state = Request::RESET_CONNECTION;
@@ -217,7 +219,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                 }
 
                 for (int i = 0; i < get->stream_size(); i++) {
-                    protocol::request::GetStreamDescription d = get->stream(i);
+                    protocol::GetStreamDescription d = get->stream(i);
 
                     if (d.start_byte_offset() >= d.end_byte_offset()) {
                         error_code = protocol::response::INVALID_OFFSET;
@@ -228,16 +230,13 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     }
                 }
 
-                // TODO perform additional stream verification
-
-                // we pass the request to the download worker, which does the heavy lifting
-                response_envelope = pblog::Envelope();
-                get->add_to_envelope(&response_envelope);
+                // TODO ensure option of path | {bucket, stream_set, stream} both populated
 
                 for (int i = 0; i < get->stream_size(); i++) {
-                    protocol::request::GetStreamDescription desc = get->stream(i);
+                    protocol::GetStreamDescription desc = get->stream(i);
 
                     InputStream stream = InputStream();
+                    // TODO don't need to open stream, just check for existence
                     if (!d->store->get_input_stream(desc.bucket(), desc.stream_set(), desc.stream(), stream)) {
                         // TODO assumption not always valid for simple bool return code
                         error_code = protocol::response::PATH_NOT_FOUND;
@@ -246,36 +245,26 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                         delete get;
                         break;
                     }
-
-                    stream.Seek(desc.start_byte_offset());
-
-                    pblog::Envelope m = pblog::Envelope();
-                    for (;;) {
-                        if (!stream.ReadEnvelope(m)) break;
-
-                        // TODO factor out into something better
-                        message_t *msg = m.to_zmq_message();
-
-                        // need to copy identity messages b/c that's how 0MQ works
-                        message_t i1;
-                        i1.copy(&identities[0]);
-
-                        message_t i2;
-                        i2.copy(&identities[1]);
-
-                        socket->send(i1, ZMQ_SNDMORE);
-                        socket->send(i2, ZMQ_SNDMORE);
-
-                        printf("sending envelope...\n");
-                        if (!socket->send(*msg, 0)) {
-                            printf("error sending envelope!\n");
-                        }
-
-
-                    }
                 }
 
+                // TODO perform additional stream verification
+
+                // we pass the request to the download worker, which does the heavy lifting
+                pblogd::GetRequest get_msg = pblogd::GetRequest();
+
+                for (int i = 0; i < get->stream_size(); i++) {
+                    protocol::GetStreamDescription * desc = get_msg.add_stream();
+                    desc->CopyFrom(get->stream(i));
+                }
+
+                get_msg.add_socket_identity(identities[1].data(), identities[1].size());
+                response_envelope = pblog::Envelope();
+                get_msg.add_to_envelope(&response_envelope);
+                message_t * download_msg = response_envelope.to_zmq_message();
+                dsock->send(*download_msg, 0);
+                delete download_msg;
                 delete get;
+
                 state = Request::WAITING;
                 break;
             }
@@ -299,6 +288,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     state = Request::RESET_CONNECTION;
                     break;
                 }
+
 
                 if (!socket->send(identities[1], ZMQ_SNDMORE)) {
                     state = Request::RESET_CONNECTION;
@@ -348,19 +338,25 @@ void * __stdcall Download::download_worker(apr_thread_t *thread, void *init_data
 {
     download_worker_init *init = (download_worker_init *)init_data;
 
-    socket_t *jsock = new socket_t(*init->ctx, ZMQ_SUB);
-    socket_t *rsock = new socket_t(*init->ctx, ZMQ_PUB);
+    assert(init->ctx);
+    assert(init->store);
+    assert(init->broker_endpoint);
+    assert(init->jobs_endpoint);
 
-    // subscribe to everything
-    jsock->setsockopt(ZMQ_SUBSCRIBE, "", 0);
+    pblog::Store *store = init->store;
+
+    socket_t *jsock = new socket_t(*init->ctx, ZMQ_XREP);
+    socket_t *rsock = new socket_t(*init->ctx, ZMQ_XREQ);
+
     jsock->connect(init->jobs_endpoint);
-
-    rsock->bind(init->broker_endpoint);
+    rsock->connect(init->broker_endpoint);
 
     // variables used by multiple states
     int state = Download::WAITING;
     vector<message_t *> identities;
     vector<message_t *> received_msgs;
+    int stream_offset;
+    pblogd::GetRequest request;
 
     bool loop = true;
     while (loop) {
@@ -372,29 +368,71 @@ void * __stdcall Download::download_worker(apr_thread_t *thread, void *init_data
 
             case Download::RESET:
                 for (size_t i = identities.size(); i; ) {
-                    delete identities.at(i--);
+                    delete identities[--i];
                 }
                 for (size_t i = received_msgs.size(); i; ) {
-                    delete received_msgs.at(i--);
+                    delete received_msgs[--i];
                 }
+                stream_offset = -1;
                 received_msgs.clear();
                 state = Download::WAITING;
                 break;
 
             case Download::PARSE_RECEIVED:
-                // TODO what is appropriate action here?
-                if (received_msgs.size() > 1) {
+            {
+                // TODO handle identities properly
+
+                ::pblog::Envelope envelope = ::pblog::Envelope(received_msgs[received_msgs.size()-1]);
+                assert(envelope.number_messages() == 1);
+                assert(envelope.message_namespace(0) == pblogd::GetRequest::pblog_namespace);
+                assert(envelope.message_type(0) == pblogd::GetRequest::pblog_enumeration);
+
+                request = pblogd::GetRequest(*(pblogd::GetRequest *)envelope.get_message(0));
+
+                stream_offset = 0;
+                state = Download::PROCESS_GET;
+                break;
+            }
+
+            case Download::PROCESS_GET:
+            {
+                // state transitions to itself until we have exhausted all streams
+                if (stream_offset >= request.stream_size()) {
                     state = Download::RESET;
                     break;
                 }
 
-                ::pblog::Envelope envelope = ::pblog::Envelope(received_msgs[0]);
-                assert(envelope.number_messages() == 1);
-                assert(envelope.message_namespace(0) == 1);
-                assert(envelope.message_type(0) == protocol::request::Get::pblog_enumeration);
+                protocol::GetStreamDescription desc = request.stream(stream_offset++);
 
-                state = Download::RESET;
+                InputStream stream;
+                if (!store->get_input_stream(desc.bucket(), desc.stream_set(), desc.stream(), stream)) {
+                    // TODO handle error
+                    break;
+                }
+
+                stream.Seek(desc.start_byte_offset());
+
+                pblog::Envelope m = pblog::Envelope();
+                for (;;) {
+                    if (!stream.ReadEnvelope(m)) break;
+
+                    message_t ident(request.socket_identity(0).length());
+                    memcpy(ident.data(), request.socket_identity(0).c_str(), request.socket_identity(0).length());
+
+                    message_t *msg = m.to_zmq_message();
+
+                    // need to copy identity messages b/c that's how 0MQ works
+                    rsock->send(ident, ZMQ_SNDMORE);
+                    printf("sending envelope...\n");
+                    if (!rsock->send(*msg, 0)) {
+                        printf("error sending envelope!\n");
+                    }
+
+                    delete msg;
+                }
+
                 break;
+            }
         }
     }
 
