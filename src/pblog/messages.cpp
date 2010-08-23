@@ -17,7 +17,8 @@ namespace pblog {
         registrar->register_message(1, 4, new ::pblog::protocol::StoreInfo());
         registrar->register_message(1, 5, new ::pblog::protocol::GetStreamDescription());
         registrar->register_message(1, 6, new ::pblog::pblogd::GetRequest());
-        registrar->register_message(1, 9, new ::pblog::protocol::response::Get());
+        registrar->register_message(1, 14, new ::pblog::protocol::response::StreamSegmentStart());
+        registrar->register_message(1, 15, new ::pblog::protocol::response::StreamSegmentStop());
         registrar->register_message(1, 10, new ::pblog::protocol::response::Error());
         registrar->register_message(1, 11, new ::pblog::protocol::request::StoreInfo());
         registrar->register_message(1, 12, new ::pblog::protocol::request::Stream());

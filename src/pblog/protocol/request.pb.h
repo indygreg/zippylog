@@ -293,7 +293,7 @@ class Get : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >*
       mutable_stream();
   
-  // optional uint32 bytes_per_response = 2;
+  // optional uint32 bytes_per_response = 2 [default = 65535];
   inline bool has_bytes_per_response() const;
   inline void clear_bytes_per_response();
   static const int kBytesPerResponseFieldNumber = 2;
@@ -414,12 +414,12 @@ Get::mutable_stream() {
   return &stream_;
 }
 
-// optional uint32 bytes_per_response = 2;
+// optional uint32 bytes_per_response = 2 [default = 65535];
 inline bool Get::has_bytes_per_response() const {
   return _has_bit(1);
 }
 inline void Get::clear_bytes_per_response() {
-  bytes_per_response_ = 0u;
+  bytes_per_response_ = 65535u;
   _clear_bit(1);
 }
 inline ::google::protobuf::uint32 Get::bytes_per_response() const {

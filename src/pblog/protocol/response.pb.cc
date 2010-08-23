@@ -16,9 +16,12 @@ namespace response {
 
 namespace {
 
-const ::google::protobuf::Descriptor* Get_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* StreamSegmentStart_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Get_reflection_ = NULL;
+  StreamSegmentStart_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StreamSegmentStop_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StreamSegmentStop_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Error_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Error_reflection_ = NULL;
@@ -33,21 +36,39 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "pblog/protocol/response.proto");
   GOOGLE_CHECK(file != NULL);
-  Get_descriptor_ = file->message_type(0);
-  static const int Get_offsets_[1] = {
+  StreamSegmentStart_descriptor_ = file->message_type(0);
+  static const int StreamSegmentStart_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, stream_start_offset_),
   };
-  Get_reflection_ =
+  StreamSegmentStart_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      Get_descriptor_,
-      Get::default_instance_,
-      Get_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, _unknown_fields_),
+      StreamSegmentStart_descriptor_,
+      StreamSegmentStart::default_instance_,
+      StreamSegmentStart_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Get));
-  Error_descriptor_ = file->message_type(1);
+      sizeof(StreamSegmentStart));
+  StreamSegmentStop_descriptor_ = file->message_type(1);
+  static const int StreamSegmentStop_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, stream_stop_offset_),
+  };
+  StreamSegmentStop_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      StreamSegmentStop_descriptor_,
+      StreamSegmentStop::default_instance_,
+      StreamSegmentStop_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(StreamSegmentStop));
+  Error_descriptor_ = file->message_type(2);
   static const int Error_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, code_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, msg_),
@@ -77,7 +98,9 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Get_descriptor_, &Get::default_instance());
+    StreamSegmentStart_descriptor_, &StreamSegmentStart::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    StreamSegmentStop_descriptor_, &StreamSegmentStop::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Error_descriptor_, &Error::default_instance());
 }
@@ -85,8 +108,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto() {
-  delete Get::default_instance_;
-  delete Get_reflection_;
+  delete StreamSegmentStart::default_instance_;
+  delete StreamSegmentStart_reflection_;
+  delete StreamSegmentStop::default_instance_;
+  delete StreamSegmentStop_reflection_;
   delete Error::default_instance_;
   delete Error_reflection_;
 }
@@ -99,21 +124,27 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
-    "rotocol.response\"\005\n\003Get\"F\n\005Error\0220\n\004code"
-    "\030\001 \001(\0162\".pblog.protocol.response.ErrorCo"
-    "de\022\013\n\003msg\030\002 \001(\t*\234\002\n\tErrorCode\022\032\n\026ENVELOP"
-    "E_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAM"
-    "ESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EM"
-    "PTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005"
-    "\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_F"
-    "IELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025I"
-    "NVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET"
-    "\020\n\022\022\n\016PATH_NOT_FOUND\020\013", 422);
+    "rotocol.response\"?\n\022StreamSegmentStart\022\014"
+    "\n\004path\030\001 \001(\t\022\033\n\023stream_start_offset\030\002 \001("
+    "\004\"=\n\021StreamSegmentStop\022\014\n\004path\030\001 \001(\t\022\032\n\022"
+    "stream_stop_offset\030\002 \001(\004\"F\n\005Error\0220\n\004cod"
+    "e\030\001 \001(\0162\".pblog.protocol.response.ErrorC"
+    "ode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032\n\026ENVELO"
+    "PE_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NA"
+    "MESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016E"
+    "MPTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020"
+    "\005\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_"
+    "FIELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025"
+    "INVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSE"
+    "T\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDE"
+    "D\020\014", 563);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
-  Get::default_instance_ = new Get();
+  StreamSegmentStart::default_instance_ = new StreamSegmentStart();
+  StreamSegmentStop::default_instance_ = new StreamSegmentStop();
   Error::default_instance_ = new Error();
-  Get::default_instance_->InitAsDefaultInstance();
+  StreamSegmentStart::default_instance_->InitAsDefaultInstance();
+  StreamSegmentStop::default_instance_->InitAsDefaultInstance();
   Error::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto);
 }
@@ -142,6 +173,7 @@ bool ErrorCode_IsValid(int value) {
     case 9:
     case 10:
     case 11:
+    case 12:
       return true;
     default:
       return false;
@@ -151,88 +183,171 @@ bool ErrorCode_IsValid(int value) {
 
 // ===================================================================
 
+const ::std::string StreamSegmentStart::_default_path_;
 #ifndef _MSC_VER
+const int StreamSegmentStart::kPathFieldNumber;
+const int StreamSegmentStart::kStreamStartOffsetFieldNumber;
 #endif  // !_MSC_VER
 
-Get::Get()
+StreamSegmentStart::StreamSegmentStart()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void Get::InitAsDefaultInstance() {
+void StreamSegmentStart::InitAsDefaultInstance() {
 }
 
-Get::Get(const Get& from)
+StreamSegmentStart::StreamSegmentStart(const StreamSegmentStart& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void Get::SharedCtor() {
+void StreamSegmentStart::SharedCtor() {
   _cached_size_ = 0;
+  path_ = const_cast< ::std::string*>(&_default_path_);
+  stream_start_offset_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-Get::~Get() {
+StreamSegmentStart::~StreamSegmentStart() {
   SharedDtor();
 }
 
-void Get::SharedDtor() {
+void StreamSegmentStart::SharedDtor() {
+  if (path_ != &_default_path_) {
+    delete path_;
+  }
   if (this != default_instance_) {
   }
 }
 
-void Get::SetCachedSize(int size) const {
+void StreamSegmentStart::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Get::descriptor() {
+const ::google::protobuf::Descriptor* StreamSegmentStart::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Get_descriptor_;
+  return StreamSegmentStart_descriptor_;
 }
 
-const Get& Get::default_instance() {
+const StreamSegmentStart& StreamSegmentStart::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
 }
 
-Get* Get::default_instance_ = NULL;
+StreamSegmentStart* StreamSegmentStart::default_instance_ = NULL;
 
-Get* Get::New() const {
-  return new Get;
+StreamSegmentStart* StreamSegmentStart::New() const {
+  return new StreamSegmentStart;
 }
 
-void Get::Clear() {
+void StreamSegmentStart::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (path_ != &_default_path_) {
+        path_->clear();
+      }
+    }
+    stream_start_offset_ = GOOGLE_ULONGLONG(0);
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool Get::MergePartialFromCodedStream(
+bool StreamSegmentStart::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string path = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->path().data(), this->path().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_stream_start_offset;
+        break;
+      }
+      
+      // optional uint64 stream_start_offset = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_stream_start_offset:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &stream_start_offset_)));
+          _set_bit(1);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
 }
 
-void Get::SerializeWithCachedSizes(
+void StreamSegmentStart::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->path(), output);
+  }
+  
+  // optional uint64 stream_start_offset = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stream_start_offset(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
 }
 
-::google::protobuf::uint8* Get::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* StreamSegmentStart::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->path(), target);
+  }
+  
+  // optional uint64 stream_start_offset = 2;
+  if (_has_bit(1)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stream_start_offset(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -240,9 +355,25 @@ void Get::SerializeWithCachedSizes(
   return target;
 }
 
-int Get::ByteSize() const {
+int StreamSegmentStart::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string path = 1;
+    if (has_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->path());
+    }
+    
+    // optional uint64 stream_start_offset = 2;
+    if (has_stream_start_offset()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->stream_start_offset());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -254,10 +385,10 @@ int Get::ByteSize() const {
   return total_size;
 }
 
-void Get::MergeFrom(const ::google::protobuf::Message& from) {
+void StreamSegmentStart::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const Get* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Get*>(
+  const StreamSegmentStart* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StreamSegmentStart*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -266,40 +397,316 @@ void Get::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void Get::MergeFrom(const Get& from) {
+void StreamSegmentStart::MergeFrom(const StreamSegmentStart& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_path(from.path());
+    }
+    if (from._has_bit(1)) {
+      set_stream_start_offset(from.stream_start_offset());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void Get::CopyFrom(const ::google::protobuf::Message& from) {
+void StreamSegmentStart::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Get::CopyFrom(const Get& from) {
+void StreamSegmentStart::CopyFrom(const StreamSegmentStart& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Get::IsInitialized() const {
+bool StreamSegmentStart::IsInitialized() const {
   
   return true;
 }
 
-void Get::Swap(Get* other) {
+void StreamSegmentStart::Swap(StreamSegmentStart* other) {
   if (other != this) {
+    std::swap(path_, other->path_);
+    std::swap(stream_start_offset_, other->stream_start_offset_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Get::GetMetadata() const {
+::google::protobuf::Metadata StreamSegmentStart::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Get_descriptor_;
-  metadata.reflection = Get_reflection_;
+  metadata.descriptor = StreamSegmentStart_descriptor_;
+  metadata.reflection = StreamSegmentStart_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string StreamSegmentStop::_default_path_;
+#ifndef _MSC_VER
+const int StreamSegmentStop::kPathFieldNumber;
+const int StreamSegmentStop::kStreamStopOffsetFieldNumber;
+#endif  // !_MSC_VER
+
+StreamSegmentStop::StreamSegmentStop()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void StreamSegmentStop::InitAsDefaultInstance() {
+}
+
+StreamSegmentStop::StreamSegmentStop(const StreamSegmentStop& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void StreamSegmentStop::SharedCtor() {
+  _cached_size_ = 0;
+  path_ = const_cast< ::std::string*>(&_default_path_);
+  stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+StreamSegmentStop::~StreamSegmentStop() {
+  SharedDtor();
+}
+
+void StreamSegmentStop::SharedDtor() {
+  if (path_ != &_default_path_) {
+    delete path_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void StreamSegmentStop::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StreamSegmentStop::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StreamSegmentStop_descriptor_;
+}
+
+const StreamSegmentStop& StreamSegmentStop::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
+}
+
+StreamSegmentStop* StreamSegmentStop::default_instance_ = NULL;
+
+StreamSegmentStop* StreamSegmentStop::New() const {
+  return new StreamSegmentStop;
+}
+
+void StreamSegmentStop::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (path_ != &_default_path_) {
+        path_->clear();
+      }
+    }
+    stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool StreamSegmentStop::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string path = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->path().data(), this->path().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_stream_stop_offset;
+        break;
+      }
+      
+      // optional uint64 stream_stop_offset = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_stream_stop_offset:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &stream_stop_offset_)));
+          _set_bit(1);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void StreamSegmentStop::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->path(), output);
+  }
+  
+  // optional uint64 stream_stop_offset = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stream_stop_offset(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* StreamSegmentStop::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->path(), target);
+  }
+  
+  // optional uint64 stream_stop_offset = 2;
+  if (_has_bit(1)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stream_stop_offset(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int StreamSegmentStop::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string path = 1;
+    if (has_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->path());
+    }
+    
+    // optional uint64 stream_stop_offset = 2;
+    if (has_stream_stop_offset()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->stream_stop_offset());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StreamSegmentStop::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const StreamSegmentStop* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StreamSegmentStop*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void StreamSegmentStop::MergeFrom(const StreamSegmentStop& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_path(from.path());
+    }
+    if (from._has_bit(1)) {
+      set_stream_stop_offset(from.stream_stop_offset());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void StreamSegmentStop::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StreamSegmentStop::CopyFrom(const StreamSegmentStop& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StreamSegmentStop::IsInitialized() const {
+  
+  return true;
+}
+
+void StreamSegmentStop::Swap(StreamSegmentStop* other) {
+  if (other != this) {
+    std::swap(path_, other->path_);
+    std::swap(stream_stop_offset_, other->stream_stop_offset_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata StreamSegmentStop::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StreamSegmentStop_descriptor_;
+  metadata.reflection = StreamSegmentStop_reflection_;
   return metadata;
 }
 
@@ -576,7 +983,11 @@ void Error::Swap(Error* other) {
 
 
 
-bool Get::add_to_envelope(::pblog::Envelope *envelope) {
+bool StreamSegmentStart::add_to_envelope(::pblog::Envelope *envelope) {
+    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
+}
+
+bool StreamSegmentStop::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);
 }
 

@@ -29,5 +29,5 @@ message Get {
     // tells the server how many bytes you would like in each response
     // message set. normally, the default value will be sufficient. in some
     // situations, it may be desirable to adjust this for better performance
-    optional uint32 bytes_per_response = 2;
+    optional uint32 bytes_per_response = 2 [default=65535];
 }

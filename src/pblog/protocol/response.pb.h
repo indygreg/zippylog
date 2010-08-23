@@ -35,7 +35,8 @@ void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
 
-class Get;
+class StreamSegmentStart;
+class StreamSegmentStop;
 class Error;
 
 enum ErrorCode {
@@ -49,11 +50,12 @@ enum ErrorCode {
   FIELD_LENGTHS_DIFFERENT = 8,
   INVALID_STREAM_OFFSET = 9,
   INVALID_OFFSET = 10,
-  PATH_NOT_FOUND = 11
+  PATH_NOT_FOUND = 11,
+  LIMIT_EXCEEDED = 12
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = PATH_NOT_FOUND;
+const ErrorCode ErrorCode_MAX = LIMIT_EXCEEDED;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
@@ -68,14 +70,14 @@ inline bool ErrorCode_Parse(
 }
 // ===================================================================
 
-class Get : public ::google::protobuf::Message {
+class StreamSegmentStart : public ::google::protobuf::Message {
  public:
-  Get();
-  virtual ~Get();
+  StreamSegmentStart();
+  virtual ~StreamSegmentStart();
   
-  Get(const Get& from);
+  StreamSegmentStart(const StreamSegmentStart& from);
   
-  inline Get& operator=(const Get& from) {
+  inline StreamSegmentStart& operator=(const StreamSegmentStart& from) {
     CopyFrom(from);
     return *this;
   }
@@ -89,17 +91,17 @@ class Get : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Get& default_instance();
+  static const StreamSegmentStart& default_instance();
   
-  void Swap(Get* other);
+  void Swap(StreamSegmentStart* other);
   
   // implements Message ----------------------------------------------
   
-  Get* New() const;
+  StreamSegmentStart* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Get& from);
-  void MergeFrom(const Get& from);
+  void CopyFrom(const StreamSegmentStart& from);
+  void MergeFrom(const StreamSegmentStart& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -122,19 +124,39 @@ class Get : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional string path = 1;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  // optional uint64 stream_start_offset = 2;
+  inline bool has_stream_start_offset() const;
+  inline void clear_stream_start_offset();
+  static const int kStreamStartOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 stream_start_offset() const;
+  inline void set_stream_start_offset(::google::protobuf::uint64 value);
+  
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 9;
+  static const ::google::protobuf::uint32 pblog_enumeration = 14;
   bool add_to_envelope(::pblog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:pblog.protocol.response.Get)
+  // @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStart)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  ::google::protobuf::uint64 stream_start_offset_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -148,7 +170,111 @@ class Get : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static Get* default_instance_;
+  static StreamSegmentStart* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StreamSegmentStop : public ::google::protobuf::Message {
+ public:
+  StreamSegmentStop();
+  virtual ~StreamSegmentStop();
+  
+  StreamSegmentStop(const StreamSegmentStop& from);
+  
+  inline StreamSegmentStop& operator=(const StreamSegmentStop& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StreamSegmentStop& default_instance();
+  
+  void Swap(StreamSegmentStop* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StreamSegmentStop* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StreamSegmentStop& from);
+  void MergeFrom(const StreamSegmentStop& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string path = 1;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  // optional uint64 stream_stop_offset = 2;
+  inline bool has_stream_stop_offset() const;
+  inline void clear_stream_stop_offset();
+  static const int kStreamStopOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 stream_stop_offset() const;
+  inline void set_stream_stop_offset(::google::protobuf::uint64 value);
+  
+  static const ::google::protobuf::uint32 pblog_namespace = 1;
+  static const ::google::protobuf::uint32 pblog_enumeration = 15;
+  bool add_to_envelope(::pblog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStop)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  ::google::protobuf::uint64 stream_stop_offset_;
+  friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StreamSegmentStop* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -259,7 +385,127 @@ class Error : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// Get
+// StreamSegmentStart
+
+// optional string path = 1;
+inline bool StreamSegmentStart::has_path() const {
+  return _has_bit(0);
+}
+inline void StreamSegmentStart::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamSegmentStart::path() const {
+  return *path_;
+}
+inline void StreamSegmentStart::set_path(const ::std::string& value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void StreamSegmentStart::set_path(const char* value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void StreamSegmentStart::set_path(const char* value, size_t size) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamSegmentStart::mutable_path() {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// optional uint64 stream_start_offset = 2;
+inline bool StreamSegmentStart::has_stream_start_offset() const {
+  return _has_bit(1);
+}
+inline void StreamSegmentStart::clear_stream_start_offset() {
+  stream_start_offset_ = GOOGLE_ULONGLONG(0);
+  _clear_bit(1);
+}
+inline ::google::protobuf::uint64 StreamSegmentStart::stream_start_offset() const {
+  return stream_start_offset_;
+}
+inline void StreamSegmentStart::set_stream_start_offset(::google::protobuf::uint64 value) {
+  _set_bit(1);
+  stream_start_offset_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// StreamSegmentStop
+
+// optional string path = 1;
+inline bool StreamSegmentStop::has_path() const {
+  return _has_bit(0);
+}
+inline void StreamSegmentStop::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamSegmentStop::path() const {
+  return *path_;
+}
+inline void StreamSegmentStop::set_path(const ::std::string& value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void StreamSegmentStop::set_path(const char* value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void StreamSegmentStop::set_path(const char* value, size_t size) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamSegmentStop::mutable_path() {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// optional uint64 stream_stop_offset = 2;
+inline bool StreamSegmentStop::has_stream_stop_offset() const {
+  return _has_bit(1);
+}
+inline void StreamSegmentStop::clear_stream_stop_offset() {
+  stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+  _clear_bit(1);
+}
+inline ::google::protobuf::uint64 StreamSegmentStop::stream_stop_offset() const {
+  return stream_stop_offset_;
+}
+inline void StreamSegmentStop::set_stream_stop_offset(::google::protobuf::uint64 value) {
+  _set_bit(1);
+  stream_stop_offset_ = value;
+}
 
 // -------------------------------------------------------------------
 

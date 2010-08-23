@@ -2,8 +2,20 @@
 
 package pblog.protocol.response;
 
-// acknowledges Get request acceptance
-message Get { }
+// when a stream segment is downloaded, this will be the first message
+// sent by the server. it tells the client what it is receiving
+message StreamSegmentStart {
+    optional string path = 1;
+    optional uint64 stream_start_offset = 2;
+}
+
+// this terminates a stream segment sent by the server
+// the client should use the seen offsets to record which part of the stream(s)
+// it has received and repeat requests, if necessary
+message StreamSegmentStop {
+    optional string path = 1;
+    optional uint64 stream_stop_offset = 2;
+}
 
 message Error {
     optional ErrorCode code = 1;
@@ -45,4 +57,7 @@ enum ErrorCode {
     
     // requested path does not exist in the store
     PATH_NOT_FOUND = 11;
+    
+    // some type of limit of exceeded
+    LIMIT_EXCEEDED = 12;
 }
