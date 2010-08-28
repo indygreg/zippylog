@@ -6,7 +6,7 @@ package pblog.protocol.response;
 // sent by the server. it tells the client what it is receiving
 message StreamSegmentStart {
     optional string path = 1;
-    optional uint64 stream_start_offset = 2;
+    optional uint64 offset = 2;
 }
 
 // this terminates a stream segment sent by the server
@@ -14,9 +14,17 @@ message StreamSegmentStart {
 // it has received and repeat requests, if necessary
 message StreamSegmentEnd {
     optional string path = 1;
-    optional uint64 stream_stop_offset = 2;
-    
-    // TODO need to record errors here, likely
+
+    // offset at which next event begins
+    optional uint64 offset = 2;
+
+    // total bytes sent in the segment
+    optional uint32 bytes_sent = 3;
+
+    // total events sent in the segment
+    optional uint32 events_sent = 4;
+
+    // TODO record offset ranges that were skipped, possibly why
 }
 
 message Error {
@@ -53,13 +61,13 @@ enum ErrorCode {
 
     // a specified stream offset is not valid
     INVALID_STREAM_OFFSET = 9;
-    
+
     // offset is invalid
     INVALID_OFFSET = 10;
-    
+
     // requested path does not exist in the store
     PATH_NOT_FOUND = 11;
-    
+
     // some type of limit of exceeded
     LIMIT_EXCEEDED = 12;
 }

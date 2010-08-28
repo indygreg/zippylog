@@ -134,12 +134,12 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // optional uint64 stream_start_offset = 2;
-  inline bool has_stream_start_offset() const;
-  inline void clear_stream_start_offset();
-  static const int kStreamStartOffsetFieldNumber = 2;
-  inline ::google::protobuf::uint64 stream_start_offset() const;
-  inline void set_stream_start_offset(::google::protobuf::uint64 value);
+  // optional uint64 offset = 2;
+  inline bool has_offset() const;
+  inline void clear_offset();
+  static const int kOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 offset() const;
+  inline void set_offset(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 7;
@@ -151,7 +151,7 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   
   ::std::string* path_;
   static const ::std::string _default_path_;
-  ::google::protobuf::uint64 stream_start_offset_;
+  ::google::protobuf::uint64 offset_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
@@ -238,12 +238,26 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // optional uint64 stream_stop_offset = 2;
-  inline bool has_stream_stop_offset() const;
-  inline void clear_stream_stop_offset();
-  static const int kStreamStopOffsetFieldNumber = 2;
-  inline ::google::protobuf::uint64 stream_stop_offset() const;
-  inline void set_stream_stop_offset(::google::protobuf::uint64 value);
+  // optional uint64 offset = 2;
+  inline bool has_offset() const;
+  inline void clear_offset();
+  static const int kOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 offset() const;
+  inline void set_offset(::google::protobuf::uint64 value);
+  
+  // optional uint32 bytes_sent = 3;
+  inline bool has_bytes_sent() const;
+  inline void clear_bytes_sent();
+  static const int kBytesSentFieldNumber = 3;
+  inline ::google::protobuf::uint32 bytes_sent() const;
+  inline void set_bytes_sent(::google::protobuf::uint32 value);
+  
+  // optional uint32 events_sent = 4;
+  inline bool has_events_sent() const;
+  inline void clear_events_sent();
+  static const int kEventsSentFieldNumber = 4;
+  inline ::google::protobuf::uint32 events_sent() const;
+  inline void set_events_sent(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 8;
@@ -255,12 +269,14 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   
   ::std::string* path_;
   static const ::std::string _default_path_;
-  ::google::protobuf::uint64 stream_stop_offset_;
+  ::google::protobuf::uint64 offset_;
+  ::google::protobuf::uint32 bytes_sent_;
+  ::google::protobuf::uint32 events_sent_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -429,20 +445,20 @@ inline ::std::string* StreamSegmentStart::mutable_path() {
   return path_;
 }
 
-// optional uint64 stream_start_offset = 2;
-inline bool StreamSegmentStart::has_stream_start_offset() const {
+// optional uint64 offset = 2;
+inline bool StreamSegmentStart::has_offset() const {
   return _has_bit(1);
 }
-inline void StreamSegmentStart::clear_stream_start_offset() {
-  stream_start_offset_ = GOOGLE_ULONGLONG(0);
+inline void StreamSegmentStart::clear_offset() {
+  offset_ = GOOGLE_ULONGLONG(0);
   _clear_bit(1);
 }
-inline ::google::protobuf::uint64 StreamSegmentStart::stream_start_offset() const {
-  return stream_start_offset_;
+inline ::google::protobuf::uint64 StreamSegmentStart::offset() const {
+  return offset_;
 }
-inline void StreamSegmentStart::set_stream_start_offset(::google::protobuf::uint64 value) {
+inline void StreamSegmentStart::set_offset(::google::protobuf::uint64 value) {
   _set_bit(1);
-  stream_start_offset_ = value;
+  offset_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -491,20 +507,52 @@ inline ::std::string* StreamSegmentEnd::mutable_path() {
   return path_;
 }
 
-// optional uint64 stream_stop_offset = 2;
-inline bool StreamSegmentEnd::has_stream_stop_offset() const {
+// optional uint64 offset = 2;
+inline bool StreamSegmentEnd::has_offset() const {
   return _has_bit(1);
 }
-inline void StreamSegmentEnd::clear_stream_stop_offset() {
-  stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+inline void StreamSegmentEnd::clear_offset() {
+  offset_ = GOOGLE_ULONGLONG(0);
   _clear_bit(1);
 }
-inline ::google::protobuf::uint64 StreamSegmentEnd::stream_stop_offset() const {
-  return stream_stop_offset_;
+inline ::google::protobuf::uint64 StreamSegmentEnd::offset() const {
+  return offset_;
 }
-inline void StreamSegmentEnd::set_stream_stop_offset(::google::protobuf::uint64 value) {
+inline void StreamSegmentEnd::set_offset(::google::protobuf::uint64 value) {
   _set_bit(1);
-  stream_stop_offset_ = value;
+  offset_ = value;
+}
+
+// optional uint32 bytes_sent = 3;
+inline bool StreamSegmentEnd::has_bytes_sent() const {
+  return _has_bit(2);
+}
+inline void StreamSegmentEnd::clear_bytes_sent() {
+  bytes_sent_ = 0u;
+  _clear_bit(2);
+}
+inline ::google::protobuf::uint32 StreamSegmentEnd::bytes_sent() const {
+  return bytes_sent_;
+}
+inline void StreamSegmentEnd::set_bytes_sent(::google::protobuf::uint32 value) {
+  _set_bit(2);
+  bytes_sent_ = value;
+}
+
+// optional uint32 events_sent = 4;
+inline bool StreamSegmentEnd::has_events_sent() const {
+  return _has_bit(3);
+}
+inline void StreamSegmentEnd::clear_events_sent() {
+  events_sent_ = 0u;
+  _clear_bit(3);
+}
+inline ::google::protobuf::uint32 StreamSegmentEnd::events_sent() const {
+  return events_sent_;
+}
+inline void StreamSegmentEnd::set_events_sent(::google::protobuf::uint32 value) {
+  _set_bit(3);
+  events_sent_ = value;
 }
 
 // -------------------------------------------------------------------
