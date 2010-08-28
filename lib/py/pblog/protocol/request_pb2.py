@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/request.proto',
   package='pblog.protocol.request',
-  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"g\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x19\n\x11start_byte_offset\x18\x02 \x01(\x04\x12\x1b\n\x13max_response_events\x18\x03 \x01(\r\x12\x1a\n\x12max_response_bytes\x18\x04 \x01(\r')
+  serialized_pb='\n\x1cpblog/protocol/request.proto\x12\x16pblog.protocol.request\"\x0b\n\tStoreInfo\"G\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x19\n\x11start_byte_offset\x18\x02 \x01(\x04\x12\x17\n\x0frequested_bytes\x18\x03 \x01(\r')
 
 
 
@@ -59,15 +59,8 @@ _GET = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='max_response_events', full_name='pblog.protocol.request.Get.max_response_events', index=2,
+      name='requested_bytes', full_name='pblog.protocol.request.Get.requested_bytes', index=2,
       number=3, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='max_response_bytes', full_name='pblog.protocol.request.Get.max_response_bytes', index=3,
-      number=4, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -82,7 +75,7 @@ _GET = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=69,
-  serialized_end=172,
+  serialized_end=140,
 )
 
 
