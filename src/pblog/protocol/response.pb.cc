@@ -39,7 +39,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
   StreamSegmentStart_descriptor_ = file->message_type(0);
   static const int StreamSegmentStart_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, stream_start_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, offset_),
   };
   StreamSegmentStart_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -53,9 +53,11 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamSegmentStart));
   StreamSegmentEnd_descriptor_ = file->message_type(1);
-  static const int StreamSegmentEnd_offsets_[2] = {
+  static const int StreamSegmentEnd_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, stream_stop_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, bytes_sent_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, events_sent_),
   };
   StreamSegmentEnd_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -124,20 +126,20 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
-    "rotocol.response\"?\n\022StreamSegmentStart\022\014"
-    "\n\004path\030\001 \001(\t\022\033\n\023stream_start_offset\030\002 \001("
-    "\004\"<\n\020StreamSegmentEnd\022\014\n\004path\030\001 \001(\t\022\032\n\022s"
-    "tream_stop_offset\030\002 \001(\004\"F\n\005Error\0220\n\004code"
-    "\030\001 \001(\0162\".pblog.protocol.response.ErrorCo"
-    "de\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032\n\026ENVELOP"
-    "E_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAM"
-    "ESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EM"
-    "PTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005"
-    "\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_F"
-    "IELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025I"
-    "NVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET"
-    "\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED"
-    "\020\014", 562);
+    "rotocol.response\"2\n\022StreamSegmentStart\022\014"
+    "\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"Y\n\020StreamSe"
+    "gmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\022\022"
+    "\n\nbytes_sent\030\003 \001(\r\022\023\n\013events_sent\030\004 \001(\r\""
+    "F\n\005Error\0220\n\004code\030\001 \001(\0162\".pblog.protocol."
+    "response.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErro"
+    "rCode\022\032\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031INV"
+    "ALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_REQU"
+    "EST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MISSIN"
+    "G_ENUMERATIONS\020\005\022\033\n\027REQUEST_NOT_IMPLEMEN"
+    "TED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGTHS_"
+    "DIFFERENT\020\010\022\031\n\025INVALID_STREAM_OFFSET\020\t\022\022"
+    "\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022"
+    "\n\016LIMIT_EXCEEDED\020\014", 578);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
@@ -186,7 +188,7 @@ bool ErrorCode_IsValid(int value) {
 const ::std::string StreamSegmentStart::_default_path_;
 #ifndef _MSC_VER
 const int StreamSegmentStart::kPathFieldNumber;
-const int StreamSegmentStart::kStreamStartOffsetFieldNumber;
+const int StreamSegmentStart::kOffsetFieldNumber;
 #endif  // !_MSC_VER
 
 StreamSegmentStart::StreamSegmentStart()
@@ -206,7 +208,7 @@ StreamSegmentStart::StreamSegmentStart(const StreamSegmentStart& from)
 void StreamSegmentStart::SharedCtor() {
   _cached_size_ = 0;
   path_ = const_cast< ::std::string*>(&_default_path_);
-  stream_start_offset_ = GOOGLE_ULONGLONG(0);
+  offset_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -249,7 +251,7 @@ void StreamSegmentStart::Clear() {
         path_->clear();
       }
     }
-    stream_start_offset_ = GOOGLE_ULONGLONG(0);
+    offset_ = GOOGLE_ULONGLONG(0);
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -273,18 +275,18 @@ bool StreamSegmentStart::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_stream_start_offset;
+        if (input->ExpectTag(16)) goto parse_offset;
         break;
       }
       
-      // optional uint64 stream_start_offset = 2;
+      // optional uint64 offset = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stream_start_offset:
+         parse_offset:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &stream_start_offset_)));
+                 input, &offset_)));
           _set_bit(1);
         } else {
           goto handle_uninterpreted;
@@ -320,9 +322,9 @@ void StreamSegmentStart::SerializeWithCachedSizes(
       1, this->path(), output);
   }
   
-  // optional uint64 stream_start_offset = 2;
+  // optional uint64 offset = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stream_start_offset(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->offset(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -343,9 +345,9 @@ void StreamSegmentStart::SerializeWithCachedSizes(
         1, this->path(), target);
   }
   
-  // optional uint64 stream_start_offset = 2;
+  // optional uint64 offset = 2;
   if (_has_bit(1)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stream_start_offset(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->offset(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -366,11 +368,11 @@ int StreamSegmentStart::ByteSize() const {
           this->path());
     }
     
-    // optional uint64 stream_start_offset = 2;
-    if (has_stream_start_offset()) {
+    // optional uint64 offset = 2;
+    if (has_offset()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
-          this->stream_start_offset());
+          this->offset());
     }
     
   }
@@ -404,7 +406,7 @@ void StreamSegmentStart::MergeFrom(const StreamSegmentStart& from) {
       set_path(from.path());
     }
     if (from._has_bit(1)) {
-      set_stream_start_offset(from.stream_start_offset());
+      set_offset(from.offset());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -430,7 +432,7 @@ bool StreamSegmentStart::IsInitialized() const {
 void StreamSegmentStart::Swap(StreamSegmentStart* other) {
   if (other != this) {
     std::swap(path_, other->path_);
-    std::swap(stream_start_offset_, other->stream_start_offset_);
+    std::swap(offset_, other->offset_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -451,7 +453,9 @@ void StreamSegmentStart::Swap(StreamSegmentStart* other) {
 const ::std::string StreamSegmentEnd::_default_path_;
 #ifndef _MSC_VER
 const int StreamSegmentEnd::kPathFieldNumber;
-const int StreamSegmentEnd::kStreamStopOffsetFieldNumber;
+const int StreamSegmentEnd::kOffsetFieldNumber;
+const int StreamSegmentEnd::kBytesSentFieldNumber;
+const int StreamSegmentEnd::kEventsSentFieldNumber;
 #endif  // !_MSC_VER
 
 StreamSegmentEnd::StreamSegmentEnd()
@@ -471,7 +475,9 @@ StreamSegmentEnd::StreamSegmentEnd(const StreamSegmentEnd& from)
 void StreamSegmentEnd::SharedCtor() {
   _cached_size_ = 0;
   path_ = const_cast< ::std::string*>(&_default_path_);
-  stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+  offset_ = GOOGLE_ULONGLONG(0);
+  bytes_sent_ = 0u;
+  events_sent_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -514,7 +520,9 @@ void StreamSegmentEnd::Clear() {
         path_->clear();
       }
     }
-    stream_stop_offset_ = GOOGLE_ULONGLONG(0);
+    offset_ = GOOGLE_ULONGLONG(0);
+    bytes_sent_ = 0u;
+    events_sent_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -538,19 +546,51 @@ bool StreamSegmentEnd::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_stream_stop_offset;
+        if (input->ExpectTag(16)) goto parse_offset;
         break;
       }
       
-      // optional uint64 stream_stop_offset = 2;
+      // optional uint64 offset = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_stream_stop_offset:
+         parse_offset:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
-                 input, &stream_stop_offset_)));
+                 input, &offset_)));
           _set_bit(1);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_bytes_sent;
+        break;
+      }
+      
+      // optional uint32 bytes_sent = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_bytes_sent:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &bytes_sent_)));
+          _set_bit(2);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_events_sent;
+        break;
+      }
+      
+      // optional uint32 events_sent = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_events_sent:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &events_sent_)));
+          _set_bit(3);
         } else {
           goto handle_uninterpreted;
         }
@@ -585,9 +625,19 @@ void StreamSegmentEnd::SerializeWithCachedSizes(
       1, this->path(), output);
   }
   
-  // optional uint64 stream_stop_offset = 2;
+  // optional uint64 offset = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stream_stop_offset(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->offset(), output);
+  }
+  
+  // optional uint32 bytes_sent = 3;
+  if (_has_bit(2)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->bytes_sent(), output);
+  }
+  
+  // optional uint32 events_sent = 4;
+  if (_has_bit(3)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->events_sent(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -608,9 +658,19 @@ void StreamSegmentEnd::SerializeWithCachedSizes(
         1, this->path(), target);
   }
   
-  // optional uint64 stream_stop_offset = 2;
+  // optional uint64 offset = 2;
   if (_has_bit(1)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stream_stop_offset(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->offset(), target);
+  }
+  
+  // optional uint32 bytes_sent = 3;
+  if (_has_bit(2)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->bytes_sent(), target);
+  }
+  
+  // optional uint32 events_sent = 4;
+  if (_has_bit(3)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->events_sent(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -631,11 +691,25 @@ int StreamSegmentEnd::ByteSize() const {
           this->path());
     }
     
-    // optional uint64 stream_stop_offset = 2;
-    if (has_stream_stop_offset()) {
+    // optional uint64 offset = 2;
+    if (has_offset()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
-          this->stream_stop_offset());
+          this->offset());
+    }
+    
+    // optional uint32 bytes_sent = 3;
+    if (has_bytes_sent()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->bytes_sent());
+    }
+    
+    // optional uint32 events_sent = 4;
+    if (has_events_sent()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->events_sent());
     }
     
   }
@@ -669,7 +743,13 @@ void StreamSegmentEnd::MergeFrom(const StreamSegmentEnd& from) {
       set_path(from.path());
     }
     if (from._has_bit(1)) {
-      set_stream_stop_offset(from.stream_stop_offset());
+      set_offset(from.offset());
+    }
+    if (from._has_bit(2)) {
+      set_bytes_sent(from.bytes_sent());
+    }
+    if (from._has_bit(3)) {
+      set_events_sent(from.events_sent());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -695,7 +775,9 @@ bool StreamSegmentEnd::IsInitialized() const {
 void StreamSegmentEnd::Swap(StreamSegmentEnd* other) {
   if (other != this) {
     std::swap(path_, other->path_);
-    std::swap(stream_stop_offset_, other->stream_stop_offset_);
+    std::swap(offset_, other->offset_);
+    std::swap(bytes_sent_, other->bytes_sent_);
+    std::swap(events_sent_, other->events_sent_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
