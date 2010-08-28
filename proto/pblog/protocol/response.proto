@@ -12,9 +12,11 @@ message StreamSegmentStart {
 // this terminates a stream segment sent by the server
 // the client should use the seen offsets to record which part of the stream(s)
 // it has received and repeat requests, if necessary
-message StreamSegmentStop {
+message StreamSegmentEnd {
     optional string path = 1;
     optional uint64 stream_stop_offset = 2;
+    
+    // TODO need to record errors here, likely
 }
 
 message Error {

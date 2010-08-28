@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol/response.proto',
   package='pblog.protocol.response',
-  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"?\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x1b\n\x13stream_start_offset\x18\x02 \x01(\x04\"=\n\x11StreamSegmentStop\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x1a\n\x12stream_stop_offset\x18\x02 \x01(\x04\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xb0\x02\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c')
+  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"?\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x1b\n\x13stream_start_offset\x18\x02 \x01(\x04\"<\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x1a\n\x12stream_stop_offset\x18\x02 \x01(\x04\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xb0\x02\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -70,8 +70,8 @@ _ERRORCODE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=259,
-  serialized_end=563,
+  serialized_start=258,
+  serialized_end=562,
 )
 
 
@@ -125,22 +125,22 @@ _STREAMSEGMENTSTART = descriptor.Descriptor(
 )
 
 
-_STREAMSEGMENTSTOP = descriptor.Descriptor(
-  name='StreamSegmentStop',
-  full_name='pblog.protocol.response.StreamSegmentStop',
+_STREAMSEGMENTEND = descriptor.Descriptor(
+  name='StreamSegmentEnd',
+  full_name='pblog.protocol.response.StreamSegmentEnd',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='pblog.protocol.response.StreamSegmentStop.path', index=0,
+      name='path', full_name='pblog.protocol.response.StreamSegmentEnd.path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='stream_stop_offset', full_name='pblog.protocol.response.StreamSegmentStop.stream_stop_offset', index=1,
+      name='stream_stop_offset', full_name='pblog.protocol.response.StreamSegmentEnd.stream_stop_offset', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -156,7 +156,7 @@ _STREAMSEGMENTSTOP = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=123,
-  serialized_end=184,
+  serialized_end=183,
 )
 
 
@@ -190,8 +190,8 @@ _ERROR = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=186,
-  serialized_end=256,
+  serialized_start=185,
+  serialized_end=255,
 )
 
 
@@ -202,26 +202,26 @@ class StreamSegmentStart(message.Message):
   DESCRIPTOR = _STREAMSEGMENTSTART
   
   PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 14
+  PBLOG_ENUMERATION = 7
   # @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStart)
 
-class StreamSegmentStop(message.Message):
+class StreamSegmentEnd(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMSEGMENTSTOP
+  DESCRIPTOR = _STREAMSEGMENTEND
   
   PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 15
-  # @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStop)
+  PBLOG_ENUMERATION = 8
+  # @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentEnd)
 
 class Error(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ERROR
   
   PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 10
+  PBLOG_ENUMERATION = 9
   # @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
 
-register_message(1, 14, 'pblog.protocol.response_pb2', 'StreamSegmentStart')
-register_message(1, 15, 'pblog.protocol.response_pb2', 'StreamSegmentStop')
-register_message(1, 10, 'pblog.protocol.response_pb2', 'Error')
+register_message(1, 7, 'pblog.protocol.response_pb2', 'StreamSegmentStart')
+register_message(1, 8, 'pblog.protocol.response_pb2', 'StreamSegmentEnd')
+register_message(1, 9, 'pblog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

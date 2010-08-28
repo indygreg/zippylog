@@ -1,33 +1,22 @@
 // this file describes protocol buffer messages sent by the client when
 // communicating with a pblog server
-
-import "pblog/protocol.proto";
-
 package pblog.protocol.request;
 
 // requesting status of the pblog server's store
-message StoreInfo {
+message StoreInfo { }
 
-}
-
-// start streaming events as they hit the remote store
-// this is not reliable
-message Stream {
-    // list of paths to subscribe to
-    // string value is a store path (e.g. '/bucket/set')
-    repeated string path = 1;
-}
-
-// download stream(s) from the server
-// once accepted, the server acks via a Get response message
-// next, the server sends a bunch of envelopes as separate 0MQ messages
+// request to download part of a stream
 message Get {
-    // list of streams to get
-    // each includes metadata on how to get it
-    repeated GetStreamDescription stream = 1;
-
-    // tells the server how many bytes you would like in each response
-    // message set. normally, the default value will be sufficient. in some
-    // situations, it may be desirable to adjust this for better performance
-    optional uint32 bytes_per_response = 2 [default=65535];
+    // path of stream to retrieve
+    optional string path = 1;
+    
+    // byte offset from start of stream from which to start sending data
+    optional uint64 start_byte_offset = 2;
+    
+    // the following allow the client to specify how much data to receive
+    // the server will return as many events as it can that fit in A) the
+    // limitations imposed by the client here, or B) the server's limitations,
+    // whichever is smaller
+    optional uint32 max_response_events = 3;
+    optional uint32 max_response_bytes = 4;
 }

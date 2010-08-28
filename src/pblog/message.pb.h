@@ -175,7 +175,7 @@ class Envelope : public ::google::protobuf::Message {
   inline void set_numeric_value(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 7;
+  static const ::google::protobuf::uint32 pblog_enumeration = 5;
   // @@protoc_insertion_point(class_scope:pblog.message.Envelope)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -321,7 +321,7 @@ class ActorInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_app_id();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 8;
+  static const ::google::protobuf::uint32 pblog_enumeration = 6;
   // @@protoc_insertion_point(class_scope:pblog.message.ActorInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

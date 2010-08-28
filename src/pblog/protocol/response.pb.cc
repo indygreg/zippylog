@@ -19,9 +19,9 @@ namespace {
 const ::google::protobuf::Descriptor* StreamSegmentStart_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StreamSegmentStart_reflection_ = NULL;
-const ::google::protobuf::Descriptor* StreamSegmentStop_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* StreamSegmentEnd_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  StreamSegmentStop_reflection_ = NULL;
+  StreamSegmentEnd_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Error_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Error_reflection_ = NULL;
@@ -52,22 +52,22 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamSegmentStart));
-  StreamSegmentStop_descriptor_ = file->message_type(1);
-  static const int StreamSegmentStop_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, stream_stop_offset_),
+  StreamSegmentEnd_descriptor_ = file->message_type(1);
+  static const int StreamSegmentEnd_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, stream_stop_offset_),
   };
-  StreamSegmentStop_reflection_ =
+  StreamSegmentEnd_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      StreamSegmentStop_descriptor_,
-      StreamSegmentStop::default_instance_,
-      StreamSegmentStop_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStop, _unknown_fields_),
+      StreamSegmentEnd_descriptor_,
+      StreamSegmentEnd::default_instance_,
+      StreamSegmentEnd_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(StreamSegmentStop));
+      sizeof(StreamSegmentEnd));
   Error_descriptor_ = file->message_type(2);
   static const int Error_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, code_),
@@ -100,7 +100,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StreamSegmentStart_descriptor_, &StreamSegmentStart::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    StreamSegmentStop_descriptor_, &StreamSegmentStop::default_instance());
+    StreamSegmentEnd_descriptor_, &StreamSegmentEnd::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Error_descriptor_, &Error::default_instance());
 }
@@ -110,8 +110,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto() {
   delete StreamSegmentStart::default_instance_;
   delete StreamSegmentStart_reflection_;
-  delete StreamSegmentStop::default_instance_;
-  delete StreamSegmentStop_reflection_;
+  delete StreamSegmentEnd::default_instance_;
+  delete StreamSegmentEnd_reflection_;
   delete Error::default_instance_;
   delete Error_reflection_;
 }
@@ -126,25 +126,25 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
     "rotocol.response\"?\n\022StreamSegmentStart\022\014"
     "\n\004path\030\001 \001(\t\022\033\n\023stream_start_offset\030\002 \001("
-    "\004\"=\n\021StreamSegmentStop\022\014\n\004path\030\001 \001(\t\022\032\n\022"
-    "stream_stop_offset\030\002 \001(\004\"F\n\005Error\0220\n\004cod"
-    "e\030\001 \001(\0162\".pblog.protocol.response.ErrorC"
-    "ode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032\n\026ENVELO"
-    "PE_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NA"
-    "MESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016E"
-    "MPTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020"
-    "\005\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_"
-    "FIELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025"
-    "INVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSE"
-    "T\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDE"
-    "D\020\014", 563);
+    "\004\"<\n\020StreamSegmentEnd\022\014\n\004path\030\001 \001(\t\022\032\n\022s"
+    "tream_stop_offset\030\002 \001(\004\"F\n\005Error\0220\n\004code"
+    "\030\001 \001(\0162\".pblog.protocol.response.ErrorCo"
+    "de\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032\n\026ENVELOP"
+    "E_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAM"
+    "ESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EM"
+    "PTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005"
+    "\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_F"
+    "IELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025I"
+    "NVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET"
+    "\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED"
+    "\020\014", 562);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
-  StreamSegmentStop::default_instance_ = new StreamSegmentStop();
+  StreamSegmentEnd::default_instance_ = new StreamSegmentEnd();
   Error::default_instance_ = new Error();
   StreamSegmentStart::default_instance_->InitAsDefaultInstance();
-  StreamSegmentStop::default_instance_->InitAsDefaultInstance();
+  StreamSegmentEnd::default_instance_->InitAsDefaultInstance();
   Error::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto);
 }
@@ -448,38 +448,38 @@ void StreamSegmentStart::Swap(StreamSegmentStart* other) {
 
 // ===================================================================
 
-const ::std::string StreamSegmentStop::_default_path_;
+const ::std::string StreamSegmentEnd::_default_path_;
 #ifndef _MSC_VER
-const int StreamSegmentStop::kPathFieldNumber;
-const int StreamSegmentStop::kStreamStopOffsetFieldNumber;
+const int StreamSegmentEnd::kPathFieldNumber;
+const int StreamSegmentEnd::kStreamStopOffsetFieldNumber;
 #endif  // !_MSC_VER
 
-StreamSegmentStop::StreamSegmentStop()
+StreamSegmentEnd::StreamSegmentEnd()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void StreamSegmentStop::InitAsDefaultInstance() {
+void StreamSegmentEnd::InitAsDefaultInstance() {
 }
 
-StreamSegmentStop::StreamSegmentStop(const StreamSegmentStop& from)
+StreamSegmentEnd::StreamSegmentEnd(const StreamSegmentEnd& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void StreamSegmentStop::SharedCtor() {
+void StreamSegmentEnd::SharedCtor() {
   _cached_size_ = 0;
   path_ = const_cast< ::std::string*>(&_default_path_);
   stream_stop_offset_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-StreamSegmentStop::~StreamSegmentStop() {
+StreamSegmentEnd::~StreamSegmentEnd() {
   SharedDtor();
 }
 
-void StreamSegmentStop::SharedDtor() {
+void StreamSegmentEnd::SharedDtor() {
   if (path_ != &_default_path_) {
     delete path_;
   }
@@ -487,27 +487,27 @@ void StreamSegmentStop::SharedDtor() {
   }
 }
 
-void StreamSegmentStop::SetCachedSize(int size) const {
+void StreamSegmentEnd::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* StreamSegmentStop::descriptor() {
+const ::google::protobuf::Descriptor* StreamSegmentEnd::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return StreamSegmentStop_descriptor_;
+  return StreamSegmentEnd_descriptor_;
 }
 
-const StreamSegmentStop& StreamSegmentStop::default_instance() {
+const StreamSegmentEnd& StreamSegmentEnd::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
 }
 
-StreamSegmentStop* StreamSegmentStop::default_instance_ = NULL;
+StreamSegmentEnd* StreamSegmentEnd::default_instance_ = NULL;
 
-StreamSegmentStop* StreamSegmentStop::New() const {
-  return new StreamSegmentStop;
+StreamSegmentEnd* StreamSegmentEnd::New() const {
+  return new StreamSegmentEnd;
 }
 
-void StreamSegmentStop::Clear() {
+void StreamSegmentEnd::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
       if (path_ != &_default_path_) {
@@ -520,7 +520,7 @@ void StreamSegmentStop::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool StreamSegmentStop::MergePartialFromCodedStream(
+bool StreamSegmentEnd::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -574,7 +574,7 @@ bool StreamSegmentStop::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void StreamSegmentStop::SerializeWithCachedSizes(
+void StreamSegmentEnd::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string path = 1;
   if (_has_bit(0)) {
@@ -596,7 +596,7 @@ void StreamSegmentStop::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* StreamSegmentStop::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* StreamSegmentEnd::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string path = 1;
   if (_has_bit(0)) {
@@ -620,7 +620,7 @@ void StreamSegmentStop::SerializeWithCachedSizes(
   return target;
 }
 
-int StreamSegmentStop::ByteSize() const {
+int StreamSegmentEnd::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -650,10 +650,10 @@ int StreamSegmentStop::ByteSize() const {
   return total_size;
 }
 
-void StreamSegmentStop::MergeFrom(const ::google::protobuf::Message& from) {
+void StreamSegmentEnd::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const StreamSegmentStop* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const StreamSegmentStop*>(
+  const StreamSegmentEnd* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StreamSegmentEnd*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -662,7 +662,7 @@ void StreamSegmentStop::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void StreamSegmentStop::MergeFrom(const StreamSegmentStop& from) {
+void StreamSegmentEnd::MergeFrom(const StreamSegmentEnd& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
@@ -675,24 +675,24 @@ void StreamSegmentStop::MergeFrom(const StreamSegmentStop& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void StreamSegmentStop::CopyFrom(const ::google::protobuf::Message& from) {
+void StreamSegmentEnd::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void StreamSegmentStop::CopyFrom(const StreamSegmentStop& from) {
+void StreamSegmentEnd::CopyFrom(const StreamSegmentEnd& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool StreamSegmentStop::IsInitialized() const {
+bool StreamSegmentEnd::IsInitialized() const {
   
   return true;
 }
 
-void StreamSegmentStop::Swap(StreamSegmentStop* other) {
+void StreamSegmentEnd::Swap(StreamSegmentEnd* other) {
   if (other != this) {
     std::swap(path_, other->path_);
     std::swap(stream_stop_offset_, other->stream_stop_offset_);
@@ -702,11 +702,11 @@ void StreamSegmentStop::Swap(StreamSegmentStop* other) {
   }
 }
 
-::google::protobuf::Metadata StreamSegmentStop::GetMetadata() const {
+::google::protobuf::Metadata StreamSegmentEnd::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = StreamSegmentStop_descriptor_;
-  metadata.reflection = StreamSegmentStop_reflection_;
+  metadata.descriptor = StreamSegmentEnd_descriptor_;
+  metadata.reflection = StreamSegmentEnd_reflection_;
   return metadata;
 }
 
@@ -987,7 +987,7 @@ bool StreamSegmentStart::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);
 }
 
-bool StreamSegmentStop::add_to_envelope(::pblog::Envelope *envelope) {
+bool StreamSegmentEnd::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);
 }
 

@@ -155,7 +155,7 @@ class Envelope(message.Message):
   DESCRIPTOR = _ENVELOPE
   
   PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 7
+  PBLOG_ENUMERATION = 5
   # @@protoc_insertion_point(class_scope:pblog.message.Envelope)
 
 class ActorInfo(message.Message):
@@ -163,7 +163,7 @@ class ActorInfo(message.Message):
   DESCRIPTOR = _ACTORINFO
   
   PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 8
+  PBLOG_ENUMERATION = 6
   # @@protoc_insertion_point(class_scope:pblog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)

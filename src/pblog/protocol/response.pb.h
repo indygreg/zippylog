@@ -36,7 +36,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
 
 class StreamSegmentStart;
-class StreamSegmentStop;
+class StreamSegmentEnd;
 class Error;
 
 enum ErrorCode {
@@ -142,7 +142,7 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline void set_stream_start_offset(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 14;
+  static const ::google::protobuf::uint32 pblog_enumeration = 7;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStart)
  private:
@@ -174,14 +174,14 @@ class StreamSegmentStart : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class StreamSegmentStop : public ::google::protobuf::Message {
+class StreamSegmentEnd : public ::google::protobuf::Message {
  public:
-  StreamSegmentStop();
-  virtual ~StreamSegmentStop();
+  StreamSegmentEnd();
+  virtual ~StreamSegmentEnd();
   
-  StreamSegmentStop(const StreamSegmentStop& from);
+  StreamSegmentEnd(const StreamSegmentEnd& from);
   
-  inline StreamSegmentStop& operator=(const StreamSegmentStop& from) {
+  inline StreamSegmentEnd& operator=(const StreamSegmentEnd& from) {
     CopyFrom(from);
     return *this;
   }
@@ -195,17 +195,17 @@ class StreamSegmentStop : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StreamSegmentStop& default_instance();
+  static const StreamSegmentEnd& default_instance();
   
-  void Swap(StreamSegmentStop* other);
+  void Swap(StreamSegmentEnd* other);
   
   // implements Message ----------------------------------------------
   
-  StreamSegmentStop* New() const;
+  StreamSegmentEnd* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StreamSegmentStop& from);
-  void MergeFrom(const StreamSegmentStop& from);
+  void CopyFrom(const StreamSegmentEnd& from);
+  void MergeFrom(const StreamSegmentEnd& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -246,9 +246,9 @@ class StreamSegmentStop : public ::google::protobuf::Message {
   inline void set_stream_stop_offset(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 15;
+  static const ::google::protobuf::uint32 pblog_enumeration = 8;
   bool add_to_envelope(::pblog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStop)
+  // @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentEnd)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -274,7 +274,7 @@ class StreamSegmentStop : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static StreamSegmentStop* default_instance_;
+  static StreamSegmentEnd* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -350,7 +350,7 @@ class Error : public ::google::protobuf::Message {
   inline ::std::string* mutable_msg();
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 10;
+  static const ::google::protobuf::uint32 pblog_enumeration = 9;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
  private:
@@ -447,43 +447,43 @@ inline void StreamSegmentStart::set_stream_start_offset(::google::protobuf::uint
 
 // -------------------------------------------------------------------
 
-// StreamSegmentStop
+// StreamSegmentEnd
 
 // optional string path = 1;
-inline bool StreamSegmentStop::has_path() const {
+inline bool StreamSegmentEnd::has_path() const {
   return _has_bit(0);
 }
-inline void StreamSegmentStop::clear_path() {
+inline void StreamSegmentEnd::clear_path() {
   if (path_ != &_default_path_) {
     path_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StreamSegmentStop::path() const {
+inline const ::std::string& StreamSegmentEnd::path() const {
   return *path_;
 }
-inline void StreamSegmentStop::set_path(const ::std::string& value) {
+inline void StreamSegmentEnd::set_path(const ::std::string& value) {
   _set_bit(0);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSegmentStop::set_path(const char* value) {
+inline void StreamSegmentEnd::set_path(const char* value) {
   _set_bit(0);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSegmentStop::set_path(const char* value, size_t size) {
+inline void StreamSegmentEnd::set_path(const char* value, size_t size) {
   _set_bit(0);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamSegmentStop::mutable_path() {
+inline ::std::string* StreamSegmentEnd::mutable_path() {
   _set_bit(0);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
@@ -492,17 +492,17 @@ inline ::std::string* StreamSegmentStop::mutable_path() {
 }
 
 // optional uint64 stream_stop_offset = 2;
-inline bool StreamSegmentStop::has_stream_stop_offset() const {
+inline bool StreamSegmentEnd::has_stream_stop_offset() const {
   return _has_bit(1);
 }
-inline void StreamSegmentStop::clear_stream_stop_offset() {
+inline void StreamSegmentEnd::clear_stream_stop_offset() {
   stream_stop_offset_ = GOOGLE_ULONGLONG(0);
   _clear_bit(1);
 }
-inline ::google::protobuf::uint64 StreamSegmentStop::stream_stop_offset() const {
+inline ::google::protobuf::uint64 StreamSegmentEnd::stream_stop_offset() const {
   return stream_stop_offset_;
 }
-inline void StreamSegmentStop::set_stream_stop_offset(::google::protobuf::uint64 value) {
+inline void StreamSegmentEnd::set_stream_stop_offset(::google::protobuf::uint64 value) {
   _set_bit(1);
   stream_stop_offset_ = value;
 }
