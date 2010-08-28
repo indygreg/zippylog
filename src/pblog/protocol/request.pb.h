@@ -195,19 +195,12 @@ class Get : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 start_byte_offset() const;
   inline void set_start_byte_offset(::google::protobuf::uint64 value);
   
-  // optional uint32 max_response_events = 3;
-  inline bool has_max_response_events() const;
-  inline void clear_max_response_events();
-  static const int kMaxResponseEventsFieldNumber = 3;
-  inline ::google::protobuf::uint32 max_response_events() const;
-  inline void set_max_response_events(::google::protobuf::uint32 value);
-  
-  // optional uint32 max_response_bytes = 4;
-  inline bool has_max_response_bytes() const;
-  inline void clear_max_response_bytes();
-  static const int kMaxResponseBytesFieldNumber = 4;
-  inline ::google::protobuf::uint32 max_response_bytes() const;
-  inline void set_max_response_bytes(::google::protobuf::uint32 value);
+  // optional uint32 requested_bytes = 3;
+  inline bool has_requested_bytes() const;
+  inline void clear_requested_bytes();
+  static const int kRequestedBytesFieldNumber = 3;
+  inline ::google::protobuf::uint32 requested_bytes() const;
+  inline void set_requested_bytes(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 11;
@@ -220,13 +213,12 @@ class Get : public ::google::protobuf::Message {
   ::std::string* path_;
   static const ::std::string _default_path_;
   ::google::protobuf::uint64 start_byte_offset_;
-  ::google::protobuf::uint32 max_response_events_;
-  ::google::protobuf::uint32 max_response_bytes_;
+  ::google::protobuf::uint32 requested_bytes_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -311,36 +303,20 @@ inline void Get::set_start_byte_offset(::google::protobuf::uint64 value) {
   start_byte_offset_ = value;
 }
 
-// optional uint32 max_response_events = 3;
-inline bool Get::has_max_response_events() const {
+// optional uint32 requested_bytes = 3;
+inline bool Get::has_requested_bytes() const {
   return _has_bit(2);
 }
-inline void Get::clear_max_response_events() {
-  max_response_events_ = 0u;
+inline void Get::clear_requested_bytes() {
+  requested_bytes_ = 0u;
   _clear_bit(2);
 }
-inline ::google::protobuf::uint32 Get::max_response_events() const {
-  return max_response_events_;
+inline ::google::protobuf::uint32 Get::requested_bytes() const {
+  return requested_bytes_;
 }
-inline void Get::set_max_response_events(::google::protobuf::uint32 value) {
+inline void Get::set_requested_bytes(::google::protobuf::uint32 value) {
   _set_bit(2);
-  max_response_events_ = value;
-}
-
-// optional uint32 max_response_bytes = 4;
-inline bool Get::has_max_response_bytes() const {
-  return _has_bit(3);
-}
-inline void Get::clear_max_response_bytes() {
-  max_response_bytes_ = 0u;
-  _clear_bit(3);
-}
-inline ::google::protobuf::uint32 Get::max_response_bytes() const {
-  return max_response_bytes_;
-}
-inline void Get::set_max_response_bytes(::google::protobuf::uint32 value) {
-  _set_bit(3);
-  max_response_bytes_ = value;
+  requested_bytes_ = value;
 }
 
 

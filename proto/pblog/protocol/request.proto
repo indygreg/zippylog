@@ -13,10 +13,11 @@ message Get {
     // byte offset from start of stream from which to start sending data
     optional uint64 start_byte_offset = 2;
     
-    // the following allow the client to specify how much data to receive
+    // how many bytes to request
     // the server will return as many events as it can that fit in A) the
     // limitations imposed by the client here, or B) the server's limitations,
     // whichever is smaller
-    optional uint32 max_response_events = 3;
-    optional uint32 max_response_bytes = 4;
+    optional uint32 requested_bytes = 3;
+    
+    // TODO support max events
 }
