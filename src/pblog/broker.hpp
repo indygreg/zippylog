@@ -37,7 +37,8 @@ using ::zmq::socket_t;
 // in the system
 class PBLOG_EXPORT Broker {
     public:
-        Broker(Store * store, apr_pool_t *p);
+        Broker(Store *store, apr_pool_t *p);
+        Broker(Store *store, context_t *ctx, apr_pool_t *p);
 
         ~Broker();
 
@@ -48,22 +49,16 @@ class PBLOG_EXPORT Broker {
     protected:
         context_t * zctx;
         socket_t * workers_sock;
-        socket_t * worker_downloads_sock;
-        socket_t * download_downloads_sock;
         socket_t * clients_external_sock;
-        socket_t * download_responses_sock;
         vector<string> listen_endpoints;
         vector<socket_t *> listen_sockets;
         vector<socket_t *> listen_proxy_sockets;
         vector<void *> worker_threads;
-        vector<void *> download_threads;
         Store * store;
         apr_pool_t *p;
         bool active;
         request_processor_start_data *worker_start_data;
-        download_worker_init *download_start_data;
 
-        void create_download_threads();
         void create_worker_threads();
         void setup_internal_sockets();
         void setup_listener_sockets();

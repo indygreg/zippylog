@@ -24,7 +24,6 @@ easier to grok.
 
 #include <pblog/server.hpp>
 #include <pblog/message.pb.h>
-#include <pblog/pblogd.pb.h>
 #include <pblog/protocol.pb.h>
 #include <pblog/protocol/request.pb.h>
 #include <pblog/protocol/response.pb.h>
@@ -46,78 +45,42 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
 {
     apr_pool_t *p;
     int loop = 1;
-    int state = Request::CREATE_SOCKET;
     request_processor_start_data *d = (request_processor_start_data *)data;
 
     assert(d->ctx);
     assert(d->broker_endpoint);
-    assert(d->download_endpoint);
     assert(d->store);
 
     socket_t *socket = NULL;
     socket_t *dsock = NULL;
-
-    dsock = new socket_t(*d->ctx, ZMQ_XREQ);
-    dsock->connect(d->download_endpoint);
+    Store *store = d->store;
 
     /* variables used across states */
+    int state = Request::CREATE_SOCKET;
+    message_t zreq;
     pblog::Envelope request_envelope;
     pblog::Envelope response_envelope;
     protocol::response::ErrorCode error_code;
     string error_message;
-    message_t identities[2];
 
     /* common variables used frequently enough to warrant declaration */
     int64 more;
     size_t moresz = sizeof(more);
-    pollitem_t poll[1];
 
     while (loop) {
         switch (state) {
             case Request::CREATE_SOCKET:
-                socket = new socket_t(*d->ctx, ZMQ_XREP);
+                socket = new socket_t(*d->ctx, ZMQ_REP);
                 socket->connect(d->broker_endpoint);
                 state = Request::WAITING;
                 break;
 
             case WAITING:
-                /* we are using XREQ/XRES sockets, which means each message
-                   will begin with an identity message */
-                socket->recv(&identities[0], 0); /* blocks */
-                socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-                /* no initial identity message !? */
-                if (!more) {
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
-
-                /* 2nd identity message */
-                socket->recv(&identities[1], 0);
-                socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-
-                if (!more) {
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
-
-                /* now we have the client's actual message on the queue */
-                /* the message should always be there since routing exists */
-                poll[0] = pollitem_t();
-                poll[0].socket = *socket;
-                poll[0].events = ZMQ_POLLIN;
-                if (zmq::poll(poll, 1, 10000) != 1) {
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
-
+                socket->recv(&zreq, 0);
                 state = Request::PROCESS_REQUEST;
                 break;
 
             case Request::RESET_CONNECTION:
-                identities[0].~message_t();
-                identities[1].~message_t();
                 delete socket;
                 socket = NULL;
                 state = Request::CREATE_SOCKET;
@@ -125,11 +88,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
 
             case Request::PROCESS_REQUEST:
             {
-                /* we've already verified message is available, so we grab it */
-                message_t msg;
-
-                socket->recv(&msg, 0);
-                request_envelope = ::pblog::Envelope(&msg);
+                request_envelope = ::pblog::Envelope(&zreq);
                 //{
                 //    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
                 //    error_message = "could not parse received envelope";
@@ -168,10 +127,12 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     state = Request::PROCESS_GET;
                     break;
                 }
+                /*
                 else if (request_type == protocol::request::Stream::pblog_enumeration) {
                     state = Request::PROCESS_STREAM;
                     break;
                 }
+                */
                 else {
                     error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
                     error_message = "server does not know how to process the request";
@@ -210,70 +171,92 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                 }
                 protocol::request::Get *get = (protocol::request::Get *)msg;
 
-                if (get->stream_size() < 1) {
+                if (!get->has_path()) {
                     error_code = protocol::response::EMPTY_FIELD;
-                    error_message = "stream repeated field is empty";
+                    error_message = "required field 'path' is empty";
                     state = Request::SEND_ERROR_RESPONSE;
                     delete get;
                     break;
                 }
 
-                for (int i = 0; i < get->stream_size(); i++) {
-                    protocol::GetStreamDescription d = get->stream(i);
-
-                    if (d.start_byte_offset() >= d.end_byte_offset()) {
-                        error_code = protocol::response::INVALID_OFFSET;
-                        error_message = "start_byte_offset must be less than end_byte_offset";
-                        state = Request::SEND_ERROR_RESPONSE;
-                        delete get;
-                        break;
-                    }
-                }
-
-                // TODO ensure option of path | {bucket, stream_set, stream} both populated
-
-                for (int i = 0; i < get->stream_size(); i++) {
-                    protocol::GetStreamDescription desc = get->stream(i);
-
-                    InputStream stream = InputStream();
-                    // TODO don't need to open stream, just check for existence
-                    if (!d->store->get_input_stream(desc.bucket(), desc.stream_set(), desc.stream(), stream)) {
-                        // TODO assumption not always valid for simple bool return code
-                        error_code = protocol::response::PATH_NOT_FOUND;
-                        error_message = "requested stream not found";
-                        state = Request::SEND_ERROR_RESPONSE;
-                        delete get;
-                        break;
-                    }
+                if (!get->has_start_byte_offset()) {
+                    error_code = protocol::response::EMPTY_FIELD;
+                    error_message = "required field 'start_byte_offset' is not defined";
+                    state = Request::SEND_ERROR_RESPONSE;
+                    delete get;
+                    break;
                 }
 
                 // TODO perform additional stream verification
 
-                // TODO grab this max from a config somewhere
-                if (get->bytes_per_response() > 16000000) {
-                    error_code = protocol::response::LIMIT_EXCEEDED;
-                    error_message = "bytes_per_response exceeds the server configured maximum";
+                InputStream stream;
+                if (!store->get_input_stream(get->path(), stream)) {
+                    error_code = protocol::response::PATH_NOT_FOUND;
+                    error_message = "requested stream could not be found";
                     state = Request::SEND_ERROR_RESPONSE;
                     delete get;
                     break;
                 }
 
-                // we pass the request to the download worker, which does the heavy lifting
-                pblogd::GetRequest get_msg = pblogd::GetRequest();
-                get_msg.set_bytes_per_response(get->bytes_per_response());
+                stream.Seek(get->start_byte_offset());
 
-                for (int i = 0; i < get->stream_size(); i++) {
-                    protocol::GetStreamDescription * desc = get_msg.add_stream();
-                    desc->CopyFrom(get->stream(i));
+                // determine how much to fetch
+                uint32 bytes_left = 256000; // TODO pull from server config
+
+                // client can lower server default if it wants
+                if (get->has_requested_bytes() && get->requested_bytes() < bytes_left) {
+                    bytes_left = get->requested_bytes();
                 }
 
-                get_msg.add_socket_identity(identities[1].data(), identities[1].size());
-                response_envelope = pblog::Envelope();
-                get_msg.add_to_envelope(&response_envelope);
-                message_t * download_msg = response_envelope.to_zmq_message();
-                dsock->send(*download_msg, 0);
-                delete download_msg;
-                delete get;
+                uint32 bytes_read = 0;
+                pblog::Envelope m = pblog::Envelope();
+
+                uint32 envelope_size = stream.NextEnvelopeSize();
+                // could not find envelope in stream at offset
+                if (!envelope_size) {
+                    // TODO need better error code
+                    error_code = protocol::response::PATH_NOT_FOUND;
+                    error_message = "no envelopes found at stream offset";
+                    state = Request::SEND_ERROR_RESPONSE;
+                    delete get;
+                    break;
+                }
+
+                // we must have an envelope, so start the send sequence
+
+                protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
+                segment_start.set_path(get->path());
+                segment_start.set_stream_start_offset(get->start_byte_offset());
+                ::pblog::Envelope env = ::pblog::Envelope();
+                segment_start.add_to_envelope(&env);
+                message_t *zmsg = env.to_zmq_message();
+                socket->send(*zmsg, ZMQ_SNDMORE);
+                delete msg;
+
+                while (true) {
+                    if (!stream.ReadEnvelope(env, envelope_size)) break;
+
+                    zmsg = env.to_zmq_message();
+                    socket->send(*zmsg, ZMQ_SNDMORE);
+                    delete zmsg;
+
+                    bytes_read += envelope_size;
+
+                    if (bytes_left - envelope_size < 0) break;
+                    bytes_left -= envelope_size;
+
+                    envelope_size = stream.NextEnvelopeSize();
+                    if (!envelope_size) break;
+                }
+
+                protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
+                // TODO fill in fields
+
+                env = ::pblog::Envelope();
+                segment_end.add_to_envelope(&env);
+                zmsg = env.to_zmq_message();
+                socket->send(*zmsg, 0);
+                delete zmsg;
 
                 state = Request::WAITING;
                 break;
@@ -293,17 +276,6 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
             case Request::SEND_ENVELOPE_AND_DONE:
             {
                 message_t *msg = response_envelope.to_zmq_message();
-
-                if (!socket->send(identities[0], ZMQ_SNDMORE)) {
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
-
-
-                if (!socket->send(identities[1], ZMQ_SNDMORE)) {
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
 
                 if (!socket->send(*msg, 0)) {
                     state = Request::RESET_CONNECTION;
@@ -339,159 +311,6 @@ void * __stdcall stream_processor(apr_thread_t *thread, void *start_data)
     bool loop = true;
     while (loop) {
 
-    }
-
-    return NULL;
-}
-
-void * __stdcall Download::download_worker(apr_thread_t *thread, void *init_data)
-{
-    download_worker_init *init = (download_worker_init *)init_data;
-
-    assert(init->ctx);
-    assert(init->store);
-    assert(init->broker_endpoint);
-    assert(init->jobs_endpoint);
-
-    pblog::Store *store = init->store;
-
-    socket_t *jsock = new socket_t(*init->ctx, ZMQ_XREP);
-    socket_t *rsock = new socket_t(*init->ctx, ZMQ_XREQ);
-
-    jsock->connect(init->jobs_endpoint);
-    rsock->connect(init->broker_endpoint);
-
-    // variables used by multiple states
-    int state = Download::WAITING;
-    vector<message_t *> identities;
-    vector<message_t *> received_msgs;
-    int stream_offset;
-    pblogd::GetRequest request;
-
-    bool loop = true;
-    while (loop) {
-        switch (state) {
-            case Download::WAITING:
-                receive_multipart_blocking(jsock, identities, received_msgs);
-                state = Download::PARSE_RECEIVED;
-                break;
-
-            case Download::RESET:
-                for (size_t i = identities.size(); i; ) {
-                    delete identities[--i];
-                }
-                for (size_t i = received_msgs.size(); i; ) {
-                    delete received_msgs[--i];
-                }
-                stream_offset = -1;
-                received_msgs.clear();
-                state = Download::WAITING;
-                break;
-
-            case Download::PARSE_RECEIVED:
-            {
-                ::pblog::Envelope envelope = ::pblog::Envelope(received_msgs[received_msgs.size()-1]);
-                assert(envelope.number_messages() == 1);
-                assert(envelope.message_namespace(0) == pblogd::GetRequest::pblog_namespace);
-                assert(envelope.message_type(0) == pblogd::GetRequest::pblog_enumeration);
-
-                request = pblogd::GetRequest(*(pblogd::GetRequest *)envelope.get_message(0));
-
-                stream_offset = 0;
-                state = Download::PROCESS_GET;
-                break;
-            }
-
-            case Download::PROCESS_GET:
-            {
-                // state transitions to itself until we have exhausted all streams
-                if (stream_offset >= request.stream_size()) {
-                    state = Download::RESET;
-                    break;
-                }
-
-                protocol::GetStreamDescription desc = request.stream(stream_offset++);
-
-                InputStream stream;
-                if (!store->get_input_stream(desc.bucket(), desc.stream_set(), desc.stream(), stream)) {
-                    // TODO handle error
-                    state = Download::RESET;
-                    break;
-                }
-
-                stream.Seek(desc.start_byte_offset());
-
-                pblog::Envelope m = pblog::Envelope();
-                uint32 bytes_read = 0;
-                uint64 stream_bytes_left = desc.end_byte_offset() - desc.start_byte_offset();
-                while (true) {
-                    uint32 segment_bytes_left = request.bytes_per_response();
-
-                    uint32 envelope_size = stream.NextEnvelopeSize();
-
-                    // no size. must be done
-                    if (!envelope_size) break;
-
-                    // we must have something, so let's start sending stream segments
-                    while (true) {
-                        // it starts with an identity
-                        message_t ident(request.socket_identity(0).length());
-                        memcpy(ident.data(), request.socket_identity(0).c_str(), request.socket_identity(0).length());
-                        rsock->send(ident, ZMQ_SNDMORE);
-
-                        // stream start message
-                        protocol::response::StreamSegmentStart msg_start = protocol::response::StreamSegmentStart();
-                        msg_start.set_path(desc.path());
-                        msg_start.set_stream_start_offset(desc.start_byte_offset() + bytes_read);
-                        ::pblog::Envelope env = ::pblog::Envelope();
-                        msg_start.add_to_envelope(&env);
-
-                        message_t *msg = env.to_zmq_message();
-                        rsock->send(*msg, ZMQ_SNDMORE);
-                        delete msg;
-
-                        while (true) {
-                            if (!stream.ReadEnvelope(env, envelope_size)) break;
-
-                            message_t *msg = env.to_zmq_message();
-                            rsock->send(*msg, ZMQ_SNDMORE);
-                            delete msg;
-
-                            bytes_read += envelope_size;
-
-                            if (segment_bytes_left - envelope_size <= 0) break;
-                            if (stream_bytes_left - envelope_size <= 0) break;
-
-                            segment_bytes_left -= envelope_size;
-                            stream_bytes_left -= envelope_size;
-
-                            envelope_size = stream.NextEnvelopeSize();
-                            if (!envelope_size) break;
-                            if (segment_bytes_left - envelope_size <= 0) break;
-                            if (stream_bytes_left - envelope_size <= 0) break;
-                        }
-
-                        // don't receiving envelopes for this stream segment
-                        // so, terminate segment
-                        protocol::response::StreamSegmentStop msg_end = protocol::response::StreamSegmentStop();
-                        msg_end.set_path(desc.path());
-                        msg_end.set_stream_stop_offset(desc.start_byte_offset() + bytes_read);
-
-                        env = ::pblog::Envelope();
-                        msg_end.add_to_envelope(&env);
-
-                        msg = env.to_zmq_message();
-                        rsock->send(*msg, 0);
-                        delete msg;
-
-                        if (!stream_bytes_left || !envelope_size) break;
-                    }
-
-                }
-
-                break;
-            }
-        }
     }
 
     return NULL;

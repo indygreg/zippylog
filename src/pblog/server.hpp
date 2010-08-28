@@ -37,7 +37,6 @@ typedef struct request_processor_start_data {
 
     // where to connect to receive requests
     const char *broker_endpoint;
-    const char *download_endpoint;
 } request_processor_start_data;
 
 typedef struct stream_processor_start_data {
@@ -45,13 +44,6 @@ typedef struct stream_processor_start_data {
     pblog::Store *store;
     const char *socket_endpoint;
 } stream_processor_start_data;
-
-typedef struct download_worker_init {
-    context_t *ctx;               // 0MQ
-    pblog::Store *store;          // where we are downloading from
-    const char *jobs_endpoint;    // where to receive jobs from
-    const char *broker_endpoint;  // where to send results to
-} download_worker_init;
 
 class PBLOG_EXPORT Request {
 public:
@@ -76,19 +68,6 @@ public:
 // the stream processor handles streaming to all clients that have requested it
 // it frees the request processors to do more important things
 PBLOG_EXPORT void * __stdcall stream_processor(apr_thread_t *thread, void *data);
-
-class PBLOG_EXPORT Download {
-public:
-    enum state {
-        WAITING = 1,
-        RESET = 2,
-        PARSE_RECEIVED = 3,
-        PROCESS_GET = 4,
-    };
-
-    // thread start function for download worker
-    static void * __stdcall download_worker(apr_thread_t *thread, void *data);
-};
 
 }} // namespaces
 

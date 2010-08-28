@@ -26,7 +26,7 @@ using ::google::protobuf::int64;
 
 Client::Client(context_t *ctx, string connect)
 {
-    this->_sock = new socket_t(*ctx, ZMQ_XREQ);
+    this->_sock = new socket_t(*ctx, ZMQ_REQ);
     this->_sock->connect(connect.c_str());
 }
 
@@ -68,6 +68,7 @@ StoreInfo * Client::store_info()
 
 void Client::get_stream(const string bucket, const string set, const string stream)
 {
+    /*
     request::Get get = request::Get();
     GetStreamDescription *desc = get.add_stream();
 
@@ -80,6 +81,7 @@ void Client::get_stream(const string bucket, const string set, const string stre
     ::pblog::Envelope e = ::pblog::Envelope();
     get.add_to_envelope(&e);
     this->_send_envelope(e);
+    */
 }
 
 bool Client::read_envelope(pblog::Envelope &envelope)

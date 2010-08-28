@@ -23,29 +23,25 @@ namespace server {
 
 #define WORKER_ENDPOINT "inproc://workers"
 #define CLIENTS_ENDPOINT "inproc://clients"
-#define WORKER_DOWNLOADS_ENDPOINT "inproc://worker_downloads"
-#define DOWNLOAD_DOWNLOADS_ENDPOINT "inproc://download_downloads"
-#define DOWNLOAD_RESPONSES_ENDPOINT "inproc://download_responses"
 
 #define CLIENTS_EXTERNAL_INDEX 0
 #define WORKER_INDEX 1
-#define WORKER_DOWNLOAD_INDEX 2
-#define DOWNLOAD_RESPONSES_INDEX 3
-#define LISTENER_INDEX 4
+#define LISTENER_INDEX 2
 
 using ::google::protobuf::int64;
 
-Broker::Broker(Store * store, apr_pool_t *p)
+Broker::Broker(Store *store, apr_pool_t *p)
+{
+    Broker(store, NULL, p);
+}
+
+Broker::Broker(Store * store, context_t *ctx, apr_pool_t *p)
 {
     this->active = true;
-    this->zctx = NULL;
+    this->zctx = ctx;
     this->worker_start_data = NULL;
-    this->download_start_data = NULL;
     this->workers_sock = NULL;
     this->clients_external_sock = NULL;
-    this->worker_downloads_sock = NULL;
-    this->download_downloads_sock = NULL;
-    this->download_responses_sock = NULL;
 
     this->store = store;
 
@@ -97,11 +93,12 @@ to clients, as appropriate.
 
 void Broker::run()
 {
-    this->zctx = new zmq::context_t(1);
+    if (!this->zctx) {
+        this->zctx = new zmq::context_t(1);
+    }
 
     this->setup_internal_sockets();
     this->create_worker_threads();
-    this->create_download_threads();
     this->setup_listener_sockets();
 
     int number_pollitems = LISTENER_INDEX + 2 * this->listen_sockets.size();
@@ -117,16 +114,6 @@ void Broker::run()
     pollitems[WORKER_INDEX].events = ZMQ_POLLIN;
     pollitems[WORKER_INDEX].fd = 0;
     pollitems[WORKER_INDEX].revents = 0;
-
-    pollitems[WORKER_DOWNLOAD_INDEX].socket = *this->worker_downloads_sock;
-    pollitems[WORKER_DOWNLOAD_INDEX].events = ZMQ_POLLIN;
-    pollitems[WORKER_DOWNLOAD_INDEX].fd = 0;
-    pollitems[WORKER_DOWNLOAD_INDEX].revents = 0;
-
-    pollitems[DOWNLOAD_RESPONSES_INDEX].socket = *this->download_responses_sock;
-    pollitems[DOWNLOAD_RESPONSES_INDEX].events = ZMQ_POLLIN;
-    pollitems[DOWNLOAD_RESPONSES_INDEX].fd = 0;
-    pollitems[DOWNLOAD_RESPONSES_INDEX].revents = 0;
 
     for (int i = 0; i < this->listen_sockets.size(); i++) {
         pollitems[LISTENER_INDEX+i].socket = *this->listen_sockets[i];
@@ -167,23 +154,6 @@ void Broker::run()
             }
         }
 
-        // forward download requests to the download pool
-        if (pollitems[WORKER_DOWNLOAD_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->worker_downloads_sock->recv(&msg, 0)) {
-                    break;
-                }
-
-                moresz = sizeof(more);
-                this->worker_downloads_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->download_downloads_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                    break;
-                }
-
-                if (!more) break;
-            }
-        }
-
         // move from client meta socket to workers
         if (pollitems[CLIENTS_EXTERNAL_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
@@ -197,29 +167,6 @@ void Broker::run()
                     break;
                 }
 
-                if (!more) break;
-            }
-        }
-
-        if (pollitems[DOWNLOAD_RESPONSES_INDEX].revents & ZMQ_POLLIN) {
-            // we strip the first identity message b/c we don't care what it is
-            if (!this->download_responses_sock->recv(&msg, 0)) {
-                break;
-            }
-            moresz = sizeof(more);
-            this->download_responses_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            assert(more);
-
-            while (true) {
-                if (!this->download_responses_sock->recv(&msg, 0)) {
-                    break;
-                }
-
-                moresz = sizeof(more);
-                this->download_responses_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->clients_external_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                    break;
-                }
                 if (!more) break;
             }
         }
@@ -264,36 +211,12 @@ void Broker::run()
     delete pollitems;
 }
 
-void Broker::create_download_threads()
-{
-    this->download_start_data = new download_worker_init;
-    this->download_start_data->ctx = this->zctx;
-    this->download_start_data->store = this->store;
-    this->download_start_data->jobs_endpoint = DOWNLOAD_DOWNLOADS_ENDPOINT;
-    this->download_start_data->broker_endpoint = DOWNLOAD_RESPONSES_ENDPOINT;
-
-    apr_status_t rv;
-    apr_threadattr_t * ta;
-    rv = apr_threadattr_create(&ta, this->p);
-    if (rv != APR_SUCCESS) {
-        throw "unable to create thread attribute";
-    }
-    apr_thread_t *thread;
-    rv = apr_thread_create(&thread, ta, Download::download_worker, this->download_start_data, this->p);
-    if (rv != APR_SUCCESS) {
-        throw "unable to create download worker thread";
-    }
-
-    this->download_threads.push_back((void *)thread);
-}
-
 void Broker::create_worker_threads()
 {
     this->worker_start_data = new request_processor_start_data;
     this->worker_start_data->ctx = this->zctx;
     this->worker_start_data->store = this->store;
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
-    this->worker_start_data->download_endpoint = WORKER_DOWNLOADS_ENDPOINT;
 
     for (int i = 3; i; --i) {
         apr_status_t rv;
@@ -311,20 +234,11 @@ void Broker::create_worker_threads()
 
 void Broker::setup_internal_sockets()
 {
-    this->clients_external_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
+    this->clients_external_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
     this->clients_external_sock->bind(CLIENTS_ENDPOINT);
 
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
-
-    this->worker_downloads_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-    this->worker_downloads_sock->bind(WORKER_DOWNLOADS_ENDPOINT);
-
-    this->download_downloads_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
-    this->download_downloads_sock->bind(DOWNLOAD_DOWNLOADS_ENDPOINT);
-
-    this->download_responses_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-    this->download_responses_sock->bind(DOWNLOAD_RESPONSES_ENDPOINT);
 }
 
 void Broker::setup_listener_sockets()
