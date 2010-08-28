@@ -23,7 +23,6 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
-#include "pblog/protocol.pb.h"
 #include <pblog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
@@ -37,7 +36,6 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
 void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
 
 class StoreInfo;
-class Stream;
 class Get;
 
 // ===================================================================
@@ -97,7 +95,7 @@ class StoreInfo : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 11;
+  static const ::google::protobuf::uint32 pblog_enumeration = 10;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.StoreInfo)
  private:
@@ -123,107 +121,6 @@ class StoreInfo : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static StoreInfo* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class Stream : public ::google::protobuf::Message {
- public:
-  Stream();
-  virtual ~Stream();
-  
-  Stream(const Stream& from);
-  
-  inline Stream& operator=(const Stream& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const Stream& default_instance();
-  
-  void Swap(Stream* other);
-  
-  // implements Message ----------------------------------------------
-  
-  Stream* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Stream& from);
-  void MergeFrom(const Stream& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // repeated string path = 1;
-  inline int path_size() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path(int index) const;
-  inline ::std::string* mutable_path(int index);
-  inline void set_path(int index, const ::std::string& value);
-  inline void set_path(int index, const char* value);
-  inline void set_path(int index, const char* value, size_t size);
-  inline ::std::string* add_path();
-  inline void add_path(const ::std::string& value);
-  inline void add_path(const char* value);
-  inline void add_path(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
-  
-  static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 12;
-  bool add_to_envelope(::pblog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:pblog.protocol.request.Stream)
- private:
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  mutable int _cached_size_;
-  
-  ::google::protobuf::RepeatedPtrField< ::std::string> path_;
-  friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
-  friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
-  friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
-  
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
-  
-  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
-  inline bool _has_bit(int index) const {
-    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
-  }
-  inline void _set_bit(int index) {
-    _has_bits_[index / 32] |= (1u << (index % 32));
-  }
-  inline void _clear_bit(int index) {
-    _has_bits_[index / 32] &= ~(1u << (index % 32));
-  }
-  
-  void InitAsDefaultInstance();
-  static Stream* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -281,40 +178,55 @@ class Get : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated .pblog.protocol.GetStreamDescription stream = 1;
-  inline int stream_size() const;
-  inline void clear_stream();
-  static const int kStreamFieldNumber = 1;
-  inline const ::pblog::protocol::GetStreamDescription& stream(int index) const;
-  inline ::pblog::protocol::GetStreamDescription* mutable_stream(int index);
-  inline ::pblog::protocol::GetStreamDescription* add_stream();
-  inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >&
-      stream() const;
-  inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >*
-      mutable_stream();
+  // optional string path = 1;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
   
-  // optional uint32 bytes_per_response = 2 [default = 65535];
-  inline bool has_bytes_per_response() const;
-  inline void clear_bytes_per_response();
-  static const int kBytesPerResponseFieldNumber = 2;
-  inline ::google::protobuf::uint32 bytes_per_response() const;
-  inline void set_bytes_per_response(::google::protobuf::uint32 value);
+  // optional uint64 start_byte_offset = 2;
+  inline bool has_start_byte_offset() const;
+  inline void clear_start_byte_offset();
+  static const int kStartByteOffsetFieldNumber = 2;
+  inline ::google::protobuf::uint64 start_byte_offset() const;
+  inline void set_start_byte_offset(::google::protobuf::uint64 value);
+  
+  // optional uint32 max_response_events = 3;
+  inline bool has_max_response_events() const;
+  inline void clear_max_response_events();
+  static const int kMaxResponseEventsFieldNumber = 3;
+  inline ::google::protobuf::uint32 max_response_events() const;
+  inline void set_max_response_events(::google::protobuf::uint32 value);
+  
+  // optional uint32 max_response_bytes = 4;
+  inline bool has_max_response_bytes() const;
+  inline void clear_max_response_bytes();
+  static const int kMaxResponseBytesFieldNumber = 4;
+  inline ::google::protobuf::uint32 max_response_bytes() const;
+  inline void set_max_response_bytes(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
-  static const ::google::protobuf::uint32 pblog_enumeration = 13;
+  static const ::google::protobuf::uint32 pblog_enumeration = 11;
   bool add_to_envelope(::pblog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:pblog.protocol.request.Get)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription > stream_;
-  ::google::protobuf::uint32 bytes_per_response_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  ::google::protobuf::uint64 start_byte_offset_;
+  ::google::protobuf::uint32 max_response_events_;
+  ::google::protobuf::uint32 max_response_bytes_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -339,95 +251,96 @@ class Get : public ::google::protobuf::Message {
 
 // -------------------------------------------------------------------
 
-// Stream
-
-// repeated string path = 1;
-inline int Stream::path_size() const {
-  return path_.size();
-}
-inline void Stream::clear_path() {
-  path_.Clear();
-}
-inline const ::std::string& Stream::path(int index) const {
-  return path_.Get(index);
-}
-inline ::std::string* Stream::mutable_path(int index) {
-  return path_.Mutable(index);
-}
-inline void Stream::set_path(int index, const ::std::string& value) {
-  path_.Mutable(index)->assign(value);
-}
-inline void Stream::set_path(int index, const char* value) {
-  path_.Mutable(index)->assign(value);
-}
-inline void Stream::set_path(int index, const char* value, size_t size) {
-  path_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* Stream::add_path() {
-  return path_.Add();
-}
-inline void Stream::add_path(const ::std::string& value) {
-  path_.Add()->assign(value);
-}
-inline void Stream::add_path(const char* value) {
-  path_.Add()->assign(value);
-}
-inline void Stream::add_path(const char* value, size_t size) {
-  path_.Add()->assign(reinterpret_cast<const char*>(value), size);
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Stream::path() const {
-  return path_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Stream::mutable_path() {
-  return &path_;
-}
-
-// -------------------------------------------------------------------
-
 // Get
 
-// repeated .pblog.protocol.GetStreamDescription stream = 1;
-inline int Get::stream_size() const {
-  return stream_.size();
+// optional string path = 1;
+inline bool Get::has_path() const {
+  return _has_bit(0);
 }
-inline void Get::clear_stream() {
-  stream_.Clear();
+inline void Get::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(0);
 }
-inline const ::pblog::protocol::GetStreamDescription& Get::stream(int index) const {
-  return stream_.Get(index);
+inline const ::std::string& Get::path() const {
+  return *path_;
 }
-inline ::pblog::protocol::GetStreamDescription* Get::mutable_stream(int index) {
-  return stream_.Mutable(index);
+inline void Get::set_path(const ::std::string& value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
 }
-inline ::pblog::protocol::GetStreamDescription* Get::add_stream() {
-  return stream_.Add();
+inline void Get::set_path(const char* value) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
 }
-inline const ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >&
-Get::stream() const {
-  return stream_;
+inline void Get::set_path(const char* value, size_t size) {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::google::protobuf::RepeatedPtrField< ::pblog::protocol::GetStreamDescription >*
-Get::mutable_stream() {
-  return &stream_;
+inline ::std::string* Get::mutable_path() {
+  _set_bit(0);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
 }
 
-// optional uint32 bytes_per_response = 2 [default = 65535];
-inline bool Get::has_bytes_per_response() const {
+// optional uint64 start_byte_offset = 2;
+inline bool Get::has_start_byte_offset() const {
   return _has_bit(1);
 }
-inline void Get::clear_bytes_per_response() {
-  bytes_per_response_ = 65535u;
+inline void Get::clear_start_byte_offset() {
+  start_byte_offset_ = GOOGLE_ULONGLONG(0);
   _clear_bit(1);
 }
-inline ::google::protobuf::uint32 Get::bytes_per_response() const {
-  return bytes_per_response_;
+inline ::google::protobuf::uint64 Get::start_byte_offset() const {
+  return start_byte_offset_;
 }
-inline void Get::set_bytes_per_response(::google::protobuf::uint32 value) {
+inline void Get::set_start_byte_offset(::google::protobuf::uint64 value) {
   _set_bit(1);
-  bytes_per_response_ = value;
+  start_byte_offset_ = value;
+}
+
+// optional uint32 max_response_events = 3;
+inline bool Get::has_max_response_events() const {
+  return _has_bit(2);
+}
+inline void Get::clear_max_response_events() {
+  max_response_events_ = 0u;
+  _clear_bit(2);
+}
+inline ::google::protobuf::uint32 Get::max_response_events() const {
+  return max_response_events_;
+}
+inline void Get::set_max_response_events(::google::protobuf::uint32 value) {
+  _set_bit(2);
+  max_response_events_ = value;
+}
+
+// optional uint32 max_response_bytes = 4;
+inline bool Get::has_max_response_bytes() const {
+  return _has_bit(3);
+}
+inline void Get::clear_max_response_bytes() {
+  max_response_bytes_ = 0u;
+  _clear_bit(3);
+}
+inline ::google::protobuf::uint32 Get::max_response_bytes() const {
+  return max_response_bytes_;
+}
+inline void Get::set_max_response_bytes(::google::protobuf::uint32 value) {
+  _set_bit(3);
+  max_response_bytes_ = value;
 }
 
 

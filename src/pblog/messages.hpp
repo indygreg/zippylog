@@ -4,7 +4,6 @@
 #include <pblog/pblog.h>
 
 #include <pblog/protocol.pb.h>
-#include <pblog/pblogd.pb.h>
 #include <pblog/message.pb.h>
 #include <pblog/protocol/response.pb.h>
 #include <pblog/protocol/request.pb.h>

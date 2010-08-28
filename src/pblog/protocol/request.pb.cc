@@ -19,9 +19,6 @@ namespace {
 const ::google::protobuf::Descriptor* StoreInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StoreInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* Stream_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  Stream_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Get_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Get_reflection_ = NULL;
@@ -49,25 +46,12 @@ void protobuf_AssignDesc_pblog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StoreInfo));
-  Stream_descriptor_ = file->message_type(1);
-  static const int Stream_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, path_),
-  };
-  Stream_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      Stream_descriptor_,
-      Stream::default_instance_,
-      Stream_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Stream, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Stream));
-  Get_descriptor_ = file->message_type(2);
-  static const int Get_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, stream_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, bytes_per_response_),
+  Get_descriptor_ = file->message_type(1);
+  static const int Get_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, start_byte_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, max_response_events_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Get, max_response_bytes_),
   };
   Get_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -95,8 +79,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StoreInfo_descriptor_, &StoreInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Stream_descriptor_, &Stream::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Get_descriptor_, &Get::default_instance());
 }
 
@@ -105,8 +87,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto() {
   delete StoreInfo::default_instance_;
   delete StoreInfo_reflection_;
-  delete Stream::default_instance_;
-  delete Stream_reflection_;
   delete Get::default_instance_;
   delete Get_reflection_;
 }
@@ -117,21 +97,17 @@ void protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
-  ::pblog::protocol::protobuf_AddDesc_pblog_2fprotocol_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\034pblog/protocol/request.proto\022\026pblog.pr"
-    "otocol.request\032\024pblog/protocol.proto\"\013\n\t"
-    "StoreInfo\"\026\n\006Stream\022\014\n\004path\030\001 \003(\t\"^\n\003Get"
-    "\0224\n\006stream\030\001 \003(\0132$.pblog.protocol.GetStr"
-    "eamDescription\022!\n\022bytes_per_response\030\002 \001"
-    "(\r:\00565535", 209);
+    "otocol.request\"\013\n\tStoreInfo\"g\n\003Get\022\014\n\004pa"
+    "th\030\001 \001(\t\022\031\n\021start_byte_offset\030\002 \001(\004\022\033\n\023m"
+    "ax_response_events\030\003 \001(\r\022\032\n\022max_response"
+    "_bytes\030\004 \001(\r", 172);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
-  Stream::default_instance_ = new Stream();
   Get::default_instance_ = new Get();
   StoreInfo::default_instance_->InitAsDefaultInstance();
-  Stream::default_instance_->InitAsDefaultInstance();
   Get::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_pblog_2fprotocol_2frequest_2eproto);
 }
@@ -301,218 +277,12 @@ void StoreInfo::Swap(StoreInfo* other) {
 
 // ===================================================================
 
+const ::std::string Get::_default_path_;
 #ifndef _MSC_VER
-const int Stream::kPathFieldNumber;
-#endif  // !_MSC_VER
-
-Stream::Stream()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void Stream::InitAsDefaultInstance() {
-}
-
-Stream::Stream(const Stream& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void Stream::SharedCtor() {
-  _cached_size_ = 0;
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-Stream::~Stream() {
-  SharedDtor();
-}
-
-void Stream::SharedDtor() {
-  if (this != default_instance_) {
-  }
-}
-
-void Stream::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* Stream::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return Stream_descriptor_;
-}
-
-const Stream& Stream::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_pblog_2fprotocol_2frequest_2eproto();  return *default_instance_;
-}
-
-Stream* Stream::default_instance_ = NULL;
-
-Stream* Stream::New() const {
-  return new Stream;
-}
-
-void Stream::Clear() {
-  path_.Clear();
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool Stream::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated string path = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_path()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->path(0).data(), this->path(0).length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(10)) goto parse_path;
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-      
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void Stream::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated string path = 1;
-  for (int i = 0; i < this->path_size(); i++) {
-  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-    this->path(i).data(), this->path(i).length(),
-    ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->path(i), output);
-  }
-  
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* Stream::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // repeated string path = 1;
-  for (int i = 0; i < this->path_size(); i++) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->path(i).data(), this->path(i).length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(1, this->path(i), target);
-  }
-  
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int Stream::ByteSize() const {
-  int total_size = 0;
-  
-  // repeated string path = 1;
-  total_size += 1 * this->path_size();
-  for (int i = 0; i < this->path_size(); i++) {
-    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->path(i));
-  }
-  
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void Stream::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const Stream* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Stream*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void Stream::MergeFrom(const Stream& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  path_.MergeFrom(from.path_);
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void Stream::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Stream::CopyFrom(const Stream& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Stream::IsInitialized() const {
-  
-  return true;
-}
-
-void Stream::Swap(Stream* other) {
-  if (other != this) {
-    path_.Swap(&other->path_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata Stream::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Stream_descriptor_;
-  metadata.reflection = Stream_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int Get::kStreamFieldNumber;
-const int Get::kBytesPerResponseFieldNumber;
+const int Get::kPathFieldNumber;
+const int Get::kStartByteOffsetFieldNumber;
+const int Get::kMaxResponseEventsFieldNumber;
+const int Get::kMaxResponseBytesFieldNumber;
 #endif  // !_MSC_VER
 
 Get::Get()
@@ -531,7 +301,10 @@ Get::Get(const Get& from)
 
 void Get::SharedCtor() {
   _cached_size_ = 0;
-  bytes_per_response_ = 65535u;
+  path_ = const_cast< ::std::string*>(&_default_path_);
+  start_byte_offset_ = GOOGLE_ULONGLONG(0);
+  max_response_events_ = 0u;
+  max_response_bytes_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -540,6 +313,9 @@ Get::~Get() {
 }
 
 void Get::SharedDtor() {
+  if (path_ != &_default_path_) {
+    delete path_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -565,10 +341,16 @@ Get* Get::New() const {
 }
 
 void Get::Clear() {
-  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
-    bytes_per_response_ = 65535u;
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (path_ != &_default_path_) {
+        path_->clear();
+      }
+    }
+    start_byte_offset_ = GOOGLE_ULONGLONG(0);
+    max_response_events_ = 0u;
+    max_response_bytes_ = 0u;
   }
-  stream_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -579,30 +361,63 @@ bool Get::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated .pblog.protocol.GetStreamDescription stream = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_stream:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-                input, add_stream()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->path().data(), this->path().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_stream;
-        if (input->ExpectTag(16)) goto parse_bytes_per_response;
+        if (input->ExpectTag(16)) goto parse_start_byte_offset;
         break;
       }
       
-      // optional uint32 bytes_per_response = 2 [default = 65535];
+      // optional uint64 start_byte_offset = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_bytes_per_response:
+         parse_start_byte_offset:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &start_byte_offset_)));
+          _set_bit(1);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_max_response_events;
+        break;
+      }
+      
+      // optional uint32 max_response_events = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_response_events:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &bytes_per_response_)));
-          _set_bit(1);
+                 input, &max_response_events_)));
+          _set_bit(2);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_max_response_bytes;
+        break;
+      }
+      
+      // optional uint32 max_response_bytes = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_response_bytes:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &max_response_bytes_)));
+          _set_bit(3);
         } else {
           goto handle_uninterpreted;
         }
@@ -628,15 +443,28 @@ bool Get::MergePartialFromCodedStream(
 
 void Get::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated .pblog.protocol.GetStreamDescription stream = 1;
-  for (int i = 0; i < this->stream_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->stream(i), output);
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->path(), output);
   }
   
-  // optional uint32 bytes_per_response = 2 [default = 65535];
+  // optional uint64 start_byte_offset = 2;
   if (_has_bit(1)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->bytes_per_response(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->start_byte_offset(), output);
+  }
+  
+  // optional uint32 max_response_events = 3;
+  if (_has_bit(2)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->max_response_events(), output);
+  }
+  
+  // optional uint32 max_response_bytes = 4;
+  if (_has_bit(3)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->max_response_bytes(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -647,16 +475,29 @@ void Get::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Get::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated .pblog.protocol.GetStreamDescription stream = 1;
-  for (int i = 0; i < this->stream_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->stream(i), target);
+  // optional string path = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->path(), target);
   }
   
-  // optional uint32 bytes_per_response = 2 [default = 65535];
+  // optional uint64 start_byte_offset = 2;
   if (_has_bit(1)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->bytes_per_response(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->start_byte_offset(), target);
+  }
+  
+  // optional uint32 max_response_events = 3;
+  if (_has_bit(2)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->max_response_events(), target);
+  }
+  
+  // optional uint32 max_response_bytes = 4;
+  if (_has_bit(3)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->max_response_bytes(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -669,23 +510,36 @@ void Get::SerializeWithCachedSizes(
 int Get::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
-    // optional uint32 bytes_per_response = 2 [default = 65535];
-    if (has_bytes_per_response()) {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string path = 1;
+    if (has_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->path());
+    }
+    
+    // optional uint64 start_byte_offset = 2;
+    if (has_start_byte_offset()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->start_byte_offset());
+    }
+    
+    // optional uint32 max_response_events = 3;
+    if (has_max_response_events()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->bytes_per_response());
+          this->max_response_events());
+    }
+    
+    // optional uint32 max_response_bytes = 4;
+    if (has_max_response_bytes()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->max_response_bytes());
     }
     
   }
-  // repeated .pblog.protocol.GetStreamDescription stream = 1;
-  total_size += 1 * this->stream_size();
-  for (int i = 0; i < this->stream_size(); i++) {
-    total_size +=
-      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-        this->stream(i));
-  }
-  
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -711,10 +565,18 @@ void Get::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Get::MergeFrom(const Get& from) {
   GOOGLE_CHECK_NE(&from, this);
-  stream_.MergeFrom(from.stream_);
-  if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_path(from.path());
+    }
     if (from._has_bit(1)) {
-      set_bytes_per_response(from.bytes_per_response());
+      set_start_byte_offset(from.start_byte_offset());
+    }
+    if (from._has_bit(2)) {
+      set_max_response_events(from.max_response_events());
+    }
+    if (from._has_bit(3)) {
+      set_max_response_bytes(from.max_response_bytes());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -739,8 +601,10 @@ bool Get::IsInitialized() const {
 
 void Get::Swap(Get* other) {
   if (other != this) {
-    stream_.Swap(&other->stream_);
-    std::swap(bytes_per_response_, other->bytes_per_response_);
+    std::swap(path_, other->path_);
+    std::swap(start_byte_offset_, other->start_byte_offset_);
+    std::swap(max_response_events_, other->max_response_events_);
+    std::swap(max_response_bytes_, other->max_response_bytes_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -758,10 +622,6 @@ void Get::Swap(Get* other) {
 
 
 bool StoreInfo::add_to_envelope(::pblog::Envelope *envelope) {
-    return envelope->add_message(this, pblog_namespace, pblog_enumeration);
-}
-
-bool Stream::add_to_envelope(::pblog::Envelope *envelope) {
     return envelope->add_message(this, pblog_namespace, pblog_enumeration);
 }
 
