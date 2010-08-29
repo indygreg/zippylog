@@ -41,9 +41,8 @@ using ::std::string;
 
 static bool receive_multipart_blocking(socket_t * sock, vector<message_t *> &identities, vector<message_t *> &messages);
 
-void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
+void * __stdcall Request::request_processor(void *data)
 {
-    apr_pool_t *p;
     int loop = 1;
     request_processor_start_data *d = (request_processor_start_data *)data;
 
@@ -305,7 +304,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
 The stream processor handles streaming of events to all interested clients
 
 */
-void * __stdcall stream_processor(apr_thread_t *thread, void *start_data)
+void * __stdcall stream_processor(void *start_data)
 {
     stream_processor_start_data *start = (stream_processor_start_data *)start_data;
 

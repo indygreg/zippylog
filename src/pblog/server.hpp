@@ -18,7 +18,6 @@
 #include <pblog/pblog.h>
 #include <pblog/store.hpp>
 
-#include <apr_thread_proc.h>
 #include <zmq.hpp>
 
 namespace pblog {
@@ -61,13 +60,13 @@ public:
 
     // function that waits and processes client requests as they arrive
     // suitable to be called upon thread initialization
-    static void * __stdcall request_processor(apr_thread_t *thread, void *data);
+    static void * __stdcall request_processor(void *data);
 
 };
 
 // the stream processor handles streaming to all clients that have requested it
 // it frees the request processors to do more important things
-PBLOG_EXPORT void * __stdcall stream_processor(apr_thread_t *thread, void *data);
+PBLOG_EXPORT void * __stdcall stream_processor(void *data);
 
 }} // namespaces
 

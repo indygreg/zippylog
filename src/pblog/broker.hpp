@@ -19,7 +19,6 @@
 #include <pblog/server.hpp>
 #include <pblog/store.hpp>
 
-#include <apr_pools.h>
 #include <vector>
 #include <zmq.hpp>
 
@@ -37,8 +36,8 @@ using ::zmq::socket_t;
 // in the system
 class PBLOG_EXPORT Broker {
     public:
-        Broker(Store *store, apr_pool_t *p);
-        Broker(Store *store, context_t *ctx, apr_pool_t *p);
+        Broker(Store *store);
+        Broker(Store *store, context_t *ctx);
 
         ~Broker();
 
@@ -55,7 +54,6 @@ class PBLOG_EXPORT Broker {
         vector<socket_t *> listen_proxy_sockets;
         vector<void *> worker_threads;
         Store * store;
-        apr_pool_t *p;
         bool active;
         request_processor_start_data *worker_start_data;
 

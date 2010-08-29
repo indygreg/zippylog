@@ -12,13 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "pblog/store.hpp"
+#include <pblog/store.hpp>
 
-#ifdef WINDOWS
-#include <windows.h>
-#include <stdio.h>
-#include <iostream> // TODO remove
-#endif
+#include <pblog/platform.hpp>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -301,64 +297,10 @@ string Store::StreamFilesystemPath(const string path)
     return this->PathToFilesystemPath(path) + ".pblog";
 }
 
-struct dir_entry {
-    string name;
-    uint64 size;
-    char type;
-};
-
-// congratulations, this is the 4,234,532,657 time in programming history this
-// function has been written!
-bool directory_entries(const string dir, vector<dir_entry> &v)
-{
-    //complicated case first
-#ifdef WINDOWS
-    // TODO fix potential buffer overrun
-    char path[8192];
-    strcpy(path, dir.c_str());
-
-    // we need to wildcard the path, cuz that's how Windows works
-    char * end = strrchr(path, '\0');
-    end[0] = '\\';
-    end[1] = '*';
-    end[2] = '\0';
-
-    WIN32_FIND_DATA info;
-    HANDLE handle = FindFirstFile(path, &info);
-    if (INVALID_HANDLE_VALUE == handle) {
-        return false;
-    }
-
-    do {
-        dir_entry entry;
-        entry.name = info.cFileName;
-        entry.size = info.nFileSizeHigh << 32 + info.nFileSizeLow;
-        if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-            entry.type = 1;
-        }
-        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
-            entry.type = 2;
-        }
-
-        v.push_back(entry);
-
-    } while(FindNextFile(handle, &info) != 0);
-
-    FindClose(handle);
-    return true;
-
-#else
-    // TODO implement POSIX functionality
-#error "directory traversal not implemented on this platform yet"
-#endif
-
-    return false;
-}
-
 bool Store::directories_in_directory(const string dir, vector<string> &v)
 {
     vector<dir_entry> entries;
-    if (!directory_entries(dir, entries)) return false;
+    if (!Platform::directory_entries(dir, entries)) return false;
 
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 1 && entries[i].name[0] != '.') {
@@ -372,7 +314,7 @@ bool Store::directories_in_directory(const string dir, vector<string> &v)
 bool Store::files_in_directory(const string dir, vector<string> &v)
 {
     vector<dir_entry> entries;
-    if (!directory_entries(dir, entries)) return false;
+    if (!Platform::directory_entries(dir, entries)) return false;
 
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 2) {

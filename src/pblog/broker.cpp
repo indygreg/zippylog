@@ -14,9 +14,8 @@
 
 #include <pblog/broker.hpp>
 
+#include <pblog/platform.hpp>
 #include <pblog/server.hpp>
-
-#include <apr_thread_proc.h>
 
 namespace pblog {
 namespace server {
@@ -30,12 +29,12 @@ namespace server {
 
 using ::google::protobuf::int64;
 
-Broker::Broker(Store *store, apr_pool_t *p)
+Broker::Broker(Store *store)
 {
-    Broker(store, NULL, p);
+    Broker(store, NULL);
 }
 
-Broker::Broker(Store * store, context_t *ctx, apr_pool_t *p)
+Broker::Broker(Store * store, context_t *ctx)
 {
     this->active = true;
     this->zctx = ctx;
@@ -44,19 +43,12 @@ Broker::Broker(Store * store, context_t *ctx, apr_pool_t *p)
     this->clients_external_sock = NULL;
 
     this->store = store;
-
-    apr_pool_t * new_pool;
-    apr_pool_create(&new_pool, p);
-
-    this->p = new_pool;
 }
 
 Broker::~Broker()
 {
     if (this->zctx) delete this->zctx;
     if (this->worker_start_data) delete this->worker_start_data;
-
-    apr_pool_destroy(this->p);
 }
 
 void Broker::add_listen_endpoint(string endpoint)
@@ -219,16 +211,11 @@ void Broker::create_worker_threads()
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
 
     for (int i = 3; i; --i) {
-        apr_status_t rv;
-        apr_threadattr_t * threadattr;
-        rv = apr_threadattr_create(&threadattr, this->p);
-        if (rv != APR_SUCCESS) {
-            throw "unable to create thread attribute";
+        void * thread = Platform::create_thread(Request::request_processor, this->worker_start_data);
+        if (!thread) {
+            throw "error creating worker thread";
         }
-        apr_thread_t * thread;
-        apr_thread_create(&thread, threadattr, Request::request_processor, this->worker_start_data, this->p);
-
-        this->worker_threads.push_back((void *)thread);
+        this->worker_threads.push_back(thread);
     }
 }
 
