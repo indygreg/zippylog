@@ -19,6 +19,7 @@
 #include <pblog/protocol.pb.h>
 
 #include <string>
+#include <vector>
 #include <zmq.hpp>
 
 namespace pblog {
@@ -26,25 +27,51 @@ namespace client {
 
 using protocol::StoreInfo;
 using ::std::string;
+using ::std::vector;
 using ::zmq::socket_t;
 using ::zmq::context_t;
 
+// represents a stream segment response (from Get requests)
+class PBLOG_EXPORT StreamSegment {
+    public:
+        StreamSegment();
+        ~StreamSegment();
+
+        bool SetPath(const string path);
+        bool SetStartOffset(uint64 offset);
+        bool SetEndOffset(uint64 offset);
+        bool SetBytesSent(uint32 count);
+        bool SetEnvelopesSent(uint32 number);
+        bool AddEnvelope(Envelope e);
+
+        string Path;
+        uint64 StartOffset;
+        uint64 EndOffset;
+        uint32 BytesSent;
+        uint32 EnvelopesSent;
+        vector<Envelope> Envelopes;
+
+};
+
 class PBLOG_EXPORT Client {
     public:
-        /* establish a client client and bind to the location specified */
+        // establish a client and bind to the location specified
         Client(context_t *ctx, string bind);
-
         ~Client();
 
-        StoreInfo * store_info();
-
-        void get_stream(const string bucket, const string stream_set, const string stream);
-        bool read_envelope(pblog::Envelope &envelope);
+        bool StoreInfo(StoreInfo &info);
+        bool Get(const string path, uint64 start_offset, StreamSegment &segment);
+        bool Get(const string path, uint64 start_offset, uint64 stop_offset, StreamSegment &segment);
+        bool Get(const string path, uint64 start_offset, uint32 max_response_bytes, StreamSegment &segment);
 
     protected:
         socket_t *_sock;
 
-        bool _send_envelope(::pblog::Envelope &envelope);
+        bool _send_envelope(Envelope &envelope);
+        bool ReadEnvelope(Envelope &envelope);
+        bool ReceiveAndProcessGet(StreamSegment &segment);
+        bool HasMore();
+        bool ReadOutMultipart();
 };
 
 }} // namespaces
