@@ -196,7 +196,8 @@ void * __stdcall Request::request_processor(void *data)
                     break;
                 }
 
-                stream.Seek(get->start_offset());
+                uint64 start_offset = get->start_offset();
+                stream.Seek(start_offset);
 
                 // determine how much to fetch
                 uint32 bytes_left = 256000; // TODO pull from server config
@@ -226,12 +227,20 @@ void * __stdcall Request::request_processor(void *data)
                 segment_start.set_offset(get->start_offset());
                 ::pblog::Envelope env = ::pblog::Envelope();
                 segment_start.add_to_envelope(&env);
+
+                // copy request tags to response for client association
+                if (request_envelope.envelope.tag_size() >= 0) {
+                    for (size_t i = 0; i < request_envelope.envelope.tag_size(); i++) {
+                        env.envelope.add_tag(request_envelope.envelope.tag(i));
+                    }
+                }
+
                 message_t *zmsg = env.to_zmq_message();
                 socket->send(*zmsg, ZMQ_SNDMORE);
                 delete msg;
 
                 uint32 bytes_read = 0;
-                uint32 events_read = 0;
+                uint32 envelopes_read = 0;
 
                 while (true) {
                     if (!stream.ReadEnvelope(env, envelope_size)) break;
@@ -241,7 +250,7 @@ void * __stdcall Request::request_processor(void *data)
                     delete zmsg;
 
                     bytes_read += envelope_size;
-                    events_read++;
+                    envelopes_read++;
 
                     if (bytes_left - envelope_size < 0) break;
                     bytes_left -= envelope_size;
@@ -251,9 +260,9 @@ void * __stdcall Request::request_processor(void *data)
                 }
 
                 protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
-                segment_end.set_events_sent(events_read);
+                segment_end.set_envelopes_sent(envelopes_read);
                 segment_end.set_bytes_sent(bytes_read);
-                segment_end.set_offset(get->start_offset() + bytes_read);
+                segment_end.set_offset(start_offset + bytes_read);
 
                 env = ::pblog::Envelope();
                 segment_end.add_to_envelope(&env);
@@ -278,6 +287,14 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::SEND_ENVELOPE_AND_DONE:
             {
+                // tags associated with request attached to response so client
+                // can associate a single response to a request
+                if (request_envelope.envelope.tag_size() >= 0) {
+                    for (size_t i = 0; i < request_envelope.envelope.tag_size(); i++) {
+                        response_envelope.envelope.add_tag(request_envelope.envelope.tag(i));
+                    }
+                }
+
                 message_t *msg = response_envelope.to_zmq_message();
 
                 if (!socket->send(*msg, 0)) {
