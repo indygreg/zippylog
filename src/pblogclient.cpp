@@ -36,37 +36,5 @@ int main(int argc, const char * const argv[])
     ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
     ::google::protobuf::io::FileOutputStream os(1, -1);
 
-    while (true) {
-        printf("%d\n", i++);
-        protocol::StoreInfo *info = c.store_info();
-
-        for (size_t i = 0; i < info->bucket_size(); i++) {
-            protocol::BucketInfo binfo = info->bucket(i);
-            string bucket = binfo.path();
-
-            for (size_t j = 0; j < binfo.stream_set_size(); j++) {
-                protocol::StreamSetInfo ssinfo = binfo.stream_set(j);
-                string stream_set = ssinfo.path();
-
-                for (size_t k = 0; k < ssinfo.stream_size(); k++) {
-                    protocol::StreamInfo sinfo = ssinfo.stream(k);
-                    string stream = sinfo.path();
-
-                    cout << bucket << '/' << stream_set << '/' << stream << endl;
-
-                    c.get_stream(bucket, stream_set, stream);
-
-                    while (true) {
-                        ::pblog::Envelope e;
-                        if (c.read_envelope(e)) {
-                            printer.Print(e.envelope, &os);
-                            os.Flush();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     return 0;
 }
