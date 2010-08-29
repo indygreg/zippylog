@@ -21,7 +21,6 @@
 #include <pblog/stream.hpp>
 
 #include <vector>
-#include <apr_pools.h>
 
 namespace pblog {
 
@@ -35,7 +34,6 @@ class PBLOG_EXPORT Store {
     public:
         /** construct a store from a filesystem path */
         Store(const string path);
-        Store(const string path, apr_pool_t *p);
         ~Store();
 
         // validates that a path string is sane
@@ -99,7 +97,6 @@ class PBLOG_EXPORT Store {
 
     private:
         string _path;
-        apr_pool_t* _p;
 };
 
 } // namespace pblog

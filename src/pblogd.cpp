@@ -106,7 +106,7 @@ int main(int argc, const char * const argv[])
     }
     apr_pool_destroy(p_opts);
 
-    Store store = Store(store_path, p);
+    Store store = Store(store_path);
 
     Broker broker = Broker(&store, p);
     broker.add_listen_endpoint(apr_psprintf(p, "tcp://%s:%d", listen_address, listen_port));

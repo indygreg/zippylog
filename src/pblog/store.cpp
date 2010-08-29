@@ -14,8 +14,11 @@
 
 #include "pblog/store.hpp"
 
-#include <apr_pools.h>
-#include <apr_file_info.h>
+#ifdef WINDOWS
+#include <windows.h>
+#include <stdio.h>
+#include <iostream> // TODO remove
+#endif
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -26,25 +29,16 @@ namespace pblog {
 
 Store::Store(const string path)
 {
-    apr_pool_t *p;
-    apr_pool_create(&p, NULL);
-    Store(path, p);
-}
-
-Store::Store(const string path, apr_pool_t *p)
-{
     struct _stat64 stat;
     if (_stat64(path.c_str(), &stat)) {
         throw "store path does not exist or could not be read";
     }
 
     this->_path = path;
-    this->_p = p;
 }
 
 Store::~Store()
 {
-    apr_pool_destroy(this->_p);
 }
 
 bool Store::ValidatePath(const string path)
@@ -307,26 +301,68 @@ string Store::StreamFilesystemPath(const string path)
     return this->PathToFilesystemPath(path) + ".pblog";
 }
 
-bool Store::directories_in_directory(const string dir, vector<string> &v)
-{
-    apr_status_t st;
-    apr_dir_t *e;
-    apr_finfo_t info;
+struct dir_entry {
+    string name;
+    uint64 size;
+    char type;
+};
 
-    st = apr_dir_open(&e, dir.c_str(), this->_p);
-    if (st != APR_SUCCESS) {
+// congratulations, this is the 4,234,532,657 time in programming history this
+// function has been written!
+bool directory_entries(const string dir, vector<dir_entry> &v)
+{
+    //complicated case first
+#ifdef WINDOWS
+    // TODO fix potential buffer overrun
+    char path[8192];
+    strcpy(path, dir.c_str());
+
+    // we need to wildcard the path, cuz that's how Windows works
+    char * end = strrchr(path, '\0');
+    end[0] = '\\';
+    end[1] = '*';
+    end[2] = '\0';
+
+    WIN32_FIND_DATA info;
+    HANDLE handle = FindFirstFile(path, &info);
+    if (INVALID_HANDLE_VALUE == handle) {
         return false;
     }
 
+    do {
+        dir_entry entry;
+        entry.name = info.cFileName;
+        entry.size = info.nFileSizeHigh << 32 + info.nFileSizeLow;
+        if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            entry.type = 1;
+        }
+        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+            entry.type = 2;
+        }
 
-    while (true) {
-        st = apr_dir_read(&info, APR_FINFO_TYPE, e);
-        if (st != APR_SUCCESS) break;
+        v.push_back(entry);
 
-        if (info.filetype == APR_DIR) {
-            if (info.name[0] != '.') {
-                v.push_back(info.name);
-            }
+    } while(FindNextFile(handle, &info) != 0);
+
+    FindClose(handle);
+    return true;
+
+#else
+    // TODO implement POSIX functionality
+#error "directory traversal not implemented on this platform yet"
+#endif
+
+    return false;
+}
+
+bool Store::directories_in_directory(const string dir, vector<string> &v)
+{
+    vector<dir_entry> entries;
+    if (!directory_entries(dir, entries)) return false;
+
+    for (size_t i = 0; i < entries.size(); i++) {
+        if (entries[i].type == 1 && entries[i].name[0] != '.') {
+            v.push_back(entries[i].name);
         }
     }
 
@@ -335,20 +371,12 @@ bool Store::directories_in_directory(const string dir, vector<string> &v)
 
 bool Store::files_in_directory(const string dir, vector<string> &v)
 {
-    apr_status_t st;
-    apr_dir_t *e;
-    apr_finfo_t info;
+    vector<dir_entry> entries;
+    if (!directory_entries(dir, entries)) return false;
 
-    st = apr_dir_open(&e, dir.c_str(), this->_p);
-    if (st != APR_SUCCESS) {
-        return false;
-    }
-
-    while (true) {
-        st = apr_dir_read(&info, APR_FINFO_TYPE, e);
-        if (st != APR_SUCCESS) break;
-        if (info.filetype == APR_REG) {
-            v.push_back(info.name);
+    for (size_t i = 0; i < entries.size(); i++) {
+        if (entries[i].type == 2) {
+            v.push_back(entries[i].name);
         }
     }
 
