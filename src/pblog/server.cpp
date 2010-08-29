@@ -146,7 +146,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
             case Request::PROCESS_STOREINFO:
             {
                 protocol::StoreInfo info = protocol::StoreInfo();
-                d->store->store_info(info);
+                d->store->StoreInfo(info);
 
                 response_envelope = pblog::Envelope();
                 info.add_to_envelope(&response_envelope);
@@ -179,9 +179,9 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     break;
                 }
 
-                if (!get->has_start_byte_offset()) {
+                if (!get->has_start_offset()) {
                     error_code = protocol::response::EMPTY_FIELD;
-                    error_message = "required field 'start_byte_offset' is not defined";
+                    error_message = "required field 'start_offset' is not defined";
                     state = Request::SEND_ERROR_RESPONSE;
                     delete get;
                     break;
@@ -190,7 +190,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                 // TODO perform additional stream verification
 
                 InputStream stream;
-                if (!store->get_input_stream(get->path(), stream)) {
+                if (!store->GetInputStream(get->path(), stream)) {
                     error_code = protocol::response::PATH_NOT_FOUND;
                     error_message = "requested stream could not be found";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -198,17 +198,16 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     break;
                 }
 
-                stream.Seek(get->start_byte_offset());
+                stream.Seek(get->start_offset());
 
                 // determine how much to fetch
                 uint32 bytes_left = 256000; // TODO pull from server config
 
                 // client can lower server default if it wants
-                if (get->has_requested_bytes() && get->requested_bytes() < bytes_left) {
-                    bytes_left = get->requested_bytes();
+                if (get->has_max_response_bytes() && get->max_response_bytes() < bytes_left) {
+                    bytes_left = get->max_response_bytes();
                 }
 
-                uint32 bytes_read = 0;
                 pblog::Envelope m = pblog::Envelope();
 
                 uint32 envelope_size = stream.NextEnvelopeSize();
@@ -226,12 +225,15 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
 
                 protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
                 segment_start.set_path(get->path());
-                segment_start.set_stream_start_offset(get->start_byte_offset());
+                segment_start.set_offset(get->start_offset());
                 ::pblog::Envelope env = ::pblog::Envelope();
                 segment_start.add_to_envelope(&env);
                 message_t *zmsg = env.to_zmq_message();
                 socket->send(*zmsg, ZMQ_SNDMORE);
                 delete msg;
+
+                uint32 bytes_read = 0;
+                uint32 events_read = 0;
 
                 while (true) {
                     if (!stream.ReadEnvelope(env, envelope_size)) break;
@@ -241,6 +243,7 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                     delete zmsg;
 
                     bytes_read += envelope_size;
+                    events_read++;
 
                     if (bytes_left - envelope_size < 0) break;
                     bytes_left -= envelope_size;
@@ -250,7 +253,9 @@ void * __stdcall Request::request_processor(apr_thread_t *thread, void *data)
                 }
 
                 protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
-                // TODO fill in fields
+                segment_end.set_events_sent(events_read);
+                segment_end.set_bytes_sent(bytes_read);
+                segment_end.set_offset(get->start_offset() + bytes_read);
 
                 env = ::pblog::Envelope();
                 segment_end.add_to_envelope(&env);

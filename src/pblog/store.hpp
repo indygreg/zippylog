@@ -30,50 +30,75 @@ using ::std::string;
 
 // represents a stream store
 // functions are reentrant and thread-safe unless otherwise specified
+// TODO define an interface for the store API
 class PBLOG_EXPORT Store {
     public:
         /** construct a store from a filesystem path */
-        Store(const char *path);
-        Store(const char *path, apr_pool_t *p);
+        Store(const string path);
+        Store(const string path, apr_pool_t *p);
         ~Store();
 
-        /** return the path to this store */
-        const char * path();
+        // validates that a path string is sane
+        // this checks for things like beginning with a '/', not containing
+        // illegal characters like '.', etc
+        static bool ValidatePath(const string path);
 
-        /** obtain a list of the buckets in the store */
-        vector<string> * buckets();
+        static bool ParsePath(const string path, string &bucket, string &set, string &stream);
 
-        /** list of stream sets in a bucket */
-        vector<string> * stream_sets_in_bucket(const string bucket);
+        // return the filesystem path to this store
+        const string StorePath();
 
-        /** list of streams in stream set */
-        vector<string> * streams_in_stream_set(const string bucket, const string stream_set);
+        // obtain the set of bucket names in the store
+        bool BucketNames(vector<string> &buckets);
 
-        vector<string> * stream_paths();
+        // obtain the set of stream sets in a specific bucket
+        bool StreamSetNames(const string bucket, vector<string> &buckets);
 
-        string bucket_path(const string bucket);
-        string bucket_directory(const string bucket);
-        string stream_set_path(const string bucket, string stream_set);
-        string stream_set_directory(const string bucket, const string stream_set);
-        string stream_path(const string bucket, const string stream_set, const string stream);
-        string path_to_filesystem_path(const string path);
+        // obtain the set of stream names in a specific stream set
+        bool StreamNames(const string bucket, const string set, vector<string> &streams);
 
-        bool stream_info(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info);
-        bool stream_set_info(const string bucket, string stream_set, protocol::StreamSetInfo &info);
-        bool bucket_info(const string bucket, protocol::BucketInfo &info);
-        bool store_info(protocol::StoreInfo &info);
+        // return the path to a specific bucket
+        string BucketPath(const string bucket);
 
-        bool parse_stream_path(const string path, string &bucket, string &set, string &stream);
+        // return the path to a specific stream set
+        string StreamsetPath(const string bucket, const string set);
 
-        bool get_input_stream(const string path, InputStream &s);
-        bool get_input_stream(const string bucket, const string stream_set, const string stream, InputStream &s);
+        // return the path to a stream within a bucket and set
+        string StreamPath(const string bucket, const string set, const string stream);
+
+        // obtain the set of all paths to known buckets
+        bool BucketPaths(vector<string> &paths);
+
+        // obtain the set of all paths to known stream sets
+        bool StreamsetPaths(vector<string> &paths);
+
+        // obtain the set of all paths to all known streams
+        bool StreamPaths(vector<string> &paths);
+
+        // obtain the length of a stream
+        bool StreamLength(const string path, int64 &length);
+
+        bool StoreInfo(protocol::StoreInfo &info);
+        bool BucketInfo(const string bucket, protocol::BucketInfo &info);
+        bool StreamsetInfo(const string bucket, const string set, protocol::StreamSetInfo &info);
+        bool StreamsetInfo(const string path, protocol::StreamSetInfo &info);
+
+        bool StreamInfo(const string bucket, const string set, const string stream, protocol::StreamInfo &info);
+        bool StreamInfo(const string path, protocol::StreamInfo &info);
+
+        bool GetInputStream(const string path, InputStream &s);
+        bool GetInputStream(const string bucket, const string set, const string stream, InputStream &s);
 
     protected:
-        vector<string> * directories_in_directory(const string dir);
-        vector<string> * files_in_directory(const string dir);
+        bool directories_in_directory(const string dir, vector<string> &v);
+        bool files_in_directory(const string dir, vector<string> &v);
+
+        string PathToFilesystemPath(const string path);
+        string StreamFilesystemPath(const string path);
+
 
     private:
-        const char* _path;
+        string _path;
         apr_pool_t* _p;
 };
 

@@ -17,20 +17,27 @@
 #include <apr_pools.h>
 #include <apr_file_info.h>
 
-using namespace ::std;
+#include <sys/types.h>
+#include <sys/stat.h>
+
+using ::std::string;
 
 namespace pblog {
 
-Store::Store(const char *path)
+Store::Store(const string path)
 {
     apr_pool_t *p;
     apr_pool_create(&p, NULL);
     Store(path, p);
 }
 
-Store::Store(const char *path, apr_pool_t *p)
+Store::Store(const string path, apr_pool_t *p)
 {
-    /* TODO perform validation */
+    struct _stat64 stat;
+    if (_stat64(path.c_str(), &stat)) {
+        throw "store path does not exist or could not be read";
+    }
+
     this->_path = path;
     this->_p = p;
 }
@@ -40,159 +47,39 @@ Store::~Store()
     apr_pool_destroy(this->_p);
 }
 
-vector<string> * Store::buckets()
+bool Store::ValidatePath(const string path)
 {
-    return this->directories_in_directory(this->_path);
-}
-
-vector<string> * Store::stream_sets_in_bucket(const string bucket)
-{
-    return this->directories_in_directory(this->bucket_directory(bucket));
-}
-
-vector<string> * Store::streams_in_stream_set(const string bucket, const string stream_set)
-{
-    vector<string> *files = this->files_in_directory(this->stream_set_directory(bucket, stream_set));
-
-    for (size_t i = files->size() - 1; i; --i) {
-        if (files->at(i).substr(-6, 6).compare(".pblog")) {
-            files->pop_back();
-        }
+    if (path[0] != '/') {
+        return false;
     }
 
-    return files;
-}
-
-vector<string> * Store::stream_paths()
-{
-    vector<string> *l = new vector<string>();
-    vector<string> *buckets = this->buckets();
-
-    for (size_t i = buckets->size(); i; --i) {
-        vector<string> *sets = this->stream_sets_in_bucket(buckets->at(i-1));
-
-        for (size_t j = sets->size(); j; --j) {
-            vector<string> *streams = this->streams_in_stream_set(buckets->at(i-1), sets->at(j-1));
-
-            for (size_t k = streams->size(); k; --k) {
-                l->push_back(this->stream_path(
-                    buckets->at(i-1),
-                    sets->at(j-1),
-                    streams->at(k-1)
-                ));
-            }
-
-            delete streams;
+    int32 seen_paths = 1;
+    for (size_t i = path.length() - 1; i; i--) {
+        if (path[i] == '/') {
+            seen_paths++;
+            if (seen_paths > 3) return false;
+            continue;
+        }
+        else if (path[i] >= 48 && path[i] <= 57) {
+            continue;
+        }
+        else if (path[i] >= 65 && path[i] <= 90) {
+            continue;
+        }
+        else if (path[i] >= 97 && path[i] <= 122) {
+            continue;
+        }
+        else if (path[i] == 45 || path[i] == 95) {
+            continue;
         }
 
-        delete sets;
+        return false;
     }
-
-    delete buckets;
-
-    return l;
-}
-
-string Store::bucket_path(const string bucket)
-{
-    string s = "/";
-    s.append(bucket);
-    return s;
-}
-
-string Store::bucket_directory(const string bucket)
-{
-    string s;
-    s.append(this->_path);
-    s.append("/");
-    s.append(bucket);
-    return s;
-}
-
-string Store::stream_set_path(const string bucket, const string stream_set)
-{
-    string s = this->bucket_path(bucket);
-    s.append("/");
-    s.append(stream_set);
-    return s;
-}
-
-string Store::stream_set_directory(const string bucket, const string stream_set)
-{
-    string s = this->bucket_directory(bucket);
-    s.append("/");
-    s.append(stream_set);
-    return s;
-}
-
-string Store::stream_path(const string bucket, const string stream_set, const string filename)
-{
-    string s = this->stream_set_path(bucket, stream_set);
-    s.append("/");
-    s.append(filename);
-
-    return s;
-}
-
-string Store::path_to_filesystem_path(const string path)
-{
-    string s = string(this->_path);
-    s.append("/");
-    s.append(path);
-
-    return s;
-}
-
-bool Store::stream_info(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info)
-{
-    info.set_path(stream);
-    // TODO verify stream exists and populate other stuff
 
     return true;
 }
 
-bool Store::stream_set_info(const string bucket, const string stream_set, protocol::StreamSetInfo &info)
-{
-    info.set_path(stream_set);
-
-    vector<string> *streams = this->streams_in_stream_set(bucket, stream_set);
-
-    for (size_t i = 0; i < streams->size(); i++) {
-        protocol::StreamInfo * new_si = info.add_stream();
-        this->stream_info(bucket, stream_set, streams->at(i), *new_si);
-    }
-
-    delete streams;
-    return true;
-}
-
-bool Store::bucket_info(const string bucket, protocol::BucketInfo &info)
-{
-    info.set_path(bucket);
-
-    vector<string> *stream_sets = this->stream_sets_in_bucket(bucket);
-    for (size_t i = 0; i < stream_sets->size(); i++) {
-        protocol::StreamSetInfo *ss = info.add_stream_set();
-        this->stream_set_info(bucket, stream_sets->at(i), *ss);
-    }
-    delete stream_sets;
-
-    return true;
-}
-
-bool Store::store_info(protocol::StoreInfo &info)
-{
-    vector<string> * buckets = this->buckets();
-    for (size_t i = 0; i < buckets->size(); i++) {
-        protocol::BucketInfo *bucket = info.add_bucket();
-        this->bucket_info(buckets->at(i), *bucket);
-    }
-    delete buckets;
-
-    return true;
-}
-
-bool Store::parse_stream_path(const string path, string &bucket, string &set, string &stream)
+bool Store::ParsePath(const string path, string &bucket, string &set, string &stream)
 {
     string::size_type offsets[3];
 
@@ -217,29 +104,218 @@ bool Store::parse_stream_path(const string path, string &bucket, string &set, st
     return true;
 }
 
-bool Store::get_input_stream(const string path, InputStream &s)
+
+const string Store::StorePath()
 {
-    return s.OpenFile(this->path_to_filesystem_path(path));
+    return this->_path;
 }
 
-bool Store::get_input_stream(const string bucket, const string stream_set, const string stream, InputStream &s)
+bool Store::BucketNames(vector<string> &buckets)
 {
-    string path = this->path_to_filesystem_path(this->stream_path(bucket, stream_set, stream));
+    return this->directories_in_directory(this->_path, buckets);
+}
+
+bool Store::StreamSetNames(const string bucket, vector<string> &sets)
+{
+    return this->directories_in_directory(this->PathToFilesystemPath(this->BucketPath(bucket)), sets);
+}
+
+bool Store::StreamNames(const string bucket, const string set, vector<string> &streams)
+{
+    this->files_in_directory(this->PathToFilesystemPath(this->StreamsetPath(bucket, set)), streams);
+
+    for (size_t i = streams.size(); i; --i) {
+        if (streams[i-1].substr(streams[i-i].length() - 6, 6).compare(".pblog")) {
+            streams.pop_back();
+        }
+        streams[i-1] = streams[i-1].substr(0, streams[i-1].length() - 6);
+    }
+
+    return true;
+}
+
+string Store::BucketPath(const string bucket)
+{
+    string s = "/" + bucket;
+    return s;
+}
+
+string Store::StreamsetPath(const string bucket, const string stream_set)
+{
+    string s = this->BucketPath(bucket);
+    s.append("/");
+    s.append(stream_set);
+    return s;
+}
+
+string Store::StreamPath(const string bucket, const string stream_set, const string filename)
+{
+    string s = this->StreamsetPath(bucket, stream_set);
+    s.append("/");
+    s.append(filename);
+
+    return s;
+}
+
+bool Store::BucketPaths(vector<string> &paths)
+{
+    vector<string> buckets;
+    this->BucketNames(buckets);
+    for (size_t i = 0; i < buckets.size(); i++) {
+        paths.push_back(this->BucketPath(buckets[i]));
+    }
+
+    return true;
+}
+
+bool Store::StreamsetPaths(vector<string> &paths)
+{
+    vector<string> buckets;
+    this->BucketNames(buckets);
+    for (size_t i = 0; i < buckets.size(); i++) {
+        vector<string> sets;
+        this->StreamSetNames(buckets[i], sets);
+        for (size_t j = 0; j < sets.size(); j++) {
+            paths.push_back(this->StreamsetPath(buckets[i], sets[j]));
+        }
+    }
+
+    return true;
+}
+
+bool Store::StreamLength(const string path, int64 &length)
+{
+    if (!ValidatePath(path)) return false;
+
+    string full = this->StreamFilesystemPath(path);
+
+    struct _stat64 stat;
+    if (_stat64(full.c_str(), &stat)) {
+        return false;
+    }
+
+    length = stat.st_size;
+    return true;
+}
+
+bool Store::StreamInfo(const string path, pblog::protocol::StreamInfo &info)
+{
+    if (!ValidatePath(path)) return false;
+
+    string bucket, set, stream;
+    if (!ParsePath(path, bucket, set, stream)) {
+        return false;
+    }
+
+    return StreamInfo(bucket, set, stream, info);
+
+}
+
+bool Store::StreamInfo(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info)
+{
+    info.set_path(stream);
+    // TODO verify stream exists and populate other stuff
+
+    int64 length = -1;
+    if (this->StreamLength(this->StreamPath(bucket, stream_set, stream), length)) {
+        info.set_length(length);
+    }
+    else {
+        return false;
+    }
+
+    return true;
+}
+
+bool Store::StreamsetInfo(const string bucket, const string stream_set, protocol::StreamSetInfo &info)
+{
+    info.set_path(stream_set);
+
+    vector<string> streams;
+    this->StreamNames(bucket, stream_set, streams);
+
+    for (size_t i = 0; i < streams.size(); i++) {
+        protocol::StreamInfo * new_si = info.add_stream();
+        this->StreamInfo(bucket, stream_set, streams[i], *new_si);
+    }
+    return true;
+}
+
+bool Store::StreamsetInfo(const string path, pblog::protocol::StreamSetInfo &info)
+{
+    if (!ValidatePath(path)) return false;
+
+    string bucket, set, stream;
+    if (!ParsePath(path, bucket, set, stream)) return false;
+
+    return StreamsetInfo(bucket, set, info);
+}
+
+bool Store::BucketInfo(const string bucket, protocol::BucketInfo &info)
+{
+    info.set_path(bucket);
+
+    vector<string> stream_sets;
+    this->StreamSetNames(bucket, stream_sets);
+
+    for (size_t i = 0; i < stream_sets.size(); i++) {
+        protocol::StreamSetInfo *ss = info.add_stream_set();
+        this->StreamsetInfo(bucket, stream_sets[i], *ss);
+    }
+
+    return true;
+}
+
+bool Store::StoreInfo(protocol::StoreInfo &info)
+{
+    vector<string> buckets;
+    this->BucketNames(buckets);
+    for (size_t i = 0; i < buckets.size(); i++) {
+        protocol::BucketInfo *bucket = info.add_bucket();
+        this->BucketInfo(buckets[i], *bucket);
+    }
+
+    return true;
+}
+
+bool Store::GetInputStream(const string path, InputStream &s)
+{
+    if (!ValidatePath(path)) return false;
+
+    return s.OpenFile(this->StreamFilesystemPath(path));
+}
+
+bool Store::GetInputStream(const string bucket, const string stream_set, const string stream, InputStream &s)
+{
+    string path = this->StreamFilesystemPath(this->StreamPath(bucket, stream_set, stream));
 
     return s.OpenFile(path);
 }
 
-vector<string> * Store::directories_in_directory(const string dir)
+
+string Store::PathToFilesystemPath(const string path)
+{
+    string s = string(this->_path);
+    s.append("/");
+    s.append(path);
+
+    return s;
+}
+
+string Store::StreamFilesystemPath(const string path)
+{
+    return this->PathToFilesystemPath(path) + ".pblog";
+}
+
+bool Store::directories_in_directory(const string dir, vector<string> &v)
 {
     apr_status_t st;
     apr_dir_t *e;
     apr_finfo_t info;
 
-    vector<string> *v = new vector<string>();
-
     st = apr_dir_open(&e, dir.c_str(), this->_p);
     if (st != APR_SUCCESS) {
-        return v;
+        return false;
     }
 
 
@@ -249,36 +325,34 @@ vector<string> * Store::directories_in_directory(const string dir)
 
         if (info.filetype == APR_DIR) {
             if (info.name[0] != '.') {
-                v->push_back(info.name);
+                v.push_back(info.name);
             }
         }
     }
 
-    return v;
+    return true;
 }
 
-vector<string> * Store::files_in_directory(const string dir)
+bool Store::files_in_directory(const string dir, vector<string> &v)
 {
     apr_status_t st;
     apr_dir_t *e;
     apr_finfo_t info;
 
-    vector<string> *v = new vector<string>();
-
     st = apr_dir_open(&e, dir.c_str(), this->_p);
     if (st != APR_SUCCESS) {
-        return v;
+        return false;
     }
 
     while (true) {
         st = apr_dir_read(&info, APR_FINFO_TYPE, e);
         if (st != APR_SUCCESS) break;
         if (info.filetype == APR_REG) {
-            v->push_back(info.name);
+            v.push_back(info.name);
         }
     }
 
-    return v;
+    return true;
 }
 
 } // namespace pblog
