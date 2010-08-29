@@ -18,98 +18,67 @@
 #include <pblog/broker.hpp>
 #include <pblog/store.hpp>
 
-#include <io.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <lua.h>
+#include <lauxlib.h>
 
-#include <apr.h>
-#include <apr_general.h>
-#include <apr_getopt.h>
-#include <apr_strings.h>
-#include <zmq.hpp>
+#include <iostream>
+#include <string>
 
-using namespace ::pblog;
-using namespace ::pblog::server;
-
-#define MEMORY_ERROR "out of memory" APR_EOL_STR
-
-void _exit()
-{
-    apr_terminate2();
-}
-
-int _abort(int code)
-{
-    write(STDERR_FILENO, MEMORY_ERROR, strlen(MEMORY_ERROR));
-    abort();
-    return code;
-}
+using ::pblog::Store;
+using ::pblog::server::Broker;
+using ::std::cout;
+using ::std::endl;
+using ::std::string;
 
 int main(int argc, const char * const argv[])
 {
-    apr_status_t st;
-    apr_pool_t *p, *p_opts;
-    apr_getopt_t *opt;
-    char option;
-    const char *arg;
-    apr_int64_t max_threads = 10;
-    apr_int64_t listen_port = 52483;
-    char *listen_address = "0.0.0.0";
-    char *store_path;
-
-    st = apr_app_initialize(&argc, &argv, NULL);
-    if (st != APR_SUCCESS) {
-        printf("APR failed to initialize\n");
-        exit(1);
-    }
-    atexit(_exit);
-
-    st = apr_pool_create(&p, NULL);
-    if (st != APR_SUCCESS) {
-        printf("failed to create root APR pool\n");
-        exit(1);
+    if (argc != 2) {
+        cout << "Usage: pblogd /path/to/config/file.lua" << endl;
+        return 1;
     }
 
-    apr_pool_tag(p, "pblogd-root");
-    apr_pool_abort_set(_abort, p);
-
-    st = apr_pool_create(&p_opts, p);
-    if (st != APR_SUCCESS) {
-        printf("unable to create option parsing pool\n");
-        exit(1);
+    lua_State *L = luaL_newstate();
+    if (luaL_dofile(L, argv[1])) {
+        cout << "Error running config file" << endl;
+        cout << lua_tostring(L, lua_gettop(L)) << endl;
+        return 1;
     }
 
-    st = apr_getopt_init(&opt, p_opts, argc, argv);
-    if (st != APR_SUCCESS) {
-        printf("unable to initialize argument parsing\n");
-        exit(1);
+    lua_getglobal(L, "store_path");
+    if (!lua_isstring(L, -1)) {
+        cout << "store_path variable not defined or not a string" << endl;
+        return 1;
     }
-
-    while ((st = apr_getopt(opt, "c:s:", &option, &arg)) == APR_SUCCESS) {
-        switch (option) {
-            case 'c':
-                max_threads = apr_atoi64(arg);
-                if (errno != 0) {
-                    printf("argument to -c must be integer\n");
-                    exit(1);
-                }
-                if (max_threads < 1) {
-                    printf("argument to -c must be positive\n");
-                    exit(1);
-                }
-                break;
-
-            case 's':
-                store_path = apr_pstrdup(p, arg);
-                break;
-        }
-    }
-    apr_pool_destroy(p_opts);
+    string store_path = lua_tostring(L, -1);
 
     Store store = Store(store_path);
+    lua_pop(L, 1);
 
     Broker broker = Broker(&store);
-    //broker.add_listen_endpoint(apr_psprintf(p, "tcp://%s:%d", listen_address, listen_port));
+
+    lua_getglobal(L, "endpoints");
+    if (!lua_istable(L, -1)) {
+        cout << "endpoints variable not defined or not a table" << endl;
+        return 1;
+    }
+    lua_pushnil(L);
+    while (lua_next(L, 1) != 0) {
+        if (!lua_isstring(L, -1)) {
+            if (lua_isstring(L, -2)) {
+                cout << "endpoint value at index '" << lua_tostring(L, -2) << "' is not a string" << endl;
+                return 1;
+            }
+            else {
+                cout << "non-string value seen in endpoints table. index not printable" << endl;
+                return 1;
+            }
+        }
+        // else
+        const char *endpoint = lua_tostring(L, -1);
+        broker.add_listen_endpoint(endpoint);
+        lua_pop(L, 1);
+    }
+
     broker.run();
 
     return 0;
