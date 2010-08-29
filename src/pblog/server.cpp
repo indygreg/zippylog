@@ -34,10 +34,9 @@ easier to grok.
 namespace pblog {
 namespace server {
 
-using namespace ::zmq;
-using namespace ::google::protobuf;
-
 using ::std::string;
+using ::zmq::message_t;
+using ::zmq::socket_t;
 
 static bool receive_multipart_blocking(socket_t * sock, vector<message_t *> &identities, vector<message_t *> &messages);
 

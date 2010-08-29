@@ -24,8 +24,6 @@
 
 namespace pblog {
 
-using ::google::protobuf::uint32;
-
 InputStream::InputStream()
 {
     this->_fd = -1;

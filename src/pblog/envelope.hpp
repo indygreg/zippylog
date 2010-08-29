@@ -22,7 +22,6 @@
 namespace pblog {
 
 using ::google::protobuf::Message;
-using ::google::protobuf::uint32;
 using ::zmq::message_t;
 
 class PBLOG_EXPORT Envelope {

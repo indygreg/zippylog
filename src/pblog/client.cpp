@@ -20,7 +20,6 @@
 namespace pblog {
 namespace client {
 
-using namespace pblog::protocol;
 using ::pblog::Envelope;
 using ::google::protobuf::int64;
 
@@ -38,7 +37,7 @@ Client::~Client()
 StoreInfo * Client::store_info()
 {
     pblog::Envelope e = Envelope();
-    request::StoreInfo req = request::StoreInfo();
+    protocol::request::StoreInfo req = protocol::request::StoreInfo();
     req.add_to_envelope(&e);
 
     this->_send_envelope(e);

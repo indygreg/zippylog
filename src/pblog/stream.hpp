@@ -24,8 +24,6 @@
 
 namespace pblog {
 
-using ::google::protobuf::int64;
-using ::google::protobuf::int32;
 using ::google::protobuf::io::FileInputStream;
 using ::google::protobuf::io::CodedInputStream;
 using ::std::string;
