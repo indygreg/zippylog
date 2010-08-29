@@ -300,7 +300,7 @@ string Store::StreamFilesystemPath(const string path)
 bool Store::directories_in_directory(const string dir, vector<string> &v)
 {
     vector<dir_entry> entries;
-    if (!Platform::directory_entries(dir, entries)) return false;
+    if (!directory_entries(dir, entries)) return false;
 
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 1 && entries[i].name[0] != '.') {
@@ -314,7 +314,7 @@ bool Store::directories_in_directory(const string dir, vector<string> &v)
 bool Store::files_in_directory(const string dir, vector<string> &v)
 {
     vector<dir_entry> entries;
-    if (!Platform::directory_entries(dir, entries)) return false;
+    if (!directory_entries(dir, entries)) return false;
 
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 2) {

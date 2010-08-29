@@ -21,7 +21,6 @@
 
 namespace pblog {
 
-using ::google::protobuf::uint32;
 using ::google::protobuf::Message;
 using ::std::map;
 using ::std::pair;

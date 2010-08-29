@@ -34,14 +34,12 @@ struct dir_entry {
     char type;
 };
 
-class PBLOG_EXPORT Platform {
-    public:
-        // TODO define a type for function pointer so compiler can save us
-        static void * create_thread(void * func, void *data);
-        static bool join_thread(void *thread);
+// TODO define a type for function pointer so compiler can save us
+PBLOG_EXPORT void * create_thread(void * func, void *data);
 
-        static bool directory_entries(const string dir, vector<dir_entry> &v);
-};
+PBLOG_EXPORT bool join_thread(void *thread);
+
+PBLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
 
 } // namespace
 

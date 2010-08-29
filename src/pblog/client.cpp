@@ -21,7 +21,6 @@ namespace pblog {
 namespace client {
 
 using ::pblog::Envelope;
-using ::google::protobuf::int64;
 
 Client::Client(context_t *ctx, string connect)
 {

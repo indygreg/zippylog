@@ -20,7 +20,7 @@
 
 namespace pblog {
 
-void * Platform::create_thread(void * func, void *data)
+void * create_thread(void * func, void *data)
 {
 #ifdef WINDOWS
     LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;
@@ -36,7 +36,7 @@ void * Platform::create_thread(void * func, void *data)
     return NULL;
 }
 
-bool Platform::join_thread(void *thread)
+bool join_thread(void *thread)
 {
 #ifdef WINDOWS
     DWORD result = WaitForSingleObject((HANDLE)thread, INFINITE);
@@ -49,7 +49,7 @@ bool Platform::join_thread(void *thread)
 
 // congratulations, this is the 4,234,532,657 time in programming history this
 // function has been written!
-bool Platform::directory_entries(const string dir, vector<dir_entry> &v)
+bool directory_entries(const string dir, vector<dir_entry> &v)
 {
     //complicated case first
 #ifdef WINDOWS

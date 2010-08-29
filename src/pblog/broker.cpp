@@ -27,8 +27,6 @@ namespace server {
 #define WORKER_INDEX 1
 #define LISTENER_INDEX 2
 
-using ::google::protobuf::int64;
-
 Broker::Broker(Store *store)
 {
     Broker(store, NULL);
@@ -72,9 +70,9 @@ client messages.
 If a worker sends a response, we grab it and forward it back to the client, via
 the proxy sockets.
 
-Some requests like stream downloading and streaming are processed by non-worker
-threads. In these cases, the workers deposit a set of messages on some internal
-sockets. The broker consumes these messages and forwards them to the appropriate
+Some requests like streaming are processed by non-worker threads. In these
+cases, the workers deposit a set of messages on some internal sockets. The
+broker consumes these messages and forwards them to the appropriate
 socket connected to the other thread or thread pool.
 
 The requests processed by non-worker threads deposit messages on their own
@@ -211,7 +209,7 @@ void Broker::create_worker_threads()
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
 
     for (int i = 3; i; --i) {
-        void * thread = Platform::create_thread(Request::request_processor, this->worker_start_data);
+        void * thread = create_thread(Request::request_processor, this->worker_start_data);
         if (!thread) {
             throw "error creating worker thread";
         }
