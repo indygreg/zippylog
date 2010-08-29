@@ -21,8 +21,8 @@ message StreamSegmentEnd {
     // total bytes sent in the segment
     optional uint32 bytes_sent = 3;
 
-    // total events sent in the segment
-    optional uint32 events_sent = 4;
+    // total envelopes from stream sent
+    optional uint32 envelopes_sent = 4;
 
     // TODO record offset ranges that were skipped, possibly why
 }

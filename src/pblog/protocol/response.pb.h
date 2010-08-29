@@ -252,12 +252,12 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 bytes_sent() const;
   inline void set_bytes_sent(::google::protobuf::uint32 value);
   
-  // optional uint32 events_sent = 4;
-  inline bool has_events_sent() const;
-  inline void clear_events_sent();
-  static const int kEventsSentFieldNumber = 4;
-  inline ::google::protobuf::uint32 events_sent() const;
-  inline void set_events_sent(::google::protobuf::uint32 value);
+  // optional uint32 envelopes_sent = 4;
+  inline bool has_envelopes_sent() const;
+  inline void clear_envelopes_sent();
+  static const int kEnvelopesSentFieldNumber = 4;
+  inline ::google::protobuf::uint32 envelopes_sent() const;
+  inline void set_envelopes_sent(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 pblog_namespace = 1;
   static const ::google::protobuf::uint32 pblog_enumeration = 8;
@@ -271,7 +271,7 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   static const ::std::string _default_path_;
   ::google::protobuf::uint64 offset_;
   ::google::protobuf::uint32 bytes_sent_;
-  ::google::protobuf::uint32 events_sent_;
+  ::google::protobuf::uint32 envelopes_sent_;
   friend void  protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_pblog_2fprotocol_2fresponse_2eproto();
@@ -539,20 +539,20 @@ inline void StreamSegmentEnd::set_bytes_sent(::google::protobuf::uint32 value) {
   bytes_sent_ = value;
 }
 
-// optional uint32 events_sent = 4;
-inline bool StreamSegmentEnd::has_events_sent() const {
+// optional uint32 envelopes_sent = 4;
+inline bool StreamSegmentEnd::has_envelopes_sent() const {
   return _has_bit(3);
 }
-inline void StreamSegmentEnd::clear_events_sent() {
-  events_sent_ = 0u;
+inline void StreamSegmentEnd::clear_envelopes_sent() {
+  envelopes_sent_ = 0u;
   _clear_bit(3);
 }
-inline ::google::protobuf::uint32 StreamSegmentEnd::events_sent() const {
-  return events_sent_;
+inline ::google::protobuf::uint32 StreamSegmentEnd::envelopes_sent() const {
+  return envelopes_sent_;
 }
-inline void StreamSegmentEnd::set_events_sent(::google::protobuf::uint32 value) {
+inline void StreamSegmentEnd::set_envelopes_sent(::google::protobuf::uint32 value) {
   _set_bit(3);
-  events_sent_ = value;
+  envelopes_sent_ = value;
 }
 
 // -------------------------------------------------------------------

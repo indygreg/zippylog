@@ -57,7 +57,7 @@ void protobuf_AssignDesc_pblog_2fprotocol_2fresponse_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, path_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, offset_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, bytes_sent_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, events_sent_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, envelopes_sent_),
   };
   StreamSegmentEnd_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -127,19 +127,19 @@ void protobuf_AddDesc_pblog_2fprotocol_2fresponse_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\035pblog/protocol/response.proto\022\027pblog.p"
     "rotocol.response\"2\n\022StreamSegmentStart\022\014"
-    "\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"Y\n\020StreamSe"
+    "\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"\\\n\020StreamSe"
     "gmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\022\022"
-    "\n\nbytes_sent\030\003 \001(\r\022\023\n\013events_sent\030\004 \001(\r\""
-    "F\n\005Error\0220\n\004code\030\001 \001(\0162\".pblog.protocol."
-    "response.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErro"
-    "rCode\022\032\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031INV"
-    "ALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_REQU"
-    "EST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MISSIN"
-    "G_ENUMERATIONS\020\005\022\033\n\027REQUEST_NOT_IMPLEMEN"
-    "TED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGTHS_"
-    "DIFFERENT\020\010\022\031\n\025INVALID_STREAM_OFFSET\020\t\022\022"
-    "\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022"
-    "\n\016LIMIT_EXCEEDED\020\014", 578);
+    "\n\nbytes_sent\030\003 \001(\r\022\026\n\016envelopes_sent\030\004 \001"
+    "(\r\"F\n\005Error\0220\n\004code\030\001 \001(\0162\".pblog.protoc"
+    "ol.response.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tE"
+    "rrorCode\022\032\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031"
+    "INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_R"
+    "EQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MIS"
+    "SING_ENUMERATIONS\020\005\022\033\n\027REQUEST_NOT_IMPLE"
+    "MENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGT"
+    "HS_DIFFERENT\020\010\022\031\n\025INVALID_STREAM_OFFSET\020"
+    "\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020"
+    "\013\022\022\n\016LIMIT_EXCEEDED\020\014", 581);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "pblog/protocol/response.proto", &protobuf_RegisterTypes);
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
@@ -455,7 +455,7 @@ const ::std::string StreamSegmentEnd::_default_path_;
 const int StreamSegmentEnd::kPathFieldNumber;
 const int StreamSegmentEnd::kOffsetFieldNumber;
 const int StreamSegmentEnd::kBytesSentFieldNumber;
-const int StreamSegmentEnd::kEventsSentFieldNumber;
+const int StreamSegmentEnd::kEnvelopesSentFieldNumber;
 #endif  // !_MSC_VER
 
 StreamSegmentEnd::StreamSegmentEnd()
@@ -477,7 +477,7 @@ void StreamSegmentEnd::SharedCtor() {
   path_ = const_cast< ::std::string*>(&_default_path_);
   offset_ = GOOGLE_ULONGLONG(0);
   bytes_sent_ = 0u;
-  events_sent_ = 0u;
+  envelopes_sent_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -522,7 +522,7 @@ void StreamSegmentEnd::Clear() {
     }
     offset_ = GOOGLE_ULONGLONG(0);
     bytes_sent_ = 0u;
-    events_sent_ = 0u;
+    envelopes_sent_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -578,18 +578,18 @@ bool StreamSegmentEnd::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_events_sent;
+        if (input->ExpectTag(32)) goto parse_envelopes_sent;
         break;
       }
       
-      // optional uint32 events_sent = 4;
+      // optional uint32 envelopes_sent = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_events_sent:
+         parse_envelopes_sent:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &events_sent_)));
+                 input, &envelopes_sent_)));
           _set_bit(3);
         } else {
           goto handle_uninterpreted;
@@ -635,9 +635,9 @@ void StreamSegmentEnd::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->bytes_sent(), output);
   }
   
-  // optional uint32 events_sent = 4;
+  // optional uint32 envelopes_sent = 4;
   if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->events_sent(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->envelopes_sent(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -668,9 +668,9 @@ void StreamSegmentEnd::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->bytes_sent(), target);
   }
   
-  // optional uint32 events_sent = 4;
+  // optional uint32 envelopes_sent = 4;
   if (_has_bit(3)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->events_sent(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->envelopes_sent(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -705,11 +705,11 @@ int StreamSegmentEnd::ByteSize() const {
           this->bytes_sent());
     }
     
-    // optional uint32 events_sent = 4;
-    if (has_events_sent()) {
+    // optional uint32 envelopes_sent = 4;
+    if (has_envelopes_sent()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->events_sent());
+          this->envelopes_sent());
     }
     
   }
@@ -749,7 +749,7 @@ void StreamSegmentEnd::MergeFrom(const StreamSegmentEnd& from) {
       set_bytes_sent(from.bytes_sent());
     }
     if (from._has_bit(3)) {
-      set_events_sent(from.events_sent());
+      set_envelopes_sent(from.envelopes_sent());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -777,7 +777,7 @@ void StreamSegmentEnd::Swap(StreamSegmentEnd* other) {
     std::swap(path_, other->path_);
     std::swap(offset_, other->offset_);
     std::swap(bytes_sent_, other->bytes_sent_);
-    std::swap(events_sent_, other->events_sent_);
+    std::swap(envelopes_sent_, other->envelopes_sent_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
