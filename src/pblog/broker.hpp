@@ -31,17 +31,22 @@ using ::std::vector;
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
+typedef struct broker_config {
+    broker_config();
+    string store_path;
+    vector<string> listen_endpoints;
+} broker_config;
+
 // the broker is a ZMQ device that provides the core message routing component
 // of pblogd. it binds to a number of sockets and coordinates all the workers
 // in the system
 class PBLOG_EXPORT Broker {
     public:
+        Broker(const string config_file_path);
         Broker(Store *store);
         Broker(Store *store, context_t *ctx);
 
         ~Broker();
-
-        void add_listen_endpoint(string endpoint);
 
         void run();
 
@@ -49,14 +54,17 @@ class PBLOG_EXPORT Broker {
         context_t * zctx;
         socket_t * workers_sock;
         socket_t * clients_external_sock;
-        vector<string> listen_endpoints;
         vector<socket_t *> listen_sockets;
         vector<socket_t *> listen_proxy_sockets;
         vector<void *> worker_threads;
         Store * store;
         bool active;
         request_processor_start_data *worker_start_data;
+        broker_config config;
 
+        static bool ParseConfig(const string path, broker_config &config, string &error);
+
+        void init();
         void create_worker_threads();
         void setup_internal_sockets();
         void setup_listener_sockets();

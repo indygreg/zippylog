@@ -17,8 +17,15 @@
 #include <pblog/platform.hpp>
 #include <pblog/server.hpp>
 
+#include <lua.h>
+#include <lauxlib.h>
+
+#include <sstream>
+
 namespace pblog {
 namespace server {
+
+using ::std::ostringstream;
 
 #define WORKER_ENDPOINT "inproc://workers"
 #define CLIENTS_ENDPOINT "inproc://clients"
@@ -27,6 +34,18 @@ namespace server {
 #define WORKER_INDEX 1
 #define LISTENER_INDEX 2
 
+Broker::Broker(string config_file_path)
+{
+    this->init();
+
+    string error;
+    if (!ParseConfig(config_file_path, this->config, error)) {
+        throw error;
+    }
+
+    this->store = new Store(this->config.store_path);
+}
+
 Broker::Broker(Store *store)
 {
     Broker(store, NULL);
@@ -34,12 +53,9 @@ Broker::Broker(Store *store)
 
 Broker::Broker(Store * store, context_t *ctx)
 {
-    this->active = true;
-    this->zctx = ctx;
-    this->worker_start_data = NULL;
-    this->workers_sock = NULL;
-    this->clients_external_sock = NULL;
+    this->init();
 
+    this->zctx = ctx;
     this->store = store;
 }
 
@@ -47,11 +63,19 @@ Broker::~Broker()
 {
     if (this->zctx) delete this->zctx;
     if (this->worker_start_data) delete this->worker_start_data;
+
+
+    // TODO clean up store if it was allocated by us
 }
 
-void Broker::add_listen_endpoint(string endpoint)
+void Broker::init()
 {
-    this->listen_endpoints.push_back(endpoint);
+    this->active = true;
+    this->zctx = NULL;
+    this->worker_start_data = NULL;
+    this->workers_sock = NULL;
+    this->clients_external_sock = NULL;
+    this->store = NULL;
 }
 
 /*
@@ -228,15 +252,84 @@ void Broker::setup_internal_sockets()
 
 void Broker::setup_listener_sockets()
 {
-    for (int i = 0; i < this->listen_endpoints.size(); i++) {
+    for (int i = 0; i < this->config.listen_endpoints.size(); i++) {
         zmq::socket_t *s = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-        s->bind(this->listen_endpoints[i].c_str());
+        s->bind(this->config.listen_endpoints[i].c_str());
         this->listen_sockets.push_back(s);
 
         zmq::socket_t *p = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
         p->connect(CLIENTS_ENDPOINT);
         this->listen_proxy_sockets.push_back(p);
     }
+}
+
+bool Broker::ParseConfig(const string path, broker_config &config, string &error)
+{
+    ostringstream os;
+
+    lua_State *L = luaL_newstate();
+    if (luaL_dofile(L, path.c_str())) {
+        os << "error running config file: " << lua_tostring(L, -1);
+        goto cleanup;
+    }
+
+    // store_path defines path to stream store
+    lua_getglobal(L, "store_path");
+    if (lua_isnil(L, -1)) {
+        os << "'store_path' is not defined";
+        goto cleanup;
+    }
+    if (!lua_isstring(L, -1)) {
+        os << "'store_path' not a string";
+        goto cleanup;
+    }
+    config.store_path = lua_tostring(L, -1);
+    lua_pop(L, 1);
+
+    // endpoints is a table of strings representing 0MQ socket endpoints to
+    // listen on
+    lua_getglobal(L, "endpoints");
+    if (lua_isnil(L, -1)) {
+        os << "'endpoints' not defined";
+        goto cleanup;
+    }
+    if (!lua_istable(L, -1)) {
+        os << "'endpoints' variable not a table";
+        goto cleanup;
+    }
+
+    // iterate over the table
+    lua_pushnil(L);
+    while (lua_next(L, 1) != 0) {
+        if (!lua_isstring(L, -1)) {
+            if (lua_isstring(L, -2)) {
+                os << "endpoints value at index '" << lua_tostring(L, -2) << "' is not a string";
+                goto cleanup;
+            }
+            else {
+                os << "non-string value seen in endpoints table. index not printable";
+                goto cleanup;
+            }
+        }
+        // else
+        config.listen_endpoints.push_back(lua_tostring(L, -1));
+        lua_pop(L, 1);
+    }
+
+cleanup:
+    lua_close(L);
+
+    if (os.str().length()) {
+        error = os.str();
+        return false;
+    }
+
+    return true;
+}
+
+broker_config::broker_config()
+{
+    listen_endpoints = vector<string>();
 }
 
 }} // namespaces
