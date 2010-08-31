@@ -11,10 +11,16 @@ namespace pblog {
     {
         ::pblog::MessageRegistrar *registrar = ::pblog::MessageRegistrar::instance();
 
+        registrar->register_message(1, 12, new ::pblog::pblogd::BrokerStartup());
+        registrar->register_message(1, 13, new ::pblog::pblogd::BrokerShutdown());
+        registrar->register_message(1, 14, new ::pblog::pblogd::BrokerReceiveClientMessage());
         registrar->register_message(1, 1, new ::pblog::protocol::StreamInfo());
         registrar->register_message(1, 2, new ::pblog::protocol::StreamSetInfo());
         registrar->register_message(1, 3, new ::pblog::protocol::BucketInfo());
         registrar->register_message(1, 4, new ::pblog::protocol::StoreInfo());
+        registrar->register_message(1, 15, new ::pblog::protocol::StoreChangeStreamAdded());
+        registrar->register_message(1, 16, new ::pblog::protocol::StoreChangeStreamDeleted());
+        registrar->register_message(1, 17, new ::pblog::protocol::StoreChangeStreamAppended());
         registrar->register_message(1, 7, new ::pblog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::pblog::protocol::response::StreamSegmentEnd());
         registrar->register_message(1, 9, new ::pblog::protocol::response::Error());
