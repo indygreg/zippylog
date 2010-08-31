@@ -11,7 +11,7 @@ from pblog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='pblog/protocol.proto',
   package='pblog.protocol',
-  serialized_pb='\n\x14pblog/protocol.proto\x12\x0epblog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"I\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12*\n\x06stream\x18\x02 \x03(\x0b\x32\x1a.pblog.protocol.StreamInfo\"M\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x31\n\nstream_set\x18\x02 \x03(\x0b\x32\x1d.pblog.protocol.StreamSetInfo\"7\n\tStoreInfo\x12*\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1a.pblog.protocol.BucketInfo')
+  serialized_pb='\n\x14pblog/protocol.proto\x12\x0epblog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"I\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12*\n\x06stream\x18\x02 \x03(\x0b\x32\x1a.pblog.protocol.StreamInfo\"M\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x31\n\nstream_set\x18\x02 \x03(\x0b\x32\x1d.pblog.protocol.StreamSetInfo\"7\n\tStoreInfo\x12*\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1a.pblog.protocol.BucketInfo\"6\n\x16StoreChangeStreamAdded\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"8\n\x18StoreChangeStreamDeleted\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"9\n\x19StoreChangeStreamAppended\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04')
 
 
 
@@ -149,6 +149,111 @@ _STOREINFO = descriptor.Descriptor(
 )
 
 
+_STORECHANGESTREAMADDED = descriptor.Descriptor(
+  name='StoreChangeStreamAdded',
+  full_name='pblog.protocol.StoreChangeStreamAdded',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='path', full_name='pblog.protocol.StoreChangeStreamAdded.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='pblog.protocol.StoreChangeStreamAdded.length', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=295,
+  serialized_end=349,
+)
+
+
+_STORECHANGESTREAMDELETED = descriptor.Descriptor(
+  name='StoreChangeStreamDeleted',
+  full_name='pblog.protocol.StoreChangeStreamDeleted',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='path', full_name='pblog.protocol.StoreChangeStreamDeleted.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='pblog.protocol.StoreChangeStreamDeleted.length', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=351,
+  serialized_end=407,
+)
+
+
+_STORECHANGESTREAMAPPENDED = descriptor.Descriptor(
+  name='StoreChangeStreamAppended',
+  full_name='pblog.protocol.StoreChangeStreamAppended',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='path', full_name='pblog.protocol.StoreChangeStreamAppended.path', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='pblog.protocol.StoreChangeStreamAppended.length', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=409,
+  serialized_end=466,
+)
+
+
 _STREAMSETINFO.fields_by_name['stream'].message_type = _STREAMINFO
 _BUCKETINFO.fields_by_name['stream_set'].message_type = _STREAMSETINFO
 _STOREINFO.fields_by_name['bucket'].message_type = _BUCKETINFO
@@ -185,8 +290,35 @@ class StoreInfo(message.Message):
   PBLOG_ENUMERATION = 4
   # @@protoc_insertion_point(class_scope:pblog.protocol.StoreInfo)
 
+class StoreChangeStreamAdded(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGESTREAMADDED
+  
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 15
+  # @@protoc_insertion_point(class_scope:pblog.protocol.StoreChangeStreamAdded)
+
+class StoreChangeStreamDeleted(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGESTREAMDELETED
+  
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 16
+  # @@protoc_insertion_point(class_scope:pblog.protocol.StoreChangeStreamDeleted)
+
+class StoreChangeStreamAppended(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGESTREAMAPPENDED
+  
+  PBLOG_NAMESPACE = 1
+  PBLOG_ENUMERATION = 17
+  # @@protoc_insertion_point(class_scope:pblog.protocol.StoreChangeStreamAppended)
+
 register_message(1, 1, 'pblog.protocol_pb2', 'StreamInfo')
 register_message(1, 2, 'pblog.protocol_pb2', 'StreamSetInfo')
 register_message(1, 3, 'pblog.protocol_pb2', 'BucketInfo')
 register_message(1, 4, 'pblog.protocol_pb2', 'StoreInfo')
+register_message(1, 15, 'pblog.protocol_pb2', 'StoreChangeStreamAdded')
+register_message(1, 16, 'pblog.protocol_pb2', 'StoreChangeStreamDeleted')
+register_message(1, 17, 'pblog.protocol_pb2', 'StoreChangeStreamAppended')
 # @@protoc_insertion_point(module_scope)
