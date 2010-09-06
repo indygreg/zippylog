@@ -143,7 +143,11 @@ void Broker::run()
         // wait for a message to become available
         int rc = zmq::poll(pollitems, number_pollitems, -1);
 
-        // move worker responses to clients sock
+        // we always favor shipping messages OUT of the server to the clients
+        // that way, under heavy load, we try to get smaller before we
+        // get bigger
+
+        // move worker responses to client
         if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->workers_sock->recv(&msg, 0)) {
@@ -160,7 +164,7 @@ void Broker::run()
             }
         }
 
-        // move from client meta socket to workers
+        // send client requests to workers
         if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->clients_sock->recv(&msg, 0)) {
@@ -188,7 +192,7 @@ void Broker::create_worker_threads()
     this->worker_start_data->store = this->store;
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
 
-    for (int i = 3; i; --i) {
+    for (int i = this->config.worker_threads; i; --i) {
         void * thread = create_thread(Request::request_processor, this->worker_start_data);
         if (!thread) {
             throw "error creating worker thread";
@@ -223,6 +227,8 @@ void Broker::setup_listener_sockets()
         this->clients_sock->bind(this->config.listen_endpoints[i].c_str());
     }
 }
+
+
 
 bool Broker::ParseConfig(const string path, broker_config &config, string &error)
 {
@@ -276,6 +282,11 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
         config.listen_endpoints.push_back(lua_tostring(L, -1));
         lua_pop(L, 1);
     }
+
+    // number of worker threads to run
+    lua_getglobal(L, "worker_threads");
+    config.worker_threads = luaL_optinteger(L, -1, 3);
+    lua_pop(L, 1);
 
 cleanup:
     lua_close(L);

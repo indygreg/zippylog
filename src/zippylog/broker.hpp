@@ -36,6 +36,7 @@ typedef struct broker_config {
     broker_config();
     string store_path;
     vector<string> listen_endpoints;
+    uint32 worker_threads;
 } broker_config;
 
 typedef struct store_watcher_start_data {
