@@ -18,6 +18,7 @@
 #include <pblog/pblog.h>
 #include <pblog/server.hpp>
 #include <pblog/store.hpp>
+#include <pblog/store_watcher.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -36,6 +37,12 @@ typedef struct broker_config {
     string store_path;
     vector<string> listen_endpoints;
 } broker_config;
+
+typedef struct store_watcher_start_data {
+    context_t *zctx;
+    Store *store;
+    char *endpoint;
+} store_watcher_start_data;
 
 // the broker is a ZMQ device that provides the core message routing component
 // of pblogd. it binds to a number of sockets and coordinates all the workers
@@ -59,13 +66,17 @@ class PBLOG_EXPORT Broker {
         vector<void *> worker_threads;
         Store * store;
         bool active;
-        request_processor_start_data *worker_start_data;
+        request_processor_start_data * worker_start_data;
         broker_config config;
+        void * store_watcher_thread;
+        store_watcher_start_data * store_watcher_start;
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
+        static void * __stdcall StoreWatcherStart(void *data);
 
         void init();
         void create_worker_threads();
+        void create_store_watcher();
         void setup_internal_sockets();
         void setup_listener_sockets();
 
