@@ -23,7 +23,6 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
-#include <zippylog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
@@ -120,9 +119,6 @@ class BrokerStartup : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& listen_endpoints() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_listen_endpoints();
   
-  static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 12;
-  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerStartup)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -207,9 +203,6 @@ class BrokerShutdown : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 13;
-  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerShutdown)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -291,9 +284,6 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 14;
-  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

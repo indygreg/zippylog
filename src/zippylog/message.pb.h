@@ -174,8 +174,6 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 numeric_value() const;
   inline void set_numeric_value(::google::protobuf::uint64 value);
   
-  static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 5;
   // @@protoc_insertion_point(class_scope:zippylog.message.Envelope)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -320,8 +318,6 @@ class ActorInfo : public ::google::protobuf::Message {
   inline void set_app_id(const void* value, size_t size);
   inline ::std::string* mutable_app_id();
   
-  static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 6;
   // @@protoc_insertion_point(class_scope:zippylog.message.ActorInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

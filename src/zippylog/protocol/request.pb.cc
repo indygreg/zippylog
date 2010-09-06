@@ -97,10 +97,10 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\034zippylog/protocol/request.proto\022\026zippylog.pr"
-    "otocol.request\"\013\n\tStoreInfo\"E\n\003Get\022\014\n\004pa"
-    "th\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022max_re"
-    "sponse_bytes\030\003 \001(\r", 138);
+    "\n\037zippylog/protocol/request.proto\022\031zippy"
+    "log.protocol.request\"\013\n\tStoreInfo\"E\n\003Get"
+    "\022\014\n\004path\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022"
+    "max_response_bytes\030\003 \001(\r", 144);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
@@ -578,14 +578,6 @@ void Get::Swap(Get* other) {
 }
 
 
-
-bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool Get::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace request

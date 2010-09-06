@@ -116,10 +116,10 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\022zippylog/zippylogd.proto\022\014zippylog.zippylogd\"=\n\rBr"
-    "okerStartup\022\022\n\nstore_path\030\001 \001(\t\022\030\n\020liste"
-    "n_endpoints\030\002 \003(\t\"\020\n\016BrokerShutdown\"\034\n\032B"
-    "rokerReceiveClientMessage", 145);
+    "\n\030zippylog/zippylogd.proto\022\022zippylog.zip"
+    "pylogd\"=\n\rBrokerStartup\022\022\n\nstore_path\030\001 "
+    "\001(\t\022\030\n\020listen_endpoints\030\002 \003(\t\"\020\n\016BrokerS"
+    "hutdown\"\034\n\032BrokerReceiveClientMessage", 157);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
@@ -721,18 +721,6 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 }
 
 
-
-bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace zippylogd

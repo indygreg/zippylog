@@ -106,15 +106,15 @@ void protobuf_AddDesc_zippylog_2fmessage_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\023zippylog/message.proto\022\rzippylog.message\"\266\001\n"
-    "\010Envelope\022\017\n\007message\030\001 \003(\014\022\035\n\021message_na"
-    "mespace\030\002 \003(\rB\002\020\001\022\030\n\014message_type\030\003 \003(\rB"
-    "\002\020\001\022\023\n\013create_time\030\004 \001(\004\022\013\n\003tag\030\005 \003(\014\022\'\n"
-    "\005actor\030\006 \003(\0132\030.zippylog.message.ActorInfo\022\025"
-    "\n\rnumeric_value\030\007 \001(\004\"y\n\tActorInfo\022\022\n\nto"
-    "uch_time\030\001 \001(\004\022\023\n\013sequence_id\030\002 \001(\004\022\020\n\010h"
-    "ostname\030\003 \001(\t\022\017\n\007host_id\030\004 \001(\014\022\020\n\010actor_"
-    "id\030\005 \001(\014\022\016\n\006app_id\030\006 \001(\014", 344);
+    "\n\026zippylog/message.proto\022\020zippylog.messa"
+    "ge\"\271\001\n\010Envelope\022\017\n\007message\030\001 \003(\014\022\035\n\021mess"
+    "age_namespace\030\002 \003(\rB\002\020\001\022\030\n\014message_type\030"
+    "\003 \003(\rB\002\020\001\022\023\n\013create_time\030\004 \001(\004\022\013\n\003tag\030\005 "
+    "\003(\014\022*\n\005actor\030\006 \003(\0132\033.zippylog.message.Ac"
+    "torInfo\022\025\n\rnumeric_value\030\007 \001(\004\"y\n\tActorI"
+    "nfo\022\022\n\ntouch_time\030\001 \001(\004\022\023\n\013sequence_id\030\002"
+    " \001(\004\022\020\n\010hostname\030\003 \001(\t\022\017\n\007host_id\030\004 \001(\014\022"
+    "\020\n\010actor_id\030\005 \001(\014\022\016\n\006app_id\030\006 \001(\014", 353);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/message.proto", &protobuf_RegisterTypes);
   Envelope::default_instance_ = new Envelope();

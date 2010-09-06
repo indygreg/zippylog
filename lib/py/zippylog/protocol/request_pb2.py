@@ -4,14 +4,13 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
-from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1czippylog/protocol/request.proto\x12\x16zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r')
 
 
 
@@ -32,8 +31,8 @@ _STOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=56,
-  serialized_end=67,
+  serialized_start=62,
+  serialized_end=73,
 )
 
 
@@ -74,8 +73,8 @@ _GET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=69,
-  serialized_end=138,
+  serialized_start=75,
+  serialized_end=144,
 )
 
 
@@ -84,18 +83,12 @@ class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREINFO
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 10
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.StoreInfo)
 
 class Get(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _GET
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 11
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.Get)
 
-register_message(1, 10, 'zippylog.protocol.request_pb2', 'StoreInfo')
-register_message(1, 11, 'zippylog.protocol.request_pb2', 'Get')
 # @@protoc_insertion_point(module_scope)

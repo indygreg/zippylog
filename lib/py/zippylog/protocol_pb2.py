@@ -4,14 +4,13 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
-from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol.proto',
   package='zippylog.protocol',
-  serialized_pb='\n\x14zippylog/protocol.proto\x12\x0ezippylog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"I\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12*\n\x06stream\x18\x02 \x03(\x0b\x32\x1a.zippylog.protocol.StreamInfo\"M\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x31\n\nstream_set\x18\x02 \x03(\x0b\x32\x1d.zippylog.protocol.StreamSetInfo\"7\n\tStoreInfo\x12*\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1a.zippylog.protocol.BucketInfo\"6\n\x16StoreChangeStreamAdded\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"8\n\x18StoreChangeStreamDeleted\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"9\n\x19StoreChangeStreamAppended\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04')
+  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"L\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x06stream\x18\x02 \x03(\x0b\x32\x1d.zippylog.protocol.StreamInfo\"P\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\nstream_set\x18\x02 \x03(\x0b\x32 .zippylog.protocol.StreamSetInfo\":\n\tStoreInfo\x12-\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1d.zippylog.protocol.BucketInfo\"6\n\x16StoreChangeStreamAdded\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"8\n\x18StoreChangeStreamDeleted\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"9\n\x19StoreChangeStreamAppended\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04')
 
 
 
@@ -46,8 +45,8 @@ _STREAMINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=40,
-  serialized_end=82,
+  serialized_start=46,
+  serialized_end=88,
 )
 
 
@@ -81,8 +80,8 @@ _STREAMSETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=84,
-  serialized_end=157,
+  serialized_start=90,
+  serialized_end=166,
 )
 
 
@@ -116,8 +115,8 @@ _BUCKETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=159,
-  serialized_end=236,
+  serialized_start=168,
+  serialized_end=248,
 )
 
 
@@ -144,8 +143,8 @@ _STOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=238,
-  serialized_end=293,
+  serialized_start=250,
+  serialized_end=308,
 )
 
 
@@ -179,8 +178,8 @@ _STORECHANGESTREAMADDED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=295,
-  serialized_end=349,
+  serialized_start=310,
+  serialized_end=364,
 )
 
 
@@ -214,8 +213,8 @@ _STORECHANGESTREAMDELETED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=351,
-  serialized_end=407,
+  serialized_start=366,
+  serialized_end=422,
 )
 
 
@@ -249,8 +248,8 @@ _STORECHANGESTREAMAPPENDED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=409,
-  serialized_end=466,
+  serialized_start=424,
+  serialized_end=481,
 )
 
 
@@ -262,63 +261,42 @@ class StreamInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMINFO
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 1
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StreamInfo)
 
 class StreamSetInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSETINFO
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 2
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StreamSetInfo)
 
 class BucketInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BUCKETINFO
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 3
   # @@protoc_insertion_point(class_scope:zippylog.protocol.BucketInfo)
 
 class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREINFO
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 4
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreInfo)
 
 class StoreChangeStreamAdded(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STORECHANGESTREAMADDED
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 15
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAdded)
 
 class StoreChangeStreamDeleted(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STORECHANGESTREAMDELETED
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 16
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamDeleted)
 
 class StoreChangeStreamAppended(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STORECHANGESTREAMAPPENDED
   
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 17
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAppended)
 
-register_message(1, 1, 'zippylog.protocol_pb2', 'StreamInfo')
-register_message(1, 2, 'zippylog.protocol_pb2', 'StreamSetInfo')
-register_message(1, 3, 'zippylog.protocol_pb2', 'BucketInfo')
-register_message(1, 4, 'zippylog.protocol_pb2', 'StoreInfo')
-register_message(1, 15, 'zippylog.protocol_pb2', 'StoreChangeStreamAdded')
-register_message(1, 16, 'zippylog.protocol_pb2', 'StoreChangeStreamDeleted')
-register_message(1, 17, 'zippylog.protocol_pb2', 'StoreChangeStreamAppended')
 # @@protoc_insertion_point(module_scope)

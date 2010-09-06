@@ -211,18 +211,19 @@ void protobuf_AddDesc_zippylog_2fprotocol_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\024zippylog/protocol.proto\022\016zippylog.protocol\"*"
-    "\n\nStreamInfo\022\014\n\004path\030\001 \001(\t\022\016\n\006length\030\002 \001"
-    "(\004\"I\n\rStreamSetInfo\022\014\n\004path\030\001 \001(\t\022*\n\006str"
-    "eam\030\002 \003(\0132\032.zippylog.protocol.StreamInfo\"M\n"
-    "\nBucketInfo\022\014\n\004path\030\001 \001(\t\0221\n\nstream_set\030"
-    "\002 \003(\0132\035.zippylog.protocol.StreamSetInfo\"7\n\t"
-    "StoreInfo\022*\n\006bucket\030\001 \003(\0132\032.zippylog.protoc"
-    "ol.BucketInfo\"6\n\026StoreChangeStreamAdded\022"
-    "\014\n\004path\030\001 \001(\t\022\016\n\006length\030\002 \001(\004\"8\n\030StoreCh"
-    "angeStreamDeleted\022\014\n\004path\030\001 \001(\t\022\016\n\006lengt"
-    "h\030\002 \001(\004\"9\n\031StoreChangeStreamAppended\022\014\n\004"
-    "path\030\001 \001(\t\022\016\n\006length\030\002 \001(\004", 466);
+    "\n\027zippylog/protocol.proto\022\021zippylog.prot"
+    "ocol\"*\n\nStreamInfo\022\014\n\004path\030\001 \001(\t\022\016\n\006leng"
+    "th\030\002 \001(\004\"L\n\rStreamSetInfo\022\014\n\004path\030\001 \001(\t\022"
+    "-\n\006stream\030\002 \003(\0132\035.zippylog.protocol.Stre"
+    "amInfo\"P\n\nBucketInfo\022\014\n\004path\030\001 \001(\t\0224\n\nst"
+    "ream_set\030\002 \003(\0132 .zippylog.protocol.Strea"
+    "mSetInfo\":\n\tStoreInfo\022-\n\006bucket\030\001 \003(\0132\035."
+    "zippylog.protocol.BucketInfo\"6\n\026StoreCha"
+    "ngeStreamAdded\022\014\n\004path\030\001 \001(\t\022\016\n\006length\030\002"
+    " \001(\004\"8\n\030StoreChangeStreamDeleted\022\014\n\004path"
+    "\030\001 \001(\t\022\016\n\006length\030\002 \001(\004\"9\n\031StoreChangeStr"
+    "eamAppended\022\014\n\004path\030\001 \001(\t\022\016\n\006length\030\002 \001("
+    "\004", 481);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol.proto", &protobuf_RegisterTypes);
   StreamInfo::default_instance_ = new StreamInfo();
@@ -2042,34 +2043,6 @@ void StoreChangeStreamAppended::Swap(StoreChangeStreamAppended* other) {
 }
 
 
-
-bool StreamInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StreamSetInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BucketInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StoreChangeStreamAdded::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StoreChangeStreamDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StoreChangeStreamAppended::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace protocol

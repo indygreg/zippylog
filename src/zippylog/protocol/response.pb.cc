@@ -125,21 +125,21 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\035zippylog/protocol/response.proto\022\027zippylog.p"
-    "rotocol.response\"2\n\022StreamSegmentStart\022\014"
-    "\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"\\\n\020StreamSe"
-    "gmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\022\022"
-    "\n\nbytes_sent\030\003 \001(\r\022\026\n\016envelopes_sent\030\004 \001"
-    "(\r\"F\n\005Error\0220\n\004code\030\001 \001(\0162\".zippylog.protoc"
-    "ol.response.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tE"
-    "rrorCode\022\032\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031"
-    "INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_R"
-    "EQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MIS"
-    "SING_ENUMERATIONS\020\005\022\033\n\027REQUEST_NOT_IMPLE"
-    "MENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGT"
-    "HS_DIFFERENT\020\010\022\031\n\025INVALID_STREAM_OFFSET\020"
-    "\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020"
-    "\013\022\022\n\016LIMIT_EXCEEDED\020\014", 581);
+    "\n zippylog/protocol/response.proto\022\032zipp"
+    "ylog.protocol.response\"2\n\022StreamSegmentS"
+    "tart\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"\\\n\020St"
+    "reamSegmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002"
+    " \001(\004\022\022\n\nbytes_sent\030\003 \001(\r\022\026\n\016envelopes_se"
+    "nt\030\004 \001(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%.zippyl"
+    "og.protocol.response.ErrorCode\022\013\n\003msg\030\002 "
+    "\001(\t*\260\002\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAIL"
+    "URE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024"
+    "UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE"
+    "\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQUEST_"
+    "NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FI"
+    "ELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID_STREA"
+    "M_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_N"
+    "OT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014", 590);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
@@ -1064,18 +1064,6 @@ void Error::Swap(Error* other) {
 }
 
 
-
-bool StreamSegmentStart::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool StreamSegmentEnd::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool Error::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
-}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace response
