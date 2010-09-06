@@ -1,0 +1,73 @@
+// this file describes protocol buffer messages sent by the server to clients
+
+package zippylog.protocol.response;
+
+// when a stream segment is downloaded, this will be the first message
+// sent by the server. it tells the client what it is receiving
+message StreamSegmentStart {
+    optional string path = 1;
+    optional uint64 offset = 2;
+}
+
+// this terminates a stream segment sent by the server
+// the client should use the seen offsets to record which part of the stream(s)
+// it has received and repeat requests, if necessary
+message StreamSegmentEnd {
+    optional string path = 1;
+
+    // offset at which next event begins
+    optional uint64 offset = 2;
+
+    // total bytes sent in the segment
+    optional uint32 bytes_sent = 3;
+
+    // total envelopes from stream sent
+    optional uint32 envelopes_sent = 4;
+
+    // TODO record offset ranges that were skipped, possibly why
+}
+
+message Error {
+    optional ErrorCode code = 1;
+    optional string msg = 2;
+}
+
+enum ErrorCode {
+    // server could not parse received envelope
+    ENVELOPE_PARSE_FAILURE = 1;
+
+    // received message not from the zippylog namespace
+    INVALID_MESSAGE_NAMESPACE = 2;
+
+    // server does not know how to handle requested message type
+    UNKNOWN_REQUEST_TYPE = 3;
+
+    // server received an envelope but it had no messages telling it what to do
+    EMPTY_ENVELOPE = 4;
+
+    // server received a message but its enumerations were not defined, so it
+    // does not know how to handle it
+    MISSING_ENUMERATIONS = 5;
+
+    // server understood the request type, but does not know how to fulfill it
+    REQUEST_NOT_IMPLEMENTED = 6;
+
+    // required field in request envelope is empty
+    EMPTY_FIELD = 7;
+
+    // a set of related fields which are required to have the same number of
+    // elements don't
+    FIELD_LENGTHS_DIFFERENT = 8;
+
+    // a specified stream offset is not valid
+    INVALID_STREAM_OFFSET = 9;
+
+    // offset is invalid
+    INVALID_OFFSET = 10;
+
+    // requested path does not exist in the store
+    PATH_NOT_FOUND = 11;
+
+    // some type of limit of exceeded
+    LIMIT_EXCEEDED = 12;
+}

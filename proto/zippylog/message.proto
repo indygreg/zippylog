@@ -1,0 +1,62 @@
+package zippylog.message;
+
+// this is the basic message type of zippylog
+// it is a common container for all data encoded by zippylog
+// this message contains various common fields that commonly
+// describe embedded messages
+
+// every log message in a stream is an instance of this.
+// each instance contains common metadata and 1 or more domain-specific
+// messages, which are defined as extensions and are managed by zippylog
+message Envelope {
+    // list of protocol buffer serialized messages
+    repeated bytes message = 1;
+
+    // describe the embedded messages' types
+    // if there are N messages, there will be N entries in message_types
+    // message_namespaces is optional. if present, will have same number of
+    // elements as messages
+    repeated uint32 message_namespace = 2 [packed=true];
+    repeated uint32 message_type = 3 [packed=true];
+
+    // time message was created, in microseconds since UNIX epoch
+    optional uint64 create_time = 4;
+
+    // list of values that are intended to correlate messages
+    // the data encoded and order is defined however you want
+    repeated bytes tag = 5;
+
+    // metadata deposited by actors that touched this message
+    // as actors touch the message, they may append to this list
+    // not all actors may update this field
+    repeated ActorInfo actor = 6;
+
+    // numeric value associated with message
+    // there are a number of applications for this field:
+    //   - for logging, value could be associated with a log level (DEBUG, INFO, etc)
+    //   - a message priority
+    //   - recording a single numeric value (instead of adding a message)
+    optional uint64 numeric_value = 7;
+}
+
+// metadata describing agents that touched a message
+message ActorInfo {
+    // time message was touched, in microseconds since UNIX epoch
+    // for writers, this is the time the message was written
+    optional uint64 touch_time = 1;
+
+    // sequence ID to help identify duplicates
+    optional uint64 sequence_id = 2;
+
+    // hostname of agent
+    optional string hostname = 3;
+
+    // alternate identifier of agent host
+    optional bytes host_id = 4;
+
+    // identify the actor type
+    optional bytes actor_id = 5;
+
+    // identify the application associated with actor
+    optional bytes app_id = 6;
+}

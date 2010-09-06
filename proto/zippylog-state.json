@@ -1,0 +1,48 @@
+{
+  "cpp_messages_namespace": "zippylog", 
+  "messages": {
+    "zippylog": {
+      "zippylog.protocol.response.StreamSegmentStart": 7, 
+      "zippylog.protocol.BucketInfo": 3, 
+      "zippylog.protocol.StoreChangeStreamAppended": 17, 
+      "zippylog.message.Envelope": 5, 
+      "zippylog.zippylogd.BrokerShutdown": 13, 
+      "zippylog.protocol.StoreInfo": 4, 
+      "zippylog.zippylogd.BrokerReceiveClientMessage": 14, 
+      "zippylog.protocol.StoreChangeStreamDeleted": 16, 
+      "zippylog.protocol.StoreChangeStreamAdded": 15, 
+      "zippylog.protocol.StreamInfo": 1, 
+      "zippylog.protocol.request.StoreInfo": 10, 
+      "zippylog.protocol.response.Error": 9, 
+      "zippylog.protocol.StreamSetInfo": 2, 
+      "zippylog.zippylogd.BrokerStartup": 12, 
+      "zippylog.protocol.response.StreamSegmentEnd": 8, 
+      "zippylog.message.ActorInfo": 6, 
+      "zippylog.protocol.request.Get": 11
+    }, 
+    "google": {
+      "google.protobuf.ServiceDescriptorProto": 7, 
+      "google.protobuf.EnumValueOptions": 13, 
+      "google.protobuf.compiler.CodeGeneratorResponse": 18, 
+      "google.protobuf.compiler.CodeGeneratorRequest": 17, 
+      "google.protobuf.FileDescriptorSet": 1, 
+      "google.protobuf.MethodOptions": 15, 
+      "google.protobuf.FileOptions": 9, 
+      "google.protobuf.FieldOptions": 11, 
+      "google.protobuf.UninterpretedOption": 16, 
+      "google.protobuf.ServiceOptions": 14, 
+      "google.protobuf.FileDescriptorProto": 2, 
+      "google.protobuf.FieldDescriptorProto": 4, 
+      "google.protobuf.EnumDescriptorProto": 5, 
+      "google.protobuf.DescriptorProto": 3, 
+      "google.protobuf.MethodDescriptorProto": 8, 
+      "google.protobuf.MessageOptions": 10, 
+      "google.protobuf.EnumOptions": 12, 
+      "google.protobuf.EnumValueDescriptorProto": 6
+    }
+  }, 
+  "namespaces": {
+    "zippylog": 1, 
+    "google": 2
+  }
+}

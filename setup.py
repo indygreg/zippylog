@@ -15,17 +15,17 @@
 from setuptools import setup, find_packages
 
 setup(
-    name             = 'pblog',
+    name             = 'zippylog',
     version          = '0.0.0.dev',
-    packages         = [ 'pblog' ],
+    packages         = [ 'zippylog' ],
     package_dir      = {'':'lib/py'},
-    package_data     = { 'pblog': ['proto/*.proto'] },
-    scripts          = ['bin/pblog_compile'],
-    test_suite       = 'pblog.test.all_tests_suite',
+    package_data     = { 'zippylog': ['proto/*.proto'] },
+    scripts          = ['bin/zippylog_compile'],
+    test_suite       = 'zippylog.test.all_tests_suite',
     install_requires = [ 'protobuf>=2.3.0' ],
     author           = 'Gregory Szorc',
     author_email     = 'gregory.szorc@gmail.com',
     description      = 'structured message logging system',
     license          = 'Apache 2.0',
-    url              = 'http://github.com/indygreg/pblog'
+    url              = 'http://github.com/indygreg/zippylog'
 )
