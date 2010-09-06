@@ -12,15 +12,15 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_SERVER_HPP_
-#define PBLOG_SERVER_HPP_
+#ifndef ZIPPYLOG_SERVER_HPP_
+#define ZIPPYLOG_SERVER_HPP_
 
-#include <pblog/pblog.h>
-#include <pblog/store.hpp>
+#include <zippylog/zippylog.h>
+#include <zippylog/store.hpp>
 
 #include <zmq.hpp>
 
-namespace pblog {
+namespace zippylog {
 namespace server {
 
 using ::zmq::context_t;
@@ -32,7 +32,7 @@ typedef struct request_processor_start_data {
     context_t *ctx;
 
     // store worker operates on
-    pblog::Store *store;
+    zippylog::Store *store;
 
     // where to connect to receive requests
     const char *broker_endpoint;
@@ -40,11 +40,11 @@ typedef struct request_processor_start_data {
 
 typedef struct stream_processor_start_data {
     context_t *ctx;
-    pblog::Store *store;
+    zippylog::Store *store;
     const char *socket_endpoint;
 } stream_processor_start_data;
 
-class PBLOG_EXPORT Request {
+class ZIPPYLOG_EXPORT Request {
 public:
     enum state {
         CREATE_SOCKET = 1,
@@ -66,7 +66,7 @@ public:
 
 // the stream processor handles streaming to all clients that have requested it
 // it frees the request processors to do more important things
-PBLOG_EXPORT void * __stdcall stream_processor(void *data);
+ZIPPYLOG_EXPORT void * __stdcall stream_processor(void *data);
 
 }} // namespaces
 

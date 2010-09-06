@@ -4,18 +4,18 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
-from pblog.envelope import register_message
+from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
-  name='pblog/protocol/response.proto',
-  package='pblog.protocol.response',
-  serialized_pb='\n\x1dpblog/protocol/response.proto\x12\x17pblog.protocol.response\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"\\\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\x12\x12\n\nbytes_sent\x18\x03 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x04 \x01(\r\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".pblog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xb0\x02\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c')
+  name='zippylog/protocol/response.proto',
+  package='zippylog.protocol.response',
+  serialized_pb='\n\x1dzippylog/protocol/response.proto\x12\x17zippylog.protocol.response\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"\\\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\x12\x12\n\nbytes_sent\x18\x03 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x04 \x01(\r\"F\n\x05\x45rror\x12\x30\n\x04\x63ode\x18\x01 \x01(\x0e\x32\".zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xb0\x02\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
-  full_name='pblog.protocol.response.ErrorCode',
+  full_name='zippylog.protocol.response.ErrorCode',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -92,20 +92,20 @@ LIMIT_EXCEEDED = 12
 
 _STREAMSEGMENTSTART = descriptor.Descriptor(
   name='StreamSegmentStart',
-  full_name='pblog.protocol.response.StreamSegmentStart',
+  full_name='zippylog.protocol.response.StreamSegmentStart',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='pblog.protocol.response.StreamSegmentStart.path', index=0,
+      name='path', full_name='zippylog.protocol.response.StreamSegmentStart.path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='offset', full_name='pblog.protocol.response.StreamSegmentStart.offset', index=1,
+      name='offset', full_name='zippylog.protocol.response.StreamSegmentStart.offset', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -127,34 +127,34 @@ _STREAMSEGMENTSTART = descriptor.Descriptor(
 
 _STREAMSEGMENTEND = descriptor.Descriptor(
   name='StreamSegmentEnd',
-  full_name='pblog.protocol.response.StreamSegmentEnd',
+  full_name='zippylog.protocol.response.StreamSegmentEnd',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='pblog.protocol.response.StreamSegmentEnd.path', index=0,
+      name='path', full_name='zippylog.protocol.response.StreamSegmentEnd.path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='offset', full_name='pblog.protocol.response.StreamSegmentEnd.offset', index=1,
+      name='offset', full_name='zippylog.protocol.response.StreamSegmentEnd.offset', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='bytes_sent', full_name='pblog.protocol.response.StreamSegmentEnd.bytes_sent', index=2,
+      name='bytes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.bytes_sent', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='envelopes_sent', full_name='pblog.protocol.response.StreamSegmentEnd.envelopes_sent', index=3,
+      name='envelopes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.envelopes_sent', index=3,
       number=4, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -176,20 +176,20 @@ _STREAMSEGMENTEND = descriptor.Descriptor(
 
 _ERROR = descriptor.Descriptor(
   name='Error',
-  full_name='pblog.protocol.response.Error',
+  full_name='zippylog.protocol.response.Error',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='code', full_name='pblog.protocol.response.Error.code', index=0,
+      name='code', full_name='zippylog.protocol.response.Error.code', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=1,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='msg', full_name='pblog.protocol.response.Error.msg', index=1,
+      name='msg', full_name='zippylog.protocol.response.Error.msg', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
@@ -215,27 +215,27 @@ class StreamSegmentStart(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSEGMENTSTART
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 7
-  # @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentStart)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 7
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
 
 class StreamSegmentEnd(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSEGMENTEND
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 8
-  # @@protoc_insertion_point(class_scope:pblog.protocol.response.StreamSegmentEnd)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 8
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
 
 class Error(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ERROR
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 9
-  # @@protoc_insertion_point(class_scope:pblog.protocol.response.Error)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 9
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.Error)
 
-register_message(1, 7, 'pblog.protocol.response_pb2', 'StreamSegmentStart')
-register_message(1, 8, 'pblog.protocol.response_pb2', 'StreamSegmentEnd')
-register_message(1, 9, 'pblog.protocol.response_pb2', 'Error')
+register_message(1, 7, 'zippylog.protocol.response_pb2', 'StreamSegmentStart')
+register_message(1, 8, 'zippylog.protocol.response_pb2', 'StreamSegmentEnd')
+register_message(1, 9, 'zippylog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

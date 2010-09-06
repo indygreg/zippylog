@@ -17,9 +17,9 @@ import os
 import os.path
 import time
 
-from pblog.exception import PBException
-from pblog.envelope import Envelope
-from pblog.stream import Stream
+from zippylog.exception import PBException
+from zippylog.envelope import Envelope
+from zippylog.stream import Stream
 
 class IStreamStore:
     def buckets(self):
@@ -65,7 +65,7 @@ class FilesystemStreamStore(IStreamStore):
     def streams_in_set(self, bucket, stream_set):
         set_dir = os.path.join(self.root_path, bucket, stream_set)
         return [ p for p in os.listdir(set_dir)
-            if os.path.isfile(os.path.join(set_dir, p)) and p.endswith(('.pblog', '.pblog.z'))
+            if os.path.isfile(os.path.join(set_dir, p)) and p.endswith(('.zippylog', '.zippylog.z'))
         ]
 
     def get_stream_set(self, bucket, name, create=False):
@@ -86,14 +86,14 @@ class FilesystemStreamStore(IStreamStore):
         return ss
 
     def _get_stream_for_writing(self, base, name):
-        f = os.path.join(base, name + '.pblog')
+        f = os.path.join(base, name + '.zippylog')
         return Stream(
             open(f, 'ab', -1),
             is_empty=(os.path.getsize(f) == 0)
         )
 
     def _get_stream_for_reading(self, base, name):
-        f = os.path.join(base, name + '.pblog')
+        f = os.path.join(base, name + '.zippylog')
         return Stream(open(f, 'rb', -1))
 
 class StreamSet:

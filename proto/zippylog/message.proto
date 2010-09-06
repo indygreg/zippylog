@@ -1,13 +1,13 @@
-package pblog.message;
+package zippylog.message;
 
-// this is the basic message type of pblog
-// it is a common container for all data encoded by pblog
+// this is the basic message type of zippylog
+// it is a common container for all data encoded by zippylog
 // this message contains various common fields that commonly
 // describe embedded messages
 
 // every log message in a stream is an instance of this.
 // each instance contains common metadata and 1 or more domain-specific
-// messages, which are defined as extensions and are managed by pblog
+// messages, which are defined as extensions and are managed by zippylog
 message Envelope {
     // list of protocol buffer serialized messages
     repeated bytes message = 1;

@@ -15,10 +15,10 @@
 // this file contains cross-platform APIs
 // if this gets too large, we should consider using a framework, like APR
 
-#ifndef PBLOG_PLATFORM_HPP_
-#define PBLOG_PLATFORM_HPP_
+#ifndef ZIPPYLOG_PLATFORM_HPP_
+#define ZIPPYLOG_PLATFORM_HPP_
 
-#include <pblog/pblog.h>
+#include <zippylog/zippylog.h>
 
 #include <string>
 #include <vector>
@@ -26,7 +26,7 @@
 using ::std::string;
 using ::std::vector;
 
-namespace pblog {
+namespace zippylog {
 
 struct dir_entry {
     string name;
@@ -35,11 +35,11 @@ struct dir_entry {
 };
 
 // TODO define a type for function pointer so compiler can save us
-PBLOG_EXPORT void * create_thread(void * func, void *data);
+ZIPPYLOG_EXPORT void * create_thread(void * func, void *data);
 
-PBLOG_EXPORT bool join_thread(void *thread);
+ZIPPYLOG_EXPORT bool join_thread(void *thread);
 
-PBLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
+ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
 
 } // namespace
 

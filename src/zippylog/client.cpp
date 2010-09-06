@@ -12,13 +12,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/client.hpp>
+#include <zippylog/client.hpp>
 
-#include <pblog/envelope.hpp>
-#include <pblog/protocol/request.pb.h>
-#include <pblog/protocol/response.pb.h>
+#include <zippylog/envelope.hpp>
+#include <zippylog/protocol/request.pb.h>
+#include <zippylog/protocol/response.pb.h>
 
-namespace pblog {
+namespace zippylog {
 namespace client {
 
 Client::Client(context_t *ctx, string connect)
@@ -153,7 +153,7 @@ bool Client::HasMore()
     return more > 0;
 }
 
-bool Client::ReadEnvelope(pblog::Envelope &envelope)
+bool Client::ReadEnvelope(zippylog::Envelope &envelope)
 {
     message_t res;
     if (!this->_sock->recv(&res, 0)) return false;
@@ -173,7 +173,7 @@ bool Client::ReadOutMultipart()
     return true;
 }
 
-bool Client::_send_envelope(::pblog::Envelope &envelope)
+bool Client::_send_envelope(::zippylog::Envelope &envelope)
 {
     string buffer;
     envelope.envelope.SerializeToString(&buffer);

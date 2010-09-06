@@ -14,12 +14,12 @@
 
 
 import unittest
-import pblog.store
+import zippylog.store
 
 class StoreTest(unittest.TestCase):
 
     def test_file_for_time(self):
-        f = pblog.store.stream_name_for_time
+        f = zippylog.store.stream_name_for_time
         
         self.assertRaises(Exception, f, 1280210699, 86401)
         self.assertRaises(Exception, f, 1280210699, 34234234)

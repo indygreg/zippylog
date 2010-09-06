@@ -15,22 +15,22 @@
 import sys
 import time
 
-from pblog.exception import PBException
-from pblog.message_pb2 import Envelope as PBEnvelope
+from zippylog.exception import PBException
+from zippylog.message_pb2 import Envelope as PBEnvelope
 
 _messages = {}
 
 def register_message(namespace, value, module, name):
     '''Registers a message type.
 
-    For every message type, this function is called so the pblog system knows
+    For every message type, this function is called so the zippylog system knows
     how to handle a specific message when it is encountered in a stream.
 
     The name argument is the message name, like 'MyEvent'. This corresponds
     to the 'message' type in a .proto file.
 
-    The value argument is the numeric value pblog assigns to the message
-    (via pblog_compile).
+    The value argument is the numeric value zippylog assigns to the message
+    (via zippylog_compile).
 
     The namespace argument defines the numeric message namespace to which the
     message belongs. A namespace of 0 (the default value) is the global
@@ -57,7 +57,7 @@ def register_message(namespace, value, module, name):
 def register_all_messages(state):
     '''Registers all known messages so everything can be read.
 
-    The passed object should be the loaded pblog state file contents.
+    The passed object should be the loaded zippylog state file contents.
 
     This should eventually grab the file from a package resource.'''
     for namespace, i in state['namespaces'].iteritems():
@@ -67,10 +67,10 @@ def register_all_messages(state):
             register_message(i, enum, module, name)
 
 class Envelope():
-    '''An individual pblog envelope
+    '''An individual zippylog envelope
 
     This class provides a convenient wrapper around the
-    pblog.message.pblog_pb2.Envelope class. It allows you to quickly fill in fields
+    zippylog.message.zippylog_pb2.Envelope class. It allows you to quickly fill in fields
     without having to worry too much about implementation details.'''
 
     def __init__(self,
@@ -125,15 +125,15 @@ class Envelope():
         '''add_message(m)
 
         Adds a message to this one. The parameter should be protocol buffer
-        class instance and should be registered with pblog.'''
+        class instance and should be registered with zippylog.'''
 
         # we simply add the binary data directly to the messages list and recorded
         # the enumerated type of the message
         name = m.DESCRIPTOR.full_name
 
         self.envelope.message.append(m.SerializeToString())
-        self.envelope.message_type.append(m.PBLOG_ENUMERATION)
-        self.envelope.message_namespace.append(m.PBLOG_NAMESPACE)
+        self.envelope.message_type.append(m.ZIPPYLOG_ENUMERATION)
+        self.envelope.message_namespace.append(m.ZIPPYLOG_NAMESPACE)
 
     def get_message(self, index=0, default_namespace=None):
         '''get_message(i)
@@ -156,7 +156,7 @@ class Envelope():
             raise PBException('unknown namespace')
 
         if namespace not in _messages:
-            raise PBException('seen namespace not registered with pblog: %d' % namespace )
+            raise PBException('seen namespace not registered with zippylog: %d' % namespace )
 
         if type_enumeration not in _messages[namespace]:
             raise PBException(
@@ -178,7 +178,7 @@ class Envelope():
     def add_agent_info(self, i):
         '''add_agent_info(info)
 
-        Add a pblog.message.pblog_pb2.AgentInfo instance to the envelope
+        Add a zippylog.message.zippylog_pb2.AgentInfo instance to the envelope
         '''
         new_info = self.envelope.agent.add()
        

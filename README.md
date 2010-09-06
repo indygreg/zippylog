@@ -1,9 +1,9 @@
-# pblog - Message Bus and Store Using Protocol Buffers
+# zippylog - Message Bus and Store Using Protocol Buffers
 
-This document is targeted to end users wishing to install pblog on a system.
+This document is targeted to end users wishing to install zippylog on a system.
 
-For details about the pblog project, including why you may want to use it,
-visit the [project wiki](http://wiki.github.com/indygreg/pblog/).
+For details about the zippylog project, including why you may want to use it,
+visit the [project wiki](http://wiki.github.com/indygreg/zippylog/).
 
 ## System Requirements
 
@@ -18,7 +18,7 @@ In theory, on Debian and Ubuntu, you could run:
 But as of this typing, the repositories only had version 2.2.x, which is not
 compatible at this time.
 
-You'll also need Python 2.6 or later, as pblog relies on a few features
+You'll also need Python 2.6 or later, as zippylog relies on a few features
 introduced in 2.6.
 
 ## Installing
@@ -40,9 +40,9 @@ definitions for the messages you wish to record.
 
 Start by creating a directory to hold your definitions.
 
-`mkdir ~/pblog-messages`
+`mkdir ~/zippylog-messages`
 
-`cd ~/pblog-messages`
+`cd ~/zippylog-messages`
 
 You'll create .proto files in this directory.
 
@@ -81,10 +81,10 @@ The protocol buffer
 [Language Guide](http://code.google.com/apis/protocolbuffers/docs/proto.html)
 is the definitive source for creating .proto files.
 
-Once you have defined your messages, you'll need to run _pblog_compile_ to
-generate bindings to pblog.
+Once you have defined your messages, you'll need to run _zippylog_compile_ to
+generate bindings to zippylog.
 
-> pblog_compile ~/pblog-messages ~/pblog-generated
+> zippylog_compile ~/zippylog-messages ~/zippylog-generated
 
 Like the message source directory, you'll likely want to have the output
 directory under version control. That way, in case you do something silly,

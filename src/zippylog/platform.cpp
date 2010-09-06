@@ -12,13 +12,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/platform.hpp>
+#include <zippylog/platform.hpp>
 
 #ifdef WINDOWS
 #include <Windows.h>
 #endif
 
-namespace pblog {
+namespace zippylog {
 
 void * create_thread(void * func, void *data)
 {

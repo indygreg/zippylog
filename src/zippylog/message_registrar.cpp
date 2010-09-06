@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/message_registrar.hpp>
-#include <pblog/messages.hpp>
+#include <zippylog/message_registrar.hpp>
+#include <zippylog/messages.hpp>
 
-namespace pblog {
+namespace zippylog {
 
 MessageRegistrar::MessageRegistrar()
 {

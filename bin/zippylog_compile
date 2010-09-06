@@ -48,7 +48,7 @@ if not exists(messages_dir):
 
 out_dir = args[1]
 
-state_file = join(out_dir, 'pblog-state.json')
+state_file = join(out_dir, 'zippylog-state.json')
 
 message_files = []
 for root, dirs, files in os.walk(messages_dir):
@@ -80,11 +80,11 @@ protoc_args.append('--cpp_pb_out=%s' % cpp_out)
 protoc_args.extend(message_files)
 
 env = os.environ
-env['PBLOG_STATE_FILE'] = state_file
+env['ZIPPYLOG_STATE_FILE'] = state_file
 env['PATH'] = ':'.join([dirname(__file__), env['PATH']])
 
 if options.cpp_namespace:
-    env['PBLOG_CPP_MESSAGES_NAMESPACE'] = options.cpp_namespace
+    env['ZIPPYLOG_CPP_MESSAGES_NAMESPACE'] = options.cpp_namespace
 
 print 'executing protoc: %s' % ' '.join(protoc_args)
 p = subprocess.Popen(protoc_args, env=env)

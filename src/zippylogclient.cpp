@@ -14,14 +14,14 @@
 
 #pragma once
 
-#include <pblog/client.hpp>
+#include <zippylog/client.hpp>
 
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <zmq.hpp>
 #include <iostream>
 
-using namespace pblog;
+using namespace zippylog;
 using ::zmq::context_t;
 using namespace ::std;
 

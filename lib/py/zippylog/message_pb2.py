@@ -8,64 +8,64 @@ from google.protobuf import descriptor_pb2
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
-  name='pblog/message.proto',
-  package='pblog.message',
-  serialized_pb='\n\x13pblog/message.proto\x12\rpblog.message\"\xb6\x01\n\x08\x45nvelope\x12\x0f\n\x07message\x18\x01 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x02 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x03 \x03(\rB\x02\x10\x01\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\x04\x12\x0b\n\x03tag\x18\x05 \x03(\x0c\x12\'\n\x05\x61\x63tor\x18\x06 \x03(\x0b\x32\x18.pblog.message.ActorInfo\x12\x15\n\rnumeric_value\x18\x07 \x01(\x04\"y\n\tActorInfo\x12\x12\n\ntouch_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x10\n\x08\x61\x63tor_id\x18\x05 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x06 \x01(\x0c')
+  name='zippylog/message.proto',
+  package='zippylog.message',
+  serialized_pb='\n\x13zippylog/message.proto\x12\rzippylog.message\"\xb6\x01\n\x08\x45nvelope\x12\x0f\n\x07message\x18\x01 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x02 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x03 \x03(\rB\x02\x10\x01\x12\x13\n\x0b\x63reate_time\x18\x04 \x01(\x04\x12\x0b\n\x03tag\x18\x05 \x03(\x0c\x12\'\n\x05\x61\x63tor\x18\x06 \x03(\x0b\x32\x18.zippylog.message.ActorInfo\x12\x15\n\rnumeric_value\x18\x07 \x01(\x04\"y\n\tActorInfo\x12\x12\n\ntouch_time\x18\x01 \x01(\x04\x12\x13\n\x0bsequence_id\x18\x02 \x01(\x04\x12\x10\n\x08hostname\x18\x03 \x01(\t\x12\x0f\n\x07host_id\x18\x04 \x01(\x0c\x12\x10\n\x08\x61\x63tor_id\x18\x05 \x01(\x0c\x12\x0e\n\x06\x61pp_id\x18\x06 \x01(\x0c')
 
 
 
 
 _ENVELOPE = descriptor.Descriptor(
   name='Envelope',
-  full_name='pblog.message.Envelope',
+  full_name='zippylog.message.Envelope',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='message', full_name='pblog.message.Envelope.message', index=0,
+      name='message', full_name='zippylog.message.Envelope.message', index=0,
       number=1, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='message_namespace', full_name='pblog.message.Envelope.message_namespace', index=1,
+      name='message_namespace', full_name='zippylog.message.Envelope.message_namespace', index=1,
       number=2, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
     descriptor.FieldDescriptor(
-      name='message_type', full_name='pblog.message.Envelope.message_type', index=2,
+      name='message_type', full_name='zippylog.message.Envelope.message_type', index=2,
       number=3, type=13, cpp_type=3, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
     descriptor.FieldDescriptor(
-      name='create_time', full_name='pblog.message.Envelope.create_time', index=3,
+      name='create_time', full_name='zippylog.message.Envelope.create_time', index=3,
       number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='tag', full_name='pblog.message.Envelope.tag', index=4,
+      name='tag', full_name='zippylog.message.Envelope.tag', index=4,
       number=5, type=12, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='actor', full_name='pblog.message.Envelope.actor', index=5,
+      name='actor', full_name='zippylog.message.Envelope.actor', index=5,
       number=6, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='numeric_value', full_name='pblog.message.Envelope.numeric_value', index=6,
+      name='numeric_value', full_name='zippylog.message.Envelope.numeric_value', index=6,
       number=7, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -87,48 +87,48 @@ _ENVELOPE = descriptor.Descriptor(
 
 _ACTORINFO = descriptor.Descriptor(
   name='ActorInfo',
-  full_name='pblog.message.ActorInfo',
+  full_name='zippylog.message.ActorInfo',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='touch_time', full_name='pblog.message.ActorInfo.touch_time', index=0,
+      name='touch_time', full_name='zippylog.message.ActorInfo.touch_time', index=0,
       number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='sequence_id', full_name='pblog.message.ActorInfo.sequence_id', index=1,
+      name='sequence_id', full_name='zippylog.message.ActorInfo.sequence_id', index=1,
       number=2, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='hostname', full_name='pblog.message.ActorInfo.hostname', index=2,
+      name='hostname', full_name='zippylog.message.ActorInfo.hostname', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='host_id', full_name='pblog.message.ActorInfo.host_id', index=3,
+      name='host_id', full_name='zippylog.message.ActorInfo.host_id', index=3,
       number=4, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='actor_id', full_name='pblog.message.ActorInfo.actor_id', index=4,
+      name='actor_id', full_name='zippylog.message.ActorInfo.actor_id', index=4,
       number=5, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='app_id', full_name='pblog.message.ActorInfo.app_id', index=5,
+      name='app_id', full_name='zippylog.message.ActorInfo.app_id', index=5,
       number=6, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
@@ -154,16 +154,16 @@ class Envelope(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ENVELOPE
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 5
-  # @@protoc_insertion_point(class_scope:pblog.message.Envelope)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 5
+  # @@protoc_insertion_point(class_scope:zippylog.message.Envelope)
 
 class ActorInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ACTORINFO
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 6
-  # @@protoc_insertion_point(class_scope:pblog.message.ActorInfo)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 6
+  # @@protoc_insertion_point(class_scope:zippylog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)

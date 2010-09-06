@@ -17,7 +17,7 @@ import unittest
 
 def all_tests_suite():
     suite = unittest.TestLoader().loadTestsFromNames([
-        'pblog.test.store_test',
+        'zippylog.test.store_test',
     ])
 
     return suite

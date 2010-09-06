@@ -1,8 +1,8 @@
 // this file describes protocol buffer messages sent by the client when
-// communicating with a pblog server
-package pblog.protocol.request;
+// communicating with a zippylog server
+package zippylog.protocol.request;
 
-// requesting status of the pblog server's store
+// requesting status of the zippylog server's store
 message StoreInfo { }
 
 // request to download part of a stream

@@ -1,24 +1,24 @@
 {
-  "cpp_messages_namespace": "pblog", 
+  "cpp_messages_namespace": "zippylog", 
   "messages": {
-    "pblog": {
-      "pblog.protocol.response.StreamSegmentStart": 7, 
-      "pblog.protocol.BucketInfo": 3, 
-      "pblog.protocol.StoreChangeStreamAppended": 17, 
-      "pblog.message.Envelope": 5, 
-      "pblog.pblogd.BrokerShutdown": 13, 
-      "pblog.protocol.StoreInfo": 4, 
-      "pblog.pblogd.BrokerReceiveClientMessage": 14, 
-      "pblog.protocol.StoreChangeStreamDeleted": 16, 
-      "pblog.protocol.StoreChangeStreamAdded": 15, 
-      "pblog.protocol.StreamInfo": 1, 
-      "pblog.protocol.request.StoreInfo": 10, 
-      "pblog.protocol.response.Error": 9, 
-      "pblog.protocol.StreamSetInfo": 2, 
-      "pblog.pblogd.BrokerStartup": 12, 
-      "pblog.protocol.response.StreamSegmentEnd": 8, 
-      "pblog.message.ActorInfo": 6, 
-      "pblog.protocol.request.Get": 11
+    "zippylog": {
+      "zippylog.protocol.response.StreamSegmentStart": 7, 
+      "zippylog.protocol.BucketInfo": 3, 
+      "zippylog.protocol.StoreChangeStreamAppended": 17, 
+      "zippylog.message.Envelope": 5, 
+      "zippylog.zippylogd.BrokerShutdown": 13, 
+      "zippylog.protocol.StoreInfo": 4, 
+      "zippylog.zippylogd.BrokerReceiveClientMessage": 14, 
+      "zippylog.protocol.StoreChangeStreamDeleted": 16, 
+      "zippylog.protocol.StoreChangeStreamAdded": 15, 
+      "zippylog.protocol.StreamInfo": 1, 
+      "zippylog.protocol.request.StoreInfo": 10, 
+      "zippylog.protocol.response.Error": 9, 
+      "zippylog.protocol.StreamSetInfo": 2, 
+      "zippylog.zippylogd.BrokerStartup": 12, 
+      "zippylog.protocol.response.StreamSegmentEnd": 8, 
+      "zippylog.message.ActorInfo": 6, 
+      "zippylog.protocol.request.Get": 11
     }, 
     "google": {
       "google.protobuf.ServiceDescriptorProto": 7, 
@@ -42,7 +42,7 @@
     }
   }, 
   "namespaces": {
-    "pblog": 1, 
+    "zippylog": 1, 
     "google": 2
   }
 }

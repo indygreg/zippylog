@@ -12,12 +12,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/envelope.hpp>
-#include <pblog/message_registrar.hpp>
+#include <zippylog/envelope.hpp>
+#include <zippylog/message_registrar.hpp>
 
 #include <string>
 
-namespace pblog {
+namespace zippylog {
 
 using ::std::string;
 

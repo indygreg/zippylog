@@ -10,22 +10,22 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_MESSAGE_REGISTRAR_HPP_
-#define PBLOG_MESSAGE_REGISTRAR_HPP_
+#ifndef ZIPPYLOG_MESSAGE_REGISTRAR_HPP_
+#define ZIPPYLOG_MESSAGE_REGISTRAR_HPP_
 
-#include <pblog/pblog.h>
+#include <zippylog/zippylog.h>
 
 #include <google/protobuf/message.h>
 #include <map>
 #include <utility>
 
-namespace pblog {
+namespace zippylog {
 
 using ::google::protobuf::Message;
 using ::std::map;
 using ::std::pair;
 
-class PBLOG_EXPORT MessageRegistrar {
+class ZIPPYLOG_EXPORT MessageRegistrar {
     public:
         MessageRegistrar();
 

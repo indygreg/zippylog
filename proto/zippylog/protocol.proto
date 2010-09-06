@@ -1,6 +1,6 @@
-// pblog message types shared between protocol ends
+// zippylog message types shared between protocol ends
 
-package pblog.protocol;
+package zippylog.protocol;
 
 // describes an individual stream
 message StreamInfo {

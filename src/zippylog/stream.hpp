@@ -12,23 +12,23 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_STREAM_HPP_
-#define PBLOG_STREAM_HPP_
+#ifndef ZIPPYLOG_STREAM_HPP_
+#define ZIPPYLOG_STREAM_HPP_
 
-#include <pblog/pblog.h>
-#include <pblog/envelope.hpp>
+#include <zippylog/zippylog.h>
+#include <zippylog/envelope.hpp>
 
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <string>
 
-namespace pblog {
+namespace zippylog {
 
 using ::google::protobuf::io::FileInputStream;
 using ::google::protobuf::io::CodedInputStream;
 using ::std::string;
 
-class PBLOG_EXPORT InputStream {
+class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
         InputStream(string file, int64 seek_bytes=0);
@@ -40,7 +40,7 @@ class PBLOG_EXPORT InputStream {
         // does NOT include size of envelope size encoding
         uint32 NextEnvelopeSize();
 
-        bool ReadEnvelope(::pblog::Envelope &envelope, uint32 &bytes_read);
+        bool ReadEnvelope(::zippylog::Envelope &envelope, uint32 &bytes_read);
         bool Seek(int64 offset);
 
     private:
@@ -52,12 +52,12 @@ class PBLOG_EXPORT InputStream {
 
 };
 
-class PBLOG_EXPORT OutputStream {
+class ZIPPYLOG_EXPORT OutputStream {
     public:
         OutputStream();
         ~OutputStream();
 
-        bool WriteEnvelope(::pblog::Envelope &envelope);
+        bool WriteEnvelope(::zippylog::Envelope &envelope);
 };
 
 } // namespace

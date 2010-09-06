@@ -14,9 +14,9 @@
 
 import time
 
-from pblog.exception import PBException
-from pblog.envelope import Envelope
-from pblog.message.pblog_pb2 import ActorInfo
+from zippylog.exception import PBException
+from zippylog.envelope import Envelope
+from zippylog.message.zippylog_pb2 import ActorInfo
 
 class IActor:
     def __init__(self, write_namespaces=False, write_actor_info=True):
@@ -31,7 +31,7 @@ class IActor:
         self.write_actor_info = bool(write_actor_info)
         self.actor_info = ActorInfo()
 
-    '''Interface for pblog actors.'''
+    '''Interface for zippylog actors.'''
     def write_envelopes(self, *envelopes):
         raise PBException('must be implemented in derived classes')
 
@@ -96,18 +96,18 @@ class IActor:
         for s in self.out_streams.itervalues():
             s.write_envelopes(message)
             
-    def write_pblog_envelopes(self, *envelops):
-        '''Write multiple pblog.message.Message instances.'''
+    def write_zippylog_envelopes(self, *envelops):
+        '''Write multiple zippylog.message.Message instances.'''
         for m in envelopes:
             if not isinstance(m, Envelope):
-                raise PBException('object is not a pblog.envelope type: %s' % type(m))
+                raise PBException('object is not a zippylog.envelope type: %s' % type(m))
 
             self.write_envelope(m)
 
     def combine_and_write_messages(self, *messages):
-        '''Write multiple protocol buffer messages to a pblog envelopes.
+        '''Write multiple protocol buffer messages to a zippylog envelopes.
 
-        This takes multiple protocol buffer messages, embeds them in a pblog
+        This takes multiple protocol buffer messages, embeds them in a zippylog
         envelope, and writes that single envelope.'''
         # TODO support additional parameters for envelope
         raise PBException('not yet implemented')

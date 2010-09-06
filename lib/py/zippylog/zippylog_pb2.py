@@ -4,34 +4,34 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
-from pblog.envelope import register_message
+from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
-  name='pblog/pblogd.proto',
-  package='pblog.pblogd',
-  serialized_pb='\n\x12pblog/pblogd.proto\x12\x0cpblog.pblogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage')
+  name='zippylog/zippylogd.proto',
+  package='zippylog.zippylogd',
+  serialized_pb='\n\x12zippylog/zippylogd.proto\x12\x0czippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage')
 
 
 
 
 _BROKERSTARTUP = descriptor.Descriptor(
   name='BrokerStartup',
-  full_name='pblog.pblogd.BrokerStartup',
+  full_name='zippylog.zippylogd.BrokerStartup',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='store_path', full_name='pblog.pblogd.BrokerStartup.store_path', index=0,
+      name='store_path', full_name='zippylog.zippylogd.BrokerStartup.store_path', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='listen_endpoints', full_name='pblog.pblogd.BrokerStartup.listen_endpoints', index=1,
+      name='listen_endpoints', full_name='zippylog.zippylogd.BrokerStartup.listen_endpoints', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -53,7 +53,7 @@ _BROKERSTARTUP = descriptor.Descriptor(
 
 _BROKERSHUTDOWN = descriptor.Descriptor(
   name='BrokerShutdown',
-  full_name='pblog.pblogd.BrokerShutdown',
+  full_name='zippylog.zippylogd.BrokerShutdown',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -74,7 +74,7 @@ _BROKERSHUTDOWN = descriptor.Descriptor(
 
 _BROKERRECEIVECLIENTMESSAGE = descriptor.Descriptor(
   name='BrokerReceiveClientMessage',
-  full_name='pblog.pblogd.BrokerReceiveClientMessage',
+  full_name='zippylog.zippylogd.BrokerReceiveClientMessage',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -98,27 +98,27 @@ class BrokerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERSTARTUP
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 12
-  # @@protoc_insertion_point(class_scope:pblog.pblogd.BrokerStartup)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 12
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerStartup)
 
 class BrokerShutdown(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERSHUTDOWN
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 13
-  # @@protoc_insertion_point(class_scope:pblog.pblogd.BrokerShutdown)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 13
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerShutdown)
 
 class BrokerReceiveClientMessage(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERRECEIVECLIENTMESSAGE
   
-  PBLOG_NAMESPACE = 1
-  PBLOG_ENUMERATION = 14
-  # @@protoc_insertion_point(class_scope:pblog.pblogd.BrokerReceiveClientMessage)
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 14
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
 
-register_message(1, 12, 'pblog.pblogd_pb2', 'BrokerStartup')
-register_message(1, 13, 'pblog.pblogd_pb2', 'BrokerShutdown')
-register_message(1, 14, 'pblog.pblogd_pb2', 'BrokerReceiveClientMessage')
+register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
+register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
+register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
 # @@protoc_insertion_point(module_scope)

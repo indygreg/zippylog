@@ -12,17 +12,17 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_CLIENT_HPP_
-#define PBLOG_CLIENT_HPP_
+#ifndef ZIPPYLOG_CLIENT_HPP_
+#define ZIPPYLOG_CLIENT_HPP_
 
-#include <pblog/pblog.h>
-#include <pblog/protocol.pb.h>
+#include <zippylog/zippylog.h>
+#include <zippylog/protocol.pb.h>
 
 #include <string>
 #include <vector>
 #include <zmq.hpp>
 
-namespace pblog {
+namespace zippylog {
 namespace client {
 
 using protocol::StoreInfo;
@@ -32,7 +32,7 @@ using ::zmq::socket_t;
 using ::zmq::context_t;
 
 // represents a stream segment response (from Get requests)
-class PBLOG_EXPORT StreamSegment {
+class ZIPPYLOG_EXPORT StreamSegment {
     public:
         StreamSegment();
         ~StreamSegment();
@@ -53,7 +53,7 @@ class PBLOG_EXPORT StreamSegment {
 
 };
 
-class PBLOG_EXPORT Client {
+class ZIPPYLOG_EXPORT Client {
     public:
         // establish a client and bind to the location specified
         Client(context_t *ctx, string bind);

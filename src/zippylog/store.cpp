@@ -12,16 +12,16 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/store.hpp>
+#include <zippylog/store.hpp>
 
-#include <pblog/platform.hpp>
+#include <zippylog/platform.hpp>
 
 #include <sys/types.h>
 #include <sys/stat.h>
 
 using ::std::string;
 
-namespace pblog {
+namespace zippylog {
 
 Store::Store(const string path)
 {
@@ -115,7 +115,7 @@ bool Store::StreamNames(const string bucket, const string set, vector<string> &s
     this->files_in_directory(this->PathToFilesystemPath(this->StreamsetPath(bucket, set)), streams);
 
     for (size_t i = streams.size(); i; --i) {
-        if (streams[i-1].substr(streams[i-i].length() - 6, 6).compare(".pblog")) {
+        if (streams[i-1].substr(streams[i-i].length() - 6, 6).compare(".zippylog")) {
             streams.pop_back();
         }
         streams[i-1] = streams[i-1].substr(0, streams[i-1].length() - 6);
@@ -188,7 +188,7 @@ bool Store::StreamLength(const string path, int64 &length)
     return true;
 }
 
-bool Store::StreamInfo(const string path, pblog::protocol::StreamInfo &info)
+bool Store::StreamInfo(const string path, zippylog::protocol::StreamInfo &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -231,7 +231,7 @@ bool Store::StreamsetInfo(const string bucket, const string stream_set, protocol
     return true;
 }
 
-bool Store::StreamsetInfo(const string path, pblog::protocol::StreamSetInfo &info)
+bool Store::StreamsetInfo(const string path, zippylog::protocol::StreamSetInfo &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -294,7 +294,7 @@ string Store::PathToFilesystemPath(const string path)
 
 string Store::StreamFilesystemPath(const string path)
 {
-    return this->PathToFilesystemPath(path) + ".pblog";
+    return this->PathToFilesystemPath(path) + ".zippylog";
 }
 
 bool Store::directories_in_directory(const string dir, vector<string> &v)
@@ -325,4 +325,4 @@ bool Store::files_in_directory(const string dir, vector<string> &v)
     return true;
 }
 
-} // namespace pblog
+} // namespace zippylog

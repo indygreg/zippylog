@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "pblog/stream.hpp"
+#include "zippylog/stream.hpp"
 
 #include <fcntl.h>
 #include <io.h>
@@ -22,7 +22,7 @@
 #define open _open
 #endif
 
-namespace pblog {
+namespace zippylog {
 
 InputStream::InputStream()
 {
@@ -98,7 +98,7 @@ uint32 InputStream::NextEnvelopeSize()
     return this->_next_envelope_size;
 }
 
-bool InputStream::ReadEnvelope(::pblog::Envelope &e, uint32 &bytes_read)
+bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 {
     uint32 size = this->NextEnvelopeSize();
     if (!size) {
@@ -151,7 +151,7 @@ OutputStream::~OutputStream()
 
 }
 
-bool OutputStream::WriteEnvelope(::pblog::Envelope &e)
+bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
 {
     return false;
 }

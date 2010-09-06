@@ -13,6 +13,6 @@
 #  limitations under the License.
 
 class PBException(Exception):
-    '''Base class for all exceptions in the pblog package.'''
+    '''Base class for all exceptions in the zippylog package.'''
     pass
 

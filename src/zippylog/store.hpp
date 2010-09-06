@@ -12,17 +12,17 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_STORE_HPP_
-#define PBLOG_STORE_HPP_
+#ifndef ZIPPYLOG_STORE_HPP_
+#define ZIPPYLOG_STORE_HPP_
 
-#include <pblog/pblog.h>
+#include <zippylog/zippylog.h>
 
-#include <pblog/protocol.pb.h>
-#include <pblog/stream.hpp>
+#include <zippylog/protocol.pb.h>
+#include <zippylog/stream.hpp>
 
 #include <vector>
 
-namespace pblog {
+namespace zippylog {
 
 using ::std::vector;
 using ::std::string;
@@ -30,7 +30,7 @@ using ::std::string;
 // represents a stream store
 // functions are reentrant and thread-safe unless otherwise specified
 // TODO define an interface for the store API
-class PBLOG_EXPORT Store {
+class ZIPPYLOG_EXPORT Store {
     public:
         /** construct a store from a filesystem path */
         Store(const string path);
@@ -99,6 +99,6 @@ class PBLOG_EXPORT Store {
         string _path;
 };
 
-} // namespace pblog
+} // namespace zippylog
 
 #endif

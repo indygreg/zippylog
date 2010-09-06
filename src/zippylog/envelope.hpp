@@ -10,21 +10,21 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_ENVELOPE_HPP_
-#define PBLOG_ENVELOPE_HPP_
+#ifndef ZIPPYLOG_ENVELOPE_HPP_
+#define ZIPPYLOG_ENVELOPE_HPP_
 
-#include <pblog/pblog.h>
-#include <pblog/message.pb.h>
+#include <zippylog/zippylog.h>
+#include <zippylog/message.pb.h>
 
 #include <google/protobuf/message.h>
 #include <zmq.hpp>
 
-namespace pblog {
+namespace zippylog {
 
 using ::google::protobuf::Message;
 using ::zmq::message_t;
 
-class PBLOG_EXPORT Envelope {
+class ZIPPYLOG_EXPORT Envelope {
     public:
         // construct an empty envelope
         Envelope();

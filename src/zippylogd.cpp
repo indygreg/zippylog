@@ -14,9 +14,9 @@
 
 #pragma once
 
-#include <pblog/pblog.h>
-#include <pblog/broker.hpp>
-#include <pblog/store.hpp>
+#include <zippylog/zippylog.h>
+#include <zippylog/broker.hpp>
+#include <zippylog/store.hpp>
 
 #include <io.h>
 #include <stdio.h>
@@ -28,8 +28,8 @@
 #include <apr_strings.h>
 #include <zmq.hpp>
 
-using namespace ::pblog;
-using namespace ::pblog::server;
+using namespace ::zippylog;
+using namespace ::zippylog::server;
 
 #define MEMORY_ERROR "out of memory" APR_EOL_STR
 
@@ -70,7 +70,7 @@ int main(int argc, const char * const argv[])
         exit(1);
     }
 
-    apr_pool_tag(p, "pblogd-root");
+    apr_pool_tag(p, "zippylogd-root");
     apr_pool_abort_set(_abort, p);
 
     st = apr_pool_create(&p_opts, p);

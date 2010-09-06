@@ -12,12 +12,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <pblog/broker.hpp>
+#include <zippylog/broker.hpp>
 
-#include <pblog/platform.hpp>
-#include <pblog/server.hpp>
+#include <zippylog/platform.hpp>
+#include <zippylog/server.hpp>
 
-namespace pblog {
+namespace zippylog {
 namespace server {
 
 #define WORKER_ENDPOINT "inproc://workers"

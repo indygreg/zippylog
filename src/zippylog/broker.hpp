@@ -12,29 +12,29 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_SERVER_BROKER_HPP_
-#define PBLOG_SERVER_BROKER_HPP_
+#ifndef ZIPPYLOG_SERVER_BROKER_HPP_
+#define ZIPPYLOG_SERVER_BROKER_HPP_
 
-#include <pblog/pblog.h>
-#include <pblog/server.hpp>
-#include <pblog/store.hpp>
+#include <zippylog/zippylog.h>
+#include <zippylog/server.hpp>
+#include <zippylog/store.hpp>
 
 #include <vector>
 #include <zmq.hpp>
 
-namespace pblog {
+namespace zippylog {
 namespace server {
 
-using ::pblog::Store;
+using ::zippylog::Store;
 using ::std::string;
 using ::std::vector;
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
 // the broker is a ZMQ device that provides the core message routing component
-// of pblogd. it binds to a number of sockets and coordinates all the workers
+// of zippylogd. it binds to a number of sockets and coordinates all the workers
 // in the system
-class PBLOG_EXPORT Broker {
+class ZIPPYLOG_EXPORT Broker {
     public:
         Broker(Store *store);
         Broker(Store *store, context_t *ctx);

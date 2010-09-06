@@ -22,16 +22,16 @@ easier to grok.
 
 */
 
-#include <pblog/server.hpp>
-#include <pblog/message.pb.h>
-#include <pblog/protocol.pb.h>
-#include <pblog/protocol/request.pb.h>
-#include <pblog/protocol/response.pb.h>
+#include <zippylog/server.hpp>
+#include <zippylog/message.pb.h>
+#include <zippylog/protocol.pb.h>
+#include <zippylog/protocol/request.pb.h>
+#include <zippylog/protocol/response.pb.h>
 
 #include <string>
 #include <zmq.hpp>
 
-namespace pblog {
+namespace zippylog {
 namespace server {
 
 using ::std::string;
@@ -56,8 +56,8 @@ void * __stdcall Request::request_processor(void *data)
     /* variables used across states */
     int state = Request::CREATE_SOCKET;
     message_t zreq;
-    pblog::Envelope request_envelope;
-    pblog::Envelope response_envelope;
+    zippylog::Envelope request_envelope;
+    zippylog::Envelope response_envelope;
     protocol::response::ErrorCode error_code;
     string error_message;
 
@@ -86,7 +86,7 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::PROCESS_REQUEST:
             {
-                request_envelope = ::pblog::Envelope(&zreq);
+                request_envelope = ::zippylog::Envelope(&zreq);
                 //{
                 //    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
                 //    error_message = "could not parse received envelope";
@@ -108,25 +108,25 @@ void * __stdcall Request::request_processor(void *data)
                     break;
                 }
 
-                /* must be in the pblog namespace */
+                /* must be in the zippylog namespace */
                 if (request_envelope.envelope.message_namespace(0) != 1) {
                     error_code = protocol::response::INVALID_MESSAGE_NAMESPACE;
-                    error_message = "message namespace is not pblog's";
+                    error_message = "message namespace is not zippylog's";
                     state = Request::SEND_ERROR_RESPONSE;
                     break;
                 }
 
                 uint32 request_type = request_envelope.envelope.message_type(0);
-                if (request_type == protocol::request::StoreInfo::pblog_enumeration) {
+                if (request_type == protocol::request::StoreInfo::zippylog_enumeration) {
                     state = Request::PROCESS_STOREINFO;
                     break;
                 }
-                else if (request_type == protocol::request::Get::pblog_enumeration) {
+                else if (request_type == protocol::request::Get::zippylog_enumeration) {
                     state = Request::PROCESS_GET;
                     break;
                 }
                 /*
-                else if (request_type == protocol::request::Stream::pblog_enumeration) {
+                else if (request_type == protocol::request::Stream::zippylog_enumeration) {
                     state = Request::PROCESS_STREAM;
                     break;
                 }
@@ -146,7 +146,7 @@ void * __stdcall Request::request_processor(void *data)
                 protocol::StoreInfo info = protocol::StoreInfo();
                 d->store->StoreInfo(info);
 
-                response_envelope = pblog::Envelope();
+                response_envelope = zippylog::Envelope();
                 info.add_to_envelope(&response_envelope);
                 state = SEND_ENVELOPE_AND_DONE;
                 break;
@@ -207,7 +207,7 @@ void * __stdcall Request::request_processor(void *data)
                     bytes_left = get->max_response_bytes();
                 }
 
-                pblog::Envelope m = pblog::Envelope();
+                zippylog::Envelope m = zippylog::Envelope();
 
                 uint32 envelope_size = stream.NextEnvelopeSize();
                 // could not find envelope in stream at offset
@@ -225,7 +225,7 @@ void * __stdcall Request::request_processor(void *data)
                 protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
                 segment_start.set_path(get->path());
                 segment_start.set_offset(get->start_offset());
-                ::pblog::Envelope env = ::pblog::Envelope();
+                ::zippylog::Envelope env = ::zippylog::Envelope();
                 segment_start.add_to_envelope(&env);
 
                 // copy request tags to response for client association
@@ -264,7 +264,7 @@ void * __stdcall Request::request_processor(void *data)
                 segment_end.set_bytes_sent(bytes_read);
                 segment_end.set_offset(start_offset + bytes_read);
 
-                env = ::pblog::Envelope();
+                env = ::zippylog::Envelope();
                 segment_end.add_to_envelope(&env);
                 zmsg = env.to_zmq_message();
                 socket->send(*zmsg, 0);
@@ -279,7 +279,7 @@ void * __stdcall Request::request_processor(void *data)
                 protocol::response::Error error = protocol::response::Error();
                 error.set_code(error_code);
                 error.set_msg(error_message);
-                response_envelope = pblog::Envelope();
+                response_envelope = zippylog::Envelope();
                 error.add_to_envelope(&response_envelope);
                 state = Request::SEND_ENVELOPE_AND_DONE;
                 break;

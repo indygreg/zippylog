@@ -20,8 +20,8 @@ from the current system. It likely only runs on Linux 2.6.
 
 '''
 
-from pblog.envelope import Envelope
-from pblog.store import FilesystemStreamStore
+from zippylog.envelope import Envelope
+from zippylog.store import FilesystemStreamStore
 import os.path
 import re
 import sys

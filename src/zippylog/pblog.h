@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef PBLOG_H_
-#define PBLOG_H_
+#ifndef ZIPPYLOG_H_
+#define ZIPPYLOG_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,7 +21,7 @@ extern "C" {
 
 /* we must put this little macro before all exportable symbols on Windows */
 #ifdef WIN32
-#define PBLOG_EXPORT __declspec(dllexport)
+#define ZIPPYLOG_EXPORT __declspec(dllexport)
 #endif
 
 /* define 32 and 64 bit integer types */

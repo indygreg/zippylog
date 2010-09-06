@@ -16,8 +16,8 @@
 from google.protobuf.internal.decoder import _DecodeVarint
 from google.protobuf.internal.encoder import _VarintEncoder
 
-from pblog.exception import PBException
-from pblog.envelope import Envelope
+from zippylog.exception import PBException
+from zippylog.envelope import Envelope
 
 class Stream:
     def __init__(self, fh, version=1, is_empty=False, read_mode=None):
@@ -36,9 +36,9 @@ class Stream:
         self.varint_decoder = _DecodeVarint
 
     def write_envelopes(self, *envelopes):
-        '''Writes populated pblog.envelope.Envelope instances to the stream.
+        '''Writes populated zippylog.envelope.Envelope instances to the stream.
 
-        Typically called by another module within pblog so envelopes can be
+        Typically called by another module within zippylog so envelopes can be
         "prepared" before being written.'''
 
         if self.is_empty:
@@ -47,7 +47,7 @@ class Stream:
 
         for e in envelopes:
             if not isinstance(e, Envelope):
-                raise PBException('passed argument not a pblog.envelope.Envelope: %s' % type(m))
+                raise PBException('passed argument not a zippylog.envelope.Envelope: %s' % type(m))
 
             encoded = e.serialize()
             l = len(encoded)
