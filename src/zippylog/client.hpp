@@ -16,6 +16,7 @@
 #define ZIPPYLOG_CLIENT_HPP_
 
 #include <zippylog/zippylog.h>
+#include <zippylog/envelope.hpp>
 #include <zippylog/protocol.pb.h>
 
 #include <string>
@@ -30,6 +31,7 @@ using ::std::string;
 using ::std::vector;
 using ::zmq::socket_t;
 using ::zmq::context_t;
+using ::zippylog::Envelope;
 
 // represents a stream segment response (from Get requests)
 class ZIPPYLOG_EXPORT StreamSegment {
