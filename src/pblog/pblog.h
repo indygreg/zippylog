@@ -32,6 +32,8 @@ typedef unsigned __int32 uint32;
 typedef unsigned __int64 uint64;
 #endif
 
+// TODO need to add "GOOGLE_PROTOBUF_VERIFY_VERSION;" somewhere
+// TODO should add "google::protobuf::ShutdownProtobufLibrary();" somewhere
 
 #ifdef __cplusplus
 }
