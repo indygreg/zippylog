@@ -18,7 +18,7 @@
 #include <zippylog/zippylog.h>
 #include <zippylog/server.hpp>
 #include <zippylog/store.hpp>
-#include <pblog/store_watcher.hpp>
+#include <zippylog/store_watcher.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -60,9 +60,7 @@ class ZIPPYLOG_EXPORT Broker {
     protected:
         context_t * zctx;
         socket_t * workers_sock;
-        socket_t * clients_external_sock;
-        vector<socket_t *> listen_sockets;
-        vector<socket_t *> listen_proxy_sockets;
+        socket_t * clients_sock;
         vector<void *> worker_threads;
         Store * store;
         bool active;

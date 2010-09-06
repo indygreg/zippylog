@@ -17,8 +17,12 @@
 #include <zippylog/platform.hpp>
 #include <zippylog/server.hpp>
 
+// Lua is compiled as C most of the time, so import as such to avoid
+// name mangling
+extern "C" {
 #include <lua.h>
 #include <lauxlib.h>
+}
 
 #include <sstream>
 
@@ -29,10 +33,9 @@ namespace server {
 using ::std::ostringstream;
 
 #define WORKER_ENDPOINT "inproc://workers"
-#define CLIENTS_ENDPOINT "inproc://clients"
 #define STORE_WATCHER_CHANGE_ENDPOINT "inproc://store_changes"
 
-#define CLIENTS_EXTERNAL_INDEX 0
+#define CLIENT_INDEX 0
 #define WORKER_INDEX 1
 #define LISTENER_INDEX 2
 
@@ -76,27 +79,24 @@ void Broker::init()
     this->zctx = NULL;
     this->worker_start_data = NULL;
     this->workers_sock = NULL;
-    this->clients_external_sock = NULL;
+    this->clients_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
 }
 
 /*
-The broker is kinda a gnarly beast.
+The broker contains a number of 0MQ sockets.
 
-It binds to 1 to many listener interfaces. These are defined at run-time.
-Each listener socket has a "proxy" socket associated with it. This proxy socket
-is connected to a virtual client socket. This allows us to do message routing at
-the 0MQ layer through identities automagically.
+First, we have the client socket. It binds to whatever interfaces were
+defined at config time. A single 0MQ socket can bind to multiple endpoints,
+which is just plain awesome.
 
-The clients socket, which encapsulates all listener sockets by extension, reads
-client messages and forwards them to the worker socket. This socket has a number
-of threads connected to it at the remote end. It is the workers' job to process
-client messages.
+The client socket receives messages and forwards them to a workers socket.
+The workers socket distributes messages to a number of worker threads, which
+pull messages at their leisure.
 
-If a worker sends a response, we grab it and forward it back to the client, via
-the proxy sockets.
+If we see a response from the workers, we forward it back to the client.
 
 Some requests like streaming are processed by non-worker threads. In these
 cases, the workers deposit a set of messages on some internal sockets. The
@@ -106,8 +106,6 @@ socket connected to the other thread or thread pool.
 The requests processed by non-worker threads deposit messages on their own
 inpoc sockets. These sockets are read by the broker and messages are forwarded
 to clients, as appropriate.
-
-TODO sockets can bind to multiple endpoints, duh
 
 */
 
@@ -122,31 +120,18 @@ void Broker::run()
     this->create_store_watcher();
     this->setup_listener_sockets();
 
-    int number_pollitems = LISTENER_INDEX + 2 * this->listen_sockets.size();
-    int number_listeners = this->listen_sockets.size();
+    int number_pollitems = LISTENER_INDEX;
     zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
 
-    pollitems[CLIENTS_EXTERNAL_INDEX].socket = *this->clients_external_sock;
-    pollitems[CLIENTS_EXTERNAL_INDEX].events = ZMQ_POLLIN;
-    pollitems[CLIENTS_EXTERNAL_INDEX].fd = 0;
-    pollitems[CLIENTS_EXTERNAL_INDEX].revents = 0;
+    pollitems[CLIENT_INDEX].socket = *this->clients_sock;
+    pollitems[CLIENT_INDEX].events = ZMQ_POLLIN;
+    pollitems[CLIENT_INDEX].fd = 0;
+    pollitems[CLIENT_INDEX].revents = 0;
 
     pollitems[WORKER_INDEX].socket = *this->workers_sock;
     pollitems[WORKER_INDEX].events = ZMQ_POLLIN;
     pollitems[WORKER_INDEX].fd = 0;
     pollitems[WORKER_INDEX].revents = 0;
-
-    for (int i = 0; i < this->listen_sockets.size(); i++) {
-        pollitems[LISTENER_INDEX+i].socket = *this->listen_sockets[i];
-        pollitems[LISTENER_INDEX+i].events = ZMQ_POLLIN;
-        pollitems[LISTENER_INDEX+i].fd = 0;
-        pollitems[LISTENER_INDEX+i].revents = 0;
-
-        pollitems[LISTENER_INDEX+i+number_listeners].socket = *this->listen_proxy_sockets[i];
-        pollitems[LISTENER_INDEX+i+number_listeners].events = ZMQ_POLLIN;
-        pollitems[LISTENER_INDEX+i+number_listeners].fd = 0;
-        pollitems[LISTENER_INDEX+i+number_listeners].revents = 0;
-    }
 
     zmq::message_t msg;
     int64 more;
@@ -167,7 +152,7 @@ void Broker::run()
 
                 moresz = sizeof(more);
                 this->workers_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->clients_external_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
                     break;
                 }
 
@@ -176,55 +161,19 @@ void Broker::run()
         }
 
         // move from client meta socket to workers
-        if (pollitems[CLIENTS_EXTERNAL_INDEX].revents & ZMQ_POLLIN) {
+        if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
-                if (!this->clients_external_sock->recv(&msg, 0)) {
+                if (!this->clients_sock->recv(&msg, 0)) {
                     break;
                 }
 
                 moresz = sizeof(more);
-                this->clients_external_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+                this->clients_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
                 if (!this->workers_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
                     break;
                 }
 
                 if (!more) break;
-            }
-        }
-
-        for (int i = 0; i < number_listeners; i++) {
-            // move our responses down to listener
-            if (pollitems[LISTENER_INDEX + i + number_listeners].revents & ZMQ_POLLIN) {
-                while (true) {
-                    if (!this->listen_proxy_sockets[i]->recv(&msg, 0)) {
-                        break;
-                    }
-
-                    moresz = sizeof(more);
-                    this->listen_proxy_sockets[i]->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                    if (!this->listen_sockets[i]->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                        break;
-                    }
-                    if (!more) break;
-                }
-            }
-
-            // move client requests to the client proxy virtual device
-            if (pollitems[LISTENER_INDEX + i].revents & ZMQ_POLLIN) {
-                while (true) {
-                    if (!this->listen_sockets[i]->recv(&msg, 0)) {
-                        break;
-                    }
-
-                    moresz = sizeof(more);
-                    this->listen_sockets[i]->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-                    if (!this->listen_proxy_sockets[i]->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                        break;
-                    }
-
-                    if (!more) break;
-                }
             }
         }
     }
@@ -260,23 +209,18 @@ void Broker::create_store_watcher()
 
 void Broker::setup_internal_sockets()
 {
-    this->clients_external_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-    this->clients_external_sock->bind(CLIENTS_ENDPOINT);
-
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
 }
 
 void Broker::setup_listener_sockets()
 {
-    for (int i = 0; i < this->config.listen_endpoints.size(); i++) {
-        zmq::socket_t *s = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-        s->bind(this->config.listen_endpoints[i].c_str());
-        this->listen_sockets.push_back(s);
+    this->clients_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
 
-        zmq::socket_t *p = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
-        p->connect(CLIENTS_ENDPOINT);
-        this->listen_proxy_sockets.push_back(p);
+    // 0MQ sockets can bind to multiple endpoints
+    // how AWESOME is that?
+    for (int i = 0; i < this->config.listen_endpoints.size(); i++) {
+        this->clients_sock->bind(this->config.listen_endpoints[i].c_str());
     }
 }
 
