@@ -56,7 +56,7 @@ if mode.find('protoc-gen-') != 0 or mode[-9:] != '_zippylog':
     exit(0)
 
 mode = mode[11:]
-mode = mode[:-3]
+mode = mode[:-9]
 
 state_file = environ['ZIPPYLOG_STATE_FILE']
 
