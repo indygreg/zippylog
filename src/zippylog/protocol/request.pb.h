@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <zippylog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
@@ -93,6 +94,9 @@ class StoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 10;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.request.StoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -198,6 +202,9 @@ class Get : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 max_response_bytes() const;
   inline void set_max_response_bytes(::google::protobuf::uint32 value);
   
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 11;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.request.Get)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

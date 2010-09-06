@@ -4,6 +4,7 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
+from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
@@ -97,18 +98,27 @@ class BrokerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERSTARTUP
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 12
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerStartup)
 
 class BrokerShutdown(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERSHUTDOWN
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 13
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerShutdown)
 
 class BrokerReceiveClientMessage(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _BROKERRECEIVECLIENTMESSAGE
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 14
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
 
+register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
+register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
+register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
 # @@protoc_insertion_point(module_scope)

@@ -4,6 +4,7 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
+from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
@@ -214,18 +215,27 @@ class StreamSegmentStart(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSEGMENTSTART
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 7
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
 
 class StreamSegmentEnd(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STREAMSEGMENTEND
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 8
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
 
 class Error(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ERROR
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 9
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.Error)
 
+register_message(1, 7, 'zippylog.protocol.response_pb2', 'StreamSegmentStart')
+register_message(1, 8, 'zippylog.protocol.response_pb2', 'StreamSegmentEnd')
+register_message(1, 9, 'zippylog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

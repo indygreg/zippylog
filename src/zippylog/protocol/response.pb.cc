@@ -1064,6 +1064,18 @@ void Error::Swap(Error* other) {
 }
 
 
+
+bool StreamSegmentStart::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool StreamSegmentEnd::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool Error::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace response

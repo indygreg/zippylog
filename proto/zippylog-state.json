@@ -1,5 +1,4 @@
 {
-  "cpp_messages_namespace": "zippylog", 
   "messages": {
     "zippylog": {
       "zippylog.protocol.BucketInfo": 3, 
@@ -21,15 +20,15 @@
       "zippylog.protocol.StoreChangeStreamAdded": 15
     }, 
     "google": {
+      "google.protobuf.UninterpretedOption": 16, 
       "google.protobuf.ServiceDescriptorProto": 7, 
       "google.protobuf.EnumValueOptions": 13, 
       "google.protobuf.compiler.CodeGeneratorResponse": 18, 
       "google.protobuf.compiler.CodeGeneratorRequest": 17, 
       "google.protobuf.FileDescriptorSet": 1, 
       "google.protobuf.MethodOptions": 15, 
-      "google.protobuf.FileOptions": 9, 
       "google.protobuf.FieldOptions": 11, 
-      "google.protobuf.UninterpretedOption": 16, 
+      "google.protobuf.FileOptions": 9, 
       "google.protobuf.ServiceOptions": 14, 
       "google.protobuf.FileDescriptorProto": 2, 
       "google.protobuf.FieldDescriptorProto": 4, 
@@ -41,6 +40,7 @@
       "google.protobuf.EnumValueDescriptorProto": 6
     }
   }, 
+  "cpp_messages_namespace": "zippylog", 
   "namespaces": {
     "zippylog": 1, 
     "google": 2

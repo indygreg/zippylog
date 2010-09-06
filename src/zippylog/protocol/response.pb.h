@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include <zippylog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
@@ -140,6 +141,9 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 offset() const;
   inline void set_offset(::google::protobuf::uint64 value);
   
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 7;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -255,6 +259,9 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 envelopes_sent() const;
   inline void set_envelopes_sent(::google::protobuf::uint32 value);
   
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 8;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -358,6 +365,9 @@ class Error : public ::google::protobuf::Message {
   inline void set_msg(const char* value, size_t size);
   inline ::std::string* mutable_msg();
   
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 9;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.Error)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

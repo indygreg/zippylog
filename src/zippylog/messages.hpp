@@ -3,8 +3,8 @@
 // editing it manually
 #include <zippylog/zippylog.h>
 
-#include <zippylog/zippylogd.pb.h>
 #include <zippylog/protocol.pb.h>
+#include <zippylog/zippylogd.pb.h>
 #include <zippylog/message.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/protocol/request.pb.h>

@@ -4,6 +4,7 @@ from google.protobuf import descriptor
 from google.protobuf import message
 from google.protobuf import reflection
 from google.protobuf import descriptor_pb2
+from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
@@ -83,12 +84,18 @@ class StoreInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREINFO
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 10
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.StoreInfo)
 
 class Get(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _GET
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 11
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.Get)
 
+register_message(1, 10, 'zippylog.protocol.request_pb2', 'StoreInfo')
+register_message(1, 11, 'zippylog.protocol.request_pb2', 'Get')
 # @@protoc_insertion_point(module_scope)

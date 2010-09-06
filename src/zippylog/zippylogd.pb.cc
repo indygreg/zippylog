@@ -721,6 +721,18 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 }
 
 
+
+bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+}
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace zippylogd

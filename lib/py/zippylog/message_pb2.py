@@ -154,12 +154,16 @@ class Envelope(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ENVELOPE
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 5
   # @@protoc_insertion_point(class_scope:zippylog.message.Envelope)
 
 class ActorInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _ACTORINFO
   
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 6
   # @@protoc_insertion_point(class_scope:zippylog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)
