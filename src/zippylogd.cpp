@@ -21,7 +21,7 @@
 #include <iostream>
 #include <string>
 
-using ::pblog::server::Broker;
+using ::zippylog::server::Broker;
 using ::std::cout;
 using ::std::endl;
 
