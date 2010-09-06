@@ -29,6 +29,7 @@ using ::std::ostringstream;
 
 #define WORKER_ENDPOINT "inproc://workers"
 #define CLIENTS_ENDPOINT "inproc://clients"
+#define STORE_WATCHER_CHANGE_ENDPOINT "inproc://store_changes"
 
 #define CLIENTS_EXTERNAL_INDEX 0
 #define WORKER_INDEX 1
@@ -63,7 +64,7 @@ Broker::~Broker()
 {
     if (this->zctx) delete this->zctx;
     if (this->worker_start_data) delete this->worker_start_data;
-
+    if (this->store_watcher_start) delete this->store_watcher_start;
 
     // TODO clean up store if it was allocated by us
 }
@@ -76,6 +77,8 @@ void Broker::init()
     this->workers_sock = NULL;
     this->clients_external_sock = NULL;
     this->store = NULL;
+    this->store_watcher_thread = NULL;
+    this->store_watcher_start = NULL;
 }
 
 /*
@@ -103,6 +106,8 @@ The requests processed by non-worker threads deposit messages on their own
 inpoc sockets. These sockets are read by the broker and messages are forwarded
 to clients, as appropriate.
 
+TODO sockets can bind to multiple endpoints, duh
+
 */
 
 void Broker::run()
@@ -113,6 +118,7 @@ void Broker::run()
 
     this->setup_internal_sockets();
     this->create_worker_threads();
+    this->create_store_watcher();
     this->setup_listener_sockets();
 
     int number_pollitems = LISTENER_INDEX + 2 * this->listen_sockets.size();
@@ -241,6 +247,16 @@ void Broker::create_worker_threads()
     }
 }
 
+void Broker::create_store_watcher()
+{
+    this->store_watcher_start = new store_watcher_start_data;
+    this->store_watcher_start->endpoint = STORE_WATCHER_CHANGE_ENDPOINT;
+    this->store_watcher_start->zctx = this->zctx;
+    this->store_watcher_start->store = this->store;
+
+    this->store_watcher_thread = create_thread(StoreWatcherStart, this->store_watcher_start);
+}
+
 void Broker::setup_internal_sockets()
 {
     this->clients_external_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
@@ -330,6 +346,20 @@ cleanup:
 broker_config::broker_config()
 {
     listen_endpoints = vector<string>();
+}
+
+void * __stdcall Broker::StoreWatcherStart(void *d)
+{
+    store_watcher_start_data * data = (store_watcher_start_data *)d;
+
+    assert(data->endpoint);
+    assert(data->zctx);
+    assert(data->store);
+
+    StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint);
+    watcher.run();
+
+    return NULL;
 }
 
 }} // namespaces
