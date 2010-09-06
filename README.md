@@ -1,4 +1,4 @@
-# zippylog - Message Bus and Store Using Protocol Buffers
+# zippylog - A Fast and Efficient Message Bus and Store
 
 This document is targeted to end users wishing to install zippylog on a system.
 
