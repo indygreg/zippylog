@@ -50,7 +50,7 @@ if 'ZIPPYLOG_STATE_FILE' not in environ:
     exit(0)
 
 mode = basename(argv[0])
-if mode.find('protoc-gen-') != 0 or mode[-3:] != '_pb':
+if mode.find('protoc-gen-') != 0 or mode[-9:] != '_zippylog':
     response.error = 'protoc-gen not invoked properly. did you use zippylog_compile?'
     stdout.write(response.SerializeToString())
     exit(0)
