@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol.proto',
   package='zippylog.protocol',
-  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"L\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x06stream\x18\x02 \x03(\x0b\x32\x1d.zippylog.protocol.StreamInfo\"P\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\nstream_set\x18\x02 \x03(\x0b\x32 .zippylog.protocol.StreamSetInfo\":\n\tStoreInfo\x12-\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1d.zippylog.protocol.BucketInfo\"6\n\x16StoreChangeStreamAdded\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"8\n\x18StoreChangeStreamDeleted\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"9\n\x19StoreChangeStreamAppended\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04')
+  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\"*\n\nStreamInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"L\n\rStreamSetInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12-\n\x06stream\x18\x02 \x03(\x0b\x32\x1d.zippylog.protocol.StreamInfo\"P\n\nBucketInfo\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x34\n\nstream_set\x18\x02 \x03(\x0b\x32 .zippylog.protocol.StreamSetInfo\":\n\tStoreInfo\x12-\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1d.zippylog.protocol.BucketInfo\"\\\n\x16StoreChangeStreamAdded\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\x12\x12\n\nstream_set\x18\x02 \x01(\t\x12\x0e\n\x06stream\x18\x03 \x01(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"^\n\x18StoreChangeStreamDeleted\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\x12\x12\n\nstream_set\x18\x02 \x01(\t\x12\x0e\n\x06stream\x18\x03 \x01(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"_\n\x19StoreChangeStreamAppended\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\x12\x12\n\nstream_set\x18\x02 \x01(\t\x12\x0e\n\x06stream\x18\x03 \x01(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"(\n\x16StoreChangeBucketAdded\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\"*\n\x18StoreChangeBucketDeleted\x12\x0e\n\x06\x62ucket\x18\x02 \x01(\t\"?\n\x19StoreChangeStreamSetAdded\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\x12\x12\n\nstream_set\x18\x02 \x01(\t\"A\n\x1bStoreChangeStreamSetDeleted\x12\x0e\n\x06\x62ucket\x18\x01 \x01(\t\x12\x12\n\nstream_set\x18\x02 \x01(\t')
 
 
 
@@ -157,15 +157,29 @@ _STORECHANGESTREAMADDED = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='zippylog.protocol.StoreChangeStreamAdded.path', index=0,
+      name='bucket', full_name='zippylog.protocol.StoreChangeStreamAdded.bucket', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='length', full_name='zippylog.protocol.StoreChangeStreamAdded.length', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='stream_set', full_name='zippylog.protocol.StoreChangeStreamAdded.stream_set', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream', full_name='zippylog.protocol.StoreChangeStreamAdded.stream', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='zippylog.protocol.StoreChangeStreamAdded.length', index=3,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -180,7 +194,7 @@ _STORECHANGESTREAMADDED = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=310,
-  serialized_end=364,
+  serialized_end=402,
 )
 
 
@@ -192,15 +206,29 @@ _STORECHANGESTREAMDELETED = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='zippylog.protocol.StoreChangeStreamDeleted.path', index=0,
+      name='bucket', full_name='zippylog.protocol.StoreChangeStreamDeleted.bucket', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='length', full_name='zippylog.protocol.StoreChangeStreamDeleted.length', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='stream_set', full_name='zippylog.protocol.StoreChangeStreamDeleted.stream_set', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream', full_name='zippylog.protocol.StoreChangeStreamDeleted.stream', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='zippylog.protocol.StoreChangeStreamDeleted.length', index=3,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -214,8 +242,8 @@ _STORECHANGESTREAMDELETED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=366,
-  serialized_end=422,
+  serialized_start=404,
+  serialized_end=498,
 )
 
 
@@ -227,15 +255,29 @@ _STORECHANGESTREAMAPPENDED = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='zippylog.protocol.StoreChangeStreamAppended.path', index=0,
+      name='bucket', full_name='zippylog.protocol.StoreChangeStreamAppended.bucket', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='length', full_name='zippylog.protocol.StoreChangeStreamAppended.length', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='stream_set', full_name='zippylog.protocol.StoreChangeStreamAppended.stream_set', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream', full_name='zippylog.protocol.StoreChangeStreamAppended.stream', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='length', full_name='zippylog.protocol.StoreChangeStreamAppended.length', index=3,
+      number=4, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -249,8 +291,134 @@ _STORECHANGESTREAMAPPENDED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=424,
-  serialized_end=481,
+  serialized_start=500,
+  serialized_end=595,
+)
+
+
+_STORECHANGEBUCKETADDED = descriptor.Descriptor(
+  name='StoreChangeBucketAdded',
+  full_name='zippylog.protocol.StoreChangeBucketAdded',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='bucket', full_name='zippylog.protocol.StoreChangeBucketAdded.bucket', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=597,
+  serialized_end=637,
+)
+
+
+_STORECHANGEBUCKETDELETED = descriptor.Descriptor(
+  name='StoreChangeBucketDeleted',
+  full_name='zippylog.protocol.StoreChangeBucketDeleted',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='bucket', full_name='zippylog.protocol.StoreChangeBucketDeleted.bucket', index=0,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=639,
+  serialized_end=681,
+)
+
+
+_STORECHANGESTREAMSETADDED = descriptor.Descriptor(
+  name='StoreChangeStreamSetAdded',
+  full_name='zippylog.protocol.StoreChangeStreamSetAdded',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='bucket', full_name='zippylog.protocol.StoreChangeStreamSetAdded.bucket', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream_set', full_name='zippylog.protocol.StoreChangeStreamSetAdded.stream_set', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=683,
+  serialized_end=746,
+)
+
+
+_STORECHANGESTREAMSETDELETED = descriptor.Descriptor(
+  name='StoreChangeStreamSetDeleted',
+  full_name='zippylog.protocol.StoreChangeStreamSetDeleted',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='bucket', full_name='zippylog.protocol.StoreChangeStreamSetDeleted.bucket', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='stream_set', full_name='zippylog.protocol.StoreChangeStreamSetDeleted.stream_set', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=748,
+  serialized_end=813,
 )
 
 
@@ -314,6 +482,38 @@ class StoreChangeStreamAppended(message.Message):
   ZIPPYLOG_ENUMERATION = 17
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAppended)
 
+class StoreChangeBucketAdded(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGEBUCKETADDED
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 18
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketAdded)
+
+class StoreChangeBucketDeleted(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGEBUCKETDELETED
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 19
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketDeleted)
+
+class StoreChangeStreamSetAdded(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGESTREAMSETADDED
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 20
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetAdded)
+
+class StoreChangeStreamSetDeleted(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STORECHANGESTREAMSETDELETED
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 21
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeleted)
+
 register_message(1, 1, 'zippylog.protocol_pb2', 'StreamInfo')
 register_message(1, 2, 'zippylog.protocol_pb2', 'StreamSetInfo')
 register_message(1, 3, 'zippylog.protocol_pb2', 'BucketInfo')
@@ -321,4 +521,8 @@ register_message(1, 4, 'zippylog.protocol_pb2', 'StoreInfo')
 register_message(1, 15, 'zippylog.protocol_pb2', 'StoreChangeStreamAdded')
 register_message(1, 16, 'zippylog.protocol_pb2', 'StoreChangeStreamDeleted')
 register_message(1, 17, 'zippylog.protocol_pb2', 'StoreChangeStreamAppended')
+register_message(1, 18, 'zippylog.protocol_pb2', 'StoreChangeBucketAdded')
+register_message(1, 19, 'zippylog.protocol_pb2', 'StoreChangeBucketDeleted')
+register_message(1, 20, 'zippylog.protocol_pb2', 'StoreChangeStreamSetAdded')
+register_message(1, 21, 'zippylog.protocol_pb2', 'StoreChangeStreamSetDeleted')
 # @@protoc_insertion_point(module_scope)
