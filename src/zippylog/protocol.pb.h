@@ -41,6 +41,10 @@ class StoreInfo;
 class StoreChangeStreamAdded;
 class StoreChangeStreamDeleted;
 class StoreChangeStreamAppended;
+class StoreChangeBucketAdded;
+class StoreChangeBucketDeleted;
+class StoreChangeStreamSetAdded;
+class StoreChangeStreamSetDeleted;
 
 // ===================================================================
 
@@ -517,20 +521,40 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
-  inline bool has_path() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path() const;
-  inline void set_path(const ::std::string& value);
-  inline void set_path(const char* value);
-  inline void set_path(const char* value, size_t size);
-  inline ::std::string* mutable_path();
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
   
-  // optional uint64 length = 2;
+  // optional string stream_set = 2;
+  inline bool has_stream_set() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::std::string& stream_set() const;
+  inline void set_stream_set(const ::std::string& value);
+  inline void set_stream_set(const char* value);
+  inline void set_stream_set(const char* value, size_t size);
+  inline ::std::string* mutable_stream_set();
+  
+  // optional string stream = 3;
+  inline bool has_stream() const;
+  inline void clear_stream();
+  static const int kStreamFieldNumber = 3;
+  inline const ::std::string& stream() const;
+  inline void set_stream(const ::std::string& value);
+  inline void set_stream(const char* value);
+  inline void set_stream(const char* value, size_t size);
+  inline ::std::string* mutable_stream();
+  
+  // optional uint64 length = 4;
   inline bool has_length() const;
   inline void clear_length();
-  static const int kLengthFieldNumber = 2;
+  static const int kLengthFieldNumber = 4;
   inline ::google::protobuf::uint64 length() const;
   inline void set_length(::google::protobuf::uint64 value);
   
@@ -542,14 +566,18 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* path_;
-  static const ::std::string _default_path_;
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  ::std::string* stream_set_;
+  static const ::std::string _default_stream_set_;
+  ::std::string* stream_;
+  static const ::std::string _default_stream_;
   ::google::protobuf::uint64 length_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -621,20 +649,40 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
-  inline bool has_path() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path() const;
-  inline void set_path(const ::std::string& value);
-  inline void set_path(const char* value);
-  inline void set_path(const char* value, size_t size);
-  inline ::std::string* mutable_path();
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
   
-  // optional uint64 length = 2;
+  // optional string stream_set = 2;
+  inline bool has_stream_set() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::std::string& stream_set() const;
+  inline void set_stream_set(const ::std::string& value);
+  inline void set_stream_set(const char* value);
+  inline void set_stream_set(const char* value, size_t size);
+  inline ::std::string* mutable_stream_set();
+  
+  // optional string stream = 3;
+  inline bool has_stream() const;
+  inline void clear_stream();
+  static const int kStreamFieldNumber = 3;
+  inline const ::std::string& stream() const;
+  inline void set_stream(const ::std::string& value);
+  inline void set_stream(const char* value);
+  inline void set_stream(const char* value, size_t size);
+  inline ::std::string* mutable_stream();
+  
+  // optional uint64 length = 4;
   inline bool has_length() const;
   inline void clear_length();
-  static const int kLengthFieldNumber = 2;
+  static const int kLengthFieldNumber = 4;
   inline ::google::protobuf::uint64 length() const;
   inline void set_length(::google::protobuf::uint64 value);
   
@@ -646,14 +694,18 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* path_;
-  static const ::std::string _default_path_;
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  ::std::string* stream_set_;
+  static const ::std::string _default_stream_set_;
+  ::std::string* stream_;
+  static const ::std::string _default_stream_;
   ::google::protobuf::uint64 length_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -725,20 +777,40 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
-  inline bool has_path() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path() const;
-  inline void set_path(const ::std::string& value);
-  inline void set_path(const char* value);
-  inline void set_path(const char* value, size_t size);
-  inline ::std::string* mutable_path();
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
   
-  // optional uint64 length = 2;
+  // optional string stream_set = 2;
+  inline bool has_stream_set() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::std::string& stream_set() const;
+  inline void set_stream_set(const ::std::string& value);
+  inline void set_stream_set(const char* value);
+  inline void set_stream_set(const char* value, size_t size);
+  inline ::std::string* mutable_stream_set();
+  
+  // optional string stream = 3;
+  inline bool has_stream() const;
+  inline void clear_stream();
+  static const int kStreamFieldNumber = 3;
+  inline const ::std::string& stream() const;
+  inline void set_stream(const ::std::string& value);
+  inline void set_stream(const char* value);
+  inline void set_stream(const char* value, size_t size);
+  inline ::std::string* mutable_stream();
+  
+  // optional uint64 length = 4;
   inline bool has_length() const;
   inline void clear_length();
-  static const int kLengthFieldNumber = 2;
+  static const int kLengthFieldNumber = 4;
   inline ::google::protobuf::uint64 length() const;
   inline void set_length(::google::protobuf::uint64 value);
   
@@ -750,9 +822,313 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* path_;
-  static const ::std::string _default_path_;
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  ::std::string* stream_set_;
+  static const ::std::string _default_stream_set_;
+  ::std::string* stream_;
+  static const ::std::string _default_stream_;
   ::google::protobuf::uint64 length_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StoreChangeStreamAppended* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StoreChangeBucketAdded : public ::google::protobuf::Message {
+ public:
+  StoreChangeBucketAdded();
+  virtual ~StoreChangeBucketAdded();
+  
+  StoreChangeBucketAdded(const StoreChangeBucketAdded& from);
+  
+  inline StoreChangeBucketAdded& operator=(const StoreChangeBucketAdded& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StoreChangeBucketAdded& default_instance();
+  
+  void Swap(StoreChangeBucketAdded* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StoreChangeBucketAdded* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StoreChangeBucketAdded& from);
+  void MergeFrom(const StoreChangeBucketAdded& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 18;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketAdded)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StoreChangeBucketAdded* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StoreChangeBucketDeleted : public ::google::protobuf::Message {
+ public:
+  StoreChangeBucketDeleted();
+  virtual ~StoreChangeBucketDeleted();
+  
+  StoreChangeBucketDeleted(const StoreChangeBucketDeleted& from);
+  
+  inline StoreChangeBucketDeleted& operator=(const StoreChangeBucketDeleted& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StoreChangeBucketDeleted& default_instance();
+  
+  void Swap(StoreChangeBucketDeleted* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StoreChangeBucketDeleted* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StoreChangeBucketDeleted& from);
+  void MergeFrom(const StoreChangeBucketDeleted& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string bucket = 2;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 2;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 19;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketDeleted)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StoreChangeBucketDeleted* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
+ public:
+  StoreChangeStreamSetAdded();
+  virtual ~StoreChangeStreamSetAdded();
+  
+  StoreChangeStreamSetAdded(const StoreChangeStreamSetAdded& from);
+  
+  inline StoreChangeStreamSetAdded& operator=(const StoreChangeStreamSetAdded& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StoreChangeStreamSetAdded& default_instance();
+  
+  void Swap(StoreChangeStreamSetAdded* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StoreChangeStreamSetAdded* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StoreChangeStreamSetAdded& from);
+  void MergeFrom(const StoreChangeStreamSetAdded& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
+  
+  // optional string stream_set = 2;
+  inline bool has_stream_set() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::std::string& stream_set() const;
+  inline void set_stream_set(const ::std::string& value);
+  inline void set_stream_set(const char* value);
+  inline void set_stream_set(const char* value, size_t size);
+  inline ::std::string* mutable_stream_set();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 20;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetAdded)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  ::std::string* stream_set_;
+  static const ::std::string _default_stream_set_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
@@ -771,7 +1147,115 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamAppended* default_instance_;
+  static StoreChangeStreamSetAdded* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
+ public:
+  StoreChangeStreamSetDeleted();
+  virtual ~StoreChangeStreamSetDeleted();
+  
+  StoreChangeStreamSetDeleted(const StoreChangeStreamSetDeleted& from);
+  
+  inline StoreChangeStreamSetDeleted& operator=(const StoreChangeStreamSetDeleted& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StoreChangeStreamSetDeleted& default_instance();
+  
+  void Swap(StoreChangeStreamSetDeleted* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StoreChangeStreamSetDeleted* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StoreChangeStreamSetDeleted& from);
+  void MergeFrom(const StoreChangeStreamSetDeleted& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string bucket = 1;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 1;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
+  
+  // optional string stream_set = 2;
+  inline bool has_stream_set() const;
+  inline void clear_stream_set();
+  static const int kStreamSetFieldNumber = 2;
+  inline const ::std::string& stream_set() const;
+  inline void set_stream_set(const ::std::string& value);
+  inline void set_stream_set(const char* value);
+  inline void set_stream_set(const char* value, size_t size);
+  inline ::std::string* mutable_stream_set();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 21;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeleted)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  ::std::string* stream_set_;
+  static const ::std::string _default_stream_set_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StoreChangeStreamSetDeleted* default_instance_;
 };
 // ===================================================================
 
@@ -1013,61 +1497,145 @@ StoreInfo::mutable_bucket() {
 
 // StoreChangeStreamAdded
 
-// optional string path = 1;
-inline bool StoreChangeStreamAdded::has_path() const {
+// optional string bucket = 1;
+inline bool StoreChangeStreamAdded::has_bucket() const {
   return _has_bit(0);
 }
-inline void StoreChangeStreamAdded::clear_path() {
-  if (path_ != &_default_path_) {
-    path_->clear();
+inline void StoreChangeStreamAdded::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StoreChangeStreamAdded::path() const {
-  return *path_;
+inline const ::std::string& StoreChangeStreamAdded::bucket() const {
+  return *bucket_;
 }
-inline void StoreChangeStreamAdded::set_path(const ::std::string& value) {
+inline void StoreChangeStreamAdded::set_bucket(const ::std::string& value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_path(const char* value) {
+inline void StoreChangeStreamAdded::set_bucket(const char* value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_path(const char* value, size_t size) {
+inline void StoreChangeStreamAdded::set_bucket(const char* value, size_t size) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(reinterpret_cast<const char*>(value), size);
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAdded::mutable_path() {
+inline ::std::string* StoreChangeStreamAdded::mutable_bucket() {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  return path_;
+  return bucket_;
 }
 
-// optional uint64 length = 2;
-inline bool StoreChangeStreamAdded::has_length() const {
+// optional string stream_set = 2;
+inline bool StoreChangeStreamAdded::has_stream_set() const {
   return _has_bit(1);
+}
+inline void StoreChangeStreamAdded::clear_stream_set() {
+  if (stream_set_ != &_default_stream_set_) {
+    stream_set_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StoreChangeStreamAdded::stream_set() const {
+  return *stream_set_;
+}
+inline void StoreChangeStreamAdded::set_stream_set(const ::std::string& value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamAdded::set_stream_set(const char* value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamAdded::set_stream_set(const char* value, size_t size) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamAdded::mutable_stream_set() {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  return stream_set_;
+}
+
+// optional string stream = 3;
+inline bool StoreChangeStreamAdded::has_stream() const {
+  return _has_bit(2);
+}
+inline void StoreChangeStreamAdded::clear_stream() {
+  if (stream_ != &_default_stream_) {
+    stream_->clear();
+  }
+  _clear_bit(2);
+}
+inline const ::std::string& StoreChangeStreamAdded::stream() const {
+  return *stream_;
+}
+inline void StoreChangeStreamAdded::set_stream(const ::std::string& value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamAdded::set_stream(const char* value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamAdded::set_stream(const char* value, size_t size) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamAdded::mutable_stream() {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  return stream_;
+}
+
+// optional uint64 length = 4;
+inline bool StoreChangeStreamAdded::has_length() const {
+  return _has_bit(3);
 }
 inline void StoreChangeStreamAdded::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(1);
+  _clear_bit(3);
 }
 inline ::google::protobuf::uint64 StoreChangeStreamAdded::length() const {
   return length_;
 }
 inline void StoreChangeStreamAdded::set_length(::google::protobuf::uint64 value) {
-  _set_bit(1);
+  _set_bit(3);
   length_ = value;
 }
 
@@ -1075,61 +1643,145 @@ inline void StoreChangeStreamAdded::set_length(::google::protobuf::uint64 value)
 
 // StoreChangeStreamDeleted
 
-// optional string path = 1;
-inline bool StoreChangeStreamDeleted::has_path() const {
+// optional string bucket = 1;
+inline bool StoreChangeStreamDeleted::has_bucket() const {
   return _has_bit(0);
 }
-inline void StoreChangeStreamDeleted::clear_path() {
-  if (path_ != &_default_path_) {
-    path_->clear();
+inline void StoreChangeStreamDeleted::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StoreChangeStreamDeleted::path() const {
-  return *path_;
+inline const ::std::string& StoreChangeStreamDeleted::bucket() const {
+  return *bucket_;
 }
-inline void StoreChangeStreamDeleted::set_path(const ::std::string& value) {
+inline void StoreChangeStreamDeleted::set_bucket(const ::std::string& value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_path(const char* value) {
+inline void StoreChangeStreamDeleted::set_bucket(const char* value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_path(const char* value, size_t size) {
+inline void StoreChangeStreamDeleted::set_bucket(const char* value, size_t size) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(reinterpret_cast<const char*>(value), size);
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamDeleted::mutable_path() {
+inline ::std::string* StoreChangeStreamDeleted::mutable_bucket() {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  return path_;
+  return bucket_;
 }
 
-// optional uint64 length = 2;
-inline bool StoreChangeStreamDeleted::has_length() const {
+// optional string stream_set = 2;
+inline bool StoreChangeStreamDeleted::has_stream_set() const {
   return _has_bit(1);
+}
+inline void StoreChangeStreamDeleted::clear_stream_set() {
+  if (stream_set_ != &_default_stream_set_) {
+    stream_set_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StoreChangeStreamDeleted::stream_set() const {
+  return *stream_set_;
+}
+inline void StoreChangeStreamDeleted::set_stream_set(const ::std::string& value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamDeleted::set_stream_set(const char* value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamDeleted::set_stream_set(const char* value, size_t size) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamDeleted::mutable_stream_set() {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  return stream_set_;
+}
+
+// optional string stream = 3;
+inline bool StoreChangeStreamDeleted::has_stream() const {
+  return _has_bit(2);
+}
+inline void StoreChangeStreamDeleted::clear_stream() {
+  if (stream_ != &_default_stream_) {
+    stream_->clear();
+  }
+  _clear_bit(2);
+}
+inline const ::std::string& StoreChangeStreamDeleted::stream() const {
+  return *stream_;
+}
+inline void StoreChangeStreamDeleted::set_stream(const ::std::string& value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamDeleted::set_stream(const char* value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamDeleted::set_stream(const char* value, size_t size) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamDeleted::mutable_stream() {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  return stream_;
+}
+
+// optional uint64 length = 4;
+inline bool StoreChangeStreamDeleted::has_length() const {
+  return _has_bit(3);
 }
 inline void StoreChangeStreamDeleted::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(1);
+  _clear_bit(3);
 }
 inline ::google::protobuf::uint64 StoreChangeStreamDeleted::length() const {
   return length_;
 }
 inline void StoreChangeStreamDeleted::set_length(::google::protobuf::uint64 value) {
-  _set_bit(1);
+  _set_bit(3);
   length_ = value;
 }
 
@@ -1137,62 +1789,414 @@ inline void StoreChangeStreamDeleted::set_length(::google::protobuf::uint64 valu
 
 // StoreChangeStreamAppended
 
-// optional string path = 1;
-inline bool StoreChangeStreamAppended::has_path() const {
+// optional string bucket = 1;
+inline bool StoreChangeStreamAppended::has_bucket() const {
   return _has_bit(0);
 }
-inline void StoreChangeStreamAppended::clear_path() {
-  if (path_ != &_default_path_) {
-    path_->clear();
+inline void StoreChangeStreamAppended::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StoreChangeStreamAppended::path() const {
-  return *path_;
+inline const ::std::string& StoreChangeStreamAppended::bucket() const {
+  return *bucket_;
 }
-inline void StoreChangeStreamAppended::set_path(const ::std::string& value) {
+inline void StoreChangeStreamAppended::set_bucket(const ::std::string& value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_path(const char* value) {
+inline void StoreChangeStreamAppended::set_bucket(const char* value) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(value);
+  bucket_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_path(const char* value, size_t size) {
+inline void StoreChangeStreamAppended::set_bucket(const char* value, size_t size) {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  path_->assign(reinterpret_cast<const char*>(value), size);
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAppended::mutable_path() {
+inline ::std::string* StoreChangeStreamAppended::mutable_bucket() {
   _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
   }
-  return path_;
+  return bucket_;
 }
 
-// optional uint64 length = 2;
-inline bool StoreChangeStreamAppended::has_length() const {
+// optional string stream_set = 2;
+inline bool StoreChangeStreamAppended::has_stream_set() const {
   return _has_bit(1);
+}
+inline void StoreChangeStreamAppended::clear_stream_set() {
+  if (stream_set_ != &_default_stream_set_) {
+    stream_set_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StoreChangeStreamAppended::stream_set() const {
+  return *stream_set_;
+}
+inline void StoreChangeStreamAppended::set_stream_set(const ::std::string& value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamAppended::set_stream_set(const char* value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamAppended::set_stream_set(const char* value, size_t size) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamAppended::mutable_stream_set() {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  return stream_set_;
+}
+
+// optional string stream = 3;
+inline bool StoreChangeStreamAppended::has_stream() const {
+  return _has_bit(2);
+}
+inline void StoreChangeStreamAppended::clear_stream() {
+  if (stream_ != &_default_stream_) {
+    stream_->clear();
+  }
+  _clear_bit(2);
+}
+inline const ::std::string& StoreChangeStreamAppended::stream() const {
+  return *stream_;
+}
+inline void StoreChangeStreamAppended::set_stream(const ::std::string& value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamAppended::set_stream(const char* value) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(value);
+}
+inline void StoreChangeStreamAppended::set_stream(const char* value, size_t size) {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  stream_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamAppended::mutable_stream() {
+  _set_bit(2);
+  if (stream_ == &_default_stream_) {
+    stream_ = new ::std::string;
+  }
+  return stream_;
+}
+
+// optional uint64 length = 4;
+inline bool StoreChangeStreamAppended::has_length() const {
+  return _has_bit(3);
 }
 inline void StoreChangeStreamAppended::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(1);
+  _clear_bit(3);
 }
 inline ::google::protobuf::uint64 StoreChangeStreamAppended::length() const {
   return length_;
 }
 inline void StoreChangeStreamAppended::set_length(::google::protobuf::uint64 value) {
-  _set_bit(1);
+  _set_bit(3);
   length_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// StoreChangeBucketAdded
+
+// optional string bucket = 1;
+inline bool StoreChangeBucketAdded::has_bucket() const {
+  return _has_bit(0);
+}
+inline void StoreChangeBucketAdded::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StoreChangeBucketAdded::bucket() const {
+  return *bucket_;
+}
+inline void StoreChangeBucketAdded::set_bucket(const ::std::string& value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeBucketAdded::set_bucket(const char* value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeBucketAdded::set_bucket(const char* value, size_t size) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeBucketAdded::mutable_bucket() {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  return bucket_;
+}
+
+// -------------------------------------------------------------------
+
+// StoreChangeBucketDeleted
+
+// optional string bucket = 2;
+inline bool StoreChangeBucketDeleted::has_bucket() const {
+  return _has_bit(0);
+}
+inline void StoreChangeBucketDeleted::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StoreChangeBucketDeleted::bucket() const {
+  return *bucket_;
+}
+inline void StoreChangeBucketDeleted::set_bucket(const ::std::string& value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeBucketDeleted::set_bucket(const char* value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeBucketDeleted::set_bucket(const char* value, size_t size) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeBucketDeleted::mutable_bucket() {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  return bucket_;
+}
+
+// -------------------------------------------------------------------
+
+// StoreChangeStreamSetAdded
+
+// optional string bucket = 1;
+inline bool StoreChangeStreamSetAdded::has_bucket() const {
+  return _has_bit(0);
+}
+inline void StoreChangeStreamSetAdded::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StoreChangeStreamSetAdded::bucket() const {
+  return *bucket_;
+}
+inline void StoreChangeStreamSetAdded::set_bucket(const ::std::string& value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeStreamSetAdded::set_bucket(const char* value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeStreamSetAdded::set_bucket(const char* value, size_t size) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamSetAdded::mutable_bucket() {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  return bucket_;
+}
+
+// optional string stream_set = 2;
+inline bool StoreChangeStreamSetAdded::has_stream_set() const {
+  return _has_bit(1);
+}
+inline void StoreChangeStreamSetAdded::clear_stream_set() {
+  if (stream_set_ != &_default_stream_set_) {
+    stream_set_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StoreChangeStreamSetAdded::stream_set() const {
+  return *stream_set_;
+}
+inline void StoreChangeStreamSetAdded::set_stream_set(const ::std::string& value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamSetAdded::set_stream_set(const char* value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamSetAdded::set_stream_set(const char* value, size_t size) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamSetAdded::mutable_stream_set() {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  return stream_set_;
+}
+
+// -------------------------------------------------------------------
+
+// StoreChangeStreamSetDeleted
+
+// optional string bucket = 1;
+inline bool StoreChangeStreamSetDeleted::has_bucket() const {
+  return _has_bit(0);
+}
+inline void StoreChangeStreamSetDeleted::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StoreChangeStreamSetDeleted::bucket() const {
+  return *bucket_;
+}
+inline void StoreChangeStreamSetDeleted::set_bucket(const ::std::string& value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeStreamSetDeleted::set_bucket(const char* value) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void StoreChangeStreamSetDeleted::set_bucket(const char* value, size_t size) {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamSetDeleted::mutable_bucket() {
+  _set_bit(0);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  return bucket_;
+}
+
+// optional string stream_set = 2;
+inline bool StoreChangeStreamSetDeleted::has_stream_set() const {
+  return _has_bit(1);
+}
+inline void StoreChangeStreamSetDeleted::clear_stream_set() {
+  if (stream_set_ != &_default_stream_set_) {
+    stream_set_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StoreChangeStreamSetDeleted::stream_set() const {
+  return *stream_set_;
+}
+inline void StoreChangeStreamSetDeleted::set_stream_set(const ::std::string& value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamSetDeleted::set_stream_set(const char* value) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(value);
+}
+inline void StoreChangeStreamSetDeleted::set_stream_set(const char* value, size_t size) {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  stream_set_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StoreChangeStreamSetDeleted::mutable_stream_set() {
+  _set_bit(1);
+  if (stream_set_ == &_default_stream_set_) {
+    stream_set_ = new ::std::string;
+  }
+  return stream_set_;
 }
 
 

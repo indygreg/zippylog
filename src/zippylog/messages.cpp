@@ -18,6 +18,10 @@ namespace zippylog {
         registrar->register_message(1, 15, new ::zippylog::protocol::StoreChangeStreamAdded());
         registrar->register_message(1, 16, new ::zippylog::protocol::StoreChangeStreamDeleted());
         registrar->register_message(1, 17, new ::zippylog::protocol::StoreChangeStreamAppended());
+        registrar->register_message(1, 18, new ::zippylog::protocol::StoreChangeBucketAdded());
+        registrar->register_message(1, 19, new ::zippylog::protocol::StoreChangeBucketDeleted());
+        registrar->register_message(1, 20, new ::zippylog::protocol::StoreChangeStreamSetAdded());
+        registrar->register_message(1, 21, new ::zippylog::protocol::StoreChangeStreamSetDeleted());
         registrar->register_message(1, 12, new ::zippylog::zippylogd::BrokerStartup());
         registrar->register_message(1, 13, new ::zippylog::zippylogd::BrokerShutdown());
         registrar->register_message(1, 14, new ::zippylog::zippylogd::BrokerReceiveClientMessage());

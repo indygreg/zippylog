@@ -34,18 +34,42 @@ message StoreInfo {
 
 // a stream was added to the store
 message StoreChangeStreamAdded {
-    optional string path = 1;
-    optional uint64 length = 2;
+    optional string bucket = 1;
+    optional string stream_set = 2;
+    optional string stream = 3;
+    optional uint64 length = 4;
 }
 
 // a stream was deleted from the store
 message StoreChangeStreamDeleted {
-    optional string path = 1;
-    optional uint64 length = 2;
+    optional string bucket = 1;
+    optional string stream_set = 2;
+    optional string stream = 3;    
+    optional uint64 length = 4;
 }
 
 // a stream in the store was appended to
 message StoreChangeStreamAppended {
-    optional string path = 1;
-    optional uint64 length = 2;
+    optional string bucket = 1;
+    optional string stream_set = 2;
+    optional string stream = 3;
+    optional uint64 length = 4;
+}
+
+message StoreChangeBucketAdded {
+    optional string bucket = 1;
+}
+
+message StoreChangeBucketDeleted {
+    optional string bucket = 2;
+}
+
+message StoreChangeStreamSetAdded {
+    optional string bucket = 1;
+    optional string stream_set = 2;
+}
+
+message StoreChangeStreamSetDeleted {
+    optional string bucket = 1;
+    optional string stream_set = 2;
 }
