@@ -10,3 +10,6 @@
 [submodule "external/lua"]
 	path = external/lua
 	url = http://github.com/ittner/Lua-experimentation.git
+[submodule "external/googletest"]
+	path = external/googletest
+	url = http://github.com/sfiera/googletest.git
