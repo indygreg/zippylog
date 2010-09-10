@@ -37,6 +37,8 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
 
 class StoreInfo;
 class Get;
+class SubscribeStoreChanges;
+class SubscribeKeepalive;
 
 // ===================================================================
 
@@ -234,6 +236,203 @@ class Get : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static Get* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class SubscribeStoreChanges : public ::google::protobuf::Message {
+ public:
+  SubscribeStoreChanges();
+  virtual ~SubscribeStoreChanges();
+  
+  SubscribeStoreChanges(const SubscribeStoreChanges& from);
+  
+  inline SubscribeStoreChanges& operator=(const SubscribeStoreChanges& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SubscribeStoreChanges& default_instance();
+  
+  void Swap(SubscribeStoreChanges* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SubscribeStoreChanges* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SubscribeStoreChanges& from);
+  void MergeFrom(const SubscribeStoreChanges& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated string path = 1;
+  inline int path_size() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path(int index) const;
+  inline ::std::string* mutable_path(int index);
+  inline void set_path(int index, const ::std::string& value);
+  inline void set_path(int index, const char* value);
+  inline void set_path(int index, const char* value, size_t size);
+  inline ::std::string* add_path();
+  inline void add_path(const ::std::string& value);
+  inline void add_path(const char* value);
+  inline void add_path(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 22;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeStoreChanges)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::RepeatedPtrField< ::std::string> path_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static SubscribeStoreChanges* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SubscribeKeepalive : public ::google::protobuf::Message {
+ public:
+  SubscribeKeepalive();
+  virtual ~SubscribeKeepalive();
+  
+  SubscribeKeepalive(const SubscribeKeepalive& from);
+  
+  inline SubscribeKeepalive& operator=(const SubscribeKeepalive& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SubscribeKeepalive& default_instance();
+  
+  void Swap(SubscribeKeepalive* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SubscribeKeepalive* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SubscribeKeepalive& from);
+  void MergeFrom(const SubscribeKeepalive& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 23;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeKeepalive)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static SubscribeKeepalive* default_instance_;
+};
 // ===================================================================
 
 
@@ -317,6 +516,100 @@ inline ::google::protobuf::uint32 Get::max_response_bytes() const {
 inline void Get::set_max_response_bytes(::google::protobuf::uint32 value) {
   _set_bit(2);
   max_response_bytes_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeStoreChanges
+
+// repeated string path = 1;
+inline int SubscribeStoreChanges::path_size() const {
+  return path_.size();
+}
+inline void SubscribeStoreChanges::clear_path() {
+  path_.Clear();
+}
+inline const ::std::string& SubscribeStoreChanges::path(int index) const {
+  return path_.Get(index);
+}
+inline ::std::string* SubscribeStoreChanges::mutable_path(int index) {
+  return path_.Mutable(index);
+}
+inline void SubscribeStoreChanges::set_path(int index, const ::std::string& value) {
+  path_.Mutable(index)->assign(value);
+}
+inline void SubscribeStoreChanges::set_path(int index, const char* value) {
+  path_.Mutable(index)->assign(value);
+}
+inline void SubscribeStoreChanges::set_path(int index, const char* value, size_t size) {
+  path_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscribeStoreChanges::add_path() {
+  return path_.Add();
+}
+inline void SubscribeStoreChanges::add_path(const ::std::string& value) {
+  path_.Add()->assign(value);
+}
+inline void SubscribeStoreChanges::add_path(const char* value) {
+  path_.Add()->assign(value);
+}
+inline void SubscribeStoreChanges::add_path(const char* value, size_t size) {
+  path_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+SubscribeStoreChanges::path() const {
+  return path_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+SubscribeStoreChanges::mutable_path() {
+  return &path_;
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeKeepalive
+
+// optional bytes id = 1;
+inline bool SubscribeKeepalive::has_id() const {
+  return _has_bit(0);
+}
+inline void SubscribeKeepalive::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& SubscribeKeepalive::id() const {
+  return *id_;
+}
+inline void SubscribeKeepalive::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SubscribeKeepalive::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SubscribeKeepalive::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscribeKeepalive::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
 }
 
 
