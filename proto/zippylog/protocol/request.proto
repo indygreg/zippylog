@@ -21,3 +21,23 @@ message Get {
 
     // TODO support max events
 }
+
+// subscribes the client to store changes
+// store changes describe changes to the store. this covers creating, deletion,
+// and modification of buckets, stream sets, and streams. it does not include
+// actual envelopes in streams
+message SubscribeStoreChanges {
+
+    // list of store paths to subscribe to
+    // if you want to subscribe to the entire store, add the value "/"
+    repeated string path = 1;
+}
+
+// clients need to send keepalive messages every N seconds or the server drops
+// the subscription. this is the keepalive message
+message SubscribeKeepalive {
+    // the subscription identifier to send the keepalive for
+    // this identifier is issued by the server when it accepts the
+    // subscription
+    optional bytes id = 1;
+}
