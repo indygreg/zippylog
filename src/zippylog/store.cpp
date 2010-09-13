@@ -46,6 +46,9 @@ bool Store::ValidatePath(const string path)
     int32 seen_paths = 1;
     for (size_t i = path.length() - 1; i; i--) {
         if (path[i] == '/') {
+            // two slashes in a row is not allowed
+            if (path[i-1] == '/') return false;
+
             seen_paths++;
             if (seen_paths > 3) return false;
             continue;
@@ -71,25 +74,57 @@ bool Store::ValidatePath(const string path)
 
 bool Store::ParsePath(const string path, string &bucket, string &set, string &stream)
 {
-    string::size_type offsets[3];
+    if (!Store::ValidatePath(path)) return false;
 
-    if (path.at(0) != '/') {
-        return false;
+    bucket.clear();
+    set.clear();
+    stream.clear();
+
+    if (path.length() == 1) {
+        return true;
     }
 
+
+    int field = 0;
+    string::size_type curr = 1;
     string::size_type off = 1;
     for (size_t i = 0; i < 3; i++) {
         off = path.find_first_of("/", off);
+
         if (off == string::npos) {
-            return false;
+            switch (field) {
+                case 0:
+                    bucket = path.substr(1, path.length() - 1);
+                    break;
+
+                case 1:
+                    set = path.substr(curr, path.length() - curr);
+                    break;
+
+                case 2:
+                    stream = path.substr(curr, path.length() - curr);
+                    break;
+            }
+
+            return true;
         }
 
-        offsets[i] = off++;
-    }
+        switch (field) {
+            case 0:
+                bucket = path.substr(1, off - 1);
+                break;
 
-    bucket = path.substr(0, offsets[0] - 1);
-    set = path.substr(offsets[0] + 1, offsets[1] - offsets[0]);
-    stream = path.substr(offsets[1] + 1, offsets[2] - offsets[1]);
+            case 1:
+                set = path.substr(curr, off - curr);
+                break;
+
+            case 2:
+                return false;
+        }
+
+        curr = ++off;
+        field++;
+    }
 
     return true;
 }
@@ -132,7 +167,7 @@ string Store::BucketPath(const string bucket)
 
 string Store::StreamsetPath(const string bucket, const string stream_set)
 {
-    string s = this->BucketPath(bucket);
+    string s = BucketPath(bucket);
     s.append("/");
     s.append(stream_set);
     return s;
@@ -140,7 +175,7 @@ string Store::StreamsetPath(const string bucket, const string stream_set)
 
 string Store::StreamPath(const string bucket, const string stream_set, const string filename)
 {
-    string s = this->StreamsetPath(bucket, stream_set);
+    string s = StreamsetPath(bucket, stream_set);
     s.append("/");
     s.append(filename);
 

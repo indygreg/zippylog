@@ -42,7 +42,6 @@ static bool receive_multipart_blocking(socket_t * sock, vector<message_t *> &ide
 
 void * __stdcall Request::request_processor(void *data)
 {
-    int loop = 1;
     request_processor_start_data *d = (request_processor_start_data *)data;
 
     assert(d->ctx);
@@ -52,6 +51,11 @@ void * __stdcall Request::request_processor(void *data)
     socket_t *socket = NULL;
     socket_t *dsock = NULL;
     Store *store = d->store;
+
+    zmq::pollitem_t pollitems[1];
+    pollitems[0].events = ZMQ_POLLIN;
+    pollitems[0].fd = 0;
+    pollitems[0].revents = 0;
 
     /* variables used across states */
     int state = Request::CREATE_SOCKET;
@@ -65,17 +69,22 @@ void * __stdcall Request::request_processor(void *data)
     int64 more;
     size_t moresz = sizeof(more);
 
-    while (loop) {
+    while (true) {
         switch (state) {
             case Request::CREATE_SOCKET:
                 socket = new socket_t(*d->ctx, ZMQ_REP);
                 socket->connect(d->broker_endpoint);
+                pollitems[0].socket = *socket;
                 state = Request::WAITING;
                 break;
 
             case WAITING:
-                socket->recv(&zreq, 0);
-                state = Request::PROCESS_REQUEST;
+                // wait up to 250ms for a message, then try again
+                // we have this poll so the shutdown semaphore can be detected
+                if (zmq::poll(&pollitems[0], 1, 250000)) {
+                    socket->recv(&zreq, 0);
+                    state = Request::PROCESS_REQUEST;
+                }
                 break;
 
             case Request::RESET_CONNECTION:
@@ -125,12 +134,10 @@ void * __stdcall Request::request_processor(void *data)
                     state = Request::PROCESS_GET;
                     break;
                 }
-                /*
-                else if (request_type == protocol::request::Stream::zippylog_enumeration) {
-                    state = Request::PROCESS_STREAM;
+                else if (request_type == protocol::request::SubscribeStoreChanges::zippylog_enumeration) {
+                    state = Request::PROCESS_SUBSCRIBE_STORE_CHANGES;
                     break;
                 }
-                */
                 else {
                     error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
                     error_message = "server does not know how to process the request";
@@ -151,12 +158,6 @@ void * __stdcall Request::request_processor(void *data)
                 state = SEND_ENVELOPE_AND_DONE;
                 break;
             }
-
-            case Request::PROCESS_STREAM:
-                error_code = protocol::response::REQUEST_NOT_IMPLEMENTED;
-                error_message = "streaming requests are currently not implemented";
-                state = Request::SEND_ERROR_RESPONSE;
-                break;
 
             case Request::PROCESS_GET:
             {
@@ -274,6 +275,16 @@ void * __stdcall Request::request_processor(void *data)
                 break;
             }
 
+            case Request::PROCESS_SUBSCRIBE_STORE_CHANGES:
+            {
+                protocol::request::SubscribeStoreChanges *m =
+                    (protocol::request::SubscribeStoreChanges *)request_envelope.get_message(0);
+
+                delete m;
+                state = Request::WAITING;
+                break;
+            }
+
             case Request::SEND_ERROR_RESPONSE:
             {
                 protocol::response::Error error = protocol::response::Error();
@@ -306,13 +317,14 @@ void * __stdcall Request::request_processor(void *data)
                 break;
             }
         }
+
+        if (!d->active) break;
     }
 
     if (socket) { delete socket; }
     if (dsock) { delete dsock; }
 
     return NULL;
-
 }
 
 /*

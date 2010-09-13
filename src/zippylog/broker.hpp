@@ -37,6 +37,7 @@ typedef struct broker_config {
     string store_path;
     vector<string> listen_endpoints;
     uint32 worker_threads;
+    uint32 streaming_threads;
 } broker_config;
 
 typedef struct store_watcher_start_data {
@@ -45,40 +46,59 @@ typedef struct store_watcher_start_data {
     char *endpoint;
 } store_watcher_start_data;
 
+typedef struct streaming_start_data {
+    context_t *zctx;
+    Store *store;
+    char *store_change_endpoint;
+    char *streaming_endpoint;
+    bool *active;
+} streaming_start_data;
+
 // the broker is a ZMQ device that provides the core message routing component
 // of zippylogd. it binds to a number of sockets and coordinates all the workers
 // in the system
 class ZIPPYLOG_EXPORT Broker {
     public:
         Broker(const string config_file_path);
-        Broker(Store *store);
-        Broker(Store *store, context_t *ctx);
-
         ~Broker();
 
         void run();
+
+        // runs the broker asynchronously
+        // this creates a new thread, runs the broker in that, then returns
+        void RunAsync();
+
+        void Shutdown();
 
     protected:
         context_t * zctx;
         socket_t * workers_sock;
         socket_t * clients_sock;
+        socket_t * streaming_sock;
+        socket_t * client_stream_requests_sock;
+        void * exec_thread;
         vector<void *> worker_threads;
+        vector<void *> streaming_threads;
         Store * store;
         bool active;
         request_processor_start_data * worker_start_data;
         broker_config config;
         void * store_watcher_thread;
         store_watcher_start_data * store_watcher_start;
+        streaming_start_data * streaming_thread_data;
+
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
         static void * __stdcall StoreWatcherStart(void *data);
+        static void * __stdcall StreamingStart(void *data);
+        static void * __stdcall AsyncExecStart(void *data);
 
         void init();
         void create_worker_threads();
         void create_store_watcher();
+        void create_streaming_threads();
         void setup_internal_sockets();
         void setup_listener_sockets();
-
 
 };
 

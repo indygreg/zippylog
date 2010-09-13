@@ -41,7 +41,20 @@ class ZIPPYLOG_EXPORT Store {
         // illegal characters like '.', etc
         static bool ValidatePath(const string path);
 
+        // parses a path string into its components
+        // if this returns true, the path is valid and the strings passed
+        // by reference are updated to the extracted values
+        // if a field is empty, that string value is empty()
         static bool ParsePath(const string path, string &bucket, string &set, string &stream);
+
+        // return the path to a specific bucket
+        static string BucketPath(const string bucket);
+
+        // return the path to a specific stream set
+        static string StreamsetPath(const string bucket, const string set);
+
+        // return the path to a stream within a bucket and set
+        static string StreamPath(const string bucket, const string set, const string stream);
 
         // return the filesystem path to this store
         const string StorePath();
@@ -54,15 +67,6 @@ class ZIPPYLOG_EXPORT Store {
 
         // obtain the set of stream names in a specific stream set
         bool StreamNames(const string bucket, const string set, vector<string> &streams);
-
-        // return the path to a specific bucket
-        string BucketPath(const string bucket);
-
-        // return the path to a specific stream set
-        string StreamsetPath(const string bucket, const string set);
-
-        // return the path to a stream within a bucket and set
-        string StreamPath(const string bucket, const string set, const string stream);
 
         // obtain the set of all paths to known buckets
         bool BucketPaths(vector<string> &paths);

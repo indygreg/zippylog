@@ -36,6 +36,8 @@ typedef struct request_processor_start_data {
 
     // where to connect to receive requests
     const char *broker_endpoint;
+
+    bool active;
 } request_processor_start_data;
 
 typedef struct stream_processor_start_data {
@@ -55,7 +57,7 @@ public:
         SEND_ERROR_RESPONSE = 6,
         PROCESS_STOREINFO = 7,
         PROCESS_GET = 8,
-        PROCESS_STREAM = 9,
+        PROCESS_SUBSCRIBE_STORE_CHANGES = 9,
     };
 
     // function that waits and processes client requests as they arrive

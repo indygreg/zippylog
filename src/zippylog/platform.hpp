@@ -39,7 +39,11 @@ ZIPPYLOG_EXPORT void * create_thread(void * func, void *data);
 
 ZIPPYLOG_EXPORT bool join_thread(void *thread);
 
+ZIPPYLOG_EXPORT bool terminate_thread(void *thread);
+
 ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
+
+ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
 
 } // namespace
 

@@ -66,6 +66,8 @@ class ZIPPYLOG_EXPORT Client {
         bool Get(const string path, uint64 start_offset, uint64 stop_offset, StreamSegment &segment);
         bool Get(const string path, uint64 start_offset, uint32 max_response_bytes, StreamSegment &segment);
 
+        bool SubscribeStoreChanges(const string path);
+
     protected:
         socket_t *_sock;
 

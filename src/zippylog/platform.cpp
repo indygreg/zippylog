@@ -47,6 +47,16 @@ bool join_thread(void *thread)
 #endif
 }
 
+bool terminate_thread(void *thread)
+{
+#ifdef WINDOWS
+    DWORD rc = 1;
+    return TerminateThread(thread, rc);
+#else
+#error "terminate_thread() not implemented on your platform yet"
+#endif
+}
+
 // congratulations, this is the 4,234,532,657 time in programming history this
 // function has been written!
 bool directory_entries(const string dir, vector<dir_entry> &v)
@@ -93,6 +103,16 @@ bool directory_entries(const string dir, vector<dir_entry> &v)
 #endif
 
     return false;
+}
+
+void windows_error(char *buffer, size_t buffer_size)
+{
+#ifdef WINDOWS
+    DWORD errcode = GetLastError ();
+    DWORD rc = FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errcode, MAKELANGID(LANG_NEUTRAL,
+        SUBLANG_DEFAULT), buffer, buffer_size, NULL );
+#endif
 }
 
 } // namespace

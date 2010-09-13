@@ -101,6 +101,22 @@ bool Client::Get(const string path, uint64 start_offset, uint64 stop_offset, Str
     return Get(path, start_offset, (uint32)(stop_offset - start_offset), segment);
 }
 
+bool Client::SubscribeStoreChanges(const string path)
+{
+    protocol::request::SubscribeStoreChanges req = protocol::request::SubscribeStoreChanges();
+    req.add_path(path);
+
+    Envelope e = Envelope();
+    req.add_to_envelope(&e);
+
+    if (!this->_send_envelope(e)) return false;
+
+    Envelope response = Envelope();
+    this->ReadEnvelope(response);
+
+    return true;
+}
+
 bool Client::ReceiveAndProcessGet(StreamSegment &segment)
 {
     Envelope header = Envelope();

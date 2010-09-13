@@ -21,7 +21,11 @@ extern "C" {
 
 /* we must put this little macro before all exportable symbols on Windows */
 #ifdef WIN32
+#if defined(ZIPPYLOG_IMPORT)
+#define ZIPPYLOG_EXPORT __declspec(dllimport)
+#else
 #define ZIPPYLOG_EXPORT __declspec(dllexport)
+#endif
 #endif
 
 /* define 32 and 64 bit integer types */
@@ -33,7 +37,8 @@ typedef unsigned __int64 uint64;
 #endif
 
 // TODO need to add "GOOGLE_PROTOBUF_VERIFY_VERSION;" somewhere
-// TODO should add "google::protobuf::ShutdownProtobufLibrary();" somewhere
+
+void zippylog_shutdown();
 
 #ifdef __cplusplus
 }

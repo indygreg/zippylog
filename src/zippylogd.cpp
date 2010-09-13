@@ -32,8 +32,14 @@ int main(int argc, const char * const argv[])
         return 1;
     }
 
-    Broker broker = Broker(argv[1]);
-    broker.run();
+    try {
+        Broker broker = Broker(argv[1]);
+        broker.run();
+    }
+    catch (...) {
+        cout << "received an exception" << endl;
+        return 1;
+    }
 
     return 0;
 }

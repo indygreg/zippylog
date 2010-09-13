@@ -16,6 +16,7 @@
 
 #include <zippylog/platform.hpp>
 #include <zippylog/server.hpp>
+#include <zippylog/streamer.hpp>
 
 // Lua is compiled as C most of the time, so import as such to avoid
 // name mangling
@@ -33,13 +34,16 @@ namespace server {
 using ::std::ostringstream;
 
 #define WORKER_ENDPOINT "inproc://workers"
-#define STORE_WATCHER_CHANGE_ENDPOINT "inproc://store_changes"
+#define STORE_CHANGE_ENDPOINT "inproc://store_changes"
+#define STREAMING_ENDPOINT "inproc://streaming"
+#define CLIENT_STREAM_REQUESTS_ENDPOINT "inproc://client_stream_requests"
 
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
-#define LISTENER_INDEX 2
+#define STREAMING_INDEX 2
+#define CLIENT_STREAM_REQUESTS_INDEX 3
 
-Broker::Broker(string config_file_path)
+Broker::Broker(const string config_file_path)
 {
     this->init();
 
@@ -51,24 +55,12 @@ Broker::Broker(string config_file_path)
     this->store = new Store(this->config.store_path);
 }
 
-Broker::Broker(Store *store)
-{
-    Broker(store, NULL);
-}
-
-Broker::Broker(Store * store, context_t *ctx)
-{
-    this->init();
-
-    this->zctx = ctx;
-    this->store = store;
-}
-
 Broker::~Broker()
 {
     if (this->zctx) delete this->zctx;
     if (this->worker_start_data) delete this->worker_start_data;
     if (this->store_watcher_start) delete this->store_watcher_start;
+    if (this->streaming_thread_data) delete this->streaming_thread_data;
 
     // TODO clean up store if it was allocated by us
 }
@@ -77,12 +69,16 @@ void Broker::init()
 {
     this->active = true;
     this->zctx = NULL;
+    this->exec_thread = NULL;
     this->worker_start_data = NULL;
     this->workers_sock = NULL;
     this->clients_sock = NULL;
+    this->streaming_sock = NULL;
+    this->client_stream_requests_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
+    this->streaming_thread_data = NULL;
 }
 
 /*
@@ -118,9 +114,10 @@ void Broker::run()
     this->setup_internal_sockets();
     this->create_worker_threads();
     this->create_store_watcher();
+    this->create_streaming_threads();
     this->setup_listener_sockets();
 
-    int number_pollitems = LISTENER_INDEX;
+    int number_pollitems = 4;
     zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
 
     pollitems[CLIENT_INDEX].socket = *this->clients_sock;
@@ -133,6 +130,16 @@ void Broker::run()
     pollitems[WORKER_INDEX].fd = 0;
     pollitems[WORKER_INDEX].revents = 0;
 
+    pollitems[STREAMING_INDEX].socket = *this->streaming_sock;
+    pollitems[STREAMING_INDEX].events = ZMQ_POLLIN;
+    pollitems[STREAMING_INDEX].fd = 0;
+    pollitems[STREAMING_INDEX].revents = 0;
+
+    pollitems[CLIENT_STREAM_REQUESTS_INDEX].socket = *this->client_stream_requests_sock;
+    pollitems[CLIENT_STREAM_REQUESTS_INDEX].events = ZMQ_POLLIN;
+    pollitems[CLIENT_STREAM_REQUESTS_INDEX].fd = 0;
+    pollitems[CLIENT_STREAM_REQUESTS_INDEX].revents = 0;
+
     zmq::message_t msg;
     int64 more;
     size_t moresz = sizeof(more);
@@ -140,8 +147,8 @@ void Broker::run()
     // TODO so much repetition here. it makes me feel dirty
     // TODO better error handling
     while (this->active) {
-        // wait for a message to become available
-        int rc = zmq::poll(pollitems, number_pollitems, -1);
+        // wait up to 1s for a message to become available
+        int rc = zmq::poll(pollitems, number_pollitems, 1000000);
 
         // we always favor shipping messages OUT of the server to the clients
         // that way, under heavy load, we try to get smaller before we
@@ -164,6 +171,25 @@ void Broker::run()
             }
         }
 
+        // move streaming messages to client
+        if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
+            while (true) {
+                if (!this->streaming_sock->recv(&msg, 0)) {
+                    break;
+                }
+
+                moresz = sizeof(more);
+                this->streaming_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                    break;
+                }
+
+                if (!more) break;
+            }
+        }
+
+        // forward client stream requests to streaming thread pool
+
         // send client requests to workers
         if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
@@ -182,8 +208,26 @@ void Broker::run()
         }
     }
 
+    // need to do some cleanup
+    // tell workers to shut down
+    this->worker_start_data->active = false;
+
     delete pollitems;
 }
+
+void Broker::RunAsync()
+{
+    this->exec_thread = create_thread(Broker::AsyncExecStart, this);
+}
+
+void * Broker::AsyncExecStart(void *data)
+{
+    Broker *broker = (Broker *)data;
+    broker->run();
+
+    return NULL;
+}
+
 
 void Broker::create_worker_threads()
 {
@@ -191,6 +235,7 @@ void Broker::create_worker_threads()
     this->worker_start_data->ctx = this->zctx;
     this->worker_start_data->store = this->store;
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
+    this->worker_start_data->active = true;
 
     for (int i = this->config.worker_threads; i; --i) {
         void * thread = create_thread(Request::request_processor, this->worker_start_data);
@@ -204,17 +249,41 @@ void Broker::create_worker_threads()
 void Broker::create_store_watcher()
 {
     this->store_watcher_start = new store_watcher_start_data;
-    this->store_watcher_start->endpoint = STORE_WATCHER_CHANGE_ENDPOINT;
+    this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT;
     this->store_watcher_start->zctx = this->zctx;
     this->store_watcher_start->store = this->store;
 
     this->store_watcher_thread = create_thread(StoreWatcherStart, this->store_watcher_start);
 }
 
+void Broker::create_streaming_threads()
+{
+    this->streaming_thread_data = new streaming_start_data;
+    this->streaming_thread_data->store_change_endpoint = STORE_CHANGE_ENDPOINT;
+    this->streaming_thread_data->streaming_endpoint = STREAMING_ENDPOINT;
+    this->streaming_thread_data->zctx = this->zctx;
+    this->streaming_thread_data->store = this->store;
+    this->streaming_thread_data->active = &this->active;
+
+    for (int i = this->config.streaming_threads; i; i--) {
+        void * thread = create_thread(Broker::StreamingStart, this->streaming_thread_data);
+        if (!thread) {
+            throw "error creating streaming thread";
+        }
+        this->streaming_threads.push_back(thread);
+    }
+}
+
 void Broker::setup_internal_sockets()
 {
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
+
+    this->streaming_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
+    this->streaming_sock->bind(STREAMING_ENDPOINT);
+
+    this->client_stream_requests_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
+    this->client_stream_requests_sock->bind(CLIENT_STREAM_REQUESTS_ENDPOINT);
 }
 
 void Broker::setup_listener_sockets()
@@ -228,7 +297,28 @@ void Broker::setup_listener_sockets()
     }
 }
 
+void Broker::Shutdown()
+{
+    this->active = false;
 
+    // wait for workers to terminate
+    vector<void *>::iterator i;
+    for (i = this->worker_threads.begin(); i < this->worker_threads.end(); i++) {
+        join_thread(*i);
+    }
+
+    // wait for streaming threads to terminate
+    for (i = this->streaming_threads.begin(); i < this->streaming_threads.end(); i++) {
+        join_thread(*i);
+    }
+
+    // forcibly kill store watcher, b/c that's the only way right now
+    terminate_thread(this->store_watcher_thread);
+
+    if (this->exec_thread) {
+        join_thread(this->exec_thread);
+    }
+}
 
 bool Broker::ParseConfig(const string path, broker_config &config, string &error)
 {
@@ -288,6 +378,11 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
     config.worker_threads = luaL_optinteger(L, -1, 3);
     lua_pop(L, 1);
 
+    // number of streaming threads to run
+    lua_getglobal(L, "streaming_threads");
+    config.streaming_threads = luaL_optinteger(L, -1, 1);
+    lua_pop(L, 1);
+
 cleanup:
     lua_close(L);
 
@@ -314,6 +409,28 @@ void * __stdcall Broker::StoreWatcherStart(void *d)
 
     StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint);
     watcher.run();
+
+    return NULL;
+}
+
+void * __stdcall Broker::StreamingStart(void *d)
+{
+    streaming_start_data * data = (streaming_start_data *)d;
+
+    assert(data->zctx);
+    assert(data->store_change_endpoint);
+    assert(data->streaming_endpoint);
+    assert(data->store);
+
+    Streamer streamer = Streamer(
+        data->store,
+        data->zctx,
+        data->store_change_endpoint,
+        data->streaming_endpoint
+    );
+    streamer.SetShutdownSemaphore(data->active);
+
+    streamer.Run();
 
     return NULL;
 }

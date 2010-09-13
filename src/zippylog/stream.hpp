@@ -28,6 +28,9 @@ using ::google::protobuf::io::FileInputStream;
 using ::google::protobuf::io::CodedInputStream;
 using ::std::string;
 
+// since streams are only ever appended to, it doesn't make sense to model a
+// read/write stream, so we have a separate input and output stream
+
 class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
