@@ -273,6 +273,13 @@ void * __stdcall Request::request_processor(void *data)
                     }
                 }
 
+                vector<message_t *>::iterator i = identities.begin();
+                for (; i < identities.end(); i++) {
+                    socket->send(**i, ZMQ_SNDMORE);
+                }
+                message_t empty(0);
+                socket->send(empty, ZMQ_SNDMORE);
+
                 message_t *zmsg = env.to_zmq_message();
                 socket->send(*zmsg, ZMQ_SNDMORE);
                 delete msg;
