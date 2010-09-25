@@ -32,7 +32,7 @@ using ::std::string;
 // TODO define an interface for the store API
 class ZIPPYLOG_EXPORT Store {
     public:
-        /** construct a store from a filesystem path */
+        // construct a store from a filesystem path
         Store(const string path);
         ~Store();
 
@@ -44,7 +44,7 @@ class ZIPPYLOG_EXPORT Store {
         // parses a path string into its components
         // if this returns true, the path is valid and the strings passed
         // by reference are updated to the extracted values
-        // if a field is empty, that string value is empty()
+        // if a field is empty, that string is empty()
         static bool ParsePath(const string path, string &bucket, string &set, string &stream);
 
         // return the path to a specific bucket
@@ -91,13 +91,22 @@ class ZIPPYLOG_EXPORT Store {
         bool GetInputStream(const string path, InputStream &s);
         bool GetInputStream(const string bucket, const string set, const string stream, InputStream &s);
 
+        // create a bucket
+        // if it exists already, will return true
+        bool CreateBucket(const string bucket);
+
+        // create a stream set
+        bool CreateStreamset(const string bucket, const string stream_set);
+
+        bool BucketExists(const string bucket);
+        bool StreamsetExists(const string bucket, const string stream_set);
+
     protected:
         bool directories_in_directory(const string dir, vector<string> &v);
         bool files_in_directory(const string dir, vector<string> &v);
 
         string PathToFilesystemPath(const string path);
         string StreamFilesystemPath(const string path);
-
 
     private:
         string _path;

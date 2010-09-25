@@ -332,6 +332,13 @@ string Store::StreamFilesystemPath(const string path)
     return this->PathToFilesystemPath(path) + ".zippylog";
 }
 
+bool Store::BucketExists(const string bucket)
+{
+    string path = Store::BucketPath(bucket);
+
+    return false;
+}
+
 bool Store::directories_in_directory(const string dir, vector<string> &v)
 {
     vector<dir_entry> entries;
