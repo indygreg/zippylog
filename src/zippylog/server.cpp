@@ -38,18 +38,20 @@ using ::std::string;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
-static bool receive_multipart_blocking(socket_t * sock, vector<message_t *> &identities, vector<message_t *> &messages);
-
 void * __stdcall Request::request_processor(void *data)
 {
     request_processor_start_data *d = (request_processor_start_data *)data;
 
     assert(d->ctx);
     assert(d->broker_endpoint);
+    assert(d->streaming_subscriptions_endpoint);
+    assert(d->streaming_updates_endpoint);
     assert(d->store);
 
     socket_t *socket = NULL;
-    socket_t *dsock = NULL;
+    socket_t *subscriptions_sock = NULL;
+    socket_t *subscription_updates_sock = NULL;
+
     Store *store = d->store;
 
     zmq::pollitem_t pollitems[1];
@@ -58,8 +60,9 @@ void * __stdcall Request::request_processor(void *data)
     pollitems[0].revents = 0;
 
     /* variables used across states */
-    int state = Request::CREATE_SOCKET;
+    int state = Request::SETUP_INITIAL_SOCKETS;
     message_t zreq;
+    vector<message_t *> identities;
     zippylog::Envelope request_envelope;
     zippylog::Envelope response_envelope;
     protocol::response::ErrorCode error_code;
@@ -71,8 +74,18 @@ void * __stdcall Request::request_processor(void *data)
 
     while (true) {
         switch (state) {
+            case Request::SETUP_INITIAL_SOCKETS:
+                subscriptions_sock = new socket_t(*d->ctx, ZMQ_PUSH);
+                subscriptions_sock->connect(d->streaming_subscriptions_endpoint);
+
+                subscription_updates_sock = new socket_t(*d->ctx, ZMQ_PUSH);
+                subscription_updates_sock->connect(d->streaming_updates_endpoint);
+
+                state = Request::CREATE_SOCKET;
+                break;
+
             case Request::CREATE_SOCKET:
-                socket = new socket_t(*d->ctx, ZMQ_REP);
+                socket = new socket_t(*d->ctx, ZMQ_XREP);
                 socket->connect(d->broker_endpoint);
                 pollitems[0].socket = *socket;
                 state = Request::WAITING;
@@ -82,7 +95,6 @@ void * __stdcall Request::request_processor(void *data)
                 // wait up to 250ms for a message, then try again
                 // we have this poll so the shutdown semaphore can be detected
                 if (zmq::poll(&pollitems[0], 1, 250000)) {
-                    socket->recv(&zreq, 0);
                     state = Request::PROCESS_REQUEST;
                 }
                 break;
@@ -90,11 +102,36 @@ void * __stdcall Request::request_processor(void *data)
             case Request::RESET_CONNECTION:
                 delete socket;
                 socket = NULL;
+
+                for (size_t i = 0; i < identities.size(); i++) {
+                    delete identities[i];
+                }
+                identities.clear();
+
                 state = Request::CREATE_SOCKET;
                 break;
 
             case Request::PROCESS_REQUEST:
             {
+                while (true) {
+                    socket->recv(&zreq, 0);
+
+                    if (zreq.size() == 0) break;
+
+                    message_t *identity = new message_t();
+                    identity->copy(&zreq);
+                    identities.push_back(identity);
+
+                    int64 more;
+                    size_t moresz = sizeof(more);
+
+                    socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+
+                    if (!more) break;
+                }
+
+                socket->recv(&zreq, 0);
+
                 request_envelope = ::zippylog::Envelope(&zreq);
                 //{
                 //    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
@@ -271,7 +308,7 @@ void * __stdcall Request::request_processor(void *data)
                 socket->send(*zmsg, 0);
                 delete zmsg;
 
-                state = Request::WAITING;
+                state = Request::REQUEST_CLEANUP;
                 break;
             }
 
@@ -280,8 +317,22 @@ void * __stdcall Request::request_processor(void *data)
                 protocol::request::SubscribeStoreChanges *m =
                     (protocol::request::SubscribeStoreChanges *)request_envelope.get_message(0);
 
-                delete m;
-                state = Request::WAITING;
+                // TODO validation
+
+                // we pass the identities and the original message to the streamer
+                // we don't pass the first identity, b/c it belongs to the local socket
+                for (size_t i = 1; i < identities.size(); i++) {
+                    subscriptions_sock->send(*identities[i], ZMQ_SNDMORE);
+                }
+
+                message_t *msg = new message_t(0);
+                subscriptions_sock->send(*msg, ZMQ_SNDMORE);
+                delete msg;
+
+                msg = request_envelope.to_zmq_message();
+                subscriptions_sock->send(*msg, 0);
+
+                state = Request::REQUEST_CLEANUP;
                 break;
             }
 
@@ -306,13 +357,38 @@ void * __stdcall Request::request_processor(void *data)
                     }
                 }
 
-                message_t *msg = response_envelope.to_zmq_message();
+                for (int i = 0; i < identities.size(); i++) {
+                    if (!socket->send(*identities[i], ZMQ_SNDMORE)) {
+                        state = Request::RESET_CONNECTION;
+                        break;
+                    }
+                }
+
+                message_t *msg = new message_t(0);
+                if (!socket->send(*msg, ZMQ_SNDMORE)) {
+                    delete msg;
+                    state = Request::RESET_CONNECTION;
+                    break;
+                }
+                delete msg;
+
+                msg = response_envelope.to_zmq_message();
 
                 if (!socket->send(*msg, 0)) {
                     state = Request::RESET_CONNECTION;
                     break;
                 }
 
+                state = Request::REQUEST_CLEANUP;
+                break;
+            }
+
+            case Request::REQUEST_CLEANUP:
+            {
+                for (size_t i = 0; i < identities.size(); i++) {
+                    delete identities[i];
+                }
+                identities.clear();
                 state = Request::WAITING;
                 break;
             }
@@ -322,7 +398,8 @@ void * __stdcall Request::request_processor(void *data)
     }
 
     if (socket) { delete socket; }
-    if (dsock) { delete dsock; }
+    if (subscriptions_sock) delete subscriptions_sock;
+    if (subscription_updates_sock) delete subscription_updates_sock;
 
     return NULL;
 }
@@ -346,30 +423,6 @@ void * __stdcall stream_processor(void *start_data)
     }
 
     return NULL;
-}
-
-// receives a multipart message from a socket
-// will block until all parts are received
-//
-// on success, identities vector contains list of message identities
-// messages vector contains list of all content messages
-static bool receive_multipart_blocking(socket_t * sock, vector<message_t *> &identities, vector<message_t *> &messages)
-{
-    int64 more;
-    size_t moresz = sizeof(more);
-
-    // TODO implement identity parsing
-    while (true) {
-        message_t * msg = new message_t();
-        sock->recv(msg, 0);
-        messages.push_back(msg);
-
-        sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-        if (!more) break;
-    }
-
-    return true;
 }
 
 }} // namespaces

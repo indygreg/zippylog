@@ -51,6 +51,8 @@ typedef struct streaming_start_data {
     Store *store;
     char *store_change_endpoint;
     char *streaming_endpoint;
+    char *subscriptions_endpoint;
+    char *client_updates_endpoint;
     bool *active;
 } streaming_start_data;
 
@@ -72,10 +74,30 @@ class ZIPPYLOG_EXPORT Broker {
 
     protected:
         context_t * zctx;
+
+        // fans XREQ that fans out to individual worker threads
         socket_t * workers_sock;
+
+        // binds to listen for client requests on configured interfaces
         socket_t * clients_sock;
+
+        // XREP that receives all streamed envelopes to be sent to clients
         socket_t * streaming_sock;
-        socket_t * client_stream_requests_sock;
+
+        // PULL that receives processed client subscription requests
+        // messages delivered to one random streamer
+        socket_t * worker_subscriptions_sock;
+
+        // PUSH that sends client subscription requests to streamers
+        socket_t * streaming_subscriptions_sock;
+
+        // PULL that receives processed client streaming messages
+        // messages forwarded to all streamers
+        socket_t * worker_streaming_notify_sock;
+
+        // PUB that sends processed client streaming messages to all streamers
+        socket_t * streaming_streaming_notify_sock;
+
         void * exec_thread;
         vector<void *> worker_threads;
         vector<void *> streaming_threads;

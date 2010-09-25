@@ -37,6 +37,12 @@ typedef struct request_processor_start_data {
     // where to connect to receive requests
     const char *broker_endpoint;
 
+    // where to send client subscription messages
+    const char *streaming_subscriptions_endpoint;
+
+    // where to send updates for existing subscriptions
+    const char *streaming_updates_endpoint;
+
     bool active;
 } request_processor_start_data;
 
@@ -58,6 +64,8 @@ public:
         PROCESS_STOREINFO = 7,
         PROCESS_GET = 8,
         PROCESS_SUBSCRIBE_STORE_CHANGES = 9,
+        SETUP_INITIAL_SOCKETS = 10,
+        REQUEST_CLEANUP = 11,
     };
 
     // function that waits and processes client requests as they arrive

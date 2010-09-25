@@ -36,12 +36,17 @@ using ::std::ostringstream;
 #define WORKER_ENDPOINT "inproc://workers"
 #define STORE_CHANGE_ENDPOINT "inproc://store_changes"
 #define STREAMING_ENDPOINT "inproc://streaming"
-#define CLIENT_STREAM_REQUESTS_ENDPOINT "inproc://client_stream_requests"
+
+#define WORKER_SUBSCRIPTIONS_ENDPOINT "inproc://worker_subscriptions"
+#define STREAMING_SUBSCRIPTIONS_ENDPOINT "inproc://streaming_subscriptions"
+#define WORKER_STREAMING_NOTIFY_ENDPOINT "inproc://worker_streaming_notify"
+#define STREAMING_STREAMING_NOTIFY_ENDPOINT "inproc://streaming_notify"
 
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
 #define STREAMING_INDEX 2
-#define CLIENT_STREAM_REQUESTS_INDEX 3
+#define WORKER_SUBSCRIPTIONS_INDEX 3
+#define STREAMING_NOTIFY_INDEX 4
 
 Broker::Broker(const string config_file_path)
 {
@@ -74,7 +79,10 @@ void Broker::init()
     this->workers_sock = NULL;
     this->clients_sock = NULL;
     this->streaming_sock = NULL;
-    this->client_stream_requests_sock = NULL;
+    this->worker_subscriptions_sock = NULL;
+    this->streaming_subscriptions_sock = NULL;
+    this->worker_streaming_notify_sock = NULL;
+    this->streaming_streaming_notify_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
@@ -117,7 +125,7 @@ void Broker::run()
     this->create_streaming_threads();
     this->setup_listener_sockets();
 
-    int number_pollitems = 4;
+    int number_pollitems = 5;
     zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
 
     pollitems[CLIENT_INDEX].socket = *this->clients_sock;
@@ -135,10 +143,15 @@ void Broker::run()
     pollitems[STREAMING_INDEX].fd = 0;
     pollitems[STREAMING_INDEX].revents = 0;
 
-    pollitems[CLIENT_STREAM_REQUESTS_INDEX].socket = *this->client_stream_requests_sock;
-    pollitems[CLIENT_STREAM_REQUESTS_INDEX].events = ZMQ_POLLIN;
-    pollitems[CLIENT_STREAM_REQUESTS_INDEX].fd = 0;
-    pollitems[CLIENT_STREAM_REQUESTS_INDEX].revents = 0;
+    pollitems[WORKER_SUBSCRIPTIONS_INDEX].socket = *this->worker_subscriptions_sock;
+    pollitems[WORKER_SUBSCRIPTIONS_INDEX].events = ZMQ_POLLIN;
+    pollitems[WORKER_SUBSCRIPTIONS_INDEX].fd = 0;
+    pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents = 0;
+
+    pollitems[STREAMING_NOTIFY_INDEX].socket = *this->streaming_streaming_notify_sock;
+    pollitems[STREAMING_NOTIFY_INDEX].events = ZMQ_POLLIN;
+    pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
+    pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
 
     zmq::message_t msg;
     int64 more;
@@ -174,19 +187,39 @@ void Broker::run()
         // move streaming messages to client
         if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
-                if (!this->streaming_sock->recv(&msg, 0)) {
-                    break;
-                }
+                if (!this->streaming_sock->recv(&msg, 0)) break;
 
                 moresz = sizeof(more);
                 this->streaming_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                    break;
-                }
-
+                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
                 if (!more) break;
             }
         }
+
+        // move subscriptions requests to streamer
+        if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
+            while (true) {
+                if (!this->worker_subscriptions_sock->recv(&msg, 0)) break;
+
+                moresz = sizeof(more);
+                this->worker_subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+                if (!this->streaming_subscriptions_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
+                if (!more) break;
+            }
+        }
+
+        // move subscription general messages to all streamers
+        if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
+            while (true) {
+                if (!this->worker_streaming_notify_sock->recv(&msg, 0)) break;
+
+                moresz = sizeof(more);
+                this->worker_streaming_notify_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+                if (!this->streaming_streaming_notify_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
+                if (!more) break;
+            }
+        }
+
 
         // forward client stream requests to streaming thread pool
 
@@ -235,6 +268,8 @@ void Broker::create_worker_threads()
     this->worker_start_data->ctx = this->zctx;
     this->worker_start_data->store = this->store;
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
+    this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT;
+    this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT;
     this->worker_start_data->active = true;
 
     for (int i = this->config.worker_threads; i; --i) {
@@ -261,6 +296,8 @@ void Broker::create_streaming_threads()
     this->streaming_thread_data = new streaming_start_data;
     this->streaming_thread_data->store_change_endpoint = STORE_CHANGE_ENDPOINT;
     this->streaming_thread_data->streaming_endpoint = STREAMING_ENDPOINT;
+    this->streaming_thread_data->client_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
+    this->streaming_thread_data->subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
     this->streaming_thread_data->zctx = this->zctx;
     this->streaming_thread_data->store = this->store;
     this->streaming_thread_data->active = &this->active;
@@ -279,11 +316,20 @@ void Broker::setup_internal_sockets()
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
 
-    this->streaming_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
+    this->streaming_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
     this->streaming_sock->bind(STREAMING_ENDPOINT);
 
-    this->client_stream_requests_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
-    this->client_stream_requests_sock->bind(CLIENT_STREAM_REQUESTS_ENDPOINT);
+    this->worker_subscriptions_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->worker_subscriptions_sock->bind(WORKER_SUBSCRIPTIONS_ENDPOINT);
+
+    this->worker_streaming_notify_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->worker_streaming_notify_sock->bind(WORKER_STREAMING_NOTIFY_ENDPOINT);
+
+    this->streaming_subscriptions_sock = new zmq::socket_t(*this->zctx, ZMQ_PUSH);
+    this->streaming_subscriptions_sock->bind(STREAMING_SUBSCRIPTIONS_ENDPOINT);
+
+    this->streaming_streaming_notify_sock = new zmq::socket_t(*this->zctx, ZMQ_PUB);
+    this->streaming_streaming_notify_sock->bind(STREAMING_STREAMING_NOTIFY_ENDPOINT);
 }
 
 void Broker::setup_listener_sockets()
@@ -426,7 +472,9 @@ void * __stdcall Broker::StreamingStart(void *d)
         data->store,
         data->zctx,
         data->store_change_endpoint,
-        data->streaming_endpoint
+        data->streaming_endpoint,
+        data->subscriptions_endpoint,
+        data->client_updates_endpoint
     );
     streamer.SetShutdownSemaphore(data->active);
 

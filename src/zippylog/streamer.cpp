@@ -13,27 +13,42 @@
 //  limitations under the License.
 
 #include <zippylog/streamer.hpp>
+#include <zippylog/protocol/request.pb.h>
 
 namespace zippylog {
 namespace server {
 
+StoreChangeSubscription::StoreChangeSubscription()
+{
+
+}
+
 Streamer::Streamer(Store *store,
                    context_t *zctx,
                    const string store_changes_endpoint,
-                   const string client_endpoint)
+                   const string client_endpoint,
+                   const string subscriptions_endpoint,
+                   const string subscription_updates_endpoint)
 {
     this->store = store;
     this->zctx = zctx;
     this->store_changes_endpoint = store_changes_endpoint;
     this->client_endpoint = client_endpoint;
+    this->subscriptions_endpoint = subscriptions_endpoint;
+    this->subscription_updates_endpoint = subscription_updates_endpoint;
+
     this->changes_sock = NULL;
     this->client_sock = NULL;
+    this->subscriptions_sock = NULL;
+    this->subscription_updates_sock = NULL;
 }
 
 Streamer::~Streamer()
 {
     if (this->changes_sock) delete this->changes_sock;
     if (this->client_sock) delete this->client_sock;
+    if (this->subscriptions_sock) delete this->subscriptions_sock;
+    if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
 
 void Streamer::SetShutdownSemaphore(bool *active)
@@ -53,50 +68,125 @@ void Streamer::Run()
     this->changes_sock->connect(this->store_changes_endpoint.c_str());
 
     // establish sending socket
-    this->client_sock = new socket_t(*this->zctx, ZMQ_XREQ);
+    this->client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->client_sock->connect(this->client_endpoint.c_str());
 
-    zmq::pollitem_t pollitems[1];
+    // receive client subscriptions
+    this->subscriptions_sock = new socket_t(*this->zctx, ZMQ_PULL);
+    this->subscriptions_sock->connect(this->subscriptions_endpoint.c_str());
+
+    // receive client updates
+    this->subscription_updates_sock = new socket_t(*this->zctx, ZMQ_SUB);
+    this->subscription_updates_sock->connect(this->subscription_updates_endpoint.c_str());
+    this->subscription_updates_sock->setsockopt(ZMQ_SUBSCRIBE, "", 0);
+
+    zmq::pollitem_t pollitems[3];
     pollitems[0].events = ZMQ_POLLIN;
-    pollitems[0].socket = *this->client_sock;
+    pollitems[0].socket = *this->changes_sock;
     pollitems[0].fd = 0;
     pollitems[0].revents = 0;
+
+    pollitems[1].events = ZMQ_POLLIN;
+    pollitems[1].socket = *this->subscriptions_sock;
+    pollitems[1].fd = 0;
+    pollitems[1].revents = 0;
+
+    pollitems[2].events = ZMQ_POLLIN;
+    pollitems[2].socket = *this->subscription_updates_sock;
+    pollitems[2].fd = 0;
+    pollitems[2].revents = 0;
 
     while (*this->active) {
         zmq::message_t msg;
 
-        if (zmq::poll(&pollitems[0], 1, 250000) < 1) continue;
+        // wait for a message to process
+        if (zmq::poll(&pollitems[0], 3, 250000) < 1) continue;
 
-        this->changes_sock->recv(&msg, 0);
-
-        // if we don't have any subscriptions, do nothing
-        if (!this->store_change_subscriptions.size()) {
+        // process subscription updates first
+        if (pollitems[2].revents & ZMQ_POLLIN) {
             continue;
         }
 
-        Envelope e = Envelope(&msg);
+        // process new subscriptions
+        if (pollitems[1].revents & ZMQ_POLLIN) {
+            vector<message_t *> identities;
 
-        assert(e.number_messages());
-        // TODO magic constant
-        assert(e.message_namespace(0) == 1);
+            while (true) {
+                this->subscriptions_sock->recv(&msg, 0);
 
-        uint32 message_type = e.message_type(0);
-        switch (message_type) {
-            case protocol::StoreChangeBucketAdded::zippylog_enumeration:
-            case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
-            case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
-            case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
-            case protocol::StoreChangeStreamAppended::zippylog_enumeration:
-            case protocol::StoreChangeStreamAdded::zippylog_enumeration:
-            case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
-                // if no subscriptions to store changes, do nothing
-                if (!this->store_change_subscriptions.size()) break;
+                if (msg.size() == 0) break;
 
-                this->ProcessStoreChangeEnvelope(e);
-                break;
-            default:
-                // WTF mate?
-                break;
+                message_t *identity = new message_t();
+                identity->copy(&msg);
+                identities.push_back(identity);
+
+                int64 more;
+                size_t moresz = sizeof(more);
+
+                this->subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+
+                if (!more) break;
+            }
+
+            this->subscriptions_sock->recv(&msg, 0);
+
+            Envelope e = Envelope(&msg);
+            assert(e.number_messages() == 1);
+            assert(e.message_namespace(0) == 1);
+            assert(e.message_type(0) == protocol::request::SubscribeStoreChanges::zippylog_enumeration);
+
+            protocol::request::SubscribeStoreChanges *m = (protocol::request::SubscribeStoreChanges *)e.get_message(0);
+
+            StoreChangeSubscription subscription;
+
+            for (int i = 0; i < m->path_size(); i++) {
+                subscription.paths.push_back(m->path(i));
+            }
+
+            for (size_t i = 0; i < identities.size(); i++) {
+                string identity = string((const char *)identities[i]->data(), identities[i]->size());
+                subscription.socket_identifiers.push_back(identity);
+                delete identities[i];
+            }
+
+            // TODO create subscription identity
+            // TODO send SubscribeAck response message
+
+            this->store_change_subscriptions.push_back(subscription);
+        }
+
+        if (pollitems[0].revents & ZMQ_POLLIN) {
+            this->changes_sock->recv(&msg, 0);
+
+            // if we don't have any subscriptions, do nothing
+            if (!this->store_change_subscriptions.size()) {
+                continue;
+            }
+
+            Envelope e = Envelope(&msg);
+
+            assert(e.number_messages());
+            // TODO magic constant
+            assert(e.message_namespace(0) == 1);
+
+            uint32 message_type = e.message_type(0);
+            switch (message_type) {
+                case protocol::StoreChangeBucketAdded::zippylog_enumeration:
+                case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
+                case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
+                case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
+                case protocol::StoreChangeStreamAppended::zippylog_enumeration:
+                case protocol::StoreChangeStreamAdded::zippylog_enumeration:
+                case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+                    // if no subscriptions to store changes, do nothing
+                    if (!this->store_change_subscriptions.size()) break;
+
+                    this->ProcessStoreChangeEnvelope(e);
+                    break;
+                default:
+                    // WTF mate?
+                    break;
+            }
         }
 
     }
@@ -198,7 +288,20 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             // if the subscribed prefix doesn't match the changed prefix
             if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
-            // at this point, they must be subscribed
+            // at this point, they must be subscribed, so we send them the event
+            vector<string>::iterator identity;
+            for (identity = i->socket_identifiers.begin(); identity != i->socket_identifiers.end(); identity++) {
+                message_t msg(identity->size());
+                memcpy(msg.data(), identity->c_str(), identity->size());
+
+                this->client_sock->send(msg, ZMQ_SNDMORE);
+            }
+
+            message_t empty(0);
+            this->client_sock->send(empty, ZMQ_SNDMORE);
+
+            message_t *msg = e.to_zmq_message();
+            this->client_sock->send(*msg);
 
             // don't process this path any more for this subscriber
             break;

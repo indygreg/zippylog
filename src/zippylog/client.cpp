@@ -24,6 +24,7 @@ namespace client {
 Client::Client(context_t *ctx, string connect)
 {
     this->_sock = new socket_t(*ctx, ZMQ_REQ);
+    this->_sock->setsockopt(ZMQ_IDENTITY, "client", strlen("client"));
     this->_sock->connect(connect.c_str());
 }
 

@@ -46,7 +46,13 @@ public:
 // the streamer streams information to subscribed clients
 class ZIPPYLOG_EXPORT Streamer {
     public:
-        Streamer(Store *store, context_t *zctx, const string store_changes_endpoint, const string client_endpoint);
+        Streamer(
+            Store *store, context_t *zctx,
+            const string store_changes_endpoint,
+            const string client_endpoint,
+            const string subscriptions_endpoint,
+            const string subscription_updates_endpoint
+        );
         ~Streamer();
 
         void Run();
@@ -59,10 +65,17 @@ class ZIPPYLOG_EXPORT Streamer {
     protected:
         Store * store;
         context_t * zctx;
+
         string store_changes_endpoint;
         string client_endpoint;
+        string subscriptions_endpoint;
+        string subscription_updates_endpoint;
+
         socket_t * changes_sock;
         socket_t * client_sock;
+        socket_t * subscriptions_sock;
+        socket_t * subscription_updates_sock;
+
         vector<StoreChangeSubscription> store_change_subscriptions;
         bool * active;
 
