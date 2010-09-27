@@ -28,6 +28,7 @@ namespace zippylog {
         registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
         registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());
+        registrar->register_message(1, 26, new ::zippylog::protocol::response::SubscriptionStart());
         registrar->register_message(1, 9, new ::zippylog::protocol::response::Error());
         registrar->register_message(1, 10, new ::zippylog::protocol::request::StoreInfo());
         registrar->register_message(1, 11, new ::zippylog::protocol::request::Get());

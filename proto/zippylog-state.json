@@ -17,6 +17,7 @@
       "zippylog.message.ActorInfo": 6, 
       "zippylog.protocol.request.SubscribeKeepalive": 23, 
       "zippylog.message.Envelope": 5, 
+      "zippylog.protocol.response.SubscriptionStart": 26, 
       "zippylog.protocol.StreamSetInfo": 2, 
       "zippylog.protocol.response.Error": 9, 
       "zippylog.protocol.request.Get": 11, 
