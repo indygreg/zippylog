@@ -10,6 +10,7 @@
       "zippylog.protocol.request.StoreInfo": 10, 
       "zippylog.protocol.StoreChangeStreamSetAdded": 20, 
       "zippylog.protocol.StoreChangeBucketDeleted": 19, 
+      "zippylog.protocol.response.SubscribeAck": 24, 
       "zippylog.zippylogd.BrokerReceiveClientMessage": 14, 
       "zippylog.protocol.request.SubscribeStoreChanges": 22, 
       "zippylog.protocol.StoreChangeBucketAdded": 18, 
@@ -23,7 +24,8 @@
       "zippylog.protocol.StoreChangeStreamDeleted": 16, 
       "zippylog.protocol.response.StreamSegmentEnd": 8, 
       "zippylog.protocol.StreamInfo": 1, 
-      "zippylog.protocol.response.StreamSegmentStart": 7
+      "zippylog.protocol.response.StreamSegmentStart": 7, 
+      "zippylog.protocol.request.SubscribeCancel": 25
     }, 
     "google": {
       "google.protobuf.UninterpretedOption": 16, 

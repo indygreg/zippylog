@@ -27,6 +27,14 @@ message StreamSegmentEnd {
     // TODO record offset ranges that were skipped, possibly why
 }
 
+// acknowledges a subscription request
+message SubscribeAck {
+    // unique identifier for this subscription
+    // client needs to record this identifier to send in SubscribeKeepalive
+    // messages to keep the subscription active
+    optional string id = 1;
+}
+
 message Error {
     optional ErrorCode code = 1;
     optional string msg = 2;
