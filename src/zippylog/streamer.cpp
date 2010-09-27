@@ -14,6 +14,11 @@
 
 #include <zippylog/streamer.hpp>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/protocol/response.pb.h>
+#include <zippylog/zeromq.hpp>
+
+using ::zippylog::protocol::response::SubscribeAck;
+using ::zmq::message_t;
 
 namespace zippylog {
 namespace server {
@@ -23,12 +28,18 @@ StoreChangeSubscription::StoreChangeSubscription()
 
 }
 
+SubscriptionInfo::SubscriptionInfo()
+{
+
+}
+
 Streamer::Streamer(Store *store,
                    context_t *zctx,
                    const string store_changes_endpoint,
                    const string client_endpoint,
                    const string subscriptions_endpoint,
-                   const string subscription_updates_endpoint)
+                   const string subscription_updates_endpoint,
+                   uint32 subscription_ttl)
 {
     this->store = store;
     this->zctx = zctx;
@@ -36,6 +47,7 @@ Streamer::Streamer(Store *store,
     this->client_endpoint = client_endpoint;
     this->subscriptions_endpoint = subscriptions_endpoint;
     this->subscription_updates_endpoint = subscription_updates_endpoint;
+    this->subscription_ttl = subscription_ttl;
 
     this->changes_sock = NULL;
     this->client_sock = NULL;
@@ -109,28 +121,17 @@ void Streamer::Run()
 
         // process new subscriptions
         if (pollitems[1].revents & ZMQ_POLLIN) {
-            vector<message_t *> identities;
+            vector<string> identities;
+            vector<message_t *> msgs;
 
-            while (true) {
-                this->subscriptions_sock->recv(&msg, 0);
-
-                if (msg.size() == 0) break;
-
-                message_t *identity = new message_t();
-                identity->copy(&msg);
-                identities.push_back(identity);
-
-                int64 more;
-                size_t moresz = sizeof(more);
-
-                this->subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-                if (!more) break;
+            if (!zeromq::receive_multipart_message(this->subscriptions_sock, identities, msgs)) {
+                // TODO log error here
+                continue;
             }
 
-            this->subscriptions_sock->recv(&msg, 0);
+            assert(msgs.size() > 0);
 
-            Envelope e = Envelope(&msg);
+            Envelope e = Envelope(msgs[0]);
             assert(e.number_messages() == 1);
             assert(e.message_namespace(0) == 1);
             assert(e.message_type(0) == protocol::request::SubscribeStoreChanges::zippylog_enumeration);
@@ -143,16 +144,34 @@ void Streamer::Run()
                 subscription.paths.push_back(m->path(i));
             }
 
-            for (size_t i = 0; i < identities.size(); i++) {
-                string identity = string((const char *)identities[i]->data(), identities[i]->size());
-                subscription.socket_identifiers.push_back(identity);
-                delete identities[i];
-            }
+            subscription.socket_identifiers = identities;
 
-            // TODO create subscription identity
-            // TODO send SubscribeAck response message
+            // TODO create subscription identity properly
+            subscription.id = "foo";
 
             this->store_change_subscriptions.push_back(subscription);
+
+            SubscriptionInfo info;
+
+            this->subscriptions[subscription.id] = info;
+
+            // send ACK response to client
+            SubscribeAck ack = SubscribeAck();
+            ack.set_id(subscription.id);
+            Envelope response = Envelope();
+            ack.add_to_envelope(&response);
+
+
+            if (!zeromq::send_envelope(this->client_sock, identities, response)) {
+                // TODO log error here
+                assert(0);
+            }
+
+            for (vector<message_t *>::iterator msg = msgs.begin(); msg != msgs.end(); msg++) {
+                delete *msg;
+            }
+            msgs.clear();
+
         }
 
         if (pollitems[0].revents & ZMQ_POLLIN) {
@@ -289,19 +308,14 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
             // at this point, they must be subscribed, so we send them the event
-            vector<string>::iterator identity;
-            for (identity = i->socket_identifiers.begin(); identity != i->socket_identifiers.end(); identity++) {
-                message_t msg(identity->size());
-                memcpy(msg.data(), identity->c_str(), identity->size());
 
-                this->client_sock->send(msg, ZMQ_SNDMORE);
-            }
+            Envelope response = Envelope();
+            protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
+            start.set_id(i->id);
+            start.add_to_envelope(&response);
+            response.add_message(e.get_message(0), e.message_namespace(0), e.message_type(0));
 
-            message_t empty(0);
-            this->client_sock->send(empty, ZMQ_SNDMORE);
-
-            message_t *msg = e.to_zmq_message();
-            this->client_sock->send(*msg);
+            zeromq::send_envelope(this->client_sock, i->socket_identifiers, response);
 
             // don't process this path any more for this subscriber
             break;

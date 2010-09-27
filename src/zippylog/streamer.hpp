@@ -19,13 +19,16 @@
 
 #include <zippylog/store.hpp>
 
+#include <zmq.hpp>
+
+#include <map>
 #include <string>
 #include <vector>
-#include <zmq.hpp>
 
 namespace zippylog {
 namespace server {
 
+using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
@@ -43,6 +46,12 @@ public:
     vector<string> socket_identifiers;
 };
 
+class SubscriptionInfo {
+public:
+    SubscriptionInfo();
+
+};
+
 // the streamer streams information to subscribed clients
 class ZIPPYLOG_EXPORT Streamer {
     public:
@@ -51,7 +60,8 @@ class ZIPPYLOG_EXPORT Streamer {
             const string store_changes_endpoint,
             const string client_endpoint,
             const string subscriptions_endpoint,
-            const string subscription_updates_endpoint
+            const string subscription_updates_endpoint,
+            uint32 subscription_ttl
         );
         ~Streamer();
 
@@ -71,12 +81,17 @@ class ZIPPYLOG_EXPORT Streamer {
         string subscriptions_endpoint;
         string subscription_updates_endpoint;
 
+        uint32 subscription_ttl;
+
         socket_t * changes_sock;
         socket_t * client_sock;
         socket_t * subscriptions_sock;
         socket_t * subscription_updates_sock;
 
         vector<StoreChangeSubscription> store_change_subscriptions;
+
+        map<string, SubscriptionInfo> subscriptions;
+
         bool * active;
 
         void ProcessStoreChangeEnvelope(Envelope &e);
