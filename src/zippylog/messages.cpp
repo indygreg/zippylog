@@ -27,11 +27,13 @@ namespace zippylog {
         registrar->register_message(1, 14, new ::zippylog::zippylogd::BrokerReceiveClientMessage());
         registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
+        registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());
         registrar->register_message(1, 9, new ::zippylog::protocol::response::Error());
         registrar->register_message(1, 10, new ::zippylog::protocol::request::StoreInfo());
         registrar->register_message(1, 11, new ::zippylog::protocol::request::Get());
         registrar->register_message(1, 22, new ::zippylog::protocol::request::SubscribeStoreChanges());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());
+        registrar->register_message(1, 25, new ::zippylog::protocol::request::SubscribeCancel());
         // @@protoc_insertion_point(message_registration)
     }
 }
