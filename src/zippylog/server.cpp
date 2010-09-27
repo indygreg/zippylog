@@ -411,25 +411,4 @@ void * __stdcall Request::request_processor(void *data)
     return NULL;
 }
 
-/*
-
-The stream processor handles streaming of events to all interested clients
-
-*/
-void * __stdcall stream_processor(void *start_data)
-{
-    stream_processor_start_data *start = (stream_processor_start_data *)start_data;
-
-    // first, bind to client queue so we can send messages
-    socket_t *sock = new socket_t(*start->ctx, ZMQ_XREP);
-    sock->connect(start->socket_endpoint);
-
-    bool loop = true;
-    while (loop) {
-
-    }
-
-    return NULL;
-}
-
 }} // namespaces

@@ -74,10 +74,6 @@ public:
 
 };
 
-// the stream processor handles streaming to all clients that have requested it
-// it frees the request processors to do more important things
-ZIPPYLOG_EXPORT void * __stdcall stream_processor(void *data);
-
 }} // namespaces
 
 #endif
