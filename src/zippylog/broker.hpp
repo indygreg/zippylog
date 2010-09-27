@@ -38,6 +38,7 @@ typedef struct broker_config {
     vector<string> listen_endpoints;
     uint32 worker_threads;
     uint32 streaming_threads;
+    uint32 subscription_ttl;
 } broker_config;
 
 typedef struct store_watcher_start_data {
@@ -54,6 +55,7 @@ typedef struct streaming_start_data {
     char *subscriptions_endpoint;
     char *client_updates_endpoint;
     bool *active;
+    uint32 subscription_ttl;
 } streaming_start_data;
 
 // the broker is a ZMQ device that provides the core message routing component

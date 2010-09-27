@@ -301,6 +301,7 @@ void Broker::create_streaming_threads()
     this->streaming_thread_data->zctx = this->zctx;
     this->streaming_thread_data->store = this->store;
     this->streaming_thread_data->active = &this->active;
+    this->streaming_thread_data->subscription_ttl = this->config.subscription_ttl;
 
     for (int i = this->config.streaming_threads; i; i--) {
         void * thread = create_thread(Broker::StreamingStart, this->streaming_thread_data);
@@ -429,6 +430,11 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
     config.streaming_threads = luaL_optinteger(L, -1, 1);
     lua_pop(L, 1);
 
+    // time to live of streaming subscriptions
+    lua_getglobal(L, "streaming_subscription_ttl");
+    config.subscription_ttl = luaL_optinteger(L, -1, 60);
+    lua_pop(L, 1);
+
 cleanup:
     lua_close(L);
 
@@ -466,7 +472,10 @@ void * __stdcall Broker::StreamingStart(void *d)
     assert(data->zctx);
     assert(data->store_change_endpoint);
     assert(data->streaming_endpoint);
+    assert(data->subscriptions_endpoint);
+    assert(data->client_updates_endpoint);
     assert(data->store);
+    assert(data->subscription_ttl);
 
     Streamer streamer = Streamer(
         data->store,
@@ -474,7 +483,8 @@ void * __stdcall Broker::StreamingStart(void *d)
         data->store_change_endpoint,
         data->streaming_endpoint,
         data->subscriptions_endpoint,
-        data->client_updates_endpoint
+        data->client_updates_endpoint,
+        data->subscription_ttl
     );
     streamer.SetShutdownSemaphore(data->active);
 
