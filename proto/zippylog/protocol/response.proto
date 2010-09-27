@@ -35,6 +35,11 @@ message SubscribeAck {
     optional string id = 1;
 }
 
+// first message in sequence of a subscription response
+message SubscriptionStart {
+    optional string id = 1;
+}
+
 message Error {
     optional ErrorCode code = 1;
     optional string msg = 2;
