@@ -17,13 +17,14 @@
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/zeromq.hpp>
 
 namespace zippylog {
 namespace client {
 
 Client::Client(context_t *ctx, string connect)
 {
-    this->_sock = new socket_t(*ctx, ZMQ_REQ);
+    this->_sock = new socket_t(*ctx, ZMQ_XREQ);
     this->_sock->setsockopt(ZMQ_IDENTITY, "client", strlen("client"));
     this->_sock->connect(connect.c_str());
 }
@@ -41,24 +42,8 @@ bool Client::StoreInfo(protocol::StoreInfo &info)
 
     this->_send_envelope(e);
 
-    int64 more;
-    size_t moresz = sizeof(more);
-    message_t res;
-
-    while (true) {
-        bool result = this->_sock->recv(&res, 0);
-        if (!result) {
-            printf("error receiving\n");
-            break;
-        }
-
-        printf("received message with %d bytes\n", res.size());
-        this->_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-        if (!more) break;
-    }
-
-    Envelope e2 = Envelope(&res);
+    Envelope e2 = Envelope();
+    this->ReadFirstEnvelope(e2);
     Message *m = e2.get_message(0);
 
     info = *((protocol::StoreInfo *)m);
@@ -102,7 +87,7 @@ bool Client::Get(const string path, uint64 start_offset, uint64 stop_offset, Str
     return Get(path, start_offset, (uint32)(stop_offset - start_offset), segment);
 }
 
-bool Client::SubscribeStoreChanges(const string path)
+bool Client::SubscribeStoreChanges(const string path, SubscriptionCallback &cb)
 {
     protocol::request::SubscribeStoreChanges req = protocol::request::SubscribeStoreChanges();
     req.add_path(path);
@@ -113,7 +98,14 @@ bool Client::SubscribeStoreChanges(const string path)
     if (!this->_send_envelope(e)) return false;
 
     Envelope response = Envelope();
-    this->ReadEnvelope(response);
+    this->ReadFirstEnvelope(response);
+
+    assert(response.message_namespace(0) == protocol::response::SubscribeAck::zippylog_namespace);
+    assert(response.message_type(0) == protocol::response::SubscribeAck::zippylog_enumeration);
+
+    protocol::response::SubscribeAck *ack = (protocol::response::SubscribeAck *)response.get_message(0);
+    this->subscriptions[ack->id()] = cb;
+    delete ack;
 
     return true;
 }
@@ -121,7 +113,7 @@ bool Client::SubscribeStoreChanges(const string path)
 bool Client::ReceiveAndProcessGet(StreamSegment &segment)
 {
     Envelope header = Envelope();
-    if (!this->ReadEnvelope(header)) {
+    if (!this->ReadFirstEnvelope(header)) {
         this->ReadOutMultipart();
         return false;
     }
@@ -161,6 +153,48 @@ bool Client::ReceiveAndProcessGet(StreamSegment &segment)
     return true;
 }
 
+bool Client::WaitAndProcessMessage()
+{
+    Envelope e = Envelope();
+    if (!this->ReadFirstEnvelope(e)) return false;
+
+    if (!e.number_messages()) return false;
+
+    if (e.message_namespace(0) == 1) {
+        // if this is in response to a subscription
+        if (e.message_type(0) == protocol::response::SubscriptionStart::zippylog_enumeration) {
+            protocol::response::SubscriptionStart *start = (protocol::response::SubscriptionStart *)e.get_message(0);
+
+            SubscriptionCallback cb = this->subscriptions[start->id()];
+
+            for (size_t i = 1; i < e.number_messages(); i++) {
+                switch (e.message_type(i)) {
+                    case protocol::StoreChangeBucketAdded::zippylog_enumeration:
+                        if (cb.BucketAdded) {
+                            protocol::StoreChangeBucketAdded *added = (protocol::StoreChangeBucketAdded *)e.get_message(i);
+                            cb.BucketAdded(start->id(), *added);
+                            delete added;
+                        }
+                        break;
+                    case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
+                        if (cb.BucketDeleted) {
+                            protocol::StoreChangeBucketDeleted *deleted = (protocol::StoreChangeBucketDeleted *)e.get_message(i);
+                            cb.BucketDeleted(start->id(), *deleted);
+                            delete deleted;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+        }
+    }
+
+    return true;
+}
+
 bool Client::HasMore()
 {
     int64 more;
@@ -168,6 +202,16 @@ bool Client::HasMore()
 
     this->_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
     return more > 0;
+}
+
+bool Client::ReadFirstEnvelope(Envelope &envelope)
+{
+    message_t empty;
+    if (!this->_sock->recv(&empty, 0)) return false;
+
+    assert(empty.size() == 0);
+
+    return this->ReadEnvelope(envelope);
 }
 
 bool Client::ReadEnvelope(zippylog::Envelope &envelope)
@@ -192,11 +236,7 @@ bool Client::ReadOutMultipart()
 
 bool Client::_send_envelope(::zippylog::Envelope &envelope)
 {
-    string buffer;
-    envelope.envelope.SerializeToString(&buffer);
-    message_t *req = new message_t(buffer.length());
-    memcpy(req->data(), (void *)buffer.c_str(), buffer.length());
-    return this->_sock->send(*req, 0);
+    return zeromq::send_envelope_xreq(this->_sock, envelope);
 }
 
 StreamSegment::StreamSegment()
@@ -243,6 +283,17 @@ bool StreamSegment::AddEnvelope(Envelope e)
 {
     this->Envelopes.push_back(e);
     return true;
+}
+
+SubscriptionCallback::SubscriptionCallback()
+{
+    this->BucketAdded = NULL;
+    this->BucketDeleted = NULL;
+    this->StreamSetAdded = NULL;
+    this->StreamSetDeleted = NULL;
+    this->StreamAdded = NULL;
+    this->StreamDeleted = NULL;
+    this->StreamAppended = NULL;
 }
 
 }} // namespaces

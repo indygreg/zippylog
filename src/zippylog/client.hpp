@@ -19,6 +19,7 @@
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol.pb.h>
 
+#include <map>
 #include <string>
 #include <vector>
 #include <zmq.hpp>
@@ -27,6 +28,7 @@ namespace zippylog {
 namespace client {
 
 using protocol::StoreInfo;
+using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zmq::socket_t;
@@ -55,6 +57,28 @@ class ZIPPYLOG_EXPORT StreamSegment {
 
 };
 
+typedef void (__stdcall * StoreChangeStreamAddedCallback)(string, protocol::StoreChangeStreamAdded &);
+typedef void (__stdcall * StoreChangeStreamDeletedCallback)(string, protocol::StoreChangeStreamDeleted &);
+typedef void (__stdcall * StoreChangeStreamAppendedCallback)(string, protocol::StoreChangeStreamAppended &);
+typedef void (__stdcall * StoreChangeBucketAddedCallback)(string, protocol::StoreChangeBucketAdded &);
+typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::StoreChangeBucketDeleted &);
+typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &);
+typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &);
+
+class ZIPPYLOG_EXPORT SubscriptionCallback {
+public:
+    SubscriptionCallback();
+
+
+    StoreChangeStreamAddedCallback StreamAdded;
+    StoreChangeStreamDeletedCallback StreamDeleted;
+    StoreChangeStreamAppendedCallback StreamAppended;
+    StoreChangeBucketAddedCallback BucketAdded;
+    StoreChangeBucketDeletedCallback BucketDeleted;
+    StoreChangeStreamSetAddedCallback StreamSetAdded;
+    StoreChangeStreamSetDeletedCallback StreamSetDeleted;
+};
+
 class ZIPPYLOG_EXPORT Client {
     public:
         // establish a client and bind to the location specified
@@ -66,16 +90,20 @@ class ZIPPYLOG_EXPORT Client {
         bool Get(const string path, uint64 start_offset, uint64 stop_offset, StreamSegment &segment);
         bool Get(const string path, uint64 start_offset, uint32 max_response_bytes, StreamSegment &segment);
 
-        bool SubscribeStoreChanges(const string path);
+        bool SubscribeStoreChanges(const string path, SubscriptionCallback &callback);
+        bool WaitAndProcessMessage();
 
     protected:
         socket_t *_sock;
 
         bool _send_envelope(Envelope &envelope);
         bool ReadEnvelope(Envelope &envelope);
+        bool ReadFirstEnvelope(Envelope &envelope);
         bool ReceiveAndProcessGet(StreamSegment &segment);
         bool HasMore();
         bool ReadOutMultipart();
+
+        map<string, SubscriptionCallback> subscriptions;
 };
 
 }} // namespaces
