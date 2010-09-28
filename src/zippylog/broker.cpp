@@ -477,18 +477,26 @@ void * __stdcall Broker::StreamingStart(void *d)
     assert(data->store);
     assert(data->subscription_ttl);
 
-    Streamer streamer = Streamer(
-        data->store,
-        data->zctx,
-        data->store_change_endpoint,
-        data->streaming_endpoint,
-        data->subscriptions_endpoint,
-        data->client_updates_endpoint,
-        data->subscription_ttl
-    );
-    streamer.SetShutdownSemaphore(data->active);
+    try {
+        Streamer streamer = Streamer(
+            data->store,
+            data->zctx,
+            data->store_change_endpoint,
+            data->streaming_endpoint,
+            data->subscriptions_endpoint,
+            data->client_updates_endpoint,
+            data->subscription_ttl
+        );
+        streamer.SetShutdownSemaphore(data->active);
 
-    streamer.Run();
+        streamer.Run();
+    }
+    catch (zmq::error_t e) {
+        throw e;
+    }
+    catch (...) {
+
+    }
 
     return NULL;
 }
