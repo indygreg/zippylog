@@ -101,11 +101,15 @@ class ZIPPYLOG_EXPORT Store {
         bool BucketExists(const string bucket);
         bool StreamsetExists(const string bucket, const string stream_set);
 
+        // return the filesystem path for the given store path
+        // no validation of input path is performed
+        string PathToFilesystemPath(const string path);
+
     protected:
         bool directories_in_directory(const string dir, vector<string> &v);
         bool files_in_directory(const string dir, vector<string> &v);
 
-        string PathToFilesystemPath(const string path);
+
         string StreamFilesystemPath(const string path);
 
     private:

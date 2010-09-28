@@ -44,7 +44,7 @@ bool Store::ValidatePath(const string path)
     }
 
     int32 seen_paths = 1;
-    for (size_t i = path.length() - 1; i; i--) {
+    for (size_t i = 1; i < path.length(); i++) {
         if (path[i] == '/') {
             // two slashes in a row is not allowed
             if (path[i-1] == '/') return false;
@@ -64,6 +64,11 @@ bool Store::ValidatePath(const string path)
         }
         else if (path[i] == 45 || path[i] == 95) {
             continue;
+        }
+        // allow file extensions for stream paths
+        else if (seen_paths == 3 && path[i] == '.') {
+            if (path.substr(i, path.length() - i).compare(".zippylog") == 0)
+                return true;
         }
 
         return false;
@@ -103,6 +108,13 @@ bool Store::ParsePath(const string path, string &bucket, string &set, string &st
 
                 case 2:
                     stream = path.substr(curr, path.length() - curr);
+
+                    if (stream.length() > 9) {
+                        if (!stream.compare(stream.length() - 9, 9, ".zippylog")) {
+                            stream = stream.erase(stream.length() - 9);
+                        }
+                    }
+
                     break;
             }
 

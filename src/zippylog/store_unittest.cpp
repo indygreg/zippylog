@@ -34,6 +34,7 @@ TEST(StoreTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/a/b/c"));
     EXPECT_TRUE(Store::ValidatePath("/1/2/3"));
     EXPECT_TRUE(Store::ValidatePath("/A/B/C"));
+    EXPECT_TRUE(Store::ValidatePath("/a/b/c.zippylog"));
 }
 
 TEST(StoreTest, PathParsing) {
@@ -84,5 +85,11 @@ TEST(StoreTest, PathParsing) {
 
     path = "/bucketA/setA/streamA/";
     EXPECT_FALSE(Store::ParsePath(path, b, ss, s));
+
+    path = "/bucketA/setA/streamA.zippylog";
+    EXPECT_TRUE(Store::ParsePath(path, b, ss, s));
+    EXPECT_STREQ("bucketA", b.c_str());
+    EXPECT_STREQ("setA", ss.c_str());
+    EXPECT_STREQ("streamA", s.c_str());
 
 }
