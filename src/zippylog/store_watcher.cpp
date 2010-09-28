@@ -101,8 +101,6 @@ void StoreWatcher::run()
                 store_path[off] = '/';
             }
 
-            // TODO validate filename is file/directory
-
             switch (info->Action) {
                 case FILE_ACTION_RENAMED_NEW_NAME:
                 case FILE_ACTION_ADDED:
@@ -132,6 +130,8 @@ void StoreWatcher::HandleAdded(string path)
 {
     string bucket, set, stream;
     if (!Store::ParsePath(path, bucket, set, stream)) return;
+
+    // TODO need to validate streams are files, buckets/sets are directories
 
     Envelope e = Envelope();
 
