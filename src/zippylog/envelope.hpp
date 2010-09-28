@@ -40,7 +40,7 @@ class ZIPPYLOG_EXPORT Envelope {
         //
         // We require namespace and enumeration now. If we can get around
         // inefficient castings, we'll likely create a new overload
-        bool add_message(Message *m, uint32 ns, uint32 enumeration);
+        bool AddMessage(Message &m, uint32 ns, uint32 enumeration);
 
         message::Envelope envelope;
 
@@ -59,7 +59,11 @@ class ZIPPYLOG_EXPORT Envelope {
         {
             return this->envelope.message_type(index);
         }
+
         Message * get_message(int index);
+
+        // copy a message to another envelope
+        bool CopyMessage(int index, Envelope &dest);
 };
 
 } // namespace

@@ -31,10 +31,10 @@ Envelope::Envelope(message_t *msg)
     this->envelope.ParseFromArray(msg->data(), msg->size());
 }
 
-bool Envelope::add_message(Message *m, uint32 ns, uint32 enumeration)
+bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 {
     string buffer;
-    if (!m->SerializeToString(&buffer)) return false;
+    if (!m.SerializeToString(&buffer)) return false;
 
     this->envelope.add_message_namespace(ns);
     this->envelope.add_message_type(enumeration);
@@ -89,6 +89,17 @@ Message * Envelope::get_message(int index)
     msg->ParseFromString(buffer);
 
     return msg;
+}
+
+bool Envelope::CopyMessage(int index, Envelope &dest)
+{
+    if (this->envelope.message_size() < index + 1) return false;
+
+    dest.envelope.add_message(this->envelope.message(index));
+    dest.envelope.add_message_namespace(this->envelope.message_namespace(index));
+    dest.envelope.add_message_type(this->envelope.message_type(index));
+
+    return true;
 }
 
 } // namespace
