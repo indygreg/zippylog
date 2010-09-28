@@ -25,7 +25,9 @@
 namespace zippylog {
 
 using ::google::protobuf::io::FileInputStream;
+using ::google::protobuf::io::FileOutputStream;
 using ::google::protobuf::io::CodedInputStream;
+using ::google::protobuf::io::CodedOutputStream;
 using ::std::string;
 
 // since streams are only ever appended to, it doesn't make sense to model a
@@ -57,10 +59,16 @@ class ZIPPYLOG_EXPORT InputStream {
 
 class ZIPPYLOG_EXPORT OutputStream {
     public:
-        OutputStream();
+        // opens an output stream (always appends)
+        OutputStream(const string file);
         ~OutputStream();
 
         bool WriteEnvelope(::zippylog::Envelope &envelope);
+
+private:
+    int fd;
+    FileOutputStream *os;
+    CodedOutputStream *cos;
 };
 
 } // namespace

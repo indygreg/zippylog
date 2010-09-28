@@ -14,8 +14,12 @@
 
 #include "zippylog/stream.hpp"
 
-#include <fcntl.h>
+#include <zippylog/platform.hpp>
+
 #include <io.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #ifdef WIN32
 #define lseek64 _lseeki64
@@ -141,19 +145,43 @@ bool InputStream::Seek(int64 offset)
 }
 
 
-OutputStream::OutputStream()
+OutputStream::OutputStream(const string file)
 {
+    this->fd = open(file.c_str(), O_APPEND | O_BINARY | O_CREAT, _S_IREAD | _S_IWRITE);
+    if (this->fd < 0) {
+        throw "error opening file for writing";
+    }
 
+    platform::FileStat stat;
+    if (!platform::stat(file, stat)) {
+        throw "could not stat file opened for writing. weird";
+    }
+
+    // this is a new file, so we need to write out the version
+    if (!stat.size) {
+        char version = 0x01;
+        if (write(this->fd, &version, 1) != 1) {
+            throw "could not write version byte to stream";
+        }
+    }
+
+    this->os = new FileOutputStream(this->fd);
+    this->cos = new CodedOutputStream(this->os);
 }
 
 OutputStream::~OutputStream()
 {
-
+    this->os->Close();
+    delete this->os;
+    delete this->cos;
 }
 
 bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
 {
-    return false;
+    int size = e.envelope.ByteSize();
+
+    this->cos->WriteVarint32(size);
+    return e.envelope.SerializeToCodedStream(this->cos);
 }
 
 
