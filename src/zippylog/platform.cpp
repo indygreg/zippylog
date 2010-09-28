@@ -18,6 +18,9 @@
 #include <Windows.h>
 #endif
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 namespace zippylog {
 
 void * create_thread(void * func, void *data)
@@ -114,5 +117,33 @@ void windows_error(char *buffer, size_t buffer_size)
         SUBLANG_DEFAULT), buffer, buffer_size, NULL );
 #endif
 }
+
+namespace platform {
+
+bool stat(const string path, FileStat &st)
+{
+    struct _stat64 result;
+
+    if (_stat64(path.c_str(), &result) != 0) {
+        return false;
+    }
+
+    if (result.st_mode & _S_IFDIR) {
+        st.type = FileType::DIRECTORY;
+    }
+    else if (result.st_mode & _S_IFREG) {
+        st.type = FileType::REGULAR;
+    }
+    else if (result.st_mode & _S_IFIFO) {
+        st.type = FileType::PIPE;
+    }
+    else {
+        st.type = FileType::UNKNOWN;
+    }
+
+    return true;
+}
+
+} // platform namespace
 
 } // namespace

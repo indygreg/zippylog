@@ -28,6 +28,7 @@ using ::std::vector;
 
 namespace zippylog {
 
+// TODO move these to platform namespace
 struct dir_entry {
     string name;
     uint64 size;
@@ -44,6 +45,22 @@ ZIPPYLOG_EXPORT bool terminate_thread(void *thread);
 ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
 
 ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
+
+namespace platform {
+    enum FileType {
+        REGULAR = 1,
+        DIRECTORY = 2,
+        PIPE = 3,
+        CHARACTER = 4,
+        UNKNOWN = 5,
+    };
+
+    typedef struct FileStat {
+        FileType type;
+    } FileStat;
+
+    ZIPPYLOG_EXPORT bool stat(const string path, FileStat &st);
+}
 
 } // namespace
 
