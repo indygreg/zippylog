@@ -27,6 +27,7 @@ easier to grok.
 #include <zippylog/protocol.pb.h>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/zeromq.hpp>
 
 #include <string>
 #include <zmq.hpp>
@@ -279,10 +280,7 @@ void * __stdcall Request::request_processor(void *data)
                 }
                 message_t empty(0);
                 socket->send(empty, ZMQ_SNDMORE);
-
-                message_t *zmsg = env.to_zmq_message();
-                socket->send(*zmsg, ZMQ_SNDMORE);
-                delete msg;
+                zeromq::send_envelope_more(socket, env);
 
                 uint32 bytes_read = 0;
                 uint32 envelopes_read = 0;
@@ -290,9 +288,7 @@ void * __stdcall Request::request_processor(void *data)
                 while (true) {
                     if (!stream.ReadEnvelope(env, envelope_size)) break;
 
-                    zmsg = env.to_zmq_message();
-                    socket->send(*zmsg, ZMQ_SNDMORE);
-                    delete zmsg;
+                    zeromq::send_envelope_more(socket, env);
 
                     bytes_read += envelope_size;
                     envelopes_read++;
@@ -311,9 +307,7 @@ void * __stdcall Request::request_processor(void *data)
 
                 env = ::zippylog::Envelope();
                 segment_end.add_to_envelope(&env);
-                zmsg = env.to_zmq_message();
-                socket->send(*zmsg, 0);
-                delete zmsg;
+                zeromq::send_envelope(socket, env);
 
                 state = Request::REQUEST_CLEANUP;
                 break;
@@ -336,8 +330,7 @@ void * __stdcall Request::request_processor(void *data)
                 subscriptions_sock->send(*msg, ZMQ_SNDMORE);
                 delete msg;
 
-                msg = request_envelope.to_zmq_message();
-                subscriptions_sock->send(*msg, 0);
+                zeromq::send_envelope(subscriptions_sock, request_envelope);
 
                 state = Request::REQUEST_CLEANUP;
                 break;
@@ -379,9 +372,7 @@ void * __stdcall Request::request_processor(void *data)
                 }
                 delete msg;
 
-                msg = response_envelope.to_zmq_message();
-
-                if (!socket->send(*msg, 0)) {
+                if (!zeromq::send_envelope(socket, response_envelope)) {
                     state = Request::RESET_CONNECTION;
                     break;
                 }
