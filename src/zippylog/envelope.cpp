@@ -43,15 +43,14 @@ bool Envelope::add_message(Message *m, uint32 ns, uint32 enumeration)
     return true;
 }
 
-message_t * Envelope::to_zmq_message()
+bool Envelope::ToZmqMessage(message_t &msg)
 {
     string buffer;
     this->envelope.SerializeToString(&buffer);
+    msg.rebuild(buffer.length());
+    memcpy(msg.data(), (void *)buffer.c_str(), buffer.length());
 
-    message_t *msg = new message_t(buffer.length());
-    memcpy(msg->data(), (void *)buffer.c_str(), buffer.length());
-
-    return msg;
+    return true;
 }
 
 bool Envelope::merge_from_zmq_message(message_t *msg)
