@@ -141,6 +141,8 @@ bool stat(const string path, FileStat &st)
         st.type = FileType::UNKNOWN;
     }
 
+    st.size = result.st_size;
+
     return true;
 }
 

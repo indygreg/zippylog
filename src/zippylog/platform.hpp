@@ -57,6 +57,7 @@ namespace platform {
 
     typedef struct FileStat {
         FileType type;
+        int64 size;
     } FileStat;
 
     ZIPPYLOG_EXPORT bool stat(const string path, FileStat &st);
