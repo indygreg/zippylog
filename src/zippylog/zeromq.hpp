@@ -43,6 +43,9 @@ bool send_multipart_message(socket_t * socket, vector<string> &identities, messa
 bool send_envelope(socket_t *socket, Envelope &envelope);
 bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope);
 
+// sends an envelope with ZMQ_SNDMORE flag
+bool send_envelope_more(socket_t *socket, Envelope &envelope);
+
 // sends an envelope, but from an XREQ socket
 // this inserts an empty message part to cover the missing identity message
 bool send_envelope_xreq(socket_t *socket, Envelope &envelope);

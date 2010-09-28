@@ -83,20 +83,23 @@ bool send_multipart_message(socket_t * socket, vector<string> &identities, messa
 
 bool send_envelope(socket_t *socket, Envelope &envelope)
 {
-    message_t *msg = envelope.to_zmq_message();
-
-    bool result = socket->send(*msg, 0);
-    delete msg;
-    return result;
+    message_t msg;
+    envelope.ToZmqMessage(msg);
+    return socket->send(msg, 0);
 }
 
 bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope)
 {
-    message_t *msg = envelope.to_zmq_message();
-    bool result = send_multipart_message(socket, identities, msg);
-    delete msg;
+    message_t msg;
+    envelope.ToZmqMessage(msg);
+    return send_multipart_message(socket, identities, &msg);
+}
 
-    return result;
+bool send_envelope_more(socket_t *socket, Envelope &envelope)
+{
+    message_t msg;
+    envelope.ToZmqMessage(msg);
+    return socket->send(msg, ZMQ_SNDMORE);
 }
 
 bool send_envelope_xreq(socket_t *socket, Envelope &envelope)
