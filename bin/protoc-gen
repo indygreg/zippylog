@@ -204,7 +204,7 @@ for i in range(0, len(request.proto_file)):
                 f.insertion_point = 'namespace_scope'
                 f.content = '''
 bool %s::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }''' % name
             
                 f = response.file.add()
