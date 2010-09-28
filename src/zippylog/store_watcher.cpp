@@ -14,7 +14,6 @@
 
 #include <zippylog/store_watcher.hpp>
 
-#include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
 #include <zippylog/zeromq.hpp>
 
@@ -96,15 +95,18 @@ void StoreWatcher::run()
             store_path.append(filename);
 
             // replace backslashes with forward slashes (Windows sanity)
-            string::size_type off;
-            while ((off = store_path.find_first_of("\\", 0)) != string::npos) {
-                store_path[off] = '/';
+            for (size_t i = store_path.length(); i; i--) {
+                if (store_path[i-1] == '\\') store_path[i-1] = '/';
             }
+
+            string fs_path = this->_store->PathToFilesystemPath(filename);
+            platform::FileStat stat;
+            platform::stat(fs_path, stat);
 
             switch (info->Action) {
                 case FILE_ACTION_RENAMED_NEW_NAME:
                 case FILE_ACTION_ADDED:
-                    this->HandleAdded(store_path);
+                    this->HandleAdded(store_path, stat);
                     break;
 
                 case FILE_ACTION_RENAMED_OLD_NAME:
@@ -113,7 +115,7 @@ void StoreWatcher::run()
                     break;
 
                 case FILE_ACTION_MODIFIED:
-                    this->HandleModified(store_path);
+                    this->HandleModified(store_path, stat);
                     break;
             }
         } while (info->NextEntryOffset != 0);
@@ -126,7 +128,7 @@ void StoreWatcher::SendChangeMessage(Envelope &e)
     zeromq::send_envelope(this->socket, e);
 }
 
-void StoreWatcher::HandleAdded(string path)
+void StoreWatcher::HandleAdded(string path, platform::FileStat &stat)
 {
     string bucket, set, stream;
     if (!Store::ParsePath(path, bucket, set, stream)) return;
@@ -189,7 +191,7 @@ void StoreWatcher::HandleDeleted(string path)
     }
 }
 
-void StoreWatcher::HandleModified(string path)
+void StoreWatcher::HandleModified(string path, platform::FileStat &stat)
 {
     string bucket, set, stream;
     if (!Store::ParsePath(path, bucket, set, stream)) return;
@@ -201,10 +203,14 @@ void StoreWatcher::HandleModified(string path)
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.set_stream(stream);
+        m.set_length(stat.size);
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
     }
-    // what else is there? buckets and stream sets don't really modify, do they?
+    else {
+        // what else is there? buckets and stream sets don't really modify, do they?
+        throw "how did we get here?";
+    }
 }
 
 } // namespace

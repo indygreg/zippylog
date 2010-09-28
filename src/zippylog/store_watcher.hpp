@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 
 #include <zmq.hpp>
@@ -39,9 +40,9 @@ protected:
     zmq::socket_t * socket;
 
     void SendChangeMessage(Envelope &e);
-    void HandleAdded(string path);
+    void HandleAdded(string path, platform::FileStat &stat);
     void HandleDeleted(string path);
-    void HandleModified(string path);
+    void HandleModified(string path, platform::FileStat &stat);
 
 };
 
