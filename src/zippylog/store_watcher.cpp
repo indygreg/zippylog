@@ -16,6 +16,7 @@
 
 #include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
+#include <zippylog/zeromq.hpp>
 
 #ifdef WINDOWS
 #include <WinBase.h>
@@ -94,6 +95,12 @@ void StoreWatcher::run()
             string store_path = "/";
             store_path.append(filename);
 
+            // replace backslashes with forward slashes (Windows sanity)
+            string::size_type off;
+            while ((off = store_path.find_first_of("\\", 0)) != string::npos) {
+                store_path[off] = '/';
+            }
+
             // TODO validate filename is file/directory
 
             switch (info->Action) {
@@ -118,10 +125,7 @@ void StoreWatcher::run()
 
 void StoreWatcher::SendChangeMessage(Envelope &e)
 {
-    ::zmq::message_t *zmsg = e.to_zmq_message();
-
-    this->socket->send(*zmsg);
-    delete zmsg;
+    zeromq::send_envelope(this->socket, e);
 }
 
 void StoreWatcher::HandleAdded(string path)
