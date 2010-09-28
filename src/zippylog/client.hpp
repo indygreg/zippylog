@@ -35,6 +35,13 @@ using ::zmq::socket_t;
 using ::zmq::context_t;
 using ::zippylog::Envelope;
 
+/*
+The client API is pretty bad at the moment. In the future, everything will
+likely be implemented via callbacks. There will be synchronous and asynchronous
+calls for every functionality. Subscriptions, by definition, will be
+asynchronous. This will all get flushed out eventually.
+*/
+
 // represents a stream segment response (from Get requests)
 class ZIPPYLOG_EXPORT StreamSegment {
     public:
@@ -57,6 +64,11 @@ class ZIPPYLOG_EXPORT StreamSegment {
 
 };
 
+// function types for callbacks when the client has received a subscribed event
+// the first string parameter is the subscription id
+// callers can associate the subscription id with their own metadata
+// independent of the client API. their callbacks can fetch this data at
+// callback time.
 typedef void (__stdcall * StoreChangeStreamAddedCallback)(string, protocol::StoreChangeStreamAdded &);
 typedef void (__stdcall * StoreChangeStreamDeletedCallback)(string, protocol::StoreChangeStreamDeleted &);
 typedef void (__stdcall * StoreChangeStreamAppendedCallback)(string, protocol::StoreChangeStreamAppended &);
@@ -65,17 +77,21 @@ typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::St
 typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &);
 typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &);
 
+// The SubscriptionCallback defines the set of function callbacks for a
+// subscription. Not all callback types are valid for every subscription
+// type.
+// If a callback in not defined, no function is executed when an event for
+// that callback is received.
 class ZIPPYLOG_EXPORT SubscriptionCallback {
 public:
     SubscriptionCallback();
 
-
-    StoreChangeStreamAddedCallback StreamAdded;
-    StoreChangeStreamDeletedCallback StreamDeleted;
-    StoreChangeStreamAppendedCallback StreamAppended;
-    StoreChangeBucketAddedCallback BucketAdded;
-    StoreChangeBucketDeletedCallback BucketDeleted;
-    StoreChangeStreamSetAddedCallback StreamSetAdded;
+    StoreChangeStreamAddedCallback      StreamAdded;
+    StoreChangeStreamDeletedCallback    StreamDeleted;
+    StoreChangeStreamAppendedCallback   StreamAppended;
+    StoreChangeBucketAddedCallback      BucketAdded;
+    StoreChangeBucketDeletedCallback    BucketDeleted;
+    StoreChangeStreamSetAddedCallback   StreamSetAdded;
     StoreChangeStreamSetDeletedCallback StreamSetDeleted;
 };
 
