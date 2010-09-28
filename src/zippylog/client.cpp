@@ -184,6 +184,46 @@ bool Client::WaitAndProcessMessage()
                         }
                         break;
 
+                    case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
+                        if (cb.StreamSetAdded) {
+                            protocol::StoreChangeStreamSetAdded *added = (protocol::StoreChangeStreamSetAdded *)e.get_message(i);
+                            cb.StreamSetAdded(start->id(), *added);
+                            delete added;
+                        }
+                        break;
+
+                    case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
+                        if (cb.StreamSetDeleted) {
+                            protocol::StoreChangeStreamSetDeleted *deleted = (protocol::StoreChangeStreamSetDeleted *)e.get_message(i);
+                            cb.StreamSetDeleted(start->id(), *deleted);
+                            delete deleted;
+                        }
+                        break;
+
+                    case protocol::StoreChangeStreamAdded::zippylog_enumeration:
+                        if (cb.StreamAdded) {
+                            protocol::StoreChangeStreamAdded *added = (protocol::StoreChangeStreamAdded *)e.get_message(i);
+                            cb.StreamAdded(start->id(), *added);
+                            delete added;
+                        }
+                        break;
+
+                    case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+                        if (cb.StreamDeleted) {
+                            protocol::StoreChangeStreamDeleted *deleted = (protocol::StoreChangeStreamDeleted *)e.get_message(i);
+                            cb.StreamDeleted(start->id(), *deleted);
+                            delete deleted;
+                        }
+                        break;
+
+                    case protocol::StoreChangeStreamAppended::zippylog_enumeration:
+                        if (cb.StreamAppended) {
+                            protocol::StoreChangeStreamAppended *appended = (protocol::StoreChangeStreamAppended *)e.get_message(i);
+                            cb.StreamAppended(start->id(), *appended);
+                            delete appended;
+                        }
+                        break;
+
                     default:
                         break;
                 }
