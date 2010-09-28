@@ -313,7 +313,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
             start.set_id(i->id);
             start.add_to_envelope(&response);
-            response.add_message(e.get_message(0), e.message_namespace(0), e.message_type(0));
+
+            if (!e.CopyMessage(0, response)) {
+                throw "could not copy message to response envelope. weird";
+            }
 
             zeromq::send_envelope(this->client_sock, i->socket_identifiers, response);
 
