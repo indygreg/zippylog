@@ -3521,47 +3521,47 @@ void StoreChangeStreamSetDeleted::Swap(StoreChangeStreamSetDeleted* other) {
 
 
 bool StreamInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StreamSetInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool BucketInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeStreamAdded::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeStreamDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeStreamAppended::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeBucketAdded::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeBucketDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeStreamSetAdded::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool StoreChangeStreamSetDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
 

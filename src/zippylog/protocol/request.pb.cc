@@ -1296,23 +1296,23 @@ void SubscribeCancel::Swap(SubscribeCancel* other) {
 
 
 bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool Get::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool SubscribeStoreChanges::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool SubscribeKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
 bool SubscribeCancel::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->add_message(this, zippylog_namespace, zippylog_enumeration);
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
 
