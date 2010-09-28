@@ -62,8 +62,7 @@ void * __stdcall Request::request_processor(void *data)
 
     /* variables used across states */
     int state = Request::SETUP_INITIAL_SOCKETS;
-    message_t zreq;
-    vector<message_t *> identities;
+    vector<string> identities;
     zippylog::Envelope request_envelope;
     zippylog::Envelope response_envelope;
     protocol::response::ErrorCode error_code;
@@ -104,9 +103,6 @@ void * __stdcall Request::request_processor(void *data)
                 delete socket;
                 socket = NULL;
 
-                for (size_t i = 0; i < identities.size(); i++) {
-                    delete identities[i];
-                }
                 identities.clear();
 
                 state = Request::CREATE_SOCKET;
@@ -114,32 +110,20 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::PROCESS_REQUEST:
             {
-                while (true) {
-                    socket->recv(&zreq, 0);
-
-                    if (zreq.size() == 0) break;
-
-                    message_t *identity = new message_t();
-                    identity->copy(&zreq);
-                    identities.push_back(identity);
-
-                    int64 more;
-                    size_t moresz = sizeof(more);
-
-                    socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-
-                    if (!more) break;
+                vector<message_t *> msgs;
+                if (!zeromq::receive_multipart_message(socket, identities, msgs)) {
+                    state = Request::RESET_CONNECTION;
+                    break;
                 }
 
-                socket->recv(&zreq, 0);
+                // no payload messages sure is weird
+                if (!msgs.size()) {
+                    state = Request::REQUEST_CLEANUP;
+                    break;
+                }
 
-                request_envelope = ::zippylog::Envelope(&zreq);
-                //{
-                //    error_code = protocol::response::ENVELOPE_PARSE_FAILURE;
-                //    error_message = "could not parse received envelope";
-                //    state = SEND_ERROR_RESPONSE;
-                //    break;
-                //}
+                request_envelope = Envelope(msgs[0]);
+                // TODO handle parse failure
 
                 if (request_envelope.envelope.message_size() < 1) {
                     error_code = protocol::response::EMPTY_ENVELOPE;
@@ -274,12 +258,6 @@ void * __stdcall Request::request_processor(void *data)
                     }
                 }
 
-                vector<message_t *>::iterator i = identities.begin();
-                for (; i < identities.end(); i++) {
-                    socket->send(**i, ZMQ_SNDMORE);
-                }
-                message_t empty(0);
-                socket->send(empty, ZMQ_SNDMORE);
                 zeromq::send_envelope_more(socket, env);
 
                 uint32 bytes_read = 0;
@@ -322,15 +300,11 @@ void * __stdcall Request::request_processor(void *data)
 
                 // we pass the identities and the original message to the streamer
                 // we don't pass the first identity, b/c it belongs to the local socket
-                for (size_t i = 1; i < identities.size(); i++) {
-                    subscriptions_sock->send(*identities[i], ZMQ_SNDMORE);
-                }
+                // TODO should probably create a special message type with identities embedded
+                vector<string> subscription_identities = identities;
+                subscription_identities.erase(subscription_identities.begin());
 
-                message_t *msg = new message_t(0);
-                subscriptions_sock->send(*msg, ZMQ_SNDMORE);
-                delete msg;
-
-                zeromq::send_envelope(subscriptions_sock, request_envelope);
+                zeromq::send_envelope(subscriptions_sock, subscription_identities, request_envelope);
 
                 state = Request::REQUEST_CLEANUP;
                 break;
@@ -357,22 +331,7 @@ void * __stdcall Request::request_processor(void *data)
                     }
                 }
 
-                for (int i = 0; i < identities.size(); i++) {
-                    if (!socket->send(*identities[i], ZMQ_SNDMORE)) {
-                        state = Request::RESET_CONNECTION;
-                        break;
-                    }
-                }
-
-                message_t *msg = new message_t(0);
-                if (!socket->send(*msg, ZMQ_SNDMORE)) {
-                    delete msg;
-                    state = Request::RESET_CONNECTION;
-                    break;
-                }
-                delete msg;
-
-                if (!zeromq::send_envelope(socket, response_envelope)) {
+                if (!zeromq::send_envelope(socket, identities, response_envelope)) {
                     state = Request::RESET_CONNECTION;
                     break;
                 }
@@ -383,9 +342,6 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::REQUEST_CLEANUP:
             {
-                for (size_t i = 0; i < identities.size(); i++) {
-                    delete identities[i];
-                }
                 identities.clear();
                 state = Request::WAITING;
                 break;
