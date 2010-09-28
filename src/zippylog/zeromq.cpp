@@ -54,7 +54,7 @@ bool receive_multipart_message(socket_t * socket, vector<string> &identities, ve
     return true;
 }
 
-bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages)
+bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages, int last_flags)
 {
     vector<string>::iterator identity = identities.begin();
     for (; identity != identities.end(); identity++) {
@@ -67,32 +67,37 @@ bool send_multipart_message(socket_t * socket, vector<string> &identities, vecto
     if (!socket->send(empty, ZMQ_SNDMORE)) return false;
 
     for (size_t i = 0; i < messages.size(); i++) {
-        if (!socket->send(*messages[i], i+1 == messages.size() ? 0 : ZMQ_SNDMORE)) return false;
+        if (!socket->send(*messages[i], i+1 == messages.size() ? last_flags : ZMQ_SNDMORE)) return false;
     }
 
     return true;
 }
 
-bool send_multipart_message(socket_t * socket, vector<string> &identities, message_t *message)
+bool send_multipart_message(socket_t * socket, vector<string> &identities, message_t *message, int last_flags)
 {
     vector<message_t *> messages;
     messages.push_back(message);
 
-    return send_multipart_message(socket, identities, messages);
+    return send_multipart_message(socket, identities, messages, last_flags);
 }
 
-bool send_envelope(socket_t *socket, Envelope &envelope)
+bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t &msg)
+{
+    return send_multipart_message(socket, identities, &msg, ZMQ_SNDMORE);
+}
+
+bool send_envelope(socket_t *socket, Envelope &envelope, int flags)
 {
     message_t msg;
     envelope.ToZmqMessage(msg);
-    return socket->send(msg, 0);
+    return socket->send(msg, flags);
 }
 
-bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope)
+bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope, int flags)
 {
     message_t msg;
     envelope.ToZmqMessage(msg);
-    return send_multipart_message(socket, identities, &msg);
+    return send_multipart_message(socket, identities, &msg, flags);
 }
 
 bool send_envelope_more(socket_t *socket, Envelope &envelope)

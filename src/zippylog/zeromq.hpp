@@ -36,12 +36,15 @@ namespace zeromq {
 bool receive_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages);
 
 // sends a multipart message with identities
-bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages);
+bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages, int last_flags=0);
 
-bool send_multipart_message(socket_t * socket, vector<string> &identities, message_t *message);
+bool send_multipart_message(socket_t * socket, vector<string> &identities, message_t *message, int last_flags=0);
 
-bool send_envelope(socket_t *socket, Envelope &envelope);
-bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope);
+// sends a multipart message with the last message having ZMQ_SNDMORE
+bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t &msg);
+
+bool send_envelope(socket_t *socket, Envelope &envelope, int flags=0);
+bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope, int flags=0);
 
 // sends an envelope with ZMQ_SNDMORE flag
 bool send_envelope_more(socket_t *socket, Envelope &envelope);
