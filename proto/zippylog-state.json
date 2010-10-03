@@ -16,9 +16,9 @@
       "zippylog.protocol.StoreChangeStreamSetAdded": 20, 
       "zippylog.zippylogd.WorkerReceiveEmptyMessage": 28, 
       "zippylog.zippylogd.WorkerSendErrorResponse": 39, 
+      "zippylog.message.Envelope": 5, 
       "zippylog.protocol.StoreChangeBucketDeleted": 19, 
       "zippylog.protocol.response.SubscribeAck": 24, 
-      "zippylog.protocol.request.SubscribeCancel": 25, 
       "zippylog.zippylogd.BrokerReceiveClientMessage": 14, 
       "zippylog.zippylogd.WorkerBeginProcessStoreInfo": 32, 
       "zippylog.protocol.request.SubscribeStoreChanges": 22, 
@@ -27,7 +27,7 @@
       "zippylog.message.ActorInfo": 6, 
       "zippylog.zippylogd.StreamerReceiveKeepalive": 41, 
       "zippylog.zippylogd.WorkerInvalidMessageEnumeration": 31, 
-      "zippylog.zippylogd.WorkerBeginProcessGet": 37, 
+      "zippylog.protocol.request.SubscribeCancel": 25, 
       "zippylog.zippylogd.WorkerReceiveInvalidGet": 34, 
       "zippylog.protocol.response.SubscriptionStart": 26, 
       "zippylog.protocol.StreamSetInfo": 2, 
@@ -43,7 +43,7 @@
       "zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive": 42, 
       "zippylog.protocol.StreamInfo": 1, 
       "zippylog.protocol.response.StreamSegmentStart": 7, 
-      "zippylog.message.Envelope": 5, 
+      "zippylog.zippylogd.WorkerBeginProcessGet": 37, 
       "zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription": 43
     }, 
     "google": {

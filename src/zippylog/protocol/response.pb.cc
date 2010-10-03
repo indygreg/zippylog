@@ -77,8 +77,9 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamSegmentEnd));
   SubscribeAck_descriptor_ = file->message_type(2);
-  static const int SubscribeAck_offsets_[1] = {
+  static const int SubscribeAck_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeAck, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeAck, ttl_),
   };
   SubscribeAck_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -174,18 +175,18 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "tart\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"\\\n\020St"
     "reamSegmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002"
     " \001(\004\022\022\n\nbytes_sent\030\003 \001(\r\022\026\n\016envelopes_se"
-    "nt\030\004 \001(\r\"\032\n\014SubscribeAck\022\n\n\002id\030\001 \001(\014\"\037\n\021"
-    "SubscriptionStart\022\n\n\002id\030\001 \001(\014\"I\n\005Error\0223"
-    "\n\004code\030\001 \001(\0162%.zippylog.protocol.respons"
-    "e.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032"
-    "\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031INVALID_ME"
-    "SSAGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYP"
-    "E\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUME"
-    "RATIONS\020\005\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017"
-    "\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERE"
-    "NT\020\010\022\031\n\025INVALID_STREAM_OFFSET\020\t\022\022\n\016INVAL"
-    "ID_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT"
-    "_EXCEEDED\020\014", 651);
+    "nt\030\004 \001(\r\"\'\n\014SubscribeAck\022\n\n\002id\030\001 \001(\014\022\013\n\003"
+    "ttl\030\002 \001(\r\"\037\n\021SubscriptionStart\022\n\n\002id\030\001 \001"
+    "(\014\"I\n\005Error\0223\n\004code\030\001 \001(\0162%.zippylog.pro"
+    "tocol.response.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002"
+    "\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAILURE\020\001\022"
+    "\035\n\031INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UNKNOW"
+    "N_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024"
+    "MISSING_ENUMERATIONS\020\005\022\033\n\027REQUEST_NOT_IM"
+    "PLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIELD_LE"
+    "NGTHS_DIFFERENT\020\010\022\031\n\025INVALID_STREAM_OFFS"
+    "ET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT_FOU"
+    "ND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014", 664);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
@@ -848,6 +849,7 @@ void StreamSegmentEnd::Swap(StreamSegmentEnd* other) {
 const ::std::string SubscribeAck::_default_id_;
 #ifndef _MSC_VER
 const int SubscribeAck::kIdFieldNumber;
+const int SubscribeAck::kTtlFieldNumber;
 #endif  // !_MSC_VER
 
 SubscribeAck::SubscribeAck()
@@ -867,6 +869,7 @@ SubscribeAck::SubscribeAck(const SubscribeAck& from)
 void SubscribeAck::SharedCtor() {
   _cached_size_ = 0;
   id_ = const_cast< ::std::string*>(&_default_id_);
+  ttl_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -909,6 +912,7 @@ void SubscribeAck::Clear() {
         id_->clear();
       }
     }
+    ttl_ = 0u;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -926,6 +930,22 @@ bool SubscribeAck::MergePartialFromCodedStream(
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_ttl;
+        break;
+      }
+      
+      // optional uint32 ttl = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_ttl:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &ttl_)));
+          _set_bit(1);
         } else {
           goto handle_uninterpreted;
         }
@@ -957,6 +977,11 @@ void SubscribeAck::SerializeWithCachedSizes(
       1, this->id(), output);
   }
   
+  // optional uint32 ttl = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->ttl(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -970,6 +995,11 @@ void SubscribeAck::SerializeWithCachedSizes(
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
+  }
+  
+  // optional uint32 ttl = 2;
+  if (_has_bit(1)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->ttl(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -988,6 +1018,13 @@ int SubscribeAck::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional uint32 ttl = 2;
+    if (has_ttl()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->ttl());
     }
     
   }
@@ -1020,6 +1057,9 @@ void SubscribeAck::MergeFrom(const SubscribeAck& from) {
     if (from._has_bit(0)) {
       set_id(from.id());
     }
+    if (from._has_bit(1)) {
+      set_ttl(from.ttl());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1044,6 +1084,7 @@ bool SubscribeAck::IsInitialized() const {
 void SubscribeAck::Swap(SubscribeAck* other) {
   if (other != this) {
     std::swap(id_, other->id_);
+    std::swap(ttl_, other->ttl_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
