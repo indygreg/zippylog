@@ -4,23 +4,37 @@
 // others are written to zippylogd's own zippylog stream
 package zippylog.zippylogd;
 
+// -------------------
+// Broker Log Events |
+// -------------------
+
 message BrokerStartup {
+    optional bytes id = 1;
+
     // path to store broker bound to
-    optional string store_path = 1;
+    optional string store_path = 2;
 
     // list of endpoints to which broker is listening for requests
-    repeated string listen_endpoints = 2;
+    repeated string listen_endpoints = 3;
 }
 
 // dropped when broker stops
 message BrokerShutdown {
-
+    optional bytes id = 1;
 }
 
 // when a 0MQ message is received by the broker
 message BrokerReceiveClientMessage {
 
 }
+
+message BrokerFlushOutputStreams {
+    optional bytes id = 1;
+}
+
+// -------------------
+// Worker Log Events |
+// -------------------
 
 message WorkerStartup {
     optional bytes id = 1;

@@ -37,6 +37,7 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
 class BrokerStartup;
 class BrokerShutdown;
 class BrokerReceiveClientMessage;
+class BrokerFlushOutputStreams;
 class WorkerStartup;
 class WorkerShutdown;
 class WorkerFailReceiveMessage;
@@ -120,20 +121,30 @@ class BrokerStartup : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string store_path = 1;
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string store_path = 2;
   inline bool has_store_path() const;
   inline void clear_store_path();
-  static const int kStorePathFieldNumber = 1;
+  static const int kStorePathFieldNumber = 2;
   inline const ::std::string& store_path() const;
   inline void set_store_path(const ::std::string& value);
   inline void set_store_path(const char* value);
   inline void set_store_path(const char* value, size_t size);
   inline ::std::string* mutable_store_path();
   
-  // repeated string listen_endpoints = 2;
+  // repeated string listen_endpoints = 3;
   inline int listen_endpoints_size() const;
   inline void clear_listen_endpoints();
-  static const int kListenEndpointsFieldNumber = 2;
+  static const int kListenEndpointsFieldNumber = 3;
   inline const ::std::string& listen_endpoints(int index) const;
   inline ::std::string* mutable_listen_endpoints(int index);
   inline void set_listen_endpoints(int index, const ::std::string& value);
@@ -154,6 +165,8 @@ class BrokerStartup : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   ::std::string* store_path_;
   static const ::std::string _default_store_path_;
   ::google::protobuf::RepeatedPtrField< ::std::string> listen_endpoints_;
@@ -161,7 +174,7 @@ class BrokerStartup : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -233,6 +246,16 @@ class BrokerShutdown : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 13;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -241,11 +264,13 @@ class BrokerShutdown : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -344,6 +369,102 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static BrokerReceiveClientMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class BrokerFlushOutputStreams : public ::google::protobuf::Message {
+ public:
+  BrokerFlushOutputStreams();
+  virtual ~BrokerFlushOutputStreams();
+  
+  BrokerFlushOutputStreams(const BrokerFlushOutputStreams& from);
+  
+  inline BrokerFlushOutputStreams& operator=(const BrokerFlushOutputStreams& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BrokerFlushOutputStreams& default_instance();
+  
+  void Swap(BrokerFlushOutputStreams* other);
+  
+  // implements Message ----------------------------------------------
+  
+  BrokerFlushOutputStreams* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const BrokerFlushOutputStreams& from);
+  void MergeFrom(const BrokerFlushOutputStreams& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 53;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static BrokerFlushOutputStreams* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2940,49 +3061,91 @@ class StoreWatcherShutdown : public ::google::protobuf::Message {
 
 // BrokerStartup
 
-// optional string store_path = 1;
-inline bool BrokerStartup::has_store_path() const {
+// optional bytes id = 1;
+inline bool BrokerStartup::has_id() const {
   return _has_bit(0);
+}
+inline void BrokerStartup::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BrokerStartup::id() const {
+  return *id_;
+}
+inline void BrokerStartup::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerStartup::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerStartup::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BrokerStartup::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string store_path = 2;
+inline bool BrokerStartup::has_store_path() const {
+  return _has_bit(1);
 }
 inline void BrokerStartup::clear_store_path() {
   if (store_path_ != &_default_store_path_) {
     store_path_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& BrokerStartup::store_path() const {
   return *store_path_;
 }
 inline void BrokerStartup::set_store_path(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (store_path_ == &_default_store_path_) {
     store_path_ = new ::std::string;
   }
   store_path_->assign(value);
 }
 inline void BrokerStartup::set_store_path(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (store_path_ == &_default_store_path_) {
     store_path_ = new ::std::string;
   }
   store_path_->assign(value);
 }
 inline void BrokerStartup::set_store_path(const char* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (store_path_ == &_default_store_path_) {
     store_path_ = new ::std::string;
   }
   store_path_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* BrokerStartup::mutable_store_path() {
-  _set_bit(0);
+  _set_bit(1);
   if (store_path_ == &_default_store_path_) {
     store_path_ = new ::std::string;
   }
   return store_path_;
 }
 
-// repeated string listen_endpoints = 2;
+// repeated string listen_endpoints = 3;
 inline int BrokerStartup::listen_endpoints_size() const {
   return listen_endpoints_.size();
 }
@@ -3030,9 +3193,97 @@ BrokerStartup::mutable_listen_endpoints() {
 
 // BrokerShutdown
 
+// optional bytes id = 1;
+inline bool BrokerShutdown::has_id() const {
+  return _has_bit(0);
+}
+inline void BrokerShutdown::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BrokerShutdown::id() const {
+  return *id_;
+}
+inline void BrokerShutdown::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerShutdown::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerShutdown::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BrokerShutdown::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
 // -------------------------------------------------------------------
 
 // BrokerReceiveClientMessage
+
+// -------------------------------------------------------------------
+
+// BrokerFlushOutputStreams
+
+// optional bytes id = 1;
+inline bool BrokerFlushOutputStreams::has_id() const {
+  return _has_bit(0);
+}
+inline void BrokerFlushOutputStreams::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BrokerFlushOutputStreams::id() const {
+  return *id_;
+}
+inline void BrokerFlushOutputStreams::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerFlushOutputStreams::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BrokerFlushOutputStreams::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BrokerFlushOutputStreams::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
 
 // -------------------------------------------------------------------
 

@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1b\n\rWorkerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x0eWorkerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"&\n\x18WorkerFailReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"B\n\x1fWorkerReceiveUnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"\'\n\x19WorkerRequestParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\"(\n\x1aWorkerRequestEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"-\n\x1fWorkerInvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\")\n\x1bWorkerBeginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerEndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"%\n\x17WorkerReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15WorkerBeginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13WorkerEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"6\n\x17WorkerSendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"C\n\x1fWorkerForwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"\x1d\n\x0fStreamerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10StreamerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"?\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"<\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"L\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"N\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"E\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"I\n\rBrokerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x03 \x03(\t\"\x1c\n\x0e\x42rokerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x1a\x42rokerReceiveClientMessage\"&\n\x18\x42rokerFlushOutputStreams\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rWorkerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x0eWorkerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"&\n\x18WorkerFailReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"B\n\x1fWorkerReceiveUnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"\'\n\x19WorkerRequestParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\"(\n\x1aWorkerRequestEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"-\n\x1fWorkerInvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\")\n\x1bWorkerBeginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerEndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"%\n\x17WorkerReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15WorkerBeginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13WorkerEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"6\n\x17WorkerSendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"C\n\x1fWorkerForwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"\x1d\n\x0fStreamerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10StreamerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"?\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"<\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"L\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"N\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"E\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -24,15 +24,22 @@ _BROKERSTARTUP = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='store_path', full_name='zippylog.zippylogd.BrokerStartup.store_path', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='id', full_name='zippylog.zippylogd.BrokerStartup.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='store_path', full_name='zippylog.zippylogd.BrokerStartup.store_path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='listen_endpoints', full_name='zippylog.zippylogd.BrokerStartup.listen_endpoints', index=1,
-      number=2, type=9, cpp_type=9, label=3,
+      name='listen_endpoints', full_name='zippylog.zippylogd.BrokerStartup.listen_endpoints', index=2,
+      number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -47,7 +54,7 @@ _BROKERSTARTUP = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=48,
-  serialized_end=109,
+  serialized_end=121,
 )
 
 
@@ -58,6 +65,13 @@ _BROKERSHUTDOWN = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.BrokerShutdown.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -67,8 +81,8 @@ _BROKERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=111,
-  serialized_end=127,
+  serialized_start=123,
+  serialized_end=151,
 )
 
 
@@ -88,8 +102,36 @@ _BROKERRECEIVECLIENTMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=129,
-  serialized_end=157,
+  serialized_start=153,
+  serialized_end=181,
+)
+
+
+_BROKERFLUSHOUTPUTSTREAMS = descriptor.Descriptor(
+  name='BrokerFlushOutputStreams',
+  full_name='zippylog.zippylogd.BrokerFlushOutputStreams',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.BrokerFlushOutputStreams.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=183,
+  serialized_end=221,
 )
 
 
@@ -116,8 +158,8 @@ _WORKERSTARTUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=159,
-  serialized_end=186,
+  serialized_start=223,
+  serialized_end=250,
 )
 
 
@@ -144,8 +186,8 @@ _WORKERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=188,
-  serialized_end=216,
+  serialized_start=252,
+  serialized_end=280,
 )
 
 
@@ -172,8 +214,8 @@ _WORKERFAILRECEIVEMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=218,
-  serialized_end=256,
+  serialized_start=282,
+  serialized_end=320,
 )
 
 
@@ -200,8 +242,8 @@ _WORKERRECEIVEEMPTYMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=258,
-  serialized_end=297,
+  serialized_start=322,
+  serialized_end=361,
 )
 
 
@@ -235,8 +277,8 @@ _WORKERRECEIVEUNKNOWNREQUESTTYPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=299,
-  serialized_end=365,
+  serialized_start=363,
+  serialized_end=429,
 )
 
 
@@ -263,8 +305,8 @@ _WORKERREQUESTPARSEFAILURE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=367,
-  serialized_end=406,
+  serialized_start=431,
+  serialized_end=470,
 )
 
 
@@ -291,8 +333,8 @@ _WORKERREQUESTEMPTYENVELOPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=408,
-  serialized_end=448,
+  serialized_start=472,
+  serialized_end=512,
 )
 
 
@@ -319,8 +361,8 @@ _WORKERINVALIDMESSAGEENUMERATION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=450,
-  serialized_end=495,
+  serialized_start=514,
+  serialized_end=559,
 )
 
 
@@ -347,8 +389,8 @@ _WORKERBEGINPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=497,
-  serialized_end=538,
+  serialized_start=561,
+  serialized_end=602,
 )
 
 
@@ -375,8 +417,8 @@ _WORKERENDPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=540,
-  serialized_end=579,
+  serialized_start=604,
+  serialized_end=643,
 )
 
 
@@ -403,8 +445,8 @@ _WORKERRECEIVEINVALIDGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=581,
-  serialized_end=618,
+  serialized_start=645,
+  serialized_end=682,
 )
 
 
@@ -431,8 +473,8 @@ _WORKERGETINVALIDSTREAM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=620,
-  serialized_end=656,
+  serialized_start=684,
+  serialized_end=720,
 )
 
 
@@ -459,8 +501,8 @@ _WORKERGETINVALIDOFFSET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=658,
-  serialized_end=694,
+  serialized_start=722,
+  serialized_end=758,
 )
 
 
@@ -487,8 +529,8 @@ _WORKERBEGINPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=696,
-  serialized_end=731,
+  serialized_start=760,
+  serialized_end=795,
 )
 
 
@@ -515,8 +557,8 @@ _WORKERENDPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=733,
-  serialized_end=766,
+  serialized_start=797,
+  serialized_end=830,
 )
 
 
@@ -550,8 +592,8 @@ _WORKERSENDERRORRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=768,
-  serialized_end=822,
+  serialized_start=832,
+  serialized_end=886,
 )
 
 
@@ -585,8 +627,8 @@ _WORKERFORWARDSUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=824,
-  serialized_end=891,
+  serialized_start=888,
+  serialized_end=955,
 )
 
 
@@ -613,8 +655,8 @@ _STREAMERSTARTUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=893,
-  serialized_end=922,
+  serialized_start=957,
+  serialized_end=986,
 )
 
 
@@ -641,8 +683,8 @@ _STREAMERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=924,
-  serialized_end=954,
+  serialized_start=988,
+  serialized_end=1018,
 )
 
 
@@ -676,8 +718,8 @@ _STREAMERSUBSCRIPTIONEXPIRED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=956,
-  serialized_end=1019,
+  serialized_start=1020,
+  serialized_end=1083,
 )
 
 
@@ -711,8 +753,8 @@ _STREAMERRECEIVEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1021,
-  serialized_end=1081,
+  serialized_start=1085,
+  serialized_end=1145,
 )
 
 
@@ -746,8 +788,8 @@ _STREAMERSUBSCRIPTIONRENEWEDFROMKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1083,
-  serialized_end=1159,
+  serialized_start=1147,
+  serialized_end=1223,
 )
 
 
@@ -781,8 +823,8 @@ _STREAMERREJECTKEEPALIVEUNKNOWNSUBSCRIPTION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1161,
-  serialized_end=1239,
+  serialized_start=1225,
+  serialized_end=1303,
 )
 
 
@@ -816,8 +858,8 @@ _STREAMERERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1241,
-  serialized_end=1310,
+  serialized_start=1305,
+  serialized_end=1374,
 )
 
 
@@ -844,8 +886,8 @@ _STOREWATCHERSTARTUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1312,
-  serialized_end=1345,
+  serialized_start=1376,
+  serialized_end=1409,
 )
 
 
@@ -872,8 +914,8 @@ _STOREWATCHERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1347,
-  serialized_end=1381,
+  serialized_start=1411,
+  serialized_end=1445,
 )
 
 
@@ -901,6 +943,14 @@ class BrokerReceiveClientMessage(message.Message):
   ZIPPYLOG_NAMESPACE = 1
   ZIPPYLOG_ENUMERATION = 14
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
+
+class BrokerFlushOutputStreams(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BROKERFLUSHOUTPUTSTREAMS
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 53
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
 
 class WorkerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -1113,6 +1163,7 @@ class StoreWatcherShutdown(message.Message):
 register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
 register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
 register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
+register_message(1, 53, 'zippylog.zippylogd_pb2', 'BrokerFlushOutputStreams')
 register_message(1, 45, 'zippylog.zippylogd_pb2', 'WorkerStartup')
 register_message(1, 46, 'zippylog.zippylogd_pb2', 'WorkerShutdown')
 register_message(1, 27, 'zippylog.zippylogd_pb2', 'WorkerFailReceiveMessage')
