@@ -24,6 +24,45 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* BrokerReceiveClientMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   BrokerReceiveClientMessage_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerFailReceiveMessage_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerFailReceiveMessage_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerReceiveEmptyMessage_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerReceiveEmptyMessage_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerRequestParseFailure_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerRequestParseFailure_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerRequestEmptyEnvelope_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerRequestEmptyEnvelope_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerInvalidMessageEnumeration_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerInvalidMessageEnumeration_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerBeginProcessStoreInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerBeginProcessStoreInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerEndProcessStoreInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerEndProcessStoreInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerReceiveInvalidGet_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerReceiveInvalidGet_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerGetInvalidStream_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerGetInvalidStream_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerGetInvalidOffset_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerGetInvalidOffset_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerBeginProcessGet_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerBeginProcessGet_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerEndProcessGet_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerEndProcessGet_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerSendErrorResponse_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerSendErrorResponse_reflection_ = NULL;
 
 }  // namespace
 
@@ -78,6 +117,189 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BrokerReceiveClientMessage));
+  WorkerFailReceiveMessage_descriptor_ = file->message_type(3);
+  static const int WorkerFailReceiveMessage_offsets_[1] = {
+  };
+  WorkerFailReceiveMessage_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerFailReceiveMessage_descriptor_,
+      WorkerFailReceiveMessage::default_instance_,
+      WorkerFailReceiveMessage_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerFailReceiveMessage, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerFailReceiveMessage, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerFailReceiveMessage));
+  WorkerReceiveEmptyMessage_descriptor_ = file->message_type(4);
+  static const int WorkerReceiveEmptyMessage_offsets_[1] = {
+  };
+  WorkerReceiveEmptyMessage_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerReceiveEmptyMessage_descriptor_,
+      WorkerReceiveEmptyMessage::default_instance_,
+      WorkerReceiveEmptyMessage_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveEmptyMessage, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveEmptyMessage, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerReceiveEmptyMessage));
+  WorkerRequestParseFailure_descriptor_ = file->message_type(5);
+  static const int WorkerRequestParseFailure_offsets_[1] = {
+  };
+  WorkerRequestParseFailure_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerRequestParseFailure_descriptor_,
+      WorkerRequestParseFailure::default_instance_,
+      WorkerRequestParseFailure_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestParseFailure, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestParseFailure, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerRequestParseFailure));
+  WorkerRequestEmptyEnvelope_descriptor_ = file->message_type(6);
+  static const int WorkerRequestEmptyEnvelope_offsets_[1] = {
+  };
+  WorkerRequestEmptyEnvelope_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerRequestEmptyEnvelope_descriptor_,
+      WorkerRequestEmptyEnvelope::default_instance_,
+      WorkerRequestEmptyEnvelope_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestEmptyEnvelope, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestEmptyEnvelope, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerRequestEmptyEnvelope));
+  WorkerInvalidMessageEnumeration_descriptor_ = file->message_type(7);
+  static const int WorkerInvalidMessageEnumeration_offsets_[1] = {
+  };
+  WorkerInvalidMessageEnumeration_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerInvalidMessageEnumeration_descriptor_,
+      WorkerInvalidMessageEnumeration::default_instance_,
+      WorkerInvalidMessageEnumeration_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerInvalidMessageEnumeration, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerInvalidMessageEnumeration, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerInvalidMessageEnumeration));
+  WorkerBeginProcessStoreInfo_descriptor_ = file->message_type(8);
+  static const int WorkerBeginProcessStoreInfo_offsets_[1] = {
+  };
+  WorkerBeginProcessStoreInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerBeginProcessStoreInfo_descriptor_,
+      WorkerBeginProcessStoreInfo::default_instance_,
+      WorkerBeginProcessStoreInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessStoreInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessStoreInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerBeginProcessStoreInfo));
+  WorkerEndProcessStoreInfo_descriptor_ = file->message_type(9);
+  static const int WorkerEndProcessStoreInfo_offsets_[1] = {
+  };
+  WorkerEndProcessStoreInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerEndProcessStoreInfo_descriptor_,
+      WorkerEndProcessStoreInfo::default_instance_,
+      WorkerEndProcessStoreInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessStoreInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessStoreInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerEndProcessStoreInfo));
+  WorkerReceiveInvalidGet_descriptor_ = file->message_type(10);
+  static const int WorkerReceiveInvalidGet_offsets_[1] = {
+  };
+  WorkerReceiveInvalidGet_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerReceiveInvalidGet_descriptor_,
+      WorkerReceiveInvalidGet::default_instance_,
+      WorkerReceiveInvalidGet_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveInvalidGet, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveInvalidGet, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerReceiveInvalidGet));
+  WorkerGetInvalidStream_descriptor_ = file->message_type(11);
+  static const int WorkerGetInvalidStream_offsets_[1] = {
+  };
+  WorkerGetInvalidStream_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerGetInvalidStream_descriptor_,
+      WorkerGetInvalidStream::default_instance_,
+      WorkerGetInvalidStream_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidStream, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidStream, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerGetInvalidStream));
+  WorkerGetInvalidOffset_descriptor_ = file->message_type(12);
+  static const int WorkerGetInvalidOffset_offsets_[1] = {
+  };
+  WorkerGetInvalidOffset_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerGetInvalidOffset_descriptor_,
+      WorkerGetInvalidOffset::default_instance_,
+      WorkerGetInvalidOffset_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidOffset, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidOffset, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerGetInvalidOffset));
+  WorkerBeginProcessGet_descriptor_ = file->message_type(13);
+  static const int WorkerBeginProcessGet_offsets_[1] = {
+  };
+  WorkerBeginProcessGet_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerBeginProcessGet_descriptor_,
+      WorkerBeginProcessGet::default_instance_,
+      WorkerBeginProcessGet_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessGet, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessGet, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerBeginProcessGet));
+  WorkerEndProcessGet_descriptor_ = file->message_type(14);
+  static const int WorkerEndProcessGet_offsets_[1] = {
+  };
+  WorkerEndProcessGet_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerEndProcessGet_descriptor_,
+      WorkerEndProcessGet::default_instance_,
+      WorkerEndProcessGet_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessGet, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessGet, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerEndProcessGet));
+  WorkerSendErrorResponse_descriptor_ = file->message_type(15);
+  static const int WorkerSendErrorResponse_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, message_),
+  };
+  WorkerSendErrorResponse_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerSendErrorResponse_descriptor_,
+      WorkerSendErrorResponse::default_instance_,
+      WorkerSendErrorResponse_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerSendErrorResponse));
 }
 
 namespace {
@@ -96,6 +318,32 @@ void protobuf_RegisterTypes(const ::std::string&) {
     BrokerShutdown_descriptor_, &BrokerShutdown::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     BrokerReceiveClientMessage_descriptor_, &BrokerReceiveClientMessage::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerFailReceiveMessage_descriptor_, &WorkerFailReceiveMessage::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerReceiveEmptyMessage_descriptor_, &WorkerReceiveEmptyMessage::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerRequestParseFailure_descriptor_, &WorkerRequestParseFailure::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerRequestEmptyEnvelope_descriptor_, &WorkerRequestEmptyEnvelope::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerInvalidMessageEnumeration_descriptor_, &WorkerInvalidMessageEnumeration::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerBeginProcessStoreInfo_descriptor_, &WorkerBeginProcessStoreInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerEndProcessStoreInfo_descriptor_, &WorkerEndProcessStoreInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerReceiveInvalidGet_descriptor_, &WorkerReceiveInvalidGet::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerGetInvalidStream_descriptor_, &WorkerGetInvalidStream::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerGetInvalidOffset_descriptor_, &WorkerGetInvalidOffset::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerBeginProcessGet_descriptor_, &WorkerBeginProcessGet::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerEndProcessGet_descriptor_, &WorkerEndProcessGet::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerSendErrorResponse_descriptor_, &WorkerSendErrorResponse::default_instance());
 }
 
 }  // namespace
@@ -107,6 +355,32 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto() {
   delete BrokerShutdown_reflection_;
   delete BrokerReceiveClientMessage::default_instance_;
   delete BrokerReceiveClientMessage_reflection_;
+  delete WorkerFailReceiveMessage::default_instance_;
+  delete WorkerFailReceiveMessage_reflection_;
+  delete WorkerReceiveEmptyMessage::default_instance_;
+  delete WorkerReceiveEmptyMessage_reflection_;
+  delete WorkerRequestParseFailure::default_instance_;
+  delete WorkerRequestParseFailure_reflection_;
+  delete WorkerRequestEmptyEnvelope::default_instance_;
+  delete WorkerRequestEmptyEnvelope_reflection_;
+  delete WorkerInvalidMessageEnumeration::default_instance_;
+  delete WorkerInvalidMessageEnumeration_reflection_;
+  delete WorkerBeginProcessStoreInfo::default_instance_;
+  delete WorkerBeginProcessStoreInfo_reflection_;
+  delete WorkerEndProcessStoreInfo::default_instance_;
+  delete WorkerEndProcessStoreInfo_reflection_;
+  delete WorkerReceiveInvalidGet::default_instance_;
+  delete WorkerReceiveInvalidGet_reflection_;
+  delete WorkerGetInvalidStream::default_instance_;
+  delete WorkerGetInvalidStream_reflection_;
+  delete WorkerGetInvalidOffset::default_instance_;
+  delete WorkerGetInvalidOffset_reflection_;
+  delete WorkerBeginProcessGet::default_instance_;
+  delete WorkerBeginProcessGet_reflection_;
+  delete WorkerEndProcessGet::default_instance_;
+  delete WorkerEndProcessGet_reflection_;
+  delete WorkerSendErrorResponse::default_instance_;
+  delete WorkerSendErrorResponse_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
@@ -119,15 +393,51 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
     "\n\030zippylog/zippylogd.proto\022\022zippylog.zip"
     "pylogd\"=\n\rBrokerStartup\022\022\n\nstore_path\030\001 "
     "\001(\t\022\030\n\020listen_endpoints\030\002 \003(\t\"\020\n\016BrokerS"
-    "hutdown\"\034\n\032BrokerReceiveClientMessage", 157);
+    "hutdown\"\034\n\032BrokerReceiveClientMessage\"\032\n"
+    "\030WorkerFailReceiveMessage\"\033\n\031WorkerRecei"
+    "veEmptyMessage\"\033\n\031WorkerRequestParseFail"
+    "ure\"\034\n\032WorkerRequestEmptyEnvelope\"!\n\037Wor"
+    "kerInvalidMessageEnumeration\"\035\n\033WorkerBe"
+    "ginProcessStoreInfo\"\033\n\031WorkerEndProcessS"
+    "toreInfo\"\031\n\027WorkerReceiveInvalidGet\"\030\n\026W"
+    "orkerGetInvalidStream\"\030\n\026WorkerGetInvali"
+    "dOffset\"\027\n\025WorkerBeginProcessGet\"\025\n\023Work"
+    "erEndProcessGet\"*\n\027WorkerSendErrorRespon"
+    "se\022\017\n\007message\030\001 \001(\t", 539);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
   BrokerShutdown::default_instance_ = new BrokerShutdown();
   BrokerReceiveClientMessage::default_instance_ = new BrokerReceiveClientMessage();
+  WorkerFailReceiveMessage::default_instance_ = new WorkerFailReceiveMessage();
+  WorkerReceiveEmptyMessage::default_instance_ = new WorkerReceiveEmptyMessage();
+  WorkerRequestParseFailure::default_instance_ = new WorkerRequestParseFailure();
+  WorkerRequestEmptyEnvelope::default_instance_ = new WorkerRequestEmptyEnvelope();
+  WorkerInvalidMessageEnumeration::default_instance_ = new WorkerInvalidMessageEnumeration();
+  WorkerBeginProcessStoreInfo::default_instance_ = new WorkerBeginProcessStoreInfo();
+  WorkerEndProcessStoreInfo::default_instance_ = new WorkerEndProcessStoreInfo();
+  WorkerReceiveInvalidGet::default_instance_ = new WorkerReceiveInvalidGet();
+  WorkerGetInvalidStream::default_instance_ = new WorkerGetInvalidStream();
+  WorkerGetInvalidOffset::default_instance_ = new WorkerGetInvalidOffset();
+  WorkerBeginProcessGet::default_instance_ = new WorkerBeginProcessGet();
+  WorkerEndProcessGet::default_instance_ = new WorkerEndProcessGet();
+  WorkerSendErrorResponse::default_instance_ = new WorkerSendErrorResponse();
   BrokerStartup::default_instance_->InitAsDefaultInstance();
   BrokerShutdown::default_instance_->InitAsDefaultInstance();
   BrokerReceiveClientMessage::default_instance_->InitAsDefaultInstance();
+  WorkerFailReceiveMessage::default_instance_->InitAsDefaultInstance();
+  WorkerReceiveEmptyMessage::default_instance_->InitAsDefaultInstance();
+  WorkerRequestParseFailure::default_instance_->InitAsDefaultInstance();
+  WorkerRequestEmptyEnvelope::default_instance_->InitAsDefaultInstance();
+  WorkerInvalidMessageEnumeration::default_instance_->InitAsDefaultInstance();
+  WorkerBeginProcessStoreInfo::default_instance_->InitAsDefaultInstance();
+  WorkerEndProcessStoreInfo::default_instance_->InitAsDefaultInstance();
+  WorkerReceiveInvalidGet::default_instance_->InitAsDefaultInstance();
+  WorkerGetInvalidStream::default_instance_->InitAsDefaultInstance();
+  WorkerGetInvalidOffset::default_instance_->InitAsDefaultInstance();
+  WorkerBeginProcessGet::default_instance_->InitAsDefaultInstance();
+  WorkerEndProcessGet::default_instance_->InitAsDefaultInstance();
+  WorkerSendErrorResponse::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto);
 }
 
@@ -721,6 +1031,2091 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 }
 
 
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerFailReceiveMessage::WorkerFailReceiveMessage()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerFailReceiveMessage::InitAsDefaultInstance() {
+}
+
+WorkerFailReceiveMessage::WorkerFailReceiveMessage(const WorkerFailReceiveMessage& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerFailReceiveMessage::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerFailReceiveMessage::~WorkerFailReceiveMessage() {
+  SharedDtor();
+}
+
+void WorkerFailReceiveMessage::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerFailReceiveMessage::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerFailReceiveMessage::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerFailReceiveMessage_descriptor_;
+}
+
+const WorkerFailReceiveMessage& WorkerFailReceiveMessage::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerFailReceiveMessage* WorkerFailReceiveMessage::default_instance_ = NULL;
+
+WorkerFailReceiveMessage* WorkerFailReceiveMessage::New() const {
+  return new WorkerFailReceiveMessage;
+}
+
+void WorkerFailReceiveMessage::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerFailReceiveMessage::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerFailReceiveMessage::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerFailReceiveMessage::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerFailReceiveMessage::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerFailReceiveMessage::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerFailReceiveMessage* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerFailReceiveMessage*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerFailReceiveMessage::MergeFrom(const WorkerFailReceiveMessage& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerFailReceiveMessage::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerFailReceiveMessage::CopyFrom(const WorkerFailReceiveMessage& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerFailReceiveMessage::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerFailReceiveMessage::Swap(WorkerFailReceiveMessage* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerFailReceiveMessage::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerFailReceiveMessage_descriptor_;
+  metadata.reflection = WorkerFailReceiveMessage_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerReceiveEmptyMessage::InitAsDefaultInstance() {
+}
+
+WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage(const WorkerReceiveEmptyMessage& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerReceiveEmptyMessage::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerReceiveEmptyMessage::~WorkerReceiveEmptyMessage() {
+  SharedDtor();
+}
+
+void WorkerReceiveEmptyMessage::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerReceiveEmptyMessage::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerReceiveEmptyMessage::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerReceiveEmptyMessage_descriptor_;
+}
+
+const WorkerReceiveEmptyMessage& WorkerReceiveEmptyMessage::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerReceiveEmptyMessage* WorkerReceiveEmptyMessage::default_instance_ = NULL;
+
+WorkerReceiveEmptyMessage* WorkerReceiveEmptyMessage::New() const {
+  return new WorkerReceiveEmptyMessage;
+}
+
+void WorkerReceiveEmptyMessage::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerReceiveEmptyMessage::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerReceiveEmptyMessage::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerReceiveEmptyMessage::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerReceiveEmptyMessage::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerReceiveEmptyMessage* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerReceiveEmptyMessage*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerReceiveEmptyMessage::MergeFrom(const WorkerReceiveEmptyMessage& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerReceiveEmptyMessage::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerReceiveEmptyMessage::CopyFrom(const WorkerReceiveEmptyMessage& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerReceiveEmptyMessage::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerReceiveEmptyMessage::Swap(WorkerReceiveEmptyMessage* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerReceiveEmptyMessage::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerReceiveEmptyMessage_descriptor_;
+  metadata.reflection = WorkerReceiveEmptyMessage_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerRequestParseFailure::WorkerRequestParseFailure()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerRequestParseFailure::InitAsDefaultInstance() {
+}
+
+WorkerRequestParseFailure::WorkerRequestParseFailure(const WorkerRequestParseFailure& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerRequestParseFailure::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerRequestParseFailure::~WorkerRequestParseFailure() {
+  SharedDtor();
+}
+
+void WorkerRequestParseFailure::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerRequestParseFailure::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerRequestParseFailure::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerRequestParseFailure_descriptor_;
+}
+
+const WorkerRequestParseFailure& WorkerRequestParseFailure::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerRequestParseFailure* WorkerRequestParseFailure::default_instance_ = NULL;
+
+WorkerRequestParseFailure* WorkerRequestParseFailure::New() const {
+  return new WorkerRequestParseFailure;
+}
+
+void WorkerRequestParseFailure::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerRequestParseFailure::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerRequestParseFailure::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerRequestParseFailure::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerRequestParseFailure::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerRequestParseFailure::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerRequestParseFailure* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerRequestParseFailure*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerRequestParseFailure::MergeFrom(const WorkerRequestParseFailure& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerRequestParseFailure::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerRequestParseFailure::CopyFrom(const WorkerRequestParseFailure& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerRequestParseFailure::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerRequestParseFailure::Swap(WorkerRequestParseFailure* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerRequestParseFailure::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerRequestParseFailure_descriptor_;
+  metadata.reflection = WorkerRequestParseFailure_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerRequestEmptyEnvelope::InitAsDefaultInstance() {
+}
+
+WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope(const WorkerRequestEmptyEnvelope& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerRequestEmptyEnvelope::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerRequestEmptyEnvelope::~WorkerRequestEmptyEnvelope() {
+  SharedDtor();
+}
+
+void WorkerRequestEmptyEnvelope::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerRequestEmptyEnvelope::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerRequestEmptyEnvelope::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerRequestEmptyEnvelope_descriptor_;
+}
+
+const WorkerRequestEmptyEnvelope& WorkerRequestEmptyEnvelope::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerRequestEmptyEnvelope* WorkerRequestEmptyEnvelope::default_instance_ = NULL;
+
+WorkerRequestEmptyEnvelope* WorkerRequestEmptyEnvelope::New() const {
+  return new WorkerRequestEmptyEnvelope;
+}
+
+void WorkerRequestEmptyEnvelope::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerRequestEmptyEnvelope::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerRequestEmptyEnvelope::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerRequestEmptyEnvelope::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerRequestEmptyEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerRequestEmptyEnvelope* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerRequestEmptyEnvelope*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerRequestEmptyEnvelope::MergeFrom(const WorkerRequestEmptyEnvelope& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerRequestEmptyEnvelope::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerRequestEmptyEnvelope::CopyFrom(const WorkerRequestEmptyEnvelope& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerRequestEmptyEnvelope::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerRequestEmptyEnvelope::Swap(WorkerRequestEmptyEnvelope* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerRequestEmptyEnvelope::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerRequestEmptyEnvelope_descriptor_;
+  metadata.reflection = WorkerRequestEmptyEnvelope_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerInvalidMessageEnumeration::InitAsDefaultInstance() {
+}
+
+WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration(const WorkerInvalidMessageEnumeration& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerInvalidMessageEnumeration::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerInvalidMessageEnumeration::~WorkerInvalidMessageEnumeration() {
+  SharedDtor();
+}
+
+void WorkerInvalidMessageEnumeration::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerInvalidMessageEnumeration::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerInvalidMessageEnumeration::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerInvalidMessageEnumeration_descriptor_;
+}
+
+const WorkerInvalidMessageEnumeration& WorkerInvalidMessageEnumeration::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerInvalidMessageEnumeration* WorkerInvalidMessageEnumeration::default_instance_ = NULL;
+
+WorkerInvalidMessageEnumeration* WorkerInvalidMessageEnumeration::New() const {
+  return new WorkerInvalidMessageEnumeration;
+}
+
+void WorkerInvalidMessageEnumeration::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerInvalidMessageEnumeration::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerInvalidMessageEnumeration::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerInvalidMessageEnumeration::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerInvalidMessageEnumeration::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerInvalidMessageEnumeration* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerInvalidMessageEnumeration*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerInvalidMessageEnumeration::MergeFrom(const WorkerInvalidMessageEnumeration& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerInvalidMessageEnumeration::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerInvalidMessageEnumeration::CopyFrom(const WorkerInvalidMessageEnumeration& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerInvalidMessageEnumeration::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerInvalidMessageEnumeration::Swap(WorkerInvalidMessageEnumeration* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerInvalidMessageEnumeration::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerInvalidMessageEnumeration_descriptor_;
+  metadata.reflection = WorkerInvalidMessageEnumeration_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerBeginProcessStoreInfo::InitAsDefaultInstance() {
+}
+
+WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo(const WorkerBeginProcessStoreInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerBeginProcessStoreInfo::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerBeginProcessStoreInfo::~WorkerBeginProcessStoreInfo() {
+  SharedDtor();
+}
+
+void WorkerBeginProcessStoreInfo::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerBeginProcessStoreInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerBeginProcessStoreInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerBeginProcessStoreInfo_descriptor_;
+}
+
+const WorkerBeginProcessStoreInfo& WorkerBeginProcessStoreInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerBeginProcessStoreInfo* WorkerBeginProcessStoreInfo::default_instance_ = NULL;
+
+WorkerBeginProcessStoreInfo* WorkerBeginProcessStoreInfo::New() const {
+  return new WorkerBeginProcessStoreInfo;
+}
+
+void WorkerBeginProcessStoreInfo::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerBeginProcessStoreInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerBeginProcessStoreInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerBeginProcessStoreInfo::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerBeginProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerBeginProcessStoreInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerBeginProcessStoreInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerBeginProcessStoreInfo::MergeFrom(const WorkerBeginProcessStoreInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerBeginProcessStoreInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerBeginProcessStoreInfo::CopyFrom(const WorkerBeginProcessStoreInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerBeginProcessStoreInfo::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerBeginProcessStoreInfo::Swap(WorkerBeginProcessStoreInfo* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerBeginProcessStoreInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerBeginProcessStoreInfo_descriptor_;
+  metadata.reflection = WorkerBeginProcessStoreInfo_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerEndProcessStoreInfo::InitAsDefaultInstance() {
+}
+
+WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo(const WorkerEndProcessStoreInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerEndProcessStoreInfo::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerEndProcessStoreInfo::~WorkerEndProcessStoreInfo() {
+  SharedDtor();
+}
+
+void WorkerEndProcessStoreInfo::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerEndProcessStoreInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerEndProcessStoreInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerEndProcessStoreInfo_descriptor_;
+}
+
+const WorkerEndProcessStoreInfo& WorkerEndProcessStoreInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerEndProcessStoreInfo* WorkerEndProcessStoreInfo::default_instance_ = NULL;
+
+WorkerEndProcessStoreInfo* WorkerEndProcessStoreInfo::New() const {
+  return new WorkerEndProcessStoreInfo;
+}
+
+void WorkerEndProcessStoreInfo::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerEndProcessStoreInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerEndProcessStoreInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerEndProcessStoreInfo::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerEndProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerEndProcessStoreInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerEndProcessStoreInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerEndProcessStoreInfo::MergeFrom(const WorkerEndProcessStoreInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerEndProcessStoreInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerEndProcessStoreInfo::CopyFrom(const WorkerEndProcessStoreInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerEndProcessStoreInfo::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerEndProcessStoreInfo::Swap(WorkerEndProcessStoreInfo* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerEndProcessStoreInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerEndProcessStoreInfo_descriptor_;
+  metadata.reflection = WorkerEndProcessStoreInfo_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerReceiveInvalidGet::WorkerReceiveInvalidGet()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerReceiveInvalidGet::InitAsDefaultInstance() {
+}
+
+WorkerReceiveInvalidGet::WorkerReceiveInvalidGet(const WorkerReceiveInvalidGet& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerReceiveInvalidGet::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerReceiveInvalidGet::~WorkerReceiveInvalidGet() {
+  SharedDtor();
+}
+
+void WorkerReceiveInvalidGet::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerReceiveInvalidGet::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerReceiveInvalidGet::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerReceiveInvalidGet_descriptor_;
+}
+
+const WorkerReceiveInvalidGet& WorkerReceiveInvalidGet::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerReceiveInvalidGet* WorkerReceiveInvalidGet::default_instance_ = NULL;
+
+WorkerReceiveInvalidGet* WorkerReceiveInvalidGet::New() const {
+  return new WorkerReceiveInvalidGet;
+}
+
+void WorkerReceiveInvalidGet::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerReceiveInvalidGet::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerReceiveInvalidGet::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerReceiveInvalidGet::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerReceiveInvalidGet::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerReceiveInvalidGet* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerReceiveInvalidGet*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerReceiveInvalidGet::MergeFrom(const WorkerReceiveInvalidGet& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerReceiveInvalidGet::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerReceiveInvalidGet::CopyFrom(const WorkerReceiveInvalidGet& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerReceiveInvalidGet::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerReceiveInvalidGet::Swap(WorkerReceiveInvalidGet* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerReceiveInvalidGet::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerReceiveInvalidGet_descriptor_;
+  metadata.reflection = WorkerReceiveInvalidGet_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerGetInvalidStream::WorkerGetInvalidStream()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerGetInvalidStream::InitAsDefaultInstance() {
+}
+
+WorkerGetInvalidStream::WorkerGetInvalidStream(const WorkerGetInvalidStream& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerGetInvalidStream::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerGetInvalidStream::~WorkerGetInvalidStream() {
+  SharedDtor();
+}
+
+void WorkerGetInvalidStream::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerGetInvalidStream::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerGetInvalidStream::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerGetInvalidStream_descriptor_;
+}
+
+const WorkerGetInvalidStream& WorkerGetInvalidStream::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerGetInvalidStream* WorkerGetInvalidStream::default_instance_ = NULL;
+
+WorkerGetInvalidStream* WorkerGetInvalidStream::New() const {
+  return new WorkerGetInvalidStream;
+}
+
+void WorkerGetInvalidStream::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerGetInvalidStream::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerGetInvalidStream::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerGetInvalidStream::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerGetInvalidStream::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerGetInvalidStream::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerGetInvalidStream* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerGetInvalidStream*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerGetInvalidStream::MergeFrom(const WorkerGetInvalidStream& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerGetInvalidStream::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerGetInvalidStream::CopyFrom(const WorkerGetInvalidStream& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerGetInvalidStream::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerGetInvalidStream::Swap(WorkerGetInvalidStream* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerGetInvalidStream::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerGetInvalidStream_descriptor_;
+  metadata.reflection = WorkerGetInvalidStream_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerGetInvalidOffset::WorkerGetInvalidOffset()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerGetInvalidOffset::InitAsDefaultInstance() {
+}
+
+WorkerGetInvalidOffset::WorkerGetInvalidOffset(const WorkerGetInvalidOffset& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerGetInvalidOffset::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerGetInvalidOffset::~WorkerGetInvalidOffset() {
+  SharedDtor();
+}
+
+void WorkerGetInvalidOffset::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerGetInvalidOffset::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerGetInvalidOffset::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerGetInvalidOffset_descriptor_;
+}
+
+const WorkerGetInvalidOffset& WorkerGetInvalidOffset::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerGetInvalidOffset* WorkerGetInvalidOffset::default_instance_ = NULL;
+
+WorkerGetInvalidOffset* WorkerGetInvalidOffset::New() const {
+  return new WorkerGetInvalidOffset;
+}
+
+void WorkerGetInvalidOffset::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerGetInvalidOffset::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerGetInvalidOffset::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerGetInvalidOffset::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerGetInvalidOffset::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerGetInvalidOffset::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerGetInvalidOffset* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerGetInvalidOffset*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerGetInvalidOffset::MergeFrom(const WorkerGetInvalidOffset& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerGetInvalidOffset::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerGetInvalidOffset::CopyFrom(const WorkerGetInvalidOffset& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerGetInvalidOffset::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerGetInvalidOffset::Swap(WorkerGetInvalidOffset* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerGetInvalidOffset::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerGetInvalidOffset_descriptor_;
+  metadata.reflection = WorkerGetInvalidOffset_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerBeginProcessGet::WorkerBeginProcessGet()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerBeginProcessGet::InitAsDefaultInstance() {
+}
+
+WorkerBeginProcessGet::WorkerBeginProcessGet(const WorkerBeginProcessGet& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerBeginProcessGet::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerBeginProcessGet::~WorkerBeginProcessGet() {
+  SharedDtor();
+}
+
+void WorkerBeginProcessGet::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerBeginProcessGet::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerBeginProcessGet::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerBeginProcessGet_descriptor_;
+}
+
+const WorkerBeginProcessGet& WorkerBeginProcessGet::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerBeginProcessGet* WorkerBeginProcessGet::default_instance_ = NULL;
+
+WorkerBeginProcessGet* WorkerBeginProcessGet::New() const {
+  return new WorkerBeginProcessGet;
+}
+
+void WorkerBeginProcessGet::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerBeginProcessGet::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerBeginProcessGet::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerBeginProcessGet::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerBeginProcessGet::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerBeginProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerBeginProcessGet* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerBeginProcessGet*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerBeginProcessGet::MergeFrom(const WorkerBeginProcessGet& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerBeginProcessGet::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerBeginProcessGet::CopyFrom(const WorkerBeginProcessGet& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerBeginProcessGet::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerBeginProcessGet::Swap(WorkerBeginProcessGet* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerBeginProcessGet::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerBeginProcessGet_descriptor_;
+  metadata.reflection = WorkerBeginProcessGet_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+WorkerEndProcessGet::WorkerEndProcessGet()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerEndProcessGet::InitAsDefaultInstance() {
+}
+
+WorkerEndProcessGet::WorkerEndProcessGet(const WorkerEndProcessGet& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerEndProcessGet::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerEndProcessGet::~WorkerEndProcessGet() {
+  SharedDtor();
+}
+
+void WorkerEndProcessGet::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerEndProcessGet::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerEndProcessGet::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerEndProcessGet_descriptor_;
+}
+
+const WorkerEndProcessGet& WorkerEndProcessGet::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerEndProcessGet* WorkerEndProcessGet::default_instance_ = NULL;
+
+WorkerEndProcessGet* WorkerEndProcessGet::New() const {
+  return new WorkerEndProcessGet;
+}
+
+void WorkerEndProcessGet::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerEndProcessGet::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerEndProcessGet::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerEndProcessGet::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerEndProcessGet::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerEndProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerEndProcessGet* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerEndProcessGet*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerEndProcessGet::MergeFrom(const WorkerEndProcessGet& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerEndProcessGet::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerEndProcessGet::CopyFrom(const WorkerEndProcessGet& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerEndProcessGet::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerEndProcessGet::Swap(WorkerEndProcessGet* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerEndProcessGet::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerEndProcessGet_descriptor_;
+  metadata.reflection = WorkerEndProcessGet_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string WorkerSendErrorResponse::_default_message_;
+#ifndef _MSC_VER
+const int WorkerSendErrorResponse::kMessageFieldNumber;
+#endif  // !_MSC_VER
+
+WorkerSendErrorResponse::WorkerSendErrorResponse()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerSendErrorResponse::InitAsDefaultInstance() {
+}
+
+WorkerSendErrorResponse::WorkerSendErrorResponse(const WorkerSendErrorResponse& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerSendErrorResponse::SharedCtor() {
+  _cached_size_ = 0;
+  message_ = const_cast< ::std::string*>(&_default_message_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerSendErrorResponse::~WorkerSendErrorResponse() {
+  SharedDtor();
+}
+
+void WorkerSendErrorResponse::SharedDtor() {
+  if (message_ != &_default_message_) {
+    delete message_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerSendErrorResponse::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerSendErrorResponse::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerSendErrorResponse_descriptor_;
+}
+
+const WorkerSendErrorResponse& WorkerSendErrorResponse::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerSendErrorResponse* WorkerSendErrorResponse::default_instance_ = NULL;
+
+WorkerSendErrorResponse* WorkerSendErrorResponse::New() const {
+  return new WorkerSendErrorResponse;
+}
+
+void WorkerSendErrorResponse::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (message_ != &_default_message_) {
+        message_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerSendErrorResponse::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string message = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_message()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->message().data(), this->message().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerSendErrorResponse::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional string message = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->message().data(), this->message().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->message(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerSendErrorResponse::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional string message = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->message().data(), this->message().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->message(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerSendErrorResponse::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional string message = 1;
+    if (has_message()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->message());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerSendErrorResponse::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerSendErrorResponse* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerSendErrorResponse*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerSendErrorResponse::MergeFrom(const WorkerSendErrorResponse& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_message(from.message());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerSendErrorResponse::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerSendErrorResponse::CopyFrom(const WorkerSendErrorResponse& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerSendErrorResponse::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerSendErrorResponse::Swap(WorkerSendErrorResponse* other) {
+  if (other != this) {
+    std::swap(message_, other->message_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerSendErrorResponse::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerSendErrorResponse_descriptor_;
+  metadata.reflection = WorkerSendErrorResponse_reflection_;
+  return metadata;
+}
+
+
 
 bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
@@ -731,6 +3126,58 @@ bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerFailReceiveMessage::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerReceiveEmptyMessage::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerRequestParseFailure::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerRequestEmptyEnvelope::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerInvalidMessageEnumeration::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerBeginProcessStoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerEndProcessStoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerReceiveInvalidGet::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerGetInvalidStream::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerGetInvalidOffset::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerBeginProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerEndProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerSendErrorResponse::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
