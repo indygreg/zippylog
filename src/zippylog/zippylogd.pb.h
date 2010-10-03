@@ -37,6 +37,19 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
 class BrokerStartup;
 class BrokerShutdown;
 class BrokerReceiveClientMessage;
+class WorkerFailReceiveMessage;
+class WorkerReceiveEmptyMessage;
+class WorkerRequestParseFailure;
+class WorkerRequestEmptyEnvelope;
+class WorkerInvalidMessageEnumeration;
+class WorkerBeginProcessStoreInfo;
+class WorkerEndProcessStoreInfo;
+class WorkerReceiveInvalidGet;
+class WorkerGetInvalidStream;
+class WorkerGetInvalidOffset;
+class WorkerBeginProcessGet;
+class WorkerEndProcessGet;
+class WorkerSendErrorResponse;
 
 // ===================================================================
 
@@ -319,6 +332,1110 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static BrokerReceiveClientMessage* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class WorkerFailReceiveMessage : public ::google::protobuf::Message {
+ public:
+  WorkerFailReceiveMessage();
+  virtual ~WorkerFailReceiveMessage();
+  
+  WorkerFailReceiveMessage(const WorkerFailReceiveMessage& from);
+  
+  inline WorkerFailReceiveMessage& operator=(const WorkerFailReceiveMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerFailReceiveMessage& default_instance();
+  
+  void Swap(WorkerFailReceiveMessage* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerFailReceiveMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerFailReceiveMessage& from);
+  void MergeFrom(const WorkerFailReceiveMessage& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 27;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerFailReceiveMessage)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerFailReceiveMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
+ public:
+  WorkerReceiveEmptyMessage();
+  virtual ~WorkerReceiveEmptyMessage();
+  
+  WorkerReceiveEmptyMessage(const WorkerReceiveEmptyMessage& from);
+  
+  inline WorkerReceiveEmptyMessage& operator=(const WorkerReceiveEmptyMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerReceiveEmptyMessage& default_instance();
+  
+  void Swap(WorkerReceiveEmptyMessage* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerReceiveEmptyMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerReceiveEmptyMessage& from);
+  void MergeFrom(const WorkerReceiveEmptyMessage& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 28;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerReceiveEmptyMessage)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerReceiveEmptyMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerRequestParseFailure : public ::google::protobuf::Message {
+ public:
+  WorkerRequestParseFailure();
+  virtual ~WorkerRequestParseFailure();
+  
+  WorkerRequestParseFailure(const WorkerRequestParseFailure& from);
+  
+  inline WorkerRequestParseFailure& operator=(const WorkerRequestParseFailure& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerRequestParseFailure& default_instance();
+  
+  void Swap(WorkerRequestParseFailure* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerRequestParseFailure* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerRequestParseFailure& from);
+  void MergeFrom(const WorkerRequestParseFailure& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 29;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerRequestParseFailure)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerRequestParseFailure* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerRequestEmptyEnvelope : public ::google::protobuf::Message {
+ public:
+  WorkerRequestEmptyEnvelope();
+  virtual ~WorkerRequestEmptyEnvelope();
+  
+  WorkerRequestEmptyEnvelope(const WorkerRequestEmptyEnvelope& from);
+  
+  inline WorkerRequestEmptyEnvelope& operator=(const WorkerRequestEmptyEnvelope& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerRequestEmptyEnvelope& default_instance();
+  
+  void Swap(WorkerRequestEmptyEnvelope* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerRequestEmptyEnvelope* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerRequestEmptyEnvelope& from);
+  void MergeFrom(const WorkerRequestEmptyEnvelope& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 30;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerRequestEmptyEnvelope)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerRequestEmptyEnvelope* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerInvalidMessageEnumeration : public ::google::protobuf::Message {
+ public:
+  WorkerInvalidMessageEnumeration();
+  virtual ~WorkerInvalidMessageEnumeration();
+  
+  WorkerInvalidMessageEnumeration(const WorkerInvalidMessageEnumeration& from);
+  
+  inline WorkerInvalidMessageEnumeration& operator=(const WorkerInvalidMessageEnumeration& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerInvalidMessageEnumeration& default_instance();
+  
+  void Swap(WorkerInvalidMessageEnumeration* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerInvalidMessageEnumeration* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerInvalidMessageEnumeration& from);
+  void MergeFrom(const WorkerInvalidMessageEnumeration& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 31;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerInvalidMessageEnumeration)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerInvalidMessageEnumeration* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerBeginProcessStoreInfo : public ::google::protobuf::Message {
+ public:
+  WorkerBeginProcessStoreInfo();
+  virtual ~WorkerBeginProcessStoreInfo();
+  
+  WorkerBeginProcessStoreInfo(const WorkerBeginProcessStoreInfo& from);
+  
+  inline WorkerBeginProcessStoreInfo& operator=(const WorkerBeginProcessStoreInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerBeginProcessStoreInfo& default_instance();
+  
+  void Swap(WorkerBeginProcessStoreInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerBeginProcessStoreInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerBeginProcessStoreInfo& from);
+  void MergeFrom(const WorkerBeginProcessStoreInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 32;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerBeginProcessStoreInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerBeginProcessStoreInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerEndProcessStoreInfo : public ::google::protobuf::Message {
+ public:
+  WorkerEndProcessStoreInfo();
+  virtual ~WorkerEndProcessStoreInfo();
+  
+  WorkerEndProcessStoreInfo(const WorkerEndProcessStoreInfo& from);
+  
+  inline WorkerEndProcessStoreInfo& operator=(const WorkerEndProcessStoreInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerEndProcessStoreInfo& default_instance();
+  
+  void Swap(WorkerEndProcessStoreInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerEndProcessStoreInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerEndProcessStoreInfo& from);
+  void MergeFrom(const WorkerEndProcessStoreInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 33;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerEndProcessStoreInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerEndProcessStoreInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerReceiveInvalidGet : public ::google::protobuf::Message {
+ public:
+  WorkerReceiveInvalidGet();
+  virtual ~WorkerReceiveInvalidGet();
+  
+  WorkerReceiveInvalidGet(const WorkerReceiveInvalidGet& from);
+  
+  inline WorkerReceiveInvalidGet& operator=(const WorkerReceiveInvalidGet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerReceiveInvalidGet& default_instance();
+  
+  void Swap(WorkerReceiveInvalidGet* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerReceiveInvalidGet* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerReceiveInvalidGet& from);
+  void MergeFrom(const WorkerReceiveInvalidGet& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 34;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerReceiveInvalidGet)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerReceiveInvalidGet* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerGetInvalidStream : public ::google::protobuf::Message {
+ public:
+  WorkerGetInvalidStream();
+  virtual ~WorkerGetInvalidStream();
+  
+  WorkerGetInvalidStream(const WorkerGetInvalidStream& from);
+  
+  inline WorkerGetInvalidStream& operator=(const WorkerGetInvalidStream& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerGetInvalidStream& default_instance();
+  
+  void Swap(WorkerGetInvalidStream* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerGetInvalidStream* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerGetInvalidStream& from);
+  void MergeFrom(const WorkerGetInvalidStream& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 35;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerGetInvalidStream)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerGetInvalidStream* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerGetInvalidOffset : public ::google::protobuf::Message {
+ public:
+  WorkerGetInvalidOffset();
+  virtual ~WorkerGetInvalidOffset();
+  
+  WorkerGetInvalidOffset(const WorkerGetInvalidOffset& from);
+  
+  inline WorkerGetInvalidOffset& operator=(const WorkerGetInvalidOffset& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerGetInvalidOffset& default_instance();
+  
+  void Swap(WorkerGetInvalidOffset* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerGetInvalidOffset* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerGetInvalidOffset& from);
+  void MergeFrom(const WorkerGetInvalidOffset& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 36;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerGetInvalidOffset)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerGetInvalidOffset* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerBeginProcessGet : public ::google::protobuf::Message {
+ public:
+  WorkerBeginProcessGet();
+  virtual ~WorkerBeginProcessGet();
+  
+  WorkerBeginProcessGet(const WorkerBeginProcessGet& from);
+  
+  inline WorkerBeginProcessGet& operator=(const WorkerBeginProcessGet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerBeginProcessGet& default_instance();
+  
+  void Swap(WorkerBeginProcessGet* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerBeginProcessGet* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerBeginProcessGet& from);
+  void MergeFrom(const WorkerBeginProcessGet& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 37;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerBeginProcessGet)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerBeginProcessGet* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerEndProcessGet : public ::google::protobuf::Message {
+ public:
+  WorkerEndProcessGet();
+  virtual ~WorkerEndProcessGet();
+  
+  WorkerEndProcessGet(const WorkerEndProcessGet& from);
+  
+  inline WorkerEndProcessGet& operator=(const WorkerEndProcessGet& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerEndProcessGet& default_instance();
+  
+  void Swap(WorkerEndProcessGet* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerEndProcessGet* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerEndProcessGet& from);
+  void MergeFrom(const WorkerEndProcessGet& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 38;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerEndProcessGet)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerEndProcessGet* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerSendErrorResponse : public ::google::protobuf::Message {
+ public:
+  WorkerSendErrorResponse();
+  virtual ~WorkerSendErrorResponse();
+  
+  WorkerSendErrorResponse(const WorkerSendErrorResponse& from);
+  
+  inline WorkerSendErrorResponse& operator=(const WorkerSendErrorResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerSendErrorResponse& default_instance();
+  
+  void Swap(WorkerSendErrorResponse* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerSendErrorResponse* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerSendErrorResponse& from);
+  void MergeFrom(const WorkerSendErrorResponse& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional string message = 1;
+  inline bool has_message() const;
+  inline void clear_message();
+  static const int kMessageFieldNumber = 1;
+  inline const ::std::string& message() const;
+  inline void set_message(const ::std::string& value);
+  inline void set_message(const char* value);
+  inline void set_message(const char* value, size_t size);
+  inline ::std::string* mutable_message();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 39;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerSendErrorResponse)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* message_;
+  static const ::std::string _default_message_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerSendErrorResponse* default_instance_;
+};
 // ===================================================================
 
 
@@ -419,6 +1536,100 @@ BrokerStartup::mutable_listen_endpoints() {
 // -------------------------------------------------------------------
 
 // BrokerReceiveClientMessage
+
+// -------------------------------------------------------------------
+
+// WorkerFailReceiveMessage
+
+// -------------------------------------------------------------------
+
+// WorkerReceiveEmptyMessage
+
+// -------------------------------------------------------------------
+
+// WorkerRequestParseFailure
+
+// -------------------------------------------------------------------
+
+// WorkerRequestEmptyEnvelope
+
+// -------------------------------------------------------------------
+
+// WorkerInvalidMessageEnumeration
+
+// -------------------------------------------------------------------
+
+// WorkerBeginProcessStoreInfo
+
+// -------------------------------------------------------------------
+
+// WorkerEndProcessStoreInfo
+
+// -------------------------------------------------------------------
+
+// WorkerReceiveInvalidGet
+
+// -------------------------------------------------------------------
+
+// WorkerGetInvalidStream
+
+// -------------------------------------------------------------------
+
+// WorkerGetInvalidOffset
+
+// -------------------------------------------------------------------
+
+// WorkerBeginProcessGet
+
+// -------------------------------------------------------------------
+
+// WorkerEndProcessGet
+
+// -------------------------------------------------------------------
+
+// WorkerSendErrorResponse
+
+// optional string message = 1;
+inline bool WorkerSendErrorResponse::has_message() const {
+  return _has_bit(0);
+}
+inline void WorkerSendErrorResponse::clear_message() {
+  if (message_ != &_default_message_) {
+    message_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerSendErrorResponse::message() const {
+  return *message_;
+}
+inline void WorkerSendErrorResponse::set_message(const ::std::string& value) {
+  _set_bit(0);
+  if (message_ == &_default_message_) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void WorkerSendErrorResponse::set_message(const char* value) {
+  _set_bit(0);
+  if (message_ == &_default_message_) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void WorkerSendErrorResponse::set_message(const char* value, size_t size) {
+  _set_bit(0);
+  if (message_ == &_default_message_) {
+    message_ = new ::std::string;
+  }
+  message_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerSendErrorResponse::mutable_message() {
+  _set_bit(0);
+  if (message_ == &_default_message_) {
+    message_ = new ::std::string;
+  }
+  return message_;
+}
 
 
 // @@protoc_insertion_point(namespace_scope)

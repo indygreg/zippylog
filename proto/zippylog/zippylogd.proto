@@ -21,3 +21,62 @@ message BrokerShutdown {
 message BrokerReceiveClientMessage {
 
 }
+
+// log event for when a worker failed to receive a message from the
+// zmq socket
+message WorkerFailReceiveMessage {
+
+}
+
+// when a worker receives an empty request zmq message
+message WorkerReceiveEmptyMessage {
+
+}
+
+// when the envelope in a request could not be parsed
+message WorkerRequestParseFailure {
+
+}
+
+// when the request envelope contains no embedded message
+message WorkerRequestEmptyEnvelope {
+
+}
+
+// when the message inside the envelope is not proper enumeration
+message WorkerInvalidMessageEnumeration {
+
+}
+
+// when a worker processes a storeinfo request
+message WorkerBeginProcessStoreInfo {
+    
+}
+
+message WorkerEndProcessStoreInfo {
+
+}
+
+message WorkerReceiveInvalidGet {
+
+}
+
+message WorkerGetInvalidStream {
+
+}
+
+message WorkerGetInvalidOffset {
+
+}
+
+message WorkerBeginProcessGet {
+
+}
+
+message WorkerEndProcessGet {
+
+}
+
+message WorkerSendErrorResponse {
+    optional string message = 1;
+}
