@@ -239,6 +239,7 @@ void Streamer::Run()
             // send ACK response to client
             SubscribeAck ack = SubscribeAck();
             ack.set_id(subscription.id);
+            ack.set_ttl(this->subscription_ttl / 1000);
             Envelope response = Envelope();
             ack.add_to_envelope(&response);
 
