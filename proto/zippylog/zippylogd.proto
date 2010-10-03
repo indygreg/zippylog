@@ -86,3 +86,19 @@ message StreamerSubscriptionExpired {
     // id of subscription that expired
     optional bytes id = 1;
 }
+
+// when a streamer receives a keepalive message
+// keepalives are sent to all streamers, so all should drop this event
+message StreamerReceiveKeepalive {
+    optional bytes id = 1;
+}
+
+// when a streamer successfully renews a subscription from a keepalive
+message StreamerSubscriptionRenewedFromKeepalive {
+    optional bytes id = 1;
+}
+
+// when a stream rejects a keepalive due to unknown subscription id
+message StreamerRejectKeepaliveUnknownSubscription {
+    optional bytes id = 1;
+}
