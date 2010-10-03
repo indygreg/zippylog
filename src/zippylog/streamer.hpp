@@ -72,6 +72,12 @@ class ZIPPYLOG_EXPORT Streamer {
 
         void Run();
 
+        // returns whether the streamer knows of a subscription with the specified id
+        bool HasSubscription(const string &id);
+
+        // renews a subscription for the specified id
+        bool RenewSubscription(const string &id);
+
         // sets the shutdown semaphore for the streamer
         // if the boolean pointed to by the parameter goes to 0, Run() will
         // finish, likely shutting down the calling thread

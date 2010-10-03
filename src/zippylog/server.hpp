@@ -69,6 +69,7 @@ public:
         PROCESS_SUBSCRIBE_STORE_CHANGES = 9,
         SETUP_INITIAL_SOCKETS = 10,
         REQUEST_CLEANUP = 11,
+        PROCESS_SUBSCRIBE_KEEPALIVE = 12,
     };
 
     // function that waits and processes client requests as they arrive

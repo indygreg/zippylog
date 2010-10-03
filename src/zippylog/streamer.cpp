@@ -18,8 +18,12 @@
 #include <zippylog/zippylogd.pb.h>
 #include <zippylog/zeromq.hpp>
 
-using ::zippylog::zippylogd::StreamerSubscriptionExpired;
 using ::zippylog::protocol::response::SubscribeAck;
+using ::zippylog::zippylogd::StreamerSubscriptionExpired;
+using ::zippylog::zippylogd::StreamerReceiveKeepalive;
+using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
+using ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive;
+using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
 using ::zmq::message_t;
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
@@ -138,7 +142,45 @@ void Streamer::Run()
 
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
-            continue;
+            if (!this->subscription_updates_sock->recv(&msg, 0)) {
+                throw "weird";
+            }
+
+            Envelope e = Envelope(&msg);
+            assert(e.number_messages() == 1);
+            assert(e.message_namespace(0) == 1);
+
+            uint32 type = e.message_type(0);
+
+            if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
+                protocol::request::SubscribeKeepalive *m =
+                    (protocol::request::SubscribeKeepalive *)e.get_message(0);
+
+                string id = m->id();
+                delete m;
+
+                StreamerReceiveKeepalive log = StreamerReceiveKeepalive();
+                log.set_id(id);
+                LOG_MESSAGE(log, this->logging_sock);
+
+                if (this->HasSubscription(id)) {
+                    if (this->RenewSubscription(id)) {
+                        StreamerSubscriptionRenewedFromKeepalive log = StreamerSubscriptionRenewedFromKeepalive();
+                        log.set_id(id);
+                        LOG_MESSAGE(log, this->logging_sock);
+                    }
+                    else {
+                        StreamerErrorRenewingSubscription log = StreamerErrorRenewingSubscription();
+                        log.set_id(id);
+                        LOG_MESSAGE(log, this->logging_sock);
+                    }
+                }
+                else {
+                    StreamerRejectKeepaliveUnknownSubscription log = StreamerRejectKeepaliveUnknownSubscription();
+                    log.set_id(id);
+                    LOG_MESSAGE(log, this->logging_sock);
+                }
+            }
         }
 
         // unsubscribe any expired subscribers
@@ -176,6 +218,8 @@ void Streamer::Run()
             for (int i = 0; i < m->path_size(); i++) {
                 subscription.paths.push_back(m->path(i));
             }
+
+            delete m;
 
             subscription.socket_identifiers = identities;
 
@@ -362,6 +406,24 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             break;
         }
     }
+}
+
+bool Streamer::HasSubscription(const string &id)
+{
+    map<string, SubscriptionInfo>::iterator iter = this->subscriptions.find(id);
+
+    return iter != this->subscriptions.end();
+}
+
+bool Streamer::RenewSubscription(const string &id)
+{
+    map<string, SubscriptionInfo>::iterator iter = this->subscriptions.find(id);
+
+    if (iter == this->subscriptions.end()) {
+        return false;
+    }
+
+    return iter->second.expiration_timer.Start();
 }
 
 }} // namespaces

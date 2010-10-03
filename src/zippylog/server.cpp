@@ -187,6 +187,10 @@ void * __stdcall Request::request_processor(void *data)
                     state = Request::PROCESS_SUBSCRIBE_STORE_CHANGES;
                     break;
                 }
+                else if (request_type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
+                    state = Request::PROCESS_SUBSCRIBE_KEEPALIVE;
+                    break;
+                }
                 else {
                     error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
                     error_message = "server does not know how to process the request";
@@ -358,6 +362,18 @@ void * __stdcall Request::request_processor(void *data)
                 subscription_identities.erase(subscription_identities.begin());
 
                 zeromq::send_envelope(subscriptions_sock, subscription_identities, request_envelope);
+
+                state = Request::REQUEST_CLEANUP;
+                break;
+            }
+
+            case Request::PROCESS_SUBSCRIBE_KEEPALIVE:
+            {
+                protocol::request::SubscribeKeepalive *m =
+                    (protocol::request::SubscribeKeepalive *)request_envelope.get_message(0);
+
+                // TODO validation
+                zeromq::send_envelope(subscription_updates_sock, request_envelope);
 
                 state = Request::REQUEST_CLEANUP;
                 break;
