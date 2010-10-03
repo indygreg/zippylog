@@ -360,6 +360,13 @@ class SubscribeAck : public ::google::protobuf::Message {
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   
+  // optional uint32 ttl = 2;
+  inline bool has_ttl() const;
+  inline void clear_ttl();
+  static const int kTtlFieldNumber = 2;
+  inline ::google::protobuf::uint32 ttl() const;
+  inline void set_ttl(::google::protobuf::uint32 value);
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 24;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -370,11 +377,12 @@ class SubscribeAck : public ::google::protobuf::Message {
   
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::google::protobuf::uint32 ttl_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -793,6 +801,22 @@ inline ::std::string* SubscribeAck::mutable_id() {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional uint32 ttl = 2;
+inline bool SubscribeAck::has_ttl() const {
+  return _has_bit(1);
+}
+inline void SubscribeAck::clear_ttl() {
+  ttl_ = 0u;
+  _clear_bit(1);
+}
+inline ::google::protobuf::uint32 SubscribeAck::ttl() const {
+  return ttl_;
+}
+inline void SubscribeAck::set_ttl(::google::protobuf::uint32 value) {
+  _set_bit(1);
+  ttl_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -33,6 +33,12 @@ message SubscribeAck {
     // client needs to record this identifier to send in SubscribeKeepalive
     // messages to keep the subscription active
     optional bytes id = 1;
+    
+    // number of seconds (roughly) client has to renew subscription via a
+    // SubscribeKeepalive message before the server drops the subscription
+    // to account for network latencies and processing delays, clients should
+    // acknowledge a few seconds (at least 5 or so) before this TTL is expired
+    optional uint32 ttl = 2;
 }
 
 // first message in sequence of a subscription response
