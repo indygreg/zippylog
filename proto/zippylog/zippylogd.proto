@@ -102,3 +102,7 @@ message StreamerSubscriptionRenewedFromKeepalive {
 message StreamerRejectKeepaliveUnknownSubscription {
     optional bytes id = 1;
 }
+
+message StreamerErrorRenewingSubscription {
+    optional bytes id = 1;
+}
