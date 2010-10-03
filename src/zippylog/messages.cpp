@@ -29,6 +29,7 @@ namespace zippylog {
         registrar->register_message(1, 46, new ::zippylog::zippylogd::WorkerShutdown());
         registrar->register_message(1, 27, new ::zippylog::zippylogd::WorkerFailReceiveMessage());
         registrar->register_message(1, 28, new ::zippylog::zippylogd::WorkerReceiveEmptyMessage());
+        registrar->register_message(1, 47, new ::zippylog::zippylogd::WorkerReceiveUnknownRequestType());
         registrar->register_message(1, 29, new ::zippylog::zippylogd::WorkerRequestParseFailure());
         registrar->register_message(1, 30, new ::zippylog::zippylogd::WorkerRequestEmptyEnvelope());
         registrar->register_message(1, 31, new ::zippylog::zippylogd::WorkerInvalidMessageEnumeration());
@@ -40,6 +41,9 @@ namespace zippylog {
         registrar->register_message(1, 37, new ::zippylog::zippylogd::WorkerBeginProcessGet());
         registrar->register_message(1, 38, new ::zippylog::zippylogd::WorkerEndProcessGet());
         registrar->register_message(1, 39, new ::zippylog::zippylogd::WorkerSendErrorResponse());
+        registrar->register_message(1, 48, new ::zippylog::zippylogd::WorkerForwardSubscribeKeepalive());
+        registrar->register_message(1, 49, new ::zippylog::zippylogd::StreamerStartup());
+        registrar->register_message(1, 50, new ::zippylog::zippylogd::StreamerShutdown());
         registrar->register_message(1, 40, new ::zippylog::zippylogd::StreamerSubscriptionExpired());
         registrar->register_message(1, 41, new ::zippylog::zippylogd::StreamerReceiveKeepalive());
         registrar->register_message(1, 42, new ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive());

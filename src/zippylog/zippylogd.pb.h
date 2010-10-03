@@ -41,6 +41,7 @@ class WorkerStartup;
 class WorkerShutdown;
 class WorkerFailReceiveMessage;
 class WorkerReceiveEmptyMessage;
+class WorkerReceiveUnknownRequestType;
 class WorkerRequestParseFailure;
 class WorkerRequestEmptyEnvelope;
 class WorkerInvalidMessageEnumeration;
@@ -52,6 +53,9 @@ class WorkerGetInvalidOffset;
 class WorkerBeginProcessGet;
 class WorkerEndProcessGet;
 class WorkerSendErrorResponse;
+class WorkerForwardSubscribeKeepalive;
+class StreamerStartup;
+class StreamerShutdown;
 class StreamerSubscriptionExpired;
 class StreamerReceiveKeepalive;
 class StreamerSubscriptionRenewedFromKeepalive;
@@ -722,6 +726,110 @@ class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static WorkerReceiveEmptyMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerReceiveUnknownRequestType : public ::google::protobuf::Message {
+ public:
+  WorkerReceiveUnknownRequestType();
+  virtual ~WorkerReceiveUnknownRequestType();
+  
+  WorkerReceiveUnknownRequestType(const WorkerReceiveUnknownRequestType& from);
+  
+  inline WorkerReceiveUnknownRequestType& operator=(const WorkerReceiveUnknownRequestType& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerReceiveUnknownRequestType& default_instance();
+  
+  void Swap(WorkerReceiveUnknownRequestType* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerReceiveUnknownRequestType* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerReceiveUnknownRequestType& from);
+  void MergeFrom(const WorkerReceiveUnknownRequestType& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  // optional uint32 enumeration = 2;
+  inline bool has_enumeration() const;
+  inline void clear_enumeration();
+  static const int kEnumerationFieldNumber = 2;
+  inline ::google::protobuf::uint32 enumeration() const;
+  inline void set_enumeration(::google::protobuf::uint32 value);
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 47;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerReceiveUnknownRequestType)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  ::google::protobuf::uint32 enumeration_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerReceiveUnknownRequestType* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1793,6 +1901,306 @@ class WorkerSendErrorResponse : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class WorkerForwardSubscribeKeepalive : public ::google::protobuf::Message {
+ public:
+  WorkerForwardSubscribeKeepalive();
+  virtual ~WorkerForwardSubscribeKeepalive();
+  
+  WorkerForwardSubscribeKeepalive(const WorkerForwardSubscribeKeepalive& from);
+  
+  inline WorkerForwardSubscribeKeepalive& operator=(const WorkerForwardSubscribeKeepalive& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerForwardSubscribeKeepalive& default_instance();
+  
+  void Swap(WorkerForwardSubscribeKeepalive* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerForwardSubscribeKeepalive* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerForwardSubscribeKeepalive& from);
+  void MergeFrom(const WorkerForwardSubscribeKeepalive& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 48;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerForwardSubscribeKeepalive)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerForwardSubscribeKeepalive* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StreamerStartup : public ::google::protobuf::Message {
+ public:
+  StreamerStartup();
+  virtual ~StreamerStartup();
+  
+  StreamerStartup(const StreamerStartup& from);
+  
+  inline StreamerStartup& operator=(const StreamerStartup& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StreamerStartup& default_instance();
+  
+  void Swap(StreamerStartup* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StreamerStartup* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StreamerStartup& from);
+  void MergeFrom(const StreamerStartup& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 49;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerStartup)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StreamerStartup* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StreamerShutdown : public ::google::protobuf::Message {
+ public:
+  StreamerShutdown();
+  virtual ~StreamerShutdown();
+  
+  StreamerShutdown(const StreamerShutdown& from);
+  
+  inline StreamerShutdown& operator=(const StreamerShutdown& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StreamerShutdown& default_instance();
+  
+  void Swap(StreamerShutdown* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StreamerShutdown* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StreamerShutdown& from);
+  void MergeFrom(const StreamerShutdown& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 50;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerShutdown)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StreamerShutdown* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class StreamerSubscriptionExpired : public ::google::protobuf::Message {
  public:
   StreamerSubscriptionExpired();
@@ -2618,6 +3026,68 @@ inline ::std::string* WorkerReceiveEmptyMessage::mutable_worker() {
 
 // -------------------------------------------------------------------
 
+// WorkerReceiveUnknownRequestType
+
+// optional bytes worker = 1;
+inline bool WorkerReceiveUnknownRequestType::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerReceiveUnknownRequestType::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerReceiveUnknownRequestType::worker() const {
+  return *worker_;
+}
+inline void WorkerReceiveUnknownRequestType::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveUnknownRequestType::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveUnknownRequestType::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerReceiveUnknownRequestType::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// optional uint32 enumeration = 2;
+inline bool WorkerReceiveUnknownRequestType::has_enumeration() const {
+  return _has_bit(1);
+}
+inline void WorkerReceiveUnknownRequestType::clear_enumeration() {
+  enumeration_ = 0u;
+  _clear_bit(1);
+}
+inline ::google::protobuf::uint32 WorkerReceiveUnknownRequestType::enumeration() const {
+  return enumeration_;
+}
+inline void WorkerReceiveUnknownRequestType::set_enumeration(::google::protobuf::uint32 value) {
+  _set_bit(1);
+  enumeration_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // WorkerRequestParseFailure
 
 // optional bytes worker = 1;
@@ -3162,6 +3632,186 @@ inline ::std::string* WorkerSendErrorResponse::mutable_message() {
     message_ = new ::std::string;
   }
   return message_;
+}
+
+// -------------------------------------------------------------------
+
+// WorkerForwardSubscribeKeepalive
+
+// optional bytes worker = 1;
+inline bool WorkerForwardSubscribeKeepalive::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerForwardSubscribeKeepalive::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerForwardSubscribeKeepalive::worker() const {
+  return *worker_;
+}
+inline void WorkerForwardSubscribeKeepalive::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerForwardSubscribeKeepalive::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerForwardSubscribeKeepalive::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerForwardSubscribeKeepalive::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// optional bytes subscription = 2;
+inline bool WorkerForwardSubscribeKeepalive::has_subscription() const {
+  return _has_bit(1);
+}
+inline void WorkerForwardSubscribeKeepalive::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& WorkerForwardSubscribeKeepalive::subscription() const {
+  return *subscription_;
+}
+inline void WorkerForwardSubscribeKeepalive::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void WorkerForwardSubscribeKeepalive::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void WorkerForwardSubscribeKeepalive::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerForwardSubscribeKeepalive::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
+}
+
+// -------------------------------------------------------------------
+
+// StreamerStartup
+
+// optional bytes streamer = 1;
+inline bool StreamerStartup::has_streamer() const {
+  return _has_bit(0);
+}
+inline void StreamerStartup::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerStartup::streamer() const {
+  return *streamer_;
+}
+inline void StreamerStartup::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerStartup::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerStartup::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerStartup::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// -------------------------------------------------------------------
+
+// StreamerShutdown
+
+// optional bytes streamer = 1;
+inline bool StreamerShutdown::has_streamer() const {
+  return _has_bit(0);
+}
+inline void StreamerShutdown::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerShutdown::streamer() const {
+  return *streamer_;
+}
+inline void StreamerShutdown::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerShutdown::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerShutdown::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerShutdown::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
 }
 
 // -------------------------------------------------------------------
