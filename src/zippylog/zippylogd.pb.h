@@ -54,6 +54,7 @@ class StreamerSubscriptionExpired;
 class StreamerReceiveKeepalive;
 class StreamerSubscriptionRenewedFromKeepalive;
 class StreamerRejectKeepaliveUnknownSubscription;
+class StreamerErrorRenewingSubscription;
 
 // ===================================================================
 
@@ -1824,6 +1825,102 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   void InitAsDefaultInstance();
   static StreamerRejectKeepaliveUnknownSubscription* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
+ public:
+  StreamerErrorRenewingSubscription();
+  virtual ~StreamerErrorRenewingSubscription();
+  
+  StreamerErrorRenewingSubscription(const StreamerErrorRenewingSubscription& from);
+  
+  inline StreamerErrorRenewingSubscription& operator=(const StreamerErrorRenewingSubscription& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StreamerErrorRenewingSubscription& default_instance();
+  
+  void Swap(StreamerErrorRenewingSubscription* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StreamerErrorRenewingSubscription* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StreamerErrorRenewingSubscription& from);
+  void MergeFrom(const StreamerErrorRenewingSubscription& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 44;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerErrorRenewingSubscription)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static StreamerErrorRenewingSubscription* default_instance_;
+};
 // ===================================================================
 
 
@@ -2196,6 +2293,52 @@ inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const void* value
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// -------------------------------------------------------------------
+
+// StreamerErrorRenewingSubscription
+
+// optional bytes id = 1;
+inline bool StreamerErrorRenewingSubscription::has_id() const {
+  return _has_bit(0);
+}
+inline void StreamerErrorRenewingSubscription::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerErrorRenewingSubscription::id() const {
+  return *id_;
+}
+inline void StreamerErrorRenewingSubscription::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerErrorRenewingSubscription::mutable_id() {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;

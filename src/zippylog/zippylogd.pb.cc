@@ -75,6 +75,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* StreamerRejectKeepaliveUnknownSubscription_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StreamerRejectKeepaliveUnknownSubscription_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StreamerErrorRenewingSubscription_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StreamerErrorRenewingSubscription_reflection_ = NULL;
 
 }  // namespace
 
@@ -372,6 +375,21 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerRejectKeepaliveUnknownSubscription));
+  StreamerErrorRenewingSubscription_descriptor_ = file->message_type(20);
+  static const int StreamerErrorRenewingSubscription_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, id_),
+  };
+  StreamerErrorRenewingSubscription_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      StreamerErrorRenewingSubscription_descriptor_,
+      StreamerErrorRenewingSubscription::default_instance_,
+      StreamerErrorRenewingSubscription_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(StreamerErrorRenewingSubscription));
 }
 
 namespace {
@@ -424,6 +442,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     StreamerSubscriptionRenewedFromKeepalive_descriptor_, &StreamerSubscriptionRenewedFromKeepalive::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StreamerRejectKeepaliveUnknownSubscription_descriptor_, &StreamerRejectKeepaliveUnknownSubscription::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    StreamerErrorRenewingSubscription_descriptor_, &StreamerErrorRenewingSubscription::default_instance());
 }
 
 }  // namespace
@@ -469,6 +489,8 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto() {
   delete StreamerSubscriptionRenewedFromKeepalive_reflection_;
   delete StreamerRejectKeepaliveUnknownSubscription::default_instance_;
   delete StreamerRejectKeepaliveUnknownSubscription_reflection_;
+  delete StreamerErrorRenewingSubscription::default_instance_;
+  delete StreamerErrorRenewingSubscription_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
@@ -496,7 +518,8 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
     "eKeepalive\022\n\n\002id\030\001 \001(\014\"6\n(StreamerSubscr"
     "iptionRenewedFromKeepalive\022\n\n\002id\030\001 \001(\014\"8"
     "\n*StreamerRejectKeepaliveUnknownSubscrip"
-    "tion\022\n\n\002id\030\001 \001(\014", 736);
+    "tion\022\n\n\002id\030\001 \001(\014\"/\n!StreamerErrorRenewin"
+    "gSubscription\022\n\n\002id\030\001 \001(\014", 785);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
@@ -519,6 +542,7 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   StreamerReceiveKeepalive::default_instance_ = new StreamerReceiveKeepalive();
   StreamerSubscriptionRenewedFromKeepalive::default_instance_ = new StreamerSubscriptionRenewedFromKeepalive();
   StreamerRejectKeepaliveUnknownSubscription::default_instance_ = new StreamerRejectKeepaliveUnknownSubscription();
+  StreamerErrorRenewingSubscription::default_instance_ = new StreamerErrorRenewingSubscription();
   BrokerStartup::default_instance_->InitAsDefaultInstance();
   BrokerShutdown::default_instance_->InitAsDefaultInstance();
   BrokerReceiveClientMessage::default_instance_->InitAsDefaultInstance();
@@ -539,6 +563,7 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   StreamerReceiveKeepalive::default_instance_->InitAsDefaultInstance();
   StreamerSubscriptionRenewedFromKeepalive::default_instance_->InitAsDefaultInstance();
   StreamerRejectKeepaliveUnknownSubscription::default_instance_->InitAsDefaultInstance();
+  StreamerErrorRenewingSubscription::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto);
 }
 
@@ -4081,6 +4106,222 @@ void StreamerRejectKeepaliveUnknownSubscription::Swap(StreamerRejectKeepaliveUnk
 }
 
 
+// ===================================================================
+
+const ::std::string StreamerErrorRenewingSubscription::_default_id_;
+#ifndef _MSC_VER
+const int StreamerErrorRenewingSubscription::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+StreamerErrorRenewingSubscription::StreamerErrorRenewingSubscription()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void StreamerErrorRenewingSubscription::InitAsDefaultInstance() {
+}
+
+StreamerErrorRenewingSubscription::StreamerErrorRenewingSubscription(const StreamerErrorRenewingSubscription& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void StreamerErrorRenewingSubscription::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+StreamerErrorRenewingSubscription::~StreamerErrorRenewingSubscription() {
+  SharedDtor();
+}
+
+void StreamerErrorRenewingSubscription::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void StreamerErrorRenewingSubscription::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StreamerErrorRenewingSubscription::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StreamerErrorRenewingSubscription_descriptor_;
+}
+
+const StreamerErrorRenewingSubscription& StreamerErrorRenewingSubscription::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+StreamerErrorRenewingSubscription* StreamerErrorRenewingSubscription::default_instance_ = NULL;
+
+StreamerErrorRenewingSubscription* StreamerErrorRenewingSubscription::New() const {
+  return new StreamerErrorRenewingSubscription;
+}
+
+void StreamerErrorRenewingSubscription::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool StreamerErrorRenewingSubscription::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void StreamerErrorRenewingSubscription::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* StreamerErrorRenewingSubscription::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int StreamerErrorRenewingSubscription::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StreamerErrorRenewingSubscription::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const StreamerErrorRenewingSubscription* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StreamerErrorRenewingSubscription*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void StreamerErrorRenewingSubscription::MergeFrom(const StreamerErrorRenewingSubscription& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void StreamerErrorRenewingSubscription::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StreamerErrorRenewingSubscription::CopyFrom(const StreamerErrorRenewingSubscription& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StreamerErrorRenewingSubscription::IsInitialized() const {
+  
+  return true;
+}
+
+void StreamerErrorRenewingSubscription::Swap(StreamerErrorRenewingSubscription* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata StreamerErrorRenewingSubscription::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StreamerErrorRenewingSubscription_descriptor_;
+  metadata.reflection = StreamerErrorRenewingSubscription_reflection_;
+  return metadata;
+}
+
+
 
 bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
@@ -4159,6 +4400,10 @@ bool StreamerSubscriptionRenewedFromKeepalive::add_to_envelope(::zippylog::Envel
 }
 
 bool StreamerRejectKeepaliveUnknownSubscription::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool StreamerErrorRenewingSubscription::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
