@@ -61,6 +61,91 @@ namespace platform {
     } FileStat;
 
     ZIPPYLOG_EXPORT bool stat(const string path, FileStat &st);
+
+    typedef struct Time {
+        int32 year;
+        int32 mon;
+        int32 mday;
+        int32 hour;
+        int32 min;
+        int32 sec;
+        int32 usec;
+        int32 wday;
+        int32 yday;
+        int32 isdst;
+        int64 epoch_micro;
+        int32 epoch_sec;
+    } Time;
+
+    ZIPPYLOG_EXPORT bool TimeNow(Time &t);
+
+    // converts number of microseconds since UNIX epoch into a zippylog Time struct
+    ZIPPYLOG_EXPORT bool UnixMicroTimeToZippyTime(int64 from, Time &to);
+
+    ZIPPYLOG_EXPORT bool MakeDirectory(const string path);
+
+    ZIPPYLOG_EXPORT bool PathIsDirectory(const string path);
+
+    typedef struct UUID {
+        unsigned char data[16];
+    } UUID;
+
+    // creates a new UUID
+    // UUID type is not defined yet
+    bool CreateUUID(UUID &u);
+
+    typedef struct File {
+#ifdef WINDOWS
+        void * handle;
+#endif
+        int fd;
+    } File;
+
+    enum FileFlags {
+        READ = 1,
+        WRITE = 2,
+        APPEND = 3,
+        CREATE = 4,
+        TRUNCATE = 5,
+        BINARY = 6,
+    };
+
+    bool OpenFile(File &f, const string path, int flags);
+
+    // in the ideal world, timers would be represented as file descriptors and
+    // we could include them in the zmq poll() event loop. this is easily done
+    // on Linux. unfortunately, Windows requires a little bit more effort.
+    // TODO expose timers as file descriptors someday
+    class ZIPPYLOG_EXPORT Timer {
+    public:
+        // create a null timer. this does nothing and is present so some structs have
+        // a default constructor
+        Timer();
+
+        // create a new timer that fires N microseconds from now
+        Timer(uint32 microseconds);
+
+        // whether the timer has signaled yet
+        bool Signaled();
+
+        // reset the timer
+        // this will unarm the timer and prepare it to be executed again
+        // this is called automatically by Start() if restarting an existing timer
+        // it is more of an internal API but exposed in case it is needed
+        bool Reset();
+
+        // starts the timer
+        bool Start();
+
+    protected:
+        uint32 microseconds;
+        bool signaled;
+        bool running;
+
+#ifdef WINDOWS
+        void * handle;
+#endif
+    };
 }
 
 } // namespace

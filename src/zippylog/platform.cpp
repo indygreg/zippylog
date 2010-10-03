@@ -18,8 +18,12 @@
 #include <Windows.h>
 #endif
 
+#include <direct.h>
+#include <fcntl.h>
+#include <io.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <time.h>
 
 namespace zippylog {
 
@@ -68,7 +72,7 @@ bool directory_entries(const string dir, vector<dir_entry> &v)
 #ifdef WINDOWS
     // TODO fix potential buffer overrun
     char path[8192];
-    strcpy(path, dir.c_str());
+    strcpy_s(path, sizeof(path), dir.c_str());
 
     // we need to wildcard the path, cuz that's how Windows works
     char * end = strrchr(path, '\0');
@@ -129,21 +133,217 @@ bool stat(const string path, FileStat &st)
     }
 
     if (result.st_mode & _S_IFDIR) {
-        st.type = FileType::DIRECTORY;
+        st.type = DIRECTORY;
     }
     else if (result.st_mode & _S_IFREG) {
-        st.type = FileType::REGULAR;
+        st.type = REGULAR;
     }
     else if (result.st_mode & _S_IFIFO) {
-        st.type = FileType::PIPE;
+        st.type = PIPE;
     }
     else {
-        st.type = FileType::UNKNOWN;
+        st.type = UNKNOWN;
     }
 
     st.size = result.st_size;
 
     return true;
+}
+
+bool TimeNow(Time &t)
+{
+#ifdef WINDOWS
+    FILETIME time;
+    GetSystemTimeAsFileTime(&time);
+    ULARGE_INTEGER wintime;
+    wintime.HighPart = time.dwHighDateTime;
+    wintime.LowPart = time.dwLowDateTime;
+
+    // Windows time is in 100 nanosecond increments
+    // convert to microseconds and subtract offset
+    t.epoch_micro = wintime.QuadPart / 10 - 11644473600000000;
+    t.epoch_sec = t.epoch_micro / 1000000;
+    t.usec = t.epoch_micro % 1000000;
+#else
+#error "not supported on this platform yet"
+#endif
+
+    time_t tt = t.epoch_sec;
+    tm *gtm = gmtime(&tt);
+    t.year = gtm->tm_year + 1900;
+    t.mon = gtm->tm_mon + 1;
+    t.mday = gtm->tm_mday;
+    t.hour = gtm->tm_hour;
+    t.min = gtm->tm_min;
+    t.sec = gtm->tm_sec;
+    t.isdst = gtm->tm_isdst;
+    t.wday = gtm->tm_wday;
+    t.yday = gtm->tm_yday;
+
+    return true;
+}
+
+bool UnixMicroTimeToZippyTime(int64 from, Time &to)
+{
+    to.epoch_micro = from;
+    to.epoch_sec = from / 1000000;
+    to.usec = from % 1000000;
+
+    time_t tt = to.epoch_sec;
+    tm *gtm = gmtime(&tt);
+    to.year = gtm->tm_year + 1900;
+    to.mon = gtm->tm_mon + 1;
+    to.mday = gtm->tm_mday;
+    to.hour = gtm->tm_hour;
+    to.min = gtm->tm_min;
+    to.sec = gtm->tm_sec;
+    to.isdst = gtm->tm_isdst;
+    to.wday = gtm->tm_wday;
+    to.yday = gtm->tm_yday;
+
+    return true;
+}
+
+bool MakeDirectory(const string path)
+{
+    int result = mkdir(path.c_str());
+
+    return result == 0;
+}
+
+bool PathIsDirectory(const string path)
+{
+    FileStat st;
+    if (!stat(path, st)) return false;
+
+    return st.type == DIRECTORY;
+}
+
+bool OpenFile(File &f, const string path, int flags)
+{
+#ifdef WINDOWS
+    DWORD access = 0;
+    // kindergarten taught me sharing is good. why doesn't Windows know this?
+    DWORD share = FILE_SHARE_READ | FILE_SHARE_WRITE;
+    DWORD creation = 0;
+    DWORD attributes = 0;
+    int fdflags = 0;
+
+    if (flags & READ) access |= GENERIC_READ;
+    if (flags & WRITE) access |= GENERIC_WRITE;
+    if (flags & APPEND) {
+        access |= FILE_APPEND_DATA;
+        fdflags |= _O_APPEND;
+    }
+
+    if (flags & CREATE) {
+        creation = OPEN_ALWAYS;
+    }
+    else if (flags & TRUNCATE) {
+        creation = CREATE_ALWAYS;
+    }
+
+    // TODO probably an issue w/ ANSI vs Unicode functions for file name
+    HANDLE h = CreateFile(path.c_str(), access, share, NULL, creation, attributes, NULL);
+
+    if (h == INVALID_HANDLE_VALUE) return false;
+
+    f.handle = h;
+    f.fd = _open_osfhandle((long)h, fdflags);
+
+    return true;
+
+#endif
+    return true;
+}
+
+bool CreateUUID(UUID &u)
+{
+#ifdef WINDOWS
+    ::UUID uuid;
+    RPC_STATUS result = UuidCreate(&uuid);
+    if (result != RPC_S_OK && result != RPC_S_UUID_LOCAL_ONLY) return false;
+
+    memcpy(&u, &uuid, 16);
+    return true;
+#endif
+}
+
+
+Timer::Timer()
+{
+}
+
+Timer::Timer(uint32 microseconds)
+{
+    this->microseconds = microseconds;
+
+#ifdef WINDOWS
+    this->handle = CreateWaitableTimer(NULL, TRUE, NULL);
+    if (!this->handle) {
+        throw "timer could not be created";
+    }
+#endif
+
+    this->signaled = false;
+    this->running = false;
+}
+
+bool Timer::Reset()
+{
+    this->signaled = false;
+
+    if (this->running) {
+#ifdef WINDOWS
+        if (CancelWaitableTimer(this->handle)) {
+            this->running = false;
+            return true;
+        }
+
+        return false;
+#endif
+    }
+
+    return false;
+}
+
+bool Timer::Start()
+{
+    if (this->running) {
+        if (!this->Reset()) {
+            return false;
+        }
+    }
+
+#ifdef WINDOWS
+    LARGE_INTEGER duetime;
+    duetime.QuadPart = -10 * int32(this->microseconds);
+    if (!SetWaitableTimer(this->handle, &duetime, 0, NULL, NULL, FALSE)) {
+        return false;
+    }
+
+    this->running = true;
+    return true;
+#endif
+
+    return false;
+}
+
+bool Timer::Signaled()
+{
+    if (this->signaled) return true;
+
+#ifdef WINDOWS
+    DWORD result = WaitForSingleObject(this->handle, 0);
+
+    if (result == WAIT_OBJECT_0) {
+        this->signaled = true;
+        return true;
+    }
+
+#endif
+
+    return false;
 }
 
 } // platform namespace
