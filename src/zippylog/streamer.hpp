@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 
 #include <zmq.hpp>
@@ -33,6 +34,7 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
 using ::zippylog::Store;
+using ::zippylog::platform::Timer;
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
@@ -49,7 +51,9 @@ public:
 class SubscriptionInfo {
 public:
     SubscriptionInfo();
+    SubscriptionInfo(uint32 expiration_ttl);
 
+    Timer expiration_timer;
 };
 
 // the streamer streams information to subscribed clients
@@ -61,6 +65,7 @@ class ZIPPYLOG_EXPORT Streamer {
             const string client_endpoint,
             const string subscriptions_endpoint,
             const string subscription_updates_endpoint,
+            const string logging_endpoint,
             uint32 subscription_ttl
         );
         ~Streamer();
@@ -73,6 +78,7 @@ class ZIPPYLOG_EXPORT Streamer {
         void SetShutdownSemaphore(bool *active);
 
     protected:
+
         Store * store;
         context_t * zctx;
 
@@ -80,6 +86,7 @@ class ZIPPYLOG_EXPORT Streamer {
         string client_endpoint;
         string subscriptions_endpoint;
         string subscription_updates_endpoint;
+        string logging_endpoint;
 
         uint32 subscription_ttl;
 
@@ -87,6 +94,7 @@ class ZIPPYLOG_EXPORT Streamer {
         socket_t * client_sock;
         socket_t * subscriptions_sock;
         socket_t * subscription_updates_sock;
+        socket_t * logging_sock;
 
         vector<StoreChangeSubscription> store_change_subscriptions;
 

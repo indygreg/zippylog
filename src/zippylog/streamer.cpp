@@ -15,10 +15,18 @@
 #include <zippylog/streamer.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/zippylogd.pb.h>
 #include <zippylog/zeromq.hpp>
 
+using ::zippylog::zippylogd::StreamerSubscriptionExpired;
 using ::zippylog::protocol::response::SubscribeAck;
 using ::zmq::message_t;
+
+#define LOG_MESSAGE(msgvar, socketvar) { \
+    Envelope logenvelope = Envelope(); \
+    msgvar.add_to_envelope(&logenvelope); \
+    zeromq::send_envelope(socketvar, logenvelope); \
+}
 
 namespace zippylog {
 namespace server {
@@ -30,7 +38,14 @@ StoreChangeSubscription::StoreChangeSubscription()
 
 SubscriptionInfo::SubscriptionInfo()
 {
+}
 
+SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
+{
+    this->expiration_timer = Timer(expiration_ttl * 1000000);
+    if (!this->expiration_timer.Start()) {
+        throw "could not start expiration timer";
+    }
 }
 
 Streamer::Streamer(Store *store,
@@ -39,6 +54,7 @@ Streamer::Streamer(Store *store,
                    const string client_endpoint,
                    const string subscriptions_endpoint,
                    const string subscription_updates_endpoint,
+                   const string logging_endpoint,
                    uint32 subscription_ttl)
 {
     this->store = store;
@@ -47,12 +63,14 @@ Streamer::Streamer(Store *store,
     this->client_endpoint = client_endpoint;
     this->subscriptions_endpoint = subscriptions_endpoint;
     this->subscription_updates_endpoint = subscription_updates_endpoint;
+    this->logging_endpoint = logging_endpoint;
     this->subscription_ttl = subscription_ttl;
 
     this->changes_sock = NULL;
     this->client_sock = NULL;
     this->subscriptions_sock = NULL;
     this->subscription_updates_sock = NULL;
+    this->logging_sock = NULL;
 }
 
 Streamer::~Streamer()
@@ -61,6 +79,7 @@ Streamer::~Streamer()
     if (this->client_sock) delete this->client_sock;
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
+    if (this->logging_sock) delete this->logging_sock;
 }
 
 void Streamer::SetShutdownSemaphore(bool *active)
@@ -74,6 +93,9 @@ void Streamer::SetShutdownSemaphore(bool *active)
 
 void Streamer::Run()
 {
+    this->logging_sock = new socket_t(*this->zctx, ZMQ_PUSH);
+    this->logging_sock->connect(this->logging_endpoint.c_str());
+
     // subscribe to store change notifications
     this->changes_sock = new socket_t(*this->zctx, ZMQ_SUB);
     this->changes_sock->setsockopt(ZMQ_SUBSCRIBE, NULL, 0);
@@ -112,11 +134,22 @@ void Streamer::Run()
         zmq::message_t msg;
 
         // wait for a message to process
-        if (zmq::poll(&pollitems[0], 3, 250000) < 1) continue;
+        int rc = zmq::poll(&pollitems[0], 3, 250000);
 
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
             continue;
+        }
+
+        // unsubscribe any expired subscribers
+        map<string, SubscriptionInfo>::iterator iter = this->subscriptions.begin();
+        for (; iter != this->subscriptions.end(); iter++) {
+            if (iter->second.expiration_timer.Signaled()) {
+                StreamerSubscriptionExpired log = StreamerSubscriptionExpired();
+                log.set_id(iter->first);
+                LOG_MESSAGE(log, this->logging_sock);
+                this->subscriptions.erase(iter);
+            }
         }
 
         // process new subscriptions
@@ -147,11 +180,15 @@ void Streamer::Run()
             subscription.socket_identifiers = identities;
 
             // TODO create subscription identity properly
-            subscription.id = "foo";
+            platform::UUID uuid;
+            if (!platform::CreateUUID(uuid)) {
+                throw "could not create UUID";
+            }
+            subscription.id = string((const char *)&uuid, sizeof(uuid));
 
             this->store_change_subscriptions.push_back(subscription);
 
-            SubscriptionInfo info;
+            SubscriptionInfo info = SubscriptionInfo(this->subscription_ttl);
 
             this->subscriptions[subscription.id] = info;
 
@@ -174,6 +211,7 @@ void Streamer::Run()
 
         }
 
+        // process store changes and send to subscribers
         if (pollitems[0].revents & ZMQ_POLLIN) {
             this->changes_sock->recv(&msg, 0);
 
