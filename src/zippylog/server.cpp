@@ -28,12 +28,19 @@ easier to grok.
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/zeromq.hpp>
+#include <zippylog/zippylogd.pb.h>
 
 #include <string>
 #include <zmq.hpp>
 
 namespace zippylog {
 namespace server {
+
+#define LOG_MESSAGE(msgvar, socketvar) { \
+    Envelope logenvelope = Envelope(); \
+    msgvar.add_to_envelope(&logenvelope); \
+    zeromq::send_envelope(socketvar, logenvelope); \
+}
 
 using ::std::string;
 using ::zmq::message_t;
@@ -47,11 +54,13 @@ void * __stdcall Request::request_processor(void *data)
     assert(d->broker_endpoint);
     assert(d->streaming_subscriptions_endpoint);
     assert(d->streaming_updates_endpoint);
+    assert(d->logger_endpoint);
     assert(d->store);
 
     socket_t *socket = NULL;
     socket_t *subscriptions_sock = NULL;
     socket_t *subscription_updates_sock = NULL;
+    socket_t *logger_sock = NULL;
 
     Store *store = d->store;
 
@@ -75,6 +84,9 @@ void * __stdcall Request::request_processor(void *data)
     while (true) {
         switch (state) {
             case Request::SETUP_INITIAL_SOCKETS:
+                logger_sock = new socket_t(*d->ctx, ZMQ_PUSH);
+                logger_sock->connect(d->logger_endpoint);
+
                 subscriptions_sock = new socket_t(*d->ctx, ZMQ_PUSH);
                 subscriptions_sock->connect(d->streaming_subscriptions_endpoint);
 
@@ -112,12 +124,18 @@ void * __stdcall Request::request_processor(void *data)
             {
                 vector<message_t *> msgs;
                 if (!zeromq::receive_multipart_message(socket, identities, msgs)) {
+                    ::zippylog::zippylogd::WorkerFailReceiveMessage log = ::zippylog::zippylogd::WorkerFailReceiveMessage();
+                    LOG_MESSAGE(log, logger_sock);
+
                     state = Request::RESET_CONNECTION;
                     break;
                 }
 
                 // no payload messages sure is weird
                 if (!msgs.size()) {
+                    ::zippylog::zippylogd::WorkerReceiveEmptyMessage log = ::zippylog::zippylogd::WorkerReceiveEmptyMessage();
+                    LOG_MESSAGE(log, logger_sock);
+
                     state = Request::REQUEST_CLEANUP;
                     break;
                 }
@@ -126,6 +144,9 @@ void * __stdcall Request::request_processor(void *data)
                 // TODO handle parse failure
 
                 if (request_envelope.envelope.message_size() < 1) {
+                    ::zippylog::zippylogd::WorkerRequestEmptyEnvelope log = ::zippylog::zippylogd::WorkerRequestEmptyEnvelope();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::EMPTY_ENVELOPE;
                     error_message = "envelope contains no messages";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -133,6 +154,9 @@ void * __stdcall Request::request_processor(void *data)
                 }
 
                 if (request_envelope.envelope.message_namespace_size() < 1 || request_envelope.envelope.message_type_size() < 1) {
+                    ::zippylog::zippylogd::WorkerInvalidMessageEnumeration log = ::zippylog::zippylogd::WorkerInvalidMessageEnumeration();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::MISSING_ENUMERATIONS;
                     error_message = "message received without namespace or type enumerations";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -141,6 +165,9 @@ void * __stdcall Request::request_processor(void *data)
 
                 /* must be in the zippylog namespace */
                 if (request_envelope.envelope.message_namespace(0) != 1) {
+                    ::zippylog::zippylogd::WorkerInvalidMessageEnumeration log = ::zippylog::zippylogd::WorkerInvalidMessageEnumeration();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::INVALID_MESSAGE_NAMESPACE;
                     error_message = "message namespace is not zippylog's";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -172,8 +199,14 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::PROCESS_STOREINFO:
             {
+                ::zippylog::zippylogd::WorkerBeginProcessStoreInfo logstart = ::zippylog::zippylogd::WorkerBeginProcessStoreInfo();
+                LOG_MESSAGE(logstart, logger_sock);
+
                 protocol::StoreInfo info = protocol::StoreInfo();
                 d->store->StoreInfo(info);
+
+                ::zippylog::zippylogd::WorkerEndProcessStoreInfo logend = ::zippylog::zippylogd::WorkerEndProcessStoreInfo();
+                LOG_MESSAGE(logend, logger_sock);
 
                 response_envelope = zippylog::Envelope();
                 info.add_to_envelope(&response_envelope);
@@ -185,6 +218,9 @@ void * __stdcall Request::request_processor(void *data)
             {
                 Message *msg = request_envelope.get_message(0);
                 if (!msg) {
+                    ::zippylog::zippylogd::WorkerReceiveInvalidGet log = ::zippylog::zippylogd::WorkerReceiveInvalidGet();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
                     error_message = "error parsing get message... weird";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -193,6 +229,9 @@ void * __stdcall Request::request_processor(void *data)
                 protocol::request::Get *get = (protocol::request::Get *)msg;
 
                 if (!get->has_path()) {
+                    ::zippylog::zippylogd::WorkerReceiveInvalidGet log = ::zippylog::zippylogd::WorkerReceiveInvalidGet();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::EMPTY_FIELD;
                     error_message = "required field 'path' is empty";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -201,6 +240,9 @@ void * __stdcall Request::request_processor(void *data)
                 }
 
                 if (!get->has_start_offset()) {
+                    ::zippylog::zippylogd::WorkerReceiveInvalidGet log = ::zippylog::zippylogd::WorkerReceiveInvalidGet();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::EMPTY_FIELD;
                     error_message = "required field 'start_offset' is not defined";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -212,6 +254,9 @@ void * __stdcall Request::request_processor(void *data)
 
                 InputStream stream;
                 if (!store->GetInputStream(get->path(), stream)) {
+                    ::zippylog::zippylogd::WorkerGetInvalidStream log = ::zippylog::zippylogd::WorkerGetInvalidStream();
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::PATH_NOT_FOUND;
                     error_message = "requested stream could not be found";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -235,6 +280,9 @@ void * __stdcall Request::request_processor(void *data)
                 uint32 envelope_size = stream.NextEnvelopeSize();
                 // could not find envelope in stream at offset
                 if (!envelope_size) {
+                    ::zippylog::zippylogd::WorkerGetInvalidOffset log = ::zippylog::zippylogd::WorkerGetInvalidOffset();
+                    LOG_MESSAGE(log, logger_sock);
+
                     // TODO need better error code
                     error_code = protocol::response::PATH_NOT_FOUND;
                     error_message = "no envelopes found at stream offset";
@@ -244,6 +292,8 @@ void * __stdcall Request::request_processor(void *data)
                 }
 
                 // we must have an envelope, so start the send sequence
+                ::zippylog::zippylogd::WorkerBeginProcessGet logstart = ::zippylog::zippylogd::WorkerBeginProcessGet();
+                LOG_MESSAGE(logstart, logger_sock);
 
                 protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
                 segment_start.set_path(get->path());
@@ -287,6 +337,9 @@ void * __stdcall Request::request_processor(void *data)
                 segment_end.add_to_envelope(&env);
                 zeromq::send_envelope(socket, env);
 
+                ::zippylog::zippylogd:: WorkerEndProcessGet logend = ::zippylog::zippylogd:: WorkerEndProcessGet();
+                LOG_MESSAGE(logend, logger_sock);
+
                 state = Request::REQUEST_CLEANUP;
                 break;
             }
@@ -312,6 +365,10 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::SEND_ERROR_RESPONSE:
             {
+                ::zippylog::zippylogd::WorkerSendErrorResponse log = ::zippylog::zippylogd::WorkerSendErrorResponse();
+                log.set_message(error_message);
+                LOG_MESSAGE(log, logger_sock);
+
                 protocol::response::Error error = protocol::response::Error();
                 error.set_code(error_code);
                 error.set_msg(error_message);
@@ -354,6 +411,7 @@ void * __stdcall Request::request_processor(void *data)
     if (socket) { delete socket; }
     if (subscriptions_sock) delete subscriptions_sock;
     if (subscription_updates_sock) delete subscription_updates_sock;
+    if (logger_sock) delete logger_sock;
 
     return NULL;
 }

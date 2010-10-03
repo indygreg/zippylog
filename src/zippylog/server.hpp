@@ -43,6 +43,9 @@ typedef struct request_processor_start_data {
     // where to send updates for existing subscriptions
     const char *streaming_updates_endpoint;
 
+    // where to send log messages
+    const char *logger_endpoint;
+
     bool active;
 } request_processor_start_data;
 
