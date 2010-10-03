@@ -17,6 +17,8 @@
 #include <zippylog/platform.hpp>
 #include <zippylog/server.hpp>
 #include <zippylog/streamer.hpp>
+#include <zippylog/zeromq.hpp>
+#include <zippylog/zippylogd.pb.h>
 
 // Lua is compiled as C most of the time, so import as such to avoid
 // name mangling
@@ -27,10 +29,18 @@ extern "C" {
 
 #include <sstream>
 
+#ifdef _DEBUG
+#include <google/protobuf/text_format.h>
+#include <iostream>
+#endif
+
 namespace zippylog {
 namespace server {
 
 using ::std::ostringstream;
+using ::zippylog::zippylogd::BrokerStartup;
+using ::zippylog::zippylogd::BrokerShutdown;
+using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 
 #define WORKER_ENDPOINT "inproc://workers"
 #define STORE_CHANGE_ENDPOINT "inproc://store_changes"
@@ -85,10 +95,18 @@ void Broker::init()
     this->worker_streaming_notify_sock = NULL;
     this->streaming_streaming_notify_sock = NULL;
     this->logger_sock = NULL;
+    this->log_client_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
     this->streaming_thread_data = NULL;
+
+    platform::UUID uuid;
+    if (!platform::CreateUUID(uuid)) {
+        throw "could not create UUID";
+    }
+
+    this->id = string((const char *)&uuid, sizeof(uuid));
 }
 
 /*
@@ -122,6 +140,15 @@ void Broker::run()
     }
 
     this->setup_internal_sockets();
+
+    {
+        BrokerStartup log = BrokerStartup();
+        log.set_id(this->id);
+        Envelope logenvelope = Envelope();
+        log.add_to_envelope(&logenvelope);
+        zeromq::send_envelope(this->log_client_sock, logenvelope);
+    }
+
     this->create_worker_threads();
     this->create_store_watcher();
     this->create_streaming_threads();
@@ -150,7 +177,7 @@ void Broker::run()
     pollitems[WORKER_SUBSCRIPTIONS_INDEX].fd = 0;
     pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents = 0;
 
-    pollitems[STREAMING_NOTIFY_INDEX].socket = *this->streaming_streaming_notify_sock;
+    pollitems[STREAMING_NOTIFY_INDEX].socket = *this->worker_streaming_notify_sock;
     pollitems[STREAMING_NOTIFY_INDEX].events = ZMQ_POLLIN;
     pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
     pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
@@ -181,6 +208,22 @@ void Broker::run()
 
                 this->store->WriteData(this->config.log_bucket, this->config.log_stream_set, msg.data(), msg.size());
 
+                // TODO this is mostly for debugging purposes and should be implemented another way
+                // once the project has matured
+#ifdef _DEBUG
+                Envelope debugEnvelope = Envelope(&msg);
+                ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
+                printer.SetInitialIndentLevel(2);
+                for (int i = 0; i < debugEnvelope.number_messages(); i++) {
+                    ::google::protobuf::Message *m = debugEnvelope.get_message(i);
+                    ::std::cout << m->GetTypeName() << ::std::endl;
+                    string debugString;
+                    printer.PrintToString(*m, &debugString);
+                    delete m;
+
+                    ::std::cout << debugString;
+                }
+#endif
                 moresz = sizeof(more);
                 this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
                 if (!more) break;
@@ -192,7 +235,7 @@ void Broker::run()
         // get bigger
 
         // move worker responses to client
-        if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
+        else if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->workers_sock->recv(&msg, 0)) {
                     break;
@@ -209,7 +252,7 @@ void Broker::run()
         }
 
         // move streaming messages to client
-        if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
+        else if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->streaming_sock->recv(&msg, 0)) break;
 
@@ -221,7 +264,7 @@ void Broker::run()
         }
 
         // move subscriptions requests to streamer
-        if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
+        else if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->worker_subscriptions_sock->recv(&msg, 0)) break;
 
@@ -233,7 +276,7 @@ void Broker::run()
         }
 
         // move subscription general messages to all streamers
-        if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
+        else if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->worker_streaming_notify_sock->recv(&msg, 0)) break;
 
@@ -248,7 +291,7 @@ void Broker::run()
         // forward client stream requests to streaming thread pool
 
         // send client requests to workers
-        if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
+        else if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
                 if (!this->clients_sock->recv(&msg, 0)) {
                     break;
@@ -265,6 +308,12 @@ void Broker::run()
         }
 
         if (stream_flush_timer.Signaled()) {
+            BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
+            log.set_id(this->id);
+            Envelope e;
+            log.add_to_envelope(&e);
+            zeromq::send_envelope(this->log_client_sock, e);
+
             this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
                 throw "could not restart stream flush timer";
@@ -317,6 +366,7 @@ void Broker::create_store_watcher()
 {
     this->store_watcher_start = new store_watcher_start_data;
     this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT;
+    this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT;
     this->store_watcher_start->zctx = this->zctx;
     this->store_watcher_start->store = this->store;
 
@@ -349,6 +399,9 @@ void Broker::setup_internal_sockets()
 {
     this->logger_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
     this->logger_sock->bind(LOGGER_ENDPOINT);
+
+    this->log_client_sock = new zmq::socket_t(*this->zctx, ZMQ_PUSH);
+    this->log_client_sock->connect(LOGGER_ENDPOINT);
 
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
@@ -513,8 +566,9 @@ void * __stdcall Broker::StoreWatcherStart(void *d)
     assert(data->endpoint);
     assert(data->zctx);
     assert(data->store);
+    assert(data->logging_endpoint);
 
-    StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint);
+    StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint, data->logging_endpoint);
     watcher.run();
 
     return NULL;

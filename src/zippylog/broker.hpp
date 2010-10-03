@@ -48,6 +48,7 @@ typedef struct store_watcher_start_data {
     context_t *zctx;
     Store *store;
     char *endpoint;
+    char *logging_endpoint;
 } store_watcher_start_data;
 
 typedef struct streaming_start_data {
@@ -107,6 +108,11 @@ class ZIPPYLOG_EXPORT Broker {
         // PULL that receives logging messages from other threads
         socket_t * logger_sock;
 
+        // PUSH that sends logging messages to main logging sock
+        // yes, we have both a client and server in the same object. this is easier
+        socket_t * log_client_sock;
+
+        string id;
         void * exec_thread;
         vector<void *> worker_threads;
         vector<void *> streaming_threads;

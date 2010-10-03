@@ -19,6 +19,8 @@
 #include <zippylog/zeromq.hpp>
 
 using ::zippylog::protocol::response::SubscribeAck;
+using ::zippylog::zippylogd::StreamerStartup;
+using ::zippylog::zippylogd::StreamerShutdown;
 using ::zippylog::zippylogd::StreamerSubscriptionExpired;
 using ::zippylog::zippylogd::StreamerReceiveKeepalive;
 using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
@@ -27,6 +29,7 @@ using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
 using ::zmq::message_t;
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
+    msgvar.set_id(this->id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
     zeromq::send_envelope(socketvar, logenvelope); \
@@ -75,6 +78,13 @@ Streamer::Streamer(Store *store,
     this->subscriptions_sock = NULL;
     this->subscription_updates_sock = NULL;
     this->logging_sock = NULL;
+
+    platform::UUID uuid;
+    if (!platform::CreateUUID(uuid)) {
+        throw "could not create UUID";
+    }
+
+    this->id = string((const char *)&uuid, sizeof(uuid));
 }
 
 Streamer::~Streamer()
@@ -99,6 +109,11 @@ void Streamer::Run()
 {
     this->logging_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->logging_sock->connect(this->logging_endpoint.c_str());
+
+    {
+        StreamerStartup log = StreamerStartup();
+        LOG_MESSAGE(log, this->logging_sock);
+    }
 
     // subscribe to store change notifications
     this->changes_sock = new socket_t(*this->zctx, ZMQ_SUB);
@@ -160,24 +175,24 @@ void Streamer::Run()
                 delete m;
 
                 StreamerReceiveKeepalive log = StreamerReceiveKeepalive();
-                log.set_id(id);
+                log.set_subscription(id);
                 LOG_MESSAGE(log, this->logging_sock);
 
                 if (this->HasSubscription(id)) {
                     if (this->RenewSubscription(id)) {
                         StreamerSubscriptionRenewedFromKeepalive log = StreamerSubscriptionRenewedFromKeepalive();
-                        log.set_id(id);
+                        log.set_subscription(id);
                         LOG_MESSAGE(log, this->logging_sock);
                     }
                     else {
                         StreamerErrorRenewingSubscription log = StreamerErrorRenewingSubscription();
-                        log.set_id(id);
+                        log.set_subscription(id);
                         LOG_MESSAGE(log, this->logging_sock);
                     }
                 }
                 else {
                     StreamerRejectKeepaliveUnknownSubscription log = StreamerRejectKeepaliveUnknownSubscription();
-                    log.set_id(id);
+                    log.set_subscription(id);
                     LOG_MESSAGE(log, this->logging_sock);
                 }
             }
@@ -188,9 +203,10 @@ void Streamer::Run()
         for (; iter != this->subscriptions.end(); iter++) {
             if (iter->second.expiration_timer.Signaled()) {
                 StreamerSubscriptionExpired log = StreamerSubscriptionExpired();
-                log.set_id(iter->first);
+                log.set_subscription(iter->first);
                 LOG_MESSAGE(log, this->logging_sock);
                 this->subscriptions.erase(iter);
+                break;
             }
         }
 
@@ -290,8 +306,10 @@ void Streamer::Run()
                     break;
             }
         }
-
     }
+
+    StreamerShutdown log = StreamerShutdown();
+    LOG_MESSAGE(log, this->logging_sock);
 }
 
 void Streamer::ProcessStoreChangeEnvelope(Envelope &e)

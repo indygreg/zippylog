@@ -14,9 +14,12 @@
 
 #include <zippylog/store_watcher.hpp>
 
+#include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
 #include <zippylog/zeromq.hpp>
+#include <zippylog/zippylogd.pb.h>
 
+// TODO move platform-specific code to platform namespace
 #ifdef WINDOWS
 #include <WinBase.h>
 #include <tchar.h>
@@ -24,11 +27,25 @@
 
 namespace zippylog {
 
-StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const string endpoint)
+using ::zippylog::zippylogd::StoreWatcherStartup;
+using ::zippylog::zippylogd::StoreWatcherShutdown;
+
+StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const string endpoint, const string logging_endpoint)
 {
     this->_store = store;
     this->_ctx = ctx;
     this->_endpoint = endpoint;
+    this->logging_endpoint = logging_endpoint;
+
+    platform::UUID uuid;
+    if (!platform::CreateUUID(uuid)) {
+        throw "could not create UUID";
+    }
+
+    this->id = string((const char *)&uuid, sizeof(uuid));
+
+    this->logging_sock = new socket_t(*this->_ctx, ZMQ_PUSH);
+    this->logging_sock->connect(this->logging_endpoint.c_str());
 
     this->socket = new socket_t(*this->_ctx, ZMQ_PUB);
     this->socket->bind(this->_endpoint.c_str());
@@ -36,6 +53,14 @@ StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const st
 
 void StoreWatcher::run()
 {
+    {
+        StoreWatcherStartup log = StoreWatcherStartup();
+        log.set_id(this->id);
+        Envelope logenvelope = Envelope();
+        log.add_to_envelope(&logenvelope);
+        zeromq::send_envelope(this->logging_sock, logenvelope);
+    }
+
     HANDLE directory;
     BYTE results[32768];
     DWORD results_length;
@@ -121,10 +146,19 @@ void StoreWatcher::run()
         } while (info->NextEntryOffset != 0);
     }
 
+    {
+        StoreWatcherShutdown log = StoreWatcherShutdown();
+        log.set_id(this->id);
+        Envelope logenvelope = Envelope();
+        log.add_to_envelope(&logenvelope);
+        zeromq::send_envelope(this->logging_sock, logenvelope);
+    }
+
 }
 
 void StoreWatcher::SendChangeMessage(Envelope &e)
 {
+    zeromq::send_envelope(this->logging_sock, e);
     zeromq::send_envelope(this->socket, e);
 }
 

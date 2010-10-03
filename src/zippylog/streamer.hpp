@@ -87,6 +87,7 @@ class ZIPPYLOG_EXPORT Streamer {
 
         Store * store;
         context_t * zctx;
+        string id;
 
         string store_changes_endpoint;
         string client_endpoint;

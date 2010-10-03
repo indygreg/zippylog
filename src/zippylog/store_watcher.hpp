@@ -30,14 +30,17 @@ using ::zmq::socket_t;
 // provides file/directory change notification for stores
 class ZIPPYLOG_EXPORT StoreWatcher {
 public:
-    StoreWatcher(Store *store, zmq::context_t *ctx, const string publisher_endpoint);
+    StoreWatcher(Store *store, zmq::context_t *ctx, const string publisher_endpoint, const string logging_endpoint);
     void run();
 
 protected:
     Store * _store;
     zmq::context_t *_ctx;
     string _endpoint;
+    string logging_endpoint;
+    string id;
     zmq::socket_t * socket;
+    zmq::socket_t * logging_sock;
 
     void SendChangeMessage(Envelope &e);
     void HandleAdded(string path, platform::FileStat &stat);

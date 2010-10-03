@@ -37,12 +37,15 @@ namespace zippylog {
 namespace server {
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
+    msgvar.set_id(worker_id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
     zeromq::send_envelope(socketvar, logenvelope); \
 }
 
 using ::std::string;
+using ::zippylog::zippylogd::WorkerForwardSubscribeKeepalive;
+using ::zippylog::zippylogd::WorkerReceiveUnknownRequestType;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -61,6 +64,21 @@ void * __stdcall Request::request_processor(void *data)
     socket_t *subscriptions_sock = NULL;
     socket_t *subscription_updates_sock = NULL;
     socket_t *logger_sock = NULL;
+
+    platform::UUID uuid;
+    if (!platform::CreateUUID(uuid)) {
+        throw "could not create worker UUID";
+    }
+
+    string worker_id = string((const char *)&uuid, sizeof(uuid));
+
+    logger_sock = new socket_t(*d->ctx, ZMQ_PUSH);
+    logger_sock->connect(d->logger_endpoint);
+
+    {
+        ::zippylog::zippylogd::WorkerStartup log = ::zippylog::zippylogd::WorkerStartup();
+        LOG_MESSAGE(log, logger_sock);
+    }
 
     Store *store = d->store;
 
@@ -84,9 +102,6 @@ void * __stdcall Request::request_processor(void *data)
     while (true) {
         switch (state) {
             case Request::SETUP_INITIAL_SOCKETS:
-                logger_sock = new socket_t(*d->ctx, ZMQ_PUSH);
-                logger_sock->connect(d->logger_endpoint);
-
                 subscriptions_sock = new socket_t(*d->ctx, ZMQ_PUSH);
                 subscriptions_sock->connect(d->streaming_subscriptions_endpoint);
 
@@ -192,6 +207,10 @@ void * __stdcall Request::request_processor(void *data)
                     break;
                 }
                 else {
+                    WorkerReceiveUnknownRequestType log = WorkerReceiveUnknownRequestType();
+                    log.set_enumeration(request_type);
+                    LOG_MESSAGE(log, logger_sock);
+
                     error_code = protocol::response::UNKNOWN_REQUEST_TYPE;
                     error_message = "server does not know how to process the request";
                     state = Request::SEND_ERROR_RESPONSE;
@@ -373,6 +392,11 @@ void * __stdcall Request::request_processor(void *data)
                     (protocol::request::SubscribeKeepalive *)request_envelope.get_message(0);
 
                 // TODO validation
+
+                WorkerForwardSubscribeKeepalive log = WorkerForwardSubscribeKeepalive();
+                log.set_subscription(m->id());
+                LOG_MESSAGE(log, logger_sock);
+
                 zeromq::send_envelope(subscription_updates_sock, request_envelope);
 
                 state = Request::REQUEST_CLEANUP;
@@ -423,6 +447,9 @@ void * __stdcall Request::request_processor(void *data)
 
         if (!d->active) break;
     }
+
+    ::zippylog::zippylogd::WorkerShutdown log = ::zippylog::zippylogd::WorkerShutdown();
+    LOG_MESSAGE(log, logger_sock);
 
     if (socket) { delete socket; }
     if (subscriptions_sock) delete subscriptions_sock;
