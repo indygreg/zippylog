@@ -43,6 +43,11 @@ message WorkerReceiveEmptyMessage {
     optional bytes worker = 1;
 }
 
+message WorkerReceiveUnknownRequestType {
+    optional bytes worker = 1;
+    optional uint32 enumeration = 2;
+}
+
 // when the envelope in a request could not be parsed
 message WorkerRequestParseFailure {
     // unique identifier of worker
@@ -102,6 +107,20 @@ message WorkerSendErrorResponse {
     optional bytes worker = 1;
 
     optional string message = 2;
+}
+
+message WorkerForwardSubscribeKeepalive {
+    optional bytes worker = 1;
+
+    optional bytes subscription = 2;
+}
+
+message StreamerStartup {
+    optional bytes streamer = 1;
+}
+
+message StreamerShutdown {
+    optional bytes streamer = 1;
 }
 
 // when a subscription expires
