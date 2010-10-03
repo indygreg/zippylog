@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1a\n\x18WorkerFailReceiveMessage\"\x1b\n\x19WorkerReceiveEmptyMessage\"\x1b\n\x19WorkerRequestParseFailure\"\x1c\n\x1aWorkerRequestEmptyEnvelope\"!\n\x1fWorkerInvalidMessageEnumeration\"\x1d\n\x1bWorkerBeginProcessStoreInfo\"\x1b\n\x19WorkerEndProcessStoreInfo\"\x19\n\x17WorkerReceiveInvalidGet\"\x18\n\x16WorkerGetInvalidStream\"\x18\n\x16WorkerGetInvalidOffset\"\x17\n\x15WorkerBeginProcessGet\"\x15\n\x13WorkerEndProcessGet\"*\n\x17WorkerSendErrorResponse\x12\x0f\n\x07message\x18\x01 \x01(\t')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1a\n\x18WorkerFailReceiveMessage\"\x1b\n\x19WorkerReceiveEmptyMessage\"\x1b\n\x19WorkerRequestParseFailure\"\x1c\n\x1aWorkerRequestEmptyEnvelope\"!\n\x1fWorkerInvalidMessageEnumeration\"\x1d\n\x1bWorkerBeginProcessStoreInfo\"\x1b\n\x19WorkerEndProcessStoreInfo\"\x19\n\x17WorkerReceiveInvalidGet\"\x18\n\x16WorkerGetInvalidStream\"\x18\n\x16WorkerGetInvalidOffset\"\x17\n\x15WorkerBeginProcessGet\"\x15\n\x13WorkerEndProcessGet\"*\n\x17WorkerSendErrorResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\")\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -373,6 +373,34 @@ _WORKERSENDERRORRESPONSE = descriptor.Descriptor(
 )
 
 
+_STREAMERSUBSCRIPTIONEXPIRED = descriptor.Descriptor(
+  name='StreamerSubscriptionExpired',
+  full_name='zippylog.zippylogd.StreamerSubscriptionExpired',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=541,
+  serialized_end=582,
+)
+
+
 
 class BrokerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -502,6 +530,14 @@ class WorkerSendErrorResponse(message.Message):
   ZIPPYLOG_ENUMERATION = 39
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerSendErrorResponse)
 
+class StreamerSubscriptionExpired(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STREAMERSUBSCRIPTIONEXPIRED
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 40
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerSubscriptionExpired)
+
 register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
 register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
 register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
@@ -518,4 +554,5 @@ register_message(1, 36, 'zippylog.zippylogd_pb2', 'WorkerGetInvalidOffset')
 register_message(1, 37, 'zippylog.zippylogd_pb2', 'WorkerBeginProcessGet')
 register_message(1, 38, 'zippylog.zippylogd_pb2', 'WorkerEndProcessGet')
 register_message(1, 39, 'zippylog.zippylogd_pb2', 'WorkerSendErrorResponse')
+register_message(1, 40, 'zippylog.zippylogd_pb2', 'StreamerSubscriptionExpired')
 # @@protoc_insertion_point(module_scope)

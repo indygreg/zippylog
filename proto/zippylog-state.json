@@ -3,6 +3,7 @@
     "zippylog": {
       "zippylog.protocol.BucketInfo": 3, 
       "zippylog.protocol.StoreInfo": 4, 
+      "zippylog.zippylogd.StreamerSubscriptionExpired": 40, 
       "zippylog.zippylogd.WorkerRequestParseFailure": 29, 
       "zippylog.zippylogd.WorkerEndProcessGet": 38, 
       "zippylog.zippylogd.BrokerShutdown": 13, 
