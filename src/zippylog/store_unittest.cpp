@@ -91,5 +91,12 @@ TEST(StoreTest, PathParsing) {
     EXPECT_STREQ("bucketA", b.c_str());
     EXPECT_STREQ("setA", ss.c_str());
     EXPECT_STREQ("streamA", s.c_str());
+}
 
+TEST(StoreTest, StreamNaming)
+{
+    EXPECT_STREQ("2010-07-27", Store::StreamNameForTime(1280210699000000, 86400).c_str());
+    EXPECT_STREQ("2010-07-27-06", Store::StreamNameForTime(1280212529000000, 3600).c_str());
+    EXPECT_STREQ("2010-07-28-00-001-060", Store::StreamNameForTime(1280275200000000, 60).c_str());
+    EXPECT_STREQ("2010-07-28-00-002-060", Store::StreamNameForTime(1280275260000000, 60).c_str());
 }
