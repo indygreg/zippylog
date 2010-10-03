@@ -96,6 +96,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* StreamerErrorRenewingSubscription_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StreamerErrorRenewingSubscription_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StoreWatcherStartup_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StoreWatcherStartup_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StoreWatcherShutdown_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StoreWatcherShutdown_reflection_ = NULL;
 
 }  // namespace
 
@@ -518,6 +524,36 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerErrorRenewingSubscription));
+  StoreWatcherStartup_descriptor_ = file->message_type(27);
+  static const int StoreWatcherStartup_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherStartup, id_),
+  };
+  StoreWatcherStartup_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      StoreWatcherStartup_descriptor_,
+      StoreWatcherStartup::default_instance_,
+      StoreWatcherStartup_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherStartup, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherStartup, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(StoreWatcherStartup));
+  StoreWatcherShutdown_descriptor_ = file->message_type(28);
+  static const int StoreWatcherShutdown_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherShutdown, id_),
+  };
+  StoreWatcherShutdown_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      StoreWatcherShutdown_descriptor_,
+      StoreWatcherShutdown::default_instance_,
+      StoreWatcherShutdown_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherShutdown, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherShutdown, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(StoreWatcherShutdown));
 }
 
 namespace {
@@ -584,6 +620,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     StreamerRejectKeepaliveUnknownSubscription_descriptor_, &StreamerRejectKeepaliveUnknownSubscription::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StreamerErrorRenewingSubscription_descriptor_, &StreamerErrorRenewingSubscription::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    StoreWatcherStartup_descriptor_, &StoreWatcherStartup::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    StoreWatcherShutdown_descriptor_, &StoreWatcherShutdown::default_instance());
 }
 
 }  // namespace
@@ -643,6 +683,10 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto() {
   delete StreamerRejectKeepaliveUnknownSubscription_reflection_;
   delete StreamerErrorRenewingSubscription::default_instance_;
   delete StreamerErrorRenewingSubscription_reflection_;
+  delete StoreWatcherStartup::default_instance_;
+  delete StoreWatcherStartup_reflection_;
+  delete StoreWatcherShutdown::default_instance_;
+  delete StoreWatcherShutdown_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
@@ -684,7 +728,9 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
     "N\n*StreamerRejectKeepaliveUnknownSubscri"
     "ption\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\""
     "E\n!StreamerErrorRenewingSubscription\022\n\n\002"
-    "id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014", 1310);
+    "id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\"!\n\023StoreW"
+    "atcherStartup\022\n\n\002id\030\001 \001(\014\"\"\n\024StoreWatche"
+    "rShutdown\022\n\n\002id\030\001 \001(\014", 1381);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
@@ -714,6 +760,8 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   StreamerSubscriptionRenewedFromKeepalive::default_instance_ = new StreamerSubscriptionRenewedFromKeepalive();
   StreamerRejectKeepaliveUnknownSubscription::default_instance_ = new StreamerRejectKeepaliveUnknownSubscription();
   StreamerErrorRenewingSubscription::default_instance_ = new StreamerErrorRenewingSubscription();
+  StoreWatcherStartup::default_instance_ = new StoreWatcherStartup();
+  StoreWatcherShutdown::default_instance_ = new StoreWatcherShutdown();
   BrokerStartup::default_instance_->InitAsDefaultInstance();
   BrokerShutdown::default_instance_->InitAsDefaultInstance();
   BrokerReceiveClientMessage::default_instance_->InitAsDefaultInstance();
@@ -741,6 +789,8 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   StreamerSubscriptionRenewedFromKeepalive::default_instance_->InitAsDefaultInstance();
   StreamerRejectKeepaliveUnknownSubscription::default_instance_->InitAsDefaultInstance();
   StreamerErrorRenewingSubscription::default_instance_->InitAsDefaultInstance();
+  StoreWatcherStartup::default_instance_->InitAsDefaultInstance();
+  StoreWatcherShutdown::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto);
 }
 
@@ -6910,6 +6960,438 @@ void StreamerErrorRenewingSubscription::Swap(StreamerErrorRenewingSubscription* 
 }
 
 
+// ===================================================================
+
+const ::std::string StoreWatcherStartup::_default_id_;
+#ifndef _MSC_VER
+const int StoreWatcherStartup::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+StoreWatcherStartup::StoreWatcherStartup()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void StoreWatcherStartup::InitAsDefaultInstance() {
+}
+
+StoreWatcherStartup::StoreWatcherStartup(const StoreWatcherStartup& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void StoreWatcherStartup::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+StoreWatcherStartup::~StoreWatcherStartup() {
+  SharedDtor();
+}
+
+void StoreWatcherStartup::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void StoreWatcherStartup::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StoreWatcherStartup::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StoreWatcherStartup_descriptor_;
+}
+
+const StoreWatcherStartup& StoreWatcherStartup::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+StoreWatcherStartup* StoreWatcherStartup::default_instance_ = NULL;
+
+StoreWatcherStartup* StoreWatcherStartup::New() const {
+  return new StoreWatcherStartup;
+}
+
+void StoreWatcherStartup::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool StoreWatcherStartup::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void StoreWatcherStartup::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* StoreWatcherStartup::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int StoreWatcherStartup::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StoreWatcherStartup::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const StoreWatcherStartup* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StoreWatcherStartup*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void StoreWatcherStartup::MergeFrom(const StoreWatcherStartup& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void StoreWatcherStartup::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StoreWatcherStartup::CopyFrom(const StoreWatcherStartup& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StoreWatcherStartup::IsInitialized() const {
+  
+  return true;
+}
+
+void StoreWatcherStartup::Swap(StoreWatcherStartup* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata StoreWatcherStartup::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StoreWatcherStartup_descriptor_;
+  metadata.reflection = StoreWatcherStartup_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string StoreWatcherShutdown::_default_id_;
+#ifndef _MSC_VER
+const int StoreWatcherShutdown::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+StoreWatcherShutdown::StoreWatcherShutdown()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void StoreWatcherShutdown::InitAsDefaultInstance() {
+}
+
+StoreWatcherShutdown::StoreWatcherShutdown(const StoreWatcherShutdown& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void StoreWatcherShutdown::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+StoreWatcherShutdown::~StoreWatcherShutdown() {
+  SharedDtor();
+}
+
+void StoreWatcherShutdown::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void StoreWatcherShutdown::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StoreWatcherShutdown::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StoreWatcherShutdown_descriptor_;
+}
+
+const StoreWatcherShutdown& StoreWatcherShutdown::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+StoreWatcherShutdown* StoreWatcherShutdown::default_instance_ = NULL;
+
+StoreWatcherShutdown* StoreWatcherShutdown::New() const {
+  return new StoreWatcherShutdown;
+}
+
+void StoreWatcherShutdown::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool StoreWatcherShutdown::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void StoreWatcherShutdown::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* StoreWatcherShutdown::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int StoreWatcherShutdown::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StoreWatcherShutdown::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const StoreWatcherShutdown* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StoreWatcherShutdown*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void StoreWatcherShutdown::MergeFrom(const StoreWatcherShutdown& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void StoreWatcherShutdown::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StoreWatcherShutdown::CopyFrom(const StoreWatcherShutdown& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StoreWatcherShutdown::IsInitialized() const {
+  
+  return true;
+}
+
+void StoreWatcherShutdown::Swap(StoreWatcherShutdown* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata StoreWatcherShutdown::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StoreWatcherShutdown_descriptor_;
+  metadata.reflection = StoreWatcherShutdown_reflection_;
+  return metadata;
+}
+
+
 
 bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
@@ -7016,6 +7498,14 @@ bool StreamerRejectKeepaliveUnknownSubscription::add_to_envelope(::zippylog::Env
 }
 
 bool StreamerErrorRenewingSubscription::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool StoreWatcherStartup::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool StoreWatcherShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)

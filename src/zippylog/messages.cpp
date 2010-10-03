@@ -49,6 +49,8 @@ namespace zippylog {
         registrar->register_message(1, 42, new ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive());
         registrar->register_message(1, 43, new ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription());
         registrar->register_message(1, 44, new ::zippylog::zippylogd::StreamerErrorRenewingSubscription());
+        registrar->register_message(1, 51, new ::zippylog::zippylogd::StoreWatcherStartup());
+        registrar->register_message(1, 52, new ::zippylog::zippylogd::StoreWatcherShutdown());
         registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
         registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());

@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1b\n\rWorkerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x0eWorkerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"&\n\x18WorkerFailReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"B\n\x1fWorkerReceiveUnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"\'\n\x19WorkerRequestParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\"(\n\x1aWorkerRequestEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"-\n\x1fWorkerInvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\")\n\x1bWorkerBeginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerEndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"%\n\x17WorkerReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15WorkerBeginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13WorkerEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"6\n\x17WorkerSendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"C\n\x1fWorkerForwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"\x1d\n\x0fStreamerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10StreamerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"?\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"<\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"L\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"N\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"E\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1b\n\rWorkerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x0eWorkerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"&\n\x18WorkerFailReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"B\n\x1fWorkerReceiveUnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"\'\n\x19WorkerRequestParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\"(\n\x1aWorkerRequestEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"-\n\x1fWorkerInvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\")\n\x1bWorkerBeginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19WorkerEndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"%\n\x17WorkerReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"$\n\x16WorkerGetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15WorkerBeginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13WorkerEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"6\n\x17WorkerSendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"C\n\x1fWorkerForwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"\x1d\n\x0fStreamerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10StreamerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"?\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"<\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"L\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"N\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"E\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -821,6 +821,62 @@ _STREAMERERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
 )
 
 
+_STOREWATCHERSTARTUP = descriptor.Descriptor(
+  name='StoreWatcherStartup',
+  full_name='zippylog.zippylogd.StoreWatcherStartup',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StoreWatcherStartup.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1312,
+  serialized_end=1345,
+)
+
+
+_STOREWATCHERSHUTDOWN = descriptor.Descriptor(
+  name='StoreWatcherShutdown',
+  full_name='zippylog.zippylogd.StoreWatcherShutdown',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StoreWatcherShutdown.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1347,
+  serialized_end=1381,
+)
+
+
 
 class BrokerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -1038,6 +1094,22 @@ class StreamerErrorRenewingSubscription(message.Message):
   ZIPPYLOG_ENUMERATION = 44
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerErrorRenewingSubscription)
 
+class StoreWatcherStartup(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STOREWATCHERSTARTUP
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 51
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherStartup)
+
+class StoreWatcherShutdown(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _STOREWATCHERSHUTDOWN
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 52
+  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherShutdown)
+
 register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
 register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
 register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
@@ -1065,4 +1137,6 @@ register_message(1, 41, 'zippylog.zippylogd_pb2', 'StreamerReceiveKeepalive')
 register_message(1, 42, 'zippylog.zippylogd_pb2', 'StreamerSubscriptionRenewedFromKeepalive')
 register_message(1, 43, 'zippylog.zippylogd_pb2', 'StreamerRejectKeepaliveUnknownSubscription')
 register_message(1, 44, 'zippylog.zippylogd_pb2', 'StreamerErrorRenewingSubscription')
+register_message(1, 51, 'zippylog.zippylogd_pb2', 'StoreWatcherStartup')
+register_message(1, 52, 'zippylog.zippylogd_pb2', 'StoreWatcherShutdown')
 # @@protoc_insertion_point(module_scope)
