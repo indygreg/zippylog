@@ -25,6 +25,8 @@ namespace zippylog {
         registrar->register_message(1, 12, new ::zippylog::zippylogd::BrokerStartup());
         registrar->register_message(1, 13, new ::zippylog::zippylogd::BrokerShutdown());
         registrar->register_message(1, 14, new ::zippylog::zippylogd::BrokerReceiveClientMessage());
+        registrar->register_message(1, 45, new ::zippylog::zippylogd::WorkerStartup());
+        registrar->register_message(1, 46, new ::zippylog::zippylogd::WorkerShutdown());
         registrar->register_message(1, 27, new ::zippylog::zippylogd::WorkerFailReceiveMessage());
         registrar->register_message(1, 28, new ::zippylog::zippylogd::WorkerReceiveEmptyMessage());
         registrar->register_message(1, 29, new ::zippylog::zippylogd::WorkerRequestParseFailure());

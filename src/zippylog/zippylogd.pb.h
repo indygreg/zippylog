@@ -37,6 +37,8 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
 class BrokerStartup;
 class BrokerShutdown;
 class BrokerReceiveClientMessage;
+class WorkerStartup;
+class WorkerShutdown;
 class WorkerFailReceiveMessage;
 class WorkerReceiveEmptyMessage;
 class WorkerRequestParseFailure;
@@ -336,6 +338,198 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static BrokerReceiveClientMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerStartup : public ::google::protobuf::Message {
+ public:
+  WorkerStartup();
+  virtual ~WorkerStartup();
+  
+  WorkerStartup(const WorkerStartup& from);
+  
+  inline WorkerStartup& operator=(const WorkerStartup& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerStartup& default_instance();
+  
+  void Swap(WorkerStartup* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerStartup* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerStartup& from);
+  void MergeFrom(const WorkerStartup& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 45;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerStartup)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerStartup* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerShutdown : public ::google::protobuf::Message {
+ public:
+  WorkerShutdown();
+  virtual ~WorkerShutdown();
+  
+  WorkerShutdown(const WorkerShutdown& from);
+  
+  inline WorkerShutdown& operator=(const WorkerShutdown& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerShutdown& default_instance();
+  
+  void Swap(WorkerShutdown* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerShutdown* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerShutdown& from);
+  void MergeFrom(const WorkerShutdown& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 46;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerShutdown)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerShutdown* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2237,6 +2431,98 @@ BrokerStartup::mutable_listen_endpoints() {
 // -------------------------------------------------------------------
 
 // BrokerReceiveClientMessage
+
+// -------------------------------------------------------------------
+
+// WorkerStartup
+
+// optional bytes worker = 1;
+inline bool WorkerStartup::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerStartup::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerStartup::worker() const {
+  return *worker_;
+}
+inline void WorkerStartup::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerStartup::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerStartup::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerStartup::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// -------------------------------------------------------------------
+
+// WorkerShutdown
+
+// optional bytes worker = 1;
+inline bool WorkerShutdown::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerShutdown::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerShutdown::worker() const {
+  return *worker_;
+}
+inline void WorkerShutdown::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerShutdown::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerShutdown::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerShutdown::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 

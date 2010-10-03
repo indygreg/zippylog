@@ -22,6 +22,14 @@ message BrokerReceiveClientMessage {
 
 }
 
+message WorkerStartup {
+    optional bytes worker = 1;
+}
+
+message WorkerShutdown {
+    optional bytes worker = 1;
+}
+
 // log event for when a worker failed to receive a message from the
 // zmq socket
 message WorkerFailReceiveMessage {
