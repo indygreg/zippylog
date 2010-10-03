@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"\x1a\n\x18WorkerFailReceiveMessage\"\x1b\n\x19WorkerReceiveEmptyMessage\"\x1b\n\x19WorkerRequestParseFailure\"\x1c\n\x1aWorkerRequestEmptyEnvelope\"!\n\x1fWorkerInvalidMessageEnumeration\"\x1d\n\x1bWorkerBeginProcessStoreInfo\"\x1b\n\x19WorkerEndProcessStoreInfo\"\x19\n\x17WorkerReceiveInvalidGet\"\x18\n\x16WorkerGetInvalidStream\"\x18\n\x16WorkerGetInvalidOffset\"\x17\n\x15WorkerBeginProcessGet\"\x15\n\x13WorkerEndProcessGet\"*\n\x17WorkerSendErrorResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\")\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\"&\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"6\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"8\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\"/\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"=\n\rBrokerStartup\x12\x12\n\nstore_path\x18\x01 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x02 \x03(\t\"\x10\n\x0e\x42rokerShutdown\"\x1c\n\x1a\x42rokerReceiveClientMessage\"*\n\x18WorkerFailReceiveMessage\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"+\n\x19WorkerReceiveEmptyMessage\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"+\n\x19WorkerRequestParseFailure\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\",\n\x1aWorkerRequestEmptyEnvelope\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"1\n\x1fWorkerInvalidMessageEnumeration\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"-\n\x1bWorkerBeginProcessStoreInfo\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"+\n\x19WorkerEndProcessStoreInfo\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\")\n\x17WorkerReceiveInvalidGet\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"(\n\x16WorkerGetInvalidStream\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"(\n\x16WorkerGetInvalidOffset\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"\'\n\x15WorkerBeginProcessGet\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\"%\n\x13WorkerEndProcessGet\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\":\n\x17WorkerSendErrorResponse\x12\x0e\n\x06worker\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\";\n\x1bStreamerSubscriptionExpired\x12\x10\n\x08streamer\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x0c\"8\n\x18StreamerReceiveKeepalive\x12\x10\n\x08streamer\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x0c\"H\n(StreamerSubscriptionRenewedFromKeepalive\x12\x10\n\x08streamer\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x0c\"J\n*StreamerRejectKeepaliveUnknownSubscription\x12\x10\n\x08streamer\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x0c\"A\n!StreamerErrorRenewingSubscription\x12\x10\n\x08streamer\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\x0c')
 
 
 
@@ -100,6 +100,13 @@ _WORKERFAILRECEIVEMESSAGE = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerFailReceiveMessage.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -110,7 +117,7 @@ _WORKERFAILRECEIVEMESSAGE = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=159,
-  serialized_end=185,
+  serialized_end=201,
 )
 
 
@@ -121,6 +128,13 @@ _WORKERRECEIVEEMPTYMESSAGE = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerReceiveEmptyMessage.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -130,8 +144,8 @@ _WORKERRECEIVEEMPTYMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=187,
-  serialized_end=214,
+  serialized_start=203,
+  serialized_end=246,
 )
 
 
@@ -142,6 +156,13 @@ _WORKERREQUESTPARSEFAILURE = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerRequestParseFailure.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -151,8 +172,8 @@ _WORKERREQUESTPARSEFAILURE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=216,
-  serialized_end=243,
+  serialized_start=248,
+  serialized_end=291,
 )
 
 
@@ -163,6 +184,13 @@ _WORKERREQUESTEMPTYENVELOPE = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerRequestEmptyEnvelope.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -172,8 +200,8 @@ _WORKERREQUESTEMPTYENVELOPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=245,
-  serialized_end=273,
+  serialized_start=293,
+  serialized_end=337,
 )
 
 
@@ -184,6 +212,13 @@ _WORKERINVALIDMESSAGEENUMERATION = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerInvalidMessageEnumeration.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -193,8 +228,8 @@ _WORKERINVALIDMESSAGEENUMERATION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=275,
-  serialized_end=308,
+  serialized_start=339,
+  serialized_end=388,
 )
 
 
@@ -205,6 +240,13 @@ _WORKERBEGINPROCESSSTOREINFO = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerBeginProcessStoreInfo.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -214,8 +256,8 @@ _WORKERBEGINPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=310,
-  serialized_end=339,
+  serialized_start=390,
+  serialized_end=435,
 )
 
 
@@ -226,6 +268,13 @@ _WORKERENDPROCESSSTOREINFO = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerEndProcessStoreInfo.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -235,8 +284,8 @@ _WORKERENDPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=341,
-  serialized_end=368,
+  serialized_start=437,
+  serialized_end=480,
 )
 
 
@@ -247,6 +296,13 @@ _WORKERRECEIVEINVALIDGET = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerReceiveInvalidGet.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -256,8 +312,8 @@ _WORKERRECEIVEINVALIDGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=370,
-  serialized_end=395,
+  serialized_start=482,
+  serialized_end=523,
 )
 
 
@@ -268,6 +324,13 @@ _WORKERGETINVALIDSTREAM = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerGetInvalidStream.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -277,8 +340,8 @@ _WORKERGETINVALIDSTREAM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=397,
-  serialized_end=421,
+  serialized_start=525,
+  serialized_end=565,
 )
 
 
@@ -289,6 +352,13 @@ _WORKERGETINVALIDOFFSET = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerGetInvalidOffset.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -298,8 +368,8 @@ _WORKERGETINVALIDOFFSET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=423,
-  serialized_end=447,
+  serialized_start=567,
+  serialized_end=607,
 )
 
 
@@ -310,6 +380,13 @@ _WORKERBEGINPROCESSGET = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerBeginProcessGet.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -319,8 +396,8 @@ _WORKERBEGINPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=449,
-  serialized_end=472,
+  serialized_start=609,
+  serialized_end=648,
 )
 
 
@@ -331,6 +408,13 @@ _WORKERENDPROCESSGET = descriptor.Descriptor(
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
+    descriptor.FieldDescriptor(
+      name='worker', full_name='zippylog.zippylogd.WorkerEndProcessGet.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -340,8 +424,8 @@ _WORKERENDPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=474,
-  serialized_end=495,
+  serialized_start=650,
+  serialized_end=687,
 )
 
 
@@ -353,8 +437,15 @@ _WORKERSENDERRORRESPONSE = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='message', full_name='zippylog.zippylogd.WorkerSendErrorResponse.message', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='worker', full_name='zippylog.zippylogd.WorkerSendErrorResponse.worker', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='message', full_name='zippylog.zippylogd.WorkerSendErrorResponse.message', index=1,
+      number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -368,8 +459,8 @@ _WORKERSENDERRORRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=497,
-  serialized_end=539,
+  serialized_start=689,
+  serialized_end=747,
 )
 
 
@@ -381,8 +472,15 @@ _STREAMERSUBSCRIPTIONEXPIRED = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.id', index=0,
+      name='streamer', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.streamer', index=0,
       number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.id', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -396,8 +494,8 @@ _STREAMERSUBSCRIPTIONEXPIRED = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=541,
-  serialized_end=582,
+  serialized_start=749,
+  serialized_end=808,
 )
 
 
@@ -409,8 +507,15 @@ _STREAMERRECEIVEKEEPALIVE = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerReceiveKeepalive.id', index=0,
+      name='streamer', full_name='zippylog.zippylogd.StreamerReceiveKeepalive.streamer', index=0,
       number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerReceiveKeepalive.id', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -424,8 +529,8 @@ _STREAMERRECEIVEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=584,
-  serialized_end=622,
+  serialized_start=810,
+  serialized_end=866,
 )
 
 
@@ -437,8 +542,15 @@ _STREAMERSUBSCRIPTIONRENEWEDFROMKEEPALIVE = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive.id', index=0,
+      name='streamer', full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive.streamer', index=0,
       number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive.id', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -452,8 +564,8 @@ _STREAMERSUBSCRIPTIONRENEWEDFROMKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=624,
-  serialized_end=678,
+  serialized_start=868,
+  serialized_end=940,
 )
 
 
@@ -465,8 +577,15 @@ _STREAMERREJECTKEEPALIVEUNKNOWNSUBSCRIPTION = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription.id', index=0,
+      name='streamer', full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription.streamer', index=0,
       number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription.id', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -480,8 +599,8 @@ _STREAMERREJECTKEEPALIVEUNKNOWNSUBSCRIPTION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=680,
-  serialized_end=736,
+  serialized_start=942,
+  serialized_end=1016,
 )
 
 
@@ -493,8 +612,15 @@ _STREAMERERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription.id', index=0,
+      name='streamer', full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription.streamer', index=0,
       number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription.id', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -508,8 +634,8 @@ _STREAMERERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=738,
-  serialized_end=785,
+  serialized_start=1018,
+  serialized_end=1083,
 )
 
 
