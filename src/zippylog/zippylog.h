@@ -20,7 +20,7 @@ extern "C" {
 #endif
 
 /* we must put this little macro before all exportable symbols on Windows */
-#ifdef WIN32
+#ifdef WINDOWS
 #if defined(ZIPPYLOG_IMPORT)
 #define ZIPPYLOG_EXPORT __declspec(dllimport)
 #else
@@ -29,7 +29,7 @@ extern "C" {
 #endif
 
 /* define 32 and 64 bit integer types */
-#ifdef WIN32
+#ifdef WINDOWS
 typedef __int32 int32;
 typedef __int64 int64;
 typedef unsigned __int32 uint32;
