@@ -17,18 +17,25 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
 #include <zippylog/stream.hpp>
 
+#include <map>
 #include <vector>
 
 namespace zippylog {
 
+using ::std::map;
 using ::std::vector;
 using ::std::string;
 
+struct OpenOutputStream {
+    OutputStream *stream;
+    int64 last_write_time;
+};
+
 // represents a stream store
-// functions are reentrant and thread-safe unless otherwise specified
 // TODO define an interface for the store API
 class ZIPPYLOG_EXPORT Store {
     public:
@@ -105,15 +112,31 @@ class ZIPPYLOG_EXPORT Store {
         // no validation of input path is performed
         string PathToFilesystemPath(const string path);
 
+        // Writes an envelope calculating the stream based on the time
+        // if no time parameter is defined, time is assumed to be now()
+        bool WriteEnvelope(const string bucket, const string set, Envelope &e, int64 time=-1);
+
+        bool WriteData(const string bucket, const string set, const void *data, int length, int64 time=-1);
+        bool WriteString(const string bucket, const string set, const string &s, int64 time=-1);
+
+        // returns the name of a stream for a particular time value
+        static string StreamNameForTime(int64 time, int seconds_per_file);
+        static string StreamNameForTime(platform::Time &time, int seconds_per_file);
+
+        bool FlushOutputStreams();
+
     protected:
         bool directories_in_directory(const string dir, vector<string> &v);
         bool files_in_directory(const string dir, vector<string> &v);
+
+        bool ObtainOutputStream(const string bucket, const string set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
 
 
         string StreamFilesystemPath(const string path);
 
     private:
         string _path;
+        map<string, OpenOutputStream> out_streams;
 };
 
 } // namespace zippylog

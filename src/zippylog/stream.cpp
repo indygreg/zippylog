@@ -54,6 +54,7 @@ bool InputStream::OpenFile(string file, int64 start_offset)
         this->_fd = -1;
     }
 
+
     if (this->_is) delete this->_is;
     if (this->_cis) delete this->_cis;
     this->_have_next_size = false;
@@ -147,9 +148,12 @@ bool InputStream::Seek(int64 offset)
 
 OutputStream::OutputStream(const string file)
 {
-    this->fd = open(file.c_str(), O_APPEND | O_BINARY | O_CREAT, _S_IREAD | _S_IWRITE);
-    if (this->fd < 0) {
-        throw "error opening file for writing";
+    if (!platform::OpenFile(this->file, file,
+        platform::CREATE | platform::APPEND | platform::WRITE))
+    {
+        char error[8192];
+        windows_error(&error[0], 8192);
+        throw "could not open file";
     }
 
     platform::FileStat stat;
@@ -160,12 +164,17 @@ OutputStream::OutputStream(const string file)
     // this is a new file, so we need to write out the version
     if (!stat.size) {
         char version = 0x01;
-        if (write(this->fd, &version, 1) != 1) {
+        if (write(this->file.fd, &version, 1) != 1) {
+            int error;
+            _get_errno(&error);
+            char *errs = strerror(error);
+            char doserror[1024];
+            windows_error(&doserror[0], 1024);
             throw "could not write version byte to stream";
         }
     }
 
-    this->os = new FileOutputStream(this->fd);
+    this->os = new FileOutputStream(this->file.fd);
     this->cos = new CodedOutputStream(this->os);
 }
 
@@ -184,6 +193,24 @@ bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
     return e.envelope.SerializeToCodedStream(this->cos);
 }
 
+bool OutputStream::WriteData(const void *data, int length)
+{
+    this->cos->WriteRaw(data, length);
+
+    return true;
+}
+
+bool OutputStream::WriteString(const string &s)
+{
+    this->cos->WriteRaw(s.data(), s.size());
+
+    return true;
+}
+
+bool OutputStream::Flush()
+{
+    return this->os->Flush();
+}
 
 } // namespace
 

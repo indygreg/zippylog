@@ -18,6 +18,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <time.h>
 
 using ::std::string;
 
@@ -341,14 +342,142 @@ string Store::PathToFilesystemPath(const string path)
 
 string Store::StreamFilesystemPath(const string path)
 {
-    return this->PathToFilesystemPath(path) + ".zippylog";
+    return this->PathToFilesystemPath(path).append(".zippylog");
 }
 
 bool Store::BucketExists(const string bucket)
 {
-    string path = Store::BucketPath(bucket);
+    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
+}
 
-    return false;
+bool Store::StreamsetExists(const string bucket, const string set)
+{
+    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
+}
+
+bool Store::CreateBucket(const string bucket)
+{
+    return platform::MakeDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
+}
+
+bool Store::CreateStreamset(const string bucket, const string set)
+{
+    return platform::MakeDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
+}
+
+bool Store::WriteEnvelope(const string bucket, const string set, Envelope &e, int64 time)
+{
+    OpenOutputStream os;
+    if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) {
+        return false;
+    }
+
+    return os.stream->WriteEnvelope(e);
+}
+
+bool Store::WriteData(const string bucket, const string set, const void *data, int length, int64 time)
+{
+    OpenOutputStream os;
+    if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) return false;
+
+    return os.stream->WriteData(data, length);
+}
+
+bool Store::FlushOutputStreams()
+{
+    map<string, OpenOutputStream>::iterator i = this->out_streams.begin();
+
+    for (; i != this->out_streams.end(); i++) {
+        i->second.stream->Flush();
+    }
+
+    return true;
+}
+
+string Store::StreamNameForTime(platform::Time &t, int seconds_per_file)
+{
+
+    // daily
+    if (seconds_per_file == 86400) {
+        char s[11];
+        sprintf(&s[0], "%04d-%02d-%02d", t.year, t.mon, t.mday);
+        return string(&s[0], 10);
+    }
+
+    // hourly
+    if (seconds_per_file == 3600) {
+        char s[14];
+        sprintf(&s[0], "%04d-%02d-%02d-%02d", t.year, t.mon, t.mday, t.hour);
+        return string(&s[0], 13);
+    }
+
+    if (seconds_per_file > 3600 || seconds_per_file < 4) {
+        throw "seconds_per_file value not valid";
+    }
+
+    // this could be optimized into a static table for faster lookup
+
+    if (3600 % seconds_per_file > 0) {
+        throw "seconds_per_file does not divide into 3600 evenly";
+    }
+
+    int series_max = 3600 / seconds_per_file;
+    int seconds_since_hour = t.min * 60 + t.sec;
+    int current = seconds_since_hour / seconds_per_file + 1;
+
+    char s[22];
+    sprintf(&s[0], "%04d-%02d-%02d-%02d-%03d-%03d", t.year, t.mon, t.mday, t.hour, current, series_max);
+
+    return string(&s[0], 21);
+}
+
+string Store::StreamNameForTime(int64 time, int seconds_per_file)
+{
+    platform::Time t;
+    platform::UnixMicroTimeToZippyTime(time, t);
+
+    return Store::StreamNameForTime(t, seconds_per_file);
+}
+
+bool Store::ObtainOutputStream(const string bucket, const string set, int seconds_per_file, OpenOutputStream &os, int64 time)
+{
+    platform::Time t;
+
+    if (time < 0) {
+        platform::TimeNow(t);
+    }
+    else {
+        platform::UnixMicroTimeToZippyTime(time, t);
+    }
+
+    string stream = Store::StreamNameForTime(t, seconds_per_file);
+
+    string store_path = Store::StreamPath(bucket, set, stream);
+    string fs_path = this->StreamFilesystemPath(store_path);
+
+    map<string, OpenOutputStream>::iterator found = this->out_streams.find(store_path);
+
+    if (found != this->out_streams.end()) {
+        os.stream = found->second.stream;
+        os.last_write_time = found->second.last_write_time;
+        return true;
+    }
+    // else
+
+    if (!this->BucketExists(bucket)) {
+        if (!this->CreateBucket(bucket)) return false;
+    }
+
+    if (!this->StreamsetExists(bucket, set)) {
+        if (!this->CreateStreamset(bucket, set)) return false;
+    }
+
+    os.stream = new OutputStream(fs_path);
+    os.last_write_time = -1;
+    this->out_streams[store_path] = os;
+
+    return true;
+
 }
 
 bool Store::directories_in_directory(const string dir, vector<string> &v)

@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.h>
 #include <zippylog/envelope.hpp>
+#include <zippylog/platform.hpp>
 
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
@@ -63,10 +64,20 @@ class ZIPPYLOG_EXPORT OutputStream {
         OutputStream(const string file);
         ~OutputStream();
 
+        // writes an envelope to the stream
+        // NOT thread safe. if multiple threads call this, it may write a corrupt stream
         bool WriteEnvelope(::zippylog::Envelope &envelope);
 
+        // writes data with specified length to stream
+        bool WriteData(const void *data, int length);
+
+        // writes data inside a string to stream
+        bool WriteString(const string &s);
+
+        bool Flush();
+
 private:
-    int fd;
+    platform::File file;
     FileOutputStream *os;
     CodedOutputStream *cos;
 };
