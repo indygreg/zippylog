@@ -39,6 +39,9 @@ typedef struct broker_config {
     uint32 worker_threads;
     uint32 streaming_threads;
     uint32 subscription_ttl;
+    string log_bucket;
+    string log_stream_set;
+    int32 stream_flush_interval;
 } broker_config;
 
 typedef struct store_watcher_start_data {
@@ -54,6 +57,7 @@ typedef struct streaming_start_data {
     char *streaming_endpoint;
     char *subscriptions_endpoint;
     char *client_updates_endpoint;
+    char *logging_endpoint;
     bool *active;
     uint32 subscription_ttl;
 } streaming_start_data;
@@ -100,6 +104,9 @@ class ZIPPYLOG_EXPORT Broker {
         // PUB that sends processed client streaming messages to all streamers
         socket_t * streaming_streaming_notify_sock;
 
+        // PULL that receives logging messages from other threads
+        socket_t * logger_sock;
+
         void * exec_thread;
         vector<void *> worker_threads;
         vector<void *> streaming_threads;
@@ -110,7 +117,6 @@ class ZIPPYLOG_EXPORT Broker {
         void * store_watcher_thread;
         store_watcher_start_data * store_watcher_start;
         streaming_start_data * streaming_thread_data;
-
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
         static void * __stdcall StoreWatcherStart(void *data);

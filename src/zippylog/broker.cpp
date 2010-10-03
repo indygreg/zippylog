@@ -27,7 +27,6 @@ extern "C" {
 
 #include <sstream>
 
-
 namespace zippylog {
 namespace server {
 
@@ -36,6 +35,7 @@ using ::std::ostringstream;
 #define WORKER_ENDPOINT "inproc://workers"
 #define STORE_CHANGE_ENDPOINT "inproc://store_changes"
 #define STREAMING_ENDPOINT "inproc://streaming"
+#define LOGGER_ENDPOINT "inproc://logger"
 
 #define WORKER_SUBSCRIPTIONS_ENDPOINT "inproc://worker_subscriptions"
 #define STREAMING_SUBSCRIPTIONS_ENDPOINT "inproc://streaming_subscriptions"
@@ -47,6 +47,7 @@ using ::std::ostringstream;
 #define STREAMING_INDEX 2
 #define WORKER_SUBSCRIPTIONS_INDEX 3
 #define STREAMING_NOTIFY_INDEX 4
+#define LOGGER_INDEX 5
 
 Broker::Broker(const string config_file_path)
 {
@@ -83,6 +84,7 @@ void Broker::init()
     this->streaming_subscriptions_sock = NULL;
     this->worker_streaming_notify_sock = NULL;
     this->streaming_streaming_notify_sock = NULL;
+    this->logger_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
@@ -125,7 +127,7 @@ void Broker::run()
     this->create_streaming_threads();
     this->setup_listener_sockets();
 
-    int number_pollitems = 5;
+    int number_pollitems = 6;
     zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
 
     pollitems[CLIENT_INDEX].socket = *this->clients_sock;
@@ -153,15 +155,37 @@ void Broker::run()
     pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
     pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
 
+    pollitems[LOGGER_INDEX].socket = *this->logger_sock;
+    pollitems[LOGGER_INDEX].events = ZMQ_POLLIN;
+    pollitems[LOGGER_INDEX].fd = 0;
+    pollitems[LOGGER_INDEX].revents = 0;
+
     zmq::message_t msg;
     int64 more;
     size_t moresz = sizeof(more);
+
+    platform::Timer stream_flush_timer = platform::Timer(this->config.stream_flush_interval * 1000);
+    if (!stream_flush_timer.Start()) {
+        throw "could not start stream flush timer";
+    }
 
     // TODO so much repetition here. it makes me feel dirty
     // TODO better error handling
     while (this->active) {
         // wait up to 1s for a message to become available
         int rc = zmq::poll(pollitems, number_pollitems, 1000000);
+
+        if (pollitems[LOGGER_INDEX].revents & ZMQ_POLLIN) {
+            while (true) {
+                if (!this->logger_sock->recv(&msg, 0)) break;
+
+                this->store->WriteData(this->config.log_bucket, this->config.log_stream_set, msg.data(), msg.size());
+
+                moresz = sizeof(more);
+                this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+                if (!more) break;
+            }
+        }
 
         // we always favor shipping messages OUT of the server to the clients
         // that way, under heavy load, we try to get smaller before we
@@ -239,6 +263,13 @@ void Broker::run()
                 if (!more) break;
             }
         }
+
+        if (stream_flush_timer.Signaled()) {
+            this->store->FlushOutputStreams();
+            if (!stream_flush_timer.Start()) {
+                throw "could not restart stream flush timer";
+            }
+        }
     }
 
     // need to do some cleanup
@@ -270,6 +301,7 @@ void Broker::create_worker_threads()
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
     this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT;
     this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT;
+    this->worker_start_data->logger_endpoint = LOGGER_ENDPOINT;
     this->worker_start_data->active = true;
 
     for (int i = this->config.worker_threads; i; --i) {
@@ -298,6 +330,7 @@ void Broker::create_streaming_threads()
     this->streaming_thread_data->streaming_endpoint = STREAMING_ENDPOINT;
     this->streaming_thread_data->client_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
     this->streaming_thread_data->subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
+    this->streaming_thread_data->logging_endpoint = LOGGER_ENDPOINT;
     this->streaming_thread_data->zctx = this->zctx;
     this->streaming_thread_data->store = this->store;
     this->streaming_thread_data->active = &this->active;
@@ -314,6 +347,9 @@ void Broker::create_streaming_threads()
 
 void Broker::setup_internal_sockets()
 {
+    this->logger_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->logger_sock->bind(LOGGER_ENDPOINT);
+
     this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
 
@@ -435,6 +471,25 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
     config.subscription_ttl = luaL_optinteger(L, -1, 60);
     lua_pop(L, 1);
 
+    // logging settings
+    lua_getglobal(L, "log_bucket");
+    config.log_bucket = luaL_optstring(L, -1, "zippylog");
+    lua_pop(L, 1);
+
+    lua_getglobal(L, "log_stream_set");
+    config.log_stream_set = luaL_optstring(L, -1, "zippylogd");
+    lua_pop(L, 1);
+
+    // interval at which to flush streams
+    lua_getglobal(L, "stream_flush_interval");
+    config.stream_flush_interval = luaL_optinteger(L, -1, 5000);
+    lua_pop(L, 1);
+    if (config.stream_flush_interval < 0) {
+        os << "stream_flush_interval must be positive";
+        goto cleanup;
+    }
+
+
 cleanup:
     lua_close(L);
 
@@ -474,6 +529,7 @@ void * __stdcall Broker::StreamingStart(void *d)
     assert(data->streaming_endpoint);
     assert(data->subscriptions_endpoint);
     assert(data->client_updates_endpoint);
+    assert(data->logging_endpoint);
     assert(data->store);
     assert(data->subscription_ttl);
 
@@ -485,6 +541,7 @@ void * __stdcall Broker::StreamingStart(void *d)
             data->streaming_endpoint,
             data->subscriptions_endpoint,
             data->client_updates_endpoint,
+            data->logging_endpoint,
             data->subscription_ttl
         );
         streamer.SetShutdownSemaphore(data->active);
@@ -492,7 +549,8 @@ void * __stdcall Broker::StreamingStart(void *d)
         streamer.Run();
     }
     catch (zmq::error_t e) {
-        throw e;
+        const char *error = e.what();
+        throw error;
     }
     catch (...) {
 
