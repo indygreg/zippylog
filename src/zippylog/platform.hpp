@@ -13,7 +13,10 @@
 //  limitations under the License.
 
 // this file contains cross-platform APIs
-// if this gets too large, we should consider using a framework, like APR
+// in the ideal world, we would use an existing library, like APR. In the early
+// days of this project, it was decided to keep the code as free from external
+// dependencies as possible. As this namespace becomes larger and larger, we
+// have to start questioning that decision.
 
 #ifndef ZIPPYLOG_PLATFORM_HPP_
 #define ZIPPYLOG_PLATFORM_HPP_
