@@ -152,7 +152,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(BrokerReceiveClientMessage));
   WorkerStartup_descriptor_ = file->message_type(3);
   static const int WorkerStartup_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerStartup, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerStartup, id_),
   };
   WorkerStartup_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -167,7 +167,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerStartup));
   WorkerShutdown_descriptor_ = file->message_type(4);
   static const int WorkerShutdown_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerShutdown, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerShutdown, id_),
   };
   WorkerShutdown_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -182,7 +182,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerShutdown));
   WorkerFailReceiveMessage_descriptor_ = file->message_type(5);
   static const int WorkerFailReceiveMessage_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerFailReceiveMessage, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerFailReceiveMessage, id_),
   };
   WorkerFailReceiveMessage_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -197,7 +197,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerFailReceiveMessage));
   WorkerReceiveEmptyMessage_descriptor_ = file->message_type(6);
   static const int WorkerReceiveEmptyMessage_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveEmptyMessage, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveEmptyMessage, id_),
   };
   WorkerReceiveEmptyMessage_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -212,7 +212,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerReceiveEmptyMessage));
   WorkerReceiveUnknownRequestType_descriptor_ = file->message_type(7);
   static const int WorkerReceiveUnknownRequestType_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveUnknownRequestType, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveUnknownRequestType, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveUnknownRequestType, enumeration_),
   };
   WorkerReceiveUnknownRequestType_reflection_ =
@@ -228,7 +228,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerReceiveUnknownRequestType));
   WorkerRequestParseFailure_descriptor_ = file->message_type(8);
   static const int WorkerRequestParseFailure_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestParseFailure, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestParseFailure, id_),
   };
   WorkerRequestParseFailure_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -243,7 +243,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerRequestParseFailure));
   WorkerRequestEmptyEnvelope_descriptor_ = file->message_type(9);
   static const int WorkerRequestEmptyEnvelope_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestEmptyEnvelope, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestEmptyEnvelope, id_),
   };
   WorkerRequestEmptyEnvelope_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -258,7 +258,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerRequestEmptyEnvelope));
   WorkerInvalidMessageEnumeration_descriptor_ = file->message_type(10);
   static const int WorkerInvalidMessageEnumeration_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerInvalidMessageEnumeration, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerInvalidMessageEnumeration, id_),
   };
   WorkerInvalidMessageEnumeration_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -273,7 +273,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerInvalidMessageEnumeration));
   WorkerBeginProcessStoreInfo_descriptor_ = file->message_type(11);
   static const int WorkerBeginProcessStoreInfo_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessStoreInfo, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessStoreInfo, id_),
   };
   WorkerBeginProcessStoreInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -288,7 +288,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerBeginProcessStoreInfo));
   WorkerEndProcessStoreInfo_descriptor_ = file->message_type(12);
   static const int WorkerEndProcessStoreInfo_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessStoreInfo, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessStoreInfo, id_),
   };
   WorkerEndProcessStoreInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -303,7 +303,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerEndProcessStoreInfo));
   WorkerReceiveInvalidGet_descriptor_ = file->message_type(13);
   static const int WorkerReceiveInvalidGet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveInvalidGet, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveInvalidGet, id_),
   };
   WorkerReceiveInvalidGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -318,7 +318,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerReceiveInvalidGet));
   WorkerGetInvalidStream_descriptor_ = file->message_type(14);
   static const int WorkerGetInvalidStream_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidStream, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidStream, id_),
   };
   WorkerGetInvalidStream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -333,7 +333,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerGetInvalidStream));
   WorkerGetInvalidOffset_descriptor_ = file->message_type(15);
   static const int WorkerGetInvalidOffset_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidOffset, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidOffset, id_),
   };
   WorkerGetInvalidOffset_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -348,7 +348,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerGetInvalidOffset));
   WorkerBeginProcessGet_descriptor_ = file->message_type(16);
   static const int WorkerBeginProcessGet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessGet, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessGet, id_),
   };
   WorkerBeginProcessGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -363,7 +363,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerBeginProcessGet));
   WorkerEndProcessGet_descriptor_ = file->message_type(17);
   static const int WorkerEndProcessGet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessGet, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessGet, id_),
   };
   WorkerEndProcessGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -378,7 +378,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerEndProcessGet));
   WorkerSendErrorResponse_descriptor_ = file->message_type(18);
   static const int WorkerSendErrorResponse_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, message_),
   };
   WorkerSendErrorResponse_reflection_ =
@@ -394,7 +394,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerSendErrorResponse));
   WorkerForwardSubscribeKeepalive_descriptor_ = file->message_type(19);
   static const int WorkerForwardSubscribeKeepalive_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerForwardSubscribeKeepalive, worker_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerForwardSubscribeKeepalive, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerForwardSubscribeKeepalive, subscription_),
   };
   WorkerForwardSubscribeKeepalive_reflection_ =
@@ -410,7 +410,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(WorkerForwardSubscribeKeepalive));
   StreamerStartup_descriptor_ = file->message_type(20);
   static const int StreamerStartup_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerStartup, streamer_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerStartup, id_),
   };
   StreamerStartup_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -425,7 +425,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerStartup));
   StreamerShutdown_descriptor_ = file->message_type(21);
   static const int StreamerShutdown_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerShutdown, streamer_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerShutdown, id_),
   };
   StreamerShutdown_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -440,8 +440,8 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerShutdown));
   StreamerSubscriptionExpired_descriptor_ = file->message_type(22);
   static const int StreamerSubscriptionExpired_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionExpired, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionExpired, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionExpired, subscription_),
   };
   StreamerSubscriptionExpired_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -456,8 +456,8 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerSubscriptionExpired));
   StreamerReceiveKeepalive_descriptor_ = file->message_type(23);
   static const int StreamerReceiveKeepalive_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerReceiveKeepalive, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerReceiveKeepalive, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerReceiveKeepalive, subscription_),
   };
   StreamerReceiveKeepalive_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -472,8 +472,8 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerReceiveKeepalive));
   StreamerSubscriptionRenewedFromKeepalive_descriptor_ = file->message_type(24);
   static const int StreamerSubscriptionRenewedFromKeepalive_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionRenewedFromKeepalive, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionRenewedFromKeepalive, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionRenewedFromKeepalive, subscription_),
   };
   StreamerSubscriptionRenewedFromKeepalive_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -488,8 +488,8 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerSubscriptionRenewedFromKeepalive));
   StreamerRejectKeepaliveUnknownSubscription_descriptor_ = file->message_type(25);
   static const int StreamerRejectKeepaliveUnknownSubscription_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerRejectKeepaliveUnknownSubscription, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerRejectKeepaliveUnknownSubscription, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerRejectKeepaliveUnknownSubscription, subscription_),
   };
   StreamerRejectKeepaliveUnknownSubscription_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -504,8 +504,8 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       sizeof(StreamerRejectKeepaliveUnknownSubscription));
   StreamerErrorRenewingSubscription_descriptor_ = file->message_type(26);
   static const int StreamerErrorRenewingSubscription_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, id_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, subscription_),
   };
   StreamerErrorRenewingSubscription_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -655,38 +655,36 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
     "\n\030zippylog/zippylogd.proto\022\022zippylog.zip"
     "pylogd\"=\n\rBrokerStartup\022\022\n\nstore_path\030\001 "
     "\001(\t\022\030\n\020listen_endpoints\030\002 \003(\t\"\020\n\016BrokerS"
-    "hutdown\"\034\n\032BrokerReceiveClientMessage\"\037\n"
-    "\rWorkerStartup\022\016\n\006worker\030\001 \001(\014\" \n\016Worker"
-    "Shutdown\022\016\n\006worker\030\001 \001(\014\"*\n\030WorkerFailRe"
-    "ceiveMessage\022\016\n\006worker\030\001 \001(\014\"+\n\031WorkerRe"
-    "ceiveEmptyMessage\022\016\n\006worker\030\001 \001(\014\"F\n\037Wor"
-    "kerReceiveUnknownRequestType\022\016\n\006worker\030\001"
-    " \001(\014\022\023\n\013enumeration\030\002 \001(\r\"+\n\031WorkerReque"
-    "stParseFailure\022\016\n\006worker\030\001 \001(\014\",\n\032Worker"
-    "RequestEmptyEnvelope\022\016\n\006worker\030\001 \001(\014\"1\n\037"
-    "WorkerInvalidMessageEnumeration\022\016\n\006worke"
-    "r\030\001 \001(\014\"-\n\033WorkerBeginProcessStoreInfo\022\016"
-    "\n\006worker\030\001 \001(\014\"+\n\031WorkerEndProcessStoreI"
-    "nfo\022\016\n\006worker\030\001 \001(\014\")\n\027WorkerReceiveInva"
-    "lidGet\022\016\n\006worker\030\001 \001(\014\"(\n\026WorkerGetInval"
-    "idStream\022\016\n\006worker\030\001 \001(\014\"(\n\026WorkerGetInv"
-    "alidOffset\022\016\n\006worker\030\001 \001(\014\"\'\n\025WorkerBegi"
-    "nProcessGet\022\016\n\006worker\030\001 \001(\014\"%\n\023WorkerEnd"
-    "ProcessGet\022\016\n\006worker\030\001 \001(\014\":\n\027WorkerSend"
-    "ErrorResponse\022\016\n\006worker\030\001 \001(\014\022\017\n\007message"
-    "\030\002 \001(\t\"G\n\037WorkerForwardSubscribeKeepaliv"
-    "e\022\016\n\006worker\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\""
-    "#\n\017StreamerStartup\022\020\n\010streamer\030\001 \001(\014\"$\n\020"
-    "StreamerShutdown\022\020\n\010streamer\030\001 \001(\014\";\n\033St"
-    "reamerSubscriptionExpired\022\020\n\010streamer\030\001 "
-    "\001(\014\022\n\n\002id\030\002 \001(\014\"8\n\030StreamerReceiveKeepal"
-    "ive\022\020\n\010streamer\030\001 \001(\014\022\n\n\002id\030\002 \001(\014\"H\n(Str"
-    "eamerSubscriptionRenewedFromKeepalive\022\020\n"
-    "\010streamer\030\001 \001(\014\022\n\n\002id\030\002 \001(\014\"J\n*StreamerR"
-    "ejectKeepaliveUnknownSubscription\022\020\n\010str"
-    "eamer\030\001 \001(\014\022\n\n\002id\030\002 \001(\014\"A\n!StreamerError"
-    "RenewingSubscription\022\020\n\010streamer\030\001 \001(\014\022\n"
-    "\n\002id\030\002 \001(\014", 1370);
+    "hutdown\"\034\n\032BrokerReceiveClientMessage\"\033\n"
+    "\rWorkerStartup\022\n\n\002id\030\001 \001(\014\"\034\n\016WorkerShut"
+    "down\022\n\n\002id\030\001 \001(\014\"&\n\030WorkerFailReceiveMes"
+    "sage\022\n\n\002id\030\001 \001(\014\"\'\n\031WorkerReceiveEmptyMe"
+    "ssage\022\n\n\002id\030\001 \001(\014\"B\n\037WorkerReceiveUnknow"
+    "nRequestType\022\n\n\002id\030\001 \001(\014\022\023\n\013enumeration\030"
+    "\002 \001(\r\"\'\n\031WorkerRequestParseFailure\022\n\n\002id"
+    "\030\001 \001(\014\"(\n\032WorkerRequestEmptyEnvelope\022\n\n\002"
+    "id\030\001 \001(\014\"-\n\037WorkerInvalidMessageEnumerat"
+    "ion\022\n\n\002id\030\001 \001(\014\")\n\033WorkerBeginProcessSto"
+    "reInfo\022\n\n\002id\030\001 \001(\014\"\'\n\031WorkerEndProcessSt"
+    "oreInfo\022\n\n\002id\030\001 \001(\014\"%\n\027WorkerReceiveInva"
+    "lidGet\022\n\n\002id\030\001 \001(\014\"$\n\026WorkerGetInvalidSt"
+    "ream\022\n\n\002id\030\001 \001(\014\"$\n\026WorkerGetInvalidOffs"
+    "et\022\n\n\002id\030\001 \001(\014\"#\n\025WorkerBeginProcessGet\022"
+    "\n\n\002id\030\001 \001(\014\"!\n\023WorkerEndProcessGet\022\n\n\002id"
+    "\030\001 \001(\014\"6\n\027WorkerSendErrorResponse\022\n\n\002id\030"
+    "\001 \001(\014\022\017\n\007message\030\002 \001(\t\"C\n\037WorkerForwardS"
+    "ubscribeKeepalive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscri"
+    "ption\030\002 \001(\014\"\035\n\017StreamerStartup\022\n\n\002id\030\001 \001"
+    "(\014\"\036\n\020StreamerShutdown\022\n\n\002id\030\001 \001(\014\"?\n\033St"
+    "reamerSubscriptionExpired\022\n\n\002id\030\001 \001(\014\022\024\n"
+    "\014subscription\030\002 \001(\014\"<\n\030StreamerReceiveKe"
+    "epalive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001("
+    "\014\"L\n(StreamerSubscriptionRenewedFromKeep"
+    "alive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\""
+    "N\n*StreamerRejectKeepaliveUnknownSubscri"
+    "ption\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\""
+    "E\n!StreamerErrorRenewingSubscription\022\n\n\002"
+    "id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014", 1310);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
@@ -1338,9 +1336,9 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 
 // ===================================================================
 
-const ::std::string WorkerStartup::_default_worker_;
+const ::std::string WorkerStartup::_default_id_;
 #ifndef _MSC_VER
-const int WorkerStartup::kWorkerFieldNumber;
+const int WorkerStartup::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerStartup::WorkerStartup()
@@ -1359,7 +1357,7 @@ WorkerStartup::WorkerStartup(const WorkerStartup& from)
 
 void WorkerStartup::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1368,8 +1366,8 @@ WorkerStartup::~WorkerStartup() {
 }
 
 void WorkerStartup::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -1398,8 +1396,8 @@ WorkerStartup* WorkerStartup::New() const {
 void WorkerStartup::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -1413,12 +1411,12 @@ bool WorkerStartup::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1444,10 +1442,10 @@ bool WorkerStartup::MergePartialFromCodedStream(
 
 void WorkerStartup::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1458,11 +1456,11 @@ void WorkerStartup::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerStartup::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1476,11 +1474,11 @@ int WorkerStartup::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -1511,7 +1509,7 @@ void WorkerStartup::MergeFrom(const WorkerStartup& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1536,7 +1534,7 @@ bool WorkerStartup::IsInitialized() const {
 
 void WorkerStartup::Swap(WorkerStartup* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1554,9 +1552,9 @@ void WorkerStartup::Swap(WorkerStartup* other) {
 
 // ===================================================================
 
-const ::std::string WorkerShutdown::_default_worker_;
+const ::std::string WorkerShutdown::_default_id_;
 #ifndef _MSC_VER
-const int WorkerShutdown::kWorkerFieldNumber;
+const int WorkerShutdown::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerShutdown::WorkerShutdown()
@@ -1575,7 +1573,7 @@ WorkerShutdown::WorkerShutdown(const WorkerShutdown& from)
 
 void WorkerShutdown::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1584,8 +1582,8 @@ WorkerShutdown::~WorkerShutdown() {
 }
 
 void WorkerShutdown::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -1614,8 +1612,8 @@ WorkerShutdown* WorkerShutdown::New() const {
 void WorkerShutdown::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -1629,12 +1627,12 @@ bool WorkerShutdown::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1660,10 +1658,10 @@ bool WorkerShutdown::MergePartialFromCodedStream(
 
 void WorkerShutdown::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1674,11 +1672,11 @@ void WorkerShutdown::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerShutdown::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1692,11 +1690,11 @@ int WorkerShutdown::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -1727,7 +1725,7 @@ void WorkerShutdown::MergeFrom(const WorkerShutdown& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1752,7 +1750,7 @@ bool WorkerShutdown::IsInitialized() const {
 
 void WorkerShutdown::Swap(WorkerShutdown* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1770,9 +1768,9 @@ void WorkerShutdown::Swap(WorkerShutdown* other) {
 
 // ===================================================================
 
-const ::std::string WorkerFailReceiveMessage::_default_worker_;
+const ::std::string WorkerFailReceiveMessage::_default_id_;
 #ifndef _MSC_VER
-const int WorkerFailReceiveMessage::kWorkerFieldNumber;
+const int WorkerFailReceiveMessage::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerFailReceiveMessage::WorkerFailReceiveMessage()
@@ -1791,7 +1789,7 @@ WorkerFailReceiveMessage::WorkerFailReceiveMessage(const WorkerFailReceiveMessag
 
 void WorkerFailReceiveMessage::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1800,8 +1798,8 @@ WorkerFailReceiveMessage::~WorkerFailReceiveMessage() {
 }
 
 void WorkerFailReceiveMessage::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -1830,8 +1828,8 @@ WorkerFailReceiveMessage* WorkerFailReceiveMessage::New() const {
 void WorkerFailReceiveMessage::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -1845,12 +1843,12 @@ bool WorkerFailReceiveMessage::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1876,10 +1874,10 @@ bool WorkerFailReceiveMessage::MergePartialFromCodedStream(
 
 void WorkerFailReceiveMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1890,11 +1888,11 @@ void WorkerFailReceiveMessage::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerFailReceiveMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1908,11 +1906,11 @@ int WorkerFailReceiveMessage::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -1943,7 +1941,7 @@ void WorkerFailReceiveMessage::MergeFrom(const WorkerFailReceiveMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1968,7 +1966,7 @@ bool WorkerFailReceiveMessage::IsInitialized() const {
 
 void WorkerFailReceiveMessage::Swap(WorkerFailReceiveMessage* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1986,9 +1984,9 @@ void WorkerFailReceiveMessage::Swap(WorkerFailReceiveMessage* other) {
 
 // ===================================================================
 
-const ::std::string WorkerReceiveEmptyMessage::_default_worker_;
+const ::std::string WorkerReceiveEmptyMessage::_default_id_;
 #ifndef _MSC_VER
-const int WorkerReceiveEmptyMessage::kWorkerFieldNumber;
+const int WorkerReceiveEmptyMessage::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage()
@@ -2007,7 +2005,7 @@ WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage(const WorkerReceiveEmptyMes
 
 void WorkerReceiveEmptyMessage::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2016,8 +2014,8 @@ WorkerReceiveEmptyMessage::~WorkerReceiveEmptyMessage() {
 }
 
 void WorkerReceiveEmptyMessage::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -2046,8 +2044,8 @@ WorkerReceiveEmptyMessage* WorkerReceiveEmptyMessage::New() const {
 void WorkerReceiveEmptyMessage::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -2061,12 +2059,12 @@ bool WorkerReceiveEmptyMessage::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2092,10 +2090,10 @@ bool WorkerReceiveEmptyMessage::MergePartialFromCodedStream(
 
 void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2106,11 +2104,11 @@ void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerReceiveEmptyMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2124,11 +2122,11 @@ int WorkerReceiveEmptyMessage::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -2159,7 +2157,7 @@ void WorkerReceiveEmptyMessage::MergeFrom(const WorkerReceiveEmptyMessage& from)
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2184,7 +2182,7 @@ bool WorkerReceiveEmptyMessage::IsInitialized() const {
 
 void WorkerReceiveEmptyMessage::Swap(WorkerReceiveEmptyMessage* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2202,9 +2200,9 @@ void WorkerReceiveEmptyMessage::Swap(WorkerReceiveEmptyMessage* other) {
 
 // ===================================================================
 
-const ::std::string WorkerReceiveUnknownRequestType::_default_worker_;
+const ::std::string WorkerReceiveUnknownRequestType::_default_id_;
 #ifndef _MSC_VER
-const int WorkerReceiveUnknownRequestType::kWorkerFieldNumber;
+const int WorkerReceiveUnknownRequestType::kIdFieldNumber;
 const int WorkerReceiveUnknownRequestType::kEnumerationFieldNumber;
 #endif  // !_MSC_VER
 
@@ -2224,7 +2222,7 @@ WorkerReceiveUnknownRequestType::WorkerReceiveUnknownRequestType(const WorkerRec
 
 void WorkerReceiveUnknownRequestType::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   enumeration_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -2234,8 +2232,8 @@ WorkerReceiveUnknownRequestType::~WorkerReceiveUnknownRequestType() {
 }
 
 void WorkerReceiveUnknownRequestType::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -2264,8 +2262,8 @@ WorkerReceiveUnknownRequestType* WorkerReceiveUnknownRequestType::New() const {
 void WorkerReceiveUnknownRequestType::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     enumeration_ = 0u;
@@ -2280,12 +2278,12 @@ bool WorkerReceiveUnknownRequestType::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2327,10 +2325,10 @@ bool WorkerReceiveUnknownRequestType::MergePartialFromCodedStream(
 
 void WorkerReceiveUnknownRequestType::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   // optional uint32 enumeration = 2;
@@ -2346,11 +2344,11 @@ void WorkerReceiveUnknownRequestType::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerReceiveUnknownRequestType::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   // optional uint32 enumeration = 2;
@@ -2369,11 +2367,11 @@ int WorkerReceiveUnknownRequestType::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
     // optional uint32 enumeration = 2;
@@ -2411,7 +2409,7 @@ void WorkerReceiveUnknownRequestType::MergeFrom(const WorkerReceiveUnknownReques
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
       set_enumeration(from.enumeration());
@@ -2439,7 +2437,7 @@ bool WorkerReceiveUnknownRequestType::IsInitialized() const {
 
 void WorkerReceiveUnknownRequestType::Swap(WorkerReceiveUnknownRequestType* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(enumeration_, other->enumeration_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -2458,9 +2456,9 @@ void WorkerReceiveUnknownRequestType::Swap(WorkerReceiveUnknownRequestType* othe
 
 // ===================================================================
 
-const ::std::string WorkerRequestParseFailure::_default_worker_;
+const ::std::string WorkerRequestParseFailure::_default_id_;
 #ifndef _MSC_VER
-const int WorkerRequestParseFailure::kWorkerFieldNumber;
+const int WorkerRequestParseFailure::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerRequestParseFailure::WorkerRequestParseFailure()
@@ -2479,7 +2477,7 @@ WorkerRequestParseFailure::WorkerRequestParseFailure(const WorkerRequestParseFai
 
 void WorkerRequestParseFailure::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2488,8 +2486,8 @@ WorkerRequestParseFailure::~WorkerRequestParseFailure() {
 }
 
 void WorkerRequestParseFailure::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -2518,8 +2516,8 @@ WorkerRequestParseFailure* WorkerRequestParseFailure::New() const {
 void WorkerRequestParseFailure::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -2533,12 +2531,12 @@ bool WorkerRequestParseFailure::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2564,10 +2562,10 @@ bool WorkerRequestParseFailure::MergePartialFromCodedStream(
 
 void WorkerRequestParseFailure::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2578,11 +2576,11 @@ void WorkerRequestParseFailure::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerRequestParseFailure::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2596,11 +2594,11 @@ int WorkerRequestParseFailure::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -2631,7 +2629,7 @@ void WorkerRequestParseFailure::MergeFrom(const WorkerRequestParseFailure& from)
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2656,7 +2654,7 @@ bool WorkerRequestParseFailure::IsInitialized() const {
 
 void WorkerRequestParseFailure::Swap(WorkerRequestParseFailure* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2674,9 +2672,9 @@ void WorkerRequestParseFailure::Swap(WorkerRequestParseFailure* other) {
 
 // ===================================================================
 
-const ::std::string WorkerRequestEmptyEnvelope::_default_worker_;
+const ::std::string WorkerRequestEmptyEnvelope::_default_id_;
 #ifndef _MSC_VER
-const int WorkerRequestEmptyEnvelope::kWorkerFieldNumber;
+const int WorkerRequestEmptyEnvelope::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope()
@@ -2695,7 +2693,7 @@ WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope(const WorkerRequestEmptyE
 
 void WorkerRequestEmptyEnvelope::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2704,8 +2702,8 @@ WorkerRequestEmptyEnvelope::~WorkerRequestEmptyEnvelope() {
 }
 
 void WorkerRequestEmptyEnvelope::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -2734,8 +2732,8 @@ WorkerRequestEmptyEnvelope* WorkerRequestEmptyEnvelope::New() const {
 void WorkerRequestEmptyEnvelope::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -2749,12 +2747,12 @@ bool WorkerRequestEmptyEnvelope::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2780,10 +2778,10 @@ bool WorkerRequestEmptyEnvelope::MergePartialFromCodedStream(
 
 void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2794,11 +2792,11 @@ void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerRequestEmptyEnvelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2812,11 +2810,11 @@ int WorkerRequestEmptyEnvelope::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -2847,7 +2845,7 @@ void WorkerRequestEmptyEnvelope::MergeFrom(const WorkerRequestEmptyEnvelope& fro
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2872,7 +2870,7 @@ bool WorkerRequestEmptyEnvelope::IsInitialized() const {
 
 void WorkerRequestEmptyEnvelope::Swap(WorkerRequestEmptyEnvelope* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2890,9 +2888,9 @@ void WorkerRequestEmptyEnvelope::Swap(WorkerRequestEmptyEnvelope* other) {
 
 // ===================================================================
 
-const ::std::string WorkerInvalidMessageEnumeration::_default_worker_;
+const ::std::string WorkerInvalidMessageEnumeration::_default_id_;
 #ifndef _MSC_VER
-const int WorkerInvalidMessageEnumeration::kWorkerFieldNumber;
+const int WorkerInvalidMessageEnumeration::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration()
@@ -2911,7 +2909,7 @@ WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration(const WorkerInv
 
 void WorkerInvalidMessageEnumeration::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2920,8 +2918,8 @@ WorkerInvalidMessageEnumeration::~WorkerInvalidMessageEnumeration() {
 }
 
 void WorkerInvalidMessageEnumeration::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -2950,8 +2948,8 @@ WorkerInvalidMessageEnumeration* WorkerInvalidMessageEnumeration::New() const {
 void WorkerInvalidMessageEnumeration::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -2965,12 +2963,12 @@ bool WorkerInvalidMessageEnumeration::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -2996,10 +2994,10 @@ bool WorkerInvalidMessageEnumeration::MergePartialFromCodedStream(
 
 void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3010,11 +3008,11 @@ void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerInvalidMessageEnumeration::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3028,11 +3026,11 @@ int WorkerInvalidMessageEnumeration::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -3063,7 +3061,7 @@ void WorkerInvalidMessageEnumeration::MergeFrom(const WorkerInvalidMessageEnumer
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3088,7 +3086,7 @@ bool WorkerInvalidMessageEnumeration::IsInitialized() const {
 
 void WorkerInvalidMessageEnumeration::Swap(WorkerInvalidMessageEnumeration* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3106,9 +3104,9 @@ void WorkerInvalidMessageEnumeration::Swap(WorkerInvalidMessageEnumeration* othe
 
 // ===================================================================
 
-const ::std::string WorkerBeginProcessStoreInfo::_default_worker_;
+const ::std::string WorkerBeginProcessStoreInfo::_default_id_;
 #ifndef _MSC_VER
-const int WorkerBeginProcessStoreInfo::kWorkerFieldNumber;
+const int WorkerBeginProcessStoreInfo::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo()
@@ -3127,7 +3125,7 @@ WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo(const WorkerBeginProces
 
 void WorkerBeginProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3136,8 +3134,8 @@ WorkerBeginProcessStoreInfo::~WorkerBeginProcessStoreInfo() {
 }
 
 void WorkerBeginProcessStoreInfo::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -3166,8 +3164,8 @@ WorkerBeginProcessStoreInfo* WorkerBeginProcessStoreInfo::New() const {
 void WorkerBeginProcessStoreInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -3181,12 +3179,12 @@ bool WorkerBeginProcessStoreInfo::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -3212,10 +3210,10 @@ bool WorkerBeginProcessStoreInfo::MergePartialFromCodedStream(
 
 void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3226,11 +3224,11 @@ void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerBeginProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3244,11 +3242,11 @@ int WorkerBeginProcessStoreInfo::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -3279,7 +3277,7 @@ void WorkerBeginProcessStoreInfo::MergeFrom(const WorkerBeginProcessStoreInfo& f
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3304,7 +3302,7 @@ bool WorkerBeginProcessStoreInfo::IsInitialized() const {
 
 void WorkerBeginProcessStoreInfo::Swap(WorkerBeginProcessStoreInfo* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3322,9 +3320,9 @@ void WorkerBeginProcessStoreInfo::Swap(WorkerBeginProcessStoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string WorkerEndProcessStoreInfo::_default_worker_;
+const ::std::string WorkerEndProcessStoreInfo::_default_id_;
 #ifndef _MSC_VER
-const int WorkerEndProcessStoreInfo::kWorkerFieldNumber;
+const int WorkerEndProcessStoreInfo::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo()
@@ -3343,7 +3341,7 @@ WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo(const WorkerEndProcessStore
 
 void WorkerEndProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3352,8 +3350,8 @@ WorkerEndProcessStoreInfo::~WorkerEndProcessStoreInfo() {
 }
 
 void WorkerEndProcessStoreInfo::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -3382,8 +3380,8 @@ WorkerEndProcessStoreInfo* WorkerEndProcessStoreInfo::New() const {
 void WorkerEndProcessStoreInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -3397,12 +3395,12 @@ bool WorkerEndProcessStoreInfo::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -3428,10 +3426,10 @@ bool WorkerEndProcessStoreInfo::MergePartialFromCodedStream(
 
 void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3442,11 +3440,11 @@ void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerEndProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3460,11 +3458,11 @@ int WorkerEndProcessStoreInfo::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -3495,7 +3493,7 @@ void WorkerEndProcessStoreInfo::MergeFrom(const WorkerEndProcessStoreInfo& from)
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3520,7 +3518,7 @@ bool WorkerEndProcessStoreInfo::IsInitialized() const {
 
 void WorkerEndProcessStoreInfo::Swap(WorkerEndProcessStoreInfo* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3538,9 +3536,9 @@ void WorkerEndProcessStoreInfo::Swap(WorkerEndProcessStoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string WorkerReceiveInvalidGet::_default_worker_;
+const ::std::string WorkerReceiveInvalidGet::_default_id_;
 #ifndef _MSC_VER
-const int WorkerReceiveInvalidGet::kWorkerFieldNumber;
+const int WorkerReceiveInvalidGet::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerReceiveInvalidGet::WorkerReceiveInvalidGet()
@@ -3559,7 +3557,7 @@ WorkerReceiveInvalidGet::WorkerReceiveInvalidGet(const WorkerReceiveInvalidGet& 
 
 void WorkerReceiveInvalidGet::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3568,8 +3566,8 @@ WorkerReceiveInvalidGet::~WorkerReceiveInvalidGet() {
 }
 
 void WorkerReceiveInvalidGet::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -3598,8 +3596,8 @@ WorkerReceiveInvalidGet* WorkerReceiveInvalidGet::New() const {
 void WorkerReceiveInvalidGet::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -3613,12 +3611,12 @@ bool WorkerReceiveInvalidGet::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -3644,10 +3642,10 @@ bool WorkerReceiveInvalidGet::MergePartialFromCodedStream(
 
 void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3658,11 +3656,11 @@ void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerReceiveInvalidGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3676,11 +3674,11 @@ int WorkerReceiveInvalidGet::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -3711,7 +3709,7 @@ void WorkerReceiveInvalidGet::MergeFrom(const WorkerReceiveInvalidGet& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3736,7 +3734,7 @@ bool WorkerReceiveInvalidGet::IsInitialized() const {
 
 void WorkerReceiveInvalidGet::Swap(WorkerReceiveInvalidGet* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3754,9 +3752,9 @@ void WorkerReceiveInvalidGet::Swap(WorkerReceiveInvalidGet* other) {
 
 // ===================================================================
 
-const ::std::string WorkerGetInvalidStream::_default_worker_;
+const ::std::string WorkerGetInvalidStream::_default_id_;
 #ifndef _MSC_VER
-const int WorkerGetInvalidStream::kWorkerFieldNumber;
+const int WorkerGetInvalidStream::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerGetInvalidStream::WorkerGetInvalidStream()
@@ -3775,7 +3773,7 @@ WorkerGetInvalidStream::WorkerGetInvalidStream(const WorkerGetInvalidStream& fro
 
 void WorkerGetInvalidStream::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3784,8 +3782,8 @@ WorkerGetInvalidStream::~WorkerGetInvalidStream() {
 }
 
 void WorkerGetInvalidStream::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -3814,8 +3812,8 @@ WorkerGetInvalidStream* WorkerGetInvalidStream::New() const {
 void WorkerGetInvalidStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -3829,12 +3827,12 @@ bool WorkerGetInvalidStream::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -3860,10 +3858,10 @@ bool WorkerGetInvalidStream::MergePartialFromCodedStream(
 
 void WorkerGetInvalidStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3874,11 +3872,11 @@ void WorkerGetInvalidStream::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerGetInvalidStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3892,11 +3890,11 @@ int WorkerGetInvalidStream::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -3927,7 +3925,7 @@ void WorkerGetInvalidStream::MergeFrom(const WorkerGetInvalidStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -3952,7 +3950,7 @@ bool WorkerGetInvalidStream::IsInitialized() const {
 
 void WorkerGetInvalidStream::Swap(WorkerGetInvalidStream* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3970,9 +3968,9 @@ void WorkerGetInvalidStream::Swap(WorkerGetInvalidStream* other) {
 
 // ===================================================================
 
-const ::std::string WorkerGetInvalidOffset::_default_worker_;
+const ::std::string WorkerGetInvalidOffset::_default_id_;
 #ifndef _MSC_VER
-const int WorkerGetInvalidOffset::kWorkerFieldNumber;
+const int WorkerGetInvalidOffset::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerGetInvalidOffset::WorkerGetInvalidOffset()
@@ -3991,7 +3989,7 @@ WorkerGetInvalidOffset::WorkerGetInvalidOffset(const WorkerGetInvalidOffset& fro
 
 void WorkerGetInvalidOffset::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4000,8 +3998,8 @@ WorkerGetInvalidOffset::~WorkerGetInvalidOffset() {
 }
 
 void WorkerGetInvalidOffset::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -4030,8 +4028,8 @@ WorkerGetInvalidOffset* WorkerGetInvalidOffset::New() const {
 void WorkerGetInvalidOffset::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -4045,12 +4043,12 @@ bool WorkerGetInvalidOffset::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -4076,10 +4074,10 @@ bool WorkerGetInvalidOffset::MergePartialFromCodedStream(
 
 void WorkerGetInvalidOffset::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4090,11 +4088,11 @@ void WorkerGetInvalidOffset::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerGetInvalidOffset::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4108,11 +4106,11 @@ int WorkerGetInvalidOffset::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -4143,7 +4141,7 @@ void WorkerGetInvalidOffset::MergeFrom(const WorkerGetInvalidOffset& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4168,7 +4166,7 @@ bool WorkerGetInvalidOffset::IsInitialized() const {
 
 void WorkerGetInvalidOffset::Swap(WorkerGetInvalidOffset* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -4186,9 +4184,9 @@ void WorkerGetInvalidOffset::Swap(WorkerGetInvalidOffset* other) {
 
 // ===================================================================
 
-const ::std::string WorkerBeginProcessGet::_default_worker_;
+const ::std::string WorkerBeginProcessGet::_default_id_;
 #ifndef _MSC_VER
-const int WorkerBeginProcessGet::kWorkerFieldNumber;
+const int WorkerBeginProcessGet::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerBeginProcessGet::WorkerBeginProcessGet()
@@ -4207,7 +4205,7 @@ WorkerBeginProcessGet::WorkerBeginProcessGet(const WorkerBeginProcessGet& from)
 
 void WorkerBeginProcessGet::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4216,8 +4214,8 @@ WorkerBeginProcessGet::~WorkerBeginProcessGet() {
 }
 
 void WorkerBeginProcessGet::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -4246,8 +4244,8 @@ WorkerBeginProcessGet* WorkerBeginProcessGet::New() const {
 void WorkerBeginProcessGet::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -4261,12 +4259,12 @@ bool WorkerBeginProcessGet::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -4292,10 +4290,10 @@ bool WorkerBeginProcessGet::MergePartialFromCodedStream(
 
 void WorkerBeginProcessGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4306,11 +4304,11 @@ void WorkerBeginProcessGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerBeginProcessGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4324,11 +4322,11 @@ int WorkerBeginProcessGet::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -4359,7 +4357,7 @@ void WorkerBeginProcessGet::MergeFrom(const WorkerBeginProcessGet& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4384,7 +4382,7 @@ bool WorkerBeginProcessGet::IsInitialized() const {
 
 void WorkerBeginProcessGet::Swap(WorkerBeginProcessGet* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -4402,9 +4400,9 @@ void WorkerBeginProcessGet::Swap(WorkerBeginProcessGet* other) {
 
 // ===================================================================
 
-const ::std::string WorkerEndProcessGet::_default_worker_;
+const ::std::string WorkerEndProcessGet::_default_id_;
 #ifndef _MSC_VER
-const int WorkerEndProcessGet::kWorkerFieldNumber;
+const int WorkerEndProcessGet::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerEndProcessGet::WorkerEndProcessGet()
@@ -4423,7 +4421,7 @@ WorkerEndProcessGet::WorkerEndProcessGet(const WorkerEndProcessGet& from)
 
 void WorkerEndProcessGet::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4432,8 +4430,8 @@ WorkerEndProcessGet::~WorkerEndProcessGet() {
 }
 
 void WorkerEndProcessGet::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -4462,8 +4460,8 @@ WorkerEndProcessGet* WorkerEndProcessGet::New() const {
 void WorkerEndProcessGet::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -4477,12 +4475,12 @@ bool WorkerEndProcessGet::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -4508,10 +4506,10 @@ bool WorkerEndProcessGet::MergePartialFromCodedStream(
 
 void WorkerEndProcessGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4522,11 +4520,11 @@ void WorkerEndProcessGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerEndProcessGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4540,11 +4538,11 @@ int WorkerEndProcessGet::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
   }
@@ -4575,7 +4573,7 @@ void WorkerEndProcessGet::MergeFrom(const WorkerEndProcessGet& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4600,7 +4598,7 @@ bool WorkerEndProcessGet::IsInitialized() const {
 
 void WorkerEndProcessGet::Swap(WorkerEndProcessGet* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -4618,10 +4616,10 @@ void WorkerEndProcessGet::Swap(WorkerEndProcessGet* other) {
 
 // ===================================================================
 
-const ::std::string WorkerSendErrorResponse::_default_worker_;
+const ::std::string WorkerSendErrorResponse::_default_id_;
 const ::std::string WorkerSendErrorResponse::_default_message_;
 #ifndef _MSC_VER
-const int WorkerSendErrorResponse::kWorkerFieldNumber;
+const int WorkerSendErrorResponse::kIdFieldNumber;
 const int WorkerSendErrorResponse::kMessageFieldNumber;
 #endif  // !_MSC_VER
 
@@ -4641,7 +4639,7 @@ WorkerSendErrorResponse::WorkerSendErrorResponse(const WorkerSendErrorResponse& 
 
 void WorkerSendErrorResponse::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   message_ = const_cast< ::std::string*>(&_default_message_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -4651,8 +4649,8 @@ WorkerSendErrorResponse::~WorkerSendErrorResponse() {
 }
 
 void WorkerSendErrorResponse::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (message_ != &_default_message_) {
     delete message_;
@@ -4684,8 +4682,8 @@ WorkerSendErrorResponse* WorkerSendErrorResponse::New() const {
 void WorkerSendErrorResponse::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
@@ -4704,12 +4702,12 @@ bool WorkerSendErrorResponse::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -4752,10 +4750,10 @@ bool WorkerSendErrorResponse::MergePartialFromCodedStream(
 
 void WorkerSendErrorResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   // optional string message = 2;
@@ -4775,11 +4773,11 @@ void WorkerSendErrorResponse::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerSendErrorResponse::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   // optional string message = 2;
@@ -4803,11 +4801,11 @@ int WorkerSendErrorResponse::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
     // optional string message = 2;
@@ -4845,7 +4843,7 @@ void WorkerSendErrorResponse::MergeFrom(const WorkerSendErrorResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
       set_message(from.message());
@@ -4873,7 +4871,7 @@ bool WorkerSendErrorResponse::IsInitialized() const {
 
 void WorkerSendErrorResponse::Swap(WorkerSendErrorResponse* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(message_, other->message_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -4892,10 +4890,10 @@ void WorkerSendErrorResponse::Swap(WorkerSendErrorResponse* other) {
 
 // ===================================================================
 
-const ::std::string WorkerForwardSubscribeKeepalive::_default_worker_;
+const ::std::string WorkerForwardSubscribeKeepalive::_default_id_;
 const ::std::string WorkerForwardSubscribeKeepalive::_default_subscription_;
 #ifndef _MSC_VER
-const int WorkerForwardSubscribeKeepalive::kWorkerFieldNumber;
+const int WorkerForwardSubscribeKeepalive::kIdFieldNumber;
 const int WorkerForwardSubscribeKeepalive::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
@@ -4915,7 +4913,7 @@ WorkerForwardSubscribeKeepalive::WorkerForwardSubscribeKeepalive(const WorkerFor
 
 void WorkerForwardSubscribeKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -4925,8 +4923,8 @@ WorkerForwardSubscribeKeepalive::~WorkerForwardSubscribeKeepalive() {
 }
 
 void WorkerForwardSubscribeKeepalive::SharedDtor() {
-  if (worker_ != &_default_worker_) {
-    delete worker_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (subscription_ != &_default_subscription_) {
     delete subscription_;
@@ -4958,8 +4956,8 @@ WorkerForwardSubscribeKeepalive* WorkerForwardSubscribeKeepalive::New() const {
 void WorkerForwardSubscribeKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (worker_ != &_default_worker_) {
-        worker_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
@@ -4978,12 +4976,12 @@ bool WorkerForwardSubscribeKeepalive::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes worker = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_worker()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -5023,10 +5021,10 @@ bool WorkerForwardSubscribeKeepalive::MergePartialFromCodedStream(
 
 void WorkerForwardSubscribeKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->worker(), output);
+      1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
@@ -5043,11 +5041,11 @@ void WorkerForwardSubscribeKeepalive::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerForwardSubscribeKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes worker = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->worker(), target);
+        1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
@@ -5068,11 +5066,11 @@ int WorkerForwardSubscribeKeepalive::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes worker = 1;
-    if (has_worker()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->worker());
+          this->id());
     }
     
     // optional bytes subscription = 2;
@@ -5110,7 +5108,7 @@ void WorkerForwardSubscribeKeepalive::MergeFrom(const WorkerForwardSubscribeKeep
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_worker(from.worker());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
       set_subscription(from.subscription());
@@ -5138,7 +5136,7 @@ bool WorkerForwardSubscribeKeepalive::IsInitialized() const {
 
 void WorkerForwardSubscribeKeepalive::Swap(WorkerForwardSubscribeKeepalive* other) {
   if (other != this) {
-    std::swap(worker_, other->worker_);
+    std::swap(id_, other->id_);
     std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -5157,9 +5155,9 @@ void WorkerForwardSubscribeKeepalive::Swap(WorkerForwardSubscribeKeepalive* othe
 
 // ===================================================================
 
-const ::std::string StreamerStartup::_default_streamer_;
+const ::std::string StreamerStartup::_default_id_;
 #ifndef _MSC_VER
-const int StreamerStartup::kStreamerFieldNumber;
+const int StreamerStartup::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerStartup::StreamerStartup()
@@ -5178,7 +5176,7 @@ StreamerStartup::StreamerStartup(const StreamerStartup& from)
 
 void StreamerStartup::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5187,8 +5185,8 @@ StreamerStartup::~StreamerStartup() {
 }
 
 void StreamerStartup::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -5217,8 +5215,8 @@ StreamerStartup* StreamerStartup::New() const {
 void StreamerStartup::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -5232,12 +5230,12 @@ bool StreamerStartup::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -5263,10 +5261,10 @@ bool StreamerStartup::MergePartialFromCodedStream(
 
 void StreamerStartup::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -5277,11 +5275,11 @@ void StreamerStartup::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerStartup::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5295,11 +5293,11 @@ int StreamerStartup::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
+          this->id());
     }
     
   }
@@ -5330,7 +5328,7 @@ void StreamerStartup::MergeFrom(const StreamerStartup& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5355,7 +5353,7 @@ bool StreamerStartup::IsInitialized() const {
 
 void StreamerStartup::Swap(StreamerStartup* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5373,9 +5371,9 @@ void StreamerStartup::Swap(StreamerStartup* other) {
 
 // ===================================================================
 
-const ::std::string StreamerShutdown::_default_streamer_;
+const ::std::string StreamerShutdown::_default_id_;
 #ifndef _MSC_VER
-const int StreamerShutdown::kStreamerFieldNumber;
+const int StreamerShutdown::kIdFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerShutdown::StreamerShutdown()
@@ -5394,7 +5392,7 @@ StreamerShutdown::StreamerShutdown(const StreamerShutdown& from)
 
 void StreamerShutdown::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
+  id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5403,8 +5401,8 @@ StreamerShutdown::~StreamerShutdown() {
 }
 
 void StreamerShutdown::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
+  if (id_ != &_default_id_) {
+    delete id_;
   }
   if (this != default_instance_) {
   }
@@ -5433,8 +5431,8 @@ StreamerShutdown* StreamerShutdown::New() const {
 void StreamerShutdown::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
   }
@@ -5448,12 +5446,12 @@ bool StreamerShutdown::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
@@ -5479,10 +5477,10 @@ bool StreamerShutdown::MergePartialFromCodedStream(
 
 void StreamerShutdown::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -5493,11 +5491,11 @@ void StreamerShutdown::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerShutdown::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5511,11 +5509,11 @@ int StreamerShutdown::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
+    // optional bytes id = 1;
+    if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
+          this->id());
     }
     
   }
@@ -5546,7 +5544,7 @@ void StreamerShutdown::MergeFrom(const StreamerShutdown& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5571,7 +5569,7 @@ bool StreamerShutdown::IsInitialized() const {
 
 void StreamerShutdown::Swap(StreamerShutdown* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
+    std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5589,11 +5587,11 @@ void StreamerShutdown::Swap(StreamerShutdown* other) {
 
 // ===================================================================
 
-const ::std::string StreamerSubscriptionExpired::_default_streamer_;
 const ::std::string StreamerSubscriptionExpired::_default_id_;
+const ::std::string StreamerSubscriptionExpired::_default_subscription_;
 #ifndef _MSC_VER
-const int StreamerSubscriptionExpired::kStreamerFieldNumber;
 const int StreamerSubscriptionExpired::kIdFieldNumber;
+const int StreamerSubscriptionExpired::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerSubscriptionExpired::StreamerSubscriptionExpired()
@@ -5612,8 +5610,8 @@ StreamerSubscriptionExpired::StreamerSubscriptionExpired(const StreamerSubscript
 
 void StreamerSubscriptionExpired::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
+  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5622,11 +5620,11 @@ StreamerSubscriptionExpired::~StreamerSubscriptionExpired() {
 }
 
 void StreamerSubscriptionExpired::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
-  }
   if (id_ != &_default_id_) {
     delete id_;
+  }
+  if (subscription_ != &_default_subscription_) {
+    delete subscription_;
   }
   if (this != default_instance_) {
   }
@@ -5655,13 +5653,13 @@ StreamerSubscriptionExpired* StreamerSubscriptionExpired::New() const {
 void StreamerSubscriptionExpired::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
-        id_->clear();
+      if (subscription_ != &_default_subscription_) {
+        subscription_->clear();
       }
     }
   }
@@ -5675,26 +5673,26 @@ bool StreamerSubscriptionExpired::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_id;
+        if (input->ExpectTag(18)) goto parse_subscription;
         break;
       }
       
-      // optional bytes id = 2;
+      // optional bytes subscription = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
+         parse_subscription:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->mutable_subscription()));
         } else {
           goto handle_uninterpreted;
         }
@@ -5720,16 +5718,16 @@ bool StreamerSubscriptionExpired::MergePartialFromCodedStream(
 
 void StreamerSubscriptionExpired::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      2, this->subscription(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -5740,18 +5738,18 @@ void StreamerSubscriptionExpired::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerSubscriptionExpired::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        2, this->subscription(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5765,18 +5763,18 @@ int StreamerSubscriptionExpired::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional bytes subscription = 2;
+    if (has_subscription()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->subscription());
     }
     
   }
@@ -5807,10 +5805,10 @@ void StreamerSubscriptionExpired::MergeFrom(const StreamerSubscriptionExpired& f
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
-      set_id(from.id());
+      set_subscription(from.subscription());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5835,8 +5833,8 @@ bool StreamerSubscriptionExpired::IsInitialized() const {
 
 void StreamerSubscriptionExpired::Swap(StreamerSubscriptionExpired* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
+    std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5854,11 +5852,11 @@ void StreamerSubscriptionExpired::Swap(StreamerSubscriptionExpired* other) {
 
 // ===================================================================
 
-const ::std::string StreamerReceiveKeepalive::_default_streamer_;
 const ::std::string StreamerReceiveKeepalive::_default_id_;
+const ::std::string StreamerReceiveKeepalive::_default_subscription_;
 #ifndef _MSC_VER
-const int StreamerReceiveKeepalive::kStreamerFieldNumber;
 const int StreamerReceiveKeepalive::kIdFieldNumber;
+const int StreamerReceiveKeepalive::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerReceiveKeepalive::StreamerReceiveKeepalive()
@@ -5877,8 +5875,8 @@ StreamerReceiveKeepalive::StreamerReceiveKeepalive(const StreamerReceiveKeepaliv
 
 void StreamerReceiveKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
+  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5887,11 +5885,11 @@ StreamerReceiveKeepalive::~StreamerReceiveKeepalive() {
 }
 
 void StreamerReceiveKeepalive::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
-  }
   if (id_ != &_default_id_) {
     delete id_;
+  }
+  if (subscription_ != &_default_subscription_) {
+    delete subscription_;
   }
   if (this != default_instance_) {
   }
@@ -5920,13 +5918,13 @@ StreamerReceiveKeepalive* StreamerReceiveKeepalive::New() const {
 void StreamerReceiveKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
-        id_->clear();
+      if (subscription_ != &_default_subscription_) {
+        subscription_->clear();
       }
     }
   }
@@ -5940,26 +5938,26 @@ bool StreamerReceiveKeepalive::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_id;
+        if (input->ExpectTag(18)) goto parse_subscription;
         break;
       }
       
-      // optional bytes id = 2;
+      // optional bytes subscription = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
+         parse_subscription:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->mutable_subscription()));
         } else {
           goto handle_uninterpreted;
         }
@@ -5985,16 +5983,16 @@ bool StreamerReceiveKeepalive::MergePartialFromCodedStream(
 
 void StreamerReceiveKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      2, this->subscription(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -6005,18 +6003,18 @@ void StreamerReceiveKeepalive::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerReceiveKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        2, this->subscription(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6030,18 +6028,18 @@ int StreamerReceiveKeepalive::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional bytes subscription = 2;
+    if (has_subscription()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->subscription());
     }
     
   }
@@ -6072,10 +6070,10 @@ void StreamerReceiveKeepalive::MergeFrom(const StreamerReceiveKeepalive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
-      set_id(from.id());
+      set_subscription(from.subscription());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -6100,8 +6098,8 @@ bool StreamerReceiveKeepalive::IsInitialized() const {
 
 void StreamerReceiveKeepalive::Swap(StreamerReceiveKeepalive* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
+    std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -6119,11 +6117,11 @@ void StreamerReceiveKeepalive::Swap(StreamerReceiveKeepalive* other) {
 
 // ===================================================================
 
-const ::std::string StreamerSubscriptionRenewedFromKeepalive::_default_streamer_;
 const ::std::string StreamerSubscriptionRenewedFromKeepalive::_default_id_;
+const ::std::string StreamerSubscriptionRenewedFromKeepalive::_default_subscription_;
 #ifndef _MSC_VER
-const int StreamerSubscriptionRenewedFromKeepalive::kStreamerFieldNumber;
 const int StreamerSubscriptionRenewedFromKeepalive::kIdFieldNumber;
+const int StreamerSubscriptionRenewedFromKeepalive::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerSubscriptionRenewedFromKeepalive::StreamerSubscriptionRenewedFromKeepalive()
@@ -6142,8 +6140,8 @@ StreamerSubscriptionRenewedFromKeepalive::StreamerSubscriptionRenewedFromKeepali
 
 void StreamerSubscriptionRenewedFromKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
+  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6152,11 +6150,11 @@ StreamerSubscriptionRenewedFromKeepalive::~StreamerSubscriptionRenewedFromKeepal
 }
 
 void StreamerSubscriptionRenewedFromKeepalive::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
-  }
   if (id_ != &_default_id_) {
     delete id_;
+  }
+  if (subscription_ != &_default_subscription_) {
+    delete subscription_;
   }
   if (this != default_instance_) {
   }
@@ -6185,13 +6183,13 @@ StreamerSubscriptionRenewedFromKeepalive* StreamerSubscriptionRenewedFromKeepali
 void StreamerSubscriptionRenewedFromKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
-        id_->clear();
+      if (subscription_ != &_default_subscription_) {
+        subscription_->clear();
       }
     }
   }
@@ -6205,26 +6203,26 @@ bool StreamerSubscriptionRenewedFromKeepalive::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_id;
+        if (input->ExpectTag(18)) goto parse_subscription;
         break;
       }
       
-      // optional bytes id = 2;
+      // optional bytes subscription = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
+         parse_subscription:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->mutable_subscription()));
         } else {
           goto handle_uninterpreted;
         }
@@ -6250,16 +6248,16 @@ bool StreamerSubscriptionRenewedFromKeepalive::MergePartialFromCodedStream(
 
 void StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      2, this->subscription(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -6270,18 +6268,18 @@ void StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        2, this->subscription(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6295,18 +6293,18 @@ int StreamerSubscriptionRenewedFromKeepalive::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional bytes subscription = 2;
+    if (has_subscription()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->subscription());
     }
     
   }
@@ -6337,10 +6335,10 @@ void StreamerSubscriptionRenewedFromKeepalive::MergeFrom(const StreamerSubscript
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
-      set_id(from.id());
+      set_subscription(from.subscription());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -6365,8 +6363,8 @@ bool StreamerSubscriptionRenewedFromKeepalive::IsInitialized() const {
 
 void StreamerSubscriptionRenewedFromKeepalive::Swap(StreamerSubscriptionRenewedFromKeepalive* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
+    std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -6384,11 +6382,11 @@ void StreamerSubscriptionRenewedFromKeepalive::Swap(StreamerSubscriptionRenewedF
 
 // ===================================================================
 
-const ::std::string StreamerRejectKeepaliveUnknownSubscription::_default_streamer_;
 const ::std::string StreamerRejectKeepaliveUnknownSubscription::_default_id_;
+const ::std::string StreamerRejectKeepaliveUnknownSubscription::_default_subscription_;
 #ifndef _MSC_VER
-const int StreamerRejectKeepaliveUnknownSubscription::kStreamerFieldNumber;
 const int StreamerRejectKeepaliveUnknownSubscription::kIdFieldNumber;
+const int StreamerRejectKeepaliveUnknownSubscription::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerRejectKeepaliveUnknownSubscription::StreamerRejectKeepaliveUnknownSubscription()
@@ -6407,8 +6405,8 @@ StreamerRejectKeepaliveUnknownSubscription::StreamerRejectKeepaliveUnknownSubscr
 
 void StreamerRejectKeepaliveUnknownSubscription::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
+  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6417,11 +6415,11 @@ StreamerRejectKeepaliveUnknownSubscription::~StreamerRejectKeepaliveUnknownSubsc
 }
 
 void StreamerRejectKeepaliveUnknownSubscription::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
-  }
   if (id_ != &_default_id_) {
     delete id_;
+  }
+  if (subscription_ != &_default_subscription_) {
+    delete subscription_;
   }
   if (this != default_instance_) {
   }
@@ -6450,13 +6448,13 @@ StreamerRejectKeepaliveUnknownSubscription* StreamerRejectKeepaliveUnknownSubscr
 void StreamerRejectKeepaliveUnknownSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
-        id_->clear();
+      if (subscription_ != &_default_subscription_) {
+        subscription_->clear();
       }
     }
   }
@@ -6470,26 +6468,26 @@ bool StreamerRejectKeepaliveUnknownSubscription::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_id;
+        if (input->ExpectTag(18)) goto parse_subscription;
         break;
       }
       
-      // optional bytes id = 2;
+      // optional bytes subscription = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
+         parse_subscription:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->mutable_subscription()));
         } else {
           goto handle_uninterpreted;
         }
@@ -6515,16 +6513,16 @@ bool StreamerRejectKeepaliveUnknownSubscription::MergePartialFromCodedStream(
 
 void StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      2, this->subscription(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -6535,18 +6533,18 @@ void StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        2, this->subscription(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6560,18 +6558,18 @@ int StreamerRejectKeepaliveUnknownSubscription::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional bytes subscription = 2;
+    if (has_subscription()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->subscription());
     }
     
   }
@@ -6602,10 +6600,10 @@ void StreamerRejectKeepaliveUnknownSubscription::MergeFrom(const StreamerRejectK
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
-      set_id(from.id());
+      set_subscription(from.subscription());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -6630,8 +6628,8 @@ bool StreamerRejectKeepaliveUnknownSubscription::IsInitialized() const {
 
 void StreamerRejectKeepaliveUnknownSubscription::Swap(StreamerRejectKeepaliveUnknownSubscription* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
+    std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -6649,11 +6647,11 @@ void StreamerRejectKeepaliveUnknownSubscription::Swap(StreamerRejectKeepaliveUnk
 
 // ===================================================================
 
-const ::std::string StreamerErrorRenewingSubscription::_default_streamer_;
 const ::std::string StreamerErrorRenewingSubscription::_default_id_;
+const ::std::string StreamerErrorRenewingSubscription::_default_subscription_;
 #ifndef _MSC_VER
-const int StreamerErrorRenewingSubscription::kStreamerFieldNumber;
 const int StreamerErrorRenewingSubscription::kIdFieldNumber;
+const int StreamerErrorRenewingSubscription::kSubscriptionFieldNumber;
 #endif  // !_MSC_VER
 
 StreamerErrorRenewingSubscription::StreamerErrorRenewingSubscription()
@@ -6672,8 +6670,8 @@ StreamerErrorRenewingSubscription::StreamerErrorRenewingSubscription(const Strea
 
 void StreamerErrorRenewingSubscription::SharedCtor() {
   _cached_size_ = 0;
-  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
+  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6682,11 +6680,11 @@ StreamerErrorRenewingSubscription::~StreamerErrorRenewingSubscription() {
 }
 
 void StreamerErrorRenewingSubscription::SharedDtor() {
-  if (streamer_ != &_default_streamer_) {
-    delete streamer_;
-  }
   if (id_ != &_default_id_) {
     delete id_;
+  }
+  if (subscription_ != &_default_subscription_) {
+    delete subscription_;
   }
   if (this != default_instance_) {
   }
@@ -6715,13 +6713,13 @@ StreamerErrorRenewingSubscription* StreamerErrorRenewingSubscription::New() cons
 void StreamerErrorRenewingSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
-      if (streamer_ != &_default_streamer_) {
-        streamer_->clear();
+      if (id_ != &_default_id_) {
+        id_->clear();
       }
     }
     if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
-        id_->clear();
+      if (subscription_ != &_default_subscription_) {
+        subscription_->clear();
       }
     }
   }
@@ -6735,26 +6733,26 @@ bool StreamerErrorRenewingSubscription::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes streamer = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_streamer()));
+                input, this->mutable_id()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_id;
+        if (input->ExpectTag(18)) goto parse_subscription;
         break;
       }
       
-      // optional bytes id = 2;
+      // optional bytes subscription = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
+         parse_subscription:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->mutable_subscription()));
         } else {
           goto handle_uninterpreted;
         }
@@ -6780,16 +6778,16 @@ bool StreamerErrorRenewingSubscription::MergePartialFromCodedStream(
 
 void StreamerErrorRenewingSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->streamer(), output);
+      1, this->id(), output);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      2, this->subscription(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -6800,18 +6798,18 @@ void StreamerErrorRenewingSubscription::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerErrorRenewingSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes streamer = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->streamer(), target);
+        1, this->id(), target);
   }
   
-  // optional bytes id = 2;
+  // optional bytes subscription = 2;
   if (_has_bit(1)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        2, this->subscription(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6825,18 +6823,18 @@ int StreamerErrorRenewingSubscription::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes streamer = 1;
-    if (has_streamer()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->streamer());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
+    }
+    
+    // optional bytes subscription = 2;
+    if (has_subscription()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->subscription());
     }
     
   }
@@ -6867,10 +6865,10 @@ void StreamerErrorRenewingSubscription::MergeFrom(const StreamerErrorRenewingSub
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
-      set_streamer(from.streamer());
+      set_id(from.id());
     }
     if (from._has_bit(1)) {
-      set_id(from.id());
+      set_subscription(from.subscription());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -6895,8 +6893,8 @@ bool StreamerErrorRenewingSubscription::IsInitialized() const {
 
 void StreamerErrorRenewingSubscription::Swap(StreamerErrorRenewingSubscription* other) {
   if (other != this) {
-    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
+    std::swap(subscription_, other->subscription_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
