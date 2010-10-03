@@ -24,6 +24,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* BrokerReceiveClientMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   BrokerReceiveClientMessage_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerStartup_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerStartup_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WorkerShutdown_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WorkerShutdown_reflection_ = NULL;
 const ::google::protobuf::Descriptor* WorkerFailReceiveMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   WorkerFailReceiveMessage_reflection_ = NULL;
@@ -132,8 +138,39 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BrokerReceiveClientMessage));
-  WorkerFailReceiveMessage_descriptor_ = file->message_type(3);
+  WorkerStartup_descriptor_ = file->message_type(3);
+  static const int WorkerStartup_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerStartup, worker_),
+  };
+  WorkerStartup_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerStartup_descriptor_,
+      WorkerStartup::default_instance_,
+      WorkerStartup_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerStartup, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerStartup, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerStartup));
+  WorkerShutdown_descriptor_ = file->message_type(4);
+  static const int WorkerShutdown_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerShutdown, worker_),
+  };
+  WorkerShutdown_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WorkerShutdown_descriptor_,
+      WorkerShutdown::default_instance_,
+      WorkerShutdown_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerShutdown, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerShutdown, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WorkerShutdown));
+  WorkerFailReceiveMessage_descriptor_ = file->message_type(5);
   static const int WorkerFailReceiveMessage_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerFailReceiveMessage, worker_),
   };
   WorkerFailReceiveMessage_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -146,8 +183,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerFailReceiveMessage));
-  WorkerReceiveEmptyMessage_descriptor_ = file->message_type(4);
+  WorkerReceiveEmptyMessage_descriptor_ = file->message_type(6);
   static const int WorkerReceiveEmptyMessage_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveEmptyMessage, worker_),
   };
   WorkerReceiveEmptyMessage_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -160,8 +198,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerReceiveEmptyMessage));
-  WorkerRequestParseFailure_descriptor_ = file->message_type(5);
+  WorkerRequestParseFailure_descriptor_ = file->message_type(7);
   static const int WorkerRequestParseFailure_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestParseFailure, worker_),
   };
   WorkerRequestParseFailure_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -174,8 +213,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerRequestParseFailure));
-  WorkerRequestEmptyEnvelope_descriptor_ = file->message_type(6);
+  WorkerRequestEmptyEnvelope_descriptor_ = file->message_type(8);
   static const int WorkerRequestEmptyEnvelope_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerRequestEmptyEnvelope, worker_),
   };
   WorkerRequestEmptyEnvelope_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -188,8 +228,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerRequestEmptyEnvelope));
-  WorkerInvalidMessageEnumeration_descriptor_ = file->message_type(7);
+  WorkerInvalidMessageEnumeration_descriptor_ = file->message_type(9);
   static const int WorkerInvalidMessageEnumeration_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerInvalidMessageEnumeration, worker_),
   };
   WorkerInvalidMessageEnumeration_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -202,8 +243,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerInvalidMessageEnumeration));
-  WorkerBeginProcessStoreInfo_descriptor_ = file->message_type(8);
+  WorkerBeginProcessStoreInfo_descriptor_ = file->message_type(10);
   static const int WorkerBeginProcessStoreInfo_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessStoreInfo, worker_),
   };
   WorkerBeginProcessStoreInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -216,8 +258,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerBeginProcessStoreInfo));
-  WorkerEndProcessStoreInfo_descriptor_ = file->message_type(9);
+  WorkerEndProcessStoreInfo_descriptor_ = file->message_type(11);
   static const int WorkerEndProcessStoreInfo_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessStoreInfo, worker_),
   };
   WorkerEndProcessStoreInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -230,8 +273,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerEndProcessStoreInfo));
-  WorkerReceiveInvalidGet_descriptor_ = file->message_type(10);
+  WorkerReceiveInvalidGet_descriptor_ = file->message_type(12);
   static const int WorkerReceiveInvalidGet_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerReceiveInvalidGet, worker_),
   };
   WorkerReceiveInvalidGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -244,8 +288,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerReceiveInvalidGet));
-  WorkerGetInvalidStream_descriptor_ = file->message_type(11);
+  WorkerGetInvalidStream_descriptor_ = file->message_type(13);
   static const int WorkerGetInvalidStream_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidStream, worker_),
   };
   WorkerGetInvalidStream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -258,8 +303,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerGetInvalidStream));
-  WorkerGetInvalidOffset_descriptor_ = file->message_type(12);
+  WorkerGetInvalidOffset_descriptor_ = file->message_type(14);
   static const int WorkerGetInvalidOffset_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerGetInvalidOffset, worker_),
   };
   WorkerGetInvalidOffset_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -272,8 +318,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerGetInvalidOffset));
-  WorkerBeginProcessGet_descriptor_ = file->message_type(13);
+  WorkerBeginProcessGet_descriptor_ = file->message_type(15);
   static const int WorkerBeginProcessGet_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerBeginProcessGet, worker_),
   };
   WorkerBeginProcessGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -286,8 +333,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerBeginProcessGet));
-  WorkerEndProcessGet_descriptor_ = file->message_type(14);
+  WorkerEndProcessGet_descriptor_ = file->message_type(16);
   static const int WorkerEndProcessGet_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerEndProcessGet, worker_),
   };
   WorkerEndProcessGet_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -300,8 +348,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerEndProcessGet));
-  WorkerSendErrorResponse_descriptor_ = file->message_type(15);
-  static const int WorkerSendErrorResponse_offsets_[1] = {
+  WorkerSendErrorResponse_descriptor_ = file->message_type(17);
+  static const int WorkerSendErrorResponse_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, worker_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WorkerSendErrorResponse, message_),
   };
   WorkerSendErrorResponse_reflection_ =
@@ -315,8 +364,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WorkerSendErrorResponse));
-  StreamerSubscriptionExpired_descriptor_ = file->message_type(16);
-  static const int StreamerSubscriptionExpired_offsets_[1] = {
+  StreamerSubscriptionExpired_descriptor_ = file->message_type(18);
+  static const int StreamerSubscriptionExpired_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionExpired, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionExpired, id_),
   };
   StreamerSubscriptionExpired_reflection_ =
@@ -330,8 +380,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerSubscriptionExpired));
-  StreamerReceiveKeepalive_descriptor_ = file->message_type(17);
-  static const int StreamerReceiveKeepalive_offsets_[1] = {
+  StreamerReceiveKeepalive_descriptor_ = file->message_type(19);
+  static const int StreamerReceiveKeepalive_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerReceiveKeepalive, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerReceiveKeepalive, id_),
   };
   StreamerReceiveKeepalive_reflection_ =
@@ -345,8 +396,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerReceiveKeepalive));
-  StreamerSubscriptionRenewedFromKeepalive_descriptor_ = file->message_type(18);
-  static const int StreamerSubscriptionRenewedFromKeepalive_offsets_[1] = {
+  StreamerSubscriptionRenewedFromKeepalive_descriptor_ = file->message_type(20);
+  static const int StreamerSubscriptionRenewedFromKeepalive_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionRenewedFromKeepalive, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerSubscriptionRenewedFromKeepalive, id_),
   };
   StreamerSubscriptionRenewedFromKeepalive_reflection_ =
@@ -360,8 +412,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerSubscriptionRenewedFromKeepalive));
-  StreamerRejectKeepaliveUnknownSubscription_descriptor_ = file->message_type(19);
-  static const int StreamerRejectKeepaliveUnknownSubscription_offsets_[1] = {
+  StreamerRejectKeepaliveUnknownSubscription_descriptor_ = file->message_type(21);
+  static const int StreamerRejectKeepaliveUnknownSubscription_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerRejectKeepaliveUnknownSubscription, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerRejectKeepaliveUnknownSubscription, id_),
   };
   StreamerRejectKeepaliveUnknownSubscription_reflection_ =
@@ -375,8 +428,9 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamerRejectKeepaliveUnknownSubscription));
-  StreamerErrorRenewingSubscription_descriptor_ = file->message_type(20);
-  static const int StreamerErrorRenewingSubscription_offsets_[1] = {
+  StreamerErrorRenewingSubscription_descriptor_ = file->message_type(22);
+  static const int StreamerErrorRenewingSubscription_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, streamer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamerErrorRenewingSubscription, id_),
   };
   StreamerErrorRenewingSubscription_reflection_ =
@@ -408,6 +462,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     BrokerShutdown_descriptor_, &BrokerShutdown::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     BrokerReceiveClientMessage_descriptor_, &BrokerReceiveClientMessage::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerStartup_descriptor_, &WorkerStartup::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WorkerShutdown_descriptor_, &WorkerShutdown::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     WorkerFailReceiveMessage_descriptor_, &WorkerFailReceiveMessage::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -455,6 +513,10 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto() {
   delete BrokerShutdown_reflection_;
   delete BrokerReceiveClientMessage::default_instance_;
   delete BrokerReceiveClientMessage_reflection_;
+  delete WorkerStartup::default_instance_;
+  delete WorkerStartup_reflection_;
+  delete WorkerShutdown::default_instance_;
+  delete WorkerShutdown_reflection_;
   delete WorkerFailReceiveMessage::default_instance_;
   delete WorkerFailReceiveMessage_reflection_;
   delete WorkerReceiveEmptyMessage::default_instance_;
@@ -503,28 +565,39 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
     "\n\030zippylog/zippylogd.proto\022\022zippylog.zip"
     "pylogd\"=\n\rBrokerStartup\022\022\n\nstore_path\030\001 "
     "\001(\t\022\030\n\020listen_endpoints\030\002 \003(\t\"\020\n\016BrokerS"
-    "hutdown\"\034\n\032BrokerReceiveClientMessage\"\032\n"
-    "\030WorkerFailReceiveMessage\"\033\n\031WorkerRecei"
-    "veEmptyMessage\"\033\n\031WorkerRequestParseFail"
-    "ure\"\034\n\032WorkerRequestEmptyEnvelope\"!\n\037Wor"
-    "kerInvalidMessageEnumeration\"\035\n\033WorkerBe"
-    "ginProcessStoreInfo\"\033\n\031WorkerEndProcessS"
-    "toreInfo\"\031\n\027WorkerReceiveInvalidGet\"\030\n\026W"
-    "orkerGetInvalidStream\"\030\n\026WorkerGetInvali"
-    "dOffset\"\027\n\025WorkerBeginProcessGet\"\025\n\023Work"
-    "erEndProcessGet\"*\n\027WorkerSendErrorRespon"
-    "se\022\017\n\007message\030\001 \001(\t\")\n\033StreamerSubscript"
-    "ionExpired\022\n\n\002id\030\001 \001(\014\"&\n\030StreamerReceiv"
-    "eKeepalive\022\n\n\002id\030\001 \001(\014\"6\n(StreamerSubscr"
-    "iptionRenewedFromKeepalive\022\n\n\002id\030\001 \001(\014\"8"
-    "\n*StreamerRejectKeepaliveUnknownSubscrip"
-    "tion\022\n\n\002id\030\001 \001(\014\"/\n!StreamerErrorRenewin"
-    "gSubscription\022\n\n\002id\030\001 \001(\014", 785);
+    "hutdown\"\034\n\032BrokerReceiveClientMessage\"\037\n"
+    "\rWorkerStartup\022\016\n\006worker\030\001 \001(\014\" \n\016Worker"
+    "Shutdown\022\016\n\006worker\030\001 \001(\014\"*\n\030WorkerFailRe"
+    "ceiveMessage\022\016\n\006worker\030\001 \001(\014\"+\n\031WorkerRe"
+    "ceiveEmptyMessage\022\016\n\006worker\030\001 \001(\014\"+\n\031Wor"
+    "kerRequestParseFailure\022\016\n\006worker\030\001 \001(\014\","
+    "\n\032WorkerRequestEmptyEnvelope\022\016\n\006worker\030\001"
+    " \001(\014\"1\n\037WorkerInvalidMessageEnumeration\022"
+    "\016\n\006worker\030\001 \001(\014\"-\n\033WorkerBeginProcessSto"
+    "reInfo\022\016\n\006worker\030\001 \001(\014\"+\n\031WorkerEndProce"
+    "ssStoreInfo\022\016\n\006worker\030\001 \001(\014\")\n\027WorkerRec"
+    "eiveInvalidGet\022\016\n\006worker\030\001 \001(\014\"(\n\026Worker"
+    "GetInvalidStream\022\016\n\006worker\030\001 \001(\014\"(\n\026Work"
+    "erGetInvalidOffset\022\016\n\006worker\030\001 \001(\014\"\'\n\025Wo"
+    "rkerBeginProcessGet\022\016\n\006worker\030\001 \001(\014\"%\n\023W"
+    "orkerEndProcessGet\022\016\n\006worker\030\001 \001(\014\":\n\027Wo"
+    "rkerSendErrorResponse\022\016\n\006worker\030\001 \001(\014\022\017\n"
+    "\007message\030\002 \001(\t\";\n\033StreamerSubscriptionEx"
+    "pired\022\020\n\010streamer\030\001 \001(\014\022\n\n\002id\030\002 \001(\014\"8\n\030S"
+    "treamerReceiveKeepalive\022\020\n\010streamer\030\001 \001("
+    "\014\022\n\n\002id\030\002 \001(\014\"H\n(StreamerSubscriptionRen"
+    "ewedFromKeepalive\022\020\n\010streamer\030\001 \001(\014\022\n\n\002i"
+    "d\030\002 \001(\014\"J\n*StreamerRejectKeepaliveUnknow"
+    "nSubscription\022\020\n\010streamer\030\001 \001(\014\022\n\n\002id\030\002 "
+    "\001(\014\"A\n!StreamerErrorRenewingSubscription"
+    "\022\020\n\010streamer\030\001 \001(\014\022\n\n\002id\030\002 \001(\014", 1150);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
   BrokerStartup::default_instance_ = new BrokerStartup();
   BrokerShutdown::default_instance_ = new BrokerShutdown();
   BrokerReceiveClientMessage::default_instance_ = new BrokerReceiveClientMessage();
+  WorkerStartup::default_instance_ = new WorkerStartup();
+  WorkerShutdown::default_instance_ = new WorkerShutdown();
   WorkerFailReceiveMessage::default_instance_ = new WorkerFailReceiveMessage();
   WorkerReceiveEmptyMessage::default_instance_ = new WorkerReceiveEmptyMessage();
   WorkerRequestParseFailure::default_instance_ = new WorkerRequestParseFailure();
@@ -546,6 +619,8 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
   BrokerStartup::default_instance_->InitAsDefaultInstance();
   BrokerShutdown::default_instance_->InitAsDefaultInstance();
   BrokerReceiveClientMessage::default_instance_->InitAsDefaultInstance();
+  WorkerStartup::default_instance_->InitAsDefaultInstance();
+  WorkerShutdown::default_instance_->InitAsDefaultInstance();
   WorkerFailReceiveMessage::default_instance_->InitAsDefaultInstance();
   WorkerReceiveEmptyMessage::default_instance_->InitAsDefaultInstance();
   WorkerRequestParseFailure::default_instance_->InitAsDefaultInstance();
@@ -1159,7 +1234,441 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 
 // ===================================================================
 
+const ::std::string WorkerStartup::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerStartup::kWorkerFieldNumber;
+#endif  // !_MSC_VER
+
+WorkerStartup::WorkerStartup()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerStartup::InitAsDefaultInstance() {
+}
+
+WorkerStartup::WorkerStartup(const WorkerStartup& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerStartup::SharedCtor() {
+  _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerStartup::~WorkerStartup() {
+  SharedDtor();
+}
+
+void WorkerStartup::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerStartup::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerStartup::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerStartup_descriptor_;
+}
+
+const WorkerStartup& WorkerStartup::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerStartup* WorkerStartup::default_instance_ = NULL;
+
+WorkerStartup* WorkerStartup::New() const {
+  return new WorkerStartup;
+}
+
+void WorkerStartup::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerStartup::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerStartup::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerStartup::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerStartup::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerStartup::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerStartup* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerStartup*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerStartup::MergeFrom(const WorkerStartup& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerStartup::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerStartup::CopyFrom(const WorkerStartup& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerStartup::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerStartup::Swap(WorkerStartup* other) {
+  if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerStartup::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerStartup_descriptor_;
+  metadata.reflection = WorkerStartup_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string WorkerShutdown::_default_worker_;
+#ifndef _MSC_VER
+const int WorkerShutdown::kWorkerFieldNumber;
+#endif  // !_MSC_VER
+
+WorkerShutdown::WorkerShutdown()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WorkerShutdown::InitAsDefaultInstance() {
+}
+
+WorkerShutdown::WorkerShutdown(const WorkerShutdown& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WorkerShutdown::SharedCtor() {
+  _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WorkerShutdown::~WorkerShutdown() {
+  SharedDtor();
+}
+
+void WorkerShutdown::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void WorkerShutdown::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WorkerShutdown::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WorkerShutdown_descriptor_;
+}
+
+const WorkerShutdown& WorkerShutdown::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
+}
+
+WorkerShutdown* WorkerShutdown::default_instance_ = NULL;
+
+WorkerShutdown* WorkerShutdown::New() const {
+  return new WorkerShutdown;
+}
+
+void WorkerShutdown::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WorkerShutdown::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void WorkerShutdown::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WorkerShutdown::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WorkerShutdown::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WorkerShutdown::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WorkerShutdown* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WorkerShutdown*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WorkerShutdown::MergeFrom(const WorkerShutdown& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WorkerShutdown::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WorkerShutdown::CopyFrom(const WorkerShutdown& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WorkerShutdown::IsInitialized() const {
+  
+  return true;
+}
+
+void WorkerShutdown::Swap(WorkerShutdown* other) {
+  if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WorkerShutdown::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WorkerShutdown_descriptor_;
+  metadata.reflection = WorkerShutdown_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string WorkerFailReceiveMessage::_default_worker_;
+#ifndef _MSC_VER
+const int WorkerFailReceiveMessage::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerFailReceiveMessage::WorkerFailReceiveMessage()
@@ -1178,6 +1687,7 @@ WorkerFailReceiveMessage::WorkerFailReceiveMessage(const WorkerFailReceiveMessag
 
 void WorkerFailReceiveMessage::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1186,6 +1696,9 @@ WorkerFailReceiveMessage::~WorkerFailReceiveMessage() {
 }
 
 void WorkerFailReceiveMessage::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1211,6 +1724,13 @@ WorkerFailReceiveMessage* WorkerFailReceiveMessage::New() const {
 }
 
 void WorkerFailReceiveMessage::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1220,12 +1740,31 @@ bool WorkerFailReceiveMessage::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -1233,6 +1772,12 @@ bool WorkerFailReceiveMessage::MergePartialFromCodedStream(
 
 void WorkerFailReceiveMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1241,6 +1786,13 @@ void WorkerFailReceiveMessage::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerFailReceiveMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1251,6 +1803,15 @@ void WorkerFailReceiveMessage::SerializeWithCachedSizes(
 int WorkerFailReceiveMessage::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -1276,6 +1837,11 @@ void WorkerFailReceiveMessage::MergeFrom(const ::google::protobuf::Message& from
 
 void WorkerFailReceiveMessage::MergeFrom(const WorkerFailReceiveMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1298,6 +1864,8 @@ bool WorkerFailReceiveMessage::IsInitialized() const {
 
 void WorkerFailReceiveMessage::Swap(WorkerFailReceiveMessage* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -1314,7 +1882,9 @@ void WorkerFailReceiveMessage::Swap(WorkerFailReceiveMessage* other) {
 
 // ===================================================================
 
+const ::std::string WorkerReceiveEmptyMessage::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerReceiveEmptyMessage::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage()
@@ -1333,6 +1903,7 @@ WorkerReceiveEmptyMessage::WorkerReceiveEmptyMessage(const WorkerReceiveEmptyMes
 
 void WorkerReceiveEmptyMessage::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1341,6 +1912,9 @@ WorkerReceiveEmptyMessage::~WorkerReceiveEmptyMessage() {
 }
 
 void WorkerReceiveEmptyMessage::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1366,6 +1940,13 @@ WorkerReceiveEmptyMessage* WorkerReceiveEmptyMessage::New() const {
 }
 
 void WorkerReceiveEmptyMessage::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1375,12 +1956,31 @@ bool WorkerReceiveEmptyMessage::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -1388,6 +1988,12 @@ bool WorkerReceiveEmptyMessage::MergePartialFromCodedStream(
 
 void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1396,6 +2002,13 @@ void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerReceiveEmptyMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1406,6 +2019,15 @@ void WorkerReceiveEmptyMessage::SerializeWithCachedSizes(
 int WorkerReceiveEmptyMessage::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -1431,6 +2053,11 @@ void WorkerReceiveEmptyMessage::MergeFrom(const ::google::protobuf::Message& fro
 
 void WorkerReceiveEmptyMessage::MergeFrom(const WorkerReceiveEmptyMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1453,6 +2080,8 @@ bool WorkerReceiveEmptyMessage::IsInitialized() const {
 
 void WorkerReceiveEmptyMessage::Swap(WorkerReceiveEmptyMessage* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -1469,7 +2098,9 @@ void WorkerReceiveEmptyMessage::Swap(WorkerReceiveEmptyMessage* other) {
 
 // ===================================================================
 
+const ::std::string WorkerRequestParseFailure::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerRequestParseFailure::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerRequestParseFailure::WorkerRequestParseFailure()
@@ -1488,6 +2119,7 @@ WorkerRequestParseFailure::WorkerRequestParseFailure(const WorkerRequestParseFai
 
 void WorkerRequestParseFailure::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1496,6 +2128,9 @@ WorkerRequestParseFailure::~WorkerRequestParseFailure() {
 }
 
 void WorkerRequestParseFailure::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1521,6 +2156,13 @@ WorkerRequestParseFailure* WorkerRequestParseFailure::New() const {
 }
 
 void WorkerRequestParseFailure::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1530,12 +2172,31 @@ bool WorkerRequestParseFailure::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -1543,6 +2204,12 @@ bool WorkerRequestParseFailure::MergePartialFromCodedStream(
 
 void WorkerRequestParseFailure::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1551,6 +2218,13 @@ void WorkerRequestParseFailure::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerRequestParseFailure::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1561,6 +2235,15 @@ void WorkerRequestParseFailure::SerializeWithCachedSizes(
 int WorkerRequestParseFailure::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -1586,6 +2269,11 @@ void WorkerRequestParseFailure::MergeFrom(const ::google::protobuf::Message& fro
 
 void WorkerRequestParseFailure::MergeFrom(const WorkerRequestParseFailure& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1608,6 +2296,8 @@ bool WorkerRequestParseFailure::IsInitialized() const {
 
 void WorkerRequestParseFailure::Swap(WorkerRequestParseFailure* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -1624,7 +2314,9 @@ void WorkerRequestParseFailure::Swap(WorkerRequestParseFailure* other) {
 
 // ===================================================================
 
+const ::std::string WorkerRequestEmptyEnvelope::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerRequestEmptyEnvelope::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope()
@@ -1643,6 +2335,7 @@ WorkerRequestEmptyEnvelope::WorkerRequestEmptyEnvelope(const WorkerRequestEmptyE
 
 void WorkerRequestEmptyEnvelope::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1651,6 +2344,9 @@ WorkerRequestEmptyEnvelope::~WorkerRequestEmptyEnvelope() {
 }
 
 void WorkerRequestEmptyEnvelope::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1676,6 +2372,13 @@ WorkerRequestEmptyEnvelope* WorkerRequestEmptyEnvelope::New() const {
 }
 
 void WorkerRequestEmptyEnvelope::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1685,12 +2388,31 @@ bool WorkerRequestEmptyEnvelope::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -1698,6 +2420,12 @@ bool WorkerRequestEmptyEnvelope::MergePartialFromCodedStream(
 
 void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1706,6 +2434,13 @@ void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerRequestEmptyEnvelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1716,6 +2451,15 @@ void WorkerRequestEmptyEnvelope::SerializeWithCachedSizes(
 int WorkerRequestEmptyEnvelope::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -1741,6 +2485,11 @@ void WorkerRequestEmptyEnvelope::MergeFrom(const ::google::protobuf::Message& fr
 
 void WorkerRequestEmptyEnvelope::MergeFrom(const WorkerRequestEmptyEnvelope& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1763,6 +2512,8 @@ bool WorkerRequestEmptyEnvelope::IsInitialized() const {
 
 void WorkerRequestEmptyEnvelope::Swap(WorkerRequestEmptyEnvelope* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -1779,7 +2530,9 @@ void WorkerRequestEmptyEnvelope::Swap(WorkerRequestEmptyEnvelope* other) {
 
 // ===================================================================
 
+const ::std::string WorkerInvalidMessageEnumeration::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerInvalidMessageEnumeration::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration()
@@ -1798,6 +2551,7 @@ WorkerInvalidMessageEnumeration::WorkerInvalidMessageEnumeration(const WorkerInv
 
 void WorkerInvalidMessageEnumeration::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1806,6 +2560,9 @@ WorkerInvalidMessageEnumeration::~WorkerInvalidMessageEnumeration() {
 }
 
 void WorkerInvalidMessageEnumeration::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1831,6 +2588,13 @@ WorkerInvalidMessageEnumeration* WorkerInvalidMessageEnumeration::New() const {
 }
 
 void WorkerInvalidMessageEnumeration::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1840,12 +2604,31 @@ bool WorkerInvalidMessageEnumeration::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -1853,6 +2636,12 @@ bool WorkerInvalidMessageEnumeration::MergePartialFromCodedStream(
 
 void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1861,6 +2650,13 @@ void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerInvalidMessageEnumeration::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1871,6 +2667,15 @@ void WorkerInvalidMessageEnumeration::SerializeWithCachedSizes(
 int WorkerInvalidMessageEnumeration::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -1896,6 +2701,11 @@ void WorkerInvalidMessageEnumeration::MergeFrom(const ::google::protobuf::Messag
 
 void WorkerInvalidMessageEnumeration::MergeFrom(const WorkerInvalidMessageEnumeration& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1918,6 +2728,8 @@ bool WorkerInvalidMessageEnumeration::IsInitialized() const {
 
 void WorkerInvalidMessageEnumeration::Swap(WorkerInvalidMessageEnumeration* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -1934,7 +2746,9 @@ void WorkerInvalidMessageEnumeration::Swap(WorkerInvalidMessageEnumeration* othe
 
 // ===================================================================
 
+const ::std::string WorkerBeginProcessStoreInfo::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerBeginProcessStoreInfo::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo()
@@ -1953,6 +2767,7 @@ WorkerBeginProcessStoreInfo::WorkerBeginProcessStoreInfo(const WorkerBeginProces
 
 void WorkerBeginProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1961,6 +2776,9 @@ WorkerBeginProcessStoreInfo::~WorkerBeginProcessStoreInfo() {
 }
 
 void WorkerBeginProcessStoreInfo::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -1986,6 +2804,13 @@ WorkerBeginProcessStoreInfo* WorkerBeginProcessStoreInfo::New() const {
 }
 
 void WorkerBeginProcessStoreInfo::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -1995,12 +2820,31 @@ bool WorkerBeginProcessStoreInfo::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2008,6 +2852,12 @@ bool WorkerBeginProcessStoreInfo::MergePartialFromCodedStream(
 
 void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2016,6 +2866,13 @@ void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerBeginProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2026,6 +2883,15 @@ void WorkerBeginProcessStoreInfo::SerializeWithCachedSizes(
 int WorkerBeginProcessStoreInfo::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2051,6 +2917,11 @@ void WorkerBeginProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& f
 
 void WorkerBeginProcessStoreInfo::MergeFrom(const WorkerBeginProcessStoreInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2073,6 +2944,8 @@ bool WorkerBeginProcessStoreInfo::IsInitialized() const {
 
 void WorkerBeginProcessStoreInfo::Swap(WorkerBeginProcessStoreInfo* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2089,7 +2962,9 @@ void WorkerBeginProcessStoreInfo::Swap(WorkerBeginProcessStoreInfo* other) {
 
 // ===================================================================
 
+const ::std::string WorkerEndProcessStoreInfo::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerEndProcessStoreInfo::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo()
@@ -2108,6 +2983,7 @@ WorkerEndProcessStoreInfo::WorkerEndProcessStoreInfo(const WorkerEndProcessStore
 
 void WorkerEndProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2116,6 +2992,9 @@ WorkerEndProcessStoreInfo::~WorkerEndProcessStoreInfo() {
 }
 
 void WorkerEndProcessStoreInfo::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2141,6 +3020,13 @@ WorkerEndProcessStoreInfo* WorkerEndProcessStoreInfo::New() const {
 }
 
 void WorkerEndProcessStoreInfo::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2150,12 +3036,31 @@ bool WorkerEndProcessStoreInfo::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2163,6 +3068,12 @@ bool WorkerEndProcessStoreInfo::MergePartialFromCodedStream(
 
 void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2171,6 +3082,13 @@ void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerEndProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2181,6 +3099,15 @@ void WorkerEndProcessStoreInfo::SerializeWithCachedSizes(
 int WorkerEndProcessStoreInfo::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2206,6 +3133,11 @@ void WorkerEndProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& fro
 
 void WorkerEndProcessStoreInfo::MergeFrom(const WorkerEndProcessStoreInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2228,6 +3160,8 @@ bool WorkerEndProcessStoreInfo::IsInitialized() const {
 
 void WorkerEndProcessStoreInfo::Swap(WorkerEndProcessStoreInfo* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2244,7 +3178,9 @@ void WorkerEndProcessStoreInfo::Swap(WorkerEndProcessStoreInfo* other) {
 
 // ===================================================================
 
+const ::std::string WorkerReceiveInvalidGet::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerReceiveInvalidGet::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerReceiveInvalidGet::WorkerReceiveInvalidGet()
@@ -2263,6 +3199,7 @@ WorkerReceiveInvalidGet::WorkerReceiveInvalidGet(const WorkerReceiveInvalidGet& 
 
 void WorkerReceiveInvalidGet::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2271,6 +3208,9 @@ WorkerReceiveInvalidGet::~WorkerReceiveInvalidGet() {
 }
 
 void WorkerReceiveInvalidGet::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2296,6 +3236,13 @@ WorkerReceiveInvalidGet* WorkerReceiveInvalidGet::New() const {
 }
 
 void WorkerReceiveInvalidGet::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2305,12 +3252,31 @@ bool WorkerReceiveInvalidGet::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2318,6 +3284,12 @@ bool WorkerReceiveInvalidGet::MergePartialFromCodedStream(
 
 void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2326,6 +3298,13 @@ void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerReceiveInvalidGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2336,6 +3315,15 @@ void WorkerReceiveInvalidGet::SerializeWithCachedSizes(
 int WorkerReceiveInvalidGet::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2361,6 +3349,11 @@ void WorkerReceiveInvalidGet::MergeFrom(const ::google::protobuf::Message& from)
 
 void WorkerReceiveInvalidGet::MergeFrom(const WorkerReceiveInvalidGet& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2383,6 +3376,8 @@ bool WorkerReceiveInvalidGet::IsInitialized() const {
 
 void WorkerReceiveInvalidGet::Swap(WorkerReceiveInvalidGet* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2399,7 +3394,9 @@ void WorkerReceiveInvalidGet::Swap(WorkerReceiveInvalidGet* other) {
 
 // ===================================================================
 
+const ::std::string WorkerGetInvalidStream::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerGetInvalidStream::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerGetInvalidStream::WorkerGetInvalidStream()
@@ -2418,6 +3415,7 @@ WorkerGetInvalidStream::WorkerGetInvalidStream(const WorkerGetInvalidStream& fro
 
 void WorkerGetInvalidStream::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2426,6 +3424,9 @@ WorkerGetInvalidStream::~WorkerGetInvalidStream() {
 }
 
 void WorkerGetInvalidStream::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2451,6 +3452,13 @@ WorkerGetInvalidStream* WorkerGetInvalidStream::New() const {
 }
 
 void WorkerGetInvalidStream::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2460,12 +3468,31 @@ bool WorkerGetInvalidStream::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2473,6 +3500,12 @@ bool WorkerGetInvalidStream::MergePartialFromCodedStream(
 
 void WorkerGetInvalidStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2481,6 +3514,13 @@ void WorkerGetInvalidStream::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerGetInvalidStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2491,6 +3531,15 @@ void WorkerGetInvalidStream::SerializeWithCachedSizes(
 int WorkerGetInvalidStream::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2516,6 +3565,11 @@ void WorkerGetInvalidStream::MergeFrom(const ::google::protobuf::Message& from) 
 
 void WorkerGetInvalidStream::MergeFrom(const WorkerGetInvalidStream& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2538,6 +3592,8 @@ bool WorkerGetInvalidStream::IsInitialized() const {
 
 void WorkerGetInvalidStream::Swap(WorkerGetInvalidStream* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2554,7 +3610,9 @@ void WorkerGetInvalidStream::Swap(WorkerGetInvalidStream* other) {
 
 // ===================================================================
 
+const ::std::string WorkerGetInvalidOffset::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerGetInvalidOffset::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerGetInvalidOffset::WorkerGetInvalidOffset()
@@ -2573,6 +3631,7 @@ WorkerGetInvalidOffset::WorkerGetInvalidOffset(const WorkerGetInvalidOffset& fro
 
 void WorkerGetInvalidOffset::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2581,6 +3640,9 @@ WorkerGetInvalidOffset::~WorkerGetInvalidOffset() {
 }
 
 void WorkerGetInvalidOffset::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2606,6 +3668,13 @@ WorkerGetInvalidOffset* WorkerGetInvalidOffset::New() const {
 }
 
 void WorkerGetInvalidOffset::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2615,12 +3684,31 @@ bool WorkerGetInvalidOffset::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2628,6 +3716,12 @@ bool WorkerGetInvalidOffset::MergePartialFromCodedStream(
 
 void WorkerGetInvalidOffset::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2636,6 +3730,13 @@ void WorkerGetInvalidOffset::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerGetInvalidOffset::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2646,6 +3747,15 @@ void WorkerGetInvalidOffset::SerializeWithCachedSizes(
 int WorkerGetInvalidOffset::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2671,6 +3781,11 @@ void WorkerGetInvalidOffset::MergeFrom(const ::google::protobuf::Message& from) 
 
 void WorkerGetInvalidOffset::MergeFrom(const WorkerGetInvalidOffset& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2693,6 +3808,8 @@ bool WorkerGetInvalidOffset::IsInitialized() const {
 
 void WorkerGetInvalidOffset::Swap(WorkerGetInvalidOffset* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2709,7 +3826,9 @@ void WorkerGetInvalidOffset::Swap(WorkerGetInvalidOffset* other) {
 
 // ===================================================================
 
+const ::std::string WorkerBeginProcessGet::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerBeginProcessGet::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerBeginProcessGet::WorkerBeginProcessGet()
@@ -2728,6 +3847,7 @@ WorkerBeginProcessGet::WorkerBeginProcessGet(const WorkerBeginProcessGet& from)
 
 void WorkerBeginProcessGet::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2736,6 +3856,9 @@ WorkerBeginProcessGet::~WorkerBeginProcessGet() {
 }
 
 void WorkerBeginProcessGet::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2761,6 +3884,13 @@ WorkerBeginProcessGet* WorkerBeginProcessGet::New() const {
 }
 
 void WorkerBeginProcessGet::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2770,12 +3900,31 @@ bool WorkerBeginProcessGet::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2783,6 +3932,12 @@ bool WorkerBeginProcessGet::MergePartialFromCodedStream(
 
 void WorkerBeginProcessGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2791,6 +3946,13 @@ void WorkerBeginProcessGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerBeginProcessGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2801,6 +3963,15 @@ void WorkerBeginProcessGet::SerializeWithCachedSizes(
 int WorkerBeginProcessGet::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2826,6 +3997,11 @@ void WorkerBeginProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
 
 void WorkerBeginProcessGet::MergeFrom(const WorkerBeginProcessGet& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -2848,6 +4024,8 @@ bool WorkerBeginProcessGet::IsInitialized() const {
 
 void WorkerBeginProcessGet::Swap(WorkerBeginProcessGet* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -2864,7 +4042,9 @@ void WorkerBeginProcessGet::Swap(WorkerBeginProcessGet* other) {
 
 // ===================================================================
 
+const ::std::string WorkerEndProcessGet::_default_worker_;
 #ifndef _MSC_VER
+const int WorkerEndProcessGet::kWorkerFieldNumber;
 #endif  // !_MSC_VER
 
 WorkerEndProcessGet::WorkerEndProcessGet()
@@ -2883,6 +4063,7 @@ WorkerEndProcessGet::WorkerEndProcessGet(const WorkerEndProcessGet& from)
 
 void WorkerEndProcessGet::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2891,6 +4072,9 @@ WorkerEndProcessGet::~WorkerEndProcessGet() {
 }
 
 void WorkerEndProcessGet::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2916,6 +4100,13 @@ WorkerEndProcessGet* WorkerEndProcessGet::New() const {
 }
 
 void WorkerEndProcessGet::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+  }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2925,12 +4116,31 @@ bool WorkerEndProcessGet::MergePartialFromCodedStream(
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-      return true;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes worker = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
     }
-    DO_(::google::protobuf::internal::WireFormat::SkipField(
-          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
@@ -2938,6 +4148,12 @@ bool WorkerEndProcessGet::MergePartialFromCodedStream(
 
 void WorkerEndProcessGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2946,6 +4162,13 @@ void WorkerEndProcessGet::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerEndProcessGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
+  // optional bytes worker = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2956,6 +4179,15 @@ void WorkerEndProcessGet::SerializeWithCachedSizes(
 int WorkerEndProcessGet::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -2981,6 +4213,11 @@ void WorkerEndProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
 
 void WorkerEndProcessGet::MergeFrom(const WorkerEndProcessGet& from) {
   GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -3003,6 +4240,8 @@ bool WorkerEndProcessGet::IsInitialized() const {
 
 void WorkerEndProcessGet::Swap(WorkerEndProcessGet* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
@@ -3019,8 +4258,10 @@ void WorkerEndProcessGet::Swap(WorkerEndProcessGet* other) {
 
 // ===================================================================
 
+const ::std::string WorkerSendErrorResponse::_default_worker_;
 const ::std::string WorkerSendErrorResponse::_default_message_;
 #ifndef _MSC_VER
+const int WorkerSendErrorResponse::kWorkerFieldNumber;
 const int WorkerSendErrorResponse::kMessageFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3040,6 +4281,7 @@ WorkerSendErrorResponse::WorkerSendErrorResponse(const WorkerSendErrorResponse& 
 
 void WorkerSendErrorResponse::SharedCtor() {
   _cached_size_ = 0;
+  worker_ = const_cast< ::std::string*>(&_default_worker_);
   message_ = const_cast< ::std::string*>(&_default_message_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3049,6 +4291,9 @@ WorkerSendErrorResponse::~WorkerSendErrorResponse() {
 }
 
 void WorkerSendErrorResponse::SharedDtor() {
+  if (worker_ != &_default_worker_) {
+    delete worker_;
+  }
   if (message_ != &_default_message_) {
     delete message_;
   }
@@ -3079,6 +4324,11 @@ WorkerSendErrorResponse* WorkerSendErrorResponse::New() const {
 void WorkerSendErrorResponse::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (worker_ != &_default_worker_) {
+        worker_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (message_ != &_default_message_) {
         message_->clear();
       }
@@ -3094,10 +4344,24 @@ bool WorkerSendErrorResponse::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string message = 1;
+      // optional bytes worker = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_worker()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_message;
+        break;
+      }
+      
+      // optional string message = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_message:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_message()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -3128,13 +4392,19 @@ bool WorkerSendErrorResponse::MergePartialFromCodedStream(
 
 void WorkerSendErrorResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string message = 1;
+  // optional bytes worker = 1;
   if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->worker(), output);
+  }
+  
+  // optional string message = 2;
+  if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->message().data(), this->message().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->message(), output);
+      2, this->message(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3145,14 +4415,21 @@ void WorkerSendErrorResponse::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WorkerSendErrorResponse::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string message = 1;
+  // optional bytes worker = 1;
   if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->worker(), target);
+  }
+  
+  // optional string message = 2;
+  if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->message().data(), this->message().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->message(), target);
+        2, this->message(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3166,7 +4443,14 @@ int WorkerSendErrorResponse::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string message = 1;
+    // optional bytes worker = 1;
+    if (has_worker()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->worker());
+    }
+    
+    // optional string message = 2;
     if (has_message()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3201,6 +4485,9 @@ void WorkerSendErrorResponse::MergeFrom(const WorkerSendErrorResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_worker(from.worker());
+    }
+    if (from._has_bit(1)) {
       set_message(from.message());
     }
   }
@@ -3226,6 +4513,7 @@ bool WorkerSendErrorResponse::IsInitialized() const {
 
 void WorkerSendErrorResponse::Swap(WorkerSendErrorResponse* other) {
   if (other != this) {
+    std::swap(worker_, other->worker_);
     std::swap(message_, other->message_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3244,8 +4532,10 @@ void WorkerSendErrorResponse::Swap(WorkerSendErrorResponse* other) {
 
 // ===================================================================
 
+const ::std::string StreamerSubscriptionExpired::_default_streamer_;
 const ::std::string StreamerSubscriptionExpired::_default_id_;
 #ifndef _MSC_VER
+const int StreamerSubscriptionExpired::kStreamerFieldNumber;
 const int StreamerSubscriptionExpired::kIdFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3265,6 +4555,7 @@ StreamerSubscriptionExpired::StreamerSubscriptionExpired(const StreamerSubscript
 
 void StreamerSubscriptionExpired::SharedCtor() {
   _cached_size_ = 0;
+  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3274,6 +4565,9 @@ StreamerSubscriptionExpired::~StreamerSubscriptionExpired() {
 }
 
 void StreamerSubscriptionExpired::SharedDtor() {
+  if (streamer_ != &_default_streamer_) {
+    delete streamer_;
+  }
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -3304,6 +4598,11 @@ StreamerSubscriptionExpired* StreamerSubscriptionExpired::New() const {
 void StreamerSubscriptionExpired::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (streamer_ != &_default_streamer_) {
+        streamer_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (id_ != &_default_id_) {
         id_->clear();
       }
@@ -3319,10 +4618,24 @@ bool StreamerSubscriptionExpired::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // optional bytes streamer = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_streamer()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_id;
+        break;
+      }
+      
+      // optional bytes id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3350,10 +4663,16 @@ bool StreamerSubscriptionExpired::MergePartialFromCodedStream(
 
 void StreamerSubscriptionExpired::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->streamer(), output);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3364,11 +4683,18 @@ void StreamerSubscriptionExpired::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerSubscriptionExpired::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+        1, this->streamer(), target);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3382,7 +4708,14 @@ int StreamerSubscriptionExpired::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // optional bytes streamer = 1;
+    if (has_streamer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->streamer());
+    }
+    
+    // optional bytes id = 2;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3417,6 +4750,9 @@ void StreamerSubscriptionExpired::MergeFrom(const StreamerSubscriptionExpired& f
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_streamer(from.streamer());
+    }
+    if (from._has_bit(1)) {
       set_id(from.id());
     }
   }
@@ -3442,6 +4778,7 @@ bool StreamerSubscriptionExpired::IsInitialized() const {
 
 void StreamerSubscriptionExpired::Swap(StreamerSubscriptionExpired* other) {
   if (other != this) {
+    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3460,8 +4797,10 @@ void StreamerSubscriptionExpired::Swap(StreamerSubscriptionExpired* other) {
 
 // ===================================================================
 
+const ::std::string StreamerReceiveKeepalive::_default_streamer_;
 const ::std::string StreamerReceiveKeepalive::_default_id_;
 #ifndef _MSC_VER
+const int StreamerReceiveKeepalive::kStreamerFieldNumber;
 const int StreamerReceiveKeepalive::kIdFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3481,6 +4820,7 @@ StreamerReceiveKeepalive::StreamerReceiveKeepalive(const StreamerReceiveKeepaliv
 
 void StreamerReceiveKeepalive::SharedCtor() {
   _cached_size_ = 0;
+  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3490,6 +4830,9 @@ StreamerReceiveKeepalive::~StreamerReceiveKeepalive() {
 }
 
 void StreamerReceiveKeepalive::SharedDtor() {
+  if (streamer_ != &_default_streamer_) {
+    delete streamer_;
+  }
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -3520,6 +4863,11 @@ StreamerReceiveKeepalive* StreamerReceiveKeepalive::New() const {
 void StreamerReceiveKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (streamer_ != &_default_streamer_) {
+        streamer_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (id_ != &_default_id_) {
         id_->clear();
       }
@@ -3535,10 +4883,24 @@ bool StreamerReceiveKeepalive::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // optional bytes streamer = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_streamer()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_id;
+        break;
+      }
+      
+      // optional bytes id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3566,10 +4928,16 @@ bool StreamerReceiveKeepalive::MergePartialFromCodedStream(
 
 void StreamerReceiveKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->streamer(), output);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3580,11 +4948,18 @@ void StreamerReceiveKeepalive::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerReceiveKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+        1, this->streamer(), target);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3598,7 +4973,14 @@ int StreamerReceiveKeepalive::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // optional bytes streamer = 1;
+    if (has_streamer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->streamer());
+    }
+    
+    // optional bytes id = 2;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3633,6 +5015,9 @@ void StreamerReceiveKeepalive::MergeFrom(const StreamerReceiveKeepalive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_streamer(from.streamer());
+    }
+    if (from._has_bit(1)) {
       set_id(from.id());
     }
   }
@@ -3658,6 +5043,7 @@ bool StreamerReceiveKeepalive::IsInitialized() const {
 
 void StreamerReceiveKeepalive::Swap(StreamerReceiveKeepalive* other) {
   if (other != this) {
+    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3676,8 +5062,10 @@ void StreamerReceiveKeepalive::Swap(StreamerReceiveKeepalive* other) {
 
 // ===================================================================
 
+const ::std::string StreamerSubscriptionRenewedFromKeepalive::_default_streamer_;
 const ::std::string StreamerSubscriptionRenewedFromKeepalive::_default_id_;
 #ifndef _MSC_VER
+const int StreamerSubscriptionRenewedFromKeepalive::kStreamerFieldNumber;
 const int StreamerSubscriptionRenewedFromKeepalive::kIdFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3697,6 +5085,7 @@ StreamerSubscriptionRenewedFromKeepalive::StreamerSubscriptionRenewedFromKeepali
 
 void StreamerSubscriptionRenewedFromKeepalive::SharedCtor() {
   _cached_size_ = 0;
+  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3706,6 +5095,9 @@ StreamerSubscriptionRenewedFromKeepalive::~StreamerSubscriptionRenewedFromKeepal
 }
 
 void StreamerSubscriptionRenewedFromKeepalive::SharedDtor() {
+  if (streamer_ != &_default_streamer_) {
+    delete streamer_;
+  }
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -3736,6 +5128,11 @@ StreamerSubscriptionRenewedFromKeepalive* StreamerSubscriptionRenewedFromKeepali
 void StreamerSubscriptionRenewedFromKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (streamer_ != &_default_streamer_) {
+        streamer_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (id_ != &_default_id_) {
         id_->clear();
       }
@@ -3751,10 +5148,24 @@ bool StreamerSubscriptionRenewedFromKeepalive::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // optional bytes streamer = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_streamer()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_id;
+        break;
+      }
+      
+      // optional bytes id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3782,10 +5193,16 @@ bool StreamerSubscriptionRenewedFromKeepalive::MergePartialFromCodedStream(
 
 void StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->streamer(), output);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3796,11 +5213,18 @@ void StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerSubscriptionRenewedFromKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+        1, this->streamer(), target);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3814,7 +5238,14 @@ int StreamerSubscriptionRenewedFromKeepalive::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // optional bytes streamer = 1;
+    if (has_streamer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->streamer());
+    }
+    
+    // optional bytes id = 2;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3849,6 +5280,9 @@ void StreamerSubscriptionRenewedFromKeepalive::MergeFrom(const StreamerSubscript
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_streamer(from.streamer());
+    }
+    if (from._has_bit(1)) {
       set_id(from.id());
     }
   }
@@ -3874,6 +5308,7 @@ bool StreamerSubscriptionRenewedFromKeepalive::IsInitialized() const {
 
 void StreamerSubscriptionRenewedFromKeepalive::Swap(StreamerSubscriptionRenewedFromKeepalive* other) {
   if (other != this) {
+    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3892,8 +5327,10 @@ void StreamerSubscriptionRenewedFromKeepalive::Swap(StreamerSubscriptionRenewedF
 
 // ===================================================================
 
+const ::std::string StreamerRejectKeepaliveUnknownSubscription::_default_streamer_;
 const ::std::string StreamerRejectKeepaliveUnknownSubscription::_default_id_;
 #ifndef _MSC_VER
+const int StreamerRejectKeepaliveUnknownSubscription::kStreamerFieldNumber;
 const int StreamerRejectKeepaliveUnknownSubscription::kIdFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3913,6 +5350,7 @@ StreamerRejectKeepaliveUnknownSubscription::StreamerRejectKeepaliveUnknownSubscr
 
 void StreamerRejectKeepaliveUnknownSubscription::SharedCtor() {
   _cached_size_ = 0;
+  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3922,6 +5360,9 @@ StreamerRejectKeepaliveUnknownSubscription::~StreamerRejectKeepaliveUnknownSubsc
 }
 
 void StreamerRejectKeepaliveUnknownSubscription::SharedDtor() {
+  if (streamer_ != &_default_streamer_) {
+    delete streamer_;
+  }
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -3952,6 +5393,11 @@ StreamerRejectKeepaliveUnknownSubscription* StreamerRejectKeepaliveUnknownSubscr
 void StreamerRejectKeepaliveUnknownSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (streamer_ != &_default_streamer_) {
+        streamer_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (id_ != &_default_id_) {
         id_->clear();
       }
@@ -3967,10 +5413,24 @@ bool StreamerRejectKeepaliveUnknownSubscription::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // optional bytes streamer = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_streamer()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_id;
+        break;
+      }
+      
+      // optional bytes id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3998,10 +5458,16 @@ bool StreamerRejectKeepaliveUnknownSubscription::MergePartialFromCodedStream(
 
 void StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->streamer(), output);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4012,11 +5478,18 @@ void StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerRejectKeepaliveUnknownSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+        1, this->streamer(), target);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4030,7 +5503,14 @@ int StreamerRejectKeepaliveUnknownSubscription::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // optional bytes streamer = 1;
+    if (has_streamer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->streamer());
+    }
+    
+    // optional bytes id = 2;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -4065,6 +5545,9 @@ void StreamerRejectKeepaliveUnknownSubscription::MergeFrom(const StreamerRejectK
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_streamer(from.streamer());
+    }
+    if (from._has_bit(1)) {
       set_id(from.id());
     }
   }
@@ -4090,6 +5573,7 @@ bool StreamerRejectKeepaliveUnknownSubscription::IsInitialized() const {
 
 void StreamerRejectKeepaliveUnknownSubscription::Swap(StreamerRejectKeepaliveUnknownSubscription* other) {
   if (other != this) {
+    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -4108,8 +5592,10 @@ void StreamerRejectKeepaliveUnknownSubscription::Swap(StreamerRejectKeepaliveUnk
 
 // ===================================================================
 
+const ::std::string StreamerErrorRenewingSubscription::_default_streamer_;
 const ::std::string StreamerErrorRenewingSubscription::_default_id_;
 #ifndef _MSC_VER
+const int StreamerErrorRenewingSubscription::kStreamerFieldNumber;
 const int StreamerErrorRenewingSubscription::kIdFieldNumber;
 #endif  // !_MSC_VER
 
@@ -4129,6 +5615,7 @@ StreamerErrorRenewingSubscription::StreamerErrorRenewingSubscription(const Strea
 
 void StreamerErrorRenewingSubscription::SharedCtor() {
   _cached_size_ = 0;
+  streamer_ = const_cast< ::std::string*>(&_default_streamer_);
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -4138,6 +5625,9 @@ StreamerErrorRenewingSubscription::~StreamerErrorRenewingSubscription() {
 }
 
 void StreamerErrorRenewingSubscription::SharedDtor() {
+  if (streamer_ != &_default_streamer_) {
+    delete streamer_;
+  }
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -4168,6 +5658,11 @@ StreamerErrorRenewingSubscription* StreamerErrorRenewingSubscription::New() cons
 void StreamerErrorRenewingSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
+      if (streamer_ != &_default_streamer_) {
+        streamer_->clear();
+      }
+    }
+    if (_has_bit(1)) {
       if (id_ != &_default_id_) {
         id_->clear();
       }
@@ -4183,10 +5678,24 @@ bool StreamerErrorRenewingSubscription::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // optional bytes streamer = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_streamer()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_id;
+        break;
+      }
+      
+      // optional bytes id = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -4214,10 +5723,16 @@ bool StreamerErrorRenewingSubscription::MergePartialFromCodedStream(
 
 void StreamerErrorRenewingSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->streamer(), output);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4228,11 +5743,18 @@ void StreamerErrorRenewingSubscription::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* StreamerErrorRenewingSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
   if (_has_bit(0)) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+        1, this->streamer(), target);
+  }
+  
+  // optional bytes id = 2;
+  if (_has_bit(1)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        2, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4246,7 +5768,14 @@ int StreamerErrorRenewingSubscription::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // optional bytes streamer = 1;
+    if (has_streamer()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->streamer());
+    }
+    
+    // optional bytes id = 2;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -4281,6 +5810,9 @@ void StreamerErrorRenewingSubscription::MergeFrom(const StreamerErrorRenewingSub
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
+      set_streamer(from.streamer());
+    }
+    if (from._has_bit(1)) {
       set_id(from.id());
     }
   }
@@ -4306,6 +5838,7 @@ bool StreamerErrorRenewingSubscription::IsInitialized() const {
 
 void StreamerErrorRenewingSubscription::Swap(StreamerErrorRenewingSubscription* other) {
   if (other != this) {
+    std::swap(streamer_, other->streamer_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -4332,6 +5865,14 @@ bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WorkerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 

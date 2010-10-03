@@ -22,87 +22,125 @@ message BrokerReceiveClientMessage {
 
 }
 
+message WorkerStartup {
+    optional bytes worker = 1;
+}
+
+message WorkerShutdown {
+    optional bytes worker = 1;
+}
+
 // log event for when a worker failed to receive a message from the
 // zmq socket
 message WorkerFailReceiveMessage {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 // when a worker receives an empty request zmq message
 message WorkerReceiveEmptyMessage {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 // when the envelope in a request could not be parsed
 message WorkerRequestParseFailure {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 // when the request envelope contains no embedded message
 message WorkerRequestEmptyEnvelope {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 // when the message inside the envelope is not proper enumeration
 message WorkerInvalidMessageEnumeration {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 // when a worker processes a storeinfo request
 message WorkerBeginProcessStoreInfo {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerEndProcessStoreInfo {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerReceiveInvalidGet {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerGetInvalidStream {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerGetInvalidOffset {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerBeginProcessGet {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerEndProcessGet {
-
+    // unique identifier of worker
+    optional bytes worker = 1;
 }
 
 message WorkerSendErrorResponse {
-    optional string message = 1;
+    // unique identifier of worker
+    optional bytes worker = 1;
+
+    optional string message = 2;
 }
 
 // when a subscription expires
 message StreamerSubscriptionExpired {
+    // unique identifier of streamer
+    optional bytes streamer = 1;
+
     // id of subscription that expired
-    optional bytes id = 1;
+    optional bytes id = 2;
 }
 
 // when a streamer receives a keepalive message
 // keepalives are sent to all streamers, so all should drop this event
 message StreamerReceiveKeepalive {
-    optional bytes id = 1;
+    // unique identifier of streamer
+    optional bytes streamer = 1;
+
+    optional bytes id = 2;
 }
 
 // when a streamer successfully renews a subscription from a keepalive
 message StreamerSubscriptionRenewedFromKeepalive {
-    optional bytes id = 1;
+    // unique identifier of streamer
+    optional bytes streamer = 1;
+
+    optional bytes id = 2;
 }
 
 // when a stream rejects a keepalive due to unknown subscription id
 message StreamerRejectKeepaliveUnknownSubscription {
-    optional bytes id = 1;
+    // unique identifier of streamer
+    optional bytes streamer = 1;
+
+    optional bytes id = 2;
 }
 
 message StreamerErrorRenewingSubscription {
-    optional bytes id = 1;
+    // unique identifier of streamer
+    optional bytes streamer = 1;
+
+    optional bytes id = 2;
 }

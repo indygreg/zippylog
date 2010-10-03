@@ -37,6 +37,8 @@ void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
 class BrokerStartup;
 class BrokerShutdown;
 class BrokerReceiveClientMessage;
+class WorkerStartup;
+class WorkerShutdown;
 class WorkerFailReceiveMessage;
 class WorkerReceiveEmptyMessage;
 class WorkerRequestParseFailure;
@@ -339,6 +341,198 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class WorkerStartup : public ::google::protobuf::Message {
+ public:
+  WorkerStartup();
+  virtual ~WorkerStartup();
+  
+  WorkerStartup(const WorkerStartup& from);
+  
+  inline WorkerStartup& operator=(const WorkerStartup& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerStartup& default_instance();
+  
+  void Swap(WorkerStartup* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerStartup* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerStartup& from);
+  void MergeFrom(const WorkerStartup& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 45;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerStartup)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerStartup* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WorkerShutdown : public ::google::protobuf::Message {
+ public:
+  WorkerShutdown();
+  virtual ~WorkerShutdown();
+  
+  WorkerShutdown(const WorkerShutdown& from);
+  
+  inline WorkerShutdown& operator=(const WorkerShutdown& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WorkerShutdown& default_instance();
+  
+  void Swap(WorkerShutdown* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WorkerShutdown* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WorkerShutdown& from);
+  void MergeFrom(const WorkerShutdown& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 46;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.zippylogd.WorkerShutdown)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
+  friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WorkerShutdown* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class WorkerFailReceiveMessage : public ::google::protobuf::Message {
  public:
   WorkerFailReceiveMessage();
@@ -393,6 +587,16 @@ class WorkerFailReceiveMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 27;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -401,11 +605,13 @@ class WorkerFailReceiveMessage : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -477,6 +683,16 @@ class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 28;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -485,11 +701,13 @@ class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -561,6 +779,16 @@ class WorkerRequestParseFailure : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 29;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -569,11 +797,13 @@ class WorkerRequestParseFailure : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -645,6 +875,16 @@ class WorkerRequestEmptyEnvelope : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 30;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -653,11 +893,13 @@ class WorkerRequestEmptyEnvelope : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -729,6 +971,16 @@ class WorkerInvalidMessageEnumeration : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 31;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -737,11 +989,13 @@ class WorkerInvalidMessageEnumeration : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -813,6 +1067,16 @@ class WorkerBeginProcessStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 32;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -821,11 +1085,13 @@ class WorkerBeginProcessStoreInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -897,6 +1163,16 @@ class WorkerEndProcessStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 33;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -905,11 +1181,13 @@ class WorkerEndProcessStoreInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -981,6 +1259,16 @@ class WorkerReceiveInvalidGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 34;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -989,11 +1277,13 @@ class WorkerReceiveInvalidGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1065,6 +1355,16 @@ class WorkerGetInvalidStream : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 35;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -1073,11 +1373,13 @@ class WorkerGetInvalidStream : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1149,6 +1451,16 @@ class WorkerGetInvalidOffset : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 36;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -1157,11 +1469,13 @@ class WorkerGetInvalidOffset : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1233,6 +1547,16 @@ class WorkerBeginProcessGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 37;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -1241,11 +1565,13 @@ class WorkerBeginProcessGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1317,6 +1643,16 @@ class WorkerEndProcessGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 38;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -1325,11 +1661,13 @@ class WorkerEndProcessGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[1];
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1401,10 +1739,20 @@ class WorkerSendErrorResponse : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string message = 1;
+  // optional bytes worker = 1;
+  inline bool has_worker() const;
+  inline void clear_worker();
+  static const int kWorkerFieldNumber = 1;
+  inline const ::std::string& worker() const;
+  inline void set_worker(const ::std::string& value);
+  inline void set_worker(const char* value);
+  inline void set_worker(const void* value, size_t size);
+  inline ::std::string* mutable_worker();
+  
+  // optional string message = 2;
   inline bool has_message() const;
   inline void clear_message();
-  static const int kMessageFieldNumber = 1;
+  static const int kMessageFieldNumber = 2;
   inline const ::std::string& message() const;
   inline void set_message(const ::std::string& value);
   inline void set_message(const char* value);
@@ -1419,13 +1767,15 @@ class WorkerSendErrorResponse : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* worker_;
+  static const ::std::string _default_worker_;
   ::std::string* message_;
   static const ::std::string _default_message_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1497,10 +1847,20 @@ class StreamerSubscriptionExpired : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1515,13 +1875,15 @@ class StreamerSubscriptionExpired : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1593,10 +1955,20 @@ class StreamerReceiveKeepalive : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1611,13 +1983,15 @@ class StreamerReceiveKeepalive : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1689,10 +2063,20 @@ class StreamerSubscriptionRenewedFromKeepalive : public ::google::protobuf::Mess
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1707,13 +2091,15 @@ class StreamerSubscriptionRenewedFromKeepalive : public ::google::protobuf::Mess
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1785,10 +2171,20 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1803,13 +2199,15 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1881,10 +2279,20 @@ class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // optional bytes streamer = 1;
+  inline bool has_streamer() const;
+  inline void clear_streamer();
+  static const int kStreamerFieldNumber = 1;
+  inline const ::std::string& streamer() const;
+  inline void set_streamer(const ::std::string& value);
+  inline void set_streamer(const char* value);
+  inline void set_streamer(const void* value, size_t size);
+  inline ::std::string* mutable_streamer();
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1899,13 +2307,15 @@ class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::std::string* streamer_;
+  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -2024,92 +2434,730 @@ BrokerStartup::mutable_listen_endpoints() {
 
 // -------------------------------------------------------------------
 
+// WorkerStartup
+
+// optional bytes worker = 1;
+inline bool WorkerStartup::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerStartup::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerStartup::worker() const {
+  return *worker_;
+}
+inline void WorkerStartup::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerStartup::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerStartup::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerStartup::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// -------------------------------------------------------------------
+
+// WorkerShutdown
+
+// optional bytes worker = 1;
+inline bool WorkerShutdown::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerShutdown::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerShutdown::worker() const {
+  return *worker_;
+}
+inline void WorkerShutdown::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerShutdown::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerShutdown::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerShutdown::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// -------------------------------------------------------------------
+
 // WorkerFailReceiveMessage
+
+// optional bytes worker = 1;
+inline bool WorkerFailReceiveMessage::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerFailReceiveMessage::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerFailReceiveMessage::worker() const {
+  return *worker_;
+}
+inline void WorkerFailReceiveMessage::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerFailReceiveMessage::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerFailReceiveMessage::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerFailReceiveMessage::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerReceiveEmptyMessage
 
+// optional bytes worker = 1;
+inline bool WorkerReceiveEmptyMessage::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerReceiveEmptyMessage::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerReceiveEmptyMessage::worker() const {
+  return *worker_;
+}
+inline void WorkerReceiveEmptyMessage::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveEmptyMessage::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveEmptyMessage::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerReceiveEmptyMessage::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerRequestParseFailure
+
+// optional bytes worker = 1;
+inline bool WorkerRequestParseFailure::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerRequestParseFailure::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerRequestParseFailure::worker() const {
+  return *worker_;
+}
+inline void WorkerRequestParseFailure::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerRequestParseFailure::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerRequestParseFailure::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerRequestParseFailure::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerRequestEmptyEnvelope
 
+// optional bytes worker = 1;
+inline bool WorkerRequestEmptyEnvelope::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerRequestEmptyEnvelope::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerRequestEmptyEnvelope::worker() const {
+  return *worker_;
+}
+inline void WorkerRequestEmptyEnvelope::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerRequestEmptyEnvelope::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerRequestEmptyEnvelope::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerRequestEmptyEnvelope::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerInvalidMessageEnumeration
+
+// optional bytes worker = 1;
+inline bool WorkerInvalidMessageEnumeration::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerInvalidMessageEnumeration::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerInvalidMessageEnumeration::worker() const {
+  return *worker_;
+}
+inline void WorkerInvalidMessageEnumeration::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerInvalidMessageEnumeration::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerInvalidMessageEnumeration::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerInvalidMessageEnumeration::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerBeginProcessStoreInfo
 
+// optional bytes worker = 1;
+inline bool WorkerBeginProcessStoreInfo::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerBeginProcessStoreInfo::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerBeginProcessStoreInfo::worker() const {
+  return *worker_;
+}
+inline void WorkerBeginProcessStoreInfo::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerBeginProcessStoreInfo::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerBeginProcessStoreInfo::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerBeginProcessStoreInfo::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerEndProcessStoreInfo
+
+// optional bytes worker = 1;
+inline bool WorkerEndProcessStoreInfo::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerEndProcessStoreInfo::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerEndProcessStoreInfo::worker() const {
+  return *worker_;
+}
+inline void WorkerEndProcessStoreInfo::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerEndProcessStoreInfo::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerEndProcessStoreInfo::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerEndProcessStoreInfo::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerReceiveInvalidGet
 
+// optional bytes worker = 1;
+inline bool WorkerReceiveInvalidGet::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerReceiveInvalidGet::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerReceiveInvalidGet::worker() const {
+  return *worker_;
+}
+inline void WorkerReceiveInvalidGet::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveInvalidGet::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerReceiveInvalidGet::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerReceiveInvalidGet::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerGetInvalidStream
+
+// optional bytes worker = 1;
+inline bool WorkerGetInvalidStream::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerGetInvalidStream::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerGetInvalidStream::worker() const {
+  return *worker_;
+}
+inline void WorkerGetInvalidStream::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerGetInvalidStream::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerGetInvalidStream::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerGetInvalidStream::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerGetInvalidOffset
 
+// optional bytes worker = 1;
+inline bool WorkerGetInvalidOffset::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerGetInvalidOffset::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerGetInvalidOffset::worker() const {
+  return *worker_;
+}
+inline void WorkerGetInvalidOffset::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerGetInvalidOffset::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerGetInvalidOffset::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerGetInvalidOffset::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerBeginProcessGet
+
+// optional bytes worker = 1;
+inline bool WorkerBeginProcessGet::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerBeginProcessGet::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerBeginProcessGet::worker() const {
+  return *worker_;
+}
+inline void WorkerBeginProcessGet::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerBeginProcessGet::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerBeginProcessGet::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerBeginProcessGet::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
 
 // -------------------------------------------------------------------
 
 // WorkerEndProcessGet
 
+// optional bytes worker = 1;
+inline bool WorkerEndProcessGet::has_worker() const {
+  return _has_bit(0);
+}
+inline void WorkerEndProcessGet::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerEndProcessGet::worker() const {
+  return *worker_;
+}
+inline void WorkerEndProcessGet::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerEndProcessGet::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerEndProcessGet::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerEndProcessGet::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
 // -------------------------------------------------------------------
 
 // WorkerSendErrorResponse
 
-// optional string message = 1;
-inline bool WorkerSendErrorResponse::has_message() const {
+// optional bytes worker = 1;
+inline bool WorkerSendErrorResponse::has_worker() const {
   return _has_bit(0);
+}
+inline void WorkerSendErrorResponse::clear_worker() {
+  if (worker_ != &_default_worker_) {
+    worker_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& WorkerSendErrorResponse::worker() const {
+  return *worker_;
+}
+inline void WorkerSendErrorResponse::set_worker(const ::std::string& value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerSendErrorResponse::set_worker(const char* value) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(value);
+}
+inline void WorkerSendErrorResponse::set_worker(const void* value, size_t size) {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  worker_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WorkerSendErrorResponse::mutable_worker() {
+  _set_bit(0);
+  if (worker_ == &_default_worker_) {
+    worker_ = new ::std::string;
+  }
+  return worker_;
+}
+
+// optional string message = 2;
+inline bool WorkerSendErrorResponse::has_message() const {
+  return _has_bit(1);
 }
 inline void WorkerSendErrorResponse::clear_message() {
   if (message_ != &_default_message_) {
     message_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& WorkerSendErrorResponse::message() const {
   return *message_;
 }
 inline void WorkerSendErrorResponse::set_message(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (message_ == &_default_message_) {
     message_ = new ::std::string;
   }
   message_->assign(value);
 }
 inline void WorkerSendErrorResponse::set_message(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (message_ == &_default_message_) {
     message_ = new ::std::string;
   }
   message_->assign(value);
 }
 inline void WorkerSendErrorResponse::set_message(const char* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (message_ == &_default_message_) {
     message_ = new ::std::string;
   }
   message_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* WorkerSendErrorResponse::mutable_message() {
-  _set_bit(0);
+  _set_bit(1);
   if (message_ == &_default_message_) {
     message_ = new ::std::string;
   }
@@ -2120,42 +3168,84 @@ inline ::std::string* WorkerSendErrorResponse::mutable_message() {
 
 // StreamerSubscriptionExpired
 
-// optional bytes id = 1;
-inline bool StreamerSubscriptionExpired::has_id() const {
+// optional bytes streamer = 1;
+inline bool StreamerSubscriptionExpired::has_streamer() const {
   return _has_bit(0);
+}
+inline void StreamerSubscriptionExpired::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerSubscriptionExpired::streamer() const {
+  return *streamer_;
+}
+inline void StreamerSubscriptionExpired::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerSubscriptionExpired::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerSubscriptionExpired::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerSubscriptionExpired::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// optional bytes id = 2;
+inline bool StreamerSubscriptionExpired::has_id() const {
+  return _has_bit(1);
 }
 inline void StreamerSubscriptionExpired::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& StreamerSubscriptionExpired::id() const {
   return *id_;
 }
 inline void StreamerSubscriptionExpired::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionExpired::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionExpired::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerSubscriptionExpired::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
@@ -2166,42 +3256,84 @@ inline ::std::string* StreamerSubscriptionExpired::mutable_id() {
 
 // StreamerReceiveKeepalive
 
-// optional bytes id = 1;
-inline bool StreamerReceiveKeepalive::has_id() const {
+// optional bytes streamer = 1;
+inline bool StreamerReceiveKeepalive::has_streamer() const {
   return _has_bit(0);
+}
+inline void StreamerReceiveKeepalive::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerReceiveKeepalive::streamer() const {
+  return *streamer_;
+}
+inline void StreamerReceiveKeepalive::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerReceiveKeepalive::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerReceiveKeepalive::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerReceiveKeepalive::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// optional bytes id = 2;
+inline bool StreamerReceiveKeepalive::has_id() const {
+  return _has_bit(1);
 }
 inline void StreamerReceiveKeepalive::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& StreamerReceiveKeepalive::id() const {
   return *id_;
 }
 inline void StreamerReceiveKeepalive::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerReceiveKeepalive::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerReceiveKeepalive::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerReceiveKeepalive::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
@@ -2212,42 +3344,84 @@ inline ::std::string* StreamerReceiveKeepalive::mutable_id() {
 
 // StreamerSubscriptionRenewedFromKeepalive
 
-// optional bytes id = 1;
-inline bool StreamerSubscriptionRenewedFromKeepalive::has_id() const {
+// optional bytes streamer = 1;
+inline bool StreamerSubscriptionRenewedFromKeepalive::has_streamer() const {
   return _has_bit(0);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerSubscriptionRenewedFromKeepalive::streamer() const {
+  return *streamer_;
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// optional bytes id = 2;
+inline bool StreamerSubscriptionRenewedFromKeepalive::has_id() const {
+  return _has_bit(1);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& StreamerSubscriptionRenewedFromKeepalive::id() const {
   return *id_;
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
@@ -2258,42 +3432,84 @@ inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_id() {
 
 // StreamerRejectKeepaliveUnknownSubscription
 
-// optional bytes id = 1;
-inline bool StreamerRejectKeepaliveUnknownSubscription::has_id() const {
+// optional bytes streamer = 1;
+inline bool StreamerRejectKeepaliveUnknownSubscription::has_streamer() const {
   return _has_bit(0);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerRejectKeepaliveUnknownSubscription::streamer() const {
+  return *streamer_;
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// optional bytes id = 2;
+inline bool StreamerRejectKeepaliveUnknownSubscription::has_id() const {
+  return _has_bit(1);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& StreamerRejectKeepaliveUnknownSubscription::id() const {
   return *id_;
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
@@ -2304,42 +3520,84 @@ inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_id() {
 
 // StreamerErrorRenewingSubscription
 
-// optional bytes id = 1;
-inline bool StreamerErrorRenewingSubscription::has_id() const {
+// optional bytes streamer = 1;
+inline bool StreamerErrorRenewingSubscription::has_streamer() const {
   return _has_bit(0);
+}
+inline void StreamerErrorRenewingSubscription::clear_streamer() {
+  if (streamer_ != &_default_streamer_) {
+    streamer_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& StreamerErrorRenewingSubscription::streamer() const {
+  return *streamer_;
+}
+inline void StreamerErrorRenewingSubscription::set_streamer(const ::std::string& value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_streamer(const char* value) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_streamer(const void* value, size_t size) {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  streamer_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerErrorRenewingSubscription::mutable_streamer() {
+  _set_bit(0);
+  if (streamer_ == &_default_streamer_) {
+    streamer_ = new ::std::string;
+  }
+  return streamer_;
+}
+
+// optional bytes id = 2;
+inline bool StreamerErrorRenewingSubscription::has_id() const {
+  return _has_bit(1);
 }
 inline void StreamerErrorRenewingSubscription::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& StreamerErrorRenewingSubscription::id() const {
   return *id_;
 }
 inline void StreamerErrorRenewingSubscription::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerErrorRenewingSubscription::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerErrorRenewingSubscription::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerErrorRenewingSubscription::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
