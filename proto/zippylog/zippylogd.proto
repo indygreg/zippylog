@@ -115,6 +115,10 @@ message WorkerForwardSubscribeKeepalive {
     optional bytes subscription = 2;
 }
 
+// --------------------|
+// Streamer Log Events |
+// --------------------|
+
 message StreamerStartup {
     optional bytes id = 1;
 }
@@ -162,4 +166,16 @@ message StreamerErrorRenewingSubscription {
     optional bytes id = 1;
 
     optional bytes subscription = 2;
+}
+
+// -------------------------|
+// Store Watcher Log Events |
+// -------------------------|
+
+message StoreWatcherStartup {
+    optional bytes id = 1;
+}
+
+message StoreWatcherShutdown {
+    optional bytes id = 1;
 }
