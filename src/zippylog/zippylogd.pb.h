@@ -399,15 +399,15 @@ class WorkerStartup : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 45;
@@ -417,8 +417,8 @@ class WorkerStartup : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -495,15 +495,15 @@ class WorkerShutdown : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 46;
@@ -513,8 +513,8 @@ class WorkerShutdown : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -591,15 +591,15 @@ class WorkerFailReceiveMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 27;
@@ -609,8 +609,8 @@ class WorkerFailReceiveMessage : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -687,15 +687,15 @@ class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 28;
@@ -705,8 +705,8 @@ class WorkerReceiveEmptyMessage : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -783,15 +783,15 @@ class WorkerReceiveUnknownRequestType : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   // optional uint32 enumeration = 2;
   inline bool has_enumeration() const;
@@ -808,8 +808,8 @@ class WorkerReceiveUnknownRequestType : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   ::google::protobuf::uint32 enumeration_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
@@ -887,15 +887,15 @@ class WorkerRequestParseFailure : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 29;
@@ -905,8 +905,8 @@ class WorkerRequestParseFailure : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -983,15 +983,15 @@ class WorkerRequestEmptyEnvelope : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 30;
@@ -1001,8 +1001,8 @@ class WorkerRequestEmptyEnvelope : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1079,15 +1079,15 @@ class WorkerInvalidMessageEnumeration : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 31;
@@ -1097,8 +1097,8 @@ class WorkerInvalidMessageEnumeration : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1175,15 +1175,15 @@ class WorkerBeginProcessStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 32;
@@ -1193,8 +1193,8 @@ class WorkerBeginProcessStoreInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1271,15 +1271,15 @@ class WorkerEndProcessStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 33;
@@ -1289,8 +1289,8 @@ class WorkerEndProcessStoreInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1367,15 +1367,15 @@ class WorkerReceiveInvalidGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 34;
@@ -1385,8 +1385,8 @@ class WorkerReceiveInvalidGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1463,15 +1463,15 @@ class WorkerGetInvalidStream : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 35;
@@ -1481,8 +1481,8 @@ class WorkerGetInvalidStream : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1559,15 +1559,15 @@ class WorkerGetInvalidOffset : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 36;
@@ -1577,8 +1577,8 @@ class WorkerGetInvalidOffset : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1655,15 +1655,15 @@ class WorkerBeginProcessGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 37;
@@ -1673,8 +1673,8 @@ class WorkerBeginProcessGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1751,15 +1751,15 @@ class WorkerEndProcessGet : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 38;
@@ -1769,8 +1769,8 @@ class WorkerEndProcessGet : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -1847,15 +1847,15 @@ class WorkerSendErrorResponse : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   // optional string message = 2;
   inline bool has_message() const;
@@ -1875,8 +1875,8 @@ class WorkerSendErrorResponse : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   ::std::string* message_;
   static const ::std::string _default_message_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
@@ -1955,15 +1955,15 @@ class WorkerForwardSubscribeKeepalive : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes worker = 1;
-  inline bool has_worker() const;
-  inline void clear_worker();
-  static const int kWorkerFieldNumber = 1;
-  inline const ::std::string& worker() const;
-  inline void set_worker(const ::std::string& value);
-  inline void set_worker(const char* value);
-  inline void set_worker(const void* value, size_t size);
-  inline ::std::string* mutable_worker();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   // optional bytes subscription = 2;
   inline bool has_subscription() const;
@@ -1983,8 +1983,8 @@ class WorkerForwardSubscribeKeepalive : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* worker_;
-  static const ::std::string _default_worker_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   ::std::string* subscription_;
   static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
@@ -2063,15 +2063,15 @@ class StreamerStartup : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 49;
@@ -2081,8 +2081,8 @@ class StreamerStartup : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2159,15 +2159,15 @@ class StreamerShutdown : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 50;
@@ -2177,8 +2177,8 @@ class StreamerShutdown : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
+  ::std::string* id_;
+  static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2255,25 +2255,25 @@ class StreamerSubscriptionExpired : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
-  
-  // optional bytes id = 2;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 40;
@@ -2283,10 +2283,10 @@ class StreamerSubscriptionExpired : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2363,25 +2363,25 @@ class StreamerReceiveKeepalive : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
-  
-  // optional bytes id = 2;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 41;
@@ -2391,10 +2391,10 @@ class StreamerReceiveKeepalive : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2471,25 +2471,25 @@ class StreamerSubscriptionRenewedFromKeepalive : public ::google::protobuf::Mess
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
-  
-  // optional bytes id = 2;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 42;
@@ -2499,10 +2499,10 @@ class StreamerSubscriptionRenewedFromKeepalive : public ::google::protobuf::Mess
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2579,25 +2579,25 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
-  
-  // optional bytes id = 2;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 43;
@@ -2607,10 +2607,10 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2687,25 +2687,25 @@ class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes streamer = 1;
-  inline bool has_streamer() const;
-  inline void clear_streamer();
-  static const int kStreamerFieldNumber = 1;
-  inline const ::std::string& streamer() const;
-  inline void set_streamer(const ::std::string& value);
-  inline void set_streamer(const char* value);
-  inline void set_streamer(const void* value, size_t size);
-  inline ::std::string* mutable_streamer();
-  
-  // optional bytes id = 2;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 2;
+  static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
   inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
+  
+  // optional bytes subscription = 2;
+  inline bool has_subscription() const;
+  inline void clear_subscription();
+  static const int kSubscriptionFieldNumber = 2;
+  inline const ::std::string& subscription() const;
+  inline void set_subscription(const ::std::string& value);
+  inline void set_subscription(const char* value);
+  inline void set_subscription(const void* value, size_t size);
+  inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 44;
@@ -2715,10 +2715,10 @@ class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* streamer_;
-  static const ::std::string _default_streamer_;
   ::std::string* id_;
   static const ::std::string _default_id_;
+  ::std::string* subscription_;
+  static const ::std::string _default_subscription_;
   friend void  protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto();
@@ -2844,230 +2844,230 @@ BrokerStartup::mutable_listen_endpoints() {
 
 // WorkerStartup
 
-// optional bytes worker = 1;
-inline bool WorkerStartup::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerStartup::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerStartup::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerStartup::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerStartup::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerStartup::id() const {
+  return *id_;
 }
-inline void WorkerStartup::set_worker(const ::std::string& value) {
+inline void WorkerStartup::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerStartup::set_worker(const char* value) {
+inline void WorkerStartup::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerStartup::set_worker(const void* value, size_t size) {
+inline void WorkerStartup::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerStartup::mutable_worker() {
+inline ::std::string* WorkerStartup::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerShutdown
 
-// optional bytes worker = 1;
-inline bool WorkerShutdown::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerShutdown::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerShutdown::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerShutdown::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerShutdown::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerShutdown::id() const {
+  return *id_;
 }
-inline void WorkerShutdown::set_worker(const ::std::string& value) {
+inline void WorkerShutdown::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerShutdown::set_worker(const char* value) {
+inline void WorkerShutdown::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerShutdown::set_worker(const void* value, size_t size) {
+inline void WorkerShutdown::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerShutdown::mutable_worker() {
+inline ::std::string* WorkerShutdown::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerFailReceiveMessage
 
-// optional bytes worker = 1;
-inline bool WorkerFailReceiveMessage::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerFailReceiveMessage::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerFailReceiveMessage::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerFailReceiveMessage::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerFailReceiveMessage::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerFailReceiveMessage::id() const {
+  return *id_;
 }
-inline void WorkerFailReceiveMessage::set_worker(const ::std::string& value) {
+inline void WorkerFailReceiveMessage::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerFailReceiveMessage::set_worker(const char* value) {
+inline void WorkerFailReceiveMessage::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerFailReceiveMessage::set_worker(const void* value, size_t size) {
+inline void WorkerFailReceiveMessage::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerFailReceiveMessage::mutable_worker() {
+inline ::std::string* WorkerFailReceiveMessage::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerReceiveEmptyMessage
 
-// optional bytes worker = 1;
-inline bool WorkerReceiveEmptyMessage::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerReceiveEmptyMessage::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerReceiveEmptyMessage::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerReceiveEmptyMessage::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerReceiveEmptyMessage::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerReceiveEmptyMessage::id() const {
+  return *id_;
 }
-inline void WorkerReceiveEmptyMessage::set_worker(const ::std::string& value) {
+inline void WorkerReceiveEmptyMessage::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveEmptyMessage::set_worker(const char* value) {
+inline void WorkerReceiveEmptyMessage::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveEmptyMessage::set_worker(const void* value, size_t size) {
+inline void WorkerReceiveEmptyMessage::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerReceiveEmptyMessage::mutable_worker() {
+inline ::std::string* WorkerReceiveEmptyMessage::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerReceiveUnknownRequestType
 
-// optional bytes worker = 1;
-inline bool WorkerReceiveUnknownRequestType::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerReceiveUnknownRequestType::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerReceiveUnknownRequestType::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerReceiveUnknownRequestType::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerReceiveUnknownRequestType::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerReceiveUnknownRequestType::id() const {
+  return *id_;
 }
-inline void WorkerReceiveUnknownRequestType::set_worker(const ::std::string& value) {
+inline void WorkerReceiveUnknownRequestType::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveUnknownRequestType::set_worker(const char* value) {
+inline void WorkerReceiveUnknownRequestType::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveUnknownRequestType::set_worker(const void* value, size_t size) {
+inline void WorkerReceiveUnknownRequestType::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerReceiveUnknownRequestType::mutable_worker() {
+inline ::std::string* WorkerReceiveUnknownRequestType::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // optional uint32 enumeration = 2;
@@ -3090,506 +3090,506 @@ inline void WorkerReceiveUnknownRequestType::set_enumeration(::google::protobuf:
 
 // WorkerRequestParseFailure
 
-// optional bytes worker = 1;
-inline bool WorkerRequestParseFailure::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerRequestParseFailure::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerRequestParseFailure::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerRequestParseFailure::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerRequestParseFailure::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerRequestParseFailure::id() const {
+  return *id_;
 }
-inline void WorkerRequestParseFailure::set_worker(const ::std::string& value) {
+inline void WorkerRequestParseFailure::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerRequestParseFailure::set_worker(const char* value) {
+inline void WorkerRequestParseFailure::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerRequestParseFailure::set_worker(const void* value, size_t size) {
+inline void WorkerRequestParseFailure::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerRequestParseFailure::mutable_worker() {
+inline ::std::string* WorkerRequestParseFailure::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerRequestEmptyEnvelope
 
-// optional bytes worker = 1;
-inline bool WorkerRequestEmptyEnvelope::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerRequestEmptyEnvelope::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerRequestEmptyEnvelope::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerRequestEmptyEnvelope::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerRequestEmptyEnvelope::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerRequestEmptyEnvelope::id() const {
+  return *id_;
 }
-inline void WorkerRequestEmptyEnvelope::set_worker(const ::std::string& value) {
+inline void WorkerRequestEmptyEnvelope::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerRequestEmptyEnvelope::set_worker(const char* value) {
+inline void WorkerRequestEmptyEnvelope::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerRequestEmptyEnvelope::set_worker(const void* value, size_t size) {
+inline void WorkerRequestEmptyEnvelope::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerRequestEmptyEnvelope::mutable_worker() {
+inline ::std::string* WorkerRequestEmptyEnvelope::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerInvalidMessageEnumeration
 
-// optional bytes worker = 1;
-inline bool WorkerInvalidMessageEnumeration::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerInvalidMessageEnumeration::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerInvalidMessageEnumeration::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerInvalidMessageEnumeration::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerInvalidMessageEnumeration::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerInvalidMessageEnumeration::id() const {
+  return *id_;
 }
-inline void WorkerInvalidMessageEnumeration::set_worker(const ::std::string& value) {
+inline void WorkerInvalidMessageEnumeration::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerInvalidMessageEnumeration::set_worker(const char* value) {
+inline void WorkerInvalidMessageEnumeration::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerInvalidMessageEnumeration::set_worker(const void* value, size_t size) {
+inline void WorkerInvalidMessageEnumeration::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerInvalidMessageEnumeration::mutable_worker() {
+inline ::std::string* WorkerInvalidMessageEnumeration::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerBeginProcessStoreInfo
 
-// optional bytes worker = 1;
-inline bool WorkerBeginProcessStoreInfo::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerBeginProcessStoreInfo::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerBeginProcessStoreInfo::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerBeginProcessStoreInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerBeginProcessStoreInfo::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerBeginProcessStoreInfo::id() const {
+  return *id_;
 }
-inline void WorkerBeginProcessStoreInfo::set_worker(const ::std::string& value) {
+inline void WorkerBeginProcessStoreInfo::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerBeginProcessStoreInfo::set_worker(const char* value) {
+inline void WorkerBeginProcessStoreInfo::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerBeginProcessStoreInfo::set_worker(const void* value, size_t size) {
+inline void WorkerBeginProcessStoreInfo::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerBeginProcessStoreInfo::mutable_worker() {
+inline ::std::string* WorkerBeginProcessStoreInfo::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerEndProcessStoreInfo
 
-// optional bytes worker = 1;
-inline bool WorkerEndProcessStoreInfo::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerEndProcessStoreInfo::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerEndProcessStoreInfo::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerEndProcessStoreInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerEndProcessStoreInfo::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerEndProcessStoreInfo::id() const {
+  return *id_;
 }
-inline void WorkerEndProcessStoreInfo::set_worker(const ::std::string& value) {
+inline void WorkerEndProcessStoreInfo::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerEndProcessStoreInfo::set_worker(const char* value) {
+inline void WorkerEndProcessStoreInfo::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerEndProcessStoreInfo::set_worker(const void* value, size_t size) {
+inline void WorkerEndProcessStoreInfo::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerEndProcessStoreInfo::mutable_worker() {
+inline ::std::string* WorkerEndProcessStoreInfo::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerReceiveInvalidGet
 
-// optional bytes worker = 1;
-inline bool WorkerReceiveInvalidGet::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerReceiveInvalidGet::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerReceiveInvalidGet::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerReceiveInvalidGet::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerReceiveInvalidGet::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerReceiveInvalidGet::id() const {
+  return *id_;
 }
-inline void WorkerReceiveInvalidGet::set_worker(const ::std::string& value) {
+inline void WorkerReceiveInvalidGet::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveInvalidGet::set_worker(const char* value) {
+inline void WorkerReceiveInvalidGet::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerReceiveInvalidGet::set_worker(const void* value, size_t size) {
+inline void WorkerReceiveInvalidGet::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerReceiveInvalidGet::mutable_worker() {
+inline ::std::string* WorkerReceiveInvalidGet::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerGetInvalidStream
 
-// optional bytes worker = 1;
-inline bool WorkerGetInvalidStream::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerGetInvalidStream::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerGetInvalidStream::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerGetInvalidStream::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerGetInvalidStream::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerGetInvalidStream::id() const {
+  return *id_;
 }
-inline void WorkerGetInvalidStream::set_worker(const ::std::string& value) {
+inline void WorkerGetInvalidStream::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerGetInvalidStream::set_worker(const char* value) {
+inline void WorkerGetInvalidStream::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerGetInvalidStream::set_worker(const void* value, size_t size) {
+inline void WorkerGetInvalidStream::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerGetInvalidStream::mutable_worker() {
+inline ::std::string* WorkerGetInvalidStream::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerGetInvalidOffset
 
-// optional bytes worker = 1;
-inline bool WorkerGetInvalidOffset::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerGetInvalidOffset::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerGetInvalidOffset::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerGetInvalidOffset::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerGetInvalidOffset::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerGetInvalidOffset::id() const {
+  return *id_;
 }
-inline void WorkerGetInvalidOffset::set_worker(const ::std::string& value) {
+inline void WorkerGetInvalidOffset::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerGetInvalidOffset::set_worker(const char* value) {
+inline void WorkerGetInvalidOffset::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerGetInvalidOffset::set_worker(const void* value, size_t size) {
+inline void WorkerGetInvalidOffset::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerGetInvalidOffset::mutable_worker() {
+inline ::std::string* WorkerGetInvalidOffset::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerBeginProcessGet
 
-// optional bytes worker = 1;
-inline bool WorkerBeginProcessGet::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerBeginProcessGet::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerBeginProcessGet::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerBeginProcessGet::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerBeginProcessGet::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerBeginProcessGet::id() const {
+  return *id_;
 }
-inline void WorkerBeginProcessGet::set_worker(const ::std::string& value) {
+inline void WorkerBeginProcessGet::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerBeginProcessGet::set_worker(const char* value) {
+inline void WorkerBeginProcessGet::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerBeginProcessGet::set_worker(const void* value, size_t size) {
+inline void WorkerBeginProcessGet::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerBeginProcessGet::mutable_worker() {
+inline ::std::string* WorkerBeginProcessGet::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerEndProcessGet
 
-// optional bytes worker = 1;
-inline bool WorkerEndProcessGet::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerEndProcessGet::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerEndProcessGet::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerEndProcessGet::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerEndProcessGet::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerEndProcessGet::id() const {
+  return *id_;
 }
-inline void WorkerEndProcessGet::set_worker(const ::std::string& value) {
+inline void WorkerEndProcessGet::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerEndProcessGet::set_worker(const char* value) {
+inline void WorkerEndProcessGet::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerEndProcessGet::set_worker(const void* value, size_t size) {
+inline void WorkerEndProcessGet::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerEndProcessGet::mutable_worker() {
+inline ::std::string* WorkerEndProcessGet::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // WorkerSendErrorResponse
 
-// optional bytes worker = 1;
-inline bool WorkerSendErrorResponse::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerSendErrorResponse::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerSendErrorResponse::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerSendErrorResponse::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerSendErrorResponse::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerSendErrorResponse::id() const {
+  return *id_;
 }
-inline void WorkerSendErrorResponse::set_worker(const ::std::string& value) {
+inline void WorkerSendErrorResponse::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerSendErrorResponse::set_worker(const char* value) {
+inline void WorkerSendErrorResponse::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerSendErrorResponse::set_worker(const void* value, size_t size) {
+inline void WorkerSendErrorResponse::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerSendErrorResponse::mutable_worker() {
+inline ::std::string* WorkerSendErrorResponse::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // optional string message = 2;
@@ -3638,46 +3638,46 @@ inline ::std::string* WorkerSendErrorResponse::mutable_message() {
 
 // WorkerForwardSubscribeKeepalive
 
-// optional bytes worker = 1;
-inline bool WorkerForwardSubscribeKeepalive::has_worker() const {
+// optional bytes id = 1;
+inline bool WorkerForwardSubscribeKeepalive::has_id() const {
   return _has_bit(0);
 }
-inline void WorkerForwardSubscribeKeepalive::clear_worker() {
-  if (worker_ != &_default_worker_) {
-    worker_->clear();
+inline void WorkerForwardSubscribeKeepalive::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& WorkerForwardSubscribeKeepalive::worker() const {
-  return *worker_;
+inline const ::std::string& WorkerForwardSubscribeKeepalive::id() const {
+  return *id_;
 }
-inline void WorkerForwardSubscribeKeepalive::set_worker(const ::std::string& value) {
+inline void WorkerForwardSubscribeKeepalive::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerForwardSubscribeKeepalive::set_worker(const char* value) {
+inline void WorkerForwardSubscribeKeepalive::set_id(const char* value) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(value);
+  id_->assign(value);
 }
-inline void WorkerForwardSubscribeKeepalive::set_worker(const void* value, size_t size) {
+inline void WorkerForwardSubscribeKeepalive::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  worker_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WorkerForwardSubscribeKeepalive::mutable_worker() {
+inline ::std::string* WorkerForwardSubscribeKeepalive::mutable_id() {
   _set_bit(0);
-  if (worker_ == &_default_worker_) {
-    worker_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return worker_;
+  return id_;
 }
 
 // optional bytes subscription = 2;
@@ -3726,532 +3726,532 @@ inline ::std::string* WorkerForwardSubscribeKeepalive::mutable_subscription() {
 
 // StreamerStartup
 
-// optional bytes streamer = 1;
-inline bool StreamerStartup::has_streamer() const {
+// optional bytes id = 1;
+inline bool StreamerStartup::has_id() const {
   return _has_bit(0);
 }
-inline void StreamerStartup::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
+inline void StreamerStartup::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StreamerStartup::streamer() const {
-  return *streamer_;
+inline const ::std::string& StreamerStartup::id() const {
+  return *id_;
 }
-inline void StreamerStartup::set_streamer(const ::std::string& value) {
+inline void StreamerStartup::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(value);
+  id_->assign(value);
 }
-inline void StreamerStartup::set_streamer(const char* value) {
+inline void StreamerStartup::set_id(const char* value) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(value);
+  id_->assign(value);
 }
-inline void StreamerStartup::set_streamer(const void* value, size_t size) {
+inline void StreamerStartup::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamerStartup::mutable_streamer() {
+inline ::std::string* StreamerStartup::mutable_id() {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return streamer_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerShutdown
 
-// optional bytes streamer = 1;
-inline bool StreamerShutdown::has_streamer() const {
+// optional bytes id = 1;
+inline bool StreamerShutdown::has_id() const {
   return _has_bit(0);
 }
-inline void StreamerShutdown::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
+inline void StreamerShutdown::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& StreamerShutdown::streamer() const {
-  return *streamer_;
+inline const ::std::string& StreamerShutdown::id() const {
+  return *id_;
 }
-inline void StreamerShutdown::set_streamer(const ::std::string& value) {
+inline void StreamerShutdown::set_id(const ::std::string& value) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(value);
+  id_->assign(value);
 }
-inline void StreamerShutdown::set_streamer(const char* value) {
+inline void StreamerShutdown::set_id(const char* value) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(value);
+  id_->assign(value);
 }
-inline void StreamerShutdown::set_streamer(const void* value, size_t size) {
+inline void StreamerShutdown::set_id(const void* value, size_t size) {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
+  id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamerShutdown::mutable_streamer() {
+inline ::std::string* StreamerShutdown::mutable_id() {
   _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
   }
-  return streamer_;
+  return id_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerSubscriptionExpired
 
-// optional bytes streamer = 1;
-inline bool StreamerSubscriptionExpired::has_streamer() const {
-  return _has_bit(0);
-}
-inline void StreamerSubscriptionExpired::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamerSubscriptionExpired::streamer() const {
-  return *streamer_;
-}
-inline void StreamerSubscriptionExpired::set_streamer(const ::std::string& value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerSubscriptionExpired::set_streamer(const char* value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerSubscriptionExpired::set_streamer(const void* value, size_t size) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamerSubscriptionExpired::mutable_streamer() {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  return streamer_;
-}
-
-// optional bytes id = 2;
+// optional bytes id = 1;
 inline bool StreamerSubscriptionExpired::has_id() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamerSubscriptionExpired::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline const ::std::string& StreamerSubscriptionExpired::id() const {
   return *id_;
 }
 inline void StreamerSubscriptionExpired::set_id(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionExpired::set_id(const char* value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionExpired::set_id(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerSubscriptionExpired::mutable_id() {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional bytes subscription = 2;
+inline bool StreamerSubscriptionExpired::has_subscription() const {
+  return _has_bit(1);
+}
+inline void StreamerSubscriptionExpired::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StreamerSubscriptionExpired::subscription() const {
+  return *subscription_;
+}
+inline void StreamerSubscriptionExpired::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerSubscriptionExpired::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerSubscriptionExpired::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerSubscriptionExpired::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerReceiveKeepalive
 
-// optional bytes streamer = 1;
-inline bool StreamerReceiveKeepalive::has_streamer() const {
-  return _has_bit(0);
-}
-inline void StreamerReceiveKeepalive::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamerReceiveKeepalive::streamer() const {
-  return *streamer_;
-}
-inline void StreamerReceiveKeepalive::set_streamer(const ::std::string& value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerReceiveKeepalive::set_streamer(const char* value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerReceiveKeepalive::set_streamer(const void* value, size_t size) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamerReceiveKeepalive::mutable_streamer() {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  return streamer_;
-}
-
-// optional bytes id = 2;
+// optional bytes id = 1;
 inline bool StreamerReceiveKeepalive::has_id() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamerReceiveKeepalive::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline const ::std::string& StreamerReceiveKeepalive::id() const {
   return *id_;
 }
 inline void StreamerReceiveKeepalive::set_id(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerReceiveKeepalive::set_id(const char* value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerReceiveKeepalive::set_id(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerReceiveKeepalive::mutable_id() {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional bytes subscription = 2;
+inline bool StreamerReceiveKeepalive::has_subscription() const {
+  return _has_bit(1);
+}
+inline void StreamerReceiveKeepalive::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StreamerReceiveKeepalive::subscription() const {
+  return *subscription_;
+}
+inline void StreamerReceiveKeepalive::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerReceiveKeepalive::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerReceiveKeepalive::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerReceiveKeepalive::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerSubscriptionRenewedFromKeepalive
 
-// optional bytes streamer = 1;
-inline bool StreamerSubscriptionRenewedFromKeepalive::has_streamer() const {
-  return _has_bit(0);
-}
-inline void StreamerSubscriptionRenewedFromKeepalive::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamerSubscriptionRenewedFromKeepalive::streamer() const {
-  return *streamer_;
-}
-inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const ::std::string& value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const char* value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerSubscriptionRenewedFromKeepalive::set_streamer(const void* value, size_t size) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_streamer() {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  return streamer_;
-}
-
-// optional bytes id = 2;
+// optional bytes id = 1;
 inline bool StreamerSubscriptionRenewedFromKeepalive::has_id() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline const ::std::string& StreamerSubscriptionRenewedFromKeepalive::id() const {
   return *id_;
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const char* value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerSubscriptionRenewedFromKeepalive::set_id(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_id() {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional bytes subscription = 2;
+inline bool StreamerSubscriptionRenewedFromKeepalive::has_subscription() const {
+  return _has_bit(1);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StreamerSubscriptionRenewedFromKeepalive::subscription() const {
+  return *subscription_;
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerSubscriptionRenewedFromKeepalive::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerSubscriptionRenewedFromKeepalive::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerRejectKeepaliveUnknownSubscription
 
-// optional bytes streamer = 1;
-inline bool StreamerRejectKeepaliveUnknownSubscription::has_streamer() const {
-  return _has_bit(0);
-}
-inline void StreamerRejectKeepaliveUnknownSubscription::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamerRejectKeepaliveUnknownSubscription::streamer() const {
-  return *streamer_;
-}
-inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const ::std::string& value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const char* value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerRejectKeepaliveUnknownSubscription::set_streamer(const void* value, size_t size) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_streamer() {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  return streamer_;
-}
-
-// optional bytes id = 2;
+// optional bytes id = 1;
 inline bool StreamerRejectKeepaliveUnknownSubscription::has_id() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline const ::std::string& StreamerRejectKeepaliveUnknownSubscription::id() const {
   return *id_;
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const char* value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerRejectKeepaliveUnknownSubscription::set_id(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_id() {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional bytes subscription = 2;
+inline bool StreamerRejectKeepaliveUnknownSubscription::has_subscription() const {
+  return _has_bit(1);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StreamerRejectKeepaliveUnknownSubscription::subscription() const {
+  return *subscription_;
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerRejectKeepaliveUnknownSubscription::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerRejectKeepaliveUnknownSubscription::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
 }
 
 // -------------------------------------------------------------------
 
 // StreamerErrorRenewingSubscription
 
-// optional bytes streamer = 1;
-inline bool StreamerErrorRenewingSubscription::has_streamer() const {
-  return _has_bit(0);
-}
-inline void StreamerErrorRenewingSubscription::clear_streamer() {
-  if (streamer_ != &_default_streamer_) {
-    streamer_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamerErrorRenewingSubscription::streamer() const {
-  return *streamer_;
-}
-inline void StreamerErrorRenewingSubscription::set_streamer(const ::std::string& value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerErrorRenewingSubscription::set_streamer(const char* value) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(value);
-}
-inline void StreamerErrorRenewingSubscription::set_streamer(const void* value, size_t size) {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  streamer_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamerErrorRenewingSubscription::mutable_streamer() {
-  _set_bit(0);
-  if (streamer_ == &_default_streamer_) {
-    streamer_ = new ::std::string;
-  }
-  return streamer_;
-}
-
-// optional bytes id = 2;
+// optional bytes id = 1;
 inline bool StreamerErrorRenewingSubscription::has_id() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamerErrorRenewingSubscription::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline const ::std::string& StreamerErrorRenewingSubscription::id() const {
   return *id_;
 }
 inline void StreamerErrorRenewingSubscription::set_id(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerErrorRenewingSubscription::set_id(const char* value) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void StreamerErrorRenewingSubscription::set_id(const void* value, size_t size) {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* StreamerErrorRenewingSubscription::mutable_id() {
-  _set_bit(1);
+  _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// optional bytes subscription = 2;
+inline bool StreamerErrorRenewingSubscription::has_subscription() const {
+  return _has_bit(1);
+}
+inline void StreamerErrorRenewingSubscription::clear_subscription() {
+  if (subscription_ != &_default_subscription_) {
+    subscription_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& StreamerErrorRenewingSubscription::subscription() const {
+  return *subscription_;
+}
+inline void StreamerErrorRenewingSubscription::set_subscription(const ::std::string& value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_subscription(const char* value) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(value);
+}
+inline void StreamerErrorRenewingSubscription::set_subscription(const void* value, size_t size) {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  subscription_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StreamerErrorRenewingSubscription::mutable_subscription() {
+  _set_bit(1);
+  if (subscription_ == &_default_subscription_) {
+    subscription_ = new ::std::string;
+  }
+  return subscription_;
 }
 
 
