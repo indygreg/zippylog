@@ -7,7 +7,7 @@ package zippylog.zippylogd;
 message BrokerStartup {
     // path to store broker bound to
     optional string store_path = 1;
-    
+
     // list of endpoints to which broker is listening for requests
     repeated string listen_endpoints = 2;
 }
@@ -50,7 +50,7 @@ message WorkerInvalidMessageEnumeration {
 
 // when a worker processes a storeinfo request
 message WorkerBeginProcessStoreInfo {
-    
+
 }
 
 message WorkerEndProcessStoreInfo {
@@ -79,4 +79,10 @@ message WorkerEndProcessGet {
 
 message WorkerSendErrorResponse {
     optional string message = 1;
+}
+
+// when a subscription expires
+message StreamerSubscriptionExpired {
+    // id of subscription that expired
+    optional bytes id = 1;
 }
