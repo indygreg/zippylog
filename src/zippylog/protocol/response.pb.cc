@@ -174,8 +174,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "tart\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"\\\n\020St"
     "reamSegmentEnd\022\014\n\004path\030\001 \001(\t\022\016\n\006offset\030\002"
     " \001(\004\022\022\n\nbytes_sent\030\003 \001(\r\022\026\n\016envelopes_se"
-    "nt\030\004 \001(\r\"\032\n\014SubscribeAck\022\n\n\002id\030\001 \001(\t\"\037\n\021"
-    "SubscriptionStart\022\n\n\002id\030\001 \001(\t\"I\n\005Error\0223"
+    "nt\030\004 \001(\r\"\032\n\014SubscribeAck\022\n\n\002id\030\001 \001(\014\"\037\n\021"
+    "SubscriptionStart\022\n\n\002id\030\001 \001(\014\"I\n\005Error\0223"
     "\n\004code\030\001 \001(\0162%.zippylog.protocol.respons"
     "e.ErrorCode\022\013\n\003msg\030\002 \001(\t*\260\002\n\tErrorCode\022\032"
     "\n\026ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031INVALID_ME"
@@ -920,15 +920,12 @@ bool SubscribeAck::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string id = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->id().data(), this->id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -954,12 +951,9 @@ bool SubscribeAck::MergePartialFromCodedStream(
 
 void SubscribeAck::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string id = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
@@ -971,13 +965,10 @@ void SubscribeAck::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SubscribeAck::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string id = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
@@ -992,10 +983,10 @@ int SubscribeAck::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string id = 1;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
     }
     
@@ -1145,15 +1136,12 @@ bool SubscriptionStart::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string id = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->id().data(), this->id().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -1179,12 +1167,9 @@ bool SubscriptionStart::MergePartialFromCodedStream(
 
 void SubscriptionStart::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string id = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
@@ -1196,13 +1181,10 @@ void SubscriptionStart::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SubscriptionStart::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string id = 1;
+  // optional bytes id = 1;
   if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->id().data(), this->id().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
@@ -1217,10 +1199,10 @@ int SubscriptionStart::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string id = 1;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->id());
     }
     

@@ -32,12 +32,12 @@ message SubscribeAck {
     // unique identifier for this subscription
     // client needs to record this identifier to send in SubscribeKeepalive
     // messages to keep the subscription active
-    optional string id = 1;
+    optional bytes id = 1;
 }
 
 // first message in sequence of a subscription response
 message SubscriptionStart {
-    optional string id = 1;
+    optional bytes id = 1;
 }
 
 message Error {
