@@ -38,6 +38,7 @@ namespace zippylog {
         registrar->register_message(1, 37, new ::zippylog::zippylogd::WorkerBeginProcessGet());
         registrar->register_message(1, 38, new ::zippylog::zippylogd::WorkerEndProcessGet());
         registrar->register_message(1, 39, new ::zippylog::zippylogd::WorkerSendErrorResponse());
+        registrar->register_message(1, 40, new ::zippylog::zippylogd::StreamerSubscriptionExpired());
         registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
         registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());

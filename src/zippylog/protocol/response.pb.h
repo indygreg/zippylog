@@ -350,14 +350,14 @@ class SubscribeAck : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string id = 1;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
@@ -446,14 +446,14 @@ class SubscriptionStart : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string id = 1;
+  // optional bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
@@ -753,7 +753,7 @@ inline void StreamSegmentEnd::set_envelopes_sent(::google::protobuf::uint32 valu
 
 // SubscribeAck
 
-// optional string id = 1;
+// optional bytes id = 1;
 inline bool SubscribeAck::has_id() const {
   return _has_bit(0);
 }
@@ -780,7 +780,7 @@ inline void SubscribeAck::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void SubscribeAck::set_id(const char* value, size_t size) {
+inline void SubscribeAck::set_id(const void* value, size_t size) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
@@ -799,7 +799,7 @@ inline ::std::string* SubscribeAck::mutable_id() {
 
 // SubscriptionStart
 
-// optional string id = 1;
+// optional bytes id = 1;
 inline bool SubscriptionStart::has_id() const {
   return _has_bit(0);
 }
@@ -826,7 +826,7 @@ inline void SubscriptionStart::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void SubscriptionStart::set_id(const char* value, size_t size) {
+inline void SubscriptionStart::set_id(const void* value, size_t size) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
