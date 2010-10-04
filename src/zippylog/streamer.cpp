@@ -257,8 +257,13 @@ void Streamer::Run()
             ack.set_id(subscription.id);
             ack.set_ttl(this->subscription_ttl / 1000);
             Envelope response = Envelope();
-            ack.add_to_envelope(&response);
 
+            // copy tags to response because that's what the protocol does
+            for (size_t i = 0; i < e.envelope.tag_size(); i++) {
+                response.envelope.add_tag(e.envelope.tag(i));
+            }
+
+            ack.add_to_envelope(&response);
 
             if (!zeromq::send_envelope(this->client_sock, identities, response)) {
                 // TODO log error here
