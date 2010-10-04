@@ -93,8 +93,11 @@ bool directory_entries(const string dir, vector<dir_entry> &v)
         if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
             entry.type = 1;
         }
-        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL || info.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE) {
             entry.type = 2;
+        }
+        else {
+            entry.type = 0;
         }
 
         v.push_back(entry);
