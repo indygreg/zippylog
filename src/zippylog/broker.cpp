@@ -314,7 +314,9 @@ void Broker::run()
             log.add_to_envelope(&e);
             zeromq::send_envelope(this->log_client_sock, e);
 
-            this->store->FlushOutputStreams();
+            // TODO figure out how Protocol Buffer I/O flushing works
+            // specifically, why it is flushing 8k when there isn't 8k of data
+            //this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
                 throw "could not restart stream flush timer";
             }
@@ -539,6 +541,10 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
     lua_pop(L, 1);
     if (config.stream_flush_interval < 0) {
         os << "stream_flush_interval must be positive";
+        goto cleanup;
+    }
+    else if (config.stream_flush_interval < 1000) {
+        os << "stream_flush_interval must be greater than 1000";
         goto cleanup;
     }
 
