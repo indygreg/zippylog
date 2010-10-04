@@ -162,11 +162,14 @@ bool Store::StreamNames(const string bucket, const string set, vector<string> &s
 {
     this->files_in_directory(this->PathToFilesystemPath(this->StreamsetPath(bucket, set)), streams);
 
-    for (size_t i = streams.size(); i; --i) {
-        if (streams[i-1].substr(streams[i-i].length() - 6, 6).compare(".zippylog")) {
-            streams.pop_back();
+    vector<string>::iterator i = streams.begin();
+    for (; i != streams.end(); ) {
+        if (i->length() < 10 || i->substr(i->length() - 9, 9).compare(".zippylog")) {
+            i = streams.erase(i);
+            continue;
         }
-        streams[i-1] = streams[i-1].substr(0, streams[i-1].length() - 6);
+        *i = i->substr(0, i->length() - 9);
+        i++;
     }
 
     return true;
