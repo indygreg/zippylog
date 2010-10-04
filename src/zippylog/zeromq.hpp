@@ -35,6 +35,8 @@ namespace zeromq {
 // this is likely used by XREQ/XREP sockets
 bool receive_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages);
 
+bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages);
+
 // sends a multipart message with identities
 bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages, int last_flags=0);
 

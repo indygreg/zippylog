@@ -17,6 +17,29 @@
 namespace zippylog {
 namespace zeromq {
 
+bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages)
+{
+    messages.clear();
+
+    while (true) {
+        message_t *msg = new message_t();
+        if (!socket->recv(msg, 0)) {
+            delete msg;
+            return false;
+        }
+
+        messages.push_back(msg);
+
+        int64 more;
+        size_t moresz = sizeof(more);
+        socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+
+        if (!more) break;
+    }
+
+    return true;
+}
+
 bool receive_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages)
 {
     identities.clear();
