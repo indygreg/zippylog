@@ -331,7 +331,7 @@ void * __stdcall Request::request_processor(void *data)
                     }
                 }
 
-                zeromq::send_envelope_more(socket, env);
+                zeromq::send_envelope(socket, identities, env, ZMQ_SNDMORE);
 
                 uint32 bytes_read = 0;
                 uint32 envelopes_read = 0;
