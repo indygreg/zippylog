@@ -28,7 +28,9 @@ Envelope::Envelope()
 
 Envelope::Envelope(message_t *msg)
 {
-    this->envelope.ParseFromArray(msg->data(), msg->size());
+    if (!this->envelope.ParseFromArray(msg->data(), msg->size())) {
+        throw "could not parse message";
+    }
 }
 
 bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
@@ -53,12 +55,12 @@ bool Envelope::ToZmqMessage(message_t &msg)
     return true;
 }
 
-bool Envelope::merge_from_zmq_message(message_t *msg)
+int Envelope::number_messages()
 {
-    return this->envelope.ParseFromArray(msg->data(), msg->size());
+    return this->envelope.message_size();
 }
 
-int Envelope::number_messages()
+int Envelope::MessageCount()
 {
     return this->envelope.message_size();
 }

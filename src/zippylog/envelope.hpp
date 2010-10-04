@@ -44,13 +44,24 @@ class ZIPPYLOG_EXPORT Envelope {
 
         message::Envelope envelope;
 
-        bool merge_from_zmq_message(message_t *msg);
-
         // serializes the envelope into a 0MQ message
         // existing message content will be overwritten
         bool ToZmqMessage(message_t &msg);
 
         int number_messages();
+        int MessageCount();
+
+        inline uint32 MessageNamespace(int index)
+        {
+            return this->envelope.message_namespace(index);
+        }
+
+        inline uint32 MessageType(int index)
+        {
+            return this->envelope.message_type(index);
+        }
+
+        // deprecated
         inline uint32 message_namespace(int index)
         {
             return this->envelope.message_namespace(index);
