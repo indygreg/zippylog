@@ -49,7 +49,8 @@ SubscriptionInfo::SubscriptionInfo()
 
 SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
 {
-    this->expiration_timer = Timer(expiration_ttl * 1000000);
+    // milliseconds to microseconds
+    this->expiration_timer = Timer(expiration_ttl * 1000);
     if (!this->expiration_timer.Start()) {
         throw "could not start expiration timer";
     }
