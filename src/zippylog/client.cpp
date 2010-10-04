@@ -16,268 +16,437 @@
 
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol/request.pb.h>
-#include <zippylog/protocol/response.pb.h>
 #include <zippylog/zeromq.hpp>
+#include <zmq.hpp>
 
 namespace zippylog {
 namespace client {
 
-Client::Client(context_t *ctx, string connect)
+Client::Client(context_t *ctx, const string &connect)
 {
-    this->_sock = new socket_t(*ctx, ZMQ_XREQ);
-    this->_sock->setsockopt(ZMQ_IDENTITY, "client", strlen("client"));
-    this->_sock->connect(connect.c_str());
+    this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
+    this->client_sock->connect(connect.c_str());
+
+    // by default, renew 5 seconds before expiration
+    this->subscription_renewal_offset = 5000000;
+
+    this->pollitem = new pollitem_t[1];
+    this->pollitem[0].events = ZMQ_POLLIN;
+    this->pollitem[0].fd = 0;
+    this->pollitem[0].socket = *this->client_sock;
 }
 
 Client::~Client()
 {
-    delete this->_sock;
+    this->CancelAllSubscriptions();
+    delete this->client_sock;
+    delete this->pollitem;
 }
 
-bool Client::StoreInfo(protocol::StoreInfo &info)
+bool Client::StoreInfo(StoreInfoCallback callback, void *data)
 {
+    if (!callback) {
+        throw "callback parameter not defined";
+    }
+
     Envelope e = Envelope();
     protocol::request::StoreInfo req = protocol::request::StoreInfo();
     req.add_to_envelope(&e);
 
-    this->_send_envelope(e);
+    OutstandingRequest info = OutstandingRequest();
+    info.cb_store_info = callback;
+    info.data = data;
 
-    Envelope e2 = Envelope();
-    this->ReadFirstEnvelope(e2);
-    Message *m = e2.get_message(0);
-
-    info = *((protocol::StoreInfo *)m);
-
-    return true;
+    return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string path, uint64 start_offset, StreamSegment &segment)
+bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data)
 {
+    if (!callback) {
+        throw "callback parameter not defined";
+    }
+
+    Envelope e = Envelope();
     protocol::request::Get req = protocol::request::Get();
     req.set_path(path);
     req.set_start_offset(start_offset);
-    Envelope e = Envelope();
     req.add_to_envelope(&e);
 
-    if (!this->_send_envelope(e)) return false;
+    OutstandingRequest info = OutstandingRequest();
+    info.cb_stream_segment = callback;
+    info.data = data;
 
-    return ReceiveAndProcessGet(segment);
-
-    return false;
+    return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string path, uint64 start_offset, uint32 max_response_bytes, StreamSegment &segment)
+bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data)
 {
+    if (!callback) {
+        throw "callback parameter not defined";
+    }
+
+    Envelope e = Envelope();
     protocol::request::Get req = protocol::request::Get();
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.set_max_response_bytes(max_response_bytes);
-    Envelope e = Envelope();
     req.add_to_envelope(&e);
 
-    if (!this->_send_envelope(e)) return false;
+    OutstandingRequest info = OutstandingRequest();
+    info.cb_stream_segment = callback;
+    info.data = data;
 
-    return ReceiveAndProcessGet(segment);
-
-    return false;
+    return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string path, uint64 start_offset, uint64 stop_offset, StreamSegment &segment)
+bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data)
 {
-    return Get(path, start_offset, (uint32)(stop_offset - start_offset), segment);
+    return this->Get(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
 }
 
-bool Client::SubscribeStoreChanges(const string path, SubscriptionCallback &cb)
+
+bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallback &cb, void *data)
 {
+    // TODO validate path
+
     protocol::request::SubscribeStoreChanges req = protocol::request::SubscribeStoreChanges();
     req.add_path(path);
 
     Envelope e = Envelope();
     req.add_to_envelope(&e);
 
-    if (!this->_send_envelope(e)) return false;
+    OutstandingRequest info = OutstandingRequest();
+    info.data = data;
+    info.subscription_callback = cb;
 
-    Envelope response = Envelope();
-    this->ReadFirstEnvelope(response);
-
-    assert(response.message_namespace(0) == protocol::response::SubscribeAck::zippylog_namespace);
-    assert(response.message_type(0) == protocol::response::SubscribeAck::zippylog_enumeration);
-
-    protocol::response::SubscribeAck *ack = (protocol::response::SubscribeAck *)response.get_message(0);
-    this->subscriptions[ack->id()] = cb;
-    delete ack;
-
-    return true;
+    return this->SendRequest(e, info);
 }
 
-bool Client::ReceiveAndProcessGet(StreamSegment &segment)
+
+bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
 {
-    Envelope header = Envelope();
-    if (!this->ReadFirstEnvelope(header)) {
-        this->ReadOutMultipart();
+    platform::UUID uuid;
+    platform::CreateUUID(uuid);
+
+    string id = string((const char *)&uuid, sizeof(uuid));
+
+    e.envelope.add_tag(id);
+    req.id = id;
+
+    if (!zeromq::send_envelope_xreq(this->client_sock, e)) {
         return false;
     }
 
-    // TODO more robust parsing
-    protocol::response::StreamSegmentStart *start =
-        (protocol::response::StreamSegmentStart *)header.get_message(0);
-
-    segment.SetPath(start->path());
-    segment.SetStartOffset(start->offset());
-
-    vector<Envelope> envelopes;
-    while (this->HasMore()) {
-        Envelope e = Envelope();
-        if (!this->ReadEnvelope(e)) {
-            this->ReadOutMultipart();
-            return false;
-        }
-
-        envelopes.push_back(e);
-    }
-
-    Envelope footer = envelopes[envelopes.size()-1];
-    envelopes.pop_back();
-
-    protocol::response::StreamSegmentEnd *end =
-        (protocol::response::StreamSegmentEnd *)footer.get_message(0);
-
-    segment.SetEndOffset(end->offset());
-    segment.SetBytesSent(end->bytes_sent());
-    segment.SetEnvelopesSent(end->envelopes_sent());
-
-    for (size_t i = 0; i < envelopes.size(); i++) {
-        segment.AddEnvelope(envelopes[i]);
-    }
+    this->outstanding[id] = req;
 
     return true;
 }
 
-bool Client::WaitAndProcessMessage()
+bool Client::TryProcessMessages(uint32 timeout)
 {
-    Envelope e = Envelope();
-    if (!this->ReadFirstEnvelope(e)) return false;
+    if (::zmq::poll(this->pollitem, 1, timeout) > 0) {
+        return this->ProcessPendingMessage();
+    }
 
-    if (!e.number_messages()) return false;
+    return false;
+}
 
-    if (e.message_namespace(0) == 1) {
-        // if this is in response to a subscription
-        if (e.message_type(0) == protocol::response::SubscriptionStart::zippylog_enumeration) {
-            protocol::response::SubscriptionStart *start = (protocol::response::SubscriptionStart *)e.get_message(0);
+bool Client::ProcessPendingMessage()
+{
+    bool result = false;
+    Envelope e;
 
-            SubscriptionCallback cb = this->subscriptions[start->id()];
+    vector<message_t *> messages;
+    if (!zeromq::receive_multipart_message(this->client_sock, messages)) {
+        result = false;
+        goto CLEANUP;
+    }
 
-            for (size_t i = 1; i < e.number_messages(); i++) {
-                switch (e.message_type(i)) {
-                    case protocol::StoreChangeBucketAdded::zippylog_enumeration:
-                        if (cb.BucketAdded) {
-                            protocol::StoreChangeBucketAdded *added = (protocol::StoreChangeBucketAdded *)e.get_message(i);
-                            cb.BucketAdded(start->id(), *added);
-                            delete added;
-                        }
-                        break;
-                    case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
-                        if (cb.BucketDeleted) {
-                            protocol::StoreChangeBucketDeleted *deleted = (protocol::StoreChangeBucketDeleted *)e.get_message(i);
-                            cb.BucketDeleted(start->id(), *deleted);
-                            delete deleted;
-                        }
-                        break;
+    // first message is an empty message. we delete it
+    messages.erase(messages.begin());
 
-                    case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
-                        if (cb.StreamSetAdded) {
-                            protocol::StoreChangeStreamSetAdded *added = (protocol::StoreChangeStreamSetAdded *)e.get_message(i);
-                            cb.StreamSetAdded(start->id(), *added);
-                            delete added;
-                        }
-                        break;
+    assert(messages.size() > 0);
 
-                    case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
-                        if (cb.StreamSetDeleted) {
-                            protocol::StoreChangeStreamSetDeleted *deleted = (protocol::StoreChangeStreamSetDeleted *)e.get_message(i);
-                            cb.StreamSetDeleted(start->id(), *deleted);
-                            delete deleted;
-                        }
-                        break;
+    e = Envelope(messages[0]);
 
-                    case protocol::StoreChangeStreamAdded::zippylog_enumeration:
-                        if (cb.StreamAdded) {
-                            protocol::StoreChangeStreamAdded *added = (protocol::StoreChangeStreamAdded *)e.get_message(i);
-                            cb.StreamAdded(start->id(), *added);
-                            delete added;
-                        }
-                        break;
+    // that's most weird
+    if (e.MessageCount() < 1) {
+        result = false;
+        goto CLEANUP;
+    }
 
-                    case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
-                        if (cb.StreamDeleted) {
-                            protocol::StoreChangeStreamDeleted *deleted = (protocol::StoreChangeStreamDeleted *)e.get_message(i);
-                            cb.StreamDeleted(start->id(), *deleted);
-                            delete deleted;
-                        }
-                        break;
+    // first message is always in the zippylog namespace
+    if (e.MessageNamespace(0) != 1) {
+        result = false;
+        goto CLEANUP;
+    }
 
-                    case protocol::StoreChangeStreamAppended::zippylog_enumeration:
-                        if (cb.StreamAppended) {
-                            protocol::StoreChangeStreamAppended *appended = (protocol::StoreChangeStreamAppended *)e.get_message(i);
-                            cb.StreamAppended(start->id(), *appended);
-                            delete appended;
-                        }
-                        break;
+    // two major branches follow the division in message types:
+    //   1) those that follow strict request-reply
+    //   2) subscription responses
 
-                    default:
-                        break;
-                }
+    switch (e.MessageType(0)) {
+        // beginning of data in response to a subscription
+        case protocol::response::SubscriptionStart::zippylog_enumeration:
+        {
+            protocol::response::SubscriptionStart *start =
+                (protocol::response::SubscriptionStart *)e.get_message(0);
+
+            if (!this->ValidateSubscriptionStart(*start)) {
+                delete start;
+                result = false;
+                goto CLEANUP;
             }
 
+            messages.pop_back();
+            result = this->HandleSubscriptionResponse(e, *start, messages);
+            delete start;
+            goto CLEANUP;
+            break;
+        }
+
+        case protocol::StoreInfo::zippylog_enumeration:
+        case protocol::response::StreamSegmentStart::zippylog_enumeration:
+        case protocol::response::SubscribeAck::zippylog_enumeration:
+            result = this->HandleRequestResponse(e, messages);
+            break;
+
+        default:
+            // TODO log here or something
+            break;
+    }
+
+CLEANUP:
+    for (vector<message_t *>::iterator i = messages.begin(); i != messages.end(); i++) {
+        delete *i;
+    }
+
+    return result;
+}
+
+bool Client::ValidateSubscriptionStart(SubscriptionStart &start)
+{
+    if (!start.has_id()) return false;
+
+    return this->HasSubscription(start.id());
+}
+
+bool Client::HasSubscription(const string &id)
+{
+    map<string, Subscription>::iterator iter = this->subscriptions.find(id);
+
+    return iter != this->subscriptions.end();
+}
+
+bool Client::CancelAllSubscriptions()
+{
+    map<string, Subscription>::iterator iter = this->subscriptions.begin();
+    for (; iter != subscriptions.end(); iter++) {
+        this->CancelSubscription(iter->first);
+    }
+
+    return true;
+}
+
+bool Client::CancelSubscription(const string &id)
+{
+    return false;
+}
+
+bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, vector<message_t *> &messages)
+{
+    map<string, Subscription>::iterator iter = this->subscriptions.find(start.id());
+    // subscription could have disappeared since it was validated
+    if (iter == this->subscriptions.end()) return false;
+
+    SubscriptionCallback cb = iter->second.cb;
+
+    for (size_t i = 1; i < e.number_messages(); i++) {
+        switch (e.message_type(i)) {
+            case protocol::StoreChangeBucketAdded::zippylog_enumeration:
+                if (cb.BucketAdded) {
+                    protocol::StoreChangeBucketAdded *added = (protocol::StoreChangeBucketAdded *)e.get_message(i);
+                    cb.BucketAdded(start.id(), *added);
+                    delete added;
+                }
+                break;
+            case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
+                if (cb.BucketDeleted) {
+                    protocol::StoreChangeBucketDeleted *deleted = (protocol::StoreChangeBucketDeleted *)e.get_message(i);
+                    cb.BucketDeleted(start.id(), *deleted);
+                    delete deleted;
+                }
+                break;
+
+            case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
+                if (cb.StreamSetAdded) {
+                    protocol::StoreChangeStreamSetAdded *added = (protocol::StoreChangeStreamSetAdded *)e.get_message(i);
+                    cb.StreamSetAdded(start.id(), *added);
+                    delete added;
+                }
+                break;
+
+            case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
+                if (cb.StreamSetDeleted) {
+                    protocol::StoreChangeStreamSetDeleted *deleted = (protocol::StoreChangeStreamSetDeleted *)e.get_message(i);
+                    cb.StreamSetDeleted(start.id(), *deleted);
+                    delete deleted;
+                }
+                break;
+
+            case protocol::StoreChangeStreamAdded::zippylog_enumeration:
+                if (cb.StreamAdded) {
+                    protocol::StoreChangeStreamAdded *added = (protocol::StoreChangeStreamAdded *)e.get_message(i);
+                    cb.StreamAdded(start.id(), *added);
+                    delete added;
+                }
+                break;
+
+            case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+                if (cb.StreamDeleted) {
+                    protocol::StoreChangeStreamDeleted *deleted = (protocol::StoreChangeStreamDeleted *)e.get_message(i);
+                    cb.StreamDeleted(start.id(), *deleted);
+                    delete deleted;
+                }
+                break;
+
+            case protocol::StoreChangeStreamAppended::zippylog_enumeration:
+                if (cb.StreamAppended) {
+                    protocol::StoreChangeStreamAppended *appended = (protocol::StoreChangeStreamAppended *)e.get_message(i);
+                    cb.StreamAppended(start.id(), *appended);
+                    delete appended;
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
     return true;
 }
 
-bool Client::HasMore()
+bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
 {
-    int64 more;
-    size_t moresz = sizeof(more);
+    // all requests are tagged with a request identifier, so ignore any responses
+    // not for a known tag
 
-    this->_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-    return more > 0;
-}
+    if (!e.envelope.tag_size()) {
+        throw "received response with no tag to match to request";
+    }
 
-bool Client::ReadFirstEnvelope(Envelope &envelope)
-{
-    message_t empty;
-    if (!this->_sock->recv(&empty, 0)) return false;
+    string id = e.envelope.tag(0);
 
-    assert(empty.size() == 0);
+    // try to find the outstanding request
+    map<string, OutstandingRequest>::iterator iter = this->outstanding.find(id);
 
-    return this->ReadEnvelope(envelope);
-}
+    // this is most weird
+    // TODO is an exception always correct? what about a client that restarts
+    // with same identity?
+    if (iter == this->outstanding.end()) {
+        throw "received a response to an unknown outstanding request";
+    }
 
-bool Client::ReadEnvelope(zippylog::Envelope &envelope)
-{
-    message_t res;
-    if (!this->_sock->recv(&res, 0)) return false;
+    OutstandingRequest req = iter->second;
 
-    return envelope.merge_from_zmq_message(&res);
-}
+    switch (e.MessageType(0)) {
+        case protocol::StoreInfo::zippylog_enumeration:
+        {
+            assert(req.cb_store_info);
+            protocol::StoreInfo *info = (protocol::StoreInfo *)e.get_message(0);
 
-bool Client::ReadOutMultipart()
-{
-    while (this->HasMore()) {
-        Envelope temp = Envelope();
-        if (!this->ReadEnvelope(temp)) {
-            return false;
+            req.cb_store_info(*info, req.data);
+            delete info;
+
+            return true;
         }
+
+        case protocol::response::StreamSegmentStart::zippylog_enumeration:
+        {
+            assert(req.cb_stream_segment);
+
+            // TODO more robust parsing
+            protocol::response::StreamSegmentStart *start =
+                (protocol::response::StreamSegmentStart *)e.get_message(0);
+
+            StreamSegment segment;
+            segment.SetPath(start->path());
+            segment.SetStartOffset(start->offset());
+
+            Envelope footer = messages[messages.size() - 1];
+
+            protocol::response::StreamSegmentEnd *end =
+                (protocol::response::StreamSegmentEnd *)footer.get_message(0);
+
+            segment.SetEndOffset(end->offset());
+            segment.SetBytesSent(end->bytes_sent());
+            segment.SetEnvelopesSent(end->envelopes_sent());
+
+            for (size_t i = 0; i < messages.size() - 1; i++) {
+                Envelope payload = Envelope(messages[i]);
+                segment.AddEnvelope(payload);
+            }
+
+            req.cb_stream_segment(start->path(), start->offset(), segment, req.data);
+
+            delete start;
+            delete end;
+
+            return true;
+        }
+
+        case protocol::response::SubscribeAck::zippylog_enumeration:
+        {
+            protocol::response::SubscribeAck *ack =
+                (protocol::response::SubscribeAck *)e.get_message(0);
+
+            string id = ack->id();
+
+            Subscription sub;
+            sub.cb = req.subscription_callback;
+            sub.id = id;
+
+            uint32 ttl = ack->ttl() * 1000000;
+            if (ttl < this->subscription_renewal_offset) {
+                throw "subscription TTL less than configured time offset";
+            }
+
+            sub.expiration_timer = platform::Timer(ttl * 1000000 - this->subscription_renewal_offset);
+            sub.expiration_timer.Start();
+
+            this->subscriptions[id] = sub;
+
+            delete ack;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/*
+bool Client::AutoRenewSubscriptions()
+{
+    map<string, platform::Timer>::iterator iter = this->subscription_timers.begin();
+
+    for (; iter != this->subscription_timers.end(); iter++) {
+        if (!iter->second.Signaled()) continue;
+
+        protocol::request::SubscribeKeepalive msg = protocol::request::SubscribeKeepalive();
+        msg.set_id(iter->first);
+
+        Envelope e = Envelope();
+        msg.add_to_envelope(&e);
+
+        this->_send_envelope(e);
     }
 
     return true;
 }
+*/
 
-bool Client::_send_envelope(::zippylog::Envelope &envelope)
-{
-    return zeromq::send_envelope_xreq(this->_sock, envelope);
-}
+
 
 StreamSegment::StreamSegment()
 {
@@ -334,6 +503,18 @@ SubscriptionCallback::SubscriptionCallback()
     this->StreamAdded = NULL;
     this->StreamDeleted = NULL;
     this->StreamAppended = NULL;
+    this->StoreInfo = NULL;
+}
+
+OutstandingRequest::OutstandingRequest()
+{
+    this->cb_store_info = NULL;
+    this->cb_stream_segment = NULL;
+}
+
+Subscription::Subscription()
+{
+
 }
 
 }} // namespaces

@@ -17,7 +17,9 @@
 
 #include <zippylog/zippylog.h>
 #include <zippylog/envelope.hpp>
+#include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
+#include <zippylog/protocol/response.pb.h>
 
 #include <map>
 #include <string>
@@ -28,11 +30,14 @@ namespace zippylog {
 namespace client {
 
 using protocol::StoreInfo;
+using protocol::response::SubscriptionStart;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zmq::socket_t;
 using ::zmq::context_t;
+using ::zmq::message_t;
+using ::zmq::pollitem_t;
 using ::zippylog::Envelope;
 
 /*
@@ -77,6 +82,13 @@ typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::St
 typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &);
 typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &);
 
+// callback executed when a store info response is received
+typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
+
+// executed when a stream segment is received
+// invoked with the path, start offset, and the data in that segment
+typedef void (__stdcall * StreamSegmentCallback)(const string &, uint64, StreamSegment &, void *);
+
 // The SubscriptionCallback defines the set of function callbacks for a
 // subscription. Not all callback types are valid for every subscription
 // type.
@@ -93,33 +105,109 @@ public:
     StoreChangeBucketDeletedCallback    BucketDeleted;
     StoreChangeStreamSetAddedCallback   StreamSetAdded;
     StoreChangeStreamSetDeletedCallback StreamSetDeleted;
+    StoreInfoCallback                   StoreInfo;
 };
 
+// represents a client subscription
+class Subscription {
+public:
+    Subscription();
+
+    friend class Client;
+protected:
+    string id;
+
+    platform::Timer expiration_timer;
+
+    SubscriptionCallback cb;
+};
+
+// keeps track of requests sent whose replies have not yet been seen
+class OutstandingRequest {
+public:
+    OutstandingRequest();
+
+    friend class Client;
+
+protected:
+    string id;
+
+    StoreInfoCallback cb_store_info;
+    StreamSegmentCallback cb_stream_segment;
+    SubscriptionCallback subscription_callback;
+
+    void *data;
+};
+
+// Client instances talk to zippylog servers
 class ZIPPYLOG_EXPORT Client {
     public:
         // establish a client and bind to the location specified
-        Client(context_t *ctx, string bind);
+        Client(context_t *ctx, const string &connect);
         ~Client();
 
-        bool StoreInfo(StoreInfo &info);
-        bool Get(const string path, uint64 start_offset, StreamSegment &segment);
-        bool Get(const string path, uint64 start_offset, uint64 stop_offset, StreamSegment &segment);
-        bool Get(const string path, uint64 start_offset, uint32 max_response_bytes, StreamSegment &segment);
+        // Asynchronously obtain the store info. Executes supplied callback when store
+        // info available
+        bool StoreInfo(StoreInfoCallback callback, void *data = NULL);
 
-        bool SubscribeStoreChanges(const string path, SubscriptionCallback &callback);
-        bool WaitAndProcessMessage();
+        // Cancels the subscription with specified ID
+        bool CancelSubscription(const string &id);
+
+        // cancels all subscriptions registered with the client
+        bool CancelAllSubscriptions();
+
+        // Whether the client has a subscription with the specified subscription ID
+        bool HasSubscription(const string &id);
+
+        // Waits up to N microseconds for response messages to arrive and process
+        // any that arrive. Returns whether messages were processed
+        // callers will likely want to call this function in an event loop
+        bool TryProcessMessages(uint32 timeout);
+
+        bool Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data = NULL);
+
+        // Subscribe to store change events
+        // This subscribes to events that describe the store, not envelopes in
+        // streams. For that, use one of the other Subscribe* functions.
+        //
+        // The first argument is the path in the store to subscribe to. To
+        // subscribe to all paths, set this path to "/".
+        //
+        // The subscription will receive notifications for numerous store
+        // change events. However, unless your SubscriptionCallback defines
+        // functions for all of them, some events will be dropped by the client.
+        bool SubscribeStoreChanges(const string &path, SubscriptionCallback &callback, void *data = NULL);
 
     protected:
-        socket_t *_sock;
+        // socket connect to server
+        socket_t *client_sock;
 
-        bool _send_envelope(Envelope &envelope);
-        bool ReadEnvelope(Envelope &envelope);
-        bool ReadFirstEnvelope(Envelope &envelope);
-        bool ReceiveAndProcessGet(StreamSegment &segment);
-        bool HasMore();
-        bool ReadOutMultipart();
+        map<string, Subscription> subscriptions;
+        map<string, OutstandingRequest> outstanding;
 
-        map<string, SubscriptionCallback> subscriptions;
+        pollitem_t * pollitem;
+
+        uint32 subscription_renewal_offset;
+
+        bool SendRequest(Envelope &e, OutstandingRequest &req);
+
+        // processe an individual pending zeromq message on the socket
+        // this function assumes messages are available
+        // pending message could be multipart
+        bool ProcessPendingMessage();
+
+        // validates that a received SubscriptionStart message is OK
+        // returns false if we don't know how to handle message fields or if
+        // we don't know about the subscription
+        bool ValidateSubscriptionStart(SubscriptionStart &start);
+
+        // handles a response to a subscription
+        bool HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, vector<message_t *> &msgs);
+
+        // handles a response to a normal/outstanding request
+        bool HandleRequestResponse(Envelope &e, vector<message_t *> &msgs);
 };
 
 }} // namespaces
