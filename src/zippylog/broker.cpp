@@ -71,14 +71,35 @@ Broker::Broker(const string config_file_path)
     this->store = new Store(this->config.store_path);
 }
 
+Broker::Broker(const Broker & orig)
+{
+    throw "can not copy Broker instances";
+}
+
+Broker & Broker::operator=(const Broker & orig)
+{
+    throw "cannot assign Broker instances";
+}
+
 Broker::~Broker()
 {
-    if (this->zctx) delete this->zctx;
+    if (this->workers_sock) delete this->workers_sock;
+    if (this->clients_sock) delete this->clients_sock;
+    if (this->streaming_sock) delete this->streaming_sock;
+    if (this->worker_subscriptions_sock) delete this->worker_subscriptions_sock;
+    if (this->streaming_subscriptions_sock) delete this->streaming_subscriptions_sock;
+    if (this->worker_streaming_notify_sock) delete this->worker_streaming_notify_sock;
+    if (this->streaming_streaming_notify_sock) delete this->streaming_streaming_notify_sock;
+    if (this->logger_sock) delete this->logger_sock;
+    if (this->log_client_sock) delete this->log_client_sock;
+
     if (this->worker_start_data) delete this->worker_start_data;
     if (this->store_watcher_start) delete this->store_watcher_start;
     if (this->streaming_thread_data) delete this->streaming_thread_data;
 
-    // TODO clean up store if it was allocated by us
+    if (this->store) delete this->store;
+
+    if (this->zctx) delete this->zctx;
 }
 
 void Broker::init()

@@ -69,6 +69,8 @@ typedef struct streaming_start_data {
 class ZIPPYLOG_EXPORT Broker {
     public:
         Broker(const string config_file_path);
+        Broker(const Broker &orig);
+        Broker & operator=(const Broker &orig);
         ~Broker();
 
         void run();
