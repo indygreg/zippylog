@@ -12,11 +12,14 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "zippylog/zippylog.h"
+#include <zippylog/zippylog.h>
+#include <zippylog/message_registrar.hpp>
 
 #include <google/protobuf/stubs/common.h>
 
 void zippylog_shutdown()
 {
     ::google::protobuf::ShutdownProtobufLibrary();
+
+    ::zippylog::MessageRegistrar::instance()->Cleanup();
 }
