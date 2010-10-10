@@ -180,9 +180,14 @@ OutputStream::OutputStream(const string file)
 
 OutputStream::~OutputStream()
 {
-    this->os->Close();
-    delete this->os;
+    // we must delete the coded output stream first, so it returns unused
+    // buffer to output stream
     delete this->cos;
+
+    // we close the output stream manually, which incurs a flush
+    this->os->Close();
+
+    delete this->os;
 }
 
 bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)

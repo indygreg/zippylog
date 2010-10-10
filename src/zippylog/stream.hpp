@@ -58,6 +58,17 @@ class ZIPPYLOG_EXPORT InputStream {
 
 };
 
+// A stream used for writing data
+// Currently, OutputStream's are not thread safe. In fact, multiple instances
+// pointing to the same file are not safe. The reason is buffering.
+// Currently, the protocol buffers output streams buffer data before it is
+// written to an underlying file descriptor. Flushes don't necessarily occur
+// at boundaries we desire. If multiple output streams are writing to the same
+// file, for example, a partial envelope could be flushed by one and another
+// could write out a full envelope shortly thereafter, corrupting the stream.
+//
+// In a nutshell, only allow one OutputStream per output file globally
+// TODO establish better sanity around output stream usage
 class ZIPPYLOG_EXPORT OutputStream {
     public:
         // opens an output stream (always appends)
