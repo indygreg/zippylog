@@ -243,7 +243,7 @@ void * __stdcall Request::request_processor(void *data)
 
             case Request::PROCESS_GET:
             {
-                Message *msg = request_envelope.get_message(0);
+                Message *msg = request_envelope.GetMessage(0);
                 if (!msg) {
                     ::zippylog::zippylogd::WorkerReceiveInvalidGet log = ::zippylog::zippylogd::WorkerReceiveInvalidGet();
                     LOG_MESSAGE(log, logger_sock);
@@ -262,7 +262,6 @@ void * __stdcall Request::request_processor(void *data)
                     error_code = protocol::response::EMPTY_FIELD;
                     error_message = "required field 'path' is empty";
                     state = Request::SEND_ERROR_RESPONSE;
-                    delete get;
                     break;
                 }
 
@@ -273,7 +272,6 @@ void * __stdcall Request::request_processor(void *data)
                     error_code = protocol::response::EMPTY_FIELD;
                     error_message = "required field 'start_offset' is not defined";
                     state = Request::SEND_ERROR_RESPONSE;
-                    delete get;
                     break;
                 }
 
@@ -287,7 +285,6 @@ void * __stdcall Request::request_processor(void *data)
                     error_code = protocol::response::PATH_NOT_FOUND;
                     error_message = "requested stream could not be found";
                     state = Request::SEND_ERROR_RESPONSE;
-                    delete get;
                     break;
                 }
 
@@ -314,7 +311,6 @@ void * __stdcall Request::request_processor(void *data)
                     error_code = protocol::response::PATH_NOT_FOUND;
                     error_message = "no envelopes found at stream offset";
                     state = Request::SEND_ERROR_RESPONSE;
-                    delete get;
                     break;
                 }
 
@@ -374,7 +370,7 @@ void * __stdcall Request::request_processor(void *data)
             case Request::PROCESS_SUBSCRIBE_STORE_CHANGES:
             {
                 protocol::request::SubscribeStoreChanges *m =
-                    (protocol::request::SubscribeStoreChanges *)request_envelope.get_message(0);
+                    (protocol::request::SubscribeStoreChanges *)request_envelope.GetMessage(0);
 
                 // TODO validation
 
@@ -393,7 +389,7 @@ void * __stdcall Request::request_processor(void *data)
             case Request::PROCESS_SUBSCRIBE_ENVELOPES:
             {
                 protocol::request::SubscribeEnvelopes *m =
-                    (protocol::request::SubscribeEnvelopes *)request_envelope.get_message(0);
+                    (protocol::request::SubscribeEnvelopes *)request_envelope.GetMessage(0);
 
                 // TODO validation
 
@@ -410,7 +406,7 @@ void * __stdcall Request::request_processor(void *data)
             case Request::PROCESS_SUBSCRIBE_KEEPALIVE:
             {
                 protocol::request::SubscribeKeepalive *m =
-                    (protocol::request::SubscribeKeepalive *)request_envelope.get_message(0);
+                    (protocol::request::SubscribeKeepalive *)request_envelope.GetMessage(0);
 
                 // TODO validation
 

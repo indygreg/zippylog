@@ -173,10 +173,9 @@ void Streamer::Run()
 
             if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
                 protocol::request::SubscribeKeepalive *m =
-                    (protocol::request::SubscribeKeepalive *)e.get_message(0);
+                    (protocol::request::SubscribeKeepalive *)e.GetMessage(0);
 
                 string id = m->id();
-                delete m;
 
                 StreamerReceiveKeepalive log = StreamerReceiveKeepalive();
                 log.set_subscription(id);
@@ -294,7 +293,7 @@ void Streamer::Run()
 void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
 {
     protocol::request::SubscribeStoreChanges *m =
-        (protocol::request::SubscribeStoreChanges *)e.get_message(0);
+        (protocol::request::SubscribeStoreChanges *)e.GetMessage(0);
 
     SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
     subscription.type = SubscriptionInfo.STORE_CHANGE;
@@ -302,8 +301,6 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
     for (int i = 0; i < m->path_size(); i++) {
         subscription.paths.push_back(m->path(i));
     }
-
-    delete m;
 
     subscription.socket_identifiers = identities;
 
@@ -319,7 +316,7 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
 void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
 {
     protocol::request::SubscribeEnvelopes *m =
-        (protocol::request::SubscribeEnvelopes *)e.get_message(0);
+        (protocol::request::SubscribeEnvelopes *)e.GetMessage(0);
 
     SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
     subscription.type = subscription.ENVELOPE;
@@ -327,8 +324,6 @@ void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities
     for (int i = 0; i < m->path_size(); i++) {
         subscription.paths.push_back(m->path(i));
     }
-
-    delete m;
 
     subscription.socket_identifiers = identities;
 
@@ -356,9 +351,8 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     switch (e.MessageType(0)) {
         case protocol::StoreChangeBucketAdded::zippylog_enumeration:
         {
-            protocol::StoreChangeBucketAdded *m = (protocol::StoreChangeBucketAdded *)e.get_message(0);
+            protocol::StoreChangeBucketAdded *m = (protocol::StoreChangeBucketAdded *)e.GetMessage(0);
             bucket = m->bucket();
-            delete m;
 
             path = Store::BucketPath(bucket);
         }
@@ -366,9 +360,8 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
         {
-            protocol::StoreChangeBucketDeleted *m = (protocol::StoreChangeBucketDeleted *)e.get_message(0);
+            protocol::StoreChangeBucketDeleted *m = (protocol::StoreChangeBucketDeleted *)e.GetMessage(0);
             bucket = m->bucket();
-            delete m;
 
             path = Store::BucketPath(bucket);
         }
@@ -376,11 +369,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamSetAdded *m = (protocol::StoreChangeStreamSetAdded *)e.get_message(0);
+            protocol::StoreChangeStreamSetAdded *m = (protocol::StoreChangeStreamSetAdded *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
-
-            delete m;
 
             path = Store::StreamsetPath(bucket, stream_set);
         }
@@ -388,10 +379,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamSetDeleted *m = (protocol::StoreChangeStreamSetDeleted *)e.get_message(0);
+            protocol::StoreChangeStreamSetDeleted *m = (protocol::StoreChangeStreamSetDeleted *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
-            delete m;
 
             path = Store::StreamsetPath(bucket, stream_set);
         }
@@ -399,12 +389,11 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeStreamAppended::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamAppended *m = (protocol::StoreChangeStreamAppended *)e.get_message(0);
+            protocol::StoreChangeStreamAppended *m = (protocol::StoreChangeStreamAppended *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
             stream_length = m->length();
-            delete m;
 
             process_envelopes = true;
             path = Store::StreamPath(bucket, stream_set, stream);
@@ -413,11 +402,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeStreamAdded::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamAdded *m = (protocol::StoreChangeStreamAdded *)e.get_message(0);
+            protocol::StoreChangeStreamAdded *m = (protocol::StoreChangeStreamAdded *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
-            delete m;
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
@@ -427,11 +415,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
         case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamDeleted *m = (protocol::StoreChangeStreamDeleted *)e.get_message(0);
+            protocol::StoreChangeStreamDeleted *m = (protocol::StoreChangeStreamDeleted *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
-            delete m;
 
             path = Store::StreamPath(bucket, stream_set, stream);
         }
