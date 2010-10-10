@@ -206,7 +206,7 @@ void Broker::run()
             while (true) {
                 if (!this->logger_sock->recv(&msg, 0)) break;
 
-                this->store->WriteData(this->config.log_bucket, this->config.log_stream_set, msg.data(), msg.size());
+                this->store->WriteEnvelope(this->config.log_bucket, this->config.log_stream_set, msg.data(), msg.size());
 
                 // TODO this is mostly for debugging purposes and should be implemented another way
                 // once the project has matured
@@ -316,7 +316,7 @@ void Broker::run()
 
             // TODO figure out how Protocol Buffer I/O flushing works
             // specifically, why it is flushing 8k when there isn't 8k of data
-            //this->store->FlushOutputStreams();
+            this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
                 throw "could not restart stream flush timer";
             }
