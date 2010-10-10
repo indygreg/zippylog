@@ -229,6 +229,8 @@ bool OutputStream::Flush()
     bool result = this->os->Flush();
     this->cos = new CodedOutputStream(this->os);
 
+    // TODO consider using unbuffered I/O for the created file instead
+    // of forcing a file descriptor flush
     return platform::FlushFile(this->file) && result;
 }
 
