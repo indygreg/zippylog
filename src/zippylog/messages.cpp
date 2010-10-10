@@ -60,6 +60,7 @@ namespace zippylog {
         registrar->register_message(1, 10, new ::zippylog::protocol::request::StoreInfo());
         registrar->register_message(1, 11, new ::zippylog::protocol::request::Get());
         registrar->register_message(1, 22, new ::zippylog::protocol::request::SubscribeStoreChanges());
+        registrar->register_message(1, 54, new ::zippylog::protocol::request::SubscribeEnvelopes());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());
         registrar->register_message(1, 25, new ::zippylog::protocol::request::SubscribeCancel());
         // @@protoc_insertion_point(message_registration)

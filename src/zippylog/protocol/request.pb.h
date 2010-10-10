@@ -38,6 +38,7 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
 class StoreInfo;
 class Get;
 class SubscribeStoreChanges;
+class SubscribeEnvelopes;
 class SubscribeKeepalive;
 class SubscribeCancel;
 
@@ -337,6 +338,107 @@ class SubscribeStoreChanges : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static SubscribeStoreChanges* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SubscribeEnvelopes : public ::google::protobuf::Message {
+ public:
+  SubscribeEnvelopes();
+  virtual ~SubscribeEnvelopes();
+  
+  SubscribeEnvelopes(const SubscribeEnvelopes& from);
+  
+  inline SubscribeEnvelopes& operator=(const SubscribeEnvelopes& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SubscribeEnvelopes& default_instance();
+  
+  void Swap(SubscribeEnvelopes* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SubscribeEnvelopes* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SubscribeEnvelopes& from);
+  void MergeFrom(const SubscribeEnvelopes& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated string path = 1;
+  inline int path_size() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path(int index) const;
+  inline ::std::string* mutable_path(int index);
+  inline void set_path(int index, const ::std::string& value);
+  inline void set_path(int index, const char* value);
+  inline void set_path(int index, const char* value, size_t size);
+  inline ::std::string* add_path();
+  inline void add_path(const ::std::string& value);
+  inline void add_path(const char* value);
+  inline void add_path(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 54;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeEnvelopes)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::RepeatedPtrField< ::std::string> path_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static SubscribeEnvelopes* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -660,6 +762,54 @@ SubscribeStoreChanges::path() const {
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 SubscribeStoreChanges::mutable_path() {
+  return &path_;
+}
+
+// -------------------------------------------------------------------
+
+// SubscribeEnvelopes
+
+// repeated string path = 1;
+inline int SubscribeEnvelopes::path_size() const {
+  return path_.size();
+}
+inline void SubscribeEnvelopes::clear_path() {
+  path_.Clear();
+}
+inline const ::std::string& SubscribeEnvelopes::path(int index) const {
+  return path_.Get(index);
+}
+inline ::std::string* SubscribeEnvelopes::mutable_path(int index) {
+  return path_.Mutable(index);
+}
+inline void SubscribeEnvelopes::set_path(int index, const ::std::string& value) {
+  path_.Mutable(index)->assign(value);
+}
+inline void SubscribeEnvelopes::set_path(int index, const char* value) {
+  path_.Mutable(index)->assign(value);
+}
+inline void SubscribeEnvelopes::set_path(int index, const char* value, size_t size) {
+  path_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscribeEnvelopes::add_path() {
+  return path_.Add();
+}
+inline void SubscribeEnvelopes::add_path(const ::std::string& value) {
+  path_.Add()->assign(value);
+}
+inline void SubscribeEnvelopes::add_path(const char* value) {
+  path_.Add()->assign(value);
+}
+inline void SubscribeEnvelopes::add_path(const char* value, size_t size) {
+  path_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+SubscribeEnvelopes::path() const {
+  return path_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+SubscribeEnvelopes::mutable_path() {
   return &path_;
 }
 

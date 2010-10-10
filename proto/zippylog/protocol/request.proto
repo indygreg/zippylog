@@ -33,6 +33,16 @@ message SubscribeStoreChanges {
     repeated string path = 1;
 }
 
+// subscribes to newly-written envelopes
+message SubscribeEnvelopes {
+    // list of store paths to subscribe to
+    // this can be individual streams, stream sets, buckets, or the entire
+    // store ("/")
+    repeated string path = 1;
+
+    // TODO add filtering
+}
+
 // clients need to send keepalive messages every N seconds or the server drops
 // the subscription. this is that keepalive message
 message SubscribeKeepalive {
