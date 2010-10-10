@@ -224,6 +224,29 @@ bool Store::StreamsetPaths(vector<string> &paths)
     return true;
 }
 
+bool Store::StreamPaths(vector<string> &paths)
+{
+    paths.clear();
+
+    vector<string> buckets;
+    this->BucketNames(buckets);
+    for (vector<string>::iterator bucket = buckets.begin(); bucket != buckets.end(); bucket++) {
+        vector<string> sets;
+        this->StreamSetNames(*bucket, sets);
+
+        for (vector<string>::iterator set = sets.begin(); set != sets.end(); set++) {
+            vector<string> p;
+            this->StreamNames(*bucket, *set, p);
+
+            for (vector<string>::iterator stream = p.begin(); stream != p.end(); stream++) {
+                paths.push_back(Store::StreamPath(*bucket, *set, *stream));
+            }
+        }
+    }
+
+    return true;
+}
+
 bool Store::StreamLength(const string path, int64 &length)
 {
     if (!ValidatePath(path)) return false;
