@@ -378,6 +378,14 @@ bool Store::WriteEnvelope(const string bucket, const string set, Envelope &e, in
     return os.stream->WriteEnvelope(e);
 }
 
+bool Store::WriteEnvelope(const string &bucket, const string &set, const void *data, int length, int64 time)
+{
+    OpenOutputStream os;
+    if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) return false;
+
+    return os.stream->WriteEnvelope(data, length);
+}
+
 bool Store::WriteData(const string bucket, const string set, const void *data, int length, int64 time)
 {
     OpenOutputStream os;

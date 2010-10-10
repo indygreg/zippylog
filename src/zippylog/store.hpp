@@ -115,6 +115,7 @@ class ZIPPYLOG_EXPORT Store {
         // Writes an envelope calculating the stream based on the time
         // if no time parameter is defined, time is assumed to be now()
         bool WriteEnvelope(const string bucket, const string set, Envelope &e, int64 time=-1);
+        bool WriteEnvelope(const string &bucket, const string &set, const void *data, int length, int64 time=-1);
 
         bool WriteData(const string bucket, const string set, const void *data, int length, int64 time=-1);
         bool WriteString(const string bucket, const string set, const string &s, int64 time=-1);
@@ -123,6 +124,12 @@ class ZIPPYLOG_EXPORT Store {
         static string StreamNameForTime(int64 time, int seconds_per_file);
         static string StreamNameForTime(platform::Time &time, int seconds_per_file);
 
+        // flushes all registered output streams
+        // output streams will cache data in an im-memory buffer. when the
+        // buffer is full, it will then write to the underlying file
+        // descriptor. This API not only forces the buffer to write to
+        // the file descriptor but also calls the system API to flush the
+        // descriptor to its backing store.
         bool FlushOutputStreams();
 
     protected:
