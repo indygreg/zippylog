@@ -50,7 +50,8 @@ class ZIPPYLOG_EXPORT InputStream {
         bool Seek(int64 offset);
 
     private:
-        int _fd;
+        platform::File file;
+
         FileInputStream *_is;
         CodedInputStream *_cis;
         bool _have_next_size;

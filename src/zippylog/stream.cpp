@@ -16,21 +16,10 @@
 
 #include <zippylog/platform.hpp>
 
-#include <io.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#ifdef WIN32
-#define lseek64 _lseeki64
-#define open _open
-#endif
-
 namespace zippylog {
 
 InputStream::InputStream()
 {
-    this->_fd = -1;
     this->_cis = NULL;
     this->_is = NULL;
 }
@@ -45,32 +34,26 @@ InputStream::InputStream(string file, int64 seek_bytes)
 InputStream::~InputStream() {
     delete this->_cis;
     delete this->_is;
-    //_close(this->_fd);
 }
 
 bool InputStream::OpenFile(string file, int64 start_offset)
 {
-    if (this->_fd >= 0) {
-        _close(this->_fd);
-        this->_fd = -1;
-    }
+    platform::FileClose(this->file);
 
     if (this->_cis) delete this->_cis;
     if (this->_is) delete this->_is;
     this->_have_next_size = false;
     this->_next_envelope_size = 0;
 
-    this->_fd = open(file.c_str(), O_RDONLY | O_BINARY);
-    if (this->_fd < 0) {
-        GOOGLE_LOG(FATAL) << "could not open file for reading: " << file;
+    if (!platform::OpenFile(this->file, file, platform::READ | platform::BINARY)) {
         return false;
     }
 
     if (start_offset > 0) {
-        lseek64(this->_fd, start_offset, SEEK_SET);
+        if (!platform::FileSeek(this->file, start_offset)) return false;
     }
 
-    this->_is = new FileInputStream(this->_fd);
+    this->_is = new FileInputStream(this->file.fd);
     this->_cis = new CodedInputStream(this->_is);
 
     if (start_offset == 0) {
@@ -140,12 +123,12 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 
 bool InputStream::Seek(int64 offset)
 {
+    if (!platform::FileSeek(this->file, offset)) return false;
+
     delete this->_cis;
     delete this->_is;
 
-    lseek(this->_fd, offset, SEEK_SET);
-
-    this->_is = new FileInputStream(this->_fd);
+    this->_is = new FileInputStream(this->file.fd);
     this->_cis = new CodedInputStream(this->_is);
 
     return true;
@@ -157,8 +140,6 @@ OutputStream::OutputStream(const string file)
     if (!platform::OpenFile(this->file, file,
         platform::CREATE | platform::APPEND | platform::WRITE))
     {
-        char error[8192];
-        windows_error(&error[0], 8192);
         throw "could not open file";
     }
 
@@ -170,12 +151,7 @@ OutputStream::OutputStream(const string file)
     // this is a new file, so we need to write out the version
     if (!stat.size) {
         char version = 0x01;
-        if (write(this->file.fd, &version, 1) != 1) {
-            int error;
-            _get_errno(&error);
-            char *errs = strerror(error);
-            char doserror[1024];
-            windows_error(&doserror[0], 1024);
+        if (!platform::FileWrite(this->file, &version, 1)) {
             throw "could not write version byte to stream";
         }
     }
@@ -246,7 +222,3 @@ bool OutputStream::Flush()
 }
 
 } // namespace
-
-#ifdef WIN32
-#undef lseek64
-#endif
