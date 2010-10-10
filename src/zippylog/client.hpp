@@ -74,13 +74,13 @@ class ZIPPYLOG_EXPORT StreamSegment {
 // callers can associate the subscription id with their own metadata
 // independent of the client API. their callbacks can fetch this data at
 // callback time.
-typedef void (__stdcall * StoreChangeStreamAddedCallback)(string, protocol::StoreChangeStreamAdded &);
-typedef void (__stdcall * StoreChangeStreamDeletedCallback)(string, protocol::StoreChangeStreamDeleted &);
-typedef void (__stdcall * StoreChangeStreamAppendedCallback)(string, protocol::StoreChangeStreamAppended &);
-typedef void (__stdcall * StoreChangeBucketAddedCallback)(string, protocol::StoreChangeBucketAdded &);
-typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::StoreChangeBucketDeleted &);
-typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &);
-typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &);
+typedef void (__stdcall * StoreChangeStreamAddedCallback)(string, protocol::StoreChangeStreamAdded &, void *);
+typedef void (__stdcall * StoreChangeStreamDeletedCallback)(string, protocol::StoreChangeStreamDeleted &, void *);
+typedef void (__stdcall * StoreChangeStreamAppendedCallback)(string, protocol::StoreChangeStreamAppended &, void *);
+typedef void (__stdcall * StoreChangeBucketAddedCallback)(string, protocol::StoreChangeBucketAdded &, void *);
+typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::StoreChangeBucketDeleted &, void *);
+typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &, void *);
+typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &, void *);
 
 // callback executed when a store info response is received
 typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
@@ -120,6 +120,8 @@ protected:
     platform::Timer expiration_timer;
 
     SubscriptionCallback cb;
+
+    void *data;
 };
 
 // keeps track of requests sent whose replies have not yet been seen

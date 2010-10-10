@@ -266,14 +266,14 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeBucketAdded::zippylog_enumeration:
                 if (cb.BucketAdded) {
                     protocol::StoreChangeBucketAdded *added = (protocol::StoreChangeBucketAdded *)e.get_message(i);
-                    cb.BucketAdded(start.id(), *added);
+                    cb.BucketAdded(start.id(), *added, iter->second.data);
                     delete added;
                 }
                 break;
             case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
                 if (cb.BucketDeleted) {
                     protocol::StoreChangeBucketDeleted *deleted = (protocol::StoreChangeBucketDeleted *)e.get_message(i);
-                    cb.BucketDeleted(start.id(), *deleted);
+                    cb.BucketDeleted(start.id(), *deleted, iter->second.data);
                     delete deleted;
                 }
                 break;
@@ -281,7 +281,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
                 if (cb.StreamSetAdded) {
                     protocol::StoreChangeStreamSetAdded *added = (protocol::StoreChangeStreamSetAdded *)e.get_message(i);
-                    cb.StreamSetAdded(start.id(), *added);
+                    cb.StreamSetAdded(start.id(), *added, iter->second.data);
                     delete added;
                 }
                 break;
@@ -289,7 +289,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
                 if (cb.StreamSetDeleted) {
                     protocol::StoreChangeStreamSetDeleted *deleted = (protocol::StoreChangeStreamSetDeleted *)e.get_message(i);
-                    cb.StreamSetDeleted(start.id(), *deleted);
+                    cb.StreamSetDeleted(start.id(), *deleted, iter->second.data);
                     delete deleted;
                 }
                 break;
@@ -297,7 +297,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeStreamAdded::zippylog_enumeration:
                 if (cb.StreamAdded) {
                     protocol::StoreChangeStreamAdded *added = (protocol::StoreChangeStreamAdded *)e.get_message(i);
-                    cb.StreamAdded(start.id(), *added);
+                    cb.StreamAdded(start.id(), *added, iter->second.data);
                     delete added;
                 }
                 break;
@@ -305,7 +305,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
                 if (cb.StreamDeleted) {
                     protocol::StoreChangeStreamDeleted *deleted = (protocol::StoreChangeStreamDeleted *)e.get_message(i);
-                    cb.StreamDeleted(start.id(), *deleted);
+                    cb.StreamDeleted(start.id(), *deleted, iter->second.data);
                     delete deleted;
                 }
                 break;
@@ -313,7 +313,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
             case protocol::StoreChangeStreamAppended::zippylog_enumeration:
                 if (cb.StreamAppended) {
                     protocol::StoreChangeStreamAppended *appended = (protocol::StoreChangeStreamAppended *)e.get_message(i);
-                    cb.StreamAppended(start.id(), *appended);
+                    cb.StreamAppended(start.id(), *appended, iter->second.data);
                     delete appended;
                 }
                 break;
@@ -405,6 +405,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             Subscription sub;
             sub.cb = req.subscription_callback;
             sub.id = id;
+            sub.data = req.data;
 
             uint32 ttl = ack->ttl() * 1000000;
             if (ttl < this->subscription_renewal_offset) {
