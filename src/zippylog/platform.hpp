@@ -49,6 +49,7 @@ ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
 
 ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
 
+// new namespace where all APIs should be
 namespace platform {
     enum FileType {
         REGULAR = 1,
@@ -89,6 +90,9 @@ namespace platform {
 
     ZIPPYLOG_EXPORT bool PathIsDirectory(const string path);
 
+    // joins two filesystem paths and returns the result
+    string PathJoin(const string &a, const string &b);
+
     typedef struct UUID {
         unsigned char data[16];
     } UUID;
@@ -114,6 +118,7 @@ namespace platform {
     };
 
     bool OpenFile(File &f, const string path, int flags);
+    bool FlushFile(File &f);
 
     // in the ideal world, timers would be represented as file descriptors and
     // we could include them in the zmq poll() event loop. this is easily done

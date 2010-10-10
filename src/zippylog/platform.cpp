@@ -260,6 +260,26 @@ bool OpenFile(File &f, const string path, int flags)
     return true;
 }
 
+bool FlushFile(File &f)
+{
+#ifdef WINDOWS
+    return FlushFileBuffers(f.handle) == TRUE;
+#endif
+    return false;
+}
+
+string PathJoin(const string &a, const string &b)
+{
+    string s = a;
+#ifdef WINDOWS
+    s += "\\";
+#endif
+
+    s += b;
+
+    return s;
+}
+
 bool CreateUUID(UUID &u)
 {
 #ifdef WINDOWS
