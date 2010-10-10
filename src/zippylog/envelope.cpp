@@ -26,7 +26,7 @@ namespace zippylog {
 using ::std::stringstream;
 using ::std::vector;
 
-Envelope::Envelope()
+Envelope::Envelope() : messages(NULL), message_count(0)
 {
     platform::Time t;
     platform::TimeNow(t);
@@ -34,15 +34,98 @@ Envelope::Envelope()
     this->envelope.set_create_time(t.epoch_micro);
 }
 
-Envelope::Envelope(message_t *msg)
+Envelope::Envelope(message_t *msg) : messages(NULL), message_count(0)
 {
     if (!this->envelope.ParseFromArray(msg->data(), msg->size())) {
         throw "could not parse message";
     }
+
+    int count = this->MessageCount();
+
+    this->messages = new Message *[count];
+    this->message_count = count;
+    for (int i = 0; i < count; i++) {
+        this->messages[i] = NULL;
+    }
+}
+
+Envelope::~Envelope()
+{
+    if (this->messages) {
+        for (int i = 0; i < this->message_count; i++) {
+            if (this->messages[i]) {
+                delete this->messages[i];
+            }
+            this->messages[i] = NULL;
+        }
+    }
+
+    delete [] this->messages;
+    this->messages = NULL;
+}
+
+Envelope::Envelope(const Envelope &e)
+{
+    if (e.message_count > 0) {
+        this->message_count = e.message_count;
+        this->messages = new Message *[this->message_count];
+        for (size_t i = 0; i < this->message_count; i++) {
+            this->messages[i] = NULL;
+        }
+    }
+    else {
+        this->message_count = 0;
+        this->messages = NULL;
+    }
+
+    this->envelope = e.envelope;
+}
+
+Envelope & Envelope::operator=(const Envelope &orig)
+{
+    if (this == &orig) return *this;
+
+    if (orig.message_count > 0) {
+        this->message_count = orig.message_count;
+        this->messages = new Message *[this->message_count];
+        for (size_t i = 0; i < this->message_count; i++) {
+            this->messages[i] = NULL;
+        }
+    }
+    else {
+        this->message_count = 0;
+        this->messages = NULL;
+    }
+
+    this->envelope = orig.envelope;
+
+    return *this;
 }
 
 bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 {
+    if (!this->messages) {
+        assert(this->MessageCount() == 0);
+
+        this->messages = new Message *[1];
+        this->message_count = 1;
+        // don't bother caching it, cuz that would take memory
+        this->messages[0] = NULL;
+    }
+    else {
+        // we need to resize the array
+        Message **old = this->messages;
+
+        this->messages = new Message *[this->message_count + 1];
+        this->messages[this->message_count+1] = NULL;
+
+        for (size_t i = 0; i < this->message_count; i++) {
+            this->messages[i] = old[i];
+        }
+
+        delete [] old;
+    }
+
     string buffer;
     if (!m.SerializeToString(&buffer)) return false;
 
@@ -68,32 +151,26 @@ int Envelope::MessageCount()
     return this->envelope.message_size();
 }
 
-Message * Envelope::get_message(int index)
+Message * Envelope::GetMessage(int index)
 {
-    Message *msg = NULL;
+    if (this->MessageCount() < index + 1) return NULL;
+    if (this->envelope.message_namespace_size() < index + 1) return NULL;
+    if (this->envelope.message_type_size() < index + 1) return NULL;
 
-    if (this->envelope.message_size() < index + 1) {
-        return NULL;
-    }
-
-    if (this->envelope.message_namespace_size() < index + 1) {
-        return NULL;
-    }
-
-    if (this->envelope.message_type_size() < index + 1) {
-        return NULL;
-    }
+    assert(this->messages);
 
     uint32 ns = this->envelope.message_namespace(index);
     uint32 enumeration = this->envelope.message_type(index);
 
-    msg = MessageRegistrar::instance()->get_message(ns, enumeration);
-    if (!msg) return msg;
+    Message *msg = MessageRegistrar::instance()->get_message(ns, enumeration);
+    if (!msg) return NULL;
 
     string buffer = envelope.message(index);
     msg->ParseFromString(buffer);
 
-    return msg;
+    if (!this->messages[index]) this->messages[index] = msg;
+
+    return this->messages[index];
 }
 
 bool Envelope::CopyMessage(int index, Envelope &dest)
@@ -127,7 +204,7 @@ string Envelope::ToString()
 
     for (size_t i = 0; i < this->MessageCount(); i++) {
         string s;
-        ::google::protobuf::Message *m = this->get_message(i);
+        ::google::protobuf::Message *m = this->GetMessage(i);
         printer.PrintToString(*m, &s);
 
         ss << "  " << m->GetTypeName() << ::std::endl << s;

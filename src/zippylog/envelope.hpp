@@ -35,6 +35,11 @@ class ZIPPYLOG_EXPORT Envelope {
         // construct from a 0MQ message
         Envelope(message_t *msg);
 
+        ~Envelope();
+
+        Envelope & operator=(const Envelope &orig);
+        Envelope(const Envelope &e);
+
         // adds a protobuf messsage to the payload.
         //
         // message is effectively copied to the envelope. any modifications
@@ -63,12 +68,22 @@ class ZIPPYLOG_EXPORT Envelope {
             return this->envelope.message_type(index);
         }
 
-        Message * get_message(int index);
+        // obtain the protocol buffer message at given index
+        // the returned pointer is owned by the envelope project
+        // the memory won't be accessible once the envelope is destroyed
+        // therefore, the caller should NOT free it
+        // if the index does not exist, NULL will be returned
+        Message * GetMessage(int index);
 
         // copy a message to another envelope
         bool CopyMessage(int index, Envelope &dest);
 
         string ToString();
+
+    protected:
+        // holds pointer to dynamic array
+        Message ** messages;
+        int message_count;
 };
 
 } // namespace
