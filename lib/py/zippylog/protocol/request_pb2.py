@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\"%\n\x15SubscribeStoreChanges\x12\x0c\n\x04path\x18\x01 \x03(\t\" \n\x12SubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0fSubscribeCancel\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\"%\n\x15SubscribeStoreChanges\x12\x0c\n\x04path\x18\x01 \x03(\t\"\"\n\x12SubscribeEnvelopes\x12\x0c\n\x04path\x18\x01 \x03(\t\" \n\x12SubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0fSubscribeCancel\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -107,6 +107,34 @@ _SUBSCRIBESTORECHANGES = descriptor.Descriptor(
 )
 
 
+_SUBSCRIBEENVELOPES = descriptor.Descriptor(
+  name='SubscribeEnvelopes',
+  full_name='zippylog.protocol.request.SubscribeEnvelopes',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.protocol.request.SubscribeEnvelopes.path', index=0,
+      number=1, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=185,
+  serialized_end=219,
+)
+
+
 _SUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   name='SubscribeKeepalive',
   full_name='zippylog.protocol.request.SubscribeKeepalive',
@@ -130,8 +158,8 @@ _SUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=185,
-  serialized_end=217,
+  serialized_start=221,
+  serialized_end=253,
 )
 
 
@@ -158,8 +186,8 @@ _SUBSCRIBECANCEL = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=219,
-  serialized_end=248,
+  serialized_start=255,
+  serialized_end=284,
 )
 
 
@@ -188,6 +216,14 @@ class SubscribeStoreChanges(message.Message):
   ZIPPYLOG_ENUMERATION = 22
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeStoreChanges)
 
+class SubscribeEnvelopes(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SUBSCRIBEENVELOPES
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 54
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeEnvelopes)
+
 class SubscribeKeepalive(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _SUBSCRIBEKEEPALIVE
@@ -207,6 +243,7 @@ class SubscribeCancel(message.Message):
 register_message(1, 10, 'zippylog.protocol.request_pb2', 'StoreInfo')
 register_message(1, 11, 'zippylog.protocol.request_pb2', 'Get')
 register_message(1, 22, 'zippylog.protocol.request_pb2', 'SubscribeStoreChanges')
+register_message(1, 54, 'zippylog.protocol.request_pb2', 'SubscribeEnvelopes')
 register_message(1, 23, 'zippylog.protocol.request_pb2', 'SubscribeKeepalive')
 register_message(1, 25, 'zippylog.protocol.request_pb2', 'SubscribeCancel')
 # @@protoc_insertion_point(module_scope)

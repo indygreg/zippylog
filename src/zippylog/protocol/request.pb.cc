@@ -25,6 +25,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* SubscribeStoreChanges_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SubscribeStoreChanges_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SubscribeEnvelopes_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  SubscribeEnvelopes_reflection_ = NULL;
 const ::google::protobuf::Descriptor* SubscribeKeepalive_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SubscribeKeepalive_reflection_ = NULL;
@@ -87,7 +90,22 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeStoreChanges));
-  SubscribeKeepalive_descriptor_ = file->message_type(3);
+  SubscribeEnvelopes_descriptor_ = file->message_type(3);
+  static const int SubscribeEnvelopes_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, path_),
+  };
+  SubscribeEnvelopes_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      SubscribeEnvelopes_descriptor_,
+      SubscribeEnvelopes::default_instance_,
+      SubscribeEnvelopes_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(SubscribeEnvelopes));
+  SubscribeKeepalive_descriptor_ = file->message_type(4);
   static const int SubscribeKeepalive_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepalive, id_),
   };
@@ -102,7 +120,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeKeepalive));
-  SubscribeCancel_descriptor_ = file->message_type(4);
+  SubscribeCancel_descriptor_ = file->message_type(5);
   static const int SubscribeCancel_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancel, id_),
   };
@@ -136,6 +154,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeStoreChanges_descriptor_, &SubscribeStoreChanges::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SubscribeEnvelopes_descriptor_, &SubscribeEnvelopes::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeKeepalive_descriptor_, &SubscribeKeepalive::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeCancel_descriptor_, &SubscribeCancel::default_instance());
@@ -150,6 +170,8 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto() {
   delete Get_reflection_;
   delete SubscribeStoreChanges::default_instance_;
   delete SubscribeStoreChanges_reflection_;
+  delete SubscribeEnvelopes::default_instance_;
+  delete SubscribeEnvelopes_reflection_;
   delete SubscribeKeepalive::default_instance_;
   delete SubscribeKeepalive_reflection_;
   delete SubscribeCancel::default_instance_;
@@ -167,19 +189,22 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "log.protocol.request\"\013\n\tStoreInfo\"E\n\003Get"
     "\022\014\n\004path\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022"
     "max_response_bytes\030\003 \001(\r\"%\n\025SubscribeSto"
-    "reChanges\022\014\n\004path\030\001 \003(\t\" \n\022SubscribeKeep"
-    "alive\022\n\n\002id\030\001 \001(\014\"\035\n\017SubscribeCancel\022\n\n\002"
-    "id\030\001 \001(\014", 248);
+    "reChanges\022\014\n\004path\030\001 \003(\t\"\"\n\022SubscribeEnve"
+    "lopes\022\014\n\004path\030\001 \003(\t\" \n\022SubscribeKeepaliv"
+    "e\022\n\n\002id\030\001 \001(\014\"\035\n\017SubscribeCancel\022\n\n\002id\030\001"
+    " \001(\014", 284);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
   Get::default_instance_ = new Get();
   SubscribeStoreChanges::default_instance_ = new SubscribeStoreChanges();
+  SubscribeEnvelopes::default_instance_ = new SubscribeEnvelopes();
   SubscribeKeepalive::default_instance_ = new SubscribeKeepalive();
   SubscribeCancel::default_instance_ = new SubscribeCancel();
   StoreInfo::default_instance_->InitAsDefaultInstance();
   Get::default_instance_->InitAsDefaultInstance();
   SubscribeStoreChanges::default_instance_->InitAsDefaultInstance();
+  SubscribeEnvelopes::default_instance_->InitAsDefaultInstance();
   SubscribeKeepalive::default_instance_->InitAsDefaultInstance();
   SubscribeCancel::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto);
@@ -864,6 +889,215 @@ void SubscribeStoreChanges::Swap(SubscribeStoreChanges* other) {
 
 // ===================================================================
 
+#ifndef _MSC_VER
+const int SubscribeEnvelopes::kPathFieldNumber;
+#endif  // !_MSC_VER
+
+SubscribeEnvelopes::SubscribeEnvelopes()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void SubscribeEnvelopes::InitAsDefaultInstance() {
+}
+
+SubscribeEnvelopes::SubscribeEnvelopes(const SubscribeEnvelopes& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SubscribeEnvelopes::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SubscribeEnvelopes::~SubscribeEnvelopes() {
+  SharedDtor();
+}
+
+void SubscribeEnvelopes::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void SubscribeEnvelopes::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SubscribeEnvelopes::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SubscribeEnvelopes_descriptor_;
+}
+
+const SubscribeEnvelopes& SubscribeEnvelopes::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
+}
+
+SubscribeEnvelopes* SubscribeEnvelopes::default_instance_ = NULL;
+
+SubscribeEnvelopes* SubscribeEnvelopes::New() const {
+  return new SubscribeEnvelopes;
+}
+
+void SubscribeEnvelopes::Clear() {
+  path_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SubscribeEnvelopes::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated string path = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_path:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->path(0).data(), this->path(0).length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(10)) goto parse_path;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SubscribeEnvelopes::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
+  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    this->path(i).data(), this->path(i).length(),
+    ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->path(i), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* SubscribeEnvelopes::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // repeated string path = 1;
+  for (int i = 0; i < this->path_size(); i++) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path(i).data(), this->path(i).length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(1, this->path(i), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SubscribeEnvelopes::ByteSize() const {
+  int total_size = 0;
+  
+  // repeated string path = 1;
+  total_size += 1 * this->path_size();
+  for (int i = 0; i < this->path_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->path(i));
+  }
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SubscribeEnvelopes::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SubscribeEnvelopes* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeEnvelopes*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SubscribeEnvelopes::MergeFrom(const SubscribeEnvelopes& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  path_.MergeFrom(from.path_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SubscribeEnvelopes::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SubscribeEnvelopes::CopyFrom(const SubscribeEnvelopes& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SubscribeEnvelopes::IsInitialized() const {
+  
+  return true;
+}
+
+void SubscribeEnvelopes::Swap(SubscribeEnvelopes* other) {
+  if (other != this) {
+    path_.Swap(&other->path_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata SubscribeEnvelopes::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = SubscribeEnvelopes_descriptor_;
+  metadata.reflection = SubscribeEnvelopes_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
 const ::std::string SubscribeKeepalive::_default_id_;
 #ifndef _MSC_VER
 const int SubscribeKeepalive::kIdFieldNumber;
@@ -1304,6 +1538,10 @@ bool Get::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool SubscribeStoreChanges::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool SubscribeEnvelopes::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
