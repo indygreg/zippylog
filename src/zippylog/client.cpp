@@ -122,6 +122,22 @@ bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallback &cb,
     return this->SendRequest(e, info);
 }
 
+bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallback &cb, void *data)
+{
+    // TODO validate path
+
+    protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
+    req.add_path(path);
+    Envelope e = Envelope();
+    req.add_to_envelope(&e);
+
+    OutstandingRequest info = OutstandingRequest();
+    info.data = data;
+    info.subscription_callback = cb;
+
+    return this->SendRequest(e, info);
+}
+
 
 bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
 {
@@ -323,6 +339,15 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
         }
     }
 
+    if (!cb.Envelope) return true;
+
+    // for now, assume additional messages envelopes that were streamed
+    for (size_t i = 0; i < messages.size(); i++) {
+        Envelope env = Envelope(messages[i]);
+
+        cb.Envelope(start.id(), env, iter->second.data);
+    }
+
     return true;
 }
 
@@ -412,7 +437,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
                 throw "subscription TTL less than configured time offset";
             }
 
-            sub.expiration_timer = platform::Timer(ttl * 1000000 - this->subscription_renewal_offset);
+            sub.expiration_timer = platform::Timer(ttl - this->subscription_renewal_offset);
             sub.expiration_timer.Start();
 
             this->subscriptions[id] = sub;
@@ -426,13 +451,17 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     return false;
 }
 
-/*
-bool Client::AutoRenewSubscriptions()
+bool Client::RenewSubscriptions(bool force)
 {
-    map<string, platform::Timer>::iterator iter = this->subscription_timers.begin();
+    map<string, Subscription>::iterator iter = this->subscriptions.begin();
 
-    for (; iter != this->subscription_timers.end(); iter++) {
-        if (!iter->second.Signaled()) continue;
+    bool result = true;
+
+    for (; iter != this->subscriptions.end(); iter++) {
+        if (!force && !iter->second.expiration_timer.Signaled()) continue;
+
+        // reset the timer
+        iter->second.expiration_timer.Start();
 
         protocol::request::SubscribeKeepalive msg = protocol::request::SubscribeKeepalive();
         msg.set_id(iter->first);
@@ -440,13 +469,13 @@ bool Client::AutoRenewSubscriptions()
         Envelope e = Envelope();
         msg.add_to_envelope(&e);
 
-        this->_send_envelope(e);
+        if (!zeromq::send_envelope_xreq(this->client_sock, e)) {
+            result = false;
+        }
     }
 
-    return true;
+    return result;
 }
-*/
-
 
 
 StreamSegment::StreamSegment()
@@ -505,6 +534,7 @@ SubscriptionCallback::SubscriptionCallback()
     this->StreamDeleted = NULL;
     this->StreamAppended = NULL;
     this->StoreInfo = NULL;
+    this->Envelope = NULL;
 }
 
 OutstandingRequest::OutstandingRequest()

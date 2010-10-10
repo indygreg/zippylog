@@ -89,6 +89,10 @@ typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
 // invoked with the path, start offset, and the data in that segment
 typedef void (__stdcall * StreamSegmentCallback)(const string &, uint64, StreamSegment &, void *);
 
+// executed when an envelope is received
+// invoked with subscription id, the envelope, and supplied user data to subscription
+typedef void (__stdcall * EnvelopeCallback)(const string &, Envelope &, void *);
+
 // The SubscriptionCallback defines the set of function callbacks for a
 // subscription. Not all callback types are valid for every subscription
 // type.
@@ -106,6 +110,7 @@ public:
     StoreChangeStreamSetAddedCallback   StreamSetAdded;
     StoreChangeStreamSetDeletedCallback StreamSetDeleted;
     StoreInfoCallback                   StoreInfo;
+    EnvelopeCallback                    Envelope;
 };
 
 // represents a client subscription
@@ -166,6 +171,12 @@ class ZIPPYLOG_EXPORT Client {
         // callers will likely want to call this function in an event loop
         bool TryProcessMessages(uint32 timeout);
 
+        // renew all subscriptions
+        // unless the bool parameter is true, only the subscriptions that are
+        // near to expiration will be renewed. It is generally OK to let this
+        // be
+        bool RenewSubscriptions(bool force=false);
+
         bool Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data = NULL);
         bool Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data = NULL);
         bool Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data = NULL);
@@ -181,6 +192,9 @@ class ZIPPYLOG_EXPORT Client {
         // change events. However, unless your SubscriptionCallback defines
         // functions for all of them, some events will be dropped by the client.
         bool SubscribeStoreChanges(const string &path, SubscriptionCallback &callback, void *data = NULL);
+
+        // Subscribes to new envelopes written on the server
+        bool SubscribeEnvelopes(const string &path, SubscriptionCallback &callback, void *data = NULL);
 
     protected:
         // socket connect to server
