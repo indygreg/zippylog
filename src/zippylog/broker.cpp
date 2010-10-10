@@ -210,6 +210,7 @@ void Broker::run()
 
                 // TODO this is mostly for debugging purposes and should be implemented another way
                 // once the project has matured
+                /*
 #ifdef _DEBUG
                 Envelope debugEnvelope = Envelope(&msg);
                 ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
@@ -224,6 +225,7 @@ void Broker::run()
                     ::std::cout << debugString;
                 }
 #endif
+                */
                 moresz = sizeof(more);
                 this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
                 if (!more) break;
