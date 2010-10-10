@@ -24,6 +24,11 @@ InputStream::InputStream()
     this->_is = NULL;
 }
 
+InputStream::InputStream(const InputStream &orig)
+{
+    throw "copy constructor not available for InputStream";
+}
+
 InputStream::InputStream(string file, int64 seek_bytes)
 {
     if (!this->OpenFile(file, seek_bytes)) {
@@ -31,9 +36,16 @@ InputStream::InputStream(string file, int64 seek_bytes)
     }
 }
 
+InputStream & InputStream::operator=(const InputStream &orig)
+{
+    throw "assignment operator not available for InputStream";
+}
+
 InputStream::~InputStream() {
     delete this->_cis;
     delete this->_is;
+
+    platform::FileClose(this->file);
 }
 
 bool InputStream::OpenFile(string file, int64 start_offset)

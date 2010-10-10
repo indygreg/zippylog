@@ -91,6 +91,16 @@ Streamer::Streamer(Store *store,
     }
 }
 
+Streamer::Streamer(const Streamer &orig)
+{
+    throw "copy constructor not implemented for Streamer";
+}
+
+Streamer & Streamer::operator=(const Streamer &orig)
+{
+    throw "assignment operator not available for Streamer";
+}
+
 Streamer::~Streamer()
 {
     if (this->changes_sock) delete this->changes_sock;

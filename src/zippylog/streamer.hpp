@@ -78,6 +78,8 @@ class ZIPPYLOG_EXPORT Streamer {
             const string logging_endpoint,
             uint32 subscription_ttl
         );
+        Streamer(const Streamer &orig);
+        Streamer & operator=(const Streamer &orig);
         ~Streamer();
 
         void Run();

@@ -37,7 +37,9 @@ using ::std::string;
 class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
+        InputStream(const InputStream &orig);
         InputStream(string file, int64 seek_bytes=0);
+        InputStream & operator=(const InputStream &orig);
         ~InputStream();
 
         bool OpenFile(string file, int64 start_offset = 0);
