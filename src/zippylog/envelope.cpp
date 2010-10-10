@@ -13,17 +13,25 @@
 //  limitations under the License.
 
 #include <zippylog/envelope.hpp>
+#include <zippylog/platform.hpp>
 #include <zippylog/message_registrar.hpp>
 
-#include <string>
+#include <google/protobuf/text_format.h>
+
+#include <sstream>
+#include <vector>
 
 namespace zippylog {
 
-using ::std::string;
+using ::std::stringstream;
+using ::std::vector;
 
 Envelope::Envelope()
 {
-    ;
+    platform::Time t;
+    platform::TimeNow(t);
+
+    this->envelope.set_create_time(t.epoch_micro);
 }
 
 Envelope::Envelope(message_t *msg)
@@ -102,6 +110,35 @@ bool Envelope::CopyMessage(int index, Envelope &dest)
     dest.envelope.add_message_type(this->envelope.message_type(index));
 
     return true;
+}
+
+string Envelope::ToString()
+{
+    ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
+    printer.SetInitialIndentLevel(4);
+
+    stringstream ss = stringstream(stringstream::out);
+
+    ss << "Envelope" << ::std::endl;
+
+    if (this->envelope.has_create_time()) {
+        platform::Time t;
+        platform::UnixMicroTimeToZippyTime(this->envelope.create_time(), t);
+
+        string date = string(30, 0);
+        sprintf((char *)date.data(), "%04d-%02d-%02d %02d:%02d:%02d.%06d UTC", t.year, t.mon, t.mday, t.hour, t.min, t.sec, t.usec);
+        ss << "  create_time: " << date << ::std::endl;
+    }
+
+    for (size_t i = 0; i < this->MessageCount(); i++) {
+        string s;
+        ::google::protobuf::Message *m = this->get_message(i);
+        printer.PrintToString(*m, &s);
+
+        ss << "  " << m->GetTypeName() << ::std::endl << s;
+    }
+
+    return ss.str();
 }
 
 } // namespace

@@ -19,9 +19,12 @@
 #include <google/protobuf/message.h>
 #include <zmq.hpp>
 
+#include <string>
+
 namespace zippylog {
 
 using ::google::protobuf::Message;
+using ::std::string;
 using ::zmq::message_t;
 
 class ZIPPYLOG_EXPORT Envelope {
@@ -75,6 +78,8 @@ class ZIPPYLOG_EXPORT Envelope {
 
         // copy a message to another envelope
         bool CopyMessage(int index, Envelope &dest);
+
+        string ToString();
 };
 
 } // namespace
