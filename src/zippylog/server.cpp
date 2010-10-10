@@ -202,6 +202,10 @@ void * __stdcall Request::request_processor(void *data)
                     state = Request::PROCESS_SUBSCRIBE_STORE_CHANGES;
                     break;
                 }
+                else if (request_type == protocol::request::SubscribeEnvelopes::zippylog_enumeration) {
+                    state = Request::PROCESS_SUBSCRIBE_ENVELOPES;
+                    break;
+                }
                 else if (request_type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
                     state = Request::PROCESS_SUBSCRIBE_KEEPALIVE;
                     break;
@@ -377,6 +381,23 @@ void * __stdcall Request::request_processor(void *data)
                 // we pass the identities and the original message to the streamer
                 // we don't pass the first identity, b/c it belongs to the local socket
                 // TODO should probably create a special message type with identities embedded
+                vector<string> subscription_identities = identities;
+                subscription_identities.erase(subscription_identities.begin());
+
+                zeromq::send_envelope(subscriptions_sock, subscription_identities, request_envelope);
+
+                state = Request::REQUEST_CLEANUP;
+                break;
+            }
+
+            case Request::PROCESS_SUBSCRIBE_ENVELOPES:
+            {
+                protocol::request::SubscribeEnvelopes *m =
+                    (protocol::request::SubscribeEnvelopes *)request_envelope.get_message(0);
+
+                // TODO validation
+
+                // proxy the message w/ identities (minus first one)
                 vector<string> subscription_identities = identities;
                 subscription_identities.erase(subscription_identities.begin());
 

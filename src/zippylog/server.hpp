@@ -70,6 +70,7 @@ public:
         SETUP_INITIAL_SOCKETS = 10,
         REQUEST_CLEANUP = 11,
         PROCESS_SUBSCRIBE_KEEPALIVE = 12,
+        PROCESS_SUBSCRIBE_ENVELOPES = 13,
     };
 
     // function that waits and processes client requests as they arrive
