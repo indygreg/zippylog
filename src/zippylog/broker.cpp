@@ -314,8 +314,6 @@ void Broker::run()
             log.add_to_envelope(&e);
             zeromq::send_envelope(this->log_client_sock, e);
 
-            // TODO figure out how Protocol Buffer I/O flushing works
-            // specifically, why it is flushing 8k when there isn't 8k of data
             this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
                 throw "could not restart stream flush timer";
