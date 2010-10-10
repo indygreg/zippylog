@@ -41,6 +41,8 @@ class ZIPPYLOG_EXPORT Store {
     public:
         // construct a store from a filesystem path
         Store(const string path);
+        Store(const Store &orig);
+        Store & operator=(const Store &orig);
         ~Store();
 
         // validates that a path string is sane

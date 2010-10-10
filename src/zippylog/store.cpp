@@ -34,8 +34,22 @@ Store::Store(const string path)
     this->_path = path;
 }
 
+Store::Store(const Store &orig)
+{
+    throw "no copy constructor for Store instances";
+}
+
+Store & Store::operator=(const Store &orig)
+{
+    throw "assignment operator for stores is not defined";
+}
+
 Store::~Store()
 {
+    map<string, OpenOutputStream>::iterator i = this->out_streams.begin();
+    for (; i != this->out_streams.end(); i++) {
+        if (i->second.stream) delete i->second.stream;
+    }
 }
 
 bool Store::ValidatePath(const string path)
