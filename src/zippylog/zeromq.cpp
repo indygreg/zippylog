@@ -130,6 +130,14 @@ bool send_envelope_more(socket_t *socket, Envelope &envelope)
     return socket->send(msg, ZMQ_SNDMORE);
 }
 
+bool send_envelope_more(socket_t *socket, vector<string> &identities, Envelope &e)
+{
+    message_t msg;
+    e.ToZmqMessage(msg);
+
+    return send_multipart_more(socket, identities, msg);
+}
+
 bool send_envelope_xreq(socket_t *socket, Envelope &envelope)
 {
     message_t empty(0);
