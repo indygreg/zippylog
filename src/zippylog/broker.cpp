@@ -605,7 +605,7 @@ void * __stdcall Broker::StreamingStart(void *d)
     assert(data->subscription_ttl);
 
     try {
-        Streamer streamer = Streamer(
+        Streamer streamer(
             data->store,
             data->zctx,
             data->store_change_endpoint,
