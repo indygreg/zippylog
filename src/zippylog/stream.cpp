@@ -38,13 +38,14 @@ InputStream::InputStream()
 InputStream::InputStream(string file, int64 seek_bytes)
 {
     if (!this->OpenFile(file, seek_bytes)) {
-        // TODO handle error
+        throw "could not open stream for reading";
     }
 }
 
 InputStream::~InputStream() {
-    delete _cis, _is;
-    _close(this->_fd);
+    delete this->_cis;
+    delete this->_is;
+    //_close(this->_fd);
 }
 
 bool InputStream::OpenFile(string file, int64 start_offset)
@@ -54,9 +55,8 @@ bool InputStream::OpenFile(string file, int64 start_offset)
         this->_fd = -1;
     }
 
-
-    if (this->_is) delete this->_is;
     if (this->_cis) delete this->_cis;
+    if (this->_is) delete this->_is;
     this->_have_next_size = false;
     this->_next_envelope_size = 0;
 
@@ -70,7 +70,7 @@ bool InputStream::OpenFile(string file, int64 start_offset)
         lseek64(this->_fd, start_offset, SEEK_SET);
     }
 
-    this->_is = new FileInputStream(this->_fd, -1);
+    this->_is = new FileInputStream(this->_fd);
     this->_cis = new CodedInputStream(this->_is);
 
     if (start_offset == 0) {
