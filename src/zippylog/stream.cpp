@@ -140,7 +140,13 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 
 bool InputStream::Seek(int64 offset)
 {
+    delete this->_cis;
+    delete this->_is;
+
     lseek(this->_fd, offset, SEEK_SET);
+
+    this->_is = new FileInputStream(this->_fd);
+    this->_cis = new CodedInputStream(this->_is);
 
     return true;
 }
