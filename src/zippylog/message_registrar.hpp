@@ -28,11 +28,15 @@ using ::std::pair;
 class ZIPPYLOG_EXPORT MessageRegistrar {
     public:
         MessageRegistrar();
+        ~MessageRegistrar();
 
         static MessageRegistrar * instance();
 
         bool register_message(uint32 ns, uint32 enumeration, Message *instance);
         Message * get_message(uint32 ns, uint32 enumeration);
+
+        // cleans up a registrar instance by removing all registered message types
+        void Cleanup();
 
     protected:
         // TODO lookup time can be improved since map is nlogn

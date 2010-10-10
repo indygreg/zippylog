@@ -22,6 +22,11 @@ MessageRegistrar::MessageRegistrar()
     register_known_messages();
 }
 
+MessageRegistrar::~MessageRegistrar()
+{
+    this->Cleanup();
+}
+
 MessageRegistrar * MessageRegistrar::instance()
 {
     static MessageRegistrar registrar;
@@ -51,6 +56,15 @@ Message * MessageRegistrar::get_message(uint32 ns, uint32 enumeration)
         return iter->second->New();
     }
     return NULL;
+}
+
+void MessageRegistrar::Cleanup()
+{
+    map<pair<uint32, uint32>, Message *>::iterator iter = this->_types.begin();
+    for (; iter != this->_types.end(); iter++) {
+        delete iter->second;
+    }
+    this->_types.clear();
 }
 
 } // namespace
