@@ -68,6 +68,11 @@ class ZIPPYLOG_EXPORT OutputStream {
         // NOT thread safe. if multiple threads call this, it may write a corrupt stream
         bool WriteEnvelope(::zippylog::Envelope &envelope);
 
+        // writes an envelope from a buffer
+        // unlike WriteData(), this will add the varint length to the stream,
+        // as is necessary from the stream specification
+        bool WriteEnvelope(const void *data, int length);
+
         // writes data with specified length to stream
         bool WriteData(const void *data, int length);
 

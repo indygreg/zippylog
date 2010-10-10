@@ -193,6 +193,14 @@ bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
     return e.envelope.SerializeToCodedStream(this->cos);
 }
 
+bool OutputStream::WriteEnvelope(const void *data, int length)
+{
+    this->cos->WriteVarint32(length);
+    this->cos->WriteRaw(data, length);
+
+    return true;
+}
+
 bool OutputStream::WriteData(const void *data, int length)
 {
     this->cos->WriteRaw(data, length);
@@ -209,7 +217,19 @@ bool OutputStream::WriteString(const string &s)
 
 bool OutputStream::Flush()
 {
-    return this->os->Flush();
+    // the coded output stream takes ownership of the buffer from the file
+    // output stream, which screws with the later's Flush() API (it will
+    // flush the whole buffer, even though only X bytes really contain data).
+    // the solution is to nuke the coded output stream, which relinquishes
+    // unused bytes back to file output stream. then, we flush the output
+    // stream and create a new coded output stream
+    // see http://code.google.com/p/protobuf/issues/detail?id=216
+
+    delete this->cos;
+    bool result = this->os->Flush();
+    this->cos = new CodedOutputStream(this->os);
+
+    return platform::FlushFile(this->file) && result;
 }
 
 } // namespace
