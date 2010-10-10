@@ -38,14 +38,8 @@ using ::zmq::message_t;
 namespace zippylog {
 namespace server {
 
-StoreChangeSubscription::StoreChangeSubscription()
-{
-
-}
-
-SubscriptionInfo::SubscriptionInfo()
-{
-}
+EnvelopeSubscription::EnvelopeSubscription() {}
+SubscriptionInfo::SubscriptionInfo() {}
 
 SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
 {
@@ -81,11 +75,20 @@ Streamer::Streamer(Store *store,
     this->logging_sock = NULL;
 
     platform::UUID uuid;
-    if (!platform::CreateUUID(uuid)) {
-        throw "could not create UUID";
-    }
+    platform::CreateUUID(uuid);
 
     this->id = string((const char *)&uuid, sizeof(uuid));
+
+    // populate stream offsets with current values
+    vector<string> streams;
+    this->store->StreamPaths(streams);
+
+    for (vector<string>::iterator i = streams.begin(); i != streams.end(); i++) {
+        int64 length;
+        if (!this->store->StreamLength(*i, length)) continue;
+
+        this->stream_read_offsets[*i] = length;
+    }
 }
 
 Streamer::~Streamer()
@@ -154,7 +157,7 @@ void Streamer::Run()
         zmq::message_t msg;
 
         // wait for a message to process
-        int rc = zmq::poll(&pollitems[0], 3, 250000);
+        int rc = zmq::poll(&pollitems[0], 3, 100000);
 
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
@@ -226,49 +229,21 @@ void Streamer::Run()
             Envelope e = Envelope(msgs[0]);
             assert(e.number_messages() == 1);
             assert(e.message_namespace(0) == 1);
-            assert(e.message_type(0) == protocol::request::SubscribeStoreChanges::zippylog_enumeration);
 
-            protocol::request::SubscribeStoreChanges *m = (protocol::request::SubscribeStoreChanges *)e.get_message(0);
+            uint32 message_type = e.message_type(0);
 
-            StoreChangeSubscription subscription;
+            switch (message_type) {
+                case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
+                    this->ProcessSubscribeStoreChanges(e, identities, msgs);
+                    break;
 
-            for (int i = 0; i < m->path_size(); i++) {
-                subscription.paths.push_back(m->path(i));
-            }
+                case protocol::request::SubscribeEnvelopes::zippylog_enumeration:
+                    this->ProcessSubscribeEnvelopes(e, identities, msgs);
+                    break;
 
-            delete m;
-
-            subscription.socket_identifiers = identities;
-
-            // TODO create subscription identity properly
-            platform::UUID uuid;
-            if (!platform::CreateUUID(uuid)) {
-                throw "could not create UUID";
-            }
-            subscription.id = string((const char *)&uuid, sizeof(uuid));
-
-            this->store_change_subscriptions.push_back(subscription);
-
-            SubscriptionInfo info = SubscriptionInfo(this->subscription_ttl);
-
-            this->subscriptions[subscription.id] = info;
-
-            // send ACK response to client
-            SubscribeAck ack = SubscribeAck();
-            ack.set_id(subscription.id);
-            ack.set_ttl(this->subscription_ttl / 1000);
-            Envelope response = Envelope();
-
-            // copy tags to response because that's what the protocol does
-            for (size_t i = 0; i < e.envelope.tag_size(); i++) {
-                response.envelope.add_tag(e.envelope.tag(i));
-            }
-
-            ack.add_to_envelope(&response);
-
-            if (!zeromq::send_envelope(this->client_sock, identities, response)) {
-                // TODO log error here
-                assert(0);
+                default:
+                    // TODO log here
+                    break;
             }
 
             for (vector<message_t *>::iterator msg = msgs.begin(); msg != msgs.end(); msg++) {
@@ -283,9 +258,7 @@ void Streamer::Run()
             this->changes_sock->recv(&msg, 0);
 
             // if we don't have any subscriptions, do nothing
-            if (!this->store_change_subscriptions.size()) {
-                continue;
-            }
+            if (!this->subscriptions.size()) continue;
 
             Envelope e = Envelope(&msg);
 
@@ -303,7 +276,7 @@ void Streamer::Run()
                 case protocol::StoreChangeStreamAdded::zippylog_enumeration:
                 case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
                     // if no subscriptions to store changes, do nothing
-                    if (!this->store_change_subscriptions.size()) break;
+                    if (!this->HaveStoreChangeSubscriptions()) break;
 
                     this->ProcessStoreChangeEnvelope(e);
                     break;
@@ -318,11 +291,67 @@ void Streamer::Run()
     LOG_MESSAGE(log, this->logging_sock);
 }
 
+void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
+{
+    protocol::request::SubscribeStoreChanges *m =
+        (protocol::request::SubscribeStoreChanges *)e.get_message(0);
+
+    SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
+    subscription.type = SubscriptionInfo.STORE_CHANGE;
+
+    for (int i = 0; i < m->path_size(); i++) {
+        subscription.paths.push_back(m->path(i));
+    }
+
+    delete m;
+
+    subscription.socket_identifiers = identities;
+
+    platform::UUID uuid;
+    platform::CreateUUID(uuid);
+    string id = string((const char *)&uuid, sizeof(uuid));
+
+    this->subscriptions[id] = subscription;
+
+    this->SendSubscriptionAck(id, e, identities);
+}
+
+void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
+{
+    protocol::request::SubscribeEnvelopes *m =
+        (protocol::request::SubscribeEnvelopes *)e.get_message(0);
+
+    SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
+    subscription.type = subscription.ENVELOPE;
+
+    for (int i = 0; i < m->path_size(); i++) {
+        subscription.paths.push_back(m->path(i));
+    }
+
+    delete m;
+
+    subscription.socket_identifiers = identities;
+
+    platform::UUID uuid;
+    platform::CreateUUID(uuid);
+    string id = string((const char *)&uuid, sizeof(uuid));
+
+    subscription.envelope_subscription = EnvelopeSubscription();
+
+    this->subscriptions[id] = subscription;
+    this->SendSubscriptionAck(id, e, identities);
+}
+
 void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 {
     // we obtain the full path and build a path from it
     // we then compare path prefixes of subscribers to see who gets it
     string bucket, stream_set, stream;
+
+    bool process_envelopes = false;
+    uint64 stream_length = 0;
+
+    string path;
 
     switch (e.message_type(0)) {
         case protocol::StoreChangeBucketAdded::zippylog_enumeration:
@@ -330,6 +359,8 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             protocol::StoreChangeBucketAdded *m = (protocol::StoreChangeBucketAdded *)e.get_message(0);
             bucket = m->bucket();
             delete m;
+
+            path = Store::BucketPath(bucket);
         }
             break;
 
@@ -338,6 +369,8 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             protocol::StoreChangeBucketDeleted *m = (protocol::StoreChangeBucketDeleted *)e.get_message(0);
             bucket = m->bucket();
             delete m;
+
+            path = Store::BucketPath(bucket);
         }
             break;
 
@@ -346,7 +379,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             protocol::StoreChangeStreamSetAdded *m = (protocol::StoreChangeStreamSetAdded *)e.get_message(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
+
             delete m;
+
+            path = Store::StreamsetPath(bucket, stream_set);
         }
             break;
 
@@ -356,6 +392,8 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             bucket = m->bucket();
             stream_set = m->stream_set();
             delete m;
+
+            path = Store::StreamsetPath(bucket, stream_set);
         }
             break;
 
@@ -365,7 +403,11 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
+            stream_length = m->length();
             delete m;
+
+            process_envelopes = true;
+            path = Store::StreamPath(bucket, stream_set, stream);
         }
             break;
 
@@ -376,6 +418,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             stream_set = m->stream_set();
             stream = m->stream();
             delete m;
+
+            path = Store::StreamPath(bucket, stream_set, stream);
+
+            this->stream_read_offsets[path] = 0;
         }
             break;
 
@@ -386,50 +432,150 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             stream_set = m->stream_set();
             stream = m->stream();
             delete m;
+
+            path = Store::StreamPath(bucket, stream_set, stream);
         }
             break;
     }
 
-    string path;
-    if (!stream.empty()) {
-        path = Store::StreamPath(bucket, stream_set, stream);
-    }
-    else if (!stream_set.empty()) {
-        path = Store::StreamsetPath(bucket, stream_set);
-    }
-    else {
-        path = Store::BucketPath(bucket);
+    // pre-load an input stream if we need to
+    InputStream is;
+    if (process_envelopes && this->HaveEnvelopeSubscription(path)) {
+        if (!this->store->GetInputStream(path, is)) {
+            throw "could not obtain input stream";
+            return;
+        }
     }
 
-    // iterate over subscribers
-    vector<StoreChangeSubscription>::iterator i;
-    for (i = this->store_change_subscriptions.begin(); i != this->store_change_subscriptions.end(); i++) {
-
-        // iterate over paths they are subscribed to
-        vector<string>::iterator prefix;
-        for (prefix = i->paths.begin(); prefix != i->paths.end(); i++) {
-            // no way that will match
+    // iterate over all the subscribers
+    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        // for each path they are subscribed to
+        vector<string>::iterator prefix = i->second.paths.begin();
+        for (; prefix != i->second.paths.end(); prefix++) {
+            // no way it will match
             if (prefix->length() > path.length()) continue;
 
-            // if the subscribed prefix doesn't match the changed prefix
+            // if prefix doesn't match, move on
             if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
-            // at this point, they must be subscribed, so we send them the event
+            // at this point, the subscription matches
 
-            Envelope response = Envelope();
-            protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
-            start.set_id(i->id);
-            start.add_to_envelope(&response);
+            // the case of store changes is simple
+            if (i->second.type == i->second.STORE_CHANGE) {
+                Envelope response = Envelope();
+                protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
+                start.set_id(i->first);
+                start.add_to_envelope(&response);
 
-            if (!e.CopyMessage(0, response)) {
-                throw "could not copy message to response envelope. weird";
+                if (!e.CopyMessage(0, response)) {
+                    throw "could not copy message to response envelope. weird";
+                }
+
+                zeromq::send_envelope(this->client_sock, i->second.socket_identifiers, response);
+
+                // don't process this path any more for this subscriber
+                break;
             }
+            // envelopes are a little more challenging
+            else if (process_envelopes && i->second.type == i->second.ENVELOPE) {
+                map<string, uint64>::iterator iter = this->stream_read_offsets.find(path);
+                assert(iter != this->stream_read_offsets.end());
 
-            zeromq::send_envelope(this->client_sock, i->socket_identifiers, response);
+                uint64 offset = iter->second;
 
-            // don't process this path any more for this subscriber
-            break;
+                is.Seek(offset);
+
+                Envelope response = Envelope();
+                protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
+                start.set_id(i->first);
+                start.add_to_envelope(&response);
+
+                zeromq::send_envelope_more(this->client_sock, i->second.socket_identifiers, response);
+
+                while (offset < stream_length) {
+                    Envelope env;
+                    uint32 read;
+                    if (!is.ReadEnvelope(env, read)) {
+                        break;
+                    }
+                    offset += read;
+
+                    zeromq::send_envelope_more(this->client_sock, env);
+                }
+
+                message_t empty(0);
+                this->client_sock->send(empty);
+
+                // stop processing this subscription since the stream has been addressed
+                break;
+            }
         }
+    }
+
+    if (process_envelopes) {
+        this->stream_read_offsets[path] = stream_length;
+    }
+}
+
+bool Streamer::HaveEnvelopeSubscription(const string &path)
+{
+    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second.type != i->second.ENVELOPE) continue;
+
+        vector<string>::iterator prefix = i->second.paths.begin();
+        for (; prefix != i->second.paths.end(); prefix++) {
+            if (prefix->length() > path.length()) continue;
+            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Streamer::HaveStoreChangeSubscriptions()
+{
+    return this->HaveStoreChangeSubscriptions("/");
+}
+
+bool Streamer::HaveStoreChangeSubscriptions(const string &path)
+{
+    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second.type != i->second.STORE_CHANGE) continue;
+
+        vector<string>::iterator prefix = i->second.paths.begin();
+        for (; prefix != i->second.paths.end(); prefix++) {
+            if (prefix->length() > path.length()) continue;
+            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string> &identities)
+{
+    SubscribeAck ack = SubscribeAck();
+    ack.set_id(id);
+    ack.set_ttl(this->subscription_ttl / 1000);
+    Envelope response = Envelope();
+
+    // copy tags to response because that's what the protocol does
+    for (size_t i = 0; i < e.envelope.tag_size(); i++) {
+        response.envelope.add_tag(e.envelope.tag(i));
+    }
+
+    ack.add_to_envelope(&response);
+
+    if (!zeromq::send_envelope(this->client_sock, identities, response)) {
+        // TODO log error here
+        assert(0);
     }
 }
 

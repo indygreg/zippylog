@@ -19,6 +19,7 @@
 
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
+#include <zippylog/stream.hpp>
 
 #include <zmq.hpp>
 
@@ -38,10 +39,9 @@ using ::zippylog::platform::Timer;
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
-// represents a streaming subscription for store changes
-class StoreChangeSubscription {
+class EnvelopeSubscription {
 public:
-    StoreChangeSubscription();
+    EnvelopeSubscription();
 
     string id;
     vector<string> paths;
@@ -54,6 +54,16 @@ public:
     SubscriptionInfo(uint32 expiration_ttl);
 
     Timer expiration_timer;
+
+    enum SubscriptionType {
+        ENVELOPE = 1,
+        STORE_CHANGE = 2,
+    } type;
+
+    vector<string> paths;
+    vector<string> socket_identifiers;
+
+    EnvelopeSubscription envelope_subscription;
 };
 
 // the streamer streams information to subscribed clients
@@ -103,13 +113,28 @@ class ZIPPYLOG_EXPORT Streamer {
         socket_t * subscription_updates_sock;
         socket_t * logging_sock;
 
-        vector<StoreChangeSubscription> store_change_subscriptions;
-
         map<string, SubscriptionInfo> subscriptions;
+
+        // maps read offsets in streams, for envelope streaming
+        map<string, uint64> stream_read_offsets;
 
         bool * active;
 
         void ProcessStoreChangeEnvelope(Envelope &e);
+
+        void ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &msgs);
+        void ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &msgs);
+
+        void SendSubscriptionAck(const string &id, Envelope &req, vector<string> &identities);
+
+        // returns whether we have a subscription for envelopes in the given stream path
+        bool HaveEnvelopeSubscription(const string &path);
+
+        // whether we have any store change subscriptions
+        bool HaveStoreChangeSubscriptions();
+
+        // returns whether we have store change subscriptions for the given path
+        bool HaveStoreChangeSubscriptions(const string &path);
 };
 
 }} // namespaces
