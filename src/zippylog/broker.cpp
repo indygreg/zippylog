@@ -213,17 +213,7 @@ void Broker::run()
                 /*
 #ifdef _DEBUG
                 Envelope debugEnvelope = Envelope(&msg);
-                ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
-                printer.SetInitialIndentLevel(2);
-                for (int i = 0; i < debugEnvelope.number_messages(); i++) {
-                    ::google::protobuf::Message *m = debugEnvelope.get_message(i);
-                    ::std::cout << m->GetTypeName() << ::std::endl;
-                    string debugString;
-                    printer.PrintToString(*m, &debugString);
-                    delete m;
-
-                    ::std::cout << debugString;
-                }
+                ::std::cout << debugEnvelope.ToString();
 #endif
                 */
                 moresz = sizeof(more);
