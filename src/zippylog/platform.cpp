@@ -156,6 +156,12 @@ bool stat(const string path, FileStat &st)
 bool TimeNow(Time &t)
 {
 #ifdef WINDOWS
+    // the default resolution of the time on Windows is pretty crappy
+    // it might be about 1 millisecond
+    // the internets indicate that synchronizing the time to
+    // QueryPerformanceCounters() is a popular approach to increase the
+    // resolution.
+    // TODO make windows time resolution better
     FILETIME time;
     GetSystemTimeAsFileTime(&time);
     ULARGE_INTEGER wintime;
@@ -222,6 +228,12 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
+File::File()
+{
+    this->open = false;
+    this->handle = NULL;
+}
+
 bool OpenFile(File &f, const string path, int flags)
 {
 #ifdef WINDOWS
@@ -253,11 +265,38 @@ bool OpenFile(File &f, const string path, int flags)
 
     f.handle = h;
     f.fd = _open_osfhandle((long)h, fdflags);
+    f.open = true;
 
     return true;
 
 #endif
     return true;
+}
+
+bool FileClose(File &f)
+{
+#ifdef WINDOWS
+    if (!f.open) return true;
+    return CloseHandle(f.handle) == TRUE;
+#endif
+}
+
+bool FileSeek(File &f, int64 offset)
+{
+#ifdef WINDOWS
+    return _lseek(f.fd, offset, SEEK_SET) == offset;
+#endif
+}
+
+bool FileWrite(File &f, const void *data, size_t length)
+{
+#ifdef WINDOWS
+    LPDWORD written;
+
+    BOOL result = WriteFile(f.handle, data, length, written, NULL);
+
+    return result == TRUE && *written == length;
+#endif
 }
 
 bool FlushFile(File &f)

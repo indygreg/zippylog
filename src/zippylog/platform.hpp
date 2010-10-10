@@ -101,12 +101,16 @@ namespace platform {
     // UUID type is not defined yet
     bool CreateUUID(UUID &u);
 
-    typedef struct File {
+    class File {
+    public:
+        File();
 #ifdef WINDOWS
         void * handle;
 #endif
         int fd;
-    } File;
+
+        bool open;
+    };
 
     enum FileFlags {
         READ = 1,
@@ -118,7 +122,13 @@ namespace platform {
     };
 
     bool OpenFile(File &f, const string path, int flags);
+    bool FileClose(File &f);
+    bool FileWrite(File &f, const void *data, size_t length);
+
     bool FlushFile(File &f);
+
+    // seek to the specified offset in the file
+    bool FileSeek(File &f, int64 offset);
 
     // in the ideal world, timers would be represented as file descriptors and
     // we could include them in the zmq poll() event loop. this is easily done
