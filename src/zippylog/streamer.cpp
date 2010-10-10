@@ -166,10 +166,10 @@ void Streamer::Run()
             }
 
             Envelope e = Envelope(&msg);
-            assert(e.number_messages() == 1);
-            assert(e.message_namespace(0) == 1);
+            assert(e.MessageCount() == 1);
+            assert(e.MessageNamespace(0) == 1);
 
-            uint32 type = e.message_type(0);
+            uint32 type = e.MessageType(0);
 
             if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
                 protocol::request::SubscribeKeepalive *m =
@@ -227,10 +227,10 @@ void Streamer::Run()
             assert(msgs.size() > 0);
 
             Envelope e = Envelope(msgs[0]);
-            assert(e.number_messages() == 1);
-            assert(e.message_namespace(0) == 1);
+            assert(e.MessageCount() == 1);
+            assert(e.MessageNamespace(0) == 1);
 
-            uint32 message_type = e.message_type(0);
+            uint32 message_type = e.MessageType(0);
 
             switch (message_type) {
                 case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
@@ -262,11 +262,11 @@ void Streamer::Run()
 
             Envelope e = Envelope(&msg);
 
-            assert(e.number_messages());
+            assert(e.MessageCount());
             // TODO magic constant
-            assert(e.message_namespace(0) == 1);
+            assert(e.MessageNamespace(0) == 1);
 
-            uint32 message_type = e.message_type(0);
+            uint32 message_type = e.MessageType(0);
             switch (message_type) {
                 case protocol::StoreChangeBucketAdded::zippylog_enumeration:
                 case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
@@ -353,7 +353,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
     string path;
 
-    switch (e.message_type(0)) {
+    switch (e.MessageType(0)) {
         case protocol::StoreChangeBucketAdded::zippylog_enumeration:
         {
             protocol::StoreChangeBucketAdded *m = (protocol::StoreChangeBucketAdded *)e.get_message(0);

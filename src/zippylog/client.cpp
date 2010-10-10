@@ -277,8 +277,8 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
 
     SubscriptionCallback cb = iter->second.cb;
 
-    for (size_t i = 1; i < e.number_messages(); i++) {
-        switch (e.message_type(i)) {
+    for (size_t i = 1; i < e.MessageCount(); i++) {
+        switch (e.MessageType(i)) {
             case protocol::StoreChangeBucketAdded::zippylog_enumeration:
                 if (cb.BucketAdded) {
                     protocol::StoreChangeBucketAdded *added = (protocol::StoreChangeBucketAdded *)e.get_message(i);

@@ -63,11 +63,6 @@ bool Envelope::ToZmqMessage(message_t &msg)
     return true;
 }
 
-int Envelope::number_messages()
-{
-    return this->envelope.message_size();
-}
-
 int Envelope::MessageCount()
 {
     return this->envelope.message_size();
