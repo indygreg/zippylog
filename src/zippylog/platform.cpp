@@ -291,11 +291,11 @@ bool FileSeek(File &f, int64 offset)
 bool FileWrite(File &f, const void *data, size_t length)
 {
 #ifdef WINDOWS
-    LPDWORD written;
+    DWORD written;
 
-    BOOL result = WriteFile(f.handle, data, length, written, NULL);
+    BOOL result = WriteFile(f.handle, data, length, &written, NULL);
 
-    return result == TRUE && *written == length;
+    return result == TRUE && written == length;
 #endif
 }
 
