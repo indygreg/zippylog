@@ -142,6 +142,11 @@ void * __stdcall Request::request_processor(void *data)
                     ::zippylog::zippylogd::WorkerFailReceiveMessage log = ::zippylog::zippylogd::WorkerFailReceiveMessage();
                     LOG_MESSAGE(log, logger_sock);
 
+                    vector<message_t *>::iterator iter = msgs.begin();
+                    for (; iter != msgs.end(); iter++) {
+                        delete *iter;
+                    }
+
                     state = Request::RESET_CONNECTION;
                     break;
                 }
@@ -151,12 +156,24 @@ void * __stdcall Request::request_processor(void *data)
                     ::zippylog::zippylogd::WorkerReceiveEmptyMessage log = ::zippylog::zippylogd::WorkerReceiveEmptyMessage();
                     LOG_MESSAGE(log, logger_sock);
 
+                    vector<message_t *>::iterator iter = msgs.begin();
+                    for (; iter != msgs.end(); iter++) {
+                       delete *iter;
+                    }
+
                     state = Request::REQUEST_CLEANUP;
                     break;
                 }
 
                 request_envelope = Envelope(msgs[0]);
                 // TODO handle parse failure
+
+                // at this points, msgs vector isn't used, so free contents
+                vector<message_t *>::iterator iter = msgs.begin();
+                for (; iter != msgs.end(); iter++) {
+                    delete *iter;
+                }
+                msgs.clear();
 
                 if (request_envelope.envelope.message_size() < 1) {
                     ::zippylog::zippylogd::WorkerRequestEmptyEnvelope log = ::zippylog::zippylogd::WorkerRequestEmptyEnvelope();
