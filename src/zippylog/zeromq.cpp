@@ -55,6 +55,10 @@ bool receive_multipart_message(socket_t * socket, vector<string> &identities, ve
         message_t *msg = new message_t();
         if (!socket->recv(msg, 0)) {
             delete msg;
+            for (size_t i = 0; i < messages.size(); i++) {
+                delete messages[i];
+            }
+            messages.clear();
             return false;
         }
 
