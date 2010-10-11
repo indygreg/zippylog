@@ -187,9 +187,9 @@ bool Client::ProcessPendingMessage()
     }
 
     // first message is an empty message. we delete it
+    assert(messages.size() > 1);
+    delete messages[0];
     messages.erase(messages.begin());
-
-    assert(messages.size() > 0);
 
     Envelope e = Envelope(messages[0]);
 
