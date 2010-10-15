@@ -17,9 +17,6 @@
 #include <zippylog/platform.hpp>
 
 #include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <time.h>
 
 using ::std::string;
 
@@ -27,8 +24,7 @@ namespace zippylog {
 
 Store::Store(const string path)
 {
-    struct _stat64 stat;
-    if (_stat64(path.c_str(), &stat)) {
+    if (!platform::PathIsDirectory(path)) {
         throw "store path does not exist or could not be read";
     }
 
@@ -254,12 +250,12 @@ bool Store::StreamLength(const string path, int64 &length)
 
     string full = this->StreamFilesystemPath(path);
 
-    struct _stat64 stat;
-    if (_stat64(full.c_str(), &stat)) {
+    platform::FileStat stat;
+    if (!platform::stat(full, stat)) {
         return false;
     }
 
-    length = stat.st_size;
+    length = stat.size;
     return true;
 }
 
