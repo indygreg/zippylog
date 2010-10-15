@@ -40,7 +40,6 @@ struct dir_entry {
 
 typedef void * (* thread_start_func)(void *);
 
-// TODO define a type for function pointer so compiler can save us
 ZIPPYLOG_EXPORT void * create_thread(thread_start_func, void *data);
 
 ZIPPYLOG_EXPORT bool join_thread(void *thread);
