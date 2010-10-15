@@ -27,7 +27,7 @@
 
 namespace zippylog {
 
-void * create_thread(void * func, void *data)
+void * create_thread(thread_start_func f, void *data)
 {
 #ifdef WINDOWS
     LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;

@@ -75,7 +75,7 @@ public:
 
     // function that waits and processes client requests as they arrive
     // suitable to be called upon thread initialization
-    static void * __stdcall request_processor(void *data);
+    static void * request_processor(void *data);
 
 };
 

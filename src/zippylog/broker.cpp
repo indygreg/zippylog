@@ -555,7 +555,7 @@ broker_config::broker_config()
     listen_endpoints = vector<string>();
 }
 
-void * __stdcall Broker::StoreWatcherStart(void *d)
+void * Broker::StoreWatcherStart(void *d)
 {
     store_watcher_start_data * data = (store_watcher_start_data *)d;
 
@@ -570,7 +570,7 @@ void * __stdcall Broker::StoreWatcherStart(void *d)
     return NULL;
 }
 
-void * __stdcall Broker::StreamingStart(void *d)
+void * Broker::StreamingStart(void *d)
 {
     streaming_start_data * data = (streaming_start_data *)d;
 

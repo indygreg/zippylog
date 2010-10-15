@@ -125,9 +125,9 @@ class ZIPPYLOG_EXPORT Broker {
         streaming_start_data * streaming_thread_data;
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
-        static void * __stdcall StoreWatcherStart(void *data);
-        static void * __stdcall StreamingStart(void *data);
-        static void * __stdcall AsyncExecStart(void *data);
+        static void * StoreWatcherStart(void *data);
+        static void * StreamingStart(void *data);
+        static void * AsyncExecStart(void *data);
 
         void init();
         void create_worker_threads();
