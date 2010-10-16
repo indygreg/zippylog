@@ -19,11 +19,8 @@
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
 
-// TODO move platform-specific code to platform namespace
-#ifdef WINDOWS
 #include <WinBase.h>
 #include <tchar.h>
-#endif
 
 namespace zippylog {
 
@@ -31,6 +28,7 @@ using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
 
 StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const string endpoint, const string logging_endpoint)
+    : watcher(store->StorePath(), true), logging_sock(NULL), socket(NULL)
 {
     this->_store = store;
     this->_ctx = ctx;
@@ -49,6 +47,12 @@ StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const st
 
     this->socket = new socket_t(*this->_ctx, ZMQ_PUB);
     this->socket->bind(this->_endpoint.c_str());
+}
+
+StoreWatcher::~StoreWatcher()
+{
+    if (this->logging_sock) delete this->logging_sock;
+    if (this->socket) delete this->socket;
 }
 
 void StoreWatcher::SetShutdownSemaphore(bool *active)
@@ -70,89 +74,49 @@ void StoreWatcher::run()
         zeromq::send_envelope(this->logging_sock, logenvelope);
     }
 
-    HANDLE directory;
-    BYTE results[32768];
-    DWORD results_length;
-    DWORD results_length_written;
-    BOOL watch_result;
+    while (*this->active) {
+        // wait up to 250 milliseconds for change
+        // this will return immediately if there has been a change, so the
+        // delay likely only impacts thread shutdown
+        if (!this->watcher.WaitForChanges(250000)) continue;
 
-    directory = CreateFile(
-        this->_store->StorePath().c_str(),
-        GENERIC_READ,
-        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-        NULL,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
-        NULL
-    );
-    if (directory == INVALID_HANDLE_VALUE) {
+        vector<platform::DirectoryChange> changes;
 
-    }
-
-    char filename[8192];
-
-    while (this->active) {
-        watch_result = ReadDirectoryChangesW(directory, &results[0], sizeof(results), true,
-            FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
-            &results_length_written, NULL, NULL);
-        if (watch_result == 0) {
-            // TODO log error and continue if it wasn't too severe
-            char error[8192];
-            windows_error(&error[0], sizeof(error));
-            throw error;
-            break;
+        if (!this->watcher.GetChanges(changes)) {
+            throw "could not obtain directory changes... weird";
         }
 
-        // results is a FILE_NOTIFY_INFORMATION structure
-        size_t results_offset = 0;
-        FILE_NOTIFY_INFORMATION *info = NULL;
-        do {
-            info = (FILE_NOTIFY_INFORMATION *)&results[results_offset];
-            results_offset += info->NextEntryOffset;
-
-            int result = WideCharToMultiByte(
-                CP_UTF8,
-                0,
-                info->FileName,
-                info->FileNameLength / 2,
-                &filename[0],
-                sizeof(filename),
-                NULL,
-                NULL
-            );
-            filename[result] = '\0';
-            if (!result) {
-                continue;
-            }
-
+        vector<platform::DirectoryChange>::iterator i = changes.begin();
+        for (; i != changes.end(); i++) {
             string store_path = "/";
-            store_path.append(filename);
+            store_path.append(i->Path);
 
             // replace backslashes with forward slashes (Windows sanity)
             for (size_t i = store_path.length(); i; i--) {
                 if (store_path[i-1] == '\\') store_path[i-1] = '/';
             }
 
-            string fs_path = this->_store->PathToFilesystemPath(filename);
+            string fs_path = this->_store->PathToFilesystemPath(i->Path);
             platform::FileStat stat;
             platform::stat(fs_path, stat);
 
-            switch (info->Action) {
-                case FILE_ACTION_RENAMED_NEW_NAME:
-                case FILE_ACTION_ADDED:
+            switch (i->Action) {
+                case platform::DirectoryChange::ADDED:
                     this->HandleAdded(store_path, stat);
                     break;
 
-                case FILE_ACTION_RENAMED_OLD_NAME:
-                case FILE_ACTION_REMOVED:
+                case platform::DirectoryChange::DELETED:
                     this->HandleDeleted(store_path);
                     break;
 
-                case FILE_ACTION_MODIFIED:
+                case platform::DirectoryChange::MODIFIED:
                     this->HandleModified(store_path, stat);
                     break;
+
+                default:
+                    throw "unknown action seen. buggy code.";
             }
-        } while (info->NextEntryOffset != 0);
+        }
     }
 
     {

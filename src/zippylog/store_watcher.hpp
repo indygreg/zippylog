@@ -31,6 +31,9 @@ using ::zmq::socket_t;
 class ZIPPYLOG_EXPORT StoreWatcher {
 public:
     StoreWatcher(Store *store, zmq::context_t *ctx, const string publisher_endpoint, const string logging_endpoint);
+    StoreWatcher(const StoreWatcher &orig);
+    StoreWatcher & operator=(const StoreWatcher &orig);
+    ~StoreWatcher();
 
     void SetShutdownSemaphore(bool *active);
     void run();
@@ -44,6 +47,7 @@ protected:
     zmq::socket_t * socket;
     zmq::socket_t * logging_sock;
     bool *active;
+    platform::DirectoryWatcher watcher;
 
     void SendChangeMessage(Envelope &e);
     void HandleAdded(string path, platform::FileStat &stat);

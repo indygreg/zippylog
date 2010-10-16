@@ -15,7 +15,7 @@
 #include <zippylog/platform.hpp>
 
 #ifdef WINDOWS
-#include <Windows.h>
+#include <tchar.h>
 #endif
 
 #include <direct.h>
@@ -27,7 +27,7 @@
 
 namespace zippylog {
 
-void * create_thread(thread_start_func f, void *data)
+void * create_thread(thread_start_func func, void *data)
 {
 #ifdef WINDOWS
     LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;
@@ -407,6 +407,156 @@ bool Timer::Signaled()
 
     return false;
 }
+
+DirectoryChange::DirectoryChange() {}
+
+DirectoryWatcher::DirectoryWatcher()
+{
+    throw "default constructor not available";
+}
+
+DirectoryWatcher::DirectoryWatcher(const DirectoryWatcher &orig)
+{
+    throw "copy constructor not available";
+}
+
+DirectoryWatcher & DirectoryWatcher::operator=(const DirectoryWatcher &orig)
+{
+    throw "assignment operator not available";
+}
+
+DirectoryWatcher::~DirectoryWatcher()
+{
+    // TODO implement
+}
+
+DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse) : started_waiting(false)
+{
+    this->path = directory;
+    this->recurse = recurse;
+
+#ifdef WINDOWS
+    this->directory = CreateFile(
+        this->path.c_str(),
+        GENERIC_READ,
+        FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
+        NULL,
+        OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OVERLAPPED,
+        NULL
+    );
+
+    if (this->directory == INVALID_HANDLE_VALUE) {
+        throw "invalid handle";
+    }
+
+    this->completion_port = CreateIoCompletionPort(this->directory, NULL, NULL, 0);
+    if (!this->completion_port) {
+        throw "could not create I/O Completion Port";
+    }
+
+    memset(&this->overlapped, 0, sizeof(this->overlapped));
+#else
+#error "not available on this platform yet"
+#endif
+}
+
+bool DirectoryWatcher::WaitForChanges(int32 timeout)
+{
+    // return immediately if we have already collected changes
+    if (this->changes.size() > 0) return true;
+
+    if (!this->started_waiting) {
+#ifdef WINDOWS
+        BOOL watch_result = ReadDirectoryChangesW(this->directory,
+            &this->results[0], sizeof(this->results), this->recurse,
+            FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
+            NULL, &this->overlapped, NULL);
+        if (!watch_result) {
+            throw "could not start waiting for directory changes";
+        }
+
+        this->started_waiting = true;
+#else
+#error "functionality not implemented on this platform"
+#endif
+    }
+
+    // now, wait for completion
+#ifdef WINDOWS
+    DWORD milliseconds = time < 0 ? INFINITE : timeout / 1000;
+    DWORD bytes_transferred = 0;
+    ULONG key = 0;
+    LPOVERLAPPED ol = NULL;
+
+    if (!GetQueuedCompletionStatus(this->completion_port,
+        &bytes_transferred, &key, &ol, milliseconds))
+    {
+        // TODO look at MSDN docs for function and verify we shouldn't do more
+        return false;
+    }
+
+    // else, we have results!
+    this->started_waiting = false;
+
+    size_t results_offset = 0;
+    FILE_NOTIFY_INFORMATION *info = NULL;
+    char filename[8192];
+
+    do {
+        info = (FILE_NOTIFY_INFORMATION *)&this->results[results_offset];
+        results_offset += info->NextEntryOffset;
+
+        int result = WideCharToMultiByte(
+            CP_UTF8, 0, info->FileName, info->FileNameLength / 2,
+            &filename[0], sizeof(filename), NULL, NULL);
+
+        filename[result] = '\0';
+        if (!result) continue;
+
+        DirectoryChange change;
+        change.Path = filename;
+
+        switch (info->Action) {
+            case FILE_ACTION_RENAMED_NEW_NAME:
+            case FILE_ACTION_ADDED:
+                change.Action = change.ADDED;
+                break;
+
+            case FILE_ACTION_RENAMED_OLD_NAME:
+            case FILE_ACTION_REMOVED:
+                change.Action = change.DELETED;
+                break;
+
+            case FILE_ACTION_MODIFIED:
+                change.Action = change.MODIFIED;
+                break;
+        }
+
+        this->changes.push_back(change);
+
+    } while (info->NextEntryOffset != 0);
+
+#else
+#error "functionality not implemented on this platform"
+#endif
+
+    return true;
+}
+
+bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
+{
+    out.clear();
+
+    for (size_t i = 0; i < this->changes.size(); i++) {
+        out.push_back(this->changes[i]);
+    }
+
+    this->changes.clear();
+
+    return true;
+}
+
 
 } // platform namespace
 

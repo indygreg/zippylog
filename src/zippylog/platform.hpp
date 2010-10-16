@@ -23,6 +23,12 @@
 
 #include <zippylog/zippylog.h>
 
+#ifdef WINDOWS
+#include <winsock2.h>
+#include <Windows.h>
+
+#endif
+
 #include <string>
 #include <vector>
 
@@ -163,6 +169,65 @@ namespace platform {
 
 #ifdef WINDOWS
         void * handle;
+#endif
+    };
+
+    // represents a change in a directory
+    class DirectoryChange {
+    public:
+        DirectoryChange();
+
+        // path that was changed
+        // if a rename, this will be the new name
+        string Path;
+
+        // how the path changed
+        enum Action {
+            ADDED = 1,
+            DELETED = 2,
+            MODIFIED = 3,
+            RENAMED = 4,
+        } Action;
+
+        // if path was renamed, this will be set to old name
+        string OldName;
+    };
+
+    class DirectoryWatcher {
+    public:
+        DirectoryWatcher();
+        DirectoryWatcher(const DirectoryWatcher &orig);
+        DirectoryWatcher & operator=(const DirectoryWatcher &orig);
+        ~DirectoryWatcher();
+
+        // create a construct that watches the specified directory
+        DirectoryWatcher(const string &directory, bool recurse=true);
+
+        // Wait up to N microseconds for changes to the directory or forever,
+        // if -1 is given as the timeout value
+        //
+        // Returns true if there are changes to the directory. Returns false
+        // otherwise.
+        //
+        // If returns true, call GetChanges() to return the list of changes.
+        // Function may return true immediately if changes are already
+        // available but haven't been collected with GetChanges().
+        bool WaitForChanges(int32 timeout);
+
+        // returns collected changes to directory
+        bool GetChanges(vector<DirectoryChange> &changes);
+
+    protected:
+        string path;
+        bool recurse;
+        vector<DirectoryChange> changes;
+        bool started_waiting;
+
+#ifdef WINDOWS
+        HANDLE directory;
+        HANDLE completion_port;
+        BYTE results[32768];
+        OVERLAPPED overlapped;
 #endif
     };
 }
