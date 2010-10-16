@@ -19,9 +19,6 @@
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
 
-#include <WinBase.h>
-#include <tchar.h>
-
 namespace zippylog {
 
 using ::zippylog::zippylogd::StoreWatcherStartup;
