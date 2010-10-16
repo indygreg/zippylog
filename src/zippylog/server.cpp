@@ -49,7 +49,7 @@ using ::zippylog::zippylogd::WorkerReceiveUnknownRequestType;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
-void * __stdcall Request::request_processor(void *data)
+void * Request::request_processor(void *data)
 {
     request_processor_start_data *d = (request_processor_start_data *)data;
 
