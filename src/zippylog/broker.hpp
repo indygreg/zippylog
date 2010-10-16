@@ -49,6 +49,7 @@ typedef struct store_watcher_start_data {
     Store *store;
     char *endpoint;
     char *logging_endpoint;
+    bool *active;
 } store_watcher_start_data;
 
 typedef struct streaming_start_data {
@@ -82,7 +83,7 @@ class ZIPPYLOG_EXPORT Broker {
         void Shutdown();
 
     protected:
-        context_t * zctx;
+        context_t zctx;
 
         // fans XREQ that fans out to individual worker threads
         socket_t * workers_sock;

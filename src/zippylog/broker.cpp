@@ -59,7 +59,7 @@ using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
 
-Broker::Broker(const string config_file_path)
+Broker::Broker(const string config_file_path) : zctx(3)
 {
     this->init();
 
@@ -71,7 +71,7 @@ Broker::Broker(const string config_file_path)
     this->store = new Store(this->config.store_path);
 }
 
-Broker::Broker(const Broker & orig)
+Broker::Broker(const Broker & orig) : zctx(1)
 {
     throw "can not copy Broker instances";
 }
@@ -98,14 +98,11 @@ Broker::~Broker()
     if (this->streaming_thread_data) delete this->streaming_thread_data;
 
     if (this->store) delete this->store;
-
-    if (this->zctx) delete this->zctx;
 }
 
 void Broker::init()
 {
     this->active = true;
-    this->zctx = NULL;
     this->exec_thread = NULL;
     this->worker_start_data = NULL;
     this->workers_sock = NULL;
@@ -156,10 +153,6 @@ to clients, as appropriate.
 
 void Broker::run()
 {
-    if (!this->zctx) {
-        this->zctx = new zmq::context_t(1);
-    }
-
     this->setup_internal_sockets();
 
     {
@@ -358,7 +351,7 @@ void * Broker::AsyncExecStart(void *data)
 void Broker::create_worker_threads()
 {
     this->worker_start_data = new request_processor_start_data;
-    this->worker_start_data->ctx = this->zctx;
+    this->worker_start_data->ctx = &this->zctx;
     this->worker_start_data->store = this->store;
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
     this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT;
@@ -380,8 +373,9 @@ void Broker::create_store_watcher()
     this->store_watcher_start = new store_watcher_start_data;
     this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT;
     this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT;
-    this->store_watcher_start->zctx = this->zctx;
+    this->store_watcher_start->zctx = &this->zctx;
     this->store_watcher_start->store = this->store;
+    this->store_watcher_start->active = &this->active;
 
     this->store_watcher_thread = create_thread(StoreWatcherStart, this->store_watcher_start);
 }
@@ -394,7 +388,7 @@ void Broker::create_streaming_threads()
     this->streaming_thread_data->client_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
     this->streaming_thread_data->subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
     this->streaming_thread_data->logging_endpoint = LOGGER_ENDPOINT;
-    this->streaming_thread_data->zctx = this->zctx;
+    this->streaming_thread_data->zctx = &this->zctx;
     this->streaming_thread_data->store = this->store;
     this->streaming_thread_data->active = &this->active;
     this->streaming_thread_data->subscription_ttl = this->config.subscription_ttl;
@@ -410,34 +404,34 @@ void Broker::create_streaming_threads()
 
 void Broker::setup_internal_sockets()
 {
-    this->logger_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->logger_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
     this->logger_sock->bind(LOGGER_ENDPOINT);
 
-    this->log_client_sock = new zmq::socket_t(*this->zctx, ZMQ_PUSH);
+    this->log_client_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
     this->log_client_sock->connect(LOGGER_ENDPOINT);
 
-    this->workers_sock = new zmq::socket_t(*this->zctx, ZMQ_XREQ);
+    this->workers_sock = new zmq::socket_t(this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(WORKER_ENDPOINT);
 
-    this->streaming_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->streaming_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
     this->streaming_sock->bind(STREAMING_ENDPOINT);
 
-    this->worker_subscriptions_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->worker_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
     this->worker_subscriptions_sock->bind(WORKER_SUBSCRIPTIONS_ENDPOINT);
 
-    this->worker_streaming_notify_sock = new zmq::socket_t(*this->zctx, ZMQ_PULL);
+    this->worker_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
     this->worker_streaming_notify_sock->bind(WORKER_STREAMING_NOTIFY_ENDPOINT);
 
-    this->streaming_subscriptions_sock = new zmq::socket_t(*this->zctx, ZMQ_PUSH);
+    this->streaming_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
     this->streaming_subscriptions_sock->bind(STREAMING_SUBSCRIPTIONS_ENDPOINT);
 
-    this->streaming_streaming_notify_sock = new zmq::socket_t(*this->zctx, ZMQ_PUB);
+    this->streaming_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PUB);
     this->streaming_streaming_notify_sock->bind(STREAMING_STREAMING_NOTIFY_ENDPOINT);
 }
 
 void Broker::setup_listener_sockets()
 {
-    this->clients_sock = new zmq::socket_t(*this->zctx, ZMQ_XREP);
+    this->clients_sock = new zmq::socket_t(this->zctx, ZMQ_XREP);
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?
@@ -462,7 +456,7 @@ void Broker::Shutdown()
     }
 
     // forcibly kill store watcher, b/c that's the only way right now
-    terminate_thread(this->store_watcher_thread);
+    join_thread(this->store_watcher_thread);
 
     if (this->exec_thread) {
         join_thread(this->exec_thread);
@@ -584,8 +578,10 @@ void * __stdcall Broker::StoreWatcherStart(void *d)
     assert(data->zctx);
     assert(data->store);
     assert(data->logging_endpoint);
+    assert(data->active);
 
     StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint, data->logging_endpoint);
+    watcher.SetShutdownSemaphore(data->active);
     watcher.run();
 
     return NULL;
