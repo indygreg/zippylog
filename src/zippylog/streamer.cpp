@@ -306,7 +306,7 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
         (protocol::request::SubscribeStoreChanges *)e.GetMessage(0);
 
     SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
-    subscription.type = SubscriptionInfo.STORE_CHANGE;
+    subscription.type = SubscriptionInfo::STORE_CHANGE;
 
     for (int i = 0; i < m->path_size(); i++) {
         subscription.paths.push_back(m->path(i));
