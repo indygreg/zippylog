@@ -83,21 +83,21 @@ void StoreWatcher::run()
             throw "could not obtain directory changes... weird";
         }
 
-        vector<platform::DirectoryChange>::iterator i = changes.begin();
-        for (; i != changes.end(); i++) {
+        vector<platform::DirectoryChange>::iterator itor = changes.begin();
+        for (; itor != changes.end(); itor++) {
             string store_path = "/";
-            store_path.append(i->Path);
+            store_path.append(itor->Path);
 
             // replace backslashes with forward slashes (Windows sanity)
             for (size_t i = store_path.length(); i; i--) {
                 if (store_path[i-1] == '\\') store_path[i-1] = '/';
             }
 
-            string fs_path = this->_store->PathToFilesystemPath(i->Path);
+            string fs_path = this->_store->PathToFilesystemPath(itor->Path);
             platform::FileStat stat;
             platform::stat(fs_path, stat);
 
-            switch (i->Action) {
+            switch (itor->Action) {
                 case platform::DirectoryChange::ADDED:
                     this->HandleAdded(store_path, stat);
                     break;
