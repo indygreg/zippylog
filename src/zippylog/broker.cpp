@@ -580,7 +580,7 @@ void * Broker::StoreWatcherStart(void *d)
     assert(data->logging_endpoint);
     assert(data->active);
 
-    StoreWatcher watcher = StoreWatcher(data->store, data->zctx, data->endpoint, data->logging_endpoint);
+    StoreWatcher watcher(data->store, data->zctx, data->endpoint, data->logging_endpoint);
     watcher.SetShutdownSemaphore(data->active);
     watcher.run();
 
