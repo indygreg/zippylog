@@ -21,6 +21,22 @@
 
 #include <string>
 
+// windows.h defines GetMessage() as a macro, which craps on us
+// here, we shovel shit
+#if defined(WINDOWS) && defined(GetMessage)
+
+inline BOOL GetMessage_Windows(LPMSG msg, HWND hwnd, UINT min, UINT max) {
+    return GetMessage(msg, hwnd, min, max);
+}
+
+#undef GetMessage
+
+inline BOOL GetMessage(LPMSG msg, HWND hwnd, UINT min, UINT max) {
+    return GetMessage_Windows(msg, hwnd, min, max);
+}
+
+#endif
+
 namespace zippylog {
 
 using ::google::protobuf::Message;
