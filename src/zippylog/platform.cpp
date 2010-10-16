@@ -18,9 +18,15 @@
 #include <tchar.h>
 #endif
 
-#include <direct.h>
+#ifdef LINUX
+#include <pthread.h>
+#include <stdlib.h>
+#endif
+
+#include <dirent.h>
 #include <fcntl.h>
-#include <io.h>
+#include <sys/io.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -35,6 +41,15 @@ void * create_thread(thread_start_func func, void *data)
 
     return thread;
 
+#elif defined(LINUX)
+    pthread_t *t = (pthread_t *)malloc(sizeof(pthread_t));
+    if (!t) throw "could not allocate thread memory";
+    int result = pthread_create(t, NULL, func, data);
+    if (result != 0) {
+        throw "error creating thread";
+    }
+
+    return (void *)t;
 #else
 #error "Threading not supported on this platform yet"
     // TODO implement pthread support
@@ -49,6 +64,9 @@ bool join_thread(void *thread)
     DWORD result = WaitForSingleObject((HANDLE)thread, INFINITE);
     return WAIT_OBJECT_0 == result;
 
+#elif defined(LINUX)
+    int result = pthread_join(*(pthread_t *)thread, NULL);
+    return result == 0;
 #else
 #error "join_thread() not implemented on your platform yet"
 #endif
@@ -59,6 +77,9 @@ bool terminate_thread(void *thread)
 #ifdef WINDOWS
     DWORD rc = 1;
     return TerminateThread(thread, rc);
+#elif defined(LINUX)
+    int result = pthread_cancel(*(pthread_t *)thread);
+    return result == 0;
 #else
 #error "terminate_thread() not implemented on your platform yet"
 #endif
@@ -107,8 +128,36 @@ bool directory_entries(const string dir, vector<dir_entry> &v)
     FindClose(handle);
     return true;
 
+#elif HAVE_OPENDIR
+    DIR * dh = opendir(dir.c_str());
+    if (!dh) return false;
+
+    dirent *d = NULL;
+
+    while (d = readdir(dh)) {
+        dir_entry entry;
+
+        entry.name = d->d_name;
+
+        switch (d->d_type) {
+            case DT_DIR:
+                entry.type = 1;
+                break;
+            case DT_REG:
+                entry.type = 2;
+                break;
+            default:
+                entry.type = 0;
+                break;
+        }
+
+        v.push_back(entry);
+    }
+
+    closedir(dh);
+
+    return true;
 #else
-    // TODO implement POSIX version
 #error "directory traversal not implemented on this platform yet"
 #endif
 
@@ -129,6 +178,7 @@ namespace platform {
 
 bool stat(const string path, FileStat &st)
 {
+#ifdef WINDOWS
     struct _stat64 result;
 
     if (_stat64(path.c_str(), &result) != 0) {
@@ -147,6 +197,25 @@ bool stat(const string path, FileStat &st)
     else {
         st.type = UNKNOWN;
     }
+
+#elif LINUX
+    struct stat result;
+
+    if (stat(path.c_str(), &result) != 0) return false;
+
+    if (result.st_mode & S_IFDIR) {
+        st.type = DIRECTORY;
+    }
+    else if (result.st_mode & S_IFREG) {
+        st.type = REGULAR;
+    }
+    else if (result.st_mode & S_IFIFO) {
+        st.type = PIPE;
+    }
+    else {
+        st.type = UNKNOWN;
+    }
+#endif
 
     st.size = result.st_size;
 
@@ -173,6 +242,13 @@ bool TimeNow(Time &t)
     t.epoch_micro = wintime.QuadPart / 10 - 11644473600000000;
     t.epoch_sec = t.epoch_micro / 1000000;
     t.usec = t.epoch_micro % 1000000;
+#elif LINUX
+    struct timeval tv;
+    if (gettimeofday(&tv, NULL) != 0) return false;
+
+    t.epoch_micro = tv.tv_sec * 1000000 + tv.tv_usec;
+    t.epoch_sec = tv.tv_sec;
+    t.usec = tv.tv_usec;
 #else
 #error "not supported on this platform yet"
 #endif
@@ -215,7 +291,15 @@ bool UnixMicroTimeToZippyTime(int64 from, Time &to)
 
 bool MakeDirectory(const string path)
 {
+    // TODO permissions should be passed as argument
+#ifdef WINDOWS
+    // TODO use native Windows API
     int result = mkdir(path.c_str());
+#elif LINUX
+    int result = mkdir(path.c_str(), 0775);
+#else
+#error "Not supported on this platform yet"
+#endif
 
     return result == 0;
 }
@@ -231,7 +315,9 @@ bool PathIsDirectory(const string path)
 File::File()
 {
     this->open = false;
+#ifdef WINDOWS
     this->handle = NULL;
+#endif
 }
 
 bool OpenFile(File &f, const string path, int flags)
@@ -457,7 +543,7 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse) : star
 
     memset(&this->overlapped, 0, sizeof(this->overlapped));
 #else
-#error "not available on this platform yet"
+#warning "not available on this platform yet"
 #endif
 }
 
@@ -478,7 +564,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
         this->started_waiting = true;
 #else
-#error "functionality not implemented on this platform"
+#warning "functionality not implemented on this platform"
 #endif
     }
 
@@ -538,7 +624,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     } while (info->NextEntryOffset != 0);
 
 #else
-#error "functionality not implemented on this platform"
+#warning "functionality not implemented on this platform"
 #endif
 
     return true;
