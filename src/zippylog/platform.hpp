@@ -26,6 +26,11 @@
 #ifdef WINDOWS
 #include <winsock2.h>
 #include <Windows.h>
+
+#elif LINUX
+// TODO should be pulled from build tools
+#define HAVE_OPENDIR 1
+
 #endif
 
 #include <string>
