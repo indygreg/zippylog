@@ -51,6 +51,15 @@ StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const st
     this->socket->bind(this->_endpoint.c_str());
 }
 
+void StoreWatcher::SetShutdownSemaphore(bool *active)
+{
+    if (!active) throw "pointer must not be NULL";
+
+    if (!*active) throw "boolean being pointed to must be true";
+
+    this->active = active;
+}
+
 void StoreWatcher::run()
 {
     {
@@ -82,7 +91,7 @@ void StoreWatcher::run()
 
     char filename[8192];
 
-    while (true) {
+    while (this->active) {
         watch_result = ReadDirectoryChangesW(directory, &results[0], sizeof(results), true,
             FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
             &results_length_written, NULL, NULL);
@@ -153,7 +162,6 @@ void StoreWatcher::run()
         log.add_to_envelope(&logenvelope);
         zeromq::send_envelope(this->logging_sock, logenvelope);
     }
-
 }
 
 void StoreWatcher::SendChangeMessage(Envelope &e)
