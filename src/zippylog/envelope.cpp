@@ -18,6 +18,7 @@
 
 #include <google/protobuf/text_format.h>
 
+#include <stdio.h>
 #include <sstream>
 #include <vector>
 
@@ -189,7 +190,7 @@ string Envelope::ToString()
     ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
     printer.SetInitialIndentLevel(4);
 
-    stringstream ss = stringstream(stringstream::out);
+    stringstream ss(stringstream::out);
 
     ss << "Envelope" << ::std::endl;
 
