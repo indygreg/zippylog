@@ -47,19 +47,19 @@ typedef struct broker_config {
 typedef struct store_watcher_start_data {
     context_t *zctx;
     Store *store;
-    char *endpoint;
-    char *logging_endpoint;
+    const char *endpoint;
+    const char *logging_endpoint;
     bool *active;
 } store_watcher_start_data;
 
 typedef struct streaming_start_data {
     context_t *zctx;
     Store *store;
-    char *store_change_endpoint;
-    char *streaming_endpoint;
-    char *subscriptions_endpoint;
-    char *client_updates_endpoint;
-    char *logging_endpoint;
+    const char *store_change_endpoint;
+    const char *streaming_endpoint;
+    const char *subscriptions_endpoint;
+    const char *client_updates_endpoint;
+    const char *logging_endpoint;
     bool *active;
     uint32 subscription_ttl;
 } streaming_start_data;
@@ -126,6 +126,16 @@ class ZIPPYLOG_EXPORT Broker {
         void * store_watcher_thread;
         store_watcher_start_data * store_watcher_start;
         streaming_start_data * streaming_thread_data;
+
+        static const string WORKER_ENDPOINT;
+        static const string STORE_CHANGE_ENDPOINT;
+        static const string STREAMING_ENDPOINT;
+        static const string LOGGER_ENDPOINT;
+
+        static const string WORKER_SUBSCRIPTIONS_ENDPOINT;
+        static const string STREAMING_SUBSCRIPTIONS_ENDPOINT;
+        static const string WORKER_STREAMING_NOTIFY_ENDPOINT;
+        static const string STREAMING_STREAMING_NOTIFY_ENDPOINT;
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
         static void * StoreWatcherStart(void *data);
