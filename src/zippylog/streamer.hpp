@@ -23,6 +23,10 @@
 
 #include <zmq.hpp>
 
+extern "C" {
+#include <lua.h>
+}
+
 #include <map>
 #include <string>
 #include <vector>
@@ -64,20 +68,35 @@ public:
     vector<string> socket_identifiers;
 
     EnvelopeSubscription envelope_subscription;
+
+    lua_State *L;
+};
+
+// type passed to constructor to initialize a streamer instance
+// it is easier to pass this object than to pass many named arguments
+class ZIPPYLOG_EXPORT StreamerStartParams {
+public:
+    StreamerStartParams();
+
+    context_t *ctx;
+    Store *store;
+    string store_changes_endpoint;
+    string client_endpoint;
+    string subscriptions_endpoint;
+    string subscription_updates_endpoint;
+    string logging_endpoint;
+    uint32 subscription_ttl;
+
+    bool lua_allow;
+    uint32 lua_max_memory;
+
+    bool *active;
 };
 
 // the streamer streams information to subscribed clients
 class ZIPPYLOG_EXPORT Streamer {
     public:
-        Streamer(
-            Store *store, context_t *zctx,
-            const string store_changes_endpoint,
-            const string client_endpoint,
-            const string subscriptions_endpoint,
-            const string subscription_updates_endpoint,
-            const string logging_endpoint,
-            uint32 subscription_ttl
-        );
+        Streamer(StreamerStartParams params);
         Streamer(const Streamer &orig);
         Streamer & operator=(const Streamer &orig);
         ~Streamer();
@@ -89,11 +108,6 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // renews a subscription for the specified id
         bool RenewSubscription(const string &id);
-
-        // sets the shutdown semaphore for the streamer
-        // if the boolean pointed to by the parameter goes to 0, Run() will
-        // finish, likely shutting down the calling thread
-        void SetShutdownSemaphore(bool *active);
 
     protected:
 
@@ -108,6 +122,9 @@ class ZIPPYLOG_EXPORT Streamer {
         string logging_endpoint;
 
         uint32 subscription_ttl;
+
+        bool lua_allow;
+        uint32 lua_max_memory;
 
         socket_t * changes_sock;
         socket_t * client_sock;
@@ -137,6 +154,13 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // returns whether we have store change subscriptions for the given path
         bool HaveStoreChangeSubscriptions(const string &path);
+
+        // Lua allocator function
+        // ud is assumed to point to a uint32 value, which represents
+        // the max size
+        static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
+
+        static int LuaPanic(lua_State *L);
 };
 
 }} // namespaces

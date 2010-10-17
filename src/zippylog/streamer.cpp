@@ -50,29 +50,25 @@ SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
     }
 }
 
-Streamer::Streamer(Store *store,
-                   context_t *zctx,
-                   const string store_changes_endpoint,
-                   const string client_endpoint,
-                   const string subscriptions_endpoint,
-                   const string subscription_updates_endpoint,
-                   const string logging_endpoint,
-                   uint32 subscription_ttl)
-{
-    this->store = store;
-    this->zctx = zctx;
-    this->store_changes_endpoint = store_changes_endpoint;
-    this->client_endpoint = client_endpoint;
-    this->subscriptions_endpoint = subscriptions_endpoint;
-    this->subscription_updates_endpoint = subscription_updates_endpoint;
-    this->logging_endpoint = logging_endpoint;
-    this->subscription_ttl = subscription_ttl;
+StreamerStartParams::StreamerStartParams() : active(NULL) { }
 
-    this->changes_sock = NULL;
-    this->client_sock = NULL;
-    this->subscriptions_sock = NULL;
-    this->subscription_updates_sock = NULL;
-    this->logging_sock = NULL;
+Streamer::Streamer(StreamerStartParams params)
+    : changes_sock(NULL), client_sock(NULL), subscriptions_sock(NULL), subscription_updates_sock(NULL), logging_sock(NULL)
+{
+    this->store = params.store;
+    this->zctx = params.ctx;
+    this->store_changes_endpoint = params.store_changes_endpoint;
+    this->client_endpoint = params.client_endpoint;
+    this->subscriptions_endpoint = params.subscriptions_endpoint;
+    this->subscription_updates_endpoint = params.subscription_updates_endpoint;
+    this->logging_endpoint = params.logging_endpoint;
+    this->subscription_ttl = params.subscription_ttl;
+    this->lua_allow = params.lua_allow;
+    this->lua_max_memory = params.lua_max_memory;
+
+    if (!params.active) throw "active parameter cannot be NULL";
+
+    this->active = params.active;
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
@@ -108,15 +104,6 @@ Streamer::~Streamer()
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
     if (this->logging_sock) delete this->logging_sock;
-}
-
-void Streamer::SetShutdownSemaphore(bool *active)
-{
-    if (!active) throw "pointer must not be NULL";
-
-    if (!*active) throw "boolean being pointed to must be true";
-
-    this->active = active;
 }
 
 void Streamer::Run()
@@ -592,6 +579,27 @@ bool Streamer::RenewSubscription(const string &id)
     }
 
     return iter->second.expiration_timer.Start();
+}
+
+void * Streamer::LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize)
+{
+    uint32 *max = (uint32 *)ud;
+
+    if (nsize == 0) {
+        free(ptr);
+        return NULL;
+    }
+    else if (nsize > *max) {
+        return NULL;
+    }
+    else {
+        return realloc(ptr, nsize);
+    }
+}
+
+int Streamer::LuaPanic(lua_State *L)
+{
+    return 0;
 }
 
 }} // namespaces

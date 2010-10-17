@@ -19,6 +19,7 @@
 #include <zippylog/server.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
+#include <zippylog/streamer.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -42,6 +43,8 @@ typedef struct broker_config {
     string log_bucket;
     string log_stream_set;
     int32 stream_flush_interval;
+    bool lua_execute_client_code;       // whether client-supplied Lua code can be executed
+    uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
 } broker_config;
 
 typedef struct store_watcher_start_data {
@@ -51,18 +54,6 @@ typedef struct store_watcher_start_data {
     const char *logging_endpoint;
     bool *active;
 } store_watcher_start_data;
-
-typedef struct streaming_start_data {
-    context_t *zctx;
-    Store *store;
-    const char *store_change_endpoint;
-    const char *streaming_endpoint;
-    const char *subscriptions_endpoint;
-    const char *client_updates_endpoint;
-    const char *logging_endpoint;
-    bool *active;
-    uint32 subscription_ttl;
-} streaming_start_data;
 
 // the broker is a ZMQ device that provides the core message routing component
 // of zippylogd. it binds to a number of sockets and coordinates all the workers
@@ -125,7 +116,8 @@ class ZIPPYLOG_EXPORT Broker {
         broker_config config;
         void * store_watcher_thread;
         store_watcher_start_data * store_watcher_start;
-        streaming_start_data * streaming_thread_data;
+
+        StreamerStartParams streamer_params;
 
         static const string WORKER_ENDPOINT;
         static const string STORE_CHANGE_ENDPOINT;

@@ -91,7 +91,6 @@ Broker::~Broker()
 
     if (this->worker_start_data) delete this->worker_start_data;
     if (this->store_watcher_start) delete this->store_watcher_start;
-    if (this->streaming_thread_data) delete this->streaming_thread_data;
 
     if (this->store) delete this->store;
 }
@@ -113,7 +112,6 @@ void Broker::init()
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
-    this->streaming_thread_data = NULL;
 
     platform::UUID uuid;
     if (!platform::CreateUUID(uuid)) {
@@ -378,19 +376,21 @@ void Broker::create_store_watcher()
 
 void Broker::create_streaming_threads()
 {
-    this->streaming_thread_data = new streaming_start_data;
-    this->streaming_thread_data->store_change_endpoint = STORE_CHANGE_ENDPOINT.c_str();
-    this->streaming_thread_data->streaming_endpoint = STREAMING_ENDPOINT.c_str();
-    this->streaming_thread_data->client_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT.c_str();
-    this->streaming_thread_data->subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT.c_str();
-    this->streaming_thread_data->logging_endpoint = LOGGER_ENDPOINT.c_str();
-    this->streaming_thread_data->zctx = &this->zctx;
-    this->streaming_thread_data->store = this->store;
-    this->streaming_thread_data->active = &this->active;
-    this->streaming_thread_data->subscription_ttl = this->config.subscription_ttl;
+    this->streamer_params.client_endpoint = STREAMING_ENDPOINT;
+    this->streamer_params.store_changes_endpoint = STORE_CHANGE_ENDPOINT;
+    this->streamer_params.logging_endpoint = LOGGER_ENDPOINT;
+    this->streamer_params.subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
+    this->streamer_params.subscription_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
+
+    this->streamer_params.ctx = &this->zctx;
+    this->streamer_params.store = this->store;
+    this->streamer_params.subscription_ttl = this->config.subscription_ttl;
+    this->streamer_params.lua_allow = this->config.lua_execute_client_code;
+    this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
+    this->streamer_params.active = &this->active;
 
     for (int i = this->config.streaming_threads; i; i--) {
-        void * thread = create_thread(Broker::StreamingStart, this->streaming_thread_data);
+        void * thread = create_thread(Broker::StreamingStart, &this->streamer_params);
         if (!thread) {
             throw "error creating streaming thread";
         }
@@ -549,6 +549,15 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
         goto cleanup;
     }
 
+    // Lua settings
+    lua_getglobal(L, "lua_execute_client_code");
+    config.lua_execute_client_code = lua_toboolean(L, -1);
+    lua_pop(L, 1);
+
+    lua_getglobal(L, "lua_streaming_max_memory");
+    config.lua_streaming_max_memory = luaL_optinteger(L, -1, 524288);
+    lua_pop(L, 1);
+
 
 cleanup:
     lua_close(L);
@@ -585,30 +594,9 @@ void * Broker::StoreWatcherStart(void *d)
 
 void * Broker::StreamingStart(void *d)
 {
-    streaming_start_data * data = (streaming_start_data *)d;
-
-    assert(data->zctx);
-    assert(data->store_change_endpoint);
-    assert(data->streaming_endpoint);
-    assert(data->subscriptions_endpoint);
-    assert(data->client_updates_endpoint);
-    assert(data->logging_endpoint);
-    assert(data->store);
-    assert(data->subscription_ttl);
-
+    StreamerStartParams *params = (StreamerStartParams *)d;
     try {
-        Streamer streamer(
-            data->store,
-            data->zctx,
-            data->store_change_endpoint,
-            data->streaming_endpoint,
-            data->subscriptions_endpoint,
-            data->client_updates_endpoint,
-            data->logging_endpoint,
-            data->subscription_ttl
-        );
-        streamer.SetShutdownSemaphore(data->active);
-
+        Streamer streamer(*params);
         streamer.Run();
     }
     catch (zmq::error_t e) {
