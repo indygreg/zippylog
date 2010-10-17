@@ -411,6 +411,16 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
+  // optional string lua_code = 2;
+  inline bool has_lua_code() const;
+  inline void clear_lua_code();
+  static const int kLuaCodeFieldNumber = 2;
+  inline const ::std::string& lua_code() const;
+  inline void set_lua_code(const ::std::string& value);
+  inline void set_lua_code(const char* value);
+  inline void set_lua_code(const char* value, size_t size);
+  inline ::std::string* mutable_lua_code();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 54;
   bool add_to_envelope(::zippylog::Envelope *envelope);
@@ -420,11 +430,13 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   mutable int _cached_size_;
   
   ::google::protobuf::RepeatedPtrField< ::std::string> path_;
+  ::std::string* lua_code_;
+  static const ::std::string _default_lua_code_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -811,6 +823,48 @@ SubscribeEnvelopes::path() const {
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 SubscribeEnvelopes::mutable_path() {
   return &path_;
+}
+
+// optional string lua_code = 2;
+inline bool SubscribeEnvelopes::has_lua_code() const {
+  return _has_bit(1);
+}
+inline void SubscribeEnvelopes::clear_lua_code() {
+  if (lua_code_ != &_default_lua_code_) {
+    lua_code_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& SubscribeEnvelopes::lua_code() const {
+  return *lua_code_;
+}
+inline void SubscribeEnvelopes::set_lua_code(const ::std::string& value) {
+  _set_bit(1);
+  if (lua_code_ == &_default_lua_code_) {
+    lua_code_ = new ::std::string;
+  }
+  lua_code_->assign(value);
+}
+inline void SubscribeEnvelopes::set_lua_code(const char* value) {
+  _set_bit(1);
+  if (lua_code_ == &_default_lua_code_) {
+    lua_code_ = new ::std::string;
+  }
+  lua_code_->assign(value);
+}
+inline void SubscribeEnvelopes::set_lua_code(const char* value, size_t size) {
+  _set_bit(1);
+  if (lua_code_ == &_default_lua_code_) {
+    lua_code_ = new ::std::string;
+  }
+  lua_code_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscribeEnvelopes::mutable_lua_code() {
+  _set_bit(1);
+  if (lua_code_ == &_default_lua_code_) {
+    lua_code_ = new ::std::string;
+  }
+  return lua_code_;
 }
 
 // -------------------------------------------------------------------

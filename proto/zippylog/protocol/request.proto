@@ -41,6 +41,9 @@ message SubscribeEnvelopes {
     repeated string path = 1;
 
     // TODO add filtering
+    
+    // Lua code that defines functionality to be executed on the server
+    optional string lua_code = 2;
 }
 
 // clients need to send keepalive messages every N seconds or the server drops

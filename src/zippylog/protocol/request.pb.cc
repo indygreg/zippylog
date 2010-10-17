@@ -91,8 +91,9 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeStoreChanges));
   SubscribeEnvelopes_descriptor_ = file->message_type(3);
-  static const int SubscribeEnvelopes_offsets_[1] = {
+  static const int SubscribeEnvelopes_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, lua_code_),
   };
   SubscribeEnvelopes_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -189,10 +190,10 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "log.protocol.request\"\013\n\tStoreInfo\"E\n\003Get"
     "\022\014\n\004path\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022"
     "max_response_bytes\030\003 \001(\r\"%\n\025SubscribeSto"
-    "reChanges\022\014\n\004path\030\001 \003(\t\"\"\n\022SubscribeEnve"
-    "lopes\022\014\n\004path\030\001 \003(\t\" \n\022SubscribeKeepaliv"
-    "e\022\n\n\002id\030\001 \001(\014\"\035\n\017SubscribeCancel\022\n\n\002id\030\001"
-    " \001(\014", 284);
+    "reChanges\022\014\n\004path\030\001 \003(\t\"4\n\022SubscribeEnve"
+    "lopes\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_code\030\002 \001(\t\" \n"
+    "\022SubscribeKeepalive\022\n\n\002id\030\001 \001(\014\"\035\n\017Subsc"
+    "ribeCancel\022\n\n\002id\030\001 \001(\014", 302);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   StoreInfo::default_instance_ = new StoreInfo();
@@ -889,8 +890,10 @@ void SubscribeStoreChanges::Swap(SubscribeStoreChanges* other) {
 
 // ===================================================================
 
+const ::std::string SubscribeEnvelopes::_default_lua_code_;
 #ifndef _MSC_VER
 const int SubscribeEnvelopes::kPathFieldNumber;
+const int SubscribeEnvelopes::kLuaCodeFieldNumber;
 #endif  // !_MSC_VER
 
 SubscribeEnvelopes::SubscribeEnvelopes()
@@ -909,6 +912,7 @@ SubscribeEnvelopes::SubscribeEnvelopes(const SubscribeEnvelopes& from)
 
 void SubscribeEnvelopes::SharedCtor() {
   _cached_size_ = 0;
+  lua_code_ = const_cast< ::std::string*>(&_default_lua_code_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -917,6 +921,9 @@ SubscribeEnvelopes::~SubscribeEnvelopes() {
 }
 
 void SubscribeEnvelopes::SharedDtor() {
+  if (lua_code_ != &_default_lua_code_) {
+    delete lua_code_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -942,6 +949,13 @@ SubscribeEnvelopes* SubscribeEnvelopes::New() const {
 }
 
 void SubscribeEnvelopes::Clear() {
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (_has_bit(1)) {
+      if (lua_code_ != &_default_lua_code_) {
+        lua_code_->clear();
+      }
+    }
+  }
   path_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -967,6 +981,23 @@ bool SubscribeEnvelopes::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(10)) goto parse_path;
+        if (input->ExpectTag(18)) goto parse_lua_code;
+        break;
+      }
+      
+      // optional string lua_code = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_lua_code:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_lua_code()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->lua_code().data(), this->lua_code().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -998,6 +1029,15 @@ void SubscribeEnvelopes::SerializeWithCachedSizes(
       1, this->path(i), output);
   }
   
+  // optional string lua_code = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->lua_code().data(), this->lua_code().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->lua_code(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1015,6 +1055,16 @@ void SubscribeEnvelopes::SerializeWithCachedSizes(
       WriteStringToArray(1, this->path(i), target);
   }
   
+  // optional string lua_code = 2;
+  if (_has_bit(1)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->lua_code().data(), this->lua_code().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->lua_code(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1025,6 +1075,15 @@ void SubscribeEnvelopes::SerializeWithCachedSizes(
 int SubscribeEnvelopes::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    // optional string lua_code = 2;
+    if (has_lua_code()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->lua_code());
+    }
+    
+  }
   // repeated string path = 1;
   total_size += 1 * this->path_size();
   for (int i = 0; i < this->path_size(); i++) {
@@ -1058,6 +1117,11 @@ void SubscribeEnvelopes::MergeFrom(const ::google::protobuf::Message& from) {
 void SubscribeEnvelopes::MergeFrom(const SubscribeEnvelopes& from) {
   GOOGLE_CHECK_NE(&from, this);
   path_.MergeFrom(from.path_);
+  if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (from._has_bit(1)) {
+      set_lua_code(from.lua_code());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -1081,6 +1145,7 @@ bool SubscribeEnvelopes::IsInitialized() const {
 void SubscribeEnvelopes::Swap(SubscribeEnvelopes* other) {
   if (other != this) {
     path_.Swap(&other->path_);
+    std::swap(lua_code_, other->lua_code_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

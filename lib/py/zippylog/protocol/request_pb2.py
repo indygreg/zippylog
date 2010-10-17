@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\"%\n\x15SubscribeStoreChanges\x12\x0c\n\x04path\x18\x01 \x03(\t\"\"\n\x12SubscribeEnvelopes\x12\x0c\n\x04path\x18\x01 \x03(\t\" \n\x12SubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0fSubscribeCancel\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x0b\n\tStoreInfo\"E\n\x03Get\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x14\n\x0cstart_offset\x18\x02 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\"%\n\x15SubscribeStoreChanges\x12\x0c\n\x04path\x18\x01 \x03(\t\"4\n\x12SubscribeEnvelopes\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08lua_code\x18\x02 \x01(\t\" \n\x12SubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0fSubscribeCancel\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -121,6 +121,13 @@ _SUBSCRIBEENVELOPES = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='lua_code', full_name='zippylog.protocol.request.SubscribeEnvelopes.lua_code', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -131,7 +138,7 @@ _SUBSCRIBEENVELOPES = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=185,
-  serialized_end=219,
+  serialized_end=237,
 )
 
 
@@ -158,8 +165,8 @@ _SUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=221,
-  serialized_end=253,
+  serialized_start=239,
+  serialized_end=271,
 )
 
 
@@ -186,8 +193,8 @@ _SUBSCRIBECANCEL = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=255,
-  serialized_end=284,
+  serialized_start=273,
+  serialized_end=302,
 )
 
 
