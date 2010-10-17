@@ -26,16 +26,15 @@
 #ifdef WINDOWS
 #include <winsock2.h>
 #include <Windows.h>
-
 #endif
 
 #include <string>
 #include <vector>
 
+namespace zippylog {
+
 using ::std::string;
 using ::std::vector;
-
-namespace zippylog {
 
 // TODO move these to platform namespace
 struct dir_entry {
