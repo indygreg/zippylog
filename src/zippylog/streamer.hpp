@@ -17,11 +17,17 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/lua.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/stream.hpp>
 
 #include <zmq.hpp>
+
+extern "C" {
+#include <lua.h>
+#include <lauxlib.h>
+}
 
 #include <map>
 #include <string>
@@ -34,6 +40,7 @@ using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
+using ::zippylog::lua::LuaState;
 using ::zippylog::Store;
 using ::zippylog::platform::Timer;
 using ::zmq::context_t;
@@ -52,6 +59,9 @@ class SubscriptionInfo {
 public:
     SubscriptionInfo();
     SubscriptionInfo(uint32 expiration_ttl);
+    ~SubscriptionInfo();
+    SubscriptionInfo(const SubscriptionInfo &orig);
+    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 
     Timer expiration_timer;
 
@@ -64,20 +74,35 @@ public:
     vector<string> socket_identifiers;
 
     EnvelopeSubscription envelope_subscription;
+
+    LuaState *l;
+};
+
+// type passed to constructor to initialize a streamer instance
+// it is easier to pass this object than to pass many named arguments
+class ZIPPYLOG_EXPORT StreamerStartParams {
+public:
+    StreamerStartParams();
+
+    context_t *ctx;
+    Store *store;
+    string store_changes_endpoint;
+    string client_endpoint;
+    string subscriptions_endpoint;
+    string subscription_updates_endpoint;
+    string logging_endpoint;
+    uint32 subscription_ttl;
+
+    bool lua_allow;
+    uint32 lua_max_memory;
+
+    bool *active;
 };
 
 // the streamer streams information to subscribed clients
 class ZIPPYLOG_EXPORT Streamer {
     public:
-        Streamer(
-            Store *store, context_t *zctx,
-            const string store_changes_endpoint,
-            const string client_endpoint,
-            const string subscriptions_endpoint,
-            const string subscription_updates_endpoint,
-            const string logging_endpoint,
-            uint32 subscription_ttl
-        );
+        Streamer(StreamerStartParams params);
         Streamer(const Streamer &orig);
         Streamer & operator=(const Streamer &orig);
         ~Streamer();
@@ -89,11 +114,6 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // renews a subscription for the specified id
         bool RenewSubscription(const string &id);
-
-        // sets the shutdown semaphore for the streamer
-        // if the boolean pointed to by the parameter goes to 0, Run() will
-        // finish, likely shutting down the calling thread
-        void SetShutdownSemaphore(bool *active);
 
     protected:
 
@@ -109,13 +129,16 @@ class ZIPPYLOG_EXPORT Streamer {
 
         uint32 subscription_ttl;
 
+        bool lua_allow;
+        uint32 lua_max_memory;
+
         socket_t * changes_sock;
         socket_t * client_sock;
         socket_t * subscriptions_sock;
         socket_t * subscription_updates_sock;
         socket_t * logging_sock;
 
-        map<string, SubscriptionInfo> subscriptions;
+        map<string, SubscriptionInfo *> subscriptions;
 
         // maps read offsets in streams, for envelope streaming
         map<string, uint64> stream_read_offsets;

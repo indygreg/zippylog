@@ -198,6 +198,9 @@ class ZIPPYLOG_EXPORT Client {
         // Subscribes to new envelopes written on the server
         bool SubscribeEnvelopes(const string &path, SubscriptionCallback &callback, void *data = NULL);
 
+        // subscribes to new envelopes w/ Lua code specifying additional features
+        bool SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallback &callback, void *data = NULL);
+
     protected:
         // socket connect to server
         socket_t *client_sock;

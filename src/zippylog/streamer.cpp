@@ -39,9 +39,10 @@ namespace zippylog {
 namespace server {
 
 EnvelopeSubscription::EnvelopeSubscription() {}
-SubscriptionInfo::SubscriptionInfo() {}
+SubscriptionInfo::SubscriptionInfo() : l(NULL) {}
 
 SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
+    : l(NULL)
 {
     // milliseconds to microseconds
     this->expiration_timer = Timer(expiration_ttl * 1000);
@@ -50,29 +51,40 @@ SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
     }
 }
 
-Streamer::Streamer(Store *store,
-                   context_t *zctx,
-                   const string store_changes_endpoint,
-                   const string client_endpoint,
-                   const string subscriptions_endpoint,
-                   const string subscription_updates_endpoint,
-                   const string logging_endpoint,
-                   uint32 subscription_ttl)
+SubscriptionInfo::~SubscriptionInfo()
 {
-    this->store = store;
-    this->zctx = zctx;
-    this->store_changes_endpoint = store_changes_endpoint;
-    this->client_endpoint = client_endpoint;
-    this->subscriptions_endpoint = subscriptions_endpoint;
-    this->subscription_updates_endpoint = subscription_updates_endpoint;
-    this->logging_endpoint = logging_endpoint;
-    this->subscription_ttl = subscription_ttl;
+    if (this->l) delete this->l;
+}
 
-    this->changes_sock = NULL;
-    this->client_sock = NULL;
-    this->subscriptions_sock = NULL;
-    this->subscription_updates_sock = NULL;
-    this->logging_sock = NULL;
+SubscriptionInfo::SubscriptionInfo(const SubscriptionInfo &orig)
+{
+    throw "copy constructor not available on this object";
+}
+
+SubscriptionInfo & SubscriptionInfo::operator =(const SubscriptionInfo & orig)
+{
+    throw "assignment operator not implemented";
+}
+
+StreamerStartParams::StreamerStartParams() : active(NULL) { }
+
+Streamer::Streamer(StreamerStartParams params)
+    : changes_sock(NULL), client_sock(NULL), subscriptions_sock(NULL), subscription_updates_sock(NULL), logging_sock(NULL)
+{
+    this->store = params.store;
+    this->zctx = params.ctx;
+    this->store_changes_endpoint = params.store_changes_endpoint;
+    this->client_endpoint = params.client_endpoint;
+    this->subscriptions_endpoint = params.subscriptions_endpoint;
+    this->subscription_updates_endpoint = params.subscription_updates_endpoint;
+    this->logging_endpoint = params.logging_endpoint;
+    this->subscription_ttl = params.subscription_ttl;
+    this->lua_allow = params.lua_allow;
+    this->lua_max_memory = params.lua_max_memory;
+
+    if (!params.active) throw "active parameter cannot be NULL";
+
+    this->active = params.active;
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
@@ -103,20 +115,17 @@ Streamer & Streamer::operator=(const Streamer &orig)
 
 Streamer::~Streamer()
 {
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        delete i->second;
+    }
+    this->subscriptions.clear();
+
     if (this->changes_sock) delete this->changes_sock;
     if (this->client_sock) delete this->client_sock;
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
     if (this->logging_sock) delete this->logging_sock;
-}
-
-void Streamer::SetShutdownSemaphore(bool *active)
-{
-    if (!active) throw "pointer must not be NULL";
-
-    if (!*active) throw "boolean being pointed to must be true";
-
-    this->active = active;
 }
 
 void Streamer::Run()
@@ -212,9 +221,9 @@ void Streamer::Run()
         }
 
         // unsubscribe any expired subscribers
-        map<string, SubscriptionInfo>::iterator iter = this->subscriptions.begin();
+        map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.begin();
         for (; iter != this->subscriptions.end(); iter++) {
-            if (iter->second.expiration_timer.Signaled()) {
+            if (iter->second->expiration_timer.Signaled()) {
                 StreamerSubscriptionExpired log = StreamerSubscriptionExpired();
                 log.set_subscription(iter->first);
                 LOG_MESSAGE(log, this->logging_sock);
@@ -305,14 +314,14 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
     protocol::request::SubscribeStoreChanges *m =
         (protocol::request::SubscribeStoreChanges *)e.GetMessage(0);
 
-    SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
-    subscription.type = SubscriptionInfo::STORE_CHANGE;
+    SubscriptionInfo * subscription = new SubscriptionInfo(this->subscription_ttl);
+    subscription->type = SubscriptionInfo::STORE_CHANGE;
 
     for (int i = 0; i < m->path_size(); i++) {
-        subscription.paths.push_back(m->path(i));
+        subscription->paths.push_back(m->path(i));
     }
 
-    subscription.socket_identifiers = identities;
+    subscription->socket_identifiers = identities;
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
@@ -328,22 +337,34 @@ void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities
     protocol::request::SubscribeEnvelopes *m =
         (protocol::request::SubscribeEnvelopes *)e.GetMessage(0);
 
-    SubscriptionInfo subscription = SubscriptionInfo(this->subscription_ttl);
-    subscription.type = subscription.ENVELOPE;
-
-    for (int i = 0; i < m->path_size(); i++) {
-        subscription.paths.push_back(m->path(i));
-    }
-
-    subscription.socket_identifiers = identities;
-
     platform::UUID uuid;
     platform::CreateUUID(uuid);
     string id = string((const char *)&uuid, sizeof(uuid));
 
-    subscription.envelope_subscription = EnvelopeSubscription();
+    SubscriptionInfo *subscription = new SubscriptionInfo(this->subscription_ttl);
+    subscription->type = subscription->ENVELOPE;
 
+    for (int i = 0; i < m->path_size(); i++) {
+        subscription->paths.push_back(m->path(i));
+    }
+
+    subscription->socket_identifiers = identities;
+
+    if (m->has_lua_code()) {
+        subscription->l = new LuaState();
+        subscription->l->SetMemoryCeiling(this->lua_max_memory);
+
+        if (!subscription->l->LoadLuaCode(m->lua_code())) {
+            delete subscription;
+
+            // TODO send error response instead
+            throw "error loading user-supplied code";
+        }
+    }
+
+    subscription->envelope_subscription = EnvelopeSubscription();
     this->subscriptions[id] = subscription;
+
     this->SendSubscriptionAck(id, e, identities);
 }
 
@@ -445,11 +466,11 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     }
 
     // iterate over all the subscribers
-    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
         // for each path they are subscribed to
-        vector<string>::iterator prefix = i->second.paths.begin();
-        for (; prefix != i->second.paths.end(); prefix++) {
+        vector<string>::iterator prefix = i->second->paths.begin();
+        for (; prefix != i->second->paths.end(); prefix++) {
             // no way it will match
             if (prefix->length() > path.length()) continue;
 
@@ -459,7 +480,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             // at this point, the subscription matches
 
             // the case of store changes is simple
-            if (i->second.type == i->second.STORE_CHANGE) {
+            if (i->second->type == i->second->STORE_CHANGE) {
                 Envelope response = Envelope();
                 protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
                 start.set_id(i->first);
@@ -469,13 +490,13 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                     throw "could not copy message to response envelope. weird";
                 }
 
-                zeromq::send_envelope(this->client_sock, i->second.socket_identifiers, response);
+                zeromq::send_envelope(this->client_sock, i->second->socket_identifiers, response);
 
                 // don't process this path any more for this subscriber
                 break;
             }
             // envelopes are a little more challenging
-            else if (process_envelopes && i->second.type == i->second.ENVELOPE) {
+            else if (process_envelopes && i->second->type == i->second->ENVELOPE) {
                 map<string, uint64>::iterator iter = this->stream_read_offsets.find(path);
                 assert(iter != this->stream_read_offsets.end());
 
@@ -488,7 +509,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                 start.set_id(i->first);
                 start.add_to_envelope(&response);
 
-                zeromq::send_envelope_more(this->client_sock, i->second.socket_identifiers, response);
+                zeromq::send_envelope_more(this->client_sock, i->second->socket_identifiers, response);
 
                 while (offset < stream_length) {
                     Envelope env;
@@ -498,7 +519,19 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                     }
                     offset += read;
 
-                    zeromq::send_envelope_more(this->client_sock, env);
+                    // run envelope through Lua
+                    if (i->second->l) {
+                        if (!i->second->l->HasEnvelopeFilter()) {
+                            zeromq::send_envelope_more(this->client_sock, env);
+                            continue;
+                        }
+
+                        // else
+
+                    }
+                    else {
+                        zeromq::send_envelope_more(this->client_sock, env);
+                    }
                 }
 
                 message_t empty(0);
@@ -517,12 +550,12 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
 bool Streamer::HaveEnvelopeSubscription(const string &path)
 {
-    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second.type != i->second.ENVELOPE) continue;
+        if (i->second->type != i->second->ENVELOPE) continue;
 
-        vector<string>::iterator prefix = i->second.paths.begin();
-        for (; prefix != i->second.paths.end(); prefix++) {
+        vector<string>::iterator prefix = i->second->paths.begin();
+        for (; prefix != i->second->paths.end(); prefix++) {
             if (prefix->length() > path.length()) continue;
             if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
@@ -540,12 +573,12 @@ bool Streamer::HaveStoreChangeSubscriptions()
 
 bool Streamer::HaveStoreChangeSubscriptions(const string &path)
 {
-    map<string, SubscriptionInfo>::iterator i = this->subscriptions.begin();
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second.type != i->second.STORE_CHANGE) continue;
+        if (i->second->type != i->second->STORE_CHANGE) continue;
 
-        vector<string>::iterator prefix = i->second.paths.begin();
-        for (; prefix != i->second.paths.end(); prefix++) {
+        vector<string>::iterator prefix = i->second->paths.begin();
+        for (; prefix != i->second->paths.end(); prefix++) {
             if (prefix->length() > path.length()) continue;
             if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
@@ -578,20 +611,20 @@ void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string>
 
 bool Streamer::HasSubscription(const string &id)
 {
-    map<string, SubscriptionInfo>::iterator iter = this->subscriptions.find(id);
+    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
 
     return iter != this->subscriptions.end();
 }
 
 bool Streamer::RenewSubscription(const string &id)
 {
-    map<string, SubscriptionInfo>::iterator iter = this->subscriptions.find(id);
+    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
 
     if (iter == this->subscriptions.end()) {
         return false;
     }
 
-    return iter->second.expiration_timer.Start();
+    return iter->second->expiration_timer.Start();
 }
 
 }} // namespaces

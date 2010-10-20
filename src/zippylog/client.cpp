@@ -148,6 +148,23 @@ bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallback &cb, vo
     return this->SendRequest(e, info);
 }
 
+bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallback &cb, void *data)
+{
+    // TODO validate
+
+    protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
+    req.add_path(path);
+    req.set_lua_code(lua);
+    Envelope e = Envelope();
+    req.add_to_envelope(&e);
+
+    OutstandingRequest info = OutstandingRequest();
+    info.data = data;
+    info.subscription_callback = cb;
+
+    return this->SendRequest(e, info);
+}
+
 
 bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
 {

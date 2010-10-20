@@ -29,11 +29,6 @@ extern "C" {
 
 #include <sstream>
 
-#ifdef _DEBUG
-#include <google/protobuf/text_format.h>
-#include <iostream>
-#endif
-
 namespace zippylog {
 namespace server {
 
@@ -42,15 +37,16 @@ using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 
-#define WORKER_ENDPOINT "inproc://workers"
-#define STORE_CHANGE_ENDPOINT "inproc://store_changes"
-#define STREAMING_ENDPOINT "inproc://streaming"
-#define LOGGER_ENDPOINT "inproc://logger"
+const string Broker::WORKER_ENDPOINT = "inproc://workers";
+const string Broker::STORE_CHANGE_ENDPOINT = "inproc://store_changes";
+const string Broker::STREAMING_ENDPOINT = "inproc://streaming";
+const string Broker::LOGGER_ENDPOINT = "inproc://logger";
 
-#define WORKER_SUBSCRIPTIONS_ENDPOINT "inproc://worker_subscriptions"
-#define STREAMING_SUBSCRIPTIONS_ENDPOINT "inproc://streaming_subscriptions"
-#define WORKER_STREAMING_NOTIFY_ENDPOINT "inproc://worker_streaming_notify"
-#define STREAMING_STREAMING_NOTIFY_ENDPOINT "inproc://streaming_notify"
+const string Broker::WORKER_SUBSCRIPTIONS_ENDPOINT = "inproc://worker_subscriptions";
+const string Broker::STREAMING_SUBSCRIPTIONS_ENDPOINT = "inproc://streaming_subscriptions";
+const string Broker::WORKER_STREAMING_NOTIFY_ENDPOINT = "inproc://worker_streaming_notify";
+const string Broker::STREAMING_STREAMING_NOTIFY_ENDPOINT = "inproc://streaming_notify";
+
 
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
@@ -95,7 +91,6 @@ Broker::~Broker()
 
     if (this->worker_start_data) delete this->worker_start_data;
     if (this->store_watcher_start) delete this->store_watcher_start;
-    if (this->streaming_thread_data) delete this->streaming_thread_data;
 
     if (this->store) delete this->store;
 }
@@ -117,7 +112,6 @@ void Broker::init()
     this->store = NULL;
     this->store_watcher_thread = NULL;
     this->store_watcher_start = NULL;
-    this->streaming_thread_data = NULL;
 
     platform::UUID uuid;
     if (!platform::CreateUUID(uuid)) {
@@ -353,10 +347,10 @@ void Broker::create_worker_threads()
     this->worker_start_data = new request_processor_start_data;
     this->worker_start_data->ctx = &this->zctx;
     this->worker_start_data->store = this->store;
-    this->worker_start_data->broker_endpoint = WORKER_ENDPOINT;
-    this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT;
-    this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT;
-    this->worker_start_data->logger_endpoint = LOGGER_ENDPOINT;
+    this->worker_start_data->broker_endpoint = WORKER_ENDPOINT.c_str();
+    this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT.c_str();
+    this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT.c_str();
+    this->worker_start_data->logger_endpoint = LOGGER_ENDPOINT.c_str();
     this->worker_start_data->active = true;
 
     for (int i = this->config.worker_threads; i; --i) {
@@ -371,8 +365,8 @@ void Broker::create_worker_threads()
 void Broker::create_store_watcher()
 {
     this->store_watcher_start = new store_watcher_start_data;
-    this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT;
-    this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT;
+    this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT.c_str();
+    this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT.c_str();
     this->store_watcher_start->zctx = &this->zctx;
     this->store_watcher_start->store = this->store;
     this->store_watcher_start->active = &this->active;
@@ -382,19 +376,21 @@ void Broker::create_store_watcher()
 
 void Broker::create_streaming_threads()
 {
-    this->streaming_thread_data = new streaming_start_data;
-    this->streaming_thread_data->store_change_endpoint = STORE_CHANGE_ENDPOINT;
-    this->streaming_thread_data->streaming_endpoint = STREAMING_ENDPOINT;
-    this->streaming_thread_data->client_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
-    this->streaming_thread_data->subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
-    this->streaming_thread_data->logging_endpoint = LOGGER_ENDPOINT;
-    this->streaming_thread_data->zctx = &this->zctx;
-    this->streaming_thread_data->store = this->store;
-    this->streaming_thread_data->active = &this->active;
-    this->streaming_thread_data->subscription_ttl = this->config.subscription_ttl;
+    this->streamer_params.client_endpoint = STREAMING_ENDPOINT;
+    this->streamer_params.store_changes_endpoint = STORE_CHANGE_ENDPOINT;
+    this->streamer_params.logging_endpoint = LOGGER_ENDPOINT;
+    this->streamer_params.subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
+    this->streamer_params.subscription_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
+
+    this->streamer_params.ctx = &this->zctx;
+    this->streamer_params.store = this->store;
+    this->streamer_params.subscription_ttl = this->config.subscription_ttl;
+    this->streamer_params.lua_allow = this->config.lua_execute_client_code;
+    this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
+    this->streamer_params.active = &this->active;
 
     for (int i = this->config.streaming_threads; i; i--) {
-        void * thread = create_thread(Broker::StreamingStart, this->streaming_thread_data);
+        void * thread = create_thread(Broker::StreamingStart, &this->streamer_params);
         if (!thread) {
             throw "error creating streaming thread";
         }
@@ -405,28 +401,28 @@ void Broker::create_streaming_threads()
 void Broker::setup_internal_sockets()
 {
     this->logger_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->logger_sock->bind(LOGGER_ENDPOINT);
+    this->logger_sock->bind(LOGGER_ENDPOINT.c_str());
 
     this->log_client_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
-    this->log_client_sock->connect(LOGGER_ENDPOINT);
+    this->log_client_sock->connect(LOGGER_ENDPOINT.c_str());
 
     this->workers_sock = new zmq::socket_t(this->zctx, ZMQ_XREQ);
-    this->workers_sock->bind(WORKER_ENDPOINT);
+    this->workers_sock->bind(WORKER_ENDPOINT.c_str());
 
     this->streaming_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->streaming_sock->bind(STREAMING_ENDPOINT);
+    this->streaming_sock->bind(STREAMING_ENDPOINT.c_str());
 
     this->worker_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->worker_subscriptions_sock->bind(WORKER_SUBSCRIPTIONS_ENDPOINT);
+    this->worker_subscriptions_sock->bind(WORKER_SUBSCRIPTIONS_ENDPOINT.c_str());
 
     this->worker_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->worker_streaming_notify_sock->bind(WORKER_STREAMING_NOTIFY_ENDPOINT);
+    this->worker_streaming_notify_sock->bind(WORKER_STREAMING_NOTIFY_ENDPOINT.c_str());
 
     this->streaming_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
-    this->streaming_subscriptions_sock->bind(STREAMING_SUBSCRIPTIONS_ENDPOINT);
+    this->streaming_subscriptions_sock->bind(STREAMING_SUBSCRIPTIONS_ENDPOINT.c_str());
 
     this->streaming_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PUB);
-    this->streaming_streaming_notify_sock->bind(STREAMING_STREAMING_NOTIFY_ENDPOINT);
+    this->streaming_streaming_notify_sock->bind(STREAMING_STREAMING_NOTIFY_ENDPOINT.c_str());
 }
 
 void Broker::setup_listener_sockets()
@@ -553,6 +549,15 @@ bool Broker::ParseConfig(const string path, broker_config &config, string &error
         goto cleanup;
     }
 
+    // Lua settings
+    lua_getglobal(L, "lua_execute_client_code");
+    config.lua_execute_client_code = lua_toboolean(L, -1);
+    lua_pop(L, 1);
+
+    lua_getglobal(L, "lua_streaming_max_memory");
+    config.lua_streaming_max_memory = luaL_optinteger(L, -1, 524288);
+    lua_pop(L, 1);
+
 
 cleanup:
     lua_close(L);
@@ -589,30 +594,9 @@ void * Broker::StoreWatcherStart(void *d)
 
 void * Broker::StreamingStart(void *d)
 {
-    streaming_start_data * data = (streaming_start_data *)d;
-
-    assert(data->zctx);
-    assert(data->store_change_endpoint);
-    assert(data->streaming_endpoint);
-    assert(data->subscriptions_endpoint);
-    assert(data->client_updates_endpoint);
-    assert(data->logging_endpoint);
-    assert(data->store);
-    assert(data->subscription_ttl);
-
+    StreamerStartParams *params = (StreamerStartParams *)d;
     try {
-        Streamer streamer(
-            data->store,
-            data->zctx,
-            data->store_change_endpoint,
-            data->streaming_endpoint,
-            data->subscriptions_endpoint,
-            data->client_updates_endpoint,
-            data->logging_endpoint,
-            data->subscription_ttl
-        );
-        streamer.SetShutdownSemaphore(data->active);
-
+        Streamer streamer(*params);
         streamer.Run();
     }
     catch (zmq::error_t e) {
