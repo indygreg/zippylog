@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/lua.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/stream.hpp>
@@ -25,6 +26,7 @@
 
 extern "C" {
 #include <lua.h>
+#include <lauxlib.h>
 }
 
 #include <map>
@@ -38,6 +40,7 @@ using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
+using ::zippylog::lua::LuaState;
 using ::zippylog::Store;
 using ::zippylog::platform::Timer;
 using ::zmq::context_t;
@@ -56,6 +59,9 @@ class SubscriptionInfo {
 public:
     SubscriptionInfo();
     SubscriptionInfo(uint32 expiration_ttl);
+    ~SubscriptionInfo();
+    SubscriptionInfo(const SubscriptionInfo &orig);
+    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 
     Timer expiration_timer;
 
@@ -69,7 +75,7 @@ public:
 
     EnvelopeSubscription envelope_subscription;
 
-    lua_State *L;
+    LuaState *l;
 };
 
 // type passed to constructor to initialize a streamer instance
@@ -132,7 +138,7 @@ class ZIPPYLOG_EXPORT Streamer {
         socket_t * subscription_updates_sock;
         socket_t * logging_sock;
 
-        map<string, SubscriptionInfo> subscriptions;
+        map<string, SubscriptionInfo *> subscriptions;
 
         // maps read offsets in streams, for envelope streaming
         map<string, uint64> stream_read_offsets;
@@ -154,13 +160,6 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // returns whether we have store change subscriptions for the given path
         bool HaveStoreChangeSubscriptions(const string &path);
-
-        // Lua allocator function
-        // ud is assumed to point to a uint32 value, which represents
-        // the max size
-        static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
-
-        static int LuaPanic(lua_State *L);
 };
 
 }} // namespaces
