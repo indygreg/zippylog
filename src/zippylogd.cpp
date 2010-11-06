@@ -12,8 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#pragma once
-
 #include <zippylog/zippylog.h>
 #include <zippylog/broker.hpp>
 #include <zippylog/store.hpp>
@@ -40,6 +38,8 @@ int main(int argc, const char * const argv[])
         cout << "received an exception" << endl;
         return 1;
     }
+
+    zippylog_shutdown();
 
     return 0;
 }
