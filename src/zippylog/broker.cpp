@@ -88,8 +88,6 @@ Broker::~Broker()
     if (this->logger_sock) delete this->logger_sock;
     if (this->log_client_sock) delete this->log_client_sock;
 
-    if (this->store_watcher_start) delete this->store_watcher_start;
-
     if (this->store) delete this->store;
 }
 
@@ -108,7 +106,6 @@ void Broker::init()
     this->log_client_sock = NULL;
     this->store = NULL;
     this->store_watcher_thread = NULL;
-    this->store_watcher_start = NULL;
 
     platform::UUID uuid;
     if (!platform::CreateUUID(uuid)) {
@@ -356,14 +353,13 @@ void Broker::create_worker_threads()
 
 void Broker::create_store_watcher()
 {
-    this->store_watcher_start = new store_watcher_start_data;
-    this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT.c_str();
-    this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT.c_str();
-    this->store_watcher_start->zctx = &this->zctx;
-    this->store_watcher_start->store_path = this->config.store_path.c_str();
-    this->store_watcher_start->active = &this->active;
+    this->store_watcher_params.zctx = &this->zctx;
+    this->store_watcher_params.store_path = this->config.store_path;
+    this->store_watcher_params.endpoint = this->STORE_CHANGE_ENDPOINT;
+    this->store_watcher_params.logging_endpoint = this->LOGGER_ENDPOINT;
+    this->store_watcher_params.active = &this->active;
 
-    this->store_watcher_thread = create_thread(StoreWatcherStart, this->store_watcher_start);
+    this->store_watcher_thread = create_thread(StoreWatcherStart, &this->store_watcher_params);
 }
 
 void Broker::create_streaming_threads()
@@ -569,17 +565,10 @@ broker_config::broker_config()
 
 void * Broker::StoreWatcherStart(void *d)
 {
-    store_watcher_start_data * data = (store_watcher_start_data *)d;
+    StoreWatcherStartParams *params = (StoreWatcherStartParams *)d;
 
-    assert(data->endpoint);
-    assert(data->zctx);
-    assert(data->store_path);
-    assert(data->logging_endpoint);
-    assert(data->active);
-
-    StoreWatcher watcher(data->store_path, data->zctx, data->endpoint, data->logging_endpoint);
-    watcher.SetShutdownSemaphore(data->active);
-    watcher.run();
+    StoreWatcher watcher(*params);
+    watcher.Run();
 
     return NULL;
 }

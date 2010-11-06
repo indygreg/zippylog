@@ -27,14 +27,22 @@ namespace zippylog {
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
+class ZIPPYLOG_EXPORT StoreWatcherStartParams {
+public:
+    context_t *zctx;
+    string store_path;
+    string endpoint;
+    string logging_endpoint;
+    bool *active;
+};
+
 // provides file/directory change notification for stores
 class ZIPPYLOG_EXPORT StoreWatcher {
 public:
-    StoreWatcher(const string store_path, zmq::context_t *ctx, const string publisher_endpoint, const string logging_endpoint);
+    StoreWatcher(StoreWatcherStartParams params);
     ~StoreWatcher();
 
-    void SetShutdownSemaphore(bool *active);
-    void run();
+    void Run();
 
 protected:
     Store _store;

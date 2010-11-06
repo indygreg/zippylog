@@ -49,14 +49,6 @@ typedef struct broker_config {
     uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
 } broker_config;
 
-typedef struct store_watcher_start_data {
-    context_t *zctx;
-    const char *store_path;
-    const char *endpoint;
-    const char *logging_endpoint;
-    bool *active;
-} store_watcher_start_data;
-
 // the broker is a ZMQ device that provides the core message routing component
 // of zippylogd. it binds to a number of sockets and coordinates all the workers
 // in the system
@@ -115,10 +107,10 @@ class ZIPPYLOG_EXPORT Broker {
         bool active;
         broker_config config;
         void * store_watcher_thread;
-        store_watcher_start_data * store_watcher_start;
 
         RequestProcessorStartParams request_processor_params;
         StreamerStartParams streamer_params;
+        StoreWatcherStartParams store_watcher_params;
 
         static const string WORKER_ENDPOINT;
         static const string STORE_CHANGE_ENDPOINT;
@@ -131,6 +123,8 @@ class ZIPPYLOG_EXPORT Broker {
         static const string STREAMING_STREAMING_NOTIFY_ENDPOINT;
 
         static bool ParseConfig(const string path, broker_config &config, string &error);
+
+        // thread start functions
         static void * StoreWatcherStart(void *data);
         static void * StreamingStart(void *data);
         static void * AsyncExecStart(void *data);

@@ -24,18 +24,23 @@ namespace zippylog {
 using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
 
-StoreWatcher::StoreWatcher(const string store_path, zmq::context_t *ctx, const string endpoint, const string logging_endpoint)
-    : watcher(store_path, true), logging_sock(NULL), socket(NULL),
-      _store(store_path)
+StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
+    watcher(params.store_path, true),
+    logging_sock(NULL),
+    socket(NULL),
+    _store(params.store_path)
 {
-    this->_ctx = ctx;
-    this->_endpoint = endpoint;
-    this->logging_endpoint = logging_endpoint;
+    if (!params.active) {
+        throw "active semaphore cannot be NULL";
+    }
+
+    this->_ctx = params.zctx;
+    this->_endpoint = params.endpoint;
+    this->logging_endpoint = params.logging_endpoint;
+    this->active = params.active;
 
     platform::UUID uuid;
-    if (!platform::CreateUUID(uuid)) {
-        throw "could not create UUID";
-    }
+    platform::CreateUUID(uuid);
 
     this->id = string((const char *)&uuid, sizeof(uuid));
 
@@ -52,16 +57,7 @@ StoreWatcher::~StoreWatcher()
     if (this->socket) delete this->socket;
 }
 
-void StoreWatcher::SetShutdownSemaphore(bool *active)
-{
-    if (!active) throw "pointer must not be NULL";
-
-    if (!*active) throw "boolean being pointed to must be true";
-
-    this->active = active;
-}
-
-void StoreWatcher::run()
+void StoreWatcher::Run()
 {
     {
         StoreWatcherStartup log = StoreWatcherStartup();
