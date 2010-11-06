@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_SERVER_HPP_
-#define ZIPPYLOG_SERVER_HPP_
+#ifndef ZIPPYLOG_REQUEST_PROCESSOR_HPP_
+#define ZIPPYLOG_REQUEST_PROCESSOR_HPP_
 
 #include <zippylog/zippylog.h>
 #include <zippylog/store.hpp>
@@ -24,39 +24,39 @@ namespace zippylog {
 namespace server {
 
 using ::zmq::context_t;
+using ::zmq::socket_t;
 
-// this is sent to new workers as they are started. it gives them all the
-// info they need to start servicing requests
-typedef struct request_processor_start_data {
+class ZIPPYLOG_EXPORT RequestProcessorStartParams {
+public:
     // for ZMQ initialization on new threads
     context_t *ctx;
 
     // store worker operates on
-    const char *store_path;
+    string store_path;
 
     // where to connect to receive requests
-    const char *broker_endpoint;
+    string broker_endpoint;
 
     // where to send client subscription messages
-    const char *streaming_subscriptions_endpoint;
+    string streaming_subscriptions_endpoint;
 
     // where to send updates for existing subscriptions
-    const char *streaming_updates_endpoint;
+    string streaming_updates_endpoint;
 
     // where to send log messages
-    const char *logger_endpoint;
+    string logger_endpoint;
 
-    bool active;
-} request_processor_start_data;
+    // whether request processor should remain alive
+    bool *active;
+};
 
-typedef struct stream_processor_start_data {
-    context_t *ctx;
-    const char *store_path;
-    const char *socket_endpoint;
-} stream_processor_start_data;
-
-class ZIPPYLOG_EXPORT Request {
+class ZIPPYLOG_EXPORT RequestProcessor {
 public:
+        RequestProcessor(RequestProcessorStartParams params);
+        ~RequestProcessor();
+
+        void Run();
+
     enum state {
         CREATE_SOCKET = 1,
         WAITING = 2,
@@ -73,9 +73,27 @@ public:
         PROCESS_SUBSCRIBE_ENVELOPES = 13,
     };
 
-    // function that waits and processes client requests as they arrive
-    // suitable to be called upon thread initialization
-    static void * request_processor(void *data);
+protected:
+    context_t *ctx;
+    string store_path;
+    string broker_endpoint;
+    string streaming_subscriptions_endpoint;
+    string streaming_updates_endpoint;
+    string logger_endpoint;
+    bool *active;
+
+    Store store;
+
+    socket_t *socket;
+    socket_t *subscriptions_sock;
+    socket_t *subscription_updates_sock;
+    socket_t *logger_sock;
+
+    string id;
+
+private:
+    RequestProcessor(const RequestProcessor &orig);
+    RequestProcessor & operator=(const RequestProcessor &orig);
 
 };
 

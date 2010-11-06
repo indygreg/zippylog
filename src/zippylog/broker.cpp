@@ -15,7 +15,6 @@
 #include <zippylog/broker.hpp>
 
 #include <zippylog/platform.hpp>
-#include <zippylog/server.hpp>
 #include <zippylog/streamer.hpp>
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
@@ -89,7 +88,6 @@ Broker::~Broker()
     if (this->logger_sock) delete this->logger_sock;
     if (this->log_client_sock) delete this->log_client_sock;
 
-    if (this->worker_start_data) delete this->worker_start_data;
     if (this->store_watcher_start) delete this->store_watcher_start;
 
     if (this->store) delete this->store;
@@ -99,7 +97,6 @@ void Broker::init()
 {
     this->active = true;
     this->exec_thread = NULL;
-    this->worker_start_data = NULL;
     this->workers_sock = NULL;
     this->clients_sock = NULL;
     this->streaming_sock = NULL;
@@ -321,10 +318,6 @@ void Broker::run()
         }
     }
 
-    // need to do some cleanup
-    // tell workers to shut down
-    this->worker_start_data->active = false;
-
     delete pollitems;
 }
 
@@ -344,17 +337,16 @@ void * Broker::AsyncExecStart(void *data)
 
 void Broker::create_worker_threads()
 {
-    this->worker_start_data = new request_processor_start_data;
-    this->worker_start_data->ctx = &this->zctx;
-    this->worker_start_data->store_path = this->config.store_path.c_str();
-    this->worker_start_data->broker_endpoint = WORKER_ENDPOINT.c_str();
-    this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT.c_str();
-    this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT.c_str();
-    this->worker_start_data->logger_endpoint = LOGGER_ENDPOINT.c_str();
-    this->worker_start_data->active = true;
+    this->request_processor_params.active = &this->active;
+    this->request_processor_params.broker_endpoint = this->WORKER_ENDPOINT;
+    this->request_processor_params.ctx = &this->zctx;
+    this->request_processor_params.logger_endpoint = this->LOGGER_ENDPOINT;
+    this->request_processor_params.store_path = this->config.store_path;
+    this->request_processor_params.streaming_subscriptions_endpoint = this->WORKER_SUBSCRIPTIONS_ENDPOINT;
+    this->request_processor_params.streaming_updates_endpoint = this->WORKER_STREAMING_NOTIFY_ENDPOINT;
 
     for (int i = this->config.worker_threads; i; --i) {
-        void * thread = create_thread(Request::request_processor, this->worker_start_data);
+        void * thread = create_thread(Broker::RequestProcessorStart, &this->request_processor_params);
         if (!thread) {
             throw "error creating worker thread";
         }
@@ -598,6 +590,24 @@ void * Broker::StreamingStart(void *d)
     try {
         Streamer streamer(*params);
         streamer.Run();
+    }
+    catch (zmq::error_t e) {
+        const char *error = e.what();
+        throw error;
+    }
+    catch (...) {
+
+    }
+
+    return NULL;
+}
+
+void * Broker::RequestProcessorStart(void *d)
+{
+    RequestProcessorStartParams *params = (RequestProcessorStartParams *)d;
+    try {
+        RequestProcessor processor(*params);
+        processor.Run();
     }
     catch (zmq::error_t e) {
         const char *error = e.what();

@@ -16,7 +16,8 @@
 #define ZIPPYLOG_SERVER_BROKER_HPP_
 
 #include <zippylog/zippylog.h>
-#include <zippylog/server.hpp>
+
+#include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
 #include <zippylog/streamer.hpp>
@@ -112,11 +113,11 @@ class ZIPPYLOG_EXPORT Broker {
         vector<void *> streaming_threads;
         Store * store;
         bool active;
-        request_processor_start_data * worker_start_data;
         broker_config config;
         void * store_watcher_thread;
         store_watcher_start_data * store_watcher_start;
 
+        RequestProcessorStartParams request_processor_params;
         StreamerStartParams streamer_params;
 
         static const string WORKER_ENDPOINT;
@@ -133,6 +134,7 @@ class ZIPPYLOG_EXPORT Broker {
         static void * StoreWatcherStart(void *data);
         static void * StreamingStart(void *data);
         static void * AsyncExecStart(void *data);
+        static void * RequestProcessorStart(void *data);
 
         void init();
         void create_worker_threads();
