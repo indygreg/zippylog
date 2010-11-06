@@ -58,11 +58,10 @@ typedef struct store_watcher_start_data {
 // the broker is a ZMQ device that provides the core message routing component
 // of zippylogd. it binds to a number of sockets and coordinates all the workers
 // in the system
+// if there was a zippylogd class, this would be it
 class ZIPPYLOG_EXPORT Broker {
     public:
         Broker(const string config_file_path);
-        Broker(const Broker &orig);
-        Broker & operator=(const Broker &orig);
         ~Broker();
 
         void run();
@@ -140,6 +139,10 @@ class ZIPPYLOG_EXPORT Broker {
         void create_streaming_threads();
         void setup_internal_sockets();
         void setup_listener_sockets();
+    private:
+        // copy constructor and assignment operator are not supported
+        Broker(const Broker &orig);
+        Broker & operator=(const Broker &orig);
 
 };
 

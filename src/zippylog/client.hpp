@@ -151,8 +151,6 @@ class ZIPPYLOG_EXPORT Client {
     public:
         // establish a client and bind to the location specified
         Client(context_t *ctx, const string &connect);
-        Client(const Client &orig);
-        Client & operator=(const Client &orig);
         ~Client();
 
         // Asynchronously obtain the store info. Executes supplied callback when store
@@ -229,6 +227,11 @@ class ZIPPYLOG_EXPORT Client {
 
         // handles a response to a normal/outstanding request
         bool HandleRequestResponse(Envelope &e, vector<message_t *> &msgs);
+
+    private:
+        // disable copy constructor and assignment operator
+        Client(const Client &orig);
+        Client & operator=(const Client &orig);
 };
 
 }} // namespaces

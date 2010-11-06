@@ -60,8 +60,6 @@ public:
     SubscriptionInfo();
     SubscriptionInfo(uint32 expiration_ttl);
     ~SubscriptionInfo();
-    SubscriptionInfo(const SubscriptionInfo &orig);
-    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 
     Timer expiration_timer;
 
@@ -76,6 +74,10 @@ public:
     EnvelopeSubscription envelope_subscription;
 
     LuaState *l;
+
+private:
+    SubscriptionInfo(const SubscriptionInfo &orig);
+    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 };
 
 // type passed to constructor to initialize a streamer instance
@@ -103,8 +105,6 @@ public:
 class ZIPPYLOG_EXPORT Streamer {
     public:
         Streamer(StreamerStartParams params);
-        Streamer(const Streamer &orig);
-        Streamer & operator=(const Streamer &orig);
         ~Streamer();
 
         void Run();
@@ -160,6 +160,10 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // returns whether we have store change subscriptions for the given path
         bool HaveStoreChangeSubscriptions(const string &path);
+
+    private:
+        Streamer(const Streamer &orig);
+        Streamer & operator=(const Streamer &orig);
 };
 
 }} // namespaces

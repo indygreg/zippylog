@@ -37,9 +37,7 @@ using ::std::string;
 class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
-        InputStream(const InputStream &orig);
         InputStream(string file, int64 seek_bytes=0);
-        InputStream & operator=(const InputStream &orig);
         ~InputStream();
 
         bool OpenFile(string file, int64 start_offset = 0);
@@ -52,6 +50,10 @@ class ZIPPYLOG_EXPORT InputStream {
         bool Seek(int64 offset);
 
     private:
+        // disable copy constructor and assignment operator
+        InputStream(const InputStream &orig);
+        InputStream & operator=(const InputStream &orig);
+
         platform::File file;
 
         FileInputStream *_is;

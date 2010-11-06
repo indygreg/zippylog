@@ -41,8 +41,6 @@ class ZIPPYLOG_EXPORT Store {
     public:
         // construct a store from a filesystem path
         Store(const string path);
-        Store(const Store &orig);
-        Store & operator=(const Store &orig);
         ~Store();
 
         // validates that a path string is sane
@@ -144,6 +142,10 @@ class ZIPPYLOG_EXPORT Store {
         string StreamFilesystemPath(const string path);
 
     private:
+        // disable copy constructor and assignment operator
+        Store(const Store &orig);
+        Store & operator=(const Store &orig);
+
         string _path;
         map<string, OpenOutputStream> out_streams;
 };

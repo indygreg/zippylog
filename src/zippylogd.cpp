@@ -33,7 +33,7 @@ int main(int argc, const char * const argv[])
     }
 
     try {
-        Broker broker = Broker(argv[1]);
+        Broker broker(argv[1]);
         broker.run();
     }
     catch (...) {
