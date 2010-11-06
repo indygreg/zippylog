@@ -54,6 +54,7 @@ set(lib_sources
     src/zippylog/streamer.cpp
     src/zippylog/zeromq.cpp
     src/zippylog/zippylogd.pb.cc
+    src/zippylog/zippylog.cpp
 )
 
 add_library(zippylog SHARED ${lib_sources})
