@@ -15,18 +15,20 @@
 #include <zippylog/platform.hpp>
 
 #ifdef WINDOWS
+#include <direct.h>
 #include <tchar.h>
+#include <io.h>
 #endif
 
 #ifdef LINUX
 #include <pthread.h>
 #include <stdlib.h>
-#endif
-
 #include <dirent.h>
-#include <fcntl.h>
 #include <sys/io.h>
 #include <sys/time.h>
+#endif
+
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
