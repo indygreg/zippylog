@@ -31,7 +31,7 @@ one-time process.
 
 `python setup.py install`
 
-You should now have a `binlog_compile` script available on your system.
+You should now have a `zippylog_compile` script available on your system.
 
 ## Defining Messages
 
