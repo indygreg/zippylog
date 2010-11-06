@@ -416,6 +416,8 @@ bool CreateUUID(UUID &u)
 
     memcpy(&u, &uuid, 16);
     return true;
+#else
+#warning "functionality not implemented on this platform"
 #endif
 }
 
