@@ -24,8 +24,10 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <string.h>
 #include <sys/io.h>
 #include <sys/time.h>
+#include <uuid/uuid.h>
 #endif
 
 #include <fcntl.h>
@@ -414,6 +416,11 @@ bool CreateUUID(UUID &u)
     RPC_STATUS result = UuidCreate(&uuid);
     if (result != RPC_S_OK && result != RPC_S_UUID_LOCAL_ONLY) return false;
 
+    memcpy(&u, &uuid, 16);
+    return true;
+#elif LINUX
+    uuid_t uuid;
+    uuid_generate_time(uuid);
     memcpy(&u, &uuid, 16);
     return true;
 #else
