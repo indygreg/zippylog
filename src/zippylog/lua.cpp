@@ -14,6 +14,8 @@
 
 #include <zippylog/lua.hpp>
 
+#include <stdlib.h>
+
 namespace zippylog {
 namespace lua {
 
