@@ -31,6 +31,8 @@
 // TODO should be pulled from build tools
 #define HAVE_OPENDIR 1
 
+#include <signal.h>
+#include <time.h>
 #endif
 
 #include <string>
@@ -167,6 +169,8 @@ namespace platform {
 
 #ifdef WINDOWS
         void * handle;
+#elif LINUX
+        timer_t timer;
 #endif
     };
 

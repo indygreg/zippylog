@@ -390,6 +390,15 @@ Timer::Timer(uint32 microseconds)
     if (!this->handle) {
         throw "timer could not be created";
     }
+#elif LINUX
+    struct sigevent evp;
+    memset(&evp, 0, sizeof(evp));
+    evp.sigev_notify = SIGEV_NONE;
+
+    int result = timer_create(CLOCK_MONOTONIC, &evp, &this->timer);
+    if (result != 0) {
+    	throw "could not create timer";
+    }
 #endif
 
     this->signaled = false;
@@ -408,6 +417,17 @@ bool Timer::Reset()
         }
 
         return false;
+#elif LINUX
+        struct itimerspec v;
+        memset(&v, 0, sizeof(v));
+        int result = timer_settime(this->timer, 0, &v, NULL);
+        if (result != 0) {
+        	throw "could not reset timer";
+        }
+
+        this->running = false;
+        return true;
+
 #endif
     }
 
@@ -431,6 +451,19 @@ bool Timer::Start()
 
     this->running = true;
     return true;
+#elif LINUX
+    struct itimerspec v;
+    memset(&v, 0, sizeof(v));
+
+    v.it_value.tv_nsec = this->microseconds * 1000;
+
+    int result = timer_settime(this->timer, 0, &v, NULL);
+    if (result != 0) {
+    	return false;
+    }
+
+    this->running = true;
+    return true;
 #endif
 
     return false;
@@ -448,6 +481,19 @@ bool Timer::Signaled()
         return true;
     }
 
+#elif LINUX
+    struct itimerspec v;
+    int result = timer_gettime(this->timer, &v);
+    if (result != 0) {
+    	throw "could not obtain timer result";
+    }
+
+    if (v.it_value.tv_sec == 0 && v.it_value.tv_nsec == 0) {
+    	this->signaled = true;
+    	return true;
+    }
+
+    return false;
 #endif
 
     return false;
