@@ -24,10 +24,10 @@ namespace zippylog {
 using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
 
-StoreWatcher::StoreWatcher(zippylog::Store *store, zmq::context_t *ctx, const string endpoint, const string logging_endpoint)
-    : watcher(store->StorePath(), true), logging_sock(NULL), socket(NULL)
+StoreWatcher::StoreWatcher(const string store_path, zmq::context_t *ctx, const string endpoint, const string logging_endpoint)
+    : watcher(store_path, true), logging_sock(NULL), socket(NULL),
+      _store(store_path)
 {
-    this->_store = store;
     this->_ctx = ctx;
     this->_endpoint = endpoint;
     this->logging_endpoint = logging_endpoint;
@@ -93,7 +93,7 @@ void StoreWatcher::run()
                 if (store_path[i-1] == '\\') store_path[i-1] = '/';
             }
 
-            string fs_path = this->_store->PathToFilesystemPath(itor->Path);
+            string fs_path = this->_store.PathToFilesystemPath(itor->Path);
             platform::FileStat stat;
             platform::stat(fs_path, stat);
 

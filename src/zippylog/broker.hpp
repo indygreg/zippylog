@@ -35,6 +35,7 @@ using ::zmq::socket_t;
 
 typedef struct broker_config {
     broker_config();
+
     string store_path;
     vector<string> listen_endpoints;
     uint32 worker_threads;
@@ -49,7 +50,7 @@ typedef struct broker_config {
 
 typedef struct store_watcher_start_data {
     context_t *zctx;
-    Store *store;
+    const char *store_path;
     const char *endpoint;
     const char *logging_endpoint;
     bool *active;

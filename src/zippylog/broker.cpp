@@ -368,7 +368,7 @@ void Broker::create_store_watcher()
     this->store_watcher_start->endpoint = STORE_CHANGE_ENDPOINT.c_str();
     this->store_watcher_start->logging_endpoint = LOGGER_ENDPOINT.c_str();
     this->store_watcher_start->zctx = &this->zctx;
-    this->store_watcher_start->store = this->store;
+    this->store_watcher_start->store_path = this->config.store_path.c_str();
     this->store_watcher_start->active = &this->active;
 
     this->store_watcher_thread = create_thread(StoreWatcherStart, this->store_watcher_start);
@@ -581,11 +581,11 @@ void * Broker::StoreWatcherStart(void *d)
 
     assert(data->endpoint);
     assert(data->zctx);
-    assert(data->store);
+    assert(data->store_path);
     assert(data->logging_endpoint);
     assert(data->active);
 
-    StoreWatcher watcher(data->store, data->zctx, data->endpoint, data->logging_endpoint);
+    StoreWatcher watcher(data->store_path, data->zctx, data->endpoint, data->logging_endpoint);
     watcher.SetShutdownSemaphore(data->active);
     watcher.run();
 
