@@ -447,7 +447,7 @@ void Broker::Shutdown()
     }
 }
 
-bool Broker::ParseConfig(const string path, broker_config &config, string &error)
+bool Broker::ParseConfig(const string path, BrokerConfig &config, string &error)
 {
     ostringstream os;
 
@@ -558,7 +558,7 @@ cleanup:
     return true;
 }
 
-broker_config::broker_config()
+BrokerConfig::BrokerConfig()
 {
     listen_endpoints = vector<string>();
 }

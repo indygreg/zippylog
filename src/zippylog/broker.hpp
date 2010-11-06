@@ -34,8 +34,9 @@ using ::std::vector;
 using ::zmq::context_t;
 using ::zmq::socket_t;
 
-typedef struct broker_config {
-    broker_config();
+class BrokerConfig {
+public:
+    BrokerConfig();
 
     string store_path;
     vector<string> listen_endpoints;
@@ -47,7 +48,7 @@ typedef struct broker_config {
     int32 stream_flush_interval;
     bool lua_execute_client_code;       // whether client-supplied Lua code can be executed
     uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
-} broker_config;
+};
 
 // the broker is a ZMQ device that provides the core message routing component
 // of zippylogd. it binds to a number of sockets and coordinates all the workers
@@ -105,7 +106,7 @@ class ZIPPYLOG_EXPORT Broker {
         vector<void *> streaming_threads;
         Store * store;
         bool active;
-        broker_config config;
+        BrokerConfig config;
         void * store_watcher_thread;
 
         RequestProcessorStartParams request_processor_params;
@@ -122,7 +123,7 @@ class ZIPPYLOG_EXPORT Broker {
         static const string WORKER_STREAMING_NOTIFY_ENDPOINT;
         static const string STREAMING_STREAMING_NOTIFY_ENDPOINT;
 
-        static bool ParseConfig(const string path, broker_config &config, string &error);
+        static bool ParseConfig(const string path, BrokerConfig &config, string &error);
 
         // thread start functions
         static void * StoreWatcherStart(void *data);
