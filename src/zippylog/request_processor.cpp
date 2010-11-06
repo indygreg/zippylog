@@ -83,6 +83,7 @@ RequestProcessor::~RequestProcessor()
     if (this->logger_sock) delete this->logger_sock;
 }
 
+// TODO break function into multiple functions
 void RequestProcessor::Run()
 {
     this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
