@@ -39,6 +39,7 @@ set(lib_sources
     src/zippylog/broker.cpp
     #src/zippylog/client.cpp
     src/zippylog/envelope.cpp
+    src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
     src/zippylog/message_registrar.cpp
     src/zippylog/messages.cpp
@@ -46,7 +47,7 @@ set(lib_sources
     src/zippylog/protocol.pb.cc
     src/zippylog/protocol/request.pb.cc
     src/zippylog/protocol/response.pb.cc
-    src/zippylog/server.cpp
+    src/zippylog/request_processor.cpp
     src/zippylog/store.cpp
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
