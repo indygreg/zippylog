@@ -32,7 +32,7 @@ typedef struct request_processor_start_data {
     context_t *ctx;
 
     // store worker operates on
-    zippylog::Store *store;
+    const char *store_path;
 
     // where to connect to receive requests
     const char *broker_endpoint;
@@ -51,7 +51,7 @@ typedef struct request_processor_start_data {
 
 typedef struct stream_processor_start_data {
     context_t *ctx;
-    zippylog::Store *store;
+    const char *store_path;
     const char *socket_endpoint;
 } stream_processor_start_data;
 

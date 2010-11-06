@@ -346,7 +346,7 @@ void Broker::create_worker_threads()
 {
     this->worker_start_data = new request_processor_start_data;
     this->worker_start_data->ctx = &this->zctx;
-    this->worker_start_data->store = this->store;
+    this->worker_start_data->store_path = this->config.store_path.c_str();
     this->worker_start_data->broker_endpoint = WORKER_ENDPOINT.c_str();
     this->worker_start_data->streaming_subscriptions_endpoint = WORKER_SUBSCRIPTIONS_ENDPOINT.c_str();
     this->worker_start_data->streaming_updates_endpoint = WORKER_STREAMING_NOTIFY_ENDPOINT.c_str();

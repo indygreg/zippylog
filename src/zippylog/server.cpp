@@ -58,7 +58,7 @@ void * Request::request_processor(void *data)
     assert(d->streaming_subscriptions_endpoint);
     assert(d->streaming_updates_endpoint);
     assert(d->logger_endpoint);
-    assert(d->store);
+    assert(d->store_path);
 
     socket_t *socket = NULL;
     socket_t *subscriptions_sock = NULL;
@@ -80,7 +80,7 @@ void * Request::request_processor(void *data)
         LOG_MESSAGE(log, logger_sock);
     }
 
-    Store *store = d->store;
+    Store store(d->store_path);
 
     zmq::pollitem_t pollitems[1];
     pollitems[0].events = ZMQ_POLLIN;
@@ -247,7 +247,7 @@ void * Request::request_processor(void *data)
                 LOG_MESSAGE(logstart, logger_sock);
 
                 protocol::StoreInfo info = protocol::StoreInfo();
-                d->store->StoreInfo(info);
+                store.StoreInfo(info);
 
                 ::zippylog::zippylogd::WorkerEndProcessStoreInfo logend = ::zippylog::zippylogd::WorkerEndProcessStoreInfo();
                 LOG_MESSAGE(logend, logger_sock);
@@ -295,7 +295,7 @@ void * Request::request_processor(void *data)
                 // TODO perform additional stream verification
 
                 InputStream stream;
-                if (!store->GetInputStream(get->path(), stream)) {
+                if (!store.GetInputStream(get->path(), stream)) {
                     ::zippylog::zippylogd::WorkerGetInvalidStream log = ::zippylog::zippylogd::WorkerGetInvalidStream();
                     LOG_MESSAGE(log, logger_sock);
 
