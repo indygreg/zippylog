@@ -81,8 +81,14 @@ void StoreWatcher::Run()
 
         vector<platform::DirectoryChange>::iterator itor = changes.begin();
         for (; itor != changes.end(); itor++) {
-            string store_path = "/";
-            store_path.append(itor->Path);
+            string store_path;
+
+            if (itor->Path[0] == '/') {
+                store_path = itor->Path;
+            }
+            else {
+                store_path = "/" + itor->Path;
+            }
 
             // replace backslashes with forward slashes (Windows sanity)
             for (size_t i = store_path.length(); i; i--) {
