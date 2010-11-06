@@ -78,23 +78,7 @@ Broker & Broker::operator=(const Broker & orig)
 
 Broker::~Broker()
 {
-    if (this->store_watcher_thread) delete this->store_watcher_thread;
-
-    if (this->worker_threads.size() > 0) {
-        vector<Thread *>::iterator i = this->worker_threads.begin();
-        for (; i != this->worker_threads.end(); i++) {
-            delete *i;
-        }
-    }
-
-    if (this->streaming_threads.size() > 0) {
-        vector<Thread *>::iterator i = this->streaming_threads.begin();
-        for (; i != this->streaming_threads.end(); i++) {
-            delete *i;
-        }
-    }
-
-    if (this->exec_thread) delete this->exec_thread;
+    this->Shutdown();
 
     if (this->workers_sock) delete this->workers_sock;
     if (this->clients_sock) delete this->clients_sock;
@@ -436,6 +420,8 @@ void Broker::setup_listener_sockets()
 
 void Broker::Shutdown()
 {
+    if (!this->active) return;
+
     this->active = false;
 
     // wait for workers to terminate
