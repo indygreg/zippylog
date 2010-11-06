@@ -78,6 +78,8 @@ Broker & Broker::operator=(const Broker & orig)
 
 Broker::~Broker()
 {
+    this->Shutdown();
+
     if (this->workers_sock) delete this->workers_sock;
     if (this->clients_sock) delete this->clients_sock;
     if (this->streaming_sock) delete this->streaming_sock;
@@ -320,7 +322,7 @@ void Broker::run()
 
 void Broker::RunAsync()
 {
-    this->exec_thread = create_thread(Broker::AsyncExecStart, this);
+    this->exec_thread = new Thread(Broker::AsyncExecStart, this);
 }
 
 void * Broker::AsyncExecStart(void *data)
@@ -343,11 +345,7 @@ void Broker::create_worker_threads()
     this->request_processor_params.streaming_updates_endpoint = this->WORKER_STREAMING_NOTIFY_ENDPOINT;
 
     for (int i = this->config.worker_threads; i; --i) {
-        void * thread = create_thread(Broker::RequestProcessorStart, &this->request_processor_params);
-        if (!thread) {
-            throw "error creating worker thread";
-        }
-        this->worker_threads.push_back(thread);
+        this->worker_threads.push_back(new Thread(Broker::RequestProcessorStart, &this->request_processor_params));
     }
 }
 
@@ -359,7 +357,7 @@ void Broker::create_store_watcher()
     this->store_watcher_params.logging_endpoint = this->LOGGER_ENDPOINT;
     this->store_watcher_params.active = &this->active;
 
-    this->store_watcher_thread = create_thread(StoreWatcherStart, &this->store_watcher_params);
+    this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
 }
 
 void Broker::create_streaming_threads()
@@ -378,11 +376,7 @@ void Broker::create_streaming_threads()
     this->streamer_params.active = &this->active;
 
     for (int i = this->config.streaming_threads; i; i--) {
-        void * thread = create_thread(Broker::StreamingStart, &this->streamer_params);
-        if (!thread) {
-            throw "error creating streaming thread";
-        }
-        this->streaming_threads.push_back(thread);
+        this->streaming_threads.push_back(new Thread(Broker::StreamingStart, &this->streamer_params));
     }
 }
 
@@ -426,24 +420,34 @@ void Broker::setup_listener_sockets()
 
 void Broker::Shutdown()
 {
+    if (!this->active) return;
+
     this->active = false;
 
     // wait for workers to terminate
-    vector<void *>::iterator i;
+    vector<Thread *>::iterator i;
     for (i = this->worker_threads.begin(); i < this->worker_threads.end(); i++) {
-        join_thread(*i);
+        (*i)->Join();
+        delete *i;
     }
+    this->worker_threads.clear();
 
     // wait for streaming threads to terminate
     for (i = this->streaming_threads.begin(); i < this->streaming_threads.end(); i++) {
-        join_thread(*i);
+        (*i)->Join();
+        delete *i;
     }
+    this->streaming_threads.clear();
 
     // forcibly kill store watcher, b/c that's the only way right now
-    join_thread(this->store_watcher_thread);
+    this->store_watcher_thread->Join();
+    delete this->store_watcher_thread;
+    this->store_watcher_thread = NULL;
 
     if (this->exec_thread) {
-        join_thread(this->exec_thread);
+        this->exec_thread->Join();
+        delete this->exec_thread;
+        this->exec_thread = NULL;
     }
 }
 

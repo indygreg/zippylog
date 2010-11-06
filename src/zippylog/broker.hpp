@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.h>
 
+#include <zippylog/platform.hpp>
 #include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
@@ -28,6 +29,7 @@
 namespace zippylog {
 namespace server {
 
+using ::zippylog::platform::Thread;
 using ::zippylog::Store;
 using ::std::string;
 using ::std::vector;
@@ -101,13 +103,13 @@ class ZIPPYLOG_EXPORT Broker {
         socket_t * log_client_sock;
 
         string id;
-        void * exec_thread;
-        vector<void *> worker_threads;
-        vector<void *> streaming_threads;
+        Thread * exec_thread;
+        vector<Thread *> worker_threads;
+        vector<Thread *> streaming_threads;
         Store * store;
         bool active;
         BrokerConfig config;
-        void * store_watcher_thread;
+        Thread * store_watcher_thread;
 
         RequestProcessorStartParams request_processor_params;
         StreamerStartParams streamer_params;
