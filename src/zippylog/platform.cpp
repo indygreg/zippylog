@@ -270,6 +270,8 @@ File::File()
 #ifdef WINDOWS
     this->handle = NULL;
 #endif
+
+    this->fd = 0;
 }
 
 bool OpenFile(File &f, const string path, int flags)
@@ -307,8 +309,46 @@ bool OpenFile(File &f, const string path, int flags)
 
     return true;
 
-#endif
+#elif LINUX
+    int open_flags = 0;
+    mode_t mode = 0;
+
+    // start with mutually exclusively file access rules
+    if (flags & READ && flags & WRITE) {
+    	open_flags |= O_RDWR;
+    }
+    else if (flags & READ) {
+    	open_flags |= O_RDONLY;
+    }
+    else if (flags & WRITE) {
+    	open_flags |= O_WRONLY;
+    }
+    else {
+    	throw "must have one of READ or WRITE flag set";
+    }
+
+    if (flags & APPEND) open_flags |= O_APPEND;
+    if (flags & CREATE) {
+    	open_flags |= O_CREAT;
+    	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
+    }
+
+    if (flags & TRUNCATE) open_flags |= O_TRUNC;
+    // BINARY has no meaning on Linux
+
+    // cause opens on directories to fail always
+    open_flags |= O_DIRECTORY;
+
+    f.fd = open(path.c_str(), open_flags, mode);
+    if (f.fd < 0) {
+    	return false;
+    }
+
+    f.open = true;
+
     return true;
+#endif
+    return false;
 }
 
 bool FileClose(File &f)
@@ -316,13 +356,25 @@ bool FileClose(File &f)
 #ifdef WINDOWS
     if (!f.open) return true;
     return CloseHandle(f.handle) == TRUE;
+#elif LINUX
+	if (f.fd > 0) {
+		close(f.fd);
+		f.fd = 0;
+		return true;
+	}
+
+	return false;
 #endif
+
+	return false;
 }
 
 bool FileSeek(File &f, int64 offset)
 {
 #ifdef WINDOWS
     return _lseek(f.fd, offset, SEEK_SET) == offset;
+#elif LINUX
+	return lseek(f.fd, offset, SEEK_SET) == offset;
 #endif
 }
 
@@ -334,13 +386,21 @@ bool FileWrite(File &f, const void *data, size_t length)
     BOOL result = WriteFile(f.handle, data, length, &written, NULL);
 
     return result == TRUE && written == length;
+#elif LINUX
+    ssize_t result = write(f.fd, data, length);
+
+    return result == length;
 #endif
+
+    return false;
 }
 
 bool FlushFile(File &f)
 {
 #ifdef WINDOWS
     return FlushFileBuffers(f.handle) == TRUE;
+#elif LINUX
+	return fsync(f.fd) == 0;
 #endif
     return false;
 }
@@ -350,6 +410,8 @@ string PathJoin(const string &a, const string &b)
     string s = a;
 #ifdef WINDOWS
     s += "\\";
+#elif LINUX
+    s += "/";
 #endif
 
     s += b;
