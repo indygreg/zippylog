@@ -50,12 +50,6 @@ struct dir_entry {
 
 typedef void * (* thread_start_func)(void *);
 
-ZIPPYLOG_EXPORT void * create_thread(thread_start_func, void *data);
-
-ZIPPYLOG_EXPORT bool join_thread(void *thread);
-
-ZIPPYLOG_EXPORT bool terminate_thread(void *thread);
-
 ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
 
 ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
@@ -233,6 +227,26 @@ namespace platform {
         BYTE results[32768];
         OVERLAPPED overlapped;
 #endif
+    };
+
+    class Thread {
+    public:
+        Thread(thread_start_func, void *data);
+        ~Thread();
+
+        bool Join();
+        bool Abort();
+
+    protected:
+#ifdef WINDOWS
+        HANDLE thread;
+#elif LINUX
+        pthread_t thread;
+#endif
+
+    private:
+        Thread(const Thread &orig);
+        Thread & operator=(const Thread &orig);
     };
 }
 

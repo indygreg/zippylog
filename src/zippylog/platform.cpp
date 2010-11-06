@@ -35,58 +35,6 @@
 
 namespace zippylog {
 
-void * create_thread(thread_start_func func, void *data)
-{
-#ifdef WINDOWS
-    LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;
-    HANDLE thread = CreateThread(NULL, 0, f, data, 0, NULL);
-
-    return thread;
-
-#elif defined(LINUX)
-    pthread_t *t = (pthread_t *)malloc(sizeof(pthread_t));
-    if (!t) throw "could not allocate thread memory";
-    int result = pthread_create(t, NULL, func, data);
-    if (result != 0) {
-        throw "error creating thread";
-    }
-
-    return (void *)t;
-#else
-#error "Threading not supported on this platform yet"
-    // TODO implement pthread support
-#endif
-
-    return NULL;
-}
-
-bool join_thread(void *thread)
-{
-#ifdef WINDOWS
-    DWORD result = WaitForSingleObject((HANDLE)thread, INFINITE);
-    return WAIT_OBJECT_0 == result;
-
-#elif defined(LINUX)
-    int result = pthread_join(*(pthread_t *)thread, NULL);
-    return result == 0;
-#else
-#error "join_thread() not implemented on your platform yet"
-#endif
-}
-
-bool terminate_thread(void *thread)
-{
-#ifdef WINDOWS
-    DWORD rc = 1;
-    return TerminateThread(thread, rc);
-#elif defined(LINUX)
-    int result = pthread_cancel(*(pthread_t *)thread);
-    return result == 0;
-#else
-#error "terminate_thread() not implemented on your platform yet"
-#endif
-}
-
 // congratulations, this is the 4,234,532,657 time in programming history this
 // function has been written!
 bool directory_entries(const string dir, vector<dir_entry> &v)
@@ -647,6 +595,56 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
     return true;
 }
 
+Thread::Thread(thread_start_func func, void *data)
+{
+#ifdef WINDOWS
+    LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;
+    this->thread = CreateThread(NULL, 0, f, data, 0, NULL);
+#elif LINUX
+    int result = pthread_create(&this->thread, NULL, func, data);
+    if (result != 0) {
+        throw "error creating thread";
+    }
+#else
+#error "not supported on this platform yet"
+#endif
+}
+
+Thread::~Thread()
+{
+#ifdef WINDOWS
+    CloseHandle(this->thread);
+#endif
+}
+
+bool Thread::Join()
+{
+#ifdef WINDOWS
+    DWORD result = WaitForSingleObject(this->thread, INFINITE);
+    return WAIT_OBJECT_0 == result;
+#elif LINUX
+    int result = pthread_join(this->thread, NULL);
+    return result == 0;
+#else
+#error "join_thread() not implemented on your platform yet"
+#endif
+
+    return false;
+}
+
+bool Thread::Abort()
+{
+#ifdef WINDOWS
+    DWORD rc = 1;
+    return TerminateThread(this->thread, rc);
+#elif LINUX
+    int result = pthread_cancel(this->thread);
+    return result == 0;
+#else
+#error "terminate_thread() not implemented on your platform yet"
+#endif
+
+}
 
 } // platform namespace
 
