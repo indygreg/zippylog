@@ -24,8 +24,11 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <poll.h>
 #include <string.h>
+#include <stdio.h> // for FILENAME_MAX
 #include <sys/io.h>
+#include <sys/inotify.h>
 #include <sys/time.h>
 #include <uuid/uuid.h>
 #endif
@@ -264,6 +267,31 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
+bool DirectoriesInTree(const string &path, vector<string> &paths)
+{
+    vector<dir_entry> entries;
+
+    if (!directory_entries(path, entries)) {
+        return false;
+    }
+
+    vector<dir_entry>::iterator i = entries.begin();
+    for (; i != entries.end(); i++) {
+        if (i->type != 1) continue;
+
+        if (i->name[0] == '.') continue;
+
+        string full_path = PathJoin(path, i->name);
+
+        paths.push_back(full_path);
+
+        DirectoriesInTree(full_path, paths);
+    }
+
+    return true;
+
+}
+
 File::File()
 {
     this->open = false;
@@ -315,22 +343,22 @@ bool OpenFile(File &f, const string path, int flags)
 
     // start with mutually exclusively file access rules
     if (flags & READ && flags & WRITE) {
-    	open_flags |= O_RDWR;
+        open_flags |= O_RDWR;
     }
     else if (flags & READ) {
-    	open_flags |= O_RDONLY;
+        open_flags |= O_RDONLY;
     }
     else if (flags & WRITE) {
-    	open_flags |= O_WRONLY;
+        open_flags |= O_WRONLY;
     }
     else {
-    	throw "must have one of READ or WRITE flag set";
+        throw "must have one of READ or WRITE flag set";
     }
 
     if (flags & APPEND) open_flags |= O_APPEND;
     if (flags & CREATE) {
-    	open_flags |= O_CREAT;
-    	mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
+        open_flags |= O_CREAT;
+        mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP;
     }
 
     if (flags & TRUNCATE) open_flags |= O_TRUNC;
@@ -341,7 +369,7 @@ bool OpenFile(File &f, const string path, int flags)
 
     f.fd = open(path.c_str(), open_flags, mode);
     if (f.fd < 0) {
-    	return false;
+        return false;
     }
 
     f.open = true;
@@ -357,16 +385,16 @@ bool FileClose(File &f)
     if (!f.open) return true;
     return CloseHandle(f.handle) == TRUE;
 #elif LINUX
-	if (f.fd > 0) {
-		close(f.fd);
-		f.fd = 0;
-		return true;
-	}
+    if (f.fd > 0) {
+        close(f.fd);
+        f.fd = 0;
+        return true;
+    }
 
-	return false;
+    return false;
 #endif
 
-	return false;
+    return false;
 }
 
 bool FileSeek(File &f, int64 offset)
@@ -374,7 +402,7 @@ bool FileSeek(File &f, int64 offset)
 #ifdef WINDOWS
     return _lseek(f.fd, offset, SEEK_SET) == offset;
 #elif LINUX
-	return lseek(f.fd, offset, SEEK_SET) == offset;
+    return lseek(f.fd, offset, SEEK_SET) == offset;
 #endif
 }
 
@@ -400,7 +428,7 @@ bool FlushFile(File &f)
 #ifdef WINDOWS
     return FlushFileBuffers(f.handle) == TRUE;
 #elif LINUX
-	return fsync(f.fd) == 0;
+    return fsync(f.fd) == 0;
 #endif
     return false;
 }
@@ -459,7 +487,7 @@ Timer::Timer(uint32 microseconds)
 
     int result = timer_create(CLOCK_MONOTONIC, &evp, &this->timer);
     if (result != 0) {
-    	throw "could not create timer";
+        throw "could not create timer";
     }
 #endif
 
@@ -484,7 +512,7 @@ bool Timer::Reset()
         memset(&v, 0, sizeof(v));
         int result = timer_settime(this->timer, 0, &v, NULL);
         if (result != 0) {
-        	throw "could not reset timer";
+            throw "could not reset timer";
         }
 
         this->running = false;
@@ -521,7 +549,7 @@ bool Timer::Start()
 
     int result = timer_settime(this->timer, 0, &v, NULL);
     if (result != 0) {
-    	return false;
+        return false;
     }
 
     this->running = true;
@@ -547,12 +575,12 @@ bool Timer::Signaled()
     struct itimerspec v;
     int result = timer_gettime(this->timer, &v);
     if (result != 0) {
-    	throw "could not obtain timer result";
+        throw "could not obtain timer result";
     }
 
     if (v.it_value.tv_sec == 0 && v.it_value.tv_nsec == 0) {
-    	this->signaled = true;
-    	return true;
+        this->signaled = true;
+        return true;
     }
 
     return false;
@@ -583,7 +611,10 @@ DirectoryWatcher::~DirectoryWatcher()
     // TODO implement
 }
 
-DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse) : started_waiting(false)
+DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
+#ifdef WINDOWS
+    : started_waiting(false)
+#endif
 {
     this->path = directory;
     this->recurse = recurse;
@@ -609,6 +640,37 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse) : star
     }
 
     memset(&this->overlapped, 0, sizeof(this->overlapped));
+#elif LINUX
+    // we use inotify
+    this->fd = inotify_init();
+    if (this->fd == -1) {
+        throw "could not initialize inotify descriptor";
+    }
+
+    // add watch for root
+    int watch = inotify_add_watch(this->fd, this->path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
+    if (watch == -1) {
+        throw "could not add inotify watch for directory";
+    }
+
+    this->directories[watch] = "";
+
+    // inotify doesn't support recursive watches, so we need to do it manually
+    vector<string> paths;
+    if (!DirectoriesInTree(this->path, paths)) {
+        throw "could not obtain directories in tree";
+    }
+
+    vector<string>::iterator i = paths.begin();
+    for (; i != paths.end(); i++) {
+        watch = inotify_add_watch(this->fd, i->c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
+        if (watch == -1) {
+            throw "could not add inotify watch for directory";
+        }
+
+        this->directories[watch] = i->substr(this->path.length(), FILENAME_MAX);
+    }
+
 #else
 #warning "not available on this platform yet"
 #endif
@@ -619,8 +681,8 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     // return immediately if we have already collected changes
     if (this->changes.size() > 0) return true;
 
-    if (!this->started_waiting) {
 #ifdef WINDOWS
+    if (!this->started_waiting) {
         BOOL watch_result = ReadDirectoryChangesW(this->directory,
             &this->results[0], sizeof(this->results), this->recurse,
             FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
@@ -630,13 +692,8 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
         }
 
         this->started_waiting = true;
-#else
-#warning "functionality not implemented on this platform"
-#endif
     }
 
-    // now, wait for completion
-#ifdef WINDOWS
     DWORD milliseconds = time < 0 ? INFINITE : timeout / 1000;
     DWORD bytes_transferred = 0;
     ULONG key = 0;
@@ -690,11 +747,93 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     } while (info->NextEntryOffset != 0);
 
-#else
-#warning "functionality not implemented on this platform"
-#endif
+    return true;
+
+#elif LINUX
+    // the inotify descriptor is watching the moment it is created
+    // so, we see if data is available and we read it
+
+    struct pollfd pfd = { this->fd, POLLIN, 0 };
+    int result = poll(&pfd, 1, timeout / 1000);
+
+    if (result == -1) {
+        throw "error polling inotify descriptor";
+    }
+
+    // no data available
+    if (result == 0) return false;
+
+    // we now read off inotify_event structs from the descriptor
+    char buf[(sizeof(struct inotify_event) + FILENAME_MAX)*256] = {0};
+
+    ssize_t available = read(this->fd, &buf, sizeof(buf));
+    if (available < 0) {
+        throw "could not read from inotify descriptor";
+    }
+
+    ssize_t i = 0;
+    while (i < available) {
+        struct inotify_event *e = (struct inotify_event *)&buf[i];
+
+        map<int, string>::iterator watch = this->directories.find(e->wd);
+        if (watch == this->directories.end()) {
+            throw "unknown watch descriptor seen";
+        }
+
+        // watch was removed (we don't care how)
+        if (e->mask & IN_IGNORED) {
+            this->directories.erase(e->wd);
+            i += sizeof(struct inotify_event) + e->len;
+            continue;
+        }
+
+        string name = string(e->name, strlen(e->name)); // e->name can contain trailing NULL bytes
+
+        DirectoryChange change;
+        change.Path = PathJoin(watch->second, name);
+        string fs_path = PathJoin(this->path, change.Path);
+
+        if (e->mask & IN_CREATE) {
+            change.Action = change.ADDED;
+
+            // add inotify watcher if this is a directory
+            FileStat st;
+            if (!stat(fs_path, st)) {
+                throw "could not stat newly created file. weird";
+            }
+
+            if (st.type == DIRECTORY) {
+                int watch = inotify_add_watch(this->fd, fs_path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY );
+                if (watch == -1) {
+                    throw "could not add watch for directory: " + fs_path;
+                }
+
+                this->directories[watch] = change.Path;
+            }
+
+        }
+        else if (e->mask & IN_DELETE) {
+            change.Action = change.DELETED;
+        }
+        else if (e->mask & IN_MODIFY) {
+            change.Action = change.MODIFIED;
+        }
+        else {
+            throw "unknown change mask seen. likely coding bug";
+        }
+
+        this->changes.push_back(change);
+
+        i += sizeof(struct inotify_event) + e->len;
+    }
 
     return true;
+
+#else
+#error "functionality not implemented on this platform"
+#endif
+
+    return false;
 }
 
 bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)

@@ -35,11 +35,13 @@
 #include <time.h>
 #endif
 
+#include <map>
 #include <string>
 #include <vector>
 
 namespace zippylog {
 
+using ::std::map;
 using ::std::string;
 using ::std::vector;
 
@@ -96,6 +98,10 @@ namespace platform {
     ZIPPYLOG_EXPORT bool MakeDirectory(const string path);
 
     ZIPPYLOG_EXPORT bool PathIsDirectory(const string path);
+
+    // obtains a list of directories in a directory
+    // recursively descends the path and finds all child directories
+    bool DirectoriesInTree(const string &path, vector<string> &paths);
 
     // joins two filesystem paths and returns the result
     string PathJoin(const string &a, const string &b);
@@ -223,13 +229,19 @@ namespace platform {
         string path;
         bool recurse;
         vector<DirectoryChange> changes;
-        bool started_waiting;
 
 #ifdef WINDOWS
         HANDLE directory;
         HANDLE completion_port;
         BYTE results[32768];
         OVERLAPPED overlapped;
+        bool started_waiting;
+#elif LINUX
+        // inotify descriptor
+        int fd;
+
+        // maps watch descriptors to directories
+        map<int, string> directories;
 #endif
     };
 
