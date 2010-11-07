@@ -16,8 +16,6 @@
 
 #include <gtest/gtest.h>
 
-#include <unistd.h>
-
 using namespace ::zippylog::platform;
 
 TEST(TimerTest, CreateTimers)
@@ -27,8 +25,22 @@ TEST(TimerTest, CreateTimers)
     Timer t(100000);
     ASSERT_NO_THROW(t.Start());
     ASSERT_FALSE(t.Signaled());
-    sleep(1);
+    sleep(105);
     ASSERT_TRUE(t.Signaled());
+
+    ASSERT_TRUE(t.Reset());
+    ASSERT_FALSE(t.Signaled());
+
+    ASSERT_TRUE(t.Start(50000));
+    ASSERT_FALSE(t.Signaled());
+    sleep(51);
+    ASSERT_TRUE(t.Signaled());
+
+    ASSERT_TRUE(t.Start(100000));
+    ASSERT_TRUE(t.Reset());
+    ASSERT_FALSE(t.Signaled());
+    sleep(105);
+    ASSERT_FALSE(t.Signaled());
 }
 
 
