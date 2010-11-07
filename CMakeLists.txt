@@ -68,3 +68,5 @@ target_link_libraries(zippylogd zippylog)
 add_definitions(-DLINUX)
 #endif()
 
+add_definitions(-D_DEBUG)
+
