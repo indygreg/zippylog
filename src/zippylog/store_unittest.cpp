@@ -40,6 +40,9 @@ TEST(StoreTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/1/2/3"));
     EXPECT_TRUE(Store::ValidatePath("/A/B/C"));
     EXPECT_TRUE(Store::ValidatePath("/a/b/c.zippylog"));
+
+    EXPECT_FALSE(Store::ValidatePath("/a "));
+    EXPECT_TRUE(Store::ValidatePath("/a\0"));
 }
 
 TEST(StoreTest, PathParsing) {
