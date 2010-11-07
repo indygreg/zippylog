@@ -16,7 +16,12 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+#include <vector>
+
+using ::std::sort;
 using ::std::string;
+using ::std::vector;
 using ::zippylog::Store;
 
 TEST(StoreTest, PathValidation) {
@@ -99,4 +104,66 @@ TEST(StoreTest, StreamNaming)
     EXPECT_STREQ("2010-07-27-06", Store::StreamNameForTime(1280212529000000, 3600).c_str());
     EXPECT_STREQ("2010-07-28-00-001-060", Store::StreamNameForTime(1280275200000000, 60).c_str());
     EXPECT_STREQ("2010-07-28-00-002-060", Store::StreamNameForTime(1280275260000000, 60).c_str());
+}
+
+class StoreContentsTest : public ::testing::Test {
+protected:
+    Store store;
+
+    StoreContentsTest() : store("test/stores/00-simple") { }
+
+};
+
+// verifies that we find files in stores properly
+TEST_F(StoreContentsTest, ContentDiscovery)
+{
+    ASSERT_STREQ("test/stores/00-simple", store.StorePath().c_str());
+
+    vector<string> buckets;
+    EXPECT_TRUE(store.BucketNames(buckets));
+    EXPECT_EQ(2, buckets.size());
+
+    sort(buckets.begin(), buckets.end());
+    EXPECT_STREQ("bucketA", buckets[0].c_str());
+    EXPECT_STREQ("bucketB", buckets[1].c_str());
+
+    EXPECT_TRUE(store.BucketNames(buckets));
+    EXPECT_EQ(2, buckets.size());
+
+    vector<string> paths;
+    EXPECT_TRUE(store.BucketPaths(paths));
+    EXPECT_EQ(2, paths.size());
+
+    sort(paths.begin(), paths.end());
+    EXPECT_STREQ("/bucketA", paths[0].c_str());
+    EXPECT_STREQ("/bucketB", paths[1].c_str());
+
+    EXPECT_TRUE(store.BucketExists("bucketA"));
+    EXPECT_TRUE(store.BucketExists("bucketB"));
+
+    vector<string> sets;
+    EXPECT_TRUE(store.StreamSetNames("bucketA", sets));
+    EXPECT_EQ(3, sets.size());
+    sort(sets.begin(), sets.end());
+    EXPECT_STREQ("set0", sets[0].c_str());
+    EXPECT_STREQ("set1", sets[1].c_str());
+    EXPECT_STREQ("set2", sets[2].c_str());
+    EXPECT_TRUE(store.StreamsetExists("bucketA", "set0"));
+
+    EXPECT_TRUE(store.StreamSetNames("bucketB", sets));
+    EXPECT_EQ(4, sets.size());
+    sort(sets.begin(), sets.end());
+    EXPECT_STREQ("b", sets[0].c_str());
+    EXPECT_TRUE(store.StreamsetExists("bucketB", "b"));
+
+    EXPECT_TRUE(store.StreamsetPaths(paths));
+    EXPECT_EQ(7, paths.size());
+    sort(paths.begin(), paths.end());
+    EXPECT_STREQ("/bucketA/set0", paths[0].c_str());
+    EXPECT_STREQ("/bucketA/set1", paths[1].c_str());
+    EXPECT_STREQ("/bucketA/set2", paths[2].c_str());
+    EXPECT_STREQ("/bucketB/b", paths[3].c_str());
+    EXPECT_STREQ("/bucketB/set4", paths[4].c_str());
+    EXPECT_STREQ("/bucketB/set5", paths[5].c_str());
+    EXPECT_STREQ("/bucketB/set6", paths[6].c_str());
 }

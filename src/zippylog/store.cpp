@@ -222,6 +222,8 @@ bool Store::BucketPaths(vector<string> &paths)
 
 bool Store::StreamsetPaths(vector<string> &paths)
 {
+    paths.clear();
+
     vector<string> buckets;
     this->BucketNames(buckets);
     for (size_t i = 0; i < buckets.size(); i++) {
@@ -530,6 +532,7 @@ bool Store::directories_in_directory(const string dir, vector<string> &v)
     vector<dir_entry> entries;
     if (!directory_entries(dir, entries)) return false;
 
+    v.clear();
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 1 && entries[i].name[0] != '.') {
             v.push_back(entries[i].name);
@@ -544,6 +547,7 @@ bool Store::files_in_directory(const string dir, vector<string> &v)
     vector<dir_entry> entries;
     if (!directory_entries(dir, entries)) return false;
 
+    v.clear();
     for (size_t i = 0; i < entries.size(); i++) {
         if (entries[i].type == 2) {
             v.push_back(entries[i].name);
