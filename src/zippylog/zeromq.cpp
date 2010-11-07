@@ -131,6 +131,25 @@ bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envel
     return send_multipart_message(socket, identities, &msg, flags);
 }
 
+bool send_envelopes(socket_t *socket, vector<string> &identities, vector<Envelope> &envelopes)
+{
+    assert(envelopes.size());
+
+    if (envelopes.size() == 1) {
+        return send_envelope(socket, identities, envelopes[0]);
+    }
+
+    // we have multiple envelopes
+    if (!send_envelope_more(socket, identities, envelopes[0])) return false;
+
+    size_t i = 1;
+    for (size_t i = 1; i < envelopes.size() - 1; i++) {
+        if (!send_envelope_more(socket, envelopes[i])) return false;
+    }
+
+    return send_envelope(socket, envelopes[++i]);
+}
+
 bool send_envelope_more(socket_t *socket, Envelope &envelope)
 {
     message_t msg;

@@ -48,6 +48,9 @@ bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t
 bool send_envelope(socket_t *socket, Envelope &envelope, int flags=0);
 bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope, int flags=0);
 
+// sends multiple envelopes with identities as part of a multipart message
+bool send_envelopes(socket_t *socket, vector<string> &identities, vector<Envelope> &envelopes);
+
 // sends an envelope with ZMQ_SNDMORE flag
 bool send_envelope_more(socket_t *socket, Envelope &envelope);
 bool send_envelope_more(socket_t *socket, vector<string> &identities, Envelope &envelope);
