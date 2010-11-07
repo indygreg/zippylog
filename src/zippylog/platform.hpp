@@ -128,10 +128,10 @@ namespace platform {
     enum FileFlags {
         READ = 1,
         WRITE = 2,
-        APPEND = 3,
-        CREATE = 4,
-        TRUNCATE = 5,
-        BINARY = 6,
+        APPEND = 4,
+        CREATE = 8,
+        TRUNCATE = 16,
+        BINARY = 32,
     };
 
     bool OpenFile(File &f, const string path, int flags);
