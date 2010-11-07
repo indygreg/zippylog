@@ -192,12 +192,18 @@ namespace platform {
         bool Reset();
 
         // starts the timer
-        bool Start();
+        //
+        // if the parameter is non-zero, the timer will assume the interval
+        // specified
+        bool Start(uint32 microseconds = 0);
 
     protected:
+        void Initialize();
+
         uint32 microseconds;
         bool signaled;
         bool running;
+        bool initialized;
 
 #ifdef WINDOWS
         void * handle;

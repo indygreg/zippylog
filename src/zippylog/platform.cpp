@@ -534,7 +534,7 @@ bool CreateUUID(UUID &u)
 }
 
 
-Timer::Timer()
+Timer::Timer() : initialized(false)
 {
 }
 
@@ -545,10 +545,13 @@ Timer::~Timer()
 #endif
 }
 
-Timer::Timer(uint32 microseconds)
+Timer::Timer(uint32 microseconds) : initialized(false)
 {
     this->microseconds = microseconds;
+}
 
+void Timer::Initialize()
+{
 #ifdef WINDOWS
     this->handle = CreateWaitableTimer(NULL, TRUE, NULL);
     if (!this->handle) {
@@ -564,8 +567,11 @@ Timer::Timer(uint32 microseconds)
         set_system_error();
         throw "could not create timer";
     }
+#else
+#error "Timer::Initialize() is not implemented on this platform"
 #endif
 
+    this->initialized = true;
     this->signaled = false;
     this->running = false;
 }
@@ -600,12 +606,20 @@ bool Timer::Reset()
     return false;
 }
 
-bool Timer::Start()
+bool Timer::Start(uint32 microseconds)
 {
+    if (!this->initialized) {
+        this->Initialize();
+    }
+
     if (this->running) {
         if (!this->Reset()) {
             return false;
         }
+    }
+
+    if (microseconds > 0) {
+        this->microseconds = microseconds;
     }
 
 #ifdef WINDOWS
