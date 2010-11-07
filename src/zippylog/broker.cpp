@@ -28,6 +28,10 @@ extern "C" {
 
 #include <sstream>
 
+#ifdef _DEBUG
+#include <iostream>
+#endif
+
 namespace zippylog {
 namespace server {
 
@@ -203,8 +207,8 @@ void Broker::run()
     // TODO so much repetition here. it makes me feel dirty
     // TODO better error handling
     while (this->active) {
-        // wait up to 1s for a message to become available
-        int rc = zmq::poll(pollitems, number_pollitems, 1000000);
+        // wait up to 0.5s for a message to become available
+        int rc = zmq::poll(pollitems, number_pollitems, 500000);
 
         if (pollitems[LOGGER_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
@@ -214,12 +218,12 @@ void Broker::run()
 
                 // TODO this is mostly for debugging purposes and should be implemented another way
                 // once the project has matured
-                /*
+
 #ifdef _DEBUG
                 Envelope debugEnvelope = Envelope(&msg);
                 ::std::cout << debugEnvelope.ToString();
 #endif
-                */
+
                 moresz = sizeof(more);
                 this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
                 if (!more) break;
