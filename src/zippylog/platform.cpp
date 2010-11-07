@@ -471,6 +471,13 @@ Timer::Timer()
 {
 }
 
+Timer::~Timer()
+{
+#if LINUX
+    timer_delete(this->timer);
+#endif
+}
+
 Timer::Timer(uint32 microseconds)
 {
     this->microseconds = microseconds;

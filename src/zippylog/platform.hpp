@@ -152,6 +152,7 @@ namespace platform {
         // create a null timer. this does nothing and is present so some structs have
         // a default constructor
         Timer();
+        ~Timer();
 
         // create a new timer that fires N microseconds from now
         Timer(uint32 microseconds);
@@ -178,6 +179,7 @@ namespace platform {
 #elif LINUX
         timer_t timer;
 #endif
+
     };
 
     // represents a change in a directory
