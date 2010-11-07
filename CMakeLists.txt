@@ -20,6 +20,7 @@ set(zippylog_VERSION_MAJOR 0)
 set(zippylog_VERSION_MINOR 1)
 
 set(CMAKE_THREAD_PREFER_PTHREADS)
+set(CMAKE_BUILD_TYPE Debug)
 
 find_package(Protobuf REQUIRED)
 find_package(Lua51 REQUIRED)
@@ -58,7 +59,7 @@ set(lib_sources
 )
 
 add_library(zippylog SHARED ${lib_sources})
-target_link_libraries(zippylog ${LUA_LIBRARIES} ${PROTOBUF_LIBRARY} ${ZEROMQ_LIBRARY})
+target_link_libraries(zippylog ${LUA_LIBRARIES} ${PROTOBUF_LIBRARY} ${ZEROMQ_LIBRARY} rt)
 
 add_executable(zippylogd src/zippylogd.cpp)
 target_link_libraries(zippylogd zippylog)
