@@ -518,9 +518,9 @@ bool Broker::ParseConfig(const string path, BrokerConfig &config, string &error)
     config.streaming_threads = luaL_optinteger(L, -1, 1);
     lua_pop(L, 1);
 
-    // time to live of streaming subscriptions
+    // time to live of streaming subscriptions. sourced in seconds. stored as milliseconds
     lua_getglobal(L, "streaming_subscription_ttl");
-    config.subscription_ttl = luaL_optinteger(L, -1, 60);
+    config.subscription_ttl = luaL_optinteger(L, -1, 60) * 1000;
     lua_pop(L, 1);
 
     // logging settings
