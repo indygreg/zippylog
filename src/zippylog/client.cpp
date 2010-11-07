@@ -449,8 +449,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
                 throw "subscription TTL less than configured time offset";
             }
 
-            sub.expiration_timer = platform::Timer(ttl - this->subscription_renewal_offset);
-            sub.expiration_timer.Start();
+            sub.expiration_timer.Start(ttl - this->subscription_renewal_offset);
 
             this->subscriptions[id] = sub;
 
@@ -553,7 +552,7 @@ OutstandingRequest::OutstandingRequest()
     this->cb_stream_segment = NULL;
 }
 
-Subscription::Subscription()
+Subscription::Subscription() : expiration_timer()
 {
 
 }

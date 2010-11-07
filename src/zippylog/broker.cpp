@@ -199,7 +199,7 @@ void Broker::run()
     int64 more;
     size_t moresz = sizeof(more);
 
-    platform::Timer stream_flush_timer = platform::Timer(this->config.stream_flush_interval * 1000);
+    platform::Timer stream_flush_timer(this->config.stream_flush_interval * 1000);
     if (!stream_flush_timer.Start()) {
         throw "could not start stream flush timer";
     }
