@@ -12,13 +12,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_SERVER_BROKER_HPP_
-#define ZIPPYLOG_SERVER_BROKER_HPP_
+#ifndef ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
+#define ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
 
 #include <zippylog/zippylog.h>
 
 #include <zippylog/platform.hpp>
-#include <zippylog/request_processor.hpp>
+#include <zippylog/zippylogd/worker.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
 #include <zippylog/streamer.hpp>
@@ -27,14 +27,7 @@
 #include <zmq.hpp>
 
 namespace zippylog {
-namespace server {
-
-using ::zippylog::platform::Thread;
-using ::zippylog::Store;
-using ::std::string;
-using ::std::vector;
-using ::zmq::context_t;
-using ::zmq::socket_t;
+namespace zippylogd {
 
 class BrokerConfig {
 public:
@@ -103,17 +96,17 @@ class ZIPPYLOG_EXPORT Broker {
         socket_t * log_client_sock;
 
         string id;
-        Thread * exec_thread;
-        vector<Thread *> worker_threads;
-        vector<Thread *> streaming_threads;
-        Store * store;
+        ::zippylog::platform::Thread * exec_thread;
+        vector<::zippylog::platform::Thread *> worker_threads;
+        vector<::zippylog::platform::Thread *> streaming_threads;
+        ::zippylog::Store * store;
         bool active;
         BrokerConfig config;
-        Thread * store_watcher_thread;
+        ::zippylog::platform::Thread * store_watcher_thread;
 
-        RequestProcessorStartParams request_processor_params;
-        StreamerStartParams streamer_params;
-        StoreWatcherStartParams store_watcher_params;
+        ::zippylog::zippylogd::WorkerStartParams request_processor_params;
+        ::zippylog::server::StreamerStartParams streamer_params;
+        ::zippylog::StoreWatcherStartParams store_watcher_params;
 
         static const string WORKER_ENDPOINT;
         static const string STORE_CHANGE_ENDPOINT;

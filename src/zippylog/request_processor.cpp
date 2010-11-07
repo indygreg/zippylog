@@ -12,16 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/*
-
-This file implements routines for the server-side processing of client
-requests.
-
-The main worker routine implements a crude state machine to help make things
-easier to grok.
-
-*/
-
 #include <zippylog/request_processor.hpp>
 
 #include <zippylog/message.pb.h>
@@ -31,11 +21,7 @@ easier to grok.
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
 
-#include <string>
-#include <zmq.hpp>
-
 namespace zippylog {
-namespace server {
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
     msgvar.set_id(this->id); \
@@ -50,67 +36,51 @@ using ::zippylog::zippylogd::WorkerReceiveUnknownRequestType;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
-RequestProcessor::RequestProcessor(RequestProcessorStartParams params) :
-    store(params.store_path),
-    socket(NULL),
-    logger_sock(NULL),
-    subscriptions_sock(NULL),
-    subscription_updates_sock(NULL)
+RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
+    ctx(params.ctx),
+    active(params.active),
+    store_path(params.store_path),
+    logger_endpoint(params.logger_endpoint),
+    client_endpoint(params.client_endpoint),
+    store(params.store_path)
 {
-    if (!params.active) {
-        throw "active parameter cannot be null";
+    if (!this->active) {
+        throw "active parameter cannot be NULL";
     }
 
-    this->ctx = params.ctx;
-    this->store_path = params.store_path;
-    this->broker_endpoint = params.broker_endpoint;
-    this->streaming_subscriptions_endpoint = params.streaming_subscriptions_endpoint;
-    this->streaming_updates_endpoint = params.streaming_updates_endpoint;
-    this->logger_endpoint = params.logger_endpoint;
-    this->active = params.active;
+    if (!this->ctx) {
+        throw "ctx parameter cannot be NULL";
+    }
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
-
     this->id = string((const char *)&uuid, sizeof(uuid));
+
+    this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
+    this->logger_sock->connect(this->logger_endpoint.c_str());
+
+    this->socket = new socket_t(*this->ctx, ZMQ_XREP);
+    this->socket->connect(this->client_endpoint.c_str());
+
+    ::zippylog::zippylogd::WorkerStartup log = ::zippylog::zippylogd::WorkerStartup();
+    LOG_MESSAGE(log, this->logger_sock);
 }
 
 RequestProcessor::~RequestProcessor()
 {
-    if (this->socket) delete this->socket;
-    if (this->subscriptions_sock) delete this->subscriptions_sock;
-    if (this->subscription_updates_sock) delete this->subscription_updates_sock;
     if (this->logger_sock) delete this->logger_sock;
+    if (this->socket) delete this->socket;
 }
 
-// TODO break function into multiple functions
 void RequestProcessor::Run()
 {
-    this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
-    this->logger_sock->connect(this->logger_endpoint.c_str());
-    {
-        ::zippylog::zippylogd::WorkerStartup log = ::zippylog::zippylogd::WorkerStartup();
-        LOG_MESSAGE(log, this->logger_sock);
-    }
-
-    this->subscriptions_sock = new socket_t(*this->ctx, ZMQ_PUSH);
-    this->subscriptions_sock->connect(this->streaming_subscriptions_endpoint.c_str());
-
-    this->subscription_updates_sock = new socket_t(*this->ctx, ZMQ_PUSH);
-    this->subscription_updates_sock->connect(this->streaming_updates_endpoint.c_str());
-
-    this->socket = new socket_t(*this->ctx, ZMQ_XREP);
-    this->socket->connect(this->broker_endpoint.c_str());
+    // TODO drop log message
 
     zmq::pollitem_t pollitems[1];
     pollitems[0].events = ZMQ_POLLIN;
     pollitems[0].fd = 0;
     pollitems[0].revents = 0;
     pollitems[0].socket = *this->socket;
-
-    /* common variables used frequently enough to warrant declaration */
-    int64 more;
-    size_t moresz = sizeof(more);
 
     while (*this->active) {
         // wait up to 250ms for a message to become available
@@ -138,7 +108,11 @@ void RequestProcessor::Run()
             throw "error receiving multipart message from worker sock";
         }
 
-        assert(msgs.size());
+        // no input is very funky
+        if (!msgs.size()) {
+            // TODO log
+            continue;
+        }
 
         // an empty initial message is very weird
         if (!msgs[0]->size()) {
@@ -149,8 +123,11 @@ void RequestProcessor::Run()
             continue;
         }
 
+        // TODO handle parse failure
+        Envelope request_envelope = Envelope(msgs[0]);
+
         vector<Envelope> response_envelopes;
-        ResponseStatus result = this->ProcessRequest(this->current_request_identities, msgs, response_envelopes);
+        ResponseStatus result = this->ProcessRequest(request_envelope, response_envelopes);
 
         // destroy input messages immediately since they aren't needed any more
         vector<message_t *>::iterator iter = msgs.begin();
@@ -183,15 +160,8 @@ void RequestProcessor::Run()
     return;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(const vector<string> &identities, const vector<::zmq::message_t *> &input, vector<Envelope> &output)
+RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &request_envelope, vector<Envelope> &output)
 {
-    // no input is very funky
-    assert(input.size());
-    assert(input[0]->size());
-
-    Envelope request_envelope = Envelope(input[0]);
-    // TODO handle parse failure
-
     RequestProcessor::ResponseStatus result;
 
     if (request_envelope.envelope.message_size() < 1) {
@@ -454,15 +424,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
 
     // TODO validation
 
-    // we pass the identities and the original message to the streamer
-    // we don't pass the first identity, b/c it belongs to the local socket
-    // TODO should probably create a special message type with identities embedded
-    vector<string> subscription_identities = this->current_request_identities;
-    subscription_identities.erase(subscription_identities.begin());
-
-    zeromq::send_envelope(this->subscriptions_sock, subscription_identities, request);
-
-    return DEFERRED;
+    return this->HandleSubscribeStoreChanges(request, output);
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
@@ -472,13 +434,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
 
     // TODO validation
 
-    // proxy the message w/ identities (minus first one)
-    vector<string> subscription_identities = this->current_request_identities;
-    subscription_identities.erase(subscription_identities.begin());
-
-    zeromq::send_envelope(this->subscriptions_sock, subscription_identities, request);
-
-    return DEFERRED;
+    return this->HandleSubscribeEnvelopes(request, output);
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
@@ -486,15 +442,13 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
     protocol::request::SubscribeKeepalive *m =
         (protocol::request::SubscribeKeepalive *)request.GetMessage(0);
 
-    // TODO validation
-
     WorkerForwardSubscribeKeepalive log = WorkerForwardSubscribeKeepalive();
     log.set_subscription(m->id());
     LOG_MESSAGE(log, this->logger_sock);
 
-    zeromq::send_envelope(this->subscription_updates_sock, request);
+    // TODO validation
 
-    return DEFERRED;
+    return this->HandleSubscribeKeepalive(request, output);
 }
 
 bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code, string message, vector<Envelope> &msgs)
@@ -513,4 +467,4 @@ bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code,
     return true;
 }
 
-}} // namespaces
+} // namespace

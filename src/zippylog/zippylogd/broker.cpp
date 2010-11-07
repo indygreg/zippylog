@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/broker.hpp>
+#include <zippylog/zippylogd/broker.hpp>
 
 #include <zippylog/platform.hpp>
 #include <zippylog/streamer.hpp>
@@ -33,9 +33,12 @@ extern "C" {
 #endif
 
 namespace zippylog {
-namespace server {
+namespace zippylogd {
 
 using ::std::ostringstream;
+using ::zippylog::platform::Thread;
+using ::zippylog::server::Streamer;
+using ::zippylog::server::StreamerStartParams;
 using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
@@ -340,11 +343,14 @@ void * Broker::AsyncExecStart(void *data)
 
 void Broker::create_worker_threads()
 {
-    this->request_processor_params.active = &this->active;
-    this->request_processor_params.broker_endpoint = this->WORKER_ENDPOINT;
-    this->request_processor_params.ctx = &this->zctx;
-    this->request_processor_params.logger_endpoint = this->LOGGER_ENDPOINT;
-    this->request_processor_params.store_path = this->config.store_path;
+    ::zippylog::RequestProcessorStartParams params;
+    params.active = &this->active;
+    params.ctx = &this->zctx;
+    params.client_endpoint = this->WORKER_ENDPOINT;
+    params.logger_endpoint = this->LOGGER_ENDPOINT;
+    params.store_path = this->config.store_path;
+
+    this->request_processor_params.request_processor_params = params;
     this->request_processor_params.streaming_subscriptions_endpoint = this->WORKER_SUBSCRIPTIONS_ENDPOINT;
     this->request_processor_params.streaming_updates_endpoint = this->WORKER_STREAMING_NOTIFY_ENDPOINT;
 
@@ -601,9 +607,9 @@ void * Broker::StreamingStart(void *d)
 
 void * Broker::RequestProcessorStart(void *d)
 {
-    RequestProcessorStartParams *params = (RequestProcessorStartParams *)d;
+    WorkerStartParams *params = (WorkerStartParams *)d;
     try {
-        RequestProcessor processor(*params);
+        Worker processor(*params);
         processor.Run();
     }
     catch (zmq::error_t e) {

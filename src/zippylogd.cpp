@@ -13,13 +13,13 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.h>
-#include <zippylog/broker.hpp>
+#include <zippylog/zippylogd/broker.hpp>
 #include <zippylog/store.hpp>
 
 #include <iostream>
 #include <string>
 
-using ::zippylog::server::Broker;
+using ::zippylog::zippylogd::Broker;
 using ::std::cout;
 using ::std::endl;
 

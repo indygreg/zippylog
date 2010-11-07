@@ -22,39 +22,32 @@
 #include <zmq.hpp>
 
 namespace zippylog {
-namespace server {
-
-using ::zmq::context_t;
-using ::zmq::socket_t;
 
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
-    // for ZMQ initialization on new threads
-    context_t *ctx;
-
-    // store worker operates on
     string store_path;
-
-    // where to connect to receive requests
-    string broker_endpoint;
-
-    // where to send client subscription messages
-    string streaming_subscriptions_endpoint;
-
-    // where to send updates for existing subscriptions
-    string streaming_updates_endpoint;
-
-    // where to send log messages
+    ::zmq::context_t *ctx;
+    string client_endpoint;
     string logger_endpoint;
-
-    // whether request processor should remain alive
-    // caller sets this value to false when it wishes for the Run()
-    // function to exit
     bool *active;
 };
 
+// Processes zippylog protocol requests
+//
+// This class is designed to be an abstract base class. It implements core
+// functionality for parsing and verifying protocol requests. However, the
+// actual implementation is abstracted away in the various Handle* functions.
+// Derived classes should implement these functions.
+//
+// Currently, we make the assumption that protocol requests arrive via
+// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
+// the various Process* functions don't expose 0MQ details, so it should be
+// possible to call into this class without serializing envelopes as 0MQ
+// messages. That being said, the constructor still requires the 0MQ
+// parameters (for now, at least)
 class ZIPPYLOG_EXPORT RequestProcessor {
     public:
+        // return code from the various request processors
         enum ResponseStatus {
             // processor encountered a significant error and couldn't
             // process the request. this likely resembles a coding bug
@@ -71,18 +64,47 @@ class ZIPPYLOG_EXPORT RequestProcessor {
             DEFERRED = 3,
         };
 
-        RequestProcessor(RequestProcessorStartParams params);
+        RequestProcessor(RequestProcessorStartParams &params);
         ~RequestProcessor();
 
-        // Runs the request processing loop
-        // Listens for messages on a XREP socket connected to the endpoint
-        // defined by the broker_endpoint parameter in the start parameters
+        // Runs the request processor
+        // Will listen for messages on the 0MQ socket specified in the start parameters
+        // This function executes forever in an infinite loop until a
+        // catastrophic error or the active parameter passed in the start
+        // parameters goes to false
         void Run();
 
-        // Takes a 0MQ message (possibly multipart) as input and generates the output
-        ResponseStatus ProcessRequest(const vector<string> &identities, const vector<::zmq::message_t *> &input, vector<Envelope> &output);
+        // Processes a request envelope
+        //
+        // This is the main request processing function. If there are
+        // envelopes to be sent to the client, they are added to the passed
+        // vector.
+        //
+        // Callers should inspect the return value to determine how to handle
+        // response messages.
+        //
+        // Most people typically have no need to call this function. However,
+        // it is provided public just in case.
+        ResponseStatus ProcessRequest(Envelope &e, vector<Envelope> &output);
+
+    protected:
+
+        // callback to handle a validated request to subscribe to store changes
+        // TODO should probably have a custom class for the request instance
+        virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output) = 0;
+
+        // callback to handle a subscription to envelopes
+        // TODO specific class for request
+        virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output) = 0;
+
+        // callback to handle a subscription keepalive
+        // TODO specific class for request
+        virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output) = 0;
+
 
         // Process a StoreInfo request and populate the passed envelope with the response
+        //
+        // This function is typically called only by ProcessRequest()
         ResponseStatus ProcessStoreInfo(Envelope &response);
 
         // Process a Get request
@@ -94,32 +116,21 @@ class ZIPPYLOG_EXPORT RequestProcessor {
 
         ResponseStatus ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output);
 
-    protected:
         bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, string message, vector<Envelope> &msgs);
 
-        // start parameters
-        context_t *ctx;
+        ::zmq::context_t *ctx;
         string store_path;
-        string broker_endpoint;
-        string streaming_subscriptions_endpoint;
-        string streaming_updates_endpoint;
         string logger_endpoint;
-        bool *active;
+        string client_endpoint;
+
+        ::zmq::socket_t * logger_sock;
+        ::zmq::socket_t * socket;
 
         Store store;
 
-        socket_t *socket;
-        socket_t *subscriptions_sock;
-        socket_t *subscription_updates_sock;
-        socket_t *logger_sock;
-
         string id;
-
-        // I would rather make this a function parameter b/c I don't like keeping
-        // per-request state in the class. However, with future refactoring
-        // (making this class an abstract base), it makes sense to keep it here
-        // at the moment
         vector<string> current_request_identities;
+        bool *active;
 
 private:
         RequestProcessor(const RequestProcessor &orig);
@@ -127,6 +138,6 @@ private:
 
 };
 
-}} // namespaces
+} // namespace
 
 #endif
