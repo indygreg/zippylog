@@ -27,10 +27,10 @@ using ::std::pair;
 
 class ZIPPYLOG_EXPORT MessageRegistrar {
     public:
-        MessageRegistrar();
         ~MessageRegistrar();
 
         static MessageRegistrar * instance();
+        static void TerminateInstance();
 
         bool register_message(uint32 ns, uint32 enumeration, Message *instance);
         Message * get_message(uint32 ns, uint32 enumeration);
@@ -41,6 +41,13 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
     protected:
         // TODO lookup time can be improved since map is nlogn
         map<pair<uint32, uint32>, Message *> _types;
+
+    private:
+        MessageRegistrar();
+        MessageRegistrar(const MessageRegistrar & orig);
+        MessageRegistrar & operator=(const MessageRegistrar & orig);
+
+        static MessageRegistrar * _instance;
 };
 
 } // namespace

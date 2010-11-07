@@ -17,6 +17,8 @@
 
 namespace zippylog {
 
+MessageRegistrar * MessageRegistrar::_instance = NULL;
+
 MessageRegistrar::MessageRegistrar()
 {
     register_known_messages();
@@ -29,8 +31,18 @@ MessageRegistrar::~MessageRegistrar()
 
 MessageRegistrar * MessageRegistrar::instance()
 {
-    static MessageRegistrar registrar;
-    return &registrar;
+    if (!_instance) {
+        _instance = new MessageRegistrar();
+    }
+    return _instance;
+}
+
+void MessageRegistrar::TerminateInstance()
+{
+    if (_instance) {
+        delete _instance;
+        _instance = NULL;
+    }
 }
 
 bool MessageRegistrar::register_message(uint32 ns, uint32 enumeration, Message *instance)

@@ -21,5 +21,5 @@ void zippylog_shutdown()
 {
     ::google::protobuf::ShutdownProtobufLibrary();
 
-    ::zippylog::MessageRegistrar::instance()->Cleanup();
+    ::zippylog::MessageRegistrar::TerminateInstance();
 }
