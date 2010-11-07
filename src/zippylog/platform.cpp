@@ -492,7 +492,7 @@ Timer::Timer(uint32 microseconds)
     memset(&evp, 0, sizeof(evp));
     evp.sigev_notify = SIGEV_NONE;
 
-    int result = timer_create(CLOCK_MONOTONIC, &evp, &this->timer);
+    int result = timer_create(CLOCK_REALTIME, &evp, &this->timer);
     if (result != 0) {
         throw "could not create timer";
     }
@@ -552,7 +552,8 @@ bool Timer::Start()
     struct itimerspec v;
     memset(&v, 0, sizeof(v));
 
-    v.it_value.tv_nsec = this->microseconds * 1000;
+    v.it_value.tv_sec = this->microseconds / 1000000;
+    v.it_value.tv_nsec = (this->microseconds * 1000) % 1000000;
 
     int result = timer_settime(this->timer, 0, &v, NULL);
     if (result != 0) {
