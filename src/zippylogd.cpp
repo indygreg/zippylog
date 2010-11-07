@@ -23,6 +23,7 @@ using ::zippylog::server::Broker;
 using ::std::cout;
 using ::std::endl;
 
+#ifdef LINUX
 static volatile sig_atomic_t active = 1;
 
 void signal_handler(int signo)
@@ -31,6 +32,7 @@ void signal_handler(int signo)
 
     signal(signo, SIG_DFL);
 }
+#endif
 
 int main(int argc, const char * const argv[])
 {
@@ -39,14 +41,24 @@ int main(int argc, const char * const argv[])
         return 1;
     }
 
+#ifdef LINUX
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
+#endif
 
     try {
-        Broker broker(argv[1]);
-        broker.RunAsync();
+        zippylog_init();
 
+        Broker broker(argv[1]);
+
+#ifdef LINUX
+        broker.RunAsync();
         while (active) pause();
+#elif WINDOWS
+        broker.run();
+#else
+#error "not implemented on this platform"
+#endif
     }
     catch (...) {
         cout << "received an exception" << endl;
