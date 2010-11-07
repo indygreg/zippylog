@@ -317,7 +317,7 @@ void Broker::run()
         }
     }
 
-    delete pollitems;
+    delete [] pollitems;
 }
 
 void Broker::RunAsync()
