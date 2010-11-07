@@ -444,7 +444,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             sub.id = id;
             sub.data = req.data;
 
-            uint32 ttl = ack->ttl() * 1000000;
+            uint32 ttl = ack->ttl() * 1000;
             if (ttl < this->subscription_renewal_offset) {
                 throw "subscription TTL less than configured time offset";
             }

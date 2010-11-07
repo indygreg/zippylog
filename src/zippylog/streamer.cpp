@@ -593,7 +593,7 @@ void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string>
 {
     SubscribeAck ack = SubscribeAck();
     ack.set_id(id);
-    ack.set_ttl(this->subscription_ttl / 1000);
+    ack.set_ttl(this->subscription_ttl);
     Envelope response = Envelope();
 
     // copy tags to response because that's what the protocol does

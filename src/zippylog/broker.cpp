@@ -518,9 +518,9 @@ bool Broker::ParseConfig(const string path, BrokerConfig &config, string &error)
     config.streaming_threads = luaL_optinteger(L, -1, 1);
     lua_pop(L, 1);
 
-    // time to live of streaming subscriptions. sourced in seconds. stored as milliseconds
+    // time to live of streaming subscriptions in milliseconds
     lua_getglobal(L, "streaming_subscription_ttl");
-    config.subscription_ttl = luaL_optinteger(L, -1, 60) * 1000;
+    config.subscription_ttl = luaL_optinteger(L, -1, 60000);
     lua_pop(L, 1);
 
     // logging settings
@@ -532,7 +532,7 @@ bool Broker::ParseConfig(const string path, BrokerConfig &config, string &error)
     config.log_stream_set = luaL_optstring(L, -1, "zippylogd");
     lua_pop(L, 1);
 
-    // interval at which to flush streams
+    // interval at which to flush streams in milliseconds
     lua_getglobal(L, "stream_flush_interval");
     config.stream_flush_interval = luaL_optinteger(L, -1, 5000);
     lua_pop(L, 1);
