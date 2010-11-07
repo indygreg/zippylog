@@ -85,7 +85,7 @@ class ZIPPYLOG_EXPORT Envelope {
         }
 
         // obtain the protocol buffer message at given index
-        // the returned pointer is owned by the envelope project
+        // the returned pointer is owned by the envelope instance
         // the memory won't be accessible once the envelope is destroyed
         // therefore, the caller should NOT free it
         // if the index does not exist, NULL will be returned
