@@ -69,6 +69,9 @@ namespace platform {
     // will reset the current system error on call
     bool get_system_error(string &string);
 
+    // sleeps the current thread for specified amount of milliseconds
+    void sleep(uint32 milliseconds);
+
     enum FileType {
         REGULAR = 1,
         DIRECTORY = 2,

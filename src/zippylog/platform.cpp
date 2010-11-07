@@ -168,6 +168,21 @@ bool get_system_error(string &s)
 #endif
 }
 
+void sleep(uint32 milliseconds)
+{
+#ifdef WINDOWS
+    Sleep(milliseconds);
+#elif LINUX
+    struct timespec tv;
+    tv.tv_sec = milliseconds / 1000;
+    tv.tv_usec = (milliseconds * 1000000) % 1000000000;
+
+    nanosleep(&tv);
+#else
+#error "sleep() is not implemented on this platform"
+#endif
+}
+
 bool stat(const string path, FileStat &st)
 {
 #ifdef WINDOWS
@@ -655,6 +670,7 @@ bool Timer::Start(uint32 microseconds)
 bool Timer::Signaled()
 {
     if (this->signaled) return true;
+    if (!this->running) return false;
 
 #ifdef WINDOWS
     DWORD result = WaitForSingleObject(this->handle, 0);
