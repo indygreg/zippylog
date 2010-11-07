@@ -14,8 +14,16 @@
 
 #include <zippylog/zippylog.h>
 #include <zippylog/message_registrar.hpp>
+#include <zippylog/messages.hpp>
 
 #include <google/protobuf/stubs/common.h>
+
+void zippylog_init()
+{
+    // populate the registrar instance
+    ::zippylog::MessageRegistrar::instance();
+    ::zippylog::register_known_messages();
+}
 
 void zippylog_shutdown()
 {

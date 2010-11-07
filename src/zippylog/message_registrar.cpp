@@ -21,7 +21,7 @@ MessageRegistrar * MessageRegistrar::_instance = NULL;
 
 MessageRegistrar::MessageRegistrar()
 {
-    register_known_messages();
+
 }
 
 MessageRegistrar::~MessageRegistrar()

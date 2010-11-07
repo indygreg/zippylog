@@ -25,6 +25,8 @@ using ::google::protobuf::Message;
 using ::std::map;
 using ::std::pair;
 
+// a central registration service for zippylog message enumerations
+// Currently, instance() is NOT thread safe
 class ZIPPYLOG_EXPORT MessageRegistrar {
     public:
         ~MessageRegistrar();
