@@ -60,7 +60,6 @@ ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
 
 // new namespace where all APIs should be
 namespace platform {
-#ifdef LINUX
     // records the last known system error
     void set_system_error();
 
@@ -69,7 +68,6 @@ namespace platform {
     // else, returns true and puts the error message in the string variable
     // will reset the current system error on call
     bool get_system_error(string &string);
-#endif
 
     enum FileType {
         REGULAR = 1,
@@ -128,15 +126,31 @@ namespace platform {
     class File {
     public:
         File();
-#ifdef WINDOWS
-        void * handle;
-#endif
-        int fd;
 
-        bool open;
-    };
+        // open a file at path with the FileFlags specified
+        // returns whether file opened successfully
+        bool Open(const string &path, int flags);
 
-    enum FileFlags {
+        // close the file
+        bool Close();
+
+        // write data to the file
+        // returns whether all data was written
+        bool Write(const void *data, size_t length);
+
+        // flush contents to underlying store
+        //
+        // this clear all buffered data
+        bool Flush();
+
+        // seeks to the specified offset in the file
+        bool Seek(int64 offset);
+
+        // obtain a file descriptor for this file
+        // returns 0 if file descriptor not available, file not open, etc
+        int FileDescriptor();
+
+    enum OpenFlags {
         READ     = 0x01,
         WRITE    = 0x02,
         APPEND   = 0x04,
@@ -145,14 +159,14 @@ namespace platform {
         BINARY   = 0x20,
     };
 
-    bool OpenFile(File &f, const string path, int flags);
-    bool FileClose(File &f);
-    bool FileWrite(File &f, const void *data, size_t length);
+    protected:
+#ifdef WINDOWS
+        void * handle;
+#endif
+        int fd;
 
-    bool FlushFile(File &f);
-
-    // seek to the specified offset in the file
-    bool FileSeek(File &f, int64 offset);
+        bool open;
+    };
 
     // in the ideal world, timers would be represented as file descriptors and
     // we could include them in the zmq poll() event loop. this is easily done

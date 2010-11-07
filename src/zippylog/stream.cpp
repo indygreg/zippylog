@@ -45,27 +45,27 @@ InputStream::~InputStream() {
     delete this->_cis;
     delete this->_is;
 
-    platform::FileClose(this->file);
+    this->file.Close();
 }
 
 bool InputStream::OpenFile(string file, int64 start_offset)
 {
-    platform::FileClose(this->file);
+    this->file.Close();
 
     if (this->_cis) delete this->_cis;
     if (this->_is) delete this->_is;
     this->_have_next_size = false;
     this->_next_envelope_size = 0;
 
-    if (!platform::OpenFile(this->file, file, platform::READ | platform::BINARY)) {
+    if (!this->file.Open(file, platform::File::READ | platform::File::BINARY)) {
         return false;
     }
 
     if (start_offset > 0) {
-        if (!platform::FileSeek(this->file, start_offset)) return false;
+        if (!this->file.Seek(start_offset)) return false;
     }
 
-    this->_is = new FileInputStream(this->file.fd);
+    this->_is = new FileInputStream(this->file.FileDescriptor());
     this->_cis = new CodedInputStream(this->_is);
 
     if (start_offset == 0) {
@@ -135,23 +135,22 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 
 bool InputStream::Seek(int64 offset)
 {
-    if (!platform::FileSeek(this->file, offset)) return false;
+    if (!this->file.Seek(offset)) return false;
 
     delete this->_cis;
     delete this->_is;
 
-    this->_is = new FileInputStream(this->file.fd);
+    this->_is = new FileInputStream(this->file.FileDescriptor());
     this->_cis = new CodedInputStream(this->_is);
 
     return true;
 }
 
 
+
 OutputStream::OutputStream(const string file)
 {
-    if (!platform::OpenFile(this->file, file,
-        platform::CREATE | platform::APPEND | platform::WRITE))
-    {
+    if (!this->file.Open(file, platform::File::CREATE | platform::File::APPEND | platform::File::WRITE)) {
         throw "could not open file";
     }
 
@@ -163,12 +162,12 @@ OutputStream::OutputStream(const string file)
     // this is a new file, so we need to write out the version
     if (!stat.size) {
         char version = 0x01;
-        if (!platform::FileWrite(this->file, &version, 1)) {
+        if (!this->file.Write(&version, 1)) {
             throw "could not write version byte to stream";
         }
     }
 
-    this->os = new FileOutputStream(this->file.fd);
+    this->os = new FileOutputStream(this->file.FileDescriptor());
     this->cos = new CodedOutputStream(this->os);
 }
 
@@ -230,7 +229,7 @@ bool OutputStream::Flush()
 
     // TODO consider using unbuffered I/O for the created file instead
     // of forcing a file descriptor flush
-    return platform::FlushFile(this->file) && result;
+    return this->file.Flush() && result;
 }
 
 } // namespace

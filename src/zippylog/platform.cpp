@@ -133,16 +133,23 @@ void windows_error(char *buffer, size_t buffer_size)
 namespace platform {
 
 #ifdef LINUX
-
 static __thread int system_error = 0;
+#endif
 
 void set_system_error()
 {
+#ifdef LINUX
     system_error = errno;
+#elif WINDOWS
+    // TODO
+#else
+#error "set_system_error() not implemented on this platform"
+#endif
 }
 
 bool get_system_error(string &s)
 {
+#ifdef LINUX
     if (!system_error) return false;
 
     char * error = strerror(system_error);
@@ -152,9 +159,14 @@ bool get_system_error(string &s)
     system_error = 0;
 
     return true;
-}
 
+#elif WINDOWS
+    // TODO implement
+    return false;
+#else
+#error "get_system_error not implemented on this platform"
 #endif
+}
 
 bool stat(const string path, FileStat &st)
 {
@@ -338,7 +350,7 @@ File::File()
     this->fd = 0;
 }
 
-bool OpenFile(File &f, const string path, int flags)
+bool File::Open(const string &path, int flags)
 {
 #ifdef WINDOWS
     DWORD access = 0;
@@ -367,9 +379,9 @@ bool OpenFile(File &f, const string path, int flags)
 
     if (h == INVALID_HANDLE_VALUE) return false;
 
-    f.handle = h;
-    f.fd = _open_osfhandle((long)h, fdflags);
-    f.open = true;
+    this->handle = h;
+    this->fd = _open_osfhandle((long)h, fdflags);
+    this->open = true;
 
     return true;
 
@@ -400,77 +412,92 @@ bool OpenFile(File &f, const string path, int flags)
     if (flags & TRUNCATE) open_flags |= O_TRUNC;
     // BINARY has no meaning on Linux
 
-    f.fd = open(path.c_str(), open_flags, mode);
-    if (f.fd == -1) {
+    this->fd = open(path.c_str(), open_flags, mode);
+    if (this->fd == -1) {
         set_system_error();
         return false;
     }
 
-    f.open = true;
+    this->open = true;
 
     return true;
+#else
+#error "File::Open() not supported on this platform"
 #endif
     return false;
 }
 
-bool FileClose(File &f)
+bool File::Close()
 {
 #ifdef WINDOWS
-    if (!f.open) return true;
-    return CloseHandle(f.handle) == TRUE;
+    if (!this->open) return true;
+    return CloseHandle(this->handle) == TRUE;
 #elif LINUX
-    if (f.fd > 0) {
-        close(f.fd);
-        f.fd = 0;
+    if (this->fd > 0) {
+        close(this->fd);
+        this->fd = 0;
         return true;
     }
 
     return false;
+#else
+#error "File::Close() not supported on this platform"
 #endif
 
     return false;
 }
 
-bool FileSeek(File &f, int64 offset)
+bool File::Seek(int64 offset)
 {
 #ifdef WINDOWS
-    return _lseek(f.fd, offset, SEEK_SET) == offset;
+    return _lseek(this->fd, offset, SEEK_SET) == offset;
 #elif LINUX
-    return lseek(f.fd, offset, SEEK_SET) == offset;
+    return lseek(this->fd, offset, SEEK_SET) == offset;
+#else
+#error "File::Seek() not implemented on this platform"
 #endif
 }
 
-bool FileWrite(File &f, const void *data, size_t length)
+bool File::Write(const void *data, size_t length)
 {
 #ifdef WINDOWS
     DWORD written;
 
-    BOOL result = WriteFile(f.handle, data, length, &written, NULL);
+    BOOL result = WriteFile(this->handle, data, length, &written, NULL);
 
     return result == TRUE && written == length;
 #elif LINUX
-    ssize_t result = write(f.fd, data, length);
+    ssize_t result = write(this->fd, data, length);
 
     return result == length;
+#else
+#error "File::Seek() not implemented on this platform"
 #endif
 
     return false;
 }
 
-bool FlushFile(File &f)
+bool File::Flush()
 {
 #ifdef WINDOWS
-    return FlushFileBuffers(f.handle) == TRUE;
+    return FlushFileBuffers(this->handle) == TRUE;
 #elif LINUX
-    if (fsync(f.fd) == -1) {
+    if (fsync(this->fd) == -1) {
         set_system_error();
         return false;
     }
     return true;
 #else
-#error "not implemented on this platform"
+#error "File::Flush() not implemented on this platform"
 #endif
     return false;
+}
+
+int File::FileDescriptor()
+{
+    if (this->open) return 0;
+
+    return this->fd;
 }
 
 string PathJoin(const string &a, const string &b)
