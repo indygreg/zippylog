@@ -133,11 +133,7 @@ class ZIPPYLOG_EXPORT Store {
         bool FlushOutputStreams();
 
     protected:
-        bool directories_in_directory(const string dir, vector<string> &v);
-        bool files_in_directory(const string dir, vector<string> &v);
-
         bool ObtainOutputStream(const string bucket, const string set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
-
 
         string StreamFilesystemPath(const string path);
 

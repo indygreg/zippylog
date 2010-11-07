@@ -41,25 +41,16 @@
 
 namespace zippylog {
 
-using ::std::map;
-using ::std::string;
-using ::std::vector;
-
-// TODO move these to platform namespace
-struct dir_entry {
-    string name;
-    uint64 size;
-    char type;
-};
-
 typedef void * (* thread_start_func)(void *);
 
-ZIPPYLOG_EXPORT bool directory_entries(const string dir, vector<dir_entry> &v);
-
-ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
+void windows_error(char *buffer, size_t buffer_size);
 
 // new namespace where all APIs should be
 namespace platform {
+    using ::std::map;
+    using ::std::string;
+    using ::std::vector;
+
     // records the last known system error
     void set_system_error();
 
@@ -71,6 +62,18 @@ namespace platform {
 
     // sleeps the current thread for specified amount of milliseconds
     void sleep(uint32 milliseconds);
+
+    typedef struct DirectoryEntry {
+        string name;
+        uint64 size;
+        enum FileType type;
+    } DirectoryEntry;
+
+    bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v);
+    bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v);
+    bool FilesInDirectory(const string &dir, vector<string> &v);
+    bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v);
+    bool DirectoriesInDirectory(const string &dir, vector<string> &v);
 
     enum FileType {
         REGULAR = 1,

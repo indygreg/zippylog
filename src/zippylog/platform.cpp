@@ -41,85 +41,6 @@
 
 namespace zippylog {
 
-// congratulations, this is the 4,234,532,657 time in programming history this
-// function has been written!
-bool directory_entries(const string dir, vector<dir_entry> &v)
-{
-    //complicated case first
-#ifdef WINDOWS
-    // TODO fix potential buffer overrun
-    char path[8192];
-    strcpy_s(path, sizeof(path), dir.c_str());
-
-    // we need to wildcard the path, cuz that's how Windows works
-    char * end = strrchr(path, '\0');
-    end[0] = '\\';
-    end[1] = '*';
-    end[2] = '\0';
-
-    WIN32_FIND_DATA info;
-    HANDLE handle = FindFirstFile(path, &info);
-    if (INVALID_HANDLE_VALUE == handle) {
-        return false;
-    }
-
-    do {
-        dir_entry entry;
-        entry.name = info.cFileName;
-        entry.size = info.nFileSizeHigh << 32 + info.nFileSizeLow;
-        if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-            entry.type = 1;
-        }
-        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL || info.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE) {
-            entry.type = 2;
-        }
-        else {
-            entry.type = 0;
-        }
-
-        v.push_back(entry);
-
-    } while(FindNextFile(handle, &info) != 0);
-
-    FindClose(handle);
-    return true;
-
-#elif HAVE_OPENDIR
-    DIR * dh = opendir(dir.c_str());
-    if (!dh) return false;
-
-    dirent *d = NULL;
-
-    while (d = readdir(dh)) {
-        dir_entry entry;
-
-        entry.name = d->d_name;
-
-        switch (d->d_type) {
-            case DT_DIR:
-                entry.type = 1;
-                break;
-            case DT_REG:
-                entry.type = 2;
-                break;
-            default:
-                entry.type = 0;
-                break;
-        }
-
-        v.push_back(entry);
-    }
-
-    closedir(dh);
-
-    return true;
-#else
-#error "directory traversal not implemented on this platform yet"
-#endif
-
-    return false;
-}
-
 void windows_error(char *buffer, size_t buffer_size)
 {
 #ifdef WINDOWS
@@ -166,6 +87,85 @@ bool get_system_error(string &s)
 #else
 #error "get_system_error not implemented on this platform"
 #endif
+}
+
+// congratulations, this is the 4,234,532,657 time in programming history this
+// function has been written!
+bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
+{
+    //complicated case first
+#ifdef WINDOWS
+    // TODO fix potential buffer overrun
+    char path[8192];
+    strcpy_s(path, sizeof(path), dir.c_str());
+
+    // we need to wildcard the path, cuz that's how Windows works
+    char * end = strrchr(path, '\0');
+    end[0] = '\\';
+    end[1] = '*';
+    end[2] = '\0';
+
+    WIN32_FIND_DATA info;
+    HANDLE handle = FindFirstFile(path, &info);
+    if (INVALID_HANDLE_VALUE == handle) {
+        return false;
+    }
+
+    do {
+        DirectoryEntry entry;
+        entry.name = info.cFileName;
+        entry.size = info.nFileSizeHigh << 32 + info.nFileSizeLow;
+        if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            entry.type = FileType::DIRECTORY;
+        }
+        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL || info.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE) {
+            entry.type = FileType::REGULAR;
+        }
+        else {
+            entry.type = FileType::UNKNOWN;
+        }
+
+        v.push_back(entry);
+
+    } while(FindNextFile(handle, &info) != 0);
+
+    FindClose(handle);
+    return true;
+
+#elif HAVE_OPENDIR
+    DIR * dh = opendir(dir.c_str());
+    if (!dh) return false;
+
+    dirent *d = NULL;
+
+    while (d = readdir(dh)) {
+        DirectoryEntry entry;
+
+        entry.name = d->d_name;
+
+        switch (d->d_type) {
+            case DT_DIR:
+                entry.type = DIRECTORY;
+                break;
+            case DT_REG:
+                entry.type = FILE;
+                break;
+            default:
+                entry.type = UNKNOWN;
+                break;
+        }
+
+        v.push_back(entry);
+    }
+
+    closedir(dh);
+
+    return true;
+#else
+#error "directory traversal not implemented on this platform yet"
+#endif
+
+    return false;
 }
 
 void sleep(uint32 milliseconds)
@@ -330,17 +330,77 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
+bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v)
+{
+    v.clear();
+    vector<DirectoryEntry> entries;
+    if (!DirectoryEntries(dir, entries)) return false;
+
+    vector<DirectoryEntry>::iterator i = entries.begin();
+    for (; i != entries.end(); i++) {
+        if (i->type == FileType::DIRECTORY && i->name[0] != '.') {
+            v.push_back(*i);
+        }
+    }
+
+    return true;
+}
+
+bool DirectoriesInDirectory(const string &dir, vector<string> &v)
+{
+    vector<DirectoryEntry> entries;
+    if (!platform::DirectoriesInDirectory(dir, entries)) return false;
+
+    v.clear();
+    vector<DirectoryEntry>::iterator i = entries.begin();
+    for (; i != entries.end(); i++) {
+        v.push_back(i->name);
+    }
+
+    return true;
+}
+
+bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v)
+{
+    v.clear();
+    vector<DirectoryEntry> entries;
+    if (!DirectoryEntries(dir, entries)) return false;
+
+    vector<DirectoryEntry>::iterator i = entries.begin();
+    for (; i != entries.end(); i++) {
+        if (i->type == FileType::REGULAR) {
+            v.push_back(*i);
+        }
+    }
+
+    return true;
+}
+
+bool FilesInDirectory(const string &dir, vector<string> &v)
+{
+    v.clear();
+    vector<DirectoryEntry> entries;
+    if (!FilesInDirectory(dir, entries)) return false;
+
+    vector<DirectoryEntry>::iterator i = entries.begin();
+    for (; i != entries.end(); i++) {
+        v.push_back(i->name);
+    }
+
+    return true;
+}
+
 bool DirectoriesInTree(const string &path, vector<string> &paths)
 {
-    vector<dir_entry> entries;
+    vector<DirectoryEntry> entries;
 
-    if (!directory_entries(path, entries)) {
+    if (!DirectoryEntries(path, entries)) {
         return false;
     }
 
-    vector<dir_entry>::iterator i = entries.begin();
+    vector<DirectoryEntry>::iterator i = entries.begin();
     for (; i != entries.end(); i++) {
-        if (i->type != 1) continue;
+        if (i->type != FileType::DIRECTORY) continue;
 
         if (i->name[0] == '.') continue;
 
