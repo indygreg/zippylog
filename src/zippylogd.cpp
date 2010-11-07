@@ -24,13 +24,12 @@ using ::std::cout;
 using ::std::endl;
 
 static volatile sig_atomic_t active = 1;
-static sighandler_t default_sighandler;
 
 void signal_handler(int signo)
 {
     active = 0;
 
-    signal(signo, default_sighandler);
+    signal(signo, SIG_DFL);
 }
 
 int main(int argc, const char * const argv[])
@@ -41,7 +40,7 @@ int main(int argc, const char * const argv[])
     }
 
     signal(SIGINT, signal_handler);
-    default_sighandler = signal(SIGTERM, signal_handler);
+    signal(SIGTERM, signal_handler);
 
     try {
         Broker broker(argv[1]);
