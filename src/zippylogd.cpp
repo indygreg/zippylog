@@ -23,16 +23,31 @@ using ::zippylog::server::Broker;
 using ::std::cout;
 using ::std::endl;
 
+static volatile sig_atomic_t active = 1;
+static sighandler_t default_sighandler;
+
+void signal_handler(int signo)
+{
+    active = 0;
+
+    signal(signo, default_sighandler);
+}
+
 int main(int argc, const char * const argv[])
 {
     if (argc != 2) {
-        cout << "Usage: pblogd /path/to/config/file.lua" << endl;
+        cout << "Usage: zippylogd /path/to/config/file" << endl;
         return 1;
     }
 
+    signal(SIGINT, signal_handler);
+    default_sighandler = signal(SIGTERM, signal_handler);
+
     try {
         Broker broker(argv[1]);
-        broker.run();
+        broker.RunAsync();
+
+        while (active) pause();
     }
     catch (...) {
         cout << "received an exception" << endl;
