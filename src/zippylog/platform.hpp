@@ -60,6 +60,17 @@ ZIPPYLOG_EXPORT void windows_error(char *buffer, size_t buffer_size);
 
 // new namespace where all APIs should be
 namespace platform {
+#ifdef LINUX
+    // records the last known system error
+    void set_system_error();
+
+    // attempts to retrieve the current system error
+    // if the current system error is not defined, returns false
+    // else, returns true and puts the error message in the string variable
+    // will reset the current system error on call
+    bool get_system_error(string &string);
+#endif
+
     enum FileType {
         REGULAR = 1,
         DIRECTORY = 2,
@@ -126,12 +137,12 @@ namespace platform {
     };
 
     enum FileFlags {
-        READ = 1,
-        WRITE = 2,
-        APPEND = 4,
-        CREATE = 8,
-        TRUNCATE = 16,
-        BINARY = 32,
+        READ     = 0x01,
+        WRITE    = 0x02,
+        APPEND   = 0x04,
+        CREATE   = 0x08,
+        TRUNCATE = 0x10,
+        BINARY   = 0x20,
     };
 
     bool OpenFile(File &f, const string path, int flags);

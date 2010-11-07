@@ -24,6 +24,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <errno.h>
 #include <poll.h>
 #include <string.h>
 #include <stdio.h> // for FILENAME_MAX
@@ -131,6 +132,30 @@ void windows_error(char *buffer, size_t buffer_size)
 
 namespace platform {
 
+#ifdef LINUX
+
+static __thread int system_error = 0;
+
+void set_system_error()
+{
+    system_error = errno;
+}
+
+bool get_system_error(string &s)
+{
+    if (!system_error) return false;
+
+    char * error = strerror(system_error);
+    s.clear();
+    s.append(error);
+
+    system_error = 0;
+
+    return true;
+}
+
+#endif
+
 bool stat(const string path, FileStat &st)
 {
 #ifdef WINDOWS
@@ -156,7 +181,10 @@ bool stat(const string path, FileStat &st)
 #elif LINUX
     struct stat result;
 
-    if (stat(path.c_str(), &result) != 0) return false;
+    if (stat(path.c_str(), &result) != 0) {
+        set_system_error();
+        return false;
+    }
 
     if (result.st_mode & S_IFDIR) {
         st.type = DIRECTORY;
@@ -252,6 +280,10 @@ bool MakeDirectory(const string path)
     int result = mkdir(path.c_str());
 #elif LINUX
     int result = mkdir(path.c_str(), 0775);
+    if (result == -1) {
+        set_system_error();
+        return false;
+    }
 #else
 #error "Not supported on this platform yet"
 #endif
@@ -262,7 +294,11 @@ bool MakeDirectory(const string path)
 bool PathIsDirectory(const string path)
 {
     FileStat st;
-    if (!stat(path, st)) return false;
+    int result = stat(path, st);
+    if (result == -1) {
+        set_system_error();
+        return false;
+    }
 
     return st.type == DIRECTORY;
 }
@@ -364,11 +400,9 @@ bool OpenFile(File &f, const string path, int flags)
     if (flags & TRUNCATE) open_flags |= O_TRUNC;
     // BINARY has no meaning on Linux
 
-    // cause opens on directories to fail always
-    open_flags |= O_DIRECTORY;
-
     f.fd = open(path.c_str(), open_flags, mode);
-    if (f.fd < 0) {
+    if (f.fd == -1) {
+        set_system_error();
         return false;
     }
 
@@ -428,7 +462,13 @@ bool FlushFile(File &f)
 #ifdef WINDOWS
     return FlushFileBuffers(f.handle) == TRUE;
 #elif LINUX
-    return fsync(f.fd) == 0;
+    if (fsync(f.fd) == -1) {
+        set_system_error();
+        return false;
+    }
+    return true;
+#else
+#error "not implemented on this platform"
 #endif
     return false;
 }
@@ -493,7 +533,8 @@ Timer::Timer(uint32 microseconds)
     evp.sigev_notify = SIGEV_NONE;
 
     int result = timer_create(CLOCK_REALTIME, &evp, &this->timer);
-    if (result != 0) {
+    if (result == -1) {
+        set_system_error();
         throw "could not create timer";
     }
 #endif
@@ -518,8 +559,9 @@ bool Timer::Reset()
         struct itimerspec v;
         memset(&v, 0, sizeof(v));
         int result = timer_settime(this->timer, 0, &v, NULL);
-        if (result != 0) {
-            throw "could not reset timer";
+        if (result == -1) {
+            set_system_error();
+            return false;
         }
 
         this->running = false;
@@ -548,6 +590,7 @@ bool Timer::Start()
 
     this->running = true;
     return true;
+
 #elif LINUX
     struct itimerspec v;
     memset(&v, 0, sizeof(v));
@@ -556,7 +599,8 @@ bool Timer::Start()
     v.it_value.tv_nsec = (this->microseconds * 1000) % 1000000;
 
     int result = timer_settime(this->timer, 0, &v, NULL);
-    if (result != 0) {
+    if (result == -1) {
+        set_system_error();
         return false;
     }
 
@@ -582,7 +626,9 @@ bool Timer::Signaled()
 #elif LINUX
     struct itimerspec v;
     int result = timer_gettime(this->timer, &v);
-    if (result != 0) {
+    if (result == -1) {
+        set_system_error();
+        // TODO this API breaks convention
         throw "could not obtain timer result";
     }
 
@@ -658,6 +704,7 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
     // add watch for root
     int watch = inotify_add_watch(this->fd, this->path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
     if (watch == -1) {
+        set_system_error();
         throw "could not add inotify watch for directory";
     }
 
@@ -673,6 +720,7 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
     for (; i != paths.end(); i++) {
         watch = inotify_add_watch(this->fd, i->c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
         if (watch == -1) {
+            set_system_error();
             throw "could not add inotify watch for directory";
         }
 
@@ -765,6 +813,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     int result = poll(&pfd, 1, timeout / 1000);
 
     if (result == -1) {
+        set_system_error();
         throw "error polling inotify descriptor";
     }
 
@@ -776,6 +825,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     ssize_t available = read(this->fd, &buf, sizeof(buf));
     if (available < 0) {
+        set_system_error();
         throw "could not read from inotify descriptor";
     }
 
@@ -813,6 +863,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
             if (st.type == DIRECTORY) {
                 int watch = inotify_add_watch(this->fd, fs_path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY );
                 if (watch == -1) {
+                    set_system_error();
                     throw "could not add watch for directory: " + fs_path;
                 }
 
@@ -884,6 +935,7 @@ bool Thread::Join()
 #ifdef WINDOWS
     DWORD result = WaitForSingleObject(this->thread, INFINITE);
     return WAIT_OBJECT_0 == result;
+
 #elif LINUX
     int result = pthread_join(this->thread, NULL);
     return result == 0;
