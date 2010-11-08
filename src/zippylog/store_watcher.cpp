@@ -27,7 +27,6 @@ using ::zippylog::zippylogd::StoreWatcherShutdown;
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
     watcher(params.store_path, true),
     logging_sock(NULL),
-    socket(NULL),
     _store(params.store_path)
 {
     if (!params.active) {
@@ -46,15 +45,11 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
 
     this->logging_sock = new socket_t(*this->_ctx, ZMQ_PUSH);
     this->logging_sock->connect(this->logging_endpoint.c_str());
-
-    this->socket = new socket_t(*this->_ctx, ZMQ_PUB);
-    this->socket->bind(this->_endpoint.c_str());
 }
 
 StoreWatcher::~StoreWatcher()
 {
     if (this->logging_sock) delete this->logging_sock;
-    if (this->socket) delete this->socket;
 }
 
 void StoreWatcher::Run()
@@ -124,97 +119,6 @@ void StoreWatcher::Run()
         Envelope logenvelope = Envelope();
         log.add_to_envelope(&logenvelope);
         zeromq::send_envelope(this->logging_sock, logenvelope);
-    }
-}
-
-void StoreWatcher::SendChangeMessage(Envelope &e)
-{
-    zeromq::send_envelope(this->logging_sock, e);
-    zeromq::send_envelope(this->socket, e);
-}
-
-void StoreWatcher::HandleAdded(string path, platform::FileStat &stat)
-{
-    string bucket, set, stream;
-    if (!Store::ParsePath(path, bucket, set, stream)) return;
-
-    // TODO need to validate streams are files, buckets/sets are directories
-
-    Envelope e = Envelope();
-
-    if (!stream.empty()) {
-        protocol::StoreChangeStreamAdded m = protocol::StoreChangeStreamAdded();
-        m.set_bucket(bucket);
-        m.set_stream_set(set);
-        m.set_stream(stream);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-    else if (!set.empty()) {
-        protocol::StoreChangeStreamSetAdded m = protocol::StoreChangeStreamSetAdded();
-        m.set_bucket(bucket);
-        m.set_stream_set(set);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-    else {
-        protocol::StoreChangeBucketAdded m = protocol::StoreChangeBucketAdded();
-        m.set_bucket(bucket);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-
-}
-
-void StoreWatcher::HandleDeleted(string path)
-{
-    string bucket, set, stream;
-    if (!Store::ParsePath(path, bucket, set, stream)) return;
-
-    Envelope e = Envelope();
-
-    if (!stream.empty()) {
-        protocol::StoreChangeStreamDeleted m = protocol::StoreChangeStreamDeleted();
-        m.set_bucket(bucket);
-        m.set_stream_set(set);
-        m.set_stream(stream);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-    else if (!set.empty()) {
-        protocol::StoreChangeStreamSetDeleted m = protocol::StoreChangeStreamSetDeleted();
-        m.set_bucket(bucket);
-        m.set_stream_set(set);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-    else {
-        protocol::StoreChangeBucketDeleted m = protocol::StoreChangeBucketDeleted();
-        m.set_bucket(bucket);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-}
-
-void StoreWatcher::HandleModified(string path, platform::FileStat &stat)
-{
-    string bucket, set, stream;
-    if (!Store::ParsePath(path, bucket, set, stream)) return;
-
-    Envelope e = Envelope();
-
-    if (!stream.empty()) {
-        protocol::StoreChangeStreamAppended m = protocol::StoreChangeStreamAppended();
-        m.set_bucket(bucket);
-        m.set_stream_set(set);
-        m.set_stream(stream);
-        m.set_length(stat.size);
-        m.add_to_envelope(&e);
-        this->SendChangeMessage(e);
-    }
-    else {
-        // what else is there? buckets and stream sets don't really modify, do they?
-        throw "how did we get here?";
     }
 }
 

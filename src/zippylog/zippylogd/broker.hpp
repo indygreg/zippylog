@@ -20,8 +20,9 @@
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
-#include <zippylog/zippylogd/worker.hpp>
 #include <zippylog/zippylogd/streamer.hpp>
+#include <zippylog/zippylogd/watcher.hpp>
+#include <zippylog/zippylogd/worker.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -63,37 +64,37 @@ class ZIPPYLOG_EXPORT Broker {
         void Shutdown();
 
     protected:
-        context_t zctx;
+        ::zmq::context_t zctx;
 
         // fans XREQ that fans out to individual worker threads
-        socket_t * workers_sock;
+        ::zmq::socket_t * workers_sock;
 
         // binds to listen for client requests on configured interfaces
-        socket_t * clients_sock;
+        ::zmq::socket_t * clients_sock;
 
         // XREP that receives all streamed envelopes to be sent to clients
-        socket_t * streaming_sock;
+        ::zmq::socket_t * streaming_sock;
 
         // PULL that receives processed client subscription requests
         // messages delivered to one random streamer
-        socket_t * worker_subscriptions_sock;
+        ::zmq::socket_t * worker_subscriptions_sock;
 
         // PUSH that sends client subscription requests to streamers
-        socket_t * streaming_subscriptions_sock;
+        ::zmq::socket_t * streaming_subscriptions_sock;
 
         // PULL that receives processed client streaming messages
         // messages forwarded to all streamers
-        socket_t * worker_streaming_notify_sock;
+        ::zmq::socket_t * worker_streaming_notify_sock;
 
         // PUB that sends processed client streaming messages to all streamers
-        socket_t * streaming_streaming_notify_sock;
+        ::zmq::socket_t * streaming_streaming_notify_sock;
 
         // PULL that receives logging messages from other threads
-        socket_t * logger_sock;
+        ::zmq::socket_t * logger_sock;
 
         // PUSH that sends logging messages to main logging sock
         // yes, we have both a client and server in the same object. this is easier
-        socket_t * log_client_sock;
+        ::zmq::socket_t * log_client_sock;
 
         string id;
         ::zippylog::platform::Thread * exec_thread;
@@ -106,7 +107,7 @@ class ZIPPYLOG_EXPORT Broker {
 
         ::zippylog::zippylogd::WorkerStartParams request_processor_params;
         ::zippylog::zippylogd::StreamerStartParams streamer_params;
-        ::zippylog::StoreWatcherStartParams store_watcher_params;
+        ::zippylog::zippylogd::WatcherStartParams store_watcher_params;
 
         static const string WORKER_ENDPOINT;
         static const string STORE_CHANGE_ENDPOINT;

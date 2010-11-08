@@ -360,11 +360,14 @@ void Broker::create_worker_threads()
 
 void Broker::create_store_watcher()
 {
-    this->store_watcher_params.zctx = &this->zctx;
-    this->store_watcher_params.store_path = this->config.store_path;
-    this->store_watcher_params.endpoint = this->STORE_CHANGE_ENDPOINT;
-    this->store_watcher_params.logging_endpoint = this->LOGGER_ENDPOINT;
-    this->store_watcher_params.active = &this->active;
+    StoreWatcherStartParams params;
+    params.active = &this->active;
+    params.logging_endpoint = this->LOGGER_ENDPOINT;
+    params.store_path = this->config.store_path;
+    params.zctx = &this->zctx;
+
+    this->store_watcher_params.params = params;
+    this->store_watcher_params.socket_endpoint = this->STORE_CHANGE_ENDPOINT;
 
     this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
 }
@@ -578,10 +581,15 @@ BrokerConfig::BrokerConfig()
 
 void * Broker::StoreWatcherStart(void *d)
 {
-    StoreWatcherStartParams *params = (StoreWatcherStartParams *)d;
+    WatcherStartParams *params = (WatcherStartParams *)d;
 
-    StoreWatcher watcher(*params);
-    watcher.Run();
+    try {
+        Watcher watcher(*params);
+        watcher.Run();
+    } catch (...) {
+        // TODO log
+        printf("error in store watcher!\n");
+    }
 
     return NULL;
 }
