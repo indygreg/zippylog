@@ -163,6 +163,7 @@ void RequestProcessor::Run()
 RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &request_envelope, vector<Envelope> &output)
 {
     RequestProcessor::ResponseStatus result;
+    uint32 request_type; // forward declare b/c of goto
 
     if (request_envelope.envelope.message_size() < 1) {
         ::zippylog::zippylogd::WorkerRequestEmptyEnvelope log = ::zippylog::zippylogd::WorkerRequestEmptyEnvelope();
@@ -204,7 +205,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
         goto SEND_RESPONSE;
     }
 
-    uint32 request_type = request_envelope.envelope.message_type(0);
+    request_type = request_envelope.envelope.message_type(0);
     switch (request_type) {
         case protocol::request::StoreInfo::zippylog_enumeration:
         {
