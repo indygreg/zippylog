@@ -712,7 +712,9 @@ bool Timer::Start(uint32 microseconds)
     memset(&v, 0, sizeof(v));
 
     v.it_value.tv_sec = this->microseconds / 1000000;
-    v.it_value.tv_nsec = (this->microseconds * 1000) % 1000000;
+
+    // we don't get our nanosecond precision, but do we really care?
+    v.it_value.tv_nsec = (this->microseconds % 1000000) * 1000;
 
     int result = timer_settime(this->timer, 0, &v, NULL);
     if (result == -1) {
