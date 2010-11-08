@@ -430,9 +430,6 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
 {
-    protocol::request::SubscribeEnvelopes *m =
-        (protocol::request::SubscribeEnvelopes *)request.GetMessage(0);
-
     // TODO validation
 
     return this->HandleSubscribeEnvelopes(request, output);
