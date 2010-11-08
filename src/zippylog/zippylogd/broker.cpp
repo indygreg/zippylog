@@ -185,8 +185,26 @@ void Broker::Run()
     // TODO so much repetition here. it makes me feel dirty
     // TODO better error handling
     while (this->active) {
+        // perform maintenance at the top of the loop
+        
+        // we flush output streams if we need to
+        // TODO move this to writer thread once we isolate all writing to there
+        if (stream_flush_timer.Signaled()) {
+            BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
+            log.set_id(this->id);
+            Envelope e;
+            log.add_to_envelope(&e);
+            zeromq::send_envelope(this->log_client_sock, e);
+
+            this->store->FlushOutputStreams();
+            if (!stream_flush_timer.Start()) {
+                throw "could not restart stream flush timer";
+            }
+        }
+    
         // wait up to 0.5s for a message to become available
         int rc = zmq::poll(pollitems, number_pollitems, 500000);
+        if (rc < 1) continue;
 
         if (pollitems[LOGGER_INDEX].revents & ZMQ_POLLIN) {
             while (true) {
@@ -282,19 +300,6 @@ void Broker::Run()
                 }
 
                 if (!more) break;
-            }
-        }
-
-        if (stream_flush_timer.Signaled()) {
-            BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
-            log.set_id(this->id);
-            Envelope e;
-            log.add_to_envelope(&e);
-            zeromq::send_envelope(this->log_client_sock, e);
-
-            this->store->FlushOutputStreams();
-            if (!stream_flush_timer.Start()) {
-                throw "could not restart stream flush timer";
             }
         }
     }
@@ -401,7 +406,7 @@ void Broker::setup_listener_sockets()
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?
-    for (int i = 0; i < this->config.listen_endpoints.size(); i++) {
+    for (size_t i = 0; i < this->config.listen_endpoints.size(); i++) {
         this->clients_sock->bind(this->config.listen_endpoints[i].c_str());
     }
 }
