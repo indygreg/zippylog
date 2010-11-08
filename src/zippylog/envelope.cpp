@@ -70,7 +70,7 @@ Envelope::Envelope(const Envelope &e)
     if (e.message_count > 0) {
         this->message_count = e.message_count;
         this->messages = new Message *[this->message_count];
-        for (size_t i = 0; i < this->message_count; i++) {
+        for (int i = 0; i < this->message_count; i++) {
             this->messages[i] = NULL;
         }
     }
@@ -89,7 +89,7 @@ Envelope & Envelope::operator=(const Envelope &orig)
     if (orig.message_count > 0) {
         this->message_count = orig.message_count;
         this->messages = new Message *[this->message_count];
-        for (size_t i = 0; i < this->message_count; i++) {
+        for (int i = 0; i < this->message_count; i++) {
             this->messages[i] = NULL;
         }
     }
@@ -120,7 +120,7 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
         this->messages = new Message *[this->message_count + 1];
         this->messages[this->message_count+1] = NULL;
 
-        for (size_t i = 0; i < this->message_count; i++) {
+        for (int i = 0; i < this->message_count; i++) {
             this->messages[i] = old[i];
         }
 
@@ -203,7 +203,7 @@ string Envelope::ToString()
         ss << "  create_time: " << date << ::std::endl;
     }
 
-    for (size_t i = 0; i < this->MessageCount(); i++) {
+    for (int i = 0; i < this->MessageCount(); i++) {
         string s;
         ::google::protobuf::Message *m = this->GetMessage(i);
         printer.PrintToString(*m, &s);
