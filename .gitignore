@@ -1,7 +1,14 @@
 *.pyc
+
 build/*.user
 build/*.ncb
 build/*.suo
 build/*.i
 build/Debug
 build/Release
+
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+
