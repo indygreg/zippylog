@@ -23,7 +23,8 @@ TEST(TimerTest, CreateTimers)
     ASSERT_NO_THROW(Timer t(1000000));
 
     Timer t(100000);
-    ASSERT_NO_THROW(t.Start());
+    EXPECT_FALSE(t.Signaled());
+    EXPECT_TRUE(t.Start());
     EXPECT_FALSE(t.Signaled());
     ::zippylog::platform::sleep(105);
     EXPECT_TRUE(t.Signaled());
