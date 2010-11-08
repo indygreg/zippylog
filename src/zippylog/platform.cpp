@@ -609,7 +609,7 @@ bool CreateUUID(UUID &u)
 }
 
 
-Timer::Timer() : initialized(false)
+Timer::Timer() : initialized(false), running(false), signaled(false)
 {
 }
 
@@ -620,7 +620,7 @@ Timer::~Timer()
 #endif
 }
 
-Timer::Timer(uint32 microseconds) : initialized(false)
+Timer::Timer(uint32 microseconds) : initialized(false), running(false), signaled(false)
 {
     this->microseconds = microseconds;
 }
