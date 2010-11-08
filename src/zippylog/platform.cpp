@@ -148,7 +148,7 @@ bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
                 entry.type = DIRECTORY;
                 break;
             case DT_REG:
-                entry.type = FILE;
+                entry.type = REGULAR;
                 break;
             default:
                 entry.type = UNKNOWN;
@@ -175,9 +175,9 @@ void sleep(uint32 milliseconds)
 #elif LINUX
     struct timespec tv;
     tv.tv_sec = milliseconds / 1000;
-    tv.tv_usec = (milliseconds * 1000000) % 1000000000;
+    tv.tv_nsec = (milliseconds * 1000000) % 1000000000;
 
-    nanosleep(&tv);
+    nanosleep(&tv, NULL);
 #else
 #error "sleep() is not implemented on this platform"
 #endif
@@ -338,7 +338,7 @@ bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v)
 
     vector<DirectoryEntry>::iterator i = entries.begin();
     for (; i != entries.end(); i++) {
-        if (i->type == FileType::DIRECTORY && i->name[0] != '.') {
+        if (i->type == DIRECTORY && i->name[0] != '.') {
             v.push_back(*i);
         }
     }
@@ -368,7 +368,7 @@ bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v)
 
     vector<DirectoryEntry>::iterator i = entries.begin();
     for (; i != entries.end(); i++) {
-        if (i->type == FileType::REGULAR) {
+        if (i->type == REGULAR) {
             v.push_back(*i);
         }
     }
@@ -400,7 +400,7 @@ bool DirectoriesInTree(const string &path, vector<string> &paths)
 
     vector<DirectoryEntry>::iterator i = entries.begin();
     for (; i != entries.end(); i++) {
-        if (i->type != FileType::DIRECTORY) continue;
+        if (i->type != DIRECTORY) continue;
 
         if (i->name[0] == '.') continue;
 
@@ -487,7 +487,7 @@ bool File::Open(const string &path, int flags)
     if (flags & TRUNCATE) open_flags |= O_TRUNC;
     // BINARY has no meaning on Linux
 
-    this->fd = open(path.c_str(), open_flags, mode);
+    this->fd = ::open(path.c_str(), open_flags, mode);
     if (this->fd == -1) {
         set_system_error();
         return false;
