@@ -1592,36 +1592,21 @@ bool StreamSegmentStart::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-const ::google::protobuf::uint32 StreamSegmentStart::zippylog_namespace;
-const ::google::protobuf::uint32 StreamSegmentStart::zippylog_enumeration;
-
 bool StreamSegmentEnd::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
-
-const ::google::protobuf::uint32 StreamSegmentEnd::zippylog_namespace;
-const ::google::protobuf::uint32 StreamSegmentEnd::zippylog_enumeration;
 
 bool SubscribeAck::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-const ::google::protobuf::uint32 SubscribeAck::zippylog_namespace;
-const ::google::protobuf::uint32 SubscribeAck::zippylog_enumeration;
-
 bool SubscriptionStart::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-const ::google::protobuf::uint32 SubscriptionStart::zippylog_namespace;
-const ::google::protobuf::uint32 SubscriptionStart::zippylog_enumeration;
-
 bool Error::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
-
-const ::google::protobuf::uint32 Error::zippylog_namespace;
-const ::google::protobuf::uint32 Error::zippylog_enumeration;
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace response
