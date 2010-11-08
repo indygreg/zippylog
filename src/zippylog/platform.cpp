@@ -637,7 +637,7 @@ void Timer::Initialize()
     memset(&evp, 0, sizeof(evp));
     evp.sigev_notify = SIGEV_NONE;
 
-    int result = timer_create(CLOCK_REALTIME, &evp, &this->timer);
+    int result = timer_create(CLOCK_MONOTONIC, &evp, &this->timer);
     if (result == -1) {
         set_system_error();
         throw "could not create timer";
