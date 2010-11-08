@@ -123,10 +123,10 @@ class ZIPPYLOG_EXPORT Streamer {
         ::zmq::socket_t * subscription_updates_sock;
         ::zmq::socket_t * logging_sock;
 
-        ::std::map<::std::string, SubscriptionInfo *> subscriptions;
+        ::std::map< ::std::string, SubscriptionInfo * > subscriptions;
 
         // maps read offsets in streams, for envelope streaming
-        ::std::map<::std::string, uint64> stream_read_offsets;
+        ::std::map< ::std::string, uint64 > stream_read_offsets;
 
         bool * active;
 

@@ -150,8 +150,8 @@ class ZIPPYLOG_EXPORT Broker {
 
         string id;
         ::zippylog::platform::Thread * exec_thread;
-        vector<::zippylog::platform::Thread *> worker_threads;
-        vector<::zippylog::platform::Thread *> streaming_threads;
+        vector< ::zippylog::platform::Thread * > worker_threads;
+        vector< ::zippylog::platform::Thread * > streaming_threads;
         ::zippylog::Store * store;
         bool active;
         BrokerConfig config;
