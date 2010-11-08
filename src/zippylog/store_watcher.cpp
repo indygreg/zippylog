@@ -25,18 +25,18 @@ using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
 
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
-    watcher(params.store_path, true),
+    _store(params.store_path),
+    _ctx(params.zctx),
+    _endpoint(params.endpoint),
+    logging_endpoint(params.logging_endpoint),
+    socket(NULL),
     logging_sock(NULL),
-    _store(params.store_path)
+    active(params.active),
+    watcher(params.store_path, true)
 {
-    if (!params.active) {
+    if (!this->active) {
         throw "active semaphore cannot be NULL";
     }
-
-    this->_ctx = params.zctx;
-    this->_endpoint = params.endpoint;
-    this->logging_endpoint = params.logging_endpoint;
-    this->active = params.active;
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
