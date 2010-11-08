@@ -22,19 +22,35 @@ set(zippylog_VERSION_MINOR 1)
 set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-O0")
+endif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+
+#set(CMAKE_VERBOSE_MAKEFILE ON)
+
+################
+# DEPENDENCIES #
+################
+
+# Google C++ Testing Framework
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+# Protocol Buffers
 find_package(Protobuf REQUIRED)
+
+# Lua
 find_package(Lua51 REQUIRED)
-find_package(Threads REQUIRED)
-
-#configure_file("src/zippylog/config.h.in" "src/zippylog/config.h")
-
-include_directories(src)
-
 include_directories(${LUA_INCLUDE_DIR})
 
+# ZeroMQ
 # TODO should find ZeroMQ properly
 include_directories(external/zeromq/include)
 find_library(ZEROMQ_LIBRARY zmq external/zeromq)
+
+# Misc
+find_package(Threads REQUIRED)
+
 
 ##############################
 # Global Build Configuration #
@@ -44,6 +60,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 add_definitions(-DLINUX)
 endif()
 
+# add our source directory
+include_directories(BEFORE src)
 
 #############################
 # libzippylog configuration #
@@ -64,7 +82,8 @@ set(libzippylog_sources
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
     src/zippylog/zeromq.cpp
-    #src/zippylog/zippylogd.pb.cc
+    # TODO remove once not needed by source
+    src/zippylog/zippylogd.pb.cc
     src/zippylog/zippylog.cpp
 )
 set(libzippylog_link_libraries
@@ -72,6 +91,10 @@ set(libzippylog_link_libraries
     ${PROTOBUF_LIBRARY}
     ${ZEROMQ_LIBRARY}
 )
+
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(libzippylog_link_libraries ${libzippylog_link_libraries} rt)
+ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 # produce libzippylog shared library
 add_library(libzippylog SHARED ${libzippylog_sources})
@@ -98,6 +121,21 @@ target_link_libraries(libzippylogd ${libzippylog_link_libraries})
 set_target_properties(libzippylogd PROPERTIES OUTPUT_NAME zippylogd)
 
 #####################
+# libzippylog Tests #
+#####################
+
+set(libzippylog-test_sources
+    src/zippylog/libzippylog-test.cc
+    src/zippylog/platform_unittest.cpp
+    src/zippylog/request_processor_unittest.cpp
+    src/zippylog/store_unittest.cpp
+)
+
+add_executable(libzippylog-test ${libzippylog-test_sources})
+target_link_libraries(libzippylog-test ${libzippylog_link_libraries} libzippylog ${GTEST_LIBRARIES})
+add_test(TestLibzippylog libzippylog-test)
+
+#####################
 # zippylogd program #
 #####################
 
@@ -105,10 +143,6 @@ set(zippylogd_libraries
     libzippylog
     libzippylogd
 )
-
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(zippylogd_libraries ${zippylogd_libraries} rt)
-ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 add_executable(zippylogd src/zippylogd.cpp)
 target_link_libraries(zippylogd ${zippylogd_libraries})
