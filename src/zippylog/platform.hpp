@@ -13,10 +13,10 @@
 //  limitations under the License.
 
 // this file contains cross-platform APIs
-// in the ideal world, we would use an existing library, like APR. In the early
-// days of this project, it was decided to keep the code as free from external
-// dependencies as possible. As this namespace becomes larger and larger, we
-// have to start questioning that decision.
+// in the ideal world, we would use an existing library, like APR or Boost. In
+// the early days of this project, it was decided to keep the code as free
+// from external dependencies as possible. As this namespace becomes larger
+// and larger, we have to start questioning that decision.
 
 #ifndef ZIPPYLOG_PLATFORM_HPP_
 #define ZIPPYLOG_PLATFORM_HPP_
@@ -41,6 +41,7 @@
 
 namespace zippylog {
 
+// TODO move these last remaining APIs to platform namespace
 typedef void * (* thread_start_func)(void *);
 
 void windows_error(char *buffer, size_t buffer_size);
