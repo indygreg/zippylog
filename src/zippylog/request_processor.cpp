@@ -38,12 +38,14 @@ using ::zmq::socket_t;
 
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     ctx(params.ctx),
-    active(params.active),
     store_path(params.store_path),
     logger_endpoint(params.logger_endpoint),
     client_endpoint(params.client_endpoint),
-    store(params.store_path)
-{
+    logger_sock(NULL),
+    socket(NULL),
+    store(params.store_path),
+    active(params.active)
+    {
     if (!this->active) {
         throw "active parameter cannot be NULL";
     }
