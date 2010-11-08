@@ -20,15 +20,15 @@ namespace zippylog {
 namespace lua {
 
 LuaState::LuaState() :
-    have_envelope_filter(false),
-
+    L(NULL),
+    memory_exceeded(false),
+    
     // the default max is barely enough to do anything except create the state
     memory_ceiling(32768),
     memory_current(0),
-    memory_exceeded(false),
     memory_max_tried(0),
     memory_max_allowed(0),
-    L(NULL)
+    have_envelope_filter(false)
 {
     this->L = lua_newstate(LuaState::LuaAlloc, (void *)this);
 }
