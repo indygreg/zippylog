@@ -3524,45 +3524,78 @@ bool StreamInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StreamInfo::zippylog_namespace;
+const ::google::protobuf::uint32 StreamInfo::zippylog_enumeration;
+
 bool StreamSetInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StreamSetInfo::zippylog_namespace;
+const ::google::protobuf::uint32 StreamSetInfo::zippylog_enumeration;
 
 bool BucketInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 BucketInfo::zippylog_namespace;
+const ::google::protobuf::uint32 BucketInfo::zippylog_enumeration;
+
 bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StoreInfo::zippylog_namespace;
+const ::google::protobuf::uint32 StoreInfo::zippylog_enumeration;
 
 bool StoreChangeStreamAdded::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreChangeStreamAdded::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeStreamAdded::zippylog_enumeration;
+
 bool StoreChangeStreamDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StoreChangeStreamDeleted::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeStreamDeleted::zippylog_enumeration;
 
 bool StoreChangeStreamAppended::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreChangeStreamAppended::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeStreamAppended::zippylog_enumeration;
+
 bool StoreChangeBucketAdded::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StoreChangeBucketAdded::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeBucketAdded::zippylog_enumeration;
 
 bool StoreChangeBucketDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreChangeBucketDeleted::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeBucketDeleted::zippylog_enumeration;
+
 bool StoreChangeStreamSetAdded::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreChangeStreamSetAdded::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeStreamSetAdded::zippylog_enumeration;
+
 bool StoreChangeStreamSetDeleted::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StoreChangeStreamSetDeleted::zippylog_namespace;
+const ::google::protobuf::uint32 StoreChangeStreamSetDeleted::zippylog_enumeration;
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace protocol

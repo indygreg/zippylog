@@ -7751,121 +7751,211 @@ bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 BrokerStartup::zippylog_namespace;
+const ::google::protobuf::uint32 BrokerStartup::zippylog_enumeration;
+
 bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 BrokerShutdown::zippylog_namespace;
+const ::google::protobuf::uint32 BrokerShutdown::zippylog_enumeration;
 
 bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 BrokerReceiveClientMessage::zippylog_namespace;
+const ::google::protobuf::uint32 BrokerReceiveClientMessage::zippylog_enumeration;
+
 bool BrokerFlushOutputStreams::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 BrokerFlushOutputStreams::zippylog_namespace;
+const ::google::protobuf::uint32 BrokerFlushOutputStreams::zippylog_enumeration;
 
 bool WorkerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerStartup::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerStartup::zippylog_enumeration;
+
 bool WorkerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerShutdown::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerShutdown::zippylog_enumeration;
 
 bool WorkerFailReceiveMessage::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerFailReceiveMessage::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerFailReceiveMessage::zippylog_enumeration;
+
 bool WorkerReceiveEmptyMessage::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerReceiveEmptyMessage::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerReceiveEmptyMessage::zippylog_enumeration;
 
 bool WorkerReceiveUnknownRequestType::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerReceiveUnknownRequestType::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerReceiveUnknownRequestType::zippylog_enumeration;
+
 bool WorkerRequestParseFailure::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerRequestParseFailure::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerRequestParseFailure::zippylog_enumeration;
 
 bool WorkerRequestEmptyEnvelope::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerRequestEmptyEnvelope::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerRequestEmptyEnvelope::zippylog_enumeration;
+
 bool WorkerInvalidMessageEnumeration::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerInvalidMessageEnumeration::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerInvalidMessageEnumeration::zippylog_enumeration;
 
 bool WorkerBeginProcessStoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerBeginProcessStoreInfo::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerBeginProcessStoreInfo::zippylog_enumeration;
+
 bool WorkerEndProcessStoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerEndProcessStoreInfo::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerEndProcessStoreInfo::zippylog_enumeration;
 
 bool WorkerReceiveInvalidGet::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerReceiveInvalidGet::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerReceiveInvalidGet::zippylog_enumeration;
+
 bool WorkerGetInvalidStream::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerGetInvalidStream::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerGetInvalidStream::zippylog_enumeration;
 
 bool WorkerGetInvalidOffset::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerGetInvalidOffset::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerGetInvalidOffset::zippylog_enumeration;
+
 bool WorkerBeginProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerBeginProcessGet::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerBeginProcessGet::zippylog_enumeration;
 
 bool WorkerEndProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerEndProcessGet::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerEndProcessGet::zippylog_enumeration;
+
 bool WorkerSendErrorResponse::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 WorkerSendErrorResponse::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerSendErrorResponse::zippylog_enumeration;
 
 bool WorkerForwardSubscribeKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 WorkerForwardSubscribeKeepalive::zippylog_namespace;
+const ::google::protobuf::uint32 WorkerForwardSubscribeKeepalive::zippylog_enumeration;
+
 bool StreamerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StreamerStartup::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerStartup::zippylog_enumeration;
 
 bool StreamerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StreamerShutdown::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerShutdown::zippylog_enumeration;
+
 bool StreamerSubscriptionExpired::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StreamerSubscriptionExpired::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerSubscriptionExpired::zippylog_enumeration;
 
 bool StreamerReceiveKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StreamerReceiveKeepalive::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerReceiveKeepalive::zippylog_enumeration;
+
 bool StreamerSubscriptionRenewedFromKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StreamerSubscriptionRenewedFromKeepalive::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerSubscriptionRenewedFromKeepalive::zippylog_enumeration;
 
 bool StreamerRejectKeepaliveUnknownSubscription::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StreamerRejectKeepaliveUnknownSubscription::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerRejectKeepaliveUnknownSubscription::zippylog_enumeration;
+
 bool StreamerErrorRenewingSubscription::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StreamerErrorRenewingSubscription::zippylog_namespace;
+const ::google::protobuf::uint32 StreamerErrorRenewingSubscription::zippylog_enumeration;
 
 bool StoreWatcherStartup::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreWatcherStartup::zippylog_namespace;
+const ::google::protobuf::uint32 StoreWatcherStartup::zippylog_enumeration;
+
 bool StoreWatcherShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 StoreWatcherShutdown::zippylog_namespace;
+const ::google::protobuf::uint32 StoreWatcherShutdown::zippylog_enumeration;
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace zippylogd

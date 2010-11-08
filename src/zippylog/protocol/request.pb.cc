@@ -1598,25 +1598,43 @@ bool StoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 StoreInfo::zippylog_namespace;
+const ::google::protobuf::uint32 StoreInfo::zippylog_enumeration;
+
 bool Get::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 Get::zippylog_namespace;
+const ::google::protobuf::uint32 Get::zippylog_enumeration;
 
 bool SubscribeStoreChanges::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 SubscribeStoreChanges::zippylog_namespace;
+const ::google::protobuf::uint32 SubscribeStoreChanges::zippylog_enumeration;
+
 bool SubscribeEnvelopes::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 SubscribeEnvelopes::zippylog_namespace;
+const ::google::protobuf::uint32 SubscribeEnvelopes::zippylog_enumeration;
 
 bool SubscribeKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
+const ::google::protobuf::uint32 SubscribeKeepalive::zippylog_namespace;
+const ::google::protobuf::uint32 SubscribeKeepalive::zippylog_enumeration;
+
 bool SubscribeCancel::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
+
+const ::google::protobuf::uint32 SubscribeCancel::zippylog_namespace;
+const ::google::protobuf::uint32 SubscribeCancel::zippylog_enumeration;
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace request
