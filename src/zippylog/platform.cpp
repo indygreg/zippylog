@@ -138,7 +138,7 @@ bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
 
     dirent *d = NULL;
 
-    while (d = readdir(dh)) {
+    while ((d = readdir(dh))) {
         DirectoryEntry entry;
 
         entry.name = d->d_name;
@@ -543,8 +543,12 @@ bool File::Write(const void *data, size_t length)
     return result == TRUE && written == length;
 #elif LINUX
     ssize_t result = write(this->fd, data, length);
+    if (result == -1) {
+        set_system_error();
+        return false;
+    }
 
-    return result == length;
+    return (size_t)result == length;
 #else
 #error "File::Seek() not implemented on this platform"
 #endif
@@ -609,7 +613,7 @@ bool CreateUUID(UUID &u)
 }
 
 
-Timer::Timer() : initialized(false), running(false), signaled(false)
+Timer::Timer() : signaled(false), running(false), initialized(false)
 {
 }
 
@@ -620,7 +624,7 @@ Timer::~Timer()
 #endif
 }
 
-Timer::Timer(uint32 microseconds) : initialized(false), running(false), signaled(false)
+Timer::Timer(uint32 microseconds) : signaled(false), running(false), initialized(false)
 {
     this->microseconds = microseconds;
 }
