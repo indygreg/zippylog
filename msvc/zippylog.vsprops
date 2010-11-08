@@ -32,8 +32,12 @@
 		Value="$(root_dir)external\zeromq\include\"
 	/>
 	<UserMacro
+		Name="lua_include"
+		Value="$(root_dir)external\lua\src"
+	/>
+	<UserMacro
 		Name="solution_include"
-		Value="$(zippylog_include);$(protobuf_include);$(gtest_include);$(zmq_include);"
+		Value="$(zippylog_include);$(protobuf_include);$(gtest_include);$(zmq_include);$(lua_include)"
 	/>
 	<UserMacro
 		Name="zippylog_export"

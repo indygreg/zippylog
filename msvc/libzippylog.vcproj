@@ -56,6 +56,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Rpcrt4.lib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -171,10 +172,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\libzippylog-test.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\src\zippylog\lua.cpp"
 				>
 			</File>
@@ -195,11 +192,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\platform_unittest.cpp"
+				RelativePath="..\src\zippylog\protocol.pb.cc"
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\protocol.pb.cc"
+				RelativePath="..\src\zippylog\protocol\request.pb.cc"
 				>
 			</File>
 			<File
@@ -207,15 +204,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\request_processor_unittest.cpp"
+				RelativePath="..\src\zippylog\protocol\response.pb.cc"
 				>
 			</File>
 			<File
 				RelativePath="..\src\zippylog\store.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\store_unittest.cpp"
 				>
 			</File>
 			<File
@@ -277,7 +270,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\protocol\request.pb.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\request_processor.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol\response.pb.h"
 				>
 			</File>
 			<File
