@@ -64,6 +64,14 @@ namespace platform {
     // sleeps the current thread for specified amount of milliseconds
     void sleep(uint32 milliseconds);
 
+    enum FileType {
+        REGULAR = 1,
+        DIRECTORY = 2,
+        PIPE = 3,
+        CHARACTER = 4,
+        UNKNOWN = 5,
+    };
+
     typedef struct DirectoryEntry {
         string name;
         uint64 size;
@@ -75,14 +83,6 @@ namespace platform {
     bool FilesInDirectory(const string &dir, vector<string> &v);
     bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v);
     bool DirectoriesInDirectory(const string &dir, vector<string> &v);
-
-    enum FileType {
-        REGULAR = 1,
-        DIRECTORY = 2,
-        PIPE = 3,
-        CHARACTER = 4,
-        UNKNOWN = 5,
-    };
 
     typedef struct FileStat {
         FileType type;
