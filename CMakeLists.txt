@@ -36,8 +36,19 @@ include_directories(${LUA_INCLUDE_DIR})
 include_directories(external/zeromq/include)
 find_library(ZEROMQ_LIBRARY zmq external/zeromq)
 
-set(lib_sources
-    src/zippylog/broker.cpp
+##############################
+# Global Build Configuration #
+##############################
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+add_definitions(-DLINUX)
+endif()
+
+
+#############################
+# libzippylog configuration #
+#############################
+set(libzippylog_sources
     #src/zippylog/client.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
@@ -52,21 +63,52 @@ set(lib_sources
     src/zippylog/store.cpp
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
-    src/zippylog/streamer.cpp
     src/zippylog/zeromq.cpp
-    src/zippylog/zippylogd.pb.cc
+    #src/zippylog/zippylogd.pb.cc
     src/zippylog/zippylog.cpp
 )
+set(libzippylog_link_libraries
+    ${LUA_LIBRARIES}
+    ${PROTOBUF_LIBRARY}
+    ${ZEROMQ_LIBRARY}
+)
 
-add_library(zippylog SHARED ${lib_sources})
-target_link_libraries(zippylog ${LUA_LIBRARIES} ${PROTOBUF_LIBRARY} ${ZEROMQ_LIBRARY} rt)
+# produce libzippylog shared library
+add_library(libzippylog SHARED ${libzippylog_sources})
+target_link_libraries(libzippylog ${libzippylog_link_libraries})
+set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
+
+########################
+# libzippylogd library #
+########################
+set(libzippylogd_sources
+    src/zippylog/zippylogd/broker.cpp
+    src/zippylog/zippylogd/streamer.cpp
+    src/zippylog/zippylogd/watcher.cpp
+    src/zippylog/zippylogd/worker.cpp
+    src/zippylog/zippylogd.pb.cc
+)
+
+set(libzippylogd_link_libraries
+    zippylog
+)
+
+add_library(libzippylogd SHARED ${libzippylogd_sources})
+target_link_libraries(libzippylogd ${libzippylog_link_libraries})
+set_target_properties(libzippylogd PROPERTIES OUTPUT_NAME zippylogd)
+
+#####################
+# zippylogd program #
+#####################
+
+set(zippylogd_libraries
+    libzippylog
+    libzippylogd
+)
+
+IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(zippylogd_libraries ${zippylogd_libraries} rt)
+ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
 add_executable(zippylogd src/zippylogd.cpp)
-target_link_libraries(zippylogd zippylog)
-
-#if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-add_definitions(-DLINUX)
-#endif()
-
-add_definitions(-D_DEBUG)
-
+target_link_libraries(zippylogd ${zippylogd_libraries})
