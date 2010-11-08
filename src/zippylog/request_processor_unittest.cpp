@@ -72,9 +72,9 @@ protected:
     Store store;
 
     RequestProcessorTest() :
+        p(NULL),
         active(true),
         ctx(1),
-        p(NULL),
         logger(this->ctx, ZMQ_PULL),
         client(this->ctx, ZMQ_XREQ),
         store("test/stores/00-simple")
@@ -116,6 +116,7 @@ TEST_F(RequestProcessorTest, StoreInfo)
 
     vector<Envelope> msgs;
     RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, msgs);
+    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
 
     EXPECT_EQ(1, msgs.size());
     Envelope response = msgs[0];
