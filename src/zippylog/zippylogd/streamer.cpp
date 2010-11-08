@@ -170,7 +170,7 @@ void Streamer::Run()
         zmq::message_t msg;
 
         // wait for a message to process
-        int rc = zmq::poll(&pollitems[0], 3, 100000);
+        zmq::poll(&pollitems[0], 3, 100000);
 
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
@@ -591,7 +591,7 @@ void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string>
     Envelope response = Envelope();
 
     // copy tags to response because that's what the protocol does
-    for (size_t i = 0; i < e.envelope.tag_size(); i++) {
+    for (int i = 0; i < e.envelope.tag_size(); i++) {
         response.envelope.add_tag(e.envelope.tag(i));
     }
 

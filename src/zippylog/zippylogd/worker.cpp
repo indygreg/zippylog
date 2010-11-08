@@ -30,9 +30,9 @@ using ::zippylog::RequestProcessor;
 using ::zmq::socket_t;
 
 Worker::Worker(WorkerStartParams &params) :
+    RequestProcessor(params.request_processor_params),
     streaming_subscriptions_endpoint(params.streaming_subscriptions_endpoint),
     streaming_updates_endpoint(params.streaming_updates_endpoint),
-    RequestProcessor(params.request_processor_params),
     subscriptions_sock(NULL),
     subscription_updates_sock(NULL)
 {
