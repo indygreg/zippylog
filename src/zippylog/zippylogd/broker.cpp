@@ -15,7 +15,6 @@
 #include <zippylog/zippylogd/broker.hpp>
 
 #include <zippylog/platform.hpp>
-#include <zippylog/streamer.hpp>
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
 
@@ -37,11 +36,11 @@ namespace zippylogd {
 
 using ::std::ostringstream;
 using ::zippylog::platform::Thread;
-using ::zippylog::server::Streamer;
-using ::zippylog::server::StreamerStartParams;
 using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
+using ::zippylog::zippylogd::Streamer;
+using ::zippylog::zippylogd::StreamerStartParams;
 
 const string Broker::WORKER_ENDPOINT = "inproc://workers";
 const string Broker::STORE_CHANGE_ENDPOINT = "inproc://store_changes";

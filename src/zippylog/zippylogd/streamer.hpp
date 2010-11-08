@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_SERVER_STREAMER_HPP_
-#define ZIPPYLOG_SERVER_STREAMER_HPP_
+#ifndef ZIPPYLOG_ZIPPYLOGD_STREAMER_HPP_
+#define ZIPPYLOG_ZIPPYLOGD_STREAMER_HPP_
 
 #include <zippylog/zippylog.h>
 
@@ -24,33 +24,18 @@
 
 #include <zmq.hpp>
 
-extern "C" {
-#include <lua.h>
-#include <lauxlib.h>
-}
-
 #include <map>
 #include <string>
 #include <vector>
 
 namespace zippylog {
-namespace server {
-
-using ::std::map;
-using ::std::string;
-using ::std::vector;
-using ::zippylog::Envelope;
-using ::zippylog::lua::LuaState;
-using ::zippylog::Store;
-using ::zippylog::platform::Timer;
-using ::zmq::context_t;
-using ::zmq::socket_t;
+namespace zippylogd {
 
 class EnvelopeSubscription {
 public:
     EnvelopeSubscription();
 
-    string id;
+    ::std::string id;
     vector<string> paths;
     vector<string> socket_identifiers;
 };
@@ -61,19 +46,19 @@ public:
     SubscriptionInfo(uint32 expiration_ttl);
     ~SubscriptionInfo();
 
-    Timer expiration_timer;
+    ::zippylog::platform::Timer expiration_timer;
 
     enum SubscriptionType {
         ENVELOPE = 1,
         STORE_CHANGE = 2,
     } type;
 
-    vector<string> paths;
-    vector<string> socket_identifiers;
+    ::std::vector<string> paths;
+    ::std::vector<string> socket_identifiers;
 
     EnvelopeSubscription envelope_subscription;
 
-    LuaState *l;
+    ::zippylog::lua::LuaState *l;
 
 private:
     SubscriptionInfo(const SubscriptionInfo &orig);
@@ -86,13 +71,13 @@ class ZIPPYLOG_EXPORT StreamerStartParams {
 public:
     StreamerStartParams();
 
-    context_t *ctx;
-    Store *store;
-    string store_changes_endpoint;
-    string client_endpoint;
-    string subscriptions_endpoint;
-    string subscription_updates_endpoint;
-    string logging_endpoint;
+    ::zmq::context_t *ctx;
+    ::zippylog::Store *store;
+    ::std::string store_changes_endpoint;
+    ::std::string client_endpoint;
+    ::std::string subscriptions_endpoint;
+    ::std::string subscription_updates_endpoint;
+    ::std::string logging_endpoint;
     uint32 subscription_ttl;
 
     bool lua_allow;
@@ -118,30 +103,30 @@ class ZIPPYLOG_EXPORT Streamer {
     protected:
 
         Store * store;
-        context_t * zctx;
-        string id;
+        ::zmq::context_t * zctx;
+        ::std::string id;
 
-        string store_changes_endpoint;
-        string client_endpoint;
-        string subscriptions_endpoint;
-        string subscription_updates_endpoint;
-        string logging_endpoint;
+        ::std::string store_changes_endpoint;
+        ::std::string client_endpoint;
+        ::std::string subscriptions_endpoint;
+        ::std::string subscription_updates_endpoint;
+        ::std::string logging_endpoint;
 
         uint32 subscription_ttl;
 
         bool lua_allow;
         uint32 lua_max_memory;
 
-        socket_t * changes_sock;
-        socket_t * client_sock;
-        socket_t * subscriptions_sock;
-        socket_t * subscription_updates_sock;
-        socket_t * logging_sock;
+        ::zmq::socket_t * changes_sock;
+        ::zmq::socket_t * client_sock;
+        ::zmq::socket_t * subscriptions_sock;
+        ::zmq::socket_t * subscription_updates_sock;
+        ::zmq::socket_t * logging_sock;
 
-        map<string, SubscriptionInfo *> subscriptions;
+        ::std::map<::std::string, SubscriptionInfo *> subscriptions;
 
         // maps read offsets in streams, for envelope streaming
-        map<string, uint64> stream_read_offsets;
+        ::std::map<::std::string, uint64> stream_read_offsets;
 
         bool * active;
 

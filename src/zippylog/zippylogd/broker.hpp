@@ -18,10 +18,10 @@
 #include <zippylog/zippylog.h>
 
 #include <zippylog/platform.hpp>
-#include <zippylog/zippylogd/worker.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
-#include <zippylog/streamer.hpp>
+#include <zippylog/zippylogd/worker.hpp>
+#include <zippylog/zippylogd/streamer.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -105,7 +105,7 @@ class ZIPPYLOG_EXPORT Broker {
         ::zippylog::platform::Thread * store_watcher_thread;
 
         ::zippylog::zippylogd::WorkerStartParams request_processor_params;
-        ::zippylog::server::StreamerStartParams streamer_params;
+        ::zippylog::zippylogd::StreamerStartParams streamer_params;
         ::zippylog::StoreWatcherStartParams store_watcher_params;
 
         static const string WORKER_ENDPOINT;

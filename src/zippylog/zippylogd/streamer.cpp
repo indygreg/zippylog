@@ -12,21 +12,11 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/streamer.hpp>
+#include <zippylog/zippylogd/streamer.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/zippylogd.pb.h>
 #include <zippylog/zeromq.hpp>
-
-using ::zippylog::protocol::response::SubscribeAck;
-using ::zippylog::zippylogd::StreamerStartup;
-using ::zippylog::zippylogd::StreamerShutdown;
-using ::zippylog::zippylogd::StreamerSubscriptionExpired;
-using ::zippylog::zippylogd::StreamerReceiveKeepalive;
-using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
-using ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive;
-using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
-using ::zmq::message_t;
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
     msgvar.set_id(this->id); \
@@ -36,7 +26,18 @@ using ::zmq::message_t;
 }
 
 namespace zippylog {
-namespace server {
+namespace zippylogd {
+
+using ::zippylog::lua::LuaState;
+using ::zippylog::protocol::response::SubscribeAck;
+using ::zippylog::zippylogd::StreamerStartup;
+using ::zippylog::zippylogd::StreamerShutdown;
+using ::zippylog::zippylogd::StreamerSubscriptionExpired;
+using ::zippylog::zippylogd::StreamerReceiveKeepalive;
+using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
+using ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive;
+using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
+using ::zmq::message_t;
 
 EnvelopeSubscription::EnvelopeSubscription() {}
 SubscriptionInfo::SubscriptionInfo() : l(NULL) {}
@@ -55,20 +56,14 @@ SubscriptionInfo::~SubscriptionInfo()
     if (this->l) delete this->l;
 }
 
-SubscriptionInfo::SubscriptionInfo(const SubscriptionInfo &orig)
-{
-    throw "copy constructor not available on this object";
-}
-
-SubscriptionInfo & SubscriptionInfo::operator =(const SubscriptionInfo & orig)
-{
-    throw "assignment operator not implemented";
-}
-
 StreamerStartParams::StreamerStartParams() : active(NULL) { }
 
-Streamer::Streamer(StreamerStartParams params)
-    : changes_sock(NULL), client_sock(NULL), subscriptions_sock(NULL), subscription_updates_sock(NULL), logging_sock(NULL)
+Streamer::Streamer(StreamerStartParams params) :
+    changes_sock(NULL),
+    client_sock(NULL),
+    subscriptions_sock(NULL),
+    subscription_updates_sock(NULL),
+    logging_sock(NULL)
 {
     this->store = params.store;
     this->zctx = params.ctx;
