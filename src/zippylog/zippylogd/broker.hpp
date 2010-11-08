@@ -83,15 +83,32 @@ public:
 // of the server.
 class ZIPPYLOG_EXPORT Broker {
     public:
+        // Construct a broker from a Lua config file
+        //
+        // For a description of what configuration options are read, see
+        // ParseConfig()
         Broker(const string config_file_path);
+
         ~Broker();
 
+        // Run the broker synchronously
+        //
+        // This will block until a fatal error is encountered or until the
+        // Shutdown() function is called.
         void Run();
 
         // runs the broker asynchronously
         // this creates a new thread, runs the broker in that, then returns
         void RunAsync();
 
+        // Shut down the broker
+        //
+        // On first call, will trigger the shutdown semaphore which signals all
+        // created threads to stop execution. The function call will block
+        // until all threads have been joined.
+        //
+        // On second call, is a no-op.
+        // TODO need an API to force shutdown
         void Shutdown();
 
     protected:

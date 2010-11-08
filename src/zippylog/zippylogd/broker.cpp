@@ -427,7 +427,6 @@ void Broker::Shutdown()
     }
     this->streaming_threads.clear();
 
-    // forcibly kill store watcher, b/c that's the only way right now
     this->store_watcher_thread->Join();
     delete this->store_watcher_thread;
     this->store_watcher_thread = NULL;
