@@ -255,7 +255,7 @@ SEND_RESPONSE:
         // tags associated with request attached to response so client
         // can associate a single response to a request
         if (request_envelope.envelope.tag_size() >= 0) {
-            for (size_t i = 0; i < request_envelope.envelope.tag_size(); i++) {
+            for (int i = 0; i < request_envelope.envelope.tag_size(); i++) {
                 output[0].envelope.add_tag(request_envelope.envelope.tag(i));
             }
         }
@@ -373,7 +373,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
     // copy request tags to response for client association
     if (request.envelope.tag_size() >= 0) {
-        for (size_t i = 0; i < request.envelope.tag_size(); i++) {
+        for (int i = 0; i < request.envelope.tag_size(); i++) {
             env.envelope.add_tag(request.envelope.tag(i));
         }
     }
