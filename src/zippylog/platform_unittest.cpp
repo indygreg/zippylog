@@ -25,7 +25,7 @@ TEST(TimerTest, CreateTimers)
     Timer t(100000);
     ASSERT_NO_THROW(t.Start());
     EXPECT_FALSE(t.Signaled());
-    sleep(105);
+    ::zippylog::platform::sleep(105);
     EXPECT_TRUE(t.Signaled());
 
     EXPECT_TRUE(t.Reset());
@@ -33,13 +33,13 @@ TEST(TimerTest, CreateTimers)
 
     EXPECT_TRUE(t.Start(50000));
     EXPECT_FALSE(t.Signaled());
-    sleep(51);
+    ::zippylog::platform::sleep(51);
     EXPECT_TRUE(t.Signaled());
 
     EXPECT_TRUE(t.Start(100000));
     EXPECT_TRUE(t.Reset());
     EXPECT_FALSE(t.Signaled());
-    sleep(105);
+    ::zippylog::platform::sleep(105);
     EXPECT_FALSE(t.Signaled());
 }
 
