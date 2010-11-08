@@ -46,16 +46,47 @@ public:
     uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
 };
 
-// the broker is a ZMQ device that provides the core message routing component
-// of zippylogd. it binds to a number of sockets and coordinates all the workers
-// in the system
-// if there was a zippylogd class, this would be it
+// The broker is the server class for zippylogd
+//
+// It has a couple of functions:
+//
+//   - ZMQ Device - it forwards 0MQ messages to and from the appropriate sockets
+//   - Thread Manager - manages threads for request processing, store watching, streaming
+//   - Logging coordinator - all process logging (itself using zippylog) flows through this class
+//
+// SOCKET FLOWS
+//
+// When a client connects to a configured listening socket, messages will
+// be handled as follows:
+//
+//   client -> <clients_sock> -> <workers_sock> -> worker thread
+//
+// A worker thread will handle the message in one of the following:
+//
+//   - It will generate a response itself. It just sends the response
+//     back through the workers_sock and it will make its way back to
+//     the client.
+//   - If a subscription keepalive, will forward the message to
+//     worker_streaming_notify_sock. The broker receives messages
+//     from all workers and then rebroadcasts the messages to all
+//     streamers connected via streaming_streaming_notify_sock.
+//   - If a subscription request, will forward the message to
+//     worker_subscriptions_sock. The broker receives these messages
+//     and sends to one streamer via streaming_subscriptions_sock.
+//     The streamer that receives it will likely send a response via
+//     streaming_sock and the broker will forward it to the
+//     clients_sock.
+//
+// In the streaming cases, the request response (if there is one) does not
+// come back through the workers_sock. This is perfectly fine, as that
+// socket is a XREQ socket. This preserves the event-driver architecture
+// of the server.
 class ZIPPYLOG_EXPORT Broker {
     public:
         Broker(const string config_file_path);
         ~Broker();
 
-        void run();
+        void Run();
 
         // runs the broker asynchronously
         // this creates a new thread, runs the broker in that, then returns
@@ -83,7 +114,11 @@ class ZIPPYLOG_EXPORT Broker {
         ::zmq::socket_t * streaming_subscriptions_sock;
 
         // PULL that receives processed client streaming messages
-        // messages forwarded to all streamers
+        // messages that need to be forwarded to all streamers
+        // we can't send directly from the workers to the streamers
+        // because there is potentially a many to many mapping there
+        // the broker binds to both endpoints and distributes messages
+        // properly
         ::zmq::socket_t * worker_streaming_notify_sock;
 
         // PUB that sends processed client streaming messages to all streamers
@@ -137,7 +172,6 @@ class ZIPPYLOG_EXPORT Broker {
         // copy constructor and assignment operator are not supported
         Broker(const Broker &orig);
         Broker & operator=(const Broker &orig);
-
 };
 
 }} // namespaces

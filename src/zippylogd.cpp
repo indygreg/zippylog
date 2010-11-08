@@ -55,7 +55,7 @@ int main(int argc, const char * const argv[])
         broker.RunAsync();
         while (active) pause();
 #elif WINDOWS
-        broker.run();
+        broker.Run();
 #else
 #error "not implemented on this platform"
 #endif

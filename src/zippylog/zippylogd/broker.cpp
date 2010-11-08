@@ -123,31 +123,7 @@ void Broker::init()
     this->id = string((const char *)&uuid, sizeof(uuid));
 }
 
-/*
-The broker contains a number of 0MQ sockets.
-
-First, we have the client socket. It binds to whatever interfaces were
-defined at config time. A single 0MQ socket can bind to multiple endpoints,
-which is just plain awesome.
-
-The client socket receives messages and forwards them to a workers socket.
-The workers socket distributes messages to a number of worker threads, which
-pull messages at their leisure.
-
-If we see a response from the workers, we forward it back to the client.
-
-Some requests like streaming are processed by non-worker threads. In these
-cases, the workers deposit a set of messages on some internal sockets. The
-broker consumes these messages and forwards them to the appropriate
-socket connected to the other thread or thread pool.
-
-The requests processed by non-worker threads deposit messages on their own
-inpoc sockets. These sockets are read by the broker and messages are forwarded
-to clients, as appropriate.
-
-*/
-
-void Broker::run()
+void Broker::Run()
 {
     this->setup_internal_sockets();
 
@@ -334,7 +310,7 @@ void Broker::RunAsync()
 void * Broker::AsyncExecStart(void *data)
 {
     Broker *broker = (Broker *)data;
-    broker->run();
+    broker->Run();
 
     return NULL;
 }
