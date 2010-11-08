@@ -12,10 +12,18 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <zippylog/zippylog.h>
+
 #include <gtest/gtest.h>
 
 int main(int argc, char **argv)
 {
+    zippylog_init();
+
     ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    int result = RUN_ALL_TESTS();
+
+    zippylog_shutdown();
+
+    return result;
 }
