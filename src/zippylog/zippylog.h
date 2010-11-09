@@ -46,9 +46,9 @@ typedef uint64_t uint64;
 
 // TODO need to add "GOOGLE_PROTOBUF_VERIFY_VERSION;" somewhere
 
-void zippylog_init();
+ZIPPYLOG_EXPORT void zippylog_init();
 
-void zippylog_shutdown();
+ZIPPYLOG_EXPORT void zippylog_shutdown();
 
 #ifdef __cplusplus
 }
