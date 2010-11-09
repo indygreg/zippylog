@@ -10,10 +10,10 @@ Windows is fully supported as a development environment for zippylog. The *msvc/
 
 This might look something like the following:
 
-  git clone git://github.com/indygreg/zippylog.git
-  cd zippylog
-  git submodule update --init
-  svn co -r 298 http://protobuf.googlecode.com/svn/tags/2.3.0 external/protobuf
+    git clone git://github.com/indygreg/zippylog.git
+    cd zippylog
+    git submodule update --init
+    svn co -r 298 http://protobuf.googlecode.com/svn/tags/2.3.0 external/protobuf
   
 # Visual Studio Configurations
 
@@ -49,7 +49,7 @@ In this directory, there will be directory trees first for the system platform, 
 
 e.g. if you are building the Debug x64 version of zippylogd, you would find the binary at:
 
-  /msvc/Win32/Debug/zippylogd.exe
+    /msvc/Win32/Debug/zippylogd.exe
 
 # Static Library Hackiness
 
