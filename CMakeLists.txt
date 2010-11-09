@@ -19,6 +19,10 @@ project(zippylog)
 set(zippylog_VERSION_MAJOR 0)
 set(zippylog_VERSION_MINOR 1)
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    message(FATAL_ERROR "Building with CMake is not currently supported on Windows. See the Windows development documentation in the doc directory")
+endif()
+
 set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
 
