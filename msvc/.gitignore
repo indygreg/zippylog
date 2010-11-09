@@ -1,5 +1,4 @@
 *.user
 *.ncb
 *.suo
-Debug/
-Release/
+Win32/
