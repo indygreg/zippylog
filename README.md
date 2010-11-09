@@ -5,33 +5,25 @@ This document is targeted to end users wishing to install zippylog on a system.
 For details about the zippylog project, including why you may want to use it,
 visit the [project wiki](http://wiki.github.com/indygreg/zippylog/).
 
+Additional, more technical documentation, is stored next to the code it describes in the *doc/* directory of the Git repository.
+
 ## System Requirements
 
-You'll need to [install](http://code.google.com/apis/protocolbuffers/)
-Google Protocol Buffers, version 2.3.0 or later. Be sure to install the Python
-bits in addition to the C++ tools and libraries.
+To run, zippylog requires:
 
-In theory, on Debian and Ubuntu, you could run:
+* Protocol Buffers 2.3.0 or later
+* ZeroMQ 2.0.10 or later
+* Lua 5.1 (or any distribution conforming to the C API)
 
- > apt-get install protobuf-compiler python-protobuf
+To build zippylog and generate message classes, you'll need:
 
-But as of this typing, the repositories only had version 2.2.x, which is not
-compatible at this time.
-
-You'll also need Python 2.6 or later, as zippylog relies on a few features
-introduced in 2.6.
+* Python 2.6 or later
+* CMake (Linux)
+* Visual Studio 2008 or later(Windows)
 
 ## Installing
 
-1. Grab the source code. Either clone the git repository or find the
-_Download Source_ link on github to grab an archive. Hopefully that's a
-one-time process.
-
-2. Install Python tools and modules.
-
-`python setup.py install`
-
-You should now have a `zippylog_compile` script available on your system.
+Instructions for installing zippylog are in the *doc/* directory. See the various -development.md files.
 
 ## Defining Messages
 
