@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\zippylogd\util.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\zippylogd\watcher.cpp"
 				>
 			</File>
@@ -312,6 +316,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\zippylogd\streamer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\util.hpp"
 				>
 			</File>
 			<File
