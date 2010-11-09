@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_ZIPPYLOGD_WORKER_HPP_
 #define ZIPPYLOG_ZIPPYLOGD_WORKER_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #include <zippylog/request_processor.hpp>
 #include <zmq.hpp>

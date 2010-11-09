@@ -12,22 +12,28 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/message_registrar.hpp>
 #include <zippylog/messages.hpp>
 
 #include <google/protobuf/stubs/common.h>
 
-void zippylog_init()
+namespace zippylog {
+
+void initialize_library()
 {
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
+
     // populate the registrar instance
     ::zippylog::MessageRegistrar::instance();
     ::zippylog::register_known_messages();
 }
 
-void zippylog_shutdown()
+void shutdown_library()
 {
     ::google::protobuf::ShutdownProtobufLibrary();
 
     ::zippylog::MessageRegistrar::TerminateInstance();
 }
+
+} // namespace

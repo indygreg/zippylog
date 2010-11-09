@@ -13,7 +13,7 @@
 #ifndef ZIPPYLOG_ENVELOPE_HPP_
 #define ZIPPYLOG_ENVELOPE_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/message.pb.h>
 
 #include <google/protobuf/message.h>

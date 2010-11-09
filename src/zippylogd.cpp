@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/zippylogd/broker.hpp>
 #include <zippylog/store.hpp>
 
@@ -47,7 +47,7 @@ int main(int argc, const char * const argv[])
 #endif
 
     try {
-        zippylog_init();
+        ::zippylog::initialize_library();
 
         Broker broker(argv[1]);
 
@@ -65,7 +65,7 @@ int main(int argc, const char * const argv[])
         return 1;
     }
 
-    zippylog_shutdown();
+    ::zippylog::shutdown_library();
 
     return 0;
 }

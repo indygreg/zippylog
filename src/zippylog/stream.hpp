@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_STREAM_HPP_
 #define ZIPPYLOG_STREAM_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/envelope.hpp>
 #include <zippylog/platform.hpp>
 

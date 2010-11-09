@@ -327,7 +327,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\zippylog.h"
+				RelativePath="..\src\zippylog\zippylog.hpp"
 				>
 			</File>
 			<File

@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_LUA_HPP_
 #define ZIPPYLOG_LUA_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 extern "C" {
 #include <lua.h>

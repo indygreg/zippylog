@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_ZEROMQ_HPP_
 #define ZIPPYLOG_ZEROMQ_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/envelope.hpp>
 #include <zmq.hpp>
 

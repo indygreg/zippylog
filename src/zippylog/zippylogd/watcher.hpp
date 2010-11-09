@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOGD_STORE_WATCHER_HPP
 #define ZIPPYLOGD_STORE_WATCHER_HPP
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>

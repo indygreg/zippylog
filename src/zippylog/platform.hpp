@@ -21,7 +21,7 @@
 #ifndef ZIPPYLOG_PLATFORM_HPP_
 #define ZIPPYLOG_PLATFORM_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #ifdef WINDOWS
 #include <winsock2.h>

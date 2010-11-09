@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_REQUEST_PROCESSOR_HPP_
 #define ZIPPYLOG_REQUEST_PROCESSOR_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/protocol/response.pb.h>
 
