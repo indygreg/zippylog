@@ -38,6 +38,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/wd4251"
 				Optimization="0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -84,8 +85,6 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			InheritedPropertySheets=".\zippylog.vsprops"
 			CharacterSet="2"
@@ -109,9 +108,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				EnableIntrinsicFunctions="true"
 				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
 				WarningLevel="3"
 				DebugInformationFormat="3"
 			/>
@@ -126,6 +123,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="Rpcrt4.lib"
 				GenerateDebugInformation="true"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
@@ -167,6 +165,62 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\client.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\envelope.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\lua.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\message.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\message_registrar.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\messages.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\platform.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol\request.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\request_processor.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol\response.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\store.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\store_watcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\stream.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\zippylogd\streamer.cpp"
 				>
 			</File>
@@ -176,6 +230,18 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\zippylogd\worker.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zeromq.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylog.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd.pb.cc"
 				>
 			</File>
 		</Filter>
@@ -189,6 +255,62 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\client.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\envelope.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\lua.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\message.pb.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\message_registrar.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\messages.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\platform.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol.pb.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol\request.pb.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\request_processor.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\protocol\response.pb.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\store.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\store_watcher.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\stream.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\zippylogd\streamer.hpp"
 				>
 			</File>
@@ -198,6 +320,18 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\zippylogd\worker.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zeromq.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylog.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd.pb.h"
 				>
 			</File>
 		</Filter>

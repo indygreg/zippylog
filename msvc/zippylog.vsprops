@@ -3,13 +3,17 @@
 	ProjectType="Visual C++"
 	Version="8.00"
 	Name="zippylog-build"
-	OutputDirectory="$(SolutionDir)$(ConfigurationName)\$(ProjectName)\"
+	OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\$(ProjectName)\"
 	IntermediateDirectory="$(OutDir)"
 	>
 	<Tool
 		Name="VCCLCompilerTool"
 		AdditionalIncludeDirectories="$(solution_include)"
 		PreprocessorDefinitions="WINDOWS"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		OutputFile="$(OutDir)\..\$(ProjectName).dll"
 	/>
 	<UserMacro
 		Name="root_dir"
@@ -25,7 +29,7 @@
 	/>
 	<UserMacro
 		Name="gtest_include"
-		Value="$(root_dir)external\googletest\include\"
+		Value="$(root_dir)external\googletest\include\;$(root_dir)external\googletest\"
 	/>
 	<UserMacro
 		Name="zmq_include"
