@@ -21,7 +21,7 @@
 #ifndef ZIPPYLOG_PLATFORM_HPP_
 #define ZIPPYLOG_PLATFORM_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #ifdef WINDOWS
 #include <winsock2.h>
@@ -62,7 +62,7 @@ namespace platform {
     bool get_system_error(string &string);
 
     // sleeps the current thread for specified amount of milliseconds
-    void sleep(uint32 milliseconds);
+    ZIPPYLOG_EXPORT void sleep(uint32 milliseconds);
 
     enum FileType {
         REGULAR = 1,
@@ -78,11 +78,11 @@ namespace platform {
         enum FileType type;
     } DirectoryEntry;
 
-    bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v);
-    bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v);
-    bool FilesInDirectory(const string &dir, vector<string> &v);
-    bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v);
-    bool DirectoriesInDirectory(const string &dir, vector<string> &v);
+    ZIPPYLOG_EXPORT bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(const string &dir, vector<string> &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const string &dir, vector<string> &v);
 
     typedef struct FileStat {
         FileType type;
@@ -117,10 +117,10 @@ namespace platform {
 
     // obtains a list of directories in a directory
     // recursively descends the path and finds all child directories
-    bool DirectoriesInTree(const string &path, vector<string> &paths);
+    ZIPPYLOG_EXPORT bool DirectoriesInTree(const string &path, vector<string> &paths);
 
     // joins two filesystem paths and returns the result
-    string PathJoin(const string &a, const string &b);
+    ZIPPYLOG_EXPORT string PathJoin(const string &a, const string &b);
 
     typedef struct UUID {
         unsigned char data[16];
@@ -128,9 +128,9 @@ namespace platform {
 
     // creates a new UUID
     // UUID type is not defined yet
-    bool CreateUUID(UUID &u);
+    ZIPPYLOG_EXPORT bool CreateUUID(UUID &u);
 
-    class File {
+    class ZIPPYLOG_EXPORT File {
     public:
         File();
 
@@ -221,7 +221,7 @@ namespace platform {
     };
 
     // represents a change in a directory
-    class DirectoryChange {
+    class ZIPPYLOG_EXPORT DirectoryChange {
     public:
         DirectoryChange();
 
@@ -241,7 +241,7 @@ namespace platform {
         string OldName;
     };
 
-    class DirectoryWatcher {
+    class ZIPPYLOG_EXPORT DirectoryWatcher {
     public:
         DirectoryWatcher();
         DirectoryWatcher(const DirectoryWatcher &orig);
@@ -285,7 +285,7 @@ namespace platform {
 #endif
     };
 
-    class Thread {
+    class ZIPPYLOG_EXPORT Thread {
     public:
         Thread(thread_start_func, void *data);
         ~Thread();

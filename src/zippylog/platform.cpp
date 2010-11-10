@@ -114,15 +114,15 @@ bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
     do {
         DirectoryEntry entry;
         entry.name = info.cFileName;
-        entry.size = info.nFileSizeHigh << 32 + info.nFileSizeLow;
+        entry.size = (info.nFileSizeHigh * (MAXDWORD+1)) + info.nFileSizeLow;
         if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-            entry.type = FileType::DIRECTORY;
+            entry.type = ::zippylog::platform::DIRECTORY;
         }
         else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL || info.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE) {
-            entry.type = FileType::REGULAR;
+            entry.type = ::zippylog::platform::REGULAR;
         }
         else {
-            entry.type = FileType::UNKNOWN;
+            entry.type = ::zippylog::platform::UNKNOWN;
         }
 
         v.push_back(entry);
@@ -250,7 +250,9 @@ bool TimeNow(Time &t)
     // Windows time is in 100 nanosecond increments
     // convert to microseconds and subtract offset
     t.epoch_micro = wintime.QuadPart / 10 - 11644473600000000;
-    t.epoch_sec = t.epoch_micro / 1000000;
+
+    // TODO is this compiler hack acceptable?
+    t.epoch_sec = (int32)(t.epoch_micro / 1000000);
     t.usec = t.epoch_micro % 1000000;
 #elif LINUX
     struct timeval tv;
@@ -281,7 +283,7 @@ bool TimeNow(Time &t)
 bool UnixMicroTimeToZippyTime(int64 from, Time &to)
 {
     to.epoch_micro = from;
-    to.epoch_sec = from / 1000000;
+    to.epoch_sec = (int32)(from / 1000000);
     to.usec = from % 1000000;
 
     time_t tt = to.epoch_sec;
@@ -525,7 +527,25 @@ bool File::Close()
 bool File::Seek(int64 offset)
 {
 #ifdef WINDOWS
-    return _lseek(this->fd, offset, SEEK_SET) == offset;
+    // TODO bug with negative numbers
+
+    // TODO fix this limitation
+    if (offset < 0) {
+        throw "cannot support seeking back";
+    }
+
+    LONG high = (offset & 0xffffffff00000000) >> 32;
+
+    if (high > 0) {
+        throw "only supports 32 bit seeking currently";
+    }
+
+    LONG low = (offset & 0x00000000ffffffff);
+    DWORD result = SetFilePointer(this->handle, low, &high, FILE_BEGIN);
+
+    if (result == INVALID_SET_FILE_POINTER) return false;
+
+    return (result == (offset & 0x00000000ffffffff));
 #elif LINUX
     return lseek(this->fd, offset, SEEK_SET) == offset;
 #else
@@ -875,11 +895,12 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     DWORD milliseconds = time < 0 ? INFINITE : timeout / 1000;
     DWORD bytes_transferred = 0;
-    ULONG key = 0;
+    PULONG_PTR key = NULL;
     LPOVERLAPPED ol = NULL;
 
+
     if (!GetQueuedCompletionStatus(this->completion_port,
-        &bytes_transferred, &key, &ol, milliseconds))
+        &bytes_transferred, key, &ol, milliseconds))
     {
         // TODO look at MSDN docs for function and verify we shouldn't do more
         return false;
@@ -1073,7 +1094,7 @@ bool Thread::Abort()
 {
 #ifdef WINDOWS
     DWORD rc = 1;
-    return TerminateThread(this->thread, rc);
+    return TerminateThread(this->thread, rc) == TRUE;
 #elif LINUX
     int result = pthread_cancel(this->thread);
     return result == 0;

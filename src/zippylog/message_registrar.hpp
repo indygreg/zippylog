@@ -13,7 +13,7 @@
 #ifndef ZIPPYLOG_MESSAGE_REGISTRAR_HPP_
 #define ZIPPYLOG_MESSAGE_REGISTRAR_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #include <google/protobuf/message.h>
 #include <map>

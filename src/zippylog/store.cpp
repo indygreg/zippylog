@@ -22,13 +22,11 @@ using ::std::string;
 
 namespace zippylog {
 
-Store::Store(const string path)
+Store::Store(const string path) : _path(path)
 {
     if (!platform::PathIsDirectory(path)) {
         throw "store path does not exist or could not be read";
     }
-
-    this->_path = path;
 }
 
 Store::Store(const Store &orig)

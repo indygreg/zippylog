@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
 #define ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>

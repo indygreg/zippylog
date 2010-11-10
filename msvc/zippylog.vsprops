@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="zippylog-build"
+	OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)\$(ProjectName)\"
+	IntermediateDirectory="$(OutDir)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+		AdditionalIncludeDirectories="$(solution_include)"
+		PreprocessorDefinitions="WINDOWS"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		OutputFile="$(OutDir)\..\$(ProjectName).dll"
+	/>
+	<UserMacro
+		Name="root_dir"
+		Value="$(SolutionDir)..\"
+	/>
+	<UserMacro
+		Name="zippylog_include"
+		Value="$(root_dir)src\"
+	/>
+	<UserMacro
+		Name="protobuf_include"
+		Value="$(root_dir)external\protobuf\src\;$(root_dir)external\protobuf\vsprojects\"
+	/>
+	<UserMacro
+		Name="gtest_include"
+		Value="$(root_dir)external\googletest\include\;$(root_dir)external\googletest\"
+	/>
+	<UserMacro
+		Name="zmq_include"
+		Value="$(root_dir)external\zeromq\include\"
+	/>
+	<UserMacro
+		Name="lua_include"
+		Value="$(root_dir)external\lua\src"
+	/>
+	<UserMacro
+		Name="solution_include"
+		Value="$(zippylog_include);$(protobuf_include);$(gtest_include);$(zmq_include);$(lua_include)"
+	/>
+	<UserMacro
+		Name="zippylog_export"
+		Value="ZIPPYLOG_EXPORT"
+	/>
+	<UserMacro
+		Name="zippylog_import"
+		Value="ZIPPYLOG_IMPORT"
+	/>
+</VisualStudioPropertySheet>

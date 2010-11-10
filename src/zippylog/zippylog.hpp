@@ -12,14 +12,15 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_H_
-#define ZIPPYLOG_H_
+#ifndef ZIPPYLOG_HPP_
+#define ZIPPYLOG_HPP_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/* we must put this little macro before all exportable symbols on Windows */
+// windows requires a special macro to export symbols from libraries
+// we use the token ZIPPYLOG_IMPORT for this
+// if we are on Windows, we export symbols by default.
+// If ZIPPYLOG_IMPORT is defined, we tell the compiler we're looking for
+// external symbols.
+// Else, we're not on Windows and the keyword does nothing.
 #ifdef WINDOWS
 #if defined(ZIPPYLOG_IMPORT)
 #define ZIPPYLOG_EXPORT __declspec(dllimport)
@@ -31,6 +32,7 @@ extern "C" {
 #endif
 
 /* define 32 and 64 bit integer types */
+// TODO these should be namespaced
 #ifdef WINDOWS
 typedef __int32 int32;
 typedef __int64 int64;
@@ -44,13 +46,20 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 #endif
 
-// TODO need to add "GOOGLE_PROTOBUF_VERIFY_VERSION;" somewhere
+namespace zippylog {
 
-void zippylog_init();
+// initializes the zippylog system
+// this should be called at the beginning of every program/library that uses zippylog
+ZIPPYLOG_EXPORT void initialize_library();
 
-void zippylog_shutdown();
+// runs zippylog shutdown procedures
+// This should be executed before process exit or when zippylog is no longer
+// needed by a process.
+//
+// It isn't required to call this function. However, not doing so will result
+// in leaked memory.
+ZIPPYLOG_EXPORT void shutdown_library();
 
-#ifdef __cplusplus
-}
-#endif
+} // namespace
+
 #endif

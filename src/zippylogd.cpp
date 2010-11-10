@@ -12,16 +12,19 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 #include <zippylog/zippylogd/broker.hpp>
-#include <zippylog/store.hpp>
+#include <zippylog/zippylogd/util.hpp>
 
 #include <iostream>
 #include <string>
 
+using ::zippylog::zippylogd::ZippylogdStartParams;
 using ::zippylog::zippylogd::Broker;
 using ::std::cout;
 using ::std::endl;
+using ::std::string;
+using ::std::vector;
 
 #ifdef LINUX
 static volatile sig_atomic_t active = 1;
@@ -36,8 +39,16 @@ void signal_handler(int signo)
 
 int main(int argc, const char * const argv[])
 {
-    if (argc != 2) {
-        cout << "Usage: zippylogd /path/to/config/file" << endl;
+    string error;
+    ZippylogdStartParams params;
+
+    vector<string> args;
+    for (int i = 0; i < argc; i++) {
+        args.push_back(argv[i]);
+    }
+
+    if (!::zippylog::zippylogd::ParseCommandArguments(args, params, error)) {
+        cout << error << endl;
         return 1;
     }
 
@@ -47,8 +58,12 @@ int main(int argc, const char * const argv[])
 #endif
 
     try {
-        zippylog_init();
+        ::zippylog::initialize_library();
 
+        ::zippylog::zippylogd::Zippylogd instance(params);
+        instance.Run();
+
+        // TODO remove broker code in favor of zippylogd class
         Broker broker(argv[1]);
 
 #ifdef LINUX
@@ -60,12 +75,17 @@ int main(int argc, const char * const argv[])
 #error "not implemented on this platform"
 #endif
     }
+    catch (string s) {
+        cout << "Exception:" << endl;
+        cout << s;
+        return 1;
+    }
     catch (...) {
         cout << "received an exception" << endl;
         return 1;
     }
 
-    zippylog_shutdown();
+    ::zippylog::shutdown_library();
 
     return 0;
 }

@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_LUA_HPP_
 #define ZIPPYLOG_LUA_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 extern "C" {
 #include <lua.h>
@@ -29,8 +29,31 @@ namespace lua {
 
 using ::std::string;
 
+/// represents the input and output to a line processing function call
+class ZIPPYLOG_EXPORT LineProcessorState {
+public:
+    // DEFINITIONS
+    enum CallbackResult {
+        // take/took no action
+        NOTHING = 1,
+
+        YES = 2,
+
+        NO = 3,
+
+        STRING_MODIFIED = 4,
+    };
+
+    // INPUT parameters
+    ::std::string string_in;
+
+    // OUTPUT parameters
+    CallbackResult result;
+    ::std::string string_out;
+};
+
 // class that handles common Lua functionality
-class LuaState {
+class ZIPPYLOG_EXPORT LuaState {
 public:
     LuaState();
     ~LuaState();
@@ -41,14 +64,31 @@ public:
     // whether the state has an enveloper filter function
     bool HasEnvelopeFilter();
 
+    // whether the interpreter can process text lines
+    bool HasLineProcessor();
+
     // loads user-supplied Lua code into the interpreter
     bool LoadLuaCode(const string &code);
+
+    // loads Lua code from a file into the interpret
+    bool LoadFile(const string &filename, string &error);
+
+    // loads the string standard library into the Lua interpreter
+    bool LoadStringLibrary();
+
+    // process a line via the interpreter's line processor
+    //
+    // Returns true if the function executed without triggering an error.
+    // Returns false if there is no line processor or if there was an error.
+    // TODO we really need something better than a bool
+    bool ProcessLine(LineProcessorState &state);
 
     static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
     static int LuaPanic(lua_State *L);
 
 protected:
     bool PushFilterFunction();
+    bool DetermineCapabilities();
 
     lua_State *L;
     bool memory_exceeded;
@@ -58,6 +98,7 @@ protected:
     uint32 memory_max_allowed;
 
     bool have_envelope_filter;
+    bool have_line_processor;
 
 private:
     LuaState(const LuaState &);

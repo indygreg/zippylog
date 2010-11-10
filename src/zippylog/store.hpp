@@ -15,7 +15,7 @@
 #ifndef ZIPPYLOG_STORE_HPP_
 #define ZIPPYLOG_STORE_HPP_
 
-#include <zippylog/zippylog.h>
+#include <zippylog/zippylog.hpp>
 
 #include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
