@@ -116,6 +116,7 @@ set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 set(libzippylogd_sources
     src/zippylog/zippylogd/broker.cpp
     src/zippylog/zippylogd/streamer.cpp
+    src/zippylog/zippylogd/util.cpp
     src/zippylog/zippylogd/watcher.cpp
     src/zippylog/zippylogd/worker.cpp
     src/zippylog/zippylogd.pb.cc
