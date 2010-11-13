@@ -40,12 +40,14 @@ The config file is a Lua script which will be executed by the server. Specifical
 
 Piped logger mode is enabled by adding --piped to the command arguments. In piped logger mode, zippylog reads messages to log from a pipe, typically stdin.
 
-In piped mode, the following arguments have meaning (optional unless specified otherwise):
+In piped mode, the following arguments have meaning:
 
-* --store <path> - Specifies path to store that we should log to (required)
+* --store <path> - Specifies path to store that we should log to
 * --path <store path> - Specifies a store path to a stream set to which we should write. e.g. "/bucket/set"
 * --piped-lua-file <path> - Path to a Lua file which will be loaded into the process to enhance functionality
 * --piped-lua-max-memory <size> - Size (in kilobytes) that piped Lua interpreter can consume. Default is 1024, or 1 megabyte. This should be sufficient for normal uses.
+
+If --store, --path, or --file are not given, output is sent to stdout.
 
 ## Lua Integration
 
