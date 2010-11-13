@@ -16,9 +16,11 @@
 #define ZIPPYLOG_ZIPPYLOGD_UTIL_HPP_
 
 #include <zippylog/zippylog.hpp>
-#include <zippylog/lua.hpp>
+#include <zippylog/device/piper.hpp>
+#include <zippylog/device/store_writer.hpp>
 
-#include <iostream>
+#include <zmq.hpp>
+
 #include <string>
 #include <vector>
 
@@ -30,14 +32,40 @@ public:
     ZippylogdStartParams() :
         mode_piped(false),
         mode_server(false),
-        piped_lua_max_size(1024)
+        piped_lua_max_size(1024),
+        zctx(NULL)
     { }
 
+    // whether we read input from a pipe
     bool mode_piped;
+
+    // whether to run a server
     bool mode_server;
+
+    // if running a server, where its config file is
     ::std::string server_config_file;
+
+    // if running in piped mode, file that defines Lua code to be loaded for
+    // input processing
     ::std::string piped_lua_file;
+
+    // if running Lua code, the max memory usage the Lua interpreter is allowed
+    // to grow to
     uint32 piped_lua_max_size;
+
+    // if outputting to a store, this is the path to the store
+    ::std::string piped_store_root_path;
+
+    // if outputting to a store, the path within the store. e.g. "/bucket/set"
+    ::std::string piped_store_store_path;
+
+    // if outputting to a file path, the path to open
+    ::std::string piped_output_path;
+
+    // 0MQ context to use
+    //
+    // If one is not provided and 0MQ is needed, a new context will be created
+    ::zmq::context_t *zctx;
 
 };
 
@@ -65,16 +93,14 @@ protected:
     bool run_piped;
     bool run_server;
     ::std::string server_config_file;
-    ::std::istream *inpipe;
 
-    // Lua interpreter for pipe processing
-    ::zippylog::lua::LuaState pipeL;
-    ::std::string piped_lua_file;
-    uint32 piped_lua_max_size;
+    ::zippylog::device::Piper *piper;
+    ::zippylog::device::StoreWriter *writer;
 
-    bool piped_lua_have_line_processor;
+    ::zmq::context_t *ctx;
+    bool own_context;
 
-    bool RunPipeListener();
+    bool RunPiper();
 private:
     Zippylogd(const Zippylogd &orig);
     Zippylogd & operator=(const Zippylogd &orig);

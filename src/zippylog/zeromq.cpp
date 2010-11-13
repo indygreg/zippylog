@@ -17,13 +17,13 @@
 namespace zippylog {
 namespace zeromq {
 
-bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages)
+bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages, int flags)
 {
     messages.clear();
 
     while (true) {
         message_t *msg = new message_t();
-        if (!socket->recv(msg, 0)) {
+        if (!socket->recv(msg, flags)) {
             delete msg;
             for (size_t i = 0; i < messages.size(); i++) {
                 delete messages[i];
@@ -115,6 +115,23 @@ bool send_multipart_message(socket_t * socket, vector<string> &identities, messa
 bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t &msg)
 {
     return send_multipart_message(socket, identities, &msg, ZMQ_SNDMORE);
+}
+
+bool send_envelope_with_preceding(socket_t *socket, vector<string> &preceding, Envelope &e, int flags)
+{
+    message_t m;
+    if (!e.ToZmqMessage(m)) return false;
+
+    vector<string>::iterator msg = preceding.begin();
+    for (; msg != preceding.end(); msg++) {
+        message_t m(msg->length());
+        memcpy(m.data(), msg->c_str(), m.size());
+        while (!socket->send(m, ZMQ_SNDMORE));
+    }
+
+    while (!socket->send(m, flags));
+
+    return true;
 }
 
 bool send_envelope(socket_t *socket, Envelope &envelope, int flags)

@@ -27,10 +27,10 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
     run_piped(params.mode_piped),
     run_server(params.mode_server),
     server_config_file(params.server_config_file),
-    pipeL(),
-    piped_lua_file(params.piped_lua_file),
-    piped_lua_max_size(params.piped_lua_max_size),
-    piped_lua_have_line_processor(false)
+    piper(NULL),
+    writer(NULL),
+    ctx(params.zctx),
+    own_context(false)
 {
     if (!this->run_piped && !this->run_server) {
         throw "must specify a mode for zippylogd to run in (piped or server)";
@@ -38,69 +38,46 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
 
     // TODO more validation
 
+    if (!this->ctx) {
+        this->ctx = new ::zmq::context_t(2);
+        this->own_context = true;
+    }
+
     if (this->run_piped) {
-        // if they've provided a Lua file for us to use
-        if (this->piped_lua_file.size() > 0) {
-            // first we increase the memory ceiling
-            if (!this->pipeL.SetMemoryCeiling(1024 * this->piped_lua_max_size)) {
-                throw "error creating Lua interpreter for piped reading";
-            }
+        ::zippylog::device::PiperStartParams pparams;
+        pparams.lua_file = params.piped_lua_file;
+        pparams.lua_max_size = params.piped_lua_max_size;
+        pparams.output_path = params.piped_output_path;
+        pparams.zctx = this->ctx;
 
-            // next we load the libraries, as they will be needed by loaded code
-            if (!this->pipeL.LoadStringLibrary()) {
-                throw "could not load string library into piped Lua interpreter";
-            }
+        //pparams.store_path = params.piped_store_root_path;
+        //pparams.store_default_path = params.piped_store_store_path;
 
-            // now we try to load their use code
-            string error;
-            if (!this->pipeL.LoadFile(this->piped_lua_file, error)) {
-                throw "error loading Lua file: " + error;
-            }
-
-            // grab the capabilities
-            this->piped_lua_have_line_processor = this->pipeL.HasLineProcessor();
-        }
+        this->piper = new ::zippylog::device::Piper(pparams);
     }
 }
 
 Zippylogd::~Zippylogd()
 {
-
+    if (this->piper) delete this->piper;
+    if (this->writer) delete this->writer;
+    if (this->ctx && this->own_context) delete this->ctx;
 }
 
 bool Zippylogd::Run()
 {
     if (this->run_piped) {
-        this->RunPipeListener();
+        this->RunPiper();
     }
 
     return true;
 }
 
-bool Zippylogd::RunPipeListener()
+bool Zippylogd::RunPiper()
 {
-    // we currently only support STDIN
-    this->inpipe = &::std::cin;
+    if (!this->piper) return false;
 
-    LineProcessorState line_state;
-
-    // TODO need more work on logic
-    while (*this->inpipe) {
-        string line;
-        getline(*this->inpipe, line);
-
-        if (this->piped_lua_have_line_processor) {
-            line_state.string_in = line;
-
-            if (!this->pipeL.ProcessLine(line_state)) {
-                throw "error processing line in Lua";
-            }
-
-            ::std::cout << line_state.string_out << ::std::endl;
-        }
-    }
-
-    return true;
+    return this->piper->Run();
 }
 
 // convenience function to get an argument value and pop the current argument and the

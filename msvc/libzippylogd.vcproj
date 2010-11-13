@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\piper.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform.cpp"
 				>
 			</File>
@@ -214,6 +218,14 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\store_watcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.cpp"
 				>
 			</File>
 			<File
@@ -283,6 +295,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\piper.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform.hpp"
 				>
 			</File>
@@ -308,6 +324,14 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\store_watcher.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.hpp"
 				>
 			</File>
 			<File

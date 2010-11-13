@@ -59,6 +59,9 @@ bool LuaState::HasLineProcessor()
     return this->have_line_processor;
 }
 
+// TODO verify we can't load binary Lua code (textual only) b/c bytecode
+// verification is gone in Lua 5.2 and 5.1 was apparently buggy anyway
+
 bool LuaState::LoadLuaCode(const string &code)
 {
     if (luaL_dostring(this->L, code.c_str())) {
@@ -105,20 +108,56 @@ bool LuaState::ProcessLine(LineProcessorState &st)
 {
     if (!this->have_line_processor) return false;
 
+    int stack_size = lua_gettop(this->L);
+
     lua_getglobal(this->L, "zippylog_process_line");
     lua_pushstring(this->L, st.string_in.c_str());
-    if (lua_pcall(this->L, 1, 1, 0) != 0) {
+    if (lua_pcall(this->L, 1, LUA_MULTRET, 0) != 0) {
         // TODO need better error handling
         return false;
     }
 
-    // top of stack is first result
-    if (lua_isnil(this->L, -1)) {
+    int nresults = lua_gettop(L) - stack_size;
+    if (nresults < 1) {
+        // TODO better error handling
+        return false;
+    }
+
+    // base of stack is the first result, which can be a table or a value
+    if (lua_istable(this->L, -1 * nresults)) {
+        if (nresults < 2) {
+            // TODO need better error handling
+            lua_pop(this->L, nresults);
+            return false;
+        }
+        // we need to look for the special keys
+
+        // bucket selects where output goes
+        lua_pushlstring(this->L, "bucket", strlen("bucket"));
+        lua_gettable(this->L, -1 * nresults);
+
+        if (lua_isstring(this->L, -1)) {
+            st.bucket = lua_tostring(this->L, -1);
+        }
+        lua_pop(this->L, 1);
+
+        // stream_set selects where output goes
+        lua_pushlstring(this->L, "stream_set", strlen("stream_set"));
+        lua_gettable(this->L, -1 * nresults);
+        if (lua_isstring(this->L, -1)) {
+            st.stream_set = lua_tostring(this->L, -1);
+        }
+        lua_pop(this->L, 1);
+    }
+
+    // now we have the normal values
+    int stpos = -1 * nresults + 1;
+    if (lua_isnil(this->L, stpos)) {
         st.result = LineProcessorState::NOTHING;
         st.string_out = st.string_in;
     }
-    else if (lua_isboolean(this->L, -1)) {
-        st.result = lua_toboolean(this->L, -1) ? LineProcessorState::YES : LineProcessorState::NO;
+    else if (lua_isboolean(this->L, stpos)) {
+        st.result = lua_toboolean(this->L, stpos) ? LineProcessorState::YES : LineProcessorState::NO;
 
         if (st.result == LineProcessorState::YES) {
             st.string_out = st.string_in;
@@ -127,20 +166,24 @@ bool LuaState::ProcessLine(LineProcessorState &st)
             st.string_out.clear();
         }
     }
-    else if (lua_isstring(this->L, -1)) {
+    else if (lua_isstring(this->L, stpos)) {
+        // TODO support multiple output strings
+
         // this constructor copies data, so it is safe to use
         // (Lua strings allocated out of Lua)
-        st.string_out = string(lua_tostring(this->L, -1));
+        st.string_out = string(lua_tostring(this->L, stpos));
 
         st.result = LineProcessorState::STRING_MODIFIED;
     }
+    // TODO handle protocol buffer userdata
     else {
-        // bad function response
+        // TODO better error handling
+        lua_pop(this->L, nresults);
         return false;
     }
 
-    // clear result
-    lua_pop(this->L, -1);
+    // clear all results
+    lua_pop(this->L, nresults);
 
     return true;
 }
