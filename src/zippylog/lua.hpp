@@ -50,6 +50,8 @@ public:
     // OUTPUT parameters
     CallbackResult result;
     ::std::string string_out;
+    ::std::string bucket;
+    ::std::string stream_set;
 };
 
 // class that handles common Lua functionality
