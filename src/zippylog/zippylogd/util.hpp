@@ -33,11 +33,43 @@ public:
         piped_lua_max_size(1024)
     { }
 
+    // whether we read input from a pipe
     bool mode_piped;
+
+    // whether to run a server
     bool mode_server;
+
+    // if running a server, where its config file is
     ::std::string server_config_file;
+
+    // if running in piped mode, file that defines Lua code to be loaded for
+    // input processing
     ::std::string piped_lua_file;
+
+    // if running Lua code, the max memory usage the Lua interpreter is allowed
+    // to grow to
     uint32 piped_lua_max_size;
+
+    // mask that says where to send output when in piped mode
+    enum PipedDestination {
+        // send to stdout
+        STDOUT   = 0x00000001;
+
+        // send to a configured store
+        STORE    = 0x00000002;
+
+        // send to a file opened from a path
+        FILEPATH = 0x00000004;
+    };
+
+    // if outputting to a store, this is the path to the store
+    ::std::string piped_store_root_path;
+
+    // if outputting to a store, the path within the store. e.g. "/bucket/set"
+    ::std::string piped_store_store_path;
+
+    // if outputting to a file path, the path to open
+    ::std::string piped_output_path;
 
 };
 
