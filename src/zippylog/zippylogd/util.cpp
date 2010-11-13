@@ -27,7 +27,10 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
     run_piped(params.mode_piped),
     run_server(params.mode_server),
     server_config_file(params.server_config_file),
-    piper(NULL)
+    piper(NULL),
+    writer(NULL),
+    ctx(params.zctx),
+    own_context(false)
 {
     if (!this->run_piped && !this->run_server) {
         throw "must specify a mode for zippylogd to run in (piped or server)";
@@ -35,13 +38,20 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
 
     // TODO more validation
 
+    if (!this->ctx) {
+        this->ctx = new ::zmq::context_t(2);
+        this->own_context = true;
+    }
+
     if (this->run_piped) {
         ::zippylog::device::PiperStartParams pparams;
         pparams.lua_file = params.piped_lua_file;
         pparams.lua_max_size = params.piped_lua_max_size;
         pparams.output_path = params.piped_output_path;
-        pparams.store_root_path = params.piped_store_root_path;
-        pparams.store_store_path = params.piped_store_store_path;
+        pparams.zctx = this->ctx;
+
+        //pparams.store_path = params.piped_store_root_path;
+        //pparams.store_default_path = params.piped_store_store_path;
 
         this->piper = new ::zippylog::device::Piper(pparams);
     }
@@ -50,6 +60,8 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
 Zippylogd::~Zippylogd()
 {
     if (this->piper) delete this->piper;
+    if (this->writer) delete this->writer;
+    if (this->ctx && this->own_context) delete this->ctx;
 }
 
 bool Zippylogd::Run()

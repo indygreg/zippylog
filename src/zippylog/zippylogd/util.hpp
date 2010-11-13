@@ -17,6 +17,9 @@
 
 #include <zippylog/zippylog.hpp>
 #include <zippylog/device/piper.hpp>
+#include <zippylog/device/store_writer.hpp>
+
+#include <zmq.hpp>
 
 #include <string>
 #include <vector>
@@ -29,7 +32,8 @@ public:
     ZippylogdStartParams() :
         mode_piped(false),
         mode_server(false),
-        piped_lua_max_size(1024)
+        piped_lua_max_size(1024),
+        zctx(NULL)
     { }
 
     // whether we read input from a pipe
@@ -57,6 +61,11 @@ public:
 
     // if outputting to a file path, the path to open
     ::std::string piped_output_path;
+
+    // 0MQ context to use
+    //
+    // If one is not provided and 0MQ is needed, a new context will be created
+    ::zmq::context_t *zctx;
 
 };
 
@@ -86,6 +95,10 @@ protected:
     ::std::string server_config_file;
 
     ::zippylog::device::Piper *piper;
+    ::zippylog::device::StoreWriter *writer;
+
+    ::zmq::context_t *ctx;
+    bool own_context;
 
     bool RunPiper();
 private:

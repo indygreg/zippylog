@@ -26,7 +26,13 @@ Piper::Piper(PiperStartParams &params) :
     L(),
     lua_file(params.lua_file),
     lua_max_size(params.lua_max_size),
-    have_lua_line_processor(false)
+    have_lua_line_processor(false),
+    default_bucket(params.default_bucket),
+    default_set(params.default_stream_set),
+    output_path(params.output_path),
+    ctx(params.zctx),
+    own_context(false),
+    store_sender(NULL)
 {
     // if we have Lua, create an interpreter
     if (this->lua_file.size() > 0) {
@@ -50,9 +56,26 @@ Piper::Piper(PiperStartParams &params) :
         // define Lua capabilities
         this->have_lua_line_processor = this->L.HasLineProcessor();
     }
+
+    if (!this->ctx) {
+        this->ctx = new ::zmq::context_t(1);
+        this->own_context = true;
+    }
+
+    if (this->store_writer_envelope_pull_endpoint.length() > 0) {
+        ::zippylog::device::StoreWriterSenderStartParams swparams;
+        swparams.ctx = this->ctx;
+        swparams.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+
+        this->store_sender = new ::zippylog::device::StoreWriterSender(swparams);
+    }
 }
 
-Piper::~Piper() { }
+Piper::~Piper()
+{
+    if (this->store_sender) delete this->store_sender;
+    if (this->own_context && this->ctx) delete this->ctx;
+}
 
 bool Piper::Run()
 {
@@ -71,6 +94,11 @@ bool Piper::Run()
 
             if (!this->L.ProcessLine(line_state)) {
                 throw "error processing line in Lua";
+            }
+
+            // if told not to do anything, don't
+            if (line_state.result == line_state.NO) {
+                continue;
             }
 
             ::std::cout << line_state.string_out << ::std::endl;
