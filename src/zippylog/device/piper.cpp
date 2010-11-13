@@ -30,10 +30,22 @@ Piper::Piper(PiperStartParams &params) :
     default_bucket(params.default_bucket),
     default_set(params.default_stream_set),
     output_path(params.output_path),
+    store_writer_envelope_pull_endpoint(params.store_writer_envelope_pull_endpoint),
     ctx(params.zctx),
     own_context(false),
-    store_sender(NULL)
+    store_sender(NULL),
+    write_stdout(params.write_targets & params.STDOUT),
+    write_store(params.write_targets & params.STORE),
+    write_file(params.write_targets & params.FILEPATH)
 {
+    if (this->write_file && this->output_path.length() < 1) {
+        throw "file write mode enabled but no output path defined";
+    }
+
+    if (this->write_store && this->store_writer_envelope_pull_endpoint.length() < 1) {
+        throw "store writing enabled but no envelope pull endpoint defined";
+    }
+
     // if we have Lua, create an interpreter
     if (this->lua_file.size() > 0) {
         // first we increase the memory ceiling
@@ -101,7 +113,15 @@ bool Piper::Run()
                 continue;
             }
 
-            ::std::cout << line_state.string_out << ::std::endl;
+            if (this->write_stdout) {
+                ::std::cout << line_state.string_out << ::std::endl;
+            }
+
+            if (this->write_store) {
+
+            }
+
+
         }
     }
 

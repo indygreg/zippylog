@@ -33,7 +33,8 @@ public:
         mode_piped(false),
         mode_server(false),
         piped_lua_max_size(1024),
-        zctx(NULL)
+        zctx(NULL),
+        store_writer_envelope_pull_endpoint("inproc://store_writer_envelope_pull")
     { }
 
     // whether we read input from a pipe
@@ -53,8 +54,8 @@ public:
     // to grow to
     uint32 piped_lua_max_size;
 
-    // if outputting to a store, this is the path to the store
-    ::std::string piped_store_root_path;
+    // if outputting to a store this is the path to the store
+    ::std::string store_path;
 
     // if outputting to a store, the path within the store. e.g. "/bucket/set"
     ::std::string piped_store_store_path;
@@ -66,6 +67,12 @@ public:
     //
     // If one is not provided and 0MQ is needed, a new context will be created
     ::zmq::context_t *zctx;
+
+    /// 0MQ endpoint to which to bind the store writer envelope PULL socket
+    ///
+    /// If not defined, a constant default will be used. This could pose
+    /// problems if multiple instances use the default.
+    ::std::string store_writer_envelope_pull_endpoint;
 
 };
 
@@ -99,6 +106,8 @@ protected:
 
     ::zmq::context_t *ctx;
     bool own_context;
+
+    ::std::string store_path;
 
     bool RunPiper();
 private:

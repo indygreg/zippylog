@@ -30,7 +30,8 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
     piper(NULL),
     writer(NULL),
     ctx(params.zctx),
-    own_context(false)
+    own_context(false),
+    store_path(params.store_path)
 {
     if (!this->run_piped && !this->run_server) {
         throw "must specify a mode for zippylogd to run in (piped or server)";
@@ -54,6 +55,15 @@ Zippylogd::Zippylogd(ZippylogdStartParams &params) :
         //pparams.store_default_path = params.piped_store_store_path;
 
         this->piper = new ::zippylog::device::Piper(pparams);
+    }
+
+    if (this->store_path.length() > 0) {
+        ::zippylog::device::StoreWriterStartParams swparams;
+        swparams.store_path = this->store_path;
+        swparams.envelope_pull_endpoint = params.store_writer_envelope_pull_endpoint;
+        swparams.ctx = this->ctx;
+
+        this->writer = new ::zippylog::device::StoreWriter(swparams);
     }
 }
 
@@ -146,6 +156,19 @@ bool ParseCommandArguments(vector<string> &args, ZippylogdStartParams &params, s
     if (!params.mode_piped && !params.mode_server) {
         error = "--server or --piped not defined in arguments";
         return false;
+    }
+
+    // now look for global options
+    for (size_t i = 0; i < args.size(); i++) {
+        if (args[i] == "--store") {
+            string value;
+            if (!GetArgumentValueAndPop(args, i, value)) {
+                error = "--store requires an argument";
+                return false;
+            }
+            params.store_path = value;
+            continue;
+        }
     }
 
     // now look for options for --piped

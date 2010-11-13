@@ -34,7 +34,8 @@ namespace device {
 class ZIPPYLOG_EXPORT PiperStartParams {
 public:
     PiperStartParams() :
-        lua_max_size(1024)
+        lua_max_size(1024),
+        write_targets(0)
     { }
 
     /// file that defines Lua code to be loaded
@@ -55,6 +56,9 @@ public:
         /// send to a file opened from a path
         FILEPATH = 0x00000004,
     };
+
+    /// where to send output
+    PipedDestination write_targets;
 
     /// if outputting to a store, the default bucket to write to
     ::std::string default_bucket;
@@ -108,6 +112,10 @@ protected:
     bool own_context;
 
     ::zippylog::device::StoreWriterSender * store_sender;
+
+    bool write_stdout;
+    bool write_store;
+    bool write_file;
 
 private:
     Piper(const Piper &orig);
