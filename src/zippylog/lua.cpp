@@ -15,6 +15,7 @@
 #include <zippylog/lua.hpp>
 
 #include <stdlib.h>
+#include <string.h>
 
 extern "C" {
 #include <lualib.h>
