@@ -17,13 +17,13 @@
 namespace zippylog {
 namespace zeromq {
 
-bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages)
+bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages, int flags)
 {
     messages.clear();
 
     while (true) {
         message_t *msg = new message_t();
-        if (!socket->recv(msg, 0)) {
+        if (!socket->recv(msg, flags)) {
             delete msg;
             for (size_t i = 0; i < messages.size(); i++) {
                 delete messages[i];
