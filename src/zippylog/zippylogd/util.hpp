@@ -122,7 +122,7 @@ private:
 /// contains an error message suitable for display to the invoker.
 ///
 /// The passed list is likely modified during execution.
-ZIPPYLOG_EXPORT bool ParseCommandArguments(::std::vector<::std::string> &args, ZippylogdStartParams &params, ::std::string & error);
+ZIPPYLOG_EXPORT bool ParseCommandArguments(::std::vector< ::std::string > &args, ZippylogdStartParams &params, ::std::string & error);
 
 }} // namespaces
 

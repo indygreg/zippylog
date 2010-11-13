@@ -122,8 +122,12 @@ TEST_F(RequestProcessorTest, StoreInfo)
     Envelope response = msgs[0];
     EXPECT_EQ(1, response.MessageCount());
 
-    ASSERT_EQ(protocol::StoreInfo::zippylog_namespace, response.MessageNamespace(0));
-    ASSERT_EQ(protocol::StoreInfo::zippylog_enumeration, response.MessageType(0));
+    // work around taking references of undefined static const enumeration class members
+    // TODO remove if we have a better solution in the future
+    uint32 expected = protocol::StoreInfo::zippylog_namespace;
+    ASSERT_EQ(expected, response.MessageNamespace(0));
+    expected = protocol::StoreInfo::zippylog_enumeration;
+    ASSERT_EQ(expected, response.MessageType(0));
 
     protocol::StoreInfo *r = (protocol::StoreInfo *)response.GetMessage(0);
     ASSERT_TRUE(r != NULL);

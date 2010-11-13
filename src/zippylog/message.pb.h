@@ -174,6 +174,16 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::uint64 numeric_value() const;
   inline void set_numeric_value(::google::protobuf::uint64 value);
   
+  // optional string string_value = 8;
+  inline bool has_string_value() const;
+  inline void clear_string_value();
+  static const int kStringValueFieldNumber = 8;
+  inline const ::std::string& string_value() const;
+  inline void set_string_value(const ::std::string& value);
+  inline void set_string_value(const char* value);
+  inline void set_string_value(const char* value, size_t size);
+  inline ::std::string* mutable_string_value();
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 5;
   // @@protoc_insertion_point(class_scope:zippylog.message.Envelope)
@@ -190,11 +200,13 @@ class Envelope : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::std::string> tag_;
   ::google::protobuf::RepeatedPtrField< ::zippylog::message::ActorInfo > actor_;
   ::google::protobuf::uint64 numeric_value_;
+  ::std::string* string_value_;
+  static const ::std::string _default_string_value_;
   friend void  protobuf_AddDesc_zippylog_2fmessage_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fmessage_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fmessage_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -557,6 +569,48 @@ inline ::google::protobuf::uint64 Envelope::numeric_value() const {
 inline void Envelope::set_numeric_value(::google::protobuf::uint64 value) {
   _set_bit(6);
   numeric_value_ = value;
+}
+
+// optional string string_value = 8;
+inline bool Envelope::has_string_value() const {
+  return _has_bit(7);
+}
+inline void Envelope::clear_string_value() {
+  if (string_value_ != &_default_string_value_) {
+    string_value_->clear();
+  }
+  _clear_bit(7);
+}
+inline const ::std::string& Envelope::string_value() const {
+  return *string_value_;
+}
+inline void Envelope::set_string_value(const ::std::string& value) {
+  _set_bit(7);
+  if (string_value_ == &_default_string_value_) {
+    string_value_ = new ::std::string;
+  }
+  string_value_->assign(value);
+}
+inline void Envelope::set_string_value(const char* value) {
+  _set_bit(7);
+  if (string_value_ == &_default_string_value_) {
+    string_value_ = new ::std::string;
+  }
+  string_value_->assign(value);
+}
+inline void Envelope::set_string_value(const char* value, size_t size) {
+  _set_bit(7);
+  if (string_value_ == &_default_string_value_) {
+    string_value_ = new ::std::string;
+  }
+  string_value_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Envelope::mutable_string_value() {
+  _set_bit(7);
+  if (string_value_ == &_default_string_value_) {
+    string_value_ = new ::std::string;
+  }
+  return string_value_;
 }
 
 // -------------------------------------------------------------------

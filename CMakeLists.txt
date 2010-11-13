@@ -27,7 +27,7 @@ set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
@@ -77,6 +77,9 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     #src/zippylog/client.cpp
+    src/zippylog/device/piper.cpp
+    src/zippylog/device/store_writer.cpp
+    src/zippylog/device/store_writer_sender.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
@@ -116,6 +119,7 @@ set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 set(libzippylogd_sources
     src/zippylog/zippylogd/broker.cpp
     src/zippylog/zippylogd/streamer.cpp
+    src/zippylog/zippylogd/util.cpp
     src/zippylog/zippylogd/watcher.cpp
     src/zippylog/zippylogd/worker.cpp
     src/zippylog/zippylogd.pb.cc
