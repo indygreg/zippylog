@@ -16,9 +16,8 @@
 #define ZIPPYLOG_ZIPPYLOGD_UTIL_HPP_
 
 #include <zippylog/zippylog.hpp>
-#include <zippylog/lua.hpp>
+#include <zippylog/device/piper.hpp>
 
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -49,18 +48,6 @@ public:
     // if running Lua code, the max memory usage the Lua interpreter is allowed
     // to grow to
     uint32 piped_lua_max_size;
-
-    // mask that says where to send output when in piped mode
-    enum PipedDestination {
-        // send to stdout
-        STDOUT   = 0x00000001;
-
-        // send to a configured store
-        STORE    = 0x00000002;
-
-        // send to a file opened from a path
-        FILEPATH = 0x00000004;
-    };
 
     // if outputting to a store, this is the path to the store
     ::std::string piped_store_root_path;
@@ -97,16 +84,10 @@ protected:
     bool run_piped;
     bool run_server;
     ::std::string server_config_file;
-    ::std::istream *inpipe;
 
-    // Lua interpreter for pipe processing
-    ::zippylog::lua::LuaState pipeL;
-    ::std::string piped_lua_file;
-    uint32 piped_lua_max_size;
+    ::zippylog::device::Piper *piper;
 
-    bool piped_lua_have_line_processor;
-
-    bool RunPipeListener();
+    bool RunPiper();
 private:
     Zippylogd(const Zippylogd &orig);
     Zippylogd & operator=(const Zippylogd &orig);
