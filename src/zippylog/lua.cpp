@@ -59,6 +59,9 @@ bool LuaState::HasLineProcessor()
     return this->have_line_processor;
 }
 
+// TODO verify we can't load binary Lua code (textual only) b/c bytecode
+// verification is gone in Lua 5.2 and 5.1 was apparently buggy anyway
+
 bool LuaState::LoadLuaCode(const string &code)
 {
     if (luaL_dostring(this->L, code.c_str())) {
