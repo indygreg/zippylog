@@ -225,6 +225,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\stream.cpp"
 				>
 			</File>
@@ -324,6 +328,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\device\store_writer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.hpp"
 				>
 			</File>
 			<File
