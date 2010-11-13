@@ -27,13 +27,19 @@ The function name is the default value looked for when no custom function name i
 
 Called when a line of text is received. This is executed in the context of *a client sent a log message to zippylog for logging*.
 
-This function can return:
+This function can return one of the following type patterns:
 
 * nil - the function didn't do anything. Default behavior depending on the situation is invoked
 * true - the string should be forwarded as-is. If changes were made to the string, they won't be reflected.
 * false - the string should not be forwarded.
-* a string value - new string value to be forwarded
-* a protocol buffer message - message to be wrapped in an envelope for passing on
+* string - new string value to be forwarded
+* string, string, ... - any number of strings. each is treated as a separate output
+* protocol buffer message - message to be wrapped in an envelope for passing on
+
+An optional table can be returned before one of the above patterns. If a table is returned, the following keys have meaning:
+
+* bucket - bucket to write the message to
+* stream_set - stream set to write the message to
 
 Here are some examples (we assume the string standard library is availble):
 
