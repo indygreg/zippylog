@@ -32,7 +32,7 @@ void protobuf_AssignDesc_zippylog_2fmessage_2eproto() {
       "zippylog/message.proto");
   GOOGLE_CHECK(file != NULL);
   Envelope_descriptor_ = file->message_type(0);
-  static const int Envelope_offsets_[7] = {
+  static const int Envelope_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_namespace_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_type_),
@@ -40,6 +40,7 @@ void protobuf_AssignDesc_zippylog_2fmessage_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, tag_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, actor_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, numeric_value_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, string_value_),
   };
   Envelope_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -107,14 +108,15 @@ void protobuf_AddDesc_zippylog_2fmessage_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\026zippylog/message.proto\022\020zippylog.messa"
-    "ge\"\271\001\n\010Envelope\022\017\n\007message\030\001 \003(\014\022\035\n\021mess"
+    "ge\"\317\001\n\010Envelope\022\017\n\007message\030\001 \003(\014\022\035\n\021mess"
     "age_namespace\030\002 \003(\rB\002\020\001\022\030\n\014message_type\030"
     "\003 \003(\rB\002\020\001\022\023\n\013create_time\030\004 \001(\004\022\013\n\003tag\030\005 "
     "\003(\014\022*\n\005actor\030\006 \003(\0132\033.zippylog.message.Ac"
-    "torInfo\022\025\n\rnumeric_value\030\007 \001(\004\"y\n\tActorI"
-    "nfo\022\022\n\ntouch_time\030\001 \001(\004\022\023\n\013sequence_id\030\002"
-    " \001(\004\022\020\n\010hostname\030\003 \001(\t\022\017\n\007host_id\030\004 \001(\014\022"
-    "\020\n\010actor_id\030\005 \001(\014\022\016\n\006app_id\030\006 \001(\014", 353);
+    "torInfo\022\025\n\rnumeric_value\030\007 \001(\004\022\024\n\014string"
+    "_value\030\010 \001(\t\"y\n\tActorInfo\022\022\n\ntouch_time\030"
+    "\001 \001(\004\022\023\n\013sequence_id\030\002 \001(\004\022\020\n\010hostname\030\003"
+    " \001(\t\022\017\n\007host_id\030\004 \001(\014\022\020\n\010actor_id\030\005 \001(\014\022"
+    "\016\n\006app_id\030\006 \001(\014", 375);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/message.proto", &protobuf_RegisterTypes);
   Envelope::default_instance_ = new Envelope();
@@ -134,6 +136,7 @@ struct StaticDescriptorInitializer_zippylog_2fmessage_2eproto {
 
 // ===================================================================
 
+const ::std::string Envelope::_default_string_value_;
 #ifndef _MSC_VER
 const int Envelope::kMessageFieldNumber;
 const int Envelope::kMessageNamespaceFieldNumber;
@@ -142,6 +145,7 @@ const int Envelope::kCreateTimeFieldNumber;
 const int Envelope::kTagFieldNumber;
 const int Envelope::kActorFieldNumber;
 const int Envelope::kNumericValueFieldNumber;
+const int Envelope::kStringValueFieldNumber;
 #endif  // !_MSC_VER
 
 Envelope::Envelope()
@@ -162,6 +166,7 @@ void Envelope::SharedCtor() {
   _cached_size_ = 0;
   create_time_ = GOOGLE_ULONGLONG(0);
   numeric_value_ = GOOGLE_ULONGLONG(0);
+  string_value_ = const_cast< ::std::string*>(&_default_string_value_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -170,6 +175,9 @@ Envelope::~Envelope() {
 }
 
 void Envelope::SharedDtor() {
+  if (string_value_ != &_default_string_value_) {
+    delete string_value_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -198,6 +206,11 @@ void Envelope::Clear() {
   if (_has_bits_[3 / 32] & (0xffu << (3 % 32))) {
     create_time_ = GOOGLE_ULONGLONG(0);
     numeric_value_ = GOOGLE_ULONGLONG(0);
+    if (_has_bit(7)) {
+      if (string_value_ != &_default_string_value_) {
+        string_value_->clear();
+      }
+    }
   }
   message_.Clear();
   message_namespace_.Clear();
@@ -329,6 +342,23 @@ bool Envelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(66)) goto parse_string_value;
+        break;
+      }
+      
+      // optional string string_value = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_string_value:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_string_value()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->string_value().data(), this->string_value().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -399,6 +429,15 @@ void Envelope::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(7, this->numeric_value(), output);
   }
   
+  // optional string string_value = 8;
+  if (_has_bit(7)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->string_value().data(), this->string_value().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      8, this->string_value(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -464,6 +503,16 @@ void Envelope::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(7, this->numeric_value(), target);
   }
   
+  // optional string string_value = 8;
+  if (_has_bit(7)) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->string_value().data(), this->string_value().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->string_value(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -487,6 +536,13 @@ int Envelope::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->numeric_value());
+    }
+    
+    // optional string string_value = 8;
+    if (has_string_value()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->string_value());
     }
     
   }
@@ -579,6 +635,9 @@ void Envelope::MergeFrom(const Envelope& from) {
     if (from._has_bit(6)) {
       set_numeric_value(from.numeric_value());
     }
+    if (from._has_bit(7)) {
+      set_string_value(from.string_value());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -609,6 +668,7 @@ void Envelope::Swap(Envelope* other) {
     tag_.Swap(&other->tag_);
     actor_.Swap(&other->actor_);
     std::swap(numeric_value_, other->numeric_value_);
+    std::swap(string_value_, other->string_value_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

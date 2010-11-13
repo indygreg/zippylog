@@ -37,6 +37,11 @@ message Envelope {
     //   - a numeric priority
     //   - recording a single numeric value (instead of adding a message)
     optional uint64 numeric_value = 7;
+
+    // string value of the envelope
+    // some may wish to store string content instead of embedded messages
+    // this field allows that functionality
+    optional string string_value = 8;
 }
 
 // metadata describing agents that touched a message
