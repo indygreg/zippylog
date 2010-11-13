@@ -77,6 +77,9 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     #src/zippylog/client.cpp
+    src/zippylog/device/piper.cpp
+    src/zippylog/device/store_writer.cpp
+    src/zippylog/device/store_writer_sender.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
