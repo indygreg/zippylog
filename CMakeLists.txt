@@ -77,9 +77,10 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     #src/zippylog/client.cpp
-    src/zippylog/device/piper.cpp
     src/zippylog/device/store_writer.cpp
     src/zippylog/device/store_writer_sender.cpp
+    src/zippylog/device/string_receiver.cpp
+    src/zippylog/device/string_writer.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
@@ -93,10 +94,17 @@ set(libzippylog_sources
     src/zippylog/store.cpp
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
+    src/zippylog/util.cpp
     src/zippylog/zeromq.cpp
     # TODO remove once not needed by source
     src/zippylog/zippylogd.pb.cc
     src/zippylog/zippylog.cpp
+    src/zippylog/zippylogd/broker.cpp
+    src/zippylog/zippylogd/streamer.cpp
+    src/zippylog/zippylogd/watcher.cpp
+    src/zippylog/zippylogd/worker.cpp
+    src/zippylog/zippylogd.pb.cc
+
 )
 set(libzippylog_link_libraries
     ${LUA_LIBRARIES}
@@ -113,26 +121,6 @@ add_library(libzippylog SHARED ${libzippylog_sources})
 target_link_libraries(libzippylog ${libzippylog_link_libraries})
 set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 
-########################
-# libzippylogd library #
-########################
-set(libzippylogd_sources
-    src/zippylog/zippylogd/broker.cpp
-    src/zippylog/zippylogd/streamer.cpp
-    src/zippylog/zippylogd/util.cpp
-    src/zippylog/zippylogd/watcher.cpp
-    src/zippylog/zippylogd/worker.cpp
-    src/zippylog/zippylogd.pb.cc
-)
-
-set(libzippylogd_link_libraries
-    zippylog
-)
-
-add_library(libzippylogd SHARED ${libzippylogd_sources})
-target_link_libraries(libzippylogd ${libzippylog_link_libraries})
-set_target_properties(libzippylogd PROPERTIES OUTPUT_NAME zippylogd)
-
 #####################
 # libzippylog Tests #
 #####################
@@ -142,6 +130,7 @@ set(libzippylog-test_sources
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
+    src/zippylog/device/string_receiver_unittest.cpp
 )
 
 add_executable(libzippylog-test ${libzippylog-test_sources})
@@ -152,10 +141,12 @@ add_test(TestLibzippylog libzippylog-test)
 # zippylogd program #
 #####################
 
-set(zippylogd_libraries
-    libzippylog
-    libzippylogd
-)
-
 add_executable(zippylogd src/zippylogd.cpp)
-target_link_libraries(zippylogd ${zippylogd_libraries})
+target_link_libraries(zippylogd libzippylog)
+
+##################################
+# zippylog_string_writer program #
+##################################
+
+add_executable(zippylog_string_writer src/zippylog_string_writer.cpp)
+target_link_libraries(zippylog_string_writer libzippylog)
