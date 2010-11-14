@@ -80,6 +80,10 @@ int main(int argc, const char * const argv[])
         cout << s;
         return 1;
     }
+    catch (char * s) {
+        cout << "Exception: " << s << endl;
+        return 1;
+    }
     catch (...) {
         cout << "received an exception" << endl;
         return 1;
