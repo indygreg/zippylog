@@ -14,12 +14,10 @@
 
 #include <zippylog/zippylog.hpp>
 #include <zippylog/zippylogd/broker.hpp>
-#include <zippylog/zippylogd/util.hpp>
 
 #include <iostream>
 #include <string>
 
-using ::zippylog::zippylogd::ZippylogdStartParams;
 using ::zippylog::zippylogd::Broker;
 using ::std::cout;
 using ::std::endl;
@@ -39,19 +37,6 @@ void signal_handler(int signo)
 
 int main(int argc, const char * const argv[])
 {
-    string error;
-    ZippylogdStartParams params;
-
-    vector<string> args;
-    for (int i = 0; i < argc; i++) {
-        args.push_back(argv[i]);
-    }
-
-    if (!::zippylog::zippylogd::ParseCommandArguments(args, params, error)) {
-        cout << error << endl;
-        return 1;
-    }
-
 #ifdef LINUX
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
@@ -60,8 +45,8 @@ int main(int argc, const char * const argv[])
     try {
         ::zippylog::initialize_library();
 
-        ::zippylog::zippylogd::Zippylogd instance(params);
-        instance.Run();
+        //::zippylog::zippylogd::Zippylogd instance(params);
+        //instance.Run();
 
         // TODO remove broker code in favor of zippylogd class
         Broker broker(argv[1]);
