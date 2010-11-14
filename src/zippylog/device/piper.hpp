@@ -35,7 +35,7 @@ class ZIPPYLOG_EXPORT PiperStartParams {
 public:
     PiperStartParams() :
         lua_max_size(1024),
-        write_targets(0)
+        write_targets(PipedDestination::NONE)
     { }
 
     /// file that defines Lua code to be loaded
@@ -47,6 +47,8 @@ public:
 
     /// mask that says where to send output when in piped mode
     enum PipedDestination {
+        NONE     = 0x00000000,
+
         /// send to stdout
         STDOUT   = 0x00000001,
 

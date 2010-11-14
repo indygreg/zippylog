@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/device/piper.hpp>
+#include <zippylog/envelope.hpp>
 
 namespace zippylog {
 namespace device {
@@ -38,6 +39,10 @@ Piper::Piper(PiperStartParams &params) :
     write_store(params.write_targets & params.STORE),
     write_file(params.write_targets & params.FILEPATH)
 {
+    if (params.write_targets == PiperStartParams::NONE) {
+        throw "write_targets must have at least 1 flag set";
+    }
+
     if (this->write_file && this->output_path.length() < 1) {
         throw "file write mode enabled but no output path defined";
     }
@@ -118,7 +123,7 @@ bool Piper::Run()
             }
 
             if (this->write_store) {
-
+                ::zippylog::Envelope e(line_state.string_out);
             }
 
 
