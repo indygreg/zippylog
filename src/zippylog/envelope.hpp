@@ -51,6 +51,13 @@ class ZIPPYLOG_EXPORT Envelope {
         // construct from a 0MQ message
         Envelope(message_t *msg);
 
+        /// construct an envelope having string data
+        ///
+        /// This populates the string_value field of the envelope. It does
+        /// not build an envelope from the serialized protocol buffer data
+        /// stored in the passed string
+        Envelope(const ::std::string &s);
+
         ~Envelope();
 
         Envelope & operator=(const Envelope &orig);

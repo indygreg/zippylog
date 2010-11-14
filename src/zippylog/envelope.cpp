@@ -24,6 +24,7 @@
 
 namespace zippylog {
 
+using ::std::string;
 using ::std::stringstream;
 using ::std::vector;
 
@@ -48,6 +49,17 @@ Envelope::Envelope(message_t *msg) : messages(NULL), message_count(0)
     for (int i = 0; i < count; i++) {
         this->messages[i] = NULL;
     }
+}
+
+Envelope::Envelope(const string &s) :
+    messages(NULL),
+    message_count(0)
+{
+    platform::Time t;
+    platform::TimeNow(t);
+
+    this->envelope.set_create_time(t.epoch_micro);
+    this->envelope.set_string_value(s);
 }
 
 Envelope::~Envelope()
