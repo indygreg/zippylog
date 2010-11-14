@@ -36,7 +36,6 @@ The following projects exist in the solution:
 * liblua - Lua programming lanaguage shared library. Enables Lua integration.
 * libprotobuf - Google's Protocol Buffers library. Always compiled statically.
 * libzippylog - zippylog core routines library. This is the heart of zippylog.
-* libzippylogd - libzippylog + zippylogd implementations. Contains everything in libzippylog plus definitions required to run a zippylogd instance.
 * libzmq - ZeroMQ shared library.
 * zippylog-test - zippylog unit tests. Generates an executable that can test zippylog.
 * zippylogd - zippylogd program. Generates zippylogd.exe. Contains main() for zippylogd.
