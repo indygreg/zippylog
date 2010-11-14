@@ -124,6 +124,8 @@ bool LuaState::ProcessLine(LineProcessorState &st)
         return false;
     }
 
+    int stpos = -1 * nresults;
+
     // base of stack is the first result, which can be a table or a value
     if (lua_istable(this->L, -1 * nresults)) {
         if (nresults < 2) {
@@ -149,10 +151,11 @@ bool LuaState::ProcessLine(LineProcessorState &st)
             st.stream_set = lua_tostring(this->L, -1);
         }
         lua_pop(this->L, 1);
+
+        stpos++;
     }
 
     // now we have the normal values
-    int stpos = -1 * nresults + 1;
     if (lua_isnil(this->L, stpos)) {
         st.result = LineProcessorState::NOTHING;
         st.string_out = st.string_in;
