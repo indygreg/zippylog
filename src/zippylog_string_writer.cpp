@@ -12,31 +12,19 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/// The zippylog_string_writer program converts string data to zippylog data.
-///
-/// Currently, it is limited to reading from stdin. However, with shell
-/// redirection, it is quite simple to send a file's contents to stdin
-/// on this process.
-///
-/// The following command arguments are recognized:
-///
-///    --lua-file - File containing Lua code for processing.
-///    --stdout - Send string output to stdout
-///    --store <path> - Path to store to write to.
-///    --default-bucket <name> - Default bucket in store to send envelopes to
-///    --default-stream-set <name> - Default stream set in store to send envelopes to
-
 #include <zippylog/zippylog.hpp>
 #include <zippylog/device/string_receiver.hpp>
 #include <zippylog/device/string_writer.hpp>
 #include <zippylog/util.hpp>
 
+#include <sstream>
 #include <string>
 #include <vector>
 
 using ::std::cout;
 using ::std::endl;
 using ::std::string;
+using ::std::ostringstream;
 using ::std::vector;
 using ::zippylog::device::StringReceiver;
 using ::zippylog::device::StringReceiverStartParams;
@@ -51,7 +39,24 @@ static bool ParseCommandArguments(
     string &error)
 {
     if (args.size() < 2) {
-        error = "you must pass at least one argument to this program";
+        ostringstream usage;
+        usage
+            << "Usage: " << args[0] << " [arguments]" << endl
+            << endl
+            << "Where the following arguments control behavior:" << endl
+            << endl
+            << "    --stdout             Send processed string output to stdout"  << endl
+            << "    --store <path>       Path to store to write to"               << endl
+            << "    --default-bucket     Default bucket in store to write to"     << endl
+            << "    --default-stream-set Default stream set in store to write to" << endl
+            << "    --lua-file <path>    Lua file to load for processing"         << endl
+            << endl
+            << "If a Lua file is loaded, the following callbacks are registered:" << endl
+            << endl
+            << "    zippylog_process_line - Called on every received line"
+        ;
+        error = usage.str();
+
         return false;
     }
 
