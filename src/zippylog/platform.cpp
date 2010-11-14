@@ -594,7 +594,7 @@ bool File::Flush()
 
 int File::FileDescriptor()
 {
-    if (this->open) return 0;
+    if (!this->open) return 0;
 
     return this->fd;
 }
