@@ -16,7 +16,6 @@
 #define ZIPPYLOG_ZIPPYLOGD_UTIL_HPP_
 
 #include <zippylog/zippylog.hpp>
-#include <zippylog/device/piper.hpp>
 #include <zippylog/device/store_writer.hpp>
 
 #include <zmq.hpp>
@@ -30,15 +29,10 @@ namespace zippylogd {
 class ZIPPYLOG_EXPORT ZippylogdStartParams {
 public:
     ZippylogdStartParams() :
-        mode_piped(false),
         mode_server(false),
-        piped_lua_max_size(1024),
         zctx(NULL),
         store_writer_envelope_pull_endpoint("inproc://store_writer_envelope_pull")
     { }
-
-    // whether we read input from a pipe
-    bool mode_piped;
 
     // whether to run a server
     bool mode_server;
@@ -46,22 +40,8 @@ public:
     // if running a server, where its config file is
     ::std::string server_config_file;
 
-    // if running in piped mode, file that defines Lua code to be loaded for
-    // input processing
-    ::std::string piped_lua_file;
-
-    // if running Lua code, the max memory usage the Lua interpreter is allowed
-    // to grow to
-    uint32 piped_lua_max_size;
-
     // if outputting to a store this is the path to the store
     ::std::string store_path;
-
-    // if outputting to a store, the path within the store. e.g. "/bucket/set"
-    ::std::string piped_store_store_path;
-
-    // if outputting to a file path, the path to open
-    ::std::string piped_output_path;
 
     // 0MQ context to use
     //
@@ -97,11 +77,9 @@ public:
     bool Run();
 
 protected:
-    bool run_piped;
     bool run_server;
     ::std::string server_config_file;
 
-    ::zippylog::device::Piper *piper;
     ::zippylog::device::StoreWriter *writer;
 
     ::zmq::context_t *ctx;
@@ -109,7 +87,6 @@ protected:
 
     ::std::string store_path;
 
-    bool RunPiper();
 private:
     Zippylogd(const Zippylogd &orig);
     Zippylogd & operator=(const Zippylogd &orig);
