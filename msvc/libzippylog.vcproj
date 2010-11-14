@@ -223,6 +223,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\zippylog\zippylogd\broker.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\client.cpp"
 				>
 			</File>
@@ -244,6 +248,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\messages.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\piper.cpp"
 				>
 			</File>
 			<File
@@ -275,7 +283,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\store_writer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\stream.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\streamer.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\string_receiver.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\util.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\watcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\worker.cpp"
 				>
 			</File>
 			<File
@@ -296,6 +332,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\broker.hpp"
+				>
+			</File>
 			<File
 				RelativePath="..\src\zippylog\client.hpp"
 				>
@@ -318,6 +358,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\messages.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\piper.hpp"
 				>
 			</File>
 			<File
@@ -349,7 +393,35 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\store_writer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_writer_sender.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\stream.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\streamer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\string_receiver.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\util.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\watcher.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\zippylogd\worker.hpp"
 				>
 			</File>
 			<File
