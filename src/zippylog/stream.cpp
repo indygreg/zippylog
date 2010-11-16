@@ -18,18 +18,19 @@
 
 namespace zippylog {
 
-InputStream::InputStream()
-{
-    this->_cis = NULL;
-    this->_is = NULL;
-}
+InputStream::InputStream() :
+    _cis(NULL),
+    _is(NULL)
+{ }
 
 InputStream::InputStream(const InputStream &orig)
 {
     throw "copy constructor not available for InputStream";
 }
 
-InputStream::InputStream(string file, int64 seek_bytes)
+InputStream::InputStream(string file, int64 seek_bytes) :
+    _cis(NULL),
+    _is(NULL)
 {
     if (!this->OpenFile(file, seek_bytes)) {
         throw "could not open stream for reading";
