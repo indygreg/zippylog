@@ -3,7 +3,6 @@ zippylogd is a daemon that can be used for writing zippylogs and/or serving clie
 It has the following modes of operation (any combination can be active in any instance of zippylogd):
 
 * server - will bind to at least one 0MQ socket and process client requests
-* piped log writer - will receive log entries on a pipe (typically stdin) and will write them out
 * socket log writer - will receive log entries on a 0MQ socket and will write them out
 
 # Server Mode
@@ -35,24 +34,3 @@ The config file is a Lua script which will be executed by the server. Specifical
 
 * log_bucket - String for bucket where zippylogd writes its logs
 * log_stream_set - String for stream set where zippylogd writes its logs
-    
-# Pipe Logger
-
-Piped logger mode is enabled by adding --piped to the command arguments. In piped logger mode, zippylog reads messages to log from a pipe, typically stdin.
-
-In piped mode, the following arguments have meaning:
-
-* --store <path> - Specifies path to store that we should log to
-* --path <store path> - Specifies a store path to a stream set to which we should write. e.g. "/bucket/set"
-* --piped-lua-file <path> - Path to a Lua file which will be loaded into the process to enhance functionality
-* --piped-lua-max-memory <size> - Size (in kilobytes) that piped Lua interpreter can consume. Default is 1024, or 1 megabyte. This should be sufficient for normal uses.
-
-If --store, --path, or --file are not given, output is sent to stdout.
-
-## Lua Integration
-
-If Lua code is loaded into the server in piped mode, Lua functions can influence logging. Functions that can be defined are:
-
-* zippylog_process_line
-
-For details of how each function works, see lua-api.
