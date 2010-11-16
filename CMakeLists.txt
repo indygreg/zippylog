@@ -144,6 +144,13 @@ add_test(TestLibzippylog libzippylog-test)
 add_executable(zippylogd src/zippylogd.cpp)
 target_link_libraries(zippylogd libzippylog)
 
+#######################
+# zippylogcat program #
+#######################
+
+add_executable(zippylogcat src/zippylogcat.cpp)
+target_link_libraries(zippylogcat libzippylog)
+
 ##################################
 # zippylog_string_writer program #
 ##################################
