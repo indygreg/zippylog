@@ -215,6 +215,10 @@ string Envelope::ToString()
         ss << "  create_time: " << date << ::std::endl;
     }
 
+    if (this->envelope.has_string_value()) {
+        ss << "  string: " << this->envelope.string_value() << ::std::endl;
+    }
+
     for (int i = 0; i < this->MessageCount(); i++) {
         string s;
         ::google::protobuf::Message *m = this->GetMessage(i);
