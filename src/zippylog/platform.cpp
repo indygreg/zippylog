@@ -432,16 +432,25 @@ bool File::Open(const string &path, int flags)
 #ifdef WINDOWS
     DWORD access = 0;
     // kindergarten taught me sharing is good. why doesn't Windows know this?
-    DWORD share = FILE_SHARE_READ | FILE_SHARE_WRITE;
-    DWORD creation = 0;
+    DWORD share = 0;
+    DWORD creation = OPEN_EXISTING;
     DWORD attributes = 0;
     int fdflags = 0;
 
-    if (flags & READ) access |= GENERIC_READ;
-    if (flags & WRITE) access |= GENERIC_WRITE;
+    if (flags & READ) {
+        access |= GENERIC_READ;
+        share |= FILE_SHARE_READ;
+    }
+
+    if (flags & WRITE) {
+        access |= GENERIC_WRITE;
+        share |= FILE_SHARE_WRITE;
+    }
+
     if (flags & APPEND) {
         access |= FILE_APPEND_DATA;
         fdflags |= _O_APPEND;
+        share |= FILE_SHARE_WRITE;
     }
 
     if (flags & CREATE) {
