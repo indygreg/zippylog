@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="zippylog_string_writer"
+	Name="zippylog_string_loader"
 	ProjectGUID="{85BF69AF-5921-42D1-BB8E-741FE87759FD}"
 	RootNamespace="zippylog_string_writer"
 	TargetFrameworkVersion="196613"
@@ -161,7 +161,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\src\zippylog_string_writer.cpp"
+				RelativePath="..\src\zippylog_string_loader.cpp"
 				>
 			</File>
 		</Filter>
