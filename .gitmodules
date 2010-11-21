@@ -1,9 +1,6 @@
 [submodule "external/zeromq"]
 	path = external/zeromq
 	url = http://github.com/zeromq/zeromq2.git
-[submodule "external/apr"]
-	path = external/apr
-	url = http://github.com/apache/apr.git
 [submodule "external/wiki"]
 	path = external/wiki
 	url = git@github.com:indygreg/zippylog.wiki.git
