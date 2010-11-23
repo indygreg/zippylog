@@ -48,10 +48,6 @@ void windows_error(char *buffer, size_t buffer_size);
 
 // new namespace where all APIs should be
 namespace platform {
-    using ::std::map;
-    using ::std::string;
-    using ::std::vector;
-
     // records the last known system error
     void set_system_error();
 
@@ -59,7 +55,7 @@ namespace platform {
     // if the current system error is not defined, returns false
     // else, returns true and puts the error message in the string variable
     // will reset the current system error on call
-    bool get_system_error(string &string);
+    bool get_system_error(::std::string &string);
 
     // sleeps the current thread for specified amount of milliseconds
     ZIPPYLOG_EXPORT void sleep(uint32 milliseconds);
@@ -73,23 +69,23 @@ namespace platform {
     };
 
     typedef struct DirectoryEntry {
-        string name;
+        ::std::string name;
         uint64 size;
         enum FileType type;
     } DirectoryEntry;
 
-    ZIPPYLOG_EXPORT bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(const string &dir, vector<string> &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const string &dir, vector<string> &v);
+    ZIPPYLOG_EXPORT bool DirectoryEntries(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(const ::std::string &dir, ::std::vector< ::std::string > &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const ::std::string &dir, ::std::vector< ::std::string > &v);
 
     typedef struct FileStat {
         FileType type;
         int64 size;
     } FileStat;
 
-    ZIPPYLOG_EXPORT bool stat(const string path, FileStat &st);
+    ZIPPYLOG_EXPORT bool stat(const ::std::string path, FileStat &st);
 
     typedef struct Time {
         int32 year;
@@ -111,16 +107,16 @@ namespace platform {
     // converts number of microseconds since UNIX epoch into a zippylog Time struct
     ZIPPYLOG_EXPORT bool UnixMicroTimeToZippyTime(int64 from, Time &to);
 
-    ZIPPYLOG_EXPORT bool MakeDirectory(const string path);
+    ZIPPYLOG_EXPORT bool MakeDirectory(const ::std::string path);
 
-    ZIPPYLOG_EXPORT bool PathIsDirectory(const string path);
+    ZIPPYLOG_EXPORT bool PathIsDirectory(const ::std::string path);
 
     // obtains a list of directories in a directory
     // recursively descends the path and finds all child directories
-    ZIPPYLOG_EXPORT bool DirectoriesInTree(const string &path, vector<string> &paths);
+    ZIPPYLOG_EXPORT bool DirectoriesInTree(const ::std::string &path, ::std::vector< ::std::string > &paths);
 
     // joins two filesystem paths and returns the result
-    ZIPPYLOG_EXPORT string PathJoin(const string &a, const string &b);
+    ZIPPYLOG_EXPORT ::std::string PathJoin(const ::std::string &a, const ::std::string &b);
 
     typedef struct UUID {
         unsigned char data[16];
@@ -136,7 +132,7 @@ namespace platform {
 
         // open a file at path with the FileFlags specified
         // returns whether file opened successfully
-        bool Open(const string &path, int flags);
+        bool Open(const ::std::string &path, int flags);
 
         // close the file
         bool Close();
@@ -227,7 +223,7 @@ namespace platform {
 
         // path that was changed
         // if a rename, this will be the new name
-        string Path;
+        ::std::string Path;
 
         // how the path changed
         enum Action {
@@ -238,7 +234,7 @@ namespace platform {
         } Action;
 
         // if path was renamed, this will be set to old name
-        string OldName;
+        ::std::string OldName;
     };
 
     class ZIPPYLOG_EXPORT DirectoryWatcher {
@@ -249,7 +245,7 @@ namespace platform {
         ~DirectoryWatcher();
 
         // create a construct that watches the specified directory
-        DirectoryWatcher(const string &directory, bool recurse=true);
+        DirectoryWatcher(const ::std::string &directory, bool recurse=true);
 
         // Wait up to N microseconds for changes to the directory or forever,
         // if -1 is given as the timeout value
@@ -263,12 +259,12 @@ namespace platform {
         bool WaitForChanges(int32 timeout);
 
         // returns collected changes to directory
-        bool GetChanges(vector<DirectoryChange> &changes);
+        bool GetChanges(::std::vector<DirectoryChange> &changes);
 
     protected:
-        string path;
+        ::std::string path;
         bool recurse;
-        vector<DirectoryChange> changes;
+        ::std::vector<DirectoryChange> changes;
 
 #ifdef WINDOWS
         HANDLE directory;
@@ -281,7 +277,7 @@ namespace platform {
         int fd;
 
         // maps watch descriptors to directories
-        map<int, string> directories;
+        ::std::map<int, ::std::string> directories;
 #endif
     };
 

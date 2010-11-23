@@ -39,6 +39,9 @@
 #include <sys/stat.h>
 #include <time.h>
 
+using ::std::string;
+using ::std::vector;
+
 namespace zippylog {
 
 void windows_error(char *buffer, size_t buffer_size)
