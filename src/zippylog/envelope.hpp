@@ -21,7 +21,7 @@
 
 #include <string>
 
-// windows.h defines GetMessage() as a macro, which craps on us
+// windows.h defines GetMessage() as a macro, which craps on us.
 // here, we shovel shit
 #if defined(WINDOWS) && defined(GetMessage)
 
@@ -40,8 +40,6 @@ inline BOOL GetMessage(LPMSG msg, HWND hwnd, UINT min, UINT max) {
 namespace zippylog {
 
 using ::google::protobuf::Message;
-using ::std::string;
-using ::zmq::message_t;
 
 class ZIPPYLOG_EXPORT Envelope {
     public:
@@ -49,7 +47,7 @@ class ZIPPYLOG_EXPORT Envelope {
         Envelope();
 
         // construct from a 0MQ message
-        Envelope(message_t *msg);
+        Envelope(::zmq::message_t *msg);
 
         /// construct an envelope having string data
         ///
@@ -77,7 +75,7 @@ class ZIPPYLOG_EXPORT Envelope {
 
         // serializes the envelope into a 0MQ message
         // existing message content will be overwritten
-        bool ToZmqMessage(message_t &msg);
+        bool ToZmqMessage(::zmq::message_t &msg);
 
         int MessageCount();
 
@@ -101,7 +99,7 @@ class ZIPPYLOG_EXPORT Envelope {
         // copy a message to another envelope
         bool CopyMessage(int index, Envelope &dest);
 
-        string ToString();
+        ::std::string ToString();
 
     protected:
         // holds pointer to dynamic array

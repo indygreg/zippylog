@@ -27,6 +27,7 @@ namespace zippylog {
 using ::std::string;
 using ::std::stringstream;
 using ::std::vector;
+using ::zmq::message_t;
 
 Envelope::Envelope() : messages(NULL), message_count(0)
 {
@@ -36,7 +37,7 @@ Envelope::Envelope() : messages(NULL), message_count(0)
     this->envelope.set_create_time(t.epoch_micro);
 }
 
-Envelope::Envelope(message_t *msg) : messages(NULL), message_count(0)
+Envelope::Envelope( message_t *msg) : messages(NULL), message_count(0)
 {
     if (!this->envelope.ParseFromArray(msg->data(), msg->size())) {
         throw "could not parse message";

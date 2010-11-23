@@ -154,8 +154,8 @@ class ZIPPYLOG_EXPORT Streamer {
 
         void ProcessStoreChangeEnvelope(Envelope &e);
 
-        void ProcessSubscribeStoreChanges(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector<message_t *> &msgs);
-        void ProcessSubscribeEnvelopes(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector<message_t *> &msgs);
+        void ProcessSubscribeStoreChanges(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
+        void ProcessSubscribeEnvelopes(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
 
         void SendSubscriptionAck(const ::std::string &id, Envelope &req, ::std::vector< ::std::string > &identities);
 
