@@ -25,11 +25,6 @@
 
 namespace zippylog {
 
-using ::google::protobuf::io::FileInputStream;
-using ::google::protobuf::io::FileOutputStream;
-using ::google::protobuf::io::CodedInputStream;
-using ::google::protobuf::io::CodedOutputStream;
-
 // since streams are only ever appended to, it doesn't make sense to model a
 // read/write stream, so we have a separate input and output stream
 
@@ -55,8 +50,8 @@ class ZIPPYLOG_EXPORT InputStream {
 
         platform::File file;
 
-        FileInputStream *_is;
-        CodedInputStream *_cis;
+        ::google::protobuf::io::FileInputStream *_is;
+        ::google::protobuf::io::CodedInputStream *_cis;
         bool _have_next_size;
         uint32 _next_envelope_size;
 
@@ -98,8 +93,8 @@ class ZIPPYLOG_EXPORT OutputStream {
 
 private:
     platform::File file;
-    FileOutputStream *os;
-    CodedOutputStream *cos;
+    ::google::protobuf::io::FileOutputStream *os;
+    ::google::protobuf::io::CodedOutputStream *cos;
 };
 
 } // namespace

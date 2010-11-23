@@ -16,6 +16,10 @@
 
 #include <zippylog/platform.hpp>
 
+using ::google::protobuf::io::CodedInputStream;
+using ::google::protobuf::io::CodedOutputStream;
+using ::google::protobuf::io::FileInputStream;
+using ::google::protobuf::io::FileOutputStream;
 using ::std::string;
 
 namespace zippylog {
