@@ -12,12 +12,13 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylogd/worker.hpp>
+#include <zippylog/device/server.hpp>
 #include <zippylog/zippylogd.pb.h>
 #include <zippylog/zeromq.hpp>
 
 namespace zippylog {
-namespace zippylogd {
+namespace device {
+namespace server {
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
     msgvar.set_id(this->id); \
@@ -82,4 +83,4 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &requ
 
 
 
-}} // namespaces
+}}} // namespaces

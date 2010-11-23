@@ -12,8 +12,8 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_ZIPPYLOGD_STREAMER_HPP_
-#define ZIPPYLOG_ZIPPYLOGD_STREAMER_HPP_
+#ifndef ZIPPYLOG_DEVICE_STREAMER_HPP_
+#define ZIPPYLOG_DEVICE_STREAMER_HPP_
 
 #include <zippylog/zippylog.hpp>
 
@@ -29,8 +29,9 @@
 #include <vector>
 
 namespace zippylog {
-namespace zippylogd {
+namespace device {
 
+/// records a subscription to an envelope
 class EnvelopeSubscription {
 public:
     EnvelopeSubscription();
@@ -40,6 +41,7 @@ public:
     vector<string> socket_identifiers;
 };
 
+/// records details about an individual subscription
 class SubscriptionInfo {
 public:
     SubscriptionInfo();
@@ -65,28 +67,48 @@ private:
     SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 };
 
-// type passed to constructor to initialize a streamer instance
-// it is easier to pass this object than to pass many named arguments
+/// Used to construct a streamer device
 class ZIPPYLOG_EXPORT StreamerStartParams {
 public:
     StreamerStartParams();
 
     ::zmq::context_t *ctx;
     ::zippylog::Store *store;
+
+    /// 0MQ endpoint for SUB socket that receives store changes
     ::std::string store_changes_endpoint;
+
+    /// 0MQ endpoint for PUSH socket that will send messages to clients
     ::std::string client_endpoint;
+
+    /// 0MQ endpoint for PULL socket that will receive subscription messages
     ::std::string subscriptions_endpoint;
+
+    /// 0MQ endpoint for SUB socket that will receive subscription updates
     ::std::string subscription_updates_endpoint;
+
+    /// 0MQ endpoint for PUSH socket that will send logging messages
     ::std::string logging_endpoint;
+
+    /// Default expiration TTL of new subscriptions, in milliseconds
     uint32 subscription_ttl;
 
+    /// Whether to allow Lua code to be executed
     bool lua_allow;
+
+    /// Memory memory a Lua interpreter can grow to
     uint32 lua_max_memory;
 
+    /// Semaphore stating whether streamer should remain active
     bool *active;
 };
 
-// the streamer streams information to subscribed clients
+/// Holds stream subscriptions and notifies interested clients
+///
+/// The streamer handles the streaming aspect of zippylog. It processes
+/// new subscriptions. When it receives details about events in a store, it
+/// looks at the registered subscriptions and if any are interested, performs
+/// optional data processing and sends messages to interested subscribers.
 class ZIPPYLOG_EXPORT Streamer {
     public:
         Streamer(StreamerStartParams params);

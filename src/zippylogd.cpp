@@ -13,12 +13,12 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.hpp>
-#include <zippylog/zippylogd/broker.hpp>
+#include <zippylog/device/server.hpp>
 
 #include <iostream>
 #include <string>
 
-using ::zippylog::zippylogd::Broker;
+using ::zippylog::device::Server;
 using ::std::cout;
 using ::std::endl;
 using ::std::string;
@@ -46,17 +46,13 @@ int main(int argc, const char * const argv[])
     try {
         ::zippylog::initialize_library();
 
-        //::zippylog::zippylogd::Zippylogd instance(params);
-        //instance.Run();
-
-        // TODO remove broker code in favor of zippylogd class
-        Broker broker(argv[1]);
+        Server server(argv[1]);
 
 #ifdef LINUX
-        broker.RunAsync();
+        server.RunAsync();
         while (active) pause();
 #elif WINDOWS
-        broker.Run();
+        server.Run();
 #else
 #error "not implemented on this platform"
 #endif

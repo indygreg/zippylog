@@ -12,13 +12,14 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylogd/watcher.hpp>
+#include <zippylog/device/server.hpp>
 
 #include <zippylog/zeromq.hpp>
 #include <zippylog/zippylogd.pb.h>
 
 namespace zippylog {
-namespace zippylogd {
+namespace device {
+namespace server {
 
 using ::zmq::socket_t;
 using ::zippylog::zippylogd::StoreWatcherStartup;
@@ -129,4 +130,4 @@ void Watcher::HandleModified(string path, platform::FileStat &stat)
     }
 }
 
-}} // namespaces
+}}} // namespaces

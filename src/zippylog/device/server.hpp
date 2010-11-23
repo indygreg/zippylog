@@ -12,27 +12,97 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#ifndef ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
-#define ZIPPYLOG_ZIPPYLOGD_BROKER_HPP_
+#ifndef ZIPPYLOG_DEVICE_SERVER_HPP_
+#define ZIPPYLOG_DEVICE_SERVER_HPP_
 
 #include <zippylog/zippylog.hpp>
 
 #include <zippylog/platform.hpp>
+#include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
-#include <zippylog/zippylogd/streamer.hpp>
-#include <zippylog/zippylogd/watcher.hpp>
-#include <zippylog/zippylogd/worker.hpp>
+#include <zippylog/device/streamer.hpp>
 
 #include <vector>
 #include <zmq.hpp>
 
 namespace zippylog {
-namespace zippylogd {
+namespace device {
 
-class BrokerConfig {
+/// contains classes used by server device
+namespace server {
+
+/// Used to construct a server worker
+class WorkerStartParams {
 public:
-    BrokerConfig();
+    // where to send client subscription messages
+    string streaming_subscriptions_endpoint;
+
+    // where to send updates for existing subscriptions
+    string streaming_updates_endpoint;
+
+    ::zippylog::RequestProcessorStartParams request_processor_params;
+};
+
+/// Processes zippylog protocol requests for a server device
+class Worker : public ::zippylog::RequestProcessor {
+    public:
+        Worker(WorkerStartParams &params);
+        ~Worker();
+
+    protected:
+        ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output);
+        ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output);
+        ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output);
+
+        string streaming_subscriptions_endpoint;
+        string streaming_updates_endpoint;
+
+        ::zmq::socket_t *subscriptions_sock;
+        ::zmq::socket_t *subscription_updates_sock;
+};
+
+/// Create store watchers tailored for the server device
+class WatcherStartParams {
+public:
+    ::zippylog::StoreWatcherStartParams params;
+
+    // 0MQ socket endpoint on which to bind a PUB socket
+    string socket_endpoint;
+};
+
+/// Store watcher implementation for the server device
+///
+/// Whenever changes are seen, forwards store change events on a 0MQ PUB socket
+/// whose endpoint is defined at construction time.
+class Watcher : public ::zippylog::StoreWatcher {
+public:
+    // Construct a watcher that sends events to a 0MQ PUB socket
+    Watcher(WatcherStartParams &params);
+    ~Watcher();
+
+protected:
+    // implement the interface
+    void HandleAdded(string path, platform::FileStat &stat);
+    void HandleDeleted(string path);
+    void HandleModified(string path, platform::FileStat &stat);
+
+    // sends the change to all interested parties
+    void SendChangeMessage(Envelope &e);
+
+    string endpoint;
+    ::zmq::socket_t * socket;
+
+private:
+    Watcher(const Watcher &orig);
+    Watcher & operator=(const Watcher &orig);
+};
+
+} // end of server namespace
+
+class ServerConfig {
+public:
+    ServerConfig();
 
     string store_path;
     vector<string> listen_endpoints;
@@ -46,7 +116,7 @@ public:
     uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
 };
 
-// The broker is the server class for zippylogd
+// The server is an uber device that provides server functionality
 //
 // It has a couple of functions:
 //
@@ -81,27 +151,27 @@ public:
 // come back through the workers_sock. This is perfectly fine, as that
 // socket is a XREQ socket. This preserves the event-driver architecture
 // of the server.
-class ZIPPYLOG_EXPORT Broker {
+class ZIPPYLOG_EXPORT Server {
     public:
         // Construct a broker from a Lua config file
         //
         // For a description of what configuration options are read, see
         // ParseConfig()
-        Broker(const string config_file_path);
+        Server(const string config_file_path);
 
-        ~Broker();
+        ~Server();
 
-        // Run the broker synchronously
+        // Run the server synchronously
         //
         // This will block until a fatal error is encountered or until the
         // Shutdown() function is called.
         void Run();
 
-        // runs the broker asynchronously
-        // this creates a new thread, runs the broker in that, then returns
+        // Runs asynchronously
+        // this creates a new thread, runs the server in that, then returns
         void RunAsync();
 
-        // Shut down the broker
+        // Shut down the server
         //
         // On first call, will trigger the shutdown semaphore which signals all
         // created threads to stop execution. The function call will block
@@ -154,12 +224,12 @@ class ZIPPYLOG_EXPORT Broker {
         vector< ::zippylog::platform::Thread * > streaming_threads;
         ::zippylog::Store * store;
         bool active;
-        BrokerConfig config;
+        ServerConfig config;
         ::zippylog::platform::Thread * store_watcher_thread;
 
-        ::zippylog::zippylogd::WorkerStartParams request_processor_params;
-        ::zippylog::zippylogd::StreamerStartParams streamer_params;
-        ::zippylog::zippylogd::WatcherStartParams store_watcher_params;
+        ::zippylog::device::server::WorkerStartParams request_processor_params;
+        ::zippylog::device::StreamerStartParams streamer_params;
+        ::zippylog::device::server::WatcherStartParams store_watcher_params;
 
         static const string WORKER_ENDPOINT;
         static const string STORE_CHANGE_ENDPOINT;
@@ -171,7 +241,7 @@ class ZIPPYLOG_EXPORT Broker {
         static const string WORKER_STREAMING_NOTIFY_ENDPOINT;
         static const string STREAMING_STREAMING_NOTIFY_ENDPOINT;
 
-        static bool ParseConfig(const string path, BrokerConfig &config, string &error);
+        static bool ParseConfig(const string path, ServerConfig &config, string &error);
 
         // thread start functions
         static void * StoreWatcherStart(void *data);
@@ -187,8 +257,8 @@ class ZIPPYLOG_EXPORT Broker {
         void setup_listener_sockets();
     private:
         // copy constructor and assignment operator are not supported
-        Broker(const Broker &orig);
-        Broker & operator=(const Broker &orig);
+        Server(const Server &orig);
+        Server & operator=(const Server &orig);
 };
 
 }} // namespaces

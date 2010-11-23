@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/zippylogd/streamer.hpp>
+#include <zippylog/device/streamer.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/zippylogd.pb.h>
@@ -26,7 +26,7 @@
 }
 
 namespace zippylog {
-namespace zippylogd {
+namespace device {
 
 using ::zippylog::lua::LuaState;
 using ::zippylog::protocol::response::SubscribeAck;

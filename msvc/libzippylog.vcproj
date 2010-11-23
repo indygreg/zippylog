@@ -223,10 +223,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\src\zippylog\zippylogd\broker.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\zippylog\client.cpp"
 				>
 			</File>
@@ -271,6 +267,18 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\server.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\server_watcher.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\server_worker.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\store.cpp"
 				>
 			</File>
@@ -291,7 +299,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\zippylogd\streamer.cpp"
+				RelativePath="..\src\zippylog\device\streamer.cpp"
 				>
 			</File>
 			<File
@@ -304,14 +312,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\util.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd\watcher.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd\worker.cpp"
 				>
 			</File>
 			<File
@@ -332,10 +332,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\src\zippylog\zippylogd\broker.hpp"
-				>
-			</File>
 			<File
 				RelativePath="..\src\zippylog\client.hpp"
 				>
@@ -381,6 +377,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\server.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\store.hpp"
 				>
 			</File>
@@ -401,7 +401,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\zippylogd\streamer.hpp"
+				RelativePath="..\src\zippylog\device\streamer.hpp"
 				>
 			</File>
 			<File
@@ -414,14 +414,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\util.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd\watcher.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd\worker.hpp"
 				>
 			</File>
 			<File
