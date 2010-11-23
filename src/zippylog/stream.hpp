@@ -28,6 +28,10 @@ namespace zippylog {
 // since streams are only ever appended to, it doesn't make sense to model a
 // read/write stream, so we have a separate input and output stream
 
+/// Represents a stream that we read from
+///
+/// This currently represents a file-backed stream. This should really be
+/// an abstract base class.
 class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
