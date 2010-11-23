@@ -131,7 +131,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
 
         ResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
-        bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, string message, ::std::vector<Envelope> &msgs);
+        bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, ::std::string message, ::std::vector<Envelope> &msgs);
 
         ::zmq::context_t *ctx;
         ::std::string store_path;

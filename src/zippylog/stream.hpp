@@ -29,7 +29,6 @@ using ::google::protobuf::io::FileInputStream;
 using ::google::protobuf::io::FileOutputStream;
 using ::google::protobuf::io::CodedInputStream;
 using ::google::protobuf::io::CodedOutputStream;
-using ::std::string;
 
 // since streams are only ever appended to, it doesn't make sense to model a
 // read/write stream, so we have a separate input and output stream
@@ -37,10 +36,10 @@ using ::std::string;
 class ZIPPYLOG_EXPORT InputStream {
     public:
         InputStream();
-        InputStream(string file, int64 seek_bytes=0);
+        InputStream(::std::string file, int64 seek_bytes=0);
         ~InputStream();
 
-        bool OpenFile(string file, int64 start_offset = 0);
+        bool OpenFile(::std::string file, int64 start_offset = 0);
 
         // Size (in bytes) of the next envelope in the stream
         // does NOT include size of envelope size encoding
@@ -77,7 +76,7 @@ class ZIPPYLOG_EXPORT InputStream {
 class ZIPPYLOG_EXPORT OutputStream {
     public:
         // opens an output stream (always appends)
-        OutputStream(const string file);
+        OutputStream(const ::std::string file);
         ~OutputStream();
 
         // writes an envelope to the stream
@@ -93,7 +92,7 @@ class ZIPPYLOG_EXPORT OutputStream {
         bool WriteData(const void *data, int length);
 
         // writes data inside a string to stream
-        bool WriteString(const string &s);
+        bool WriteString(const ::std::string &s);
 
         bool Flush();
 

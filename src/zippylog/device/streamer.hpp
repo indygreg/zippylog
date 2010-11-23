@@ -117,10 +117,10 @@ class ZIPPYLOG_EXPORT Streamer {
         void Run();
 
         // returns whether the streamer knows of a subscription with the specified id
-        bool HasSubscription(const string &id);
+        bool HasSubscription(const ::std::string &id);
 
         // renews a subscription for the specified id
-        bool RenewSubscription(const string &id);
+        bool RenewSubscription(const ::std::string &id);
 
     protected:
 

@@ -135,7 +135,7 @@ class ZIPPYLOG_EXPORT Store {
 
         // return the filesystem path for the given store path
         // no validation of input path is performed
-        string PathToFilesystemPath(const ::std::string path);
+        ::std::string PathToFilesystemPath(const ::std::string path);
 
         /// Writes an envelope to the stream set specified
         ///
@@ -178,14 +178,14 @@ class ZIPPYLOG_EXPORT Store {
     protected:
         bool ObtainOutputStream(const ::std::string bucket, const ::std::string set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
 
-        string StreamFilesystemPath(const ::std::string path);
+        ::std::string StreamFilesystemPath(const ::std::string path);
 
     private:
         // disable copy constructor and assignment operator
         Store(const Store &orig);
         Store & operator=(const Store &orig);
 
-        string _path;
+        ::std::string _path;
         ::std::map< ::std::string, OpenOutputStream> out_streams;
 };
 

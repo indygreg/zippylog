@@ -36,10 +36,10 @@ namespace server {
 class WorkerStartParams {
 public:
     // where to send client subscription messages
-    string streaming_subscriptions_endpoint;
+    ::std::string streaming_subscriptions_endpoint;
 
     // where to send updates for existing subscriptions
-    string streaming_updates_endpoint;
+    ::std::string streaming_updates_endpoint;
 
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
@@ -68,7 +68,7 @@ public:
     ::zippylog::StoreWatcherStartParams params;
 
     // 0MQ socket endpoint on which to bind a PUB socket
-    string socket_endpoint;
+    ::std::string socket_endpoint;
 };
 
 /// Store watcher implementation for the server device
@@ -83,14 +83,14 @@ public:
 
 protected:
     // implement the interface
-    void HandleAdded(string path, platform::FileStat &stat);
-    void HandleDeleted(string path);
-    void HandleModified(string path, platform::FileStat &stat);
+    void HandleAdded(::std::string path, platform::FileStat &stat);
+    void HandleDeleted(::std::string path);
+    void HandleModified(::std::string path, platform::FileStat &stat);
 
     // sends the change to all interested parties
     void SendChangeMessage(Envelope &e);
 
-    string endpoint;
+    ::std::string endpoint;
     ::zmq::socket_t * socket;
 
 private:
@@ -180,7 +180,7 @@ class ZIPPYLOG_EXPORT Server {
         ///
         /// For a description of what configuration options are read, see
         /// ParseConfig()
-        Server(const string config_file_path);
+        Server(const ::std::string config_file_path);
 
         ~Server();
 
@@ -241,7 +241,7 @@ class ZIPPYLOG_EXPORT Server {
         // yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
-        string id;
+        ::std::string id;
         ::zippylog::platform::Thread * exec_thread;
         ::std::vector< ::zippylog::platform::Thread * > worker_threads;
         ::std::vector< ::zippylog::platform::Thread * > streaming_threads;

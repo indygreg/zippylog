@@ -16,6 +16,8 @@
 
 #include <zippylog/platform.hpp>
 
+using ::std::string;
+
 namespace zippylog {
 
 InputStream::InputStream() :

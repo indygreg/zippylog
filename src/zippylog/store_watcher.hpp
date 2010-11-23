@@ -28,9 +28,9 @@ namespace zippylog {
 class ZIPPYLOG_EXPORT StoreWatcherStartParams {
 public:
     ::zmq::context_t *zctx;
-    string store_path;
-    string endpoint;
-    string logging_endpoint;
+    ::std::string store_path;
+    ::std::string endpoint;
+    ::std::string logging_endpoint;
     bool *active;
 };
 
@@ -65,21 +65,21 @@ protected:
     // Receives the path that was added as a store path (e.g.
     // "/bucket/store/20101107T1615") and a stat record that describes
     // the filesystem entity.
-    virtual void HandleAdded(string path, platform::FileStat &stat) = 0;
+    virtual void HandleAdded(::std::string path, platform::FileStat &stat) = 0;
 
     // Function that performs actions when something is deleted
-    virtual void HandleDeleted(string path) = 0;
+    virtual void HandleDeleted(::std::string path) = 0;
 
     // Performs actions when something (probably a stream) is modified
-    virtual void HandleModified(string path, platform::FileStat &stat) = 0;
+    virtual void HandleModified(::std::string path, platform::FileStat &stat) = 0;
 
     void SendChangeMessage(Envelope &e);
 
     Store _store;
     ::zmq::context_t *_ctx;
-    string _endpoint;
-    string logging_endpoint;
-    string id;
+    ::std::string _endpoint;
+    ::std::string logging_endpoint;
+    ::std::string id;
     ::zmq::socket_t * socket;
     ::zmq::socket_t * logging_sock;
     bool *active;
