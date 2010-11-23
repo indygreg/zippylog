@@ -21,8 +21,11 @@
 
 namespace zippylog {
 
+using ::std::string;
+using ::std::vector;
 using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
+using ::zmq::socket_t;
 
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
     _store(params.store_path),

@@ -27,6 +27,7 @@
 
 using ::std::map;
 using ::std::string;
+using ::std::vector;
 using ::zippylog::lua::LuaState;
 using ::zippylog::protocol::response::SubscribeAck;
 using ::zippylog::zippylogd::StreamerStartup;
@@ -37,6 +38,7 @@ using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
 using ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive;
 using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
 using ::zmq::message_t;
+using ::zmq::socket_t;
 
 namespace zippylog {
 namespace device {

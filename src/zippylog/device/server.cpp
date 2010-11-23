@@ -34,7 +34,9 @@ extern "C" {
 namespace zippylog {
 namespace device {
 
+using ::std::string;
 using ::std::ostringstream;
+using ::std::vector;
 using ::zippylog::platform::Thread;
 using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;

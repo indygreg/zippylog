@@ -27,6 +27,8 @@ namespace server {
     zeromq::send_envelope(socketvar, logenvelope); \
 }
 
+using ::std::string;
+using ::std::vector;
 using ::zippylog::RequestProcessor;
 using ::zmq::socket_t;
 

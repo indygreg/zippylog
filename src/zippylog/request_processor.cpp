@@ -31,6 +31,7 @@ namespace zippylog {
 }
 
 using ::std::string;
+using ::std::vector;
 using ::zippylog::zippylogd::WorkerForwardSubscribeKeepalive;
 using ::zippylog::zippylogd::WorkerReceiveUnknownRequestType;
 using ::zmq::message_t;

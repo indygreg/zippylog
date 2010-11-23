@@ -14,6 +14,11 @@
 
 #include <zippylog/zeromq.hpp>
 
+using ::std::string;
+using ::std::vector;
+using ::zmq::socket_t;
+using ::zmq::message_t;
+
 namespace zippylog {
 namespace zeromq {
 

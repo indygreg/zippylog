@@ -21,6 +21,7 @@ namespace zippylog {
 namespace device {
 namespace server {
 
+using ::std::string;
 using ::zmq::socket_t;
 using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;

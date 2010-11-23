@@ -22,18 +22,14 @@
 #include <string>
 #include <vector>
 
-using ::std::string;
-using ::std::vector;
 using ::zippylog::Envelope;
-using ::zmq::socket_t;
-using ::zmq::message_t;
 
 namespace zippylog {
 namespace zeromq {
 
 // receives a multipart message from a socket, with identities
 // this is likely used by XREQ/XREP sockets
-bool receive_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages);
+    bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
 
 /// Receives a multipart message into a vector
 ///
@@ -42,15 +38,15 @@ bool receive_multipart_message(socket_t * socket, vector<string> &identities, ve
 ///
 /// Returns true if message(s) received successfully. False if there was an
 /// error or ZMQ_NOBLOCK was set and there were no messages available.
-bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages, int flags=0);
+bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::zmq::message_t * > &messages, int flags=0);
 
 // sends a multipart message with identities
-bool send_multipart_message(socket_t * socket, vector<string> &identities, vector<message_t *> &messages, int last_flags=0);
+bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages, int last_flags=0);
 
-bool send_multipart_message(socket_t * socket, vector<string> &identities, message_t *message, int last_flags=0);
+bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string> &identities, ::zmq::message_t *message, int last_flags=0);
 
 // sends a multipart message with the last message having ZMQ_SNDMORE
-bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t &msg);
+bool send_multipart_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::zmq::message_t &msg);
 
 /// Sends an envelope with messages coming before
 ///
@@ -59,19 +55,19 @@ bool send_multipart_more(socket_t *socket, vector<string> &identities, message_t
 /// TODO break backwards compatibility someday
 bool send_envelope_with_preceding(::zmq::socket_t *, ::std::vector< ::std::string > &preceding, Envelope &envelope, int flags=0);
 
-bool send_envelope(socket_t *socket, Envelope &envelope, int flags=0);
-bool send_envelope(socket_t *socket, vector<string> &identities, Envelope &envelope, int flags=0);
+bool send_envelope(::zmq::socket_t *socket, Envelope &envelope, int flags=0);
+bool send_envelope(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope, int flags=0);
 
 // sends multiple envelopes with identities as part of a multipart message
-bool send_envelopes(socket_t *socket, vector<string> &identities, vector<Envelope> &envelopes);
+bool send_envelopes(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::std::vector<Envelope> &envelopes);
 
 // sends an envelope with ZMQ_SNDMORE flag
-bool send_envelope_more(socket_t *socket, Envelope &envelope);
-bool send_envelope_more(socket_t *socket, vector<string> &identities, Envelope &envelope);
+bool send_envelope_more(::zmq::socket_t *socket, Envelope &envelope);
+bool send_envelope_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope);
 
 // sends an envelope, but from an XREQ socket
 // this inserts an empty message part to cover the missing identity message
-bool send_envelope_xreq(socket_t *socket, Envelope &envelope);
+bool send_envelope_xreq(::zmq::socket_t *socket, Envelope &envelope);
 
 }} // end namespaces
 
