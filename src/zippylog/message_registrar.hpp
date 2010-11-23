@@ -22,8 +22,6 @@
 namespace zippylog {
 
 using ::google::protobuf::Message;
-using ::std::map;
-using ::std::pair;
 
 // a central registration service for zippylog message enumerations
 // Currently, instance() is NOT thread safe
@@ -42,7 +40,7 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
 
     protected:
         // TODO lookup time can be improved since map is nlogn
-        map<pair<uint32, uint32>, Message *> _types;
+        ::std::map< ::std::pair<uint32, uint32>, Message * > _types;
 
     private:
         MessageRegistrar();

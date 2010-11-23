@@ -27,8 +27,6 @@ extern "C" {
 namespace zippylog {
 namespace lua {
 
-using ::std::string;
-
 /// represents the input and output to a line processing function call
 class ZIPPYLOG_EXPORT LineProcessorState {
 public:
@@ -70,10 +68,10 @@ public:
     bool HasLineProcessor();
 
     // loads user-supplied Lua code into the interpreter
-    bool LoadLuaCode(const string &code);
+    bool LoadLuaCode(const ::std::string &code);
 
     // loads Lua code from a file into the interpret
-    bool LoadFile(const string &filename, string &error);
+    bool LoadFile(const ::std::string &filename, ::std::string &error);
 
     // loads the string standard library into the Lua interpreter
     bool LoadStringLibrary();

@@ -21,6 +21,8 @@ extern "C" {
 #include <lualib.h>
 }
 
+using ::std::string;
+
 namespace zippylog {
 namespace lua {
 

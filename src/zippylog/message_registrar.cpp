@@ -15,6 +15,9 @@
 #include <zippylog/message_registrar.hpp>
 #include <zippylog/messages.hpp>
 
+using ::std::map;
+using ::std::pair;
+
 namespace zippylog {
 
 MessageRegistrar * MessageRegistrar::_instance = NULL;
