@@ -23,28 +23,43 @@
 
 namespace zippylog {
 
+/// Used to construct a request processor
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
-    string store_path;
+    /// The path to the store we should operate against
+    ::std::string store_path;
+
+    /// 0MQ context to use
+    ///
+    /// must not be NULL
     ::zmq::context_t *ctx;
-    string client_endpoint;
-    string logger_endpoint;
+
+    /// 0MQ endpoint to which to bind a XREP socket to receive client requests
+    ::std::string client_endpoint;
+
+    /// 0MQ endpoint to which to connect to send log envelopes
+    ::std::string logger_endpoint;
+
+    /// Semaphore indicating whether the processor should remain alive
+    ///
+    /// When this goes to false, the request processor will cease processing
+    /// new messages and will return from its run routine.
     bool *active;
 };
 
-// Processes zippylog protocol requests
-//
-// This class is designed to be an abstract base class. It implements core
-// functionality for parsing and verifying protocol requests. However, the
-// actual implementation is abstracted away in the various Handle* functions.
-// Derived classes should implement these functions.
-//
-// Currently, we make the assumption that protocol requests arrive via
-// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
-// the various Process* functions don't expose 0MQ details, so it should be
-// possible to call into this class without serializing envelopes as 0MQ
-// messages. That being said, the constructor still requires the 0MQ
-// parameters (for now, at least)
+/// Processes zippylog protocol requests
+///
+/// This class is designed to be an abstract base class. It implements core
+/// functionality for parsing and verifying protocol requests. However, the
+/// actual implementation is abstracted away in the various Handle* functions.
+/// Derived classes should implement these functions.
+///
+/// Currently, we make the assumption that protocol requests arrive via
+/// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
+/// the various Process* functions don't expose 0MQ details, so it should be
+/// possible to call into this class without serializing envelopes as 0MQ
+/// messages. That being said, the constructor still requires the 0MQ
+/// parameters (for now, at least)
 class ZIPPYLOG_EXPORT RequestProcessor {
     public:
         // return code from the various request processors
@@ -67,47 +82,47 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         RequestProcessor(RequestProcessorStartParams &params);
         ~RequestProcessor();
 
-        // Runs the request processor
-        // Will listen for messages on the 0MQ socket specified in the start parameters
-        // This function executes forever in an infinite loop until a
-        // catastrophic error or the active parameter passed in the start
-        // parameters goes to false
+        /// Runs the request processor
+        /// Will listen for messages on the 0MQ socket specified in the start parameters
+        /// This function executes forever in an infinite loop until a
+        /// catastrophic error or the active parameter passed in the start
+        /// parameters goes to false
         void Run();
 
-        // Processes a request envelope
-        //
-        // This is the main request processing function. If there are
-        // envelopes to be sent to the client, they are added to the passed
-        // vector.
-        //
-        // Callers should inspect the return value to determine how to handle
-        // response messages.
-        //
-        // Most people typically have no need to call this function. However,
-        // it is provided public just in case.
+        /// Processes a request envelope
+        ///
+        /// This is the main request processing function. If there are
+        /// envelopes to be sent to the client, they are added to the passed
+        /// vector.
+        ///
+        /// Callers should inspect the return value to determine how to handle
+        /// response messages.
+        ///
+        /// Most people typically have no need to call this function. However,
+        /// it is provided public just in case.
         ResponseStatus ProcessRequest(Envelope &e, vector<Envelope> &output);
 
     protected:
 
-        // callback to handle a validated request to subscribe to store changes
-        // TODO should probably have a custom class for the request instance
+        /// callback to handle a validated request to subscribe to store changes
+        /// TODO should probably have a custom class for the request instance
         virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output) = 0;
 
-        // callback to handle a subscription to envelopes
-        // TODO specific class for request
+        /// callback to handle a subscription to envelopes
+        /// TODO specific class for request
         virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output) = 0;
 
-        // callback to handle a subscription keepalive
-        // TODO specific class for request
+        /// callback to handle a subscription keepalive
+        /// TODO specific class for request
         virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output) = 0;
 
 
-        // Process a StoreInfo request and populate the passed envelope with the response
-        //
-        // This function is typically called only by ProcessRequest()
+        /// Process a StoreInfo request and populate the passed envelope with the response
+        ///
+        /// This function is typically called only by ProcessRequest()
         ResponseStatus ProcessStoreInfo(Envelope &response);
 
-        // Process a Get request
+        /// Process a Get request
         ResponseStatus ProcessGet(Envelope &request, vector<Envelope> &output);
 
         ResponseStatus ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output);
