@@ -254,6 +254,7 @@ class ZIPPYLOG_EXPORT Server {
         ::zippylog::device::StreamerStartParams streamer_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
 
+        // TODO these should not be static
         static const ::std::string WORKER_ENDPOINT;
         static const ::std::string STORE_CHANGE_ENDPOINT;
         static const ::std::string STREAMING_ENDPOINT;
