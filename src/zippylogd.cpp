@@ -38,6 +38,7 @@ void signal_handler(int signo)
 int main(int argc, const char * const argv[])
 {
 #ifdef LINUX
+    // TODO this signal handling is horribly naive
     signal(SIGINT, signal_handler);
     signal(SIGTERM, signal_handler);
 #endif
