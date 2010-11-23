@@ -100,85 +100,108 @@ private:
 
 } // end of server namespace
 
+/// Holds the config for a server device
+///
+/// Typically this is populated by parsing a Lua file. However, it could also
+/// be created manually and passed into a server's constructor.
 class ServerConfig {
 public:
     ServerConfig();
 
+    /// the path to the store the server operates against
     string store_path;
+
+    /// 0MQ endpoints to bind XREP sockets to listen for client messages
     vector<string> listen_endpoints;
+
+    /// The number of worker threads to run
     uint32 worker_threads;
+
+    /// The number of streaming threads to run
     uint32 streaming_threads;
+
+    /// The default subscription expiration TTL, in milliseconds
     uint32 subscription_ttl;
+
+    /// Bucket to log server's own log messages to
     string log_bucket;
+
+    /// Stream set to log server's own log messages to
     string log_stream_set;
+
+    /// How often to flush written streams, in milliseconds
     int32 stream_flush_interval;
-    bool lua_execute_client_code;       // whether client-supplied Lua code can be executed
-    uint32 lua_streaming_max_memory;    // max memory size of Lua interpreters attached to streaming
+
+    /// whether client-supplied Lua code can be executed
+    bool lua_execute_client_code;
+
+    /// max memory size of Lua interpreters attached to streaming
+    uint32 lua_streaming_max_memory;
 };
 
-// The server is an uber device that provides server functionality
-//
-// It has a couple of functions:
-//
-//   - ZMQ Device - it forwards 0MQ messages to and from the appropriate sockets
-//   - Thread Manager - manages threads for request processing, store watching, streaming
-//   - Logging coordinator - all process logging (itself using zippylog) flows through this class
-//
-// SOCKET FLOWS
-//
-// When a client connects to a configured listening socket, messages will
-// be handled as follows:
-//
-//   client -> <clients_sock> -> <workers_sock> -> worker thread
-//
-// A worker thread will handle the message in one of the following:
-//
-//   - It will generate a response itself. It just sends the response
-//     back through the workers_sock and it will make its way back to
-//     the client.
-//   - If a subscription keepalive, will forward the message to
-//     worker_streaming_notify_sock. The broker receives messages
-//     from all workers and then rebroadcasts the messages to all
-//     streamers connected via streaming_streaming_notify_sock.
-//   - If a subscription request, will forward the message to
-//     worker_subscriptions_sock. The broker receives these messages
-//     and sends to one streamer via streaming_subscriptions_sock.
-//     The streamer that receives it will likely send a response via
-//     streaming_sock and the broker will forward it to the
-//     clients_sock.
-//
-// In the streaming cases, the request response (if there is one) does not
-// come back through the workers_sock. This is perfectly fine, as that
-// socket is a XREQ socket. This preserves the event-driver architecture
-// of the server.
+/// The server is an uber device that provides server functionality
+///
+/// It has a couple of functions:
+///
+///   - ZMQ Device - it forwards 0MQ messages to and from the appropriate sockets
+///   - Thread Manager - manages threads for request processing, store watching, streaming
+///   - Logging coordinator - all process logging (itself using zippylog) flows through this class
+///
+/// SOCKET FLOWS
+///
+/// When a client connects to a configured listening socket, messages will
+/// be handled as follows:
+///
+///   client -> <clients_sock> -> <workers_sock> -> worker thread
+///
+/// A worker thread will handle the message in one of the following:
+///
+///   - It will generate a response itself. It just sends the response
+///     back through the workers_sock and it will make its way back to
+///     the client.
+///   - If a subscription keepalive, will forward the message to
+///     worker_streaming_notify_sock. The broker receives messages
+///     from all workers and then rebroadcasts the messages to all
+///     streamers connected via streaming_streaming_notify_sock.
+///   - If a subscription request, will forward the message to
+///     worker_subscriptions_sock. The broker receives these messages
+///     and sends to one streamer via streaming_subscriptions_sock.
+///     The streamer that receives it will likely send a response via
+///     streaming_sock and the broker will forward it to the
+///     clients_sock.
+///
+/// In the streaming cases, the request response (if there is one) does not
+/// come back through the workers_sock. This is perfectly fine, as that
+/// socket is a XREQ socket. This preserves the event-driver architecture
+/// of the server.
 class ZIPPYLOG_EXPORT Server {
     public:
-        // Construct a broker from a Lua config file
-        //
-        // For a description of what configuration options are read, see
-        // ParseConfig()
+        /// Construct a server from a Lua config file
+        ///
+        /// For a description of what configuration options are read, see
+        /// ParseConfig()
         Server(const string config_file_path);
 
         ~Server();
 
-        // Run the server synchronously
-        //
-        // This will block until a fatal error is encountered or until the
-        // Shutdown() function is called.
+        /// Run the server synchronously
+        ///
+        /// This will block until a fatal error is encountered or until the
+        /// Shutdown() function is called.
         void Run();
 
-        // Runs asynchronously
-        // this creates a new thread, runs the server in that, then returns
+        /// Runs asynchronously
+        /// this creates a new thread, runs the server in that, then returns
         void RunAsync();
 
-        // Shut down the server
-        //
-        // On first call, will trigger the shutdown semaphore which signals all
-        // created threads to stop execution. The function call will block
-        // until all threads have been joined.
-        //
-        // On second call, is a no-op.
-        // TODO need an API to force shutdown
+        /// Shut down the server
+        ///
+        /// On first call, will trigger the shutdown semaphore which signals all
+        /// created threads to stop execution. The function call will block
+        /// until all threads have been joined.
+        ///
+        /// On second call, is a no-op.
+        /// TODO need an API to force shutdown
         void Shutdown();
 
     protected:
@@ -256,7 +279,7 @@ class ZIPPYLOG_EXPORT Server {
         void setup_internal_sockets();
         void setup_listener_sockets();
     private:
-        // copy constructor and assignment operator are not supported
+        // copy constructor and assignment operator are not available
         Server(const Server &orig);
         Server & operator=(const Server &orig);
 };
