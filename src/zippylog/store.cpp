@@ -18,7 +18,9 @@
 
 #include <stdio.h>
 
+using ::std::map;
 using ::std::string;
+using ::std::vector;
 
 namespace zippylog {
 

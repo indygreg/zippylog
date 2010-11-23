@@ -51,12 +51,12 @@ class Worker : public ::zippylog::RequestProcessor {
         ~Worker();
 
     protected:
-        ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output);
-        ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output);
-        ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output);
+        ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
+        ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
+        ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
-        string streaming_subscriptions_endpoint;
-        string streaming_updates_endpoint;
+        ::std::string streaming_subscriptions_endpoint;
+        ::std::string streaming_updates_endpoint;
 
         ::zmq::socket_t *subscriptions_sock;
         ::zmq::socket_t *subscription_updates_sock;
@@ -109,10 +109,10 @@ public:
     ServerConfig();
 
     /// the path to the store the server operates against
-    string store_path;
+    ::std::string store_path;
 
     /// 0MQ endpoints to bind XREP sockets to listen for client messages
-    vector<string> listen_endpoints;
+    ::std::vector< ::std::string > listen_endpoints;
 
     /// The number of worker threads to run
     uint32 worker_threads;
@@ -124,10 +124,10 @@ public:
     uint32 subscription_ttl;
 
     /// Bucket to log server's own log messages to
-    string log_bucket;
+    ::std::string log_bucket;
 
     /// Stream set to log server's own log messages to
-    string log_stream_set;
+    ::std::string log_stream_set;
 
     /// How often to flush written streams, in milliseconds
     int32 stream_flush_interval;
@@ -243,8 +243,8 @@ class ZIPPYLOG_EXPORT Server {
 
         string id;
         ::zippylog::platform::Thread * exec_thread;
-        vector< ::zippylog::platform::Thread * > worker_threads;
-        vector< ::zippylog::platform::Thread * > streaming_threads;
+        ::std::vector< ::zippylog::platform::Thread * > worker_threads;
+        ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
         ::zippylog::Store * store;
         bool active;
         ServerConfig config;
@@ -254,17 +254,17 @@ class ZIPPYLOG_EXPORT Server {
         ::zippylog::device::StreamerStartParams streamer_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
 
-        static const string WORKER_ENDPOINT;
-        static const string STORE_CHANGE_ENDPOINT;
-        static const string STREAMING_ENDPOINT;
-        static const string LOGGER_ENDPOINT;
+        static const ::std::string WORKER_ENDPOINT;
+        static const ::std::string STORE_CHANGE_ENDPOINT;
+        static const ::std::string STREAMING_ENDPOINT;
+        static const ::std::string LOGGER_ENDPOINT;
 
-        static const string WORKER_SUBSCRIPTIONS_ENDPOINT;
-        static const string STREAMING_SUBSCRIPTIONS_ENDPOINT;
-        static const string WORKER_STREAMING_NOTIFY_ENDPOINT;
-        static const string STREAMING_STREAMING_NOTIFY_ENDPOINT;
+        static const ::std::string WORKER_SUBSCRIPTIONS_ENDPOINT;
+        static const ::std::string STREAMING_SUBSCRIPTIONS_ENDPOINT;
+        static const ::std::string WORKER_STREAMING_NOTIFY_ENDPOINT;
+        static const ::std::string STREAMING_STREAMING_NOTIFY_ENDPOINT;
 
-        static bool ParseConfig(const string path, ServerConfig &config, string &error);
+        static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
 
         // thread start functions
         static void * StoreWatcherStart(void *data);

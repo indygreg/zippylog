@@ -37,8 +37,8 @@ public:
     EnvelopeSubscription();
 
     ::std::string id;
-    vector<string> paths;
-    vector<string> socket_identifiers;
+    ::std::vector< ::std::string > paths;
+    ::std::vector< ::std::string > socket_identifiers;
 };
 
 /// records details about an individual subscription
@@ -55,8 +55,8 @@ public:
         STORE_CHANGE = 2,
     } type;
 
-    ::std::vector<string> paths;
-    ::std::vector<string> socket_identifiers;
+    ::std::vector< ::std::string > paths;
+    ::std::vector< ::std::string > socket_identifiers;
 
     EnvelopeSubscription envelope_subscription;
 
@@ -154,19 +154,19 @@ class ZIPPYLOG_EXPORT Streamer {
 
         void ProcessStoreChangeEnvelope(Envelope &e);
 
-        void ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &msgs);
-        void ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &msgs);
+        void ProcessSubscribeStoreChanges(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector<message_t *> &msgs);
+        void ProcessSubscribeEnvelopes(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector<message_t *> &msgs);
 
-        void SendSubscriptionAck(const string &id, Envelope &req, vector<string> &identities);
+        void SendSubscriptionAck(const ::std::string &id, Envelope &req, ::std::vector< ::std::string > &identities);
 
         // returns whether we have a subscription for envelopes in the given stream path
-        bool HaveEnvelopeSubscription(const string &path);
+        bool HaveEnvelopeSubscription(const ::std::string &path);
 
         // whether we have any store change subscriptions
         bool HaveStoreChangeSubscriptions();
 
         // returns whether we have store change subscriptions for the given path
-        bool HaveStoreChangeSubscriptions(const string &path);
+        bool HaveStoreChangeSubscriptions(const ::std::string &path);
 
     private:
         Streamer(const Streamer &orig);

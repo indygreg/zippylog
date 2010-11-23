@@ -100,21 +100,21 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ///
         /// Most people typically have no need to call this function. However,
         /// it is provided public just in case.
-        ResponseStatus ProcessRequest(Envelope &e, vector<Envelope> &output);
+        ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
     protected:
 
         /// callback to handle a validated request to subscribe to store changes
         /// TODO should probably have a custom class for the request instance
-        virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output) = 0;
+        virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
         /// callback to handle a subscription to envelopes
         /// TODO specific class for request
-        virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output) = 0;
+        virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
         /// callback to handle a subscription keepalive
         /// TODO specific class for request
-        virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output) = 0;
+        virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
 
         /// Process a StoreInfo request and populate the passed envelope with the response
@@ -123,28 +123,28 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ResponseStatus ProcessStoreInfo(Envelope &response);
 
         /// Process a Get request
-        ResponseStatus ProcessGet(Envelope &request, vector<Envelope> &output);
+        ResponseStatus ProcessGet(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output);
+        ResponseStatus ProcessSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output);
+        ResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output);
+        ResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
-        bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, string message, vector<Envelope> &msgs);
+        bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, string message, ::std::vector<Envelope> &msgs);
 
         ::zmq::context_t *ctx;
-        string store_path;
-        string logger_endpoint;
-        string client_endpoint;
+        ::std::string store_path;
+        ::std::string logger_endpoint;
+        ::std::string client_endpoint;
 
         ::zmq::socket_t * logger_sock;
         ::zmq::socket_t * socket;
 
         Store store;
 
-        string id;
-        vector<string> current_request_identities;
+        ::std::string id;
+        ::std::vector< ::std::string > current_request_identities;
         bool *active;
 
 private:
