@@ -323,8 +323,8 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
     // TODO perform additional stream verification
 
-    InputStream stream;
-    if (!this->store.GetInputStream(get->path(), stream)) {
+    InputStream *stream = this->store.GetInputStream(get->path());
+    if (!stream) {
         ::zippylog::zippylogd::WorkerGetInvalidStream log = ::zippylog::zippylogd::WorkerGetInvalidStream();
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -337,7 +337,9 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
     }
 
     uint64 start_offset = get->start_offset();
-    stream.Seek(start_offset);
+    if (!stream->SetAbsoluteOffset(start_offset)) {
+        throw "could not set stream offset";
+    }
 
     // determine how much to fetch
     uint32 bytes_left = 256000; // TODO pull from server config
@@ -349,7 +351,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
     zippylog::Envelope m = zippylog::Envelope();
 
-    uint32 envelope_size = stream.NextEnvelopeSize();
+    uint32 envelope_size = stream->NextEnvelopeSize();
     // could not find envelope in stream at offset
     if (!envelope_size) {
         ::zippylog::zippylogd::WorkerGetInvalidOffset log = ::zippylog::zippylogd::WorkerGetInvalidOffset();
@@ -387,7 +389,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
     uint32 envelopes_read = 0;
 
     while (true) {
-        if (!stream.ReadEnvelope(env, envelope_size)) break;
+        if (!stream->ReadEnvelope(env, envelope_size)) break;
 
         output.push_back(env);
 
@@ -397,7 +399,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
         if (bytes_left - envelope_size < 0) break;
         bytes_left -= envelope_size;
 
-        envelope_size = stream.NextEnvelopeSize();
+        envelope_size = stream->NextEnvelopeSize();
         if (!envelope_size) break;
     }
 

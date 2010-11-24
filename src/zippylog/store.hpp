@@ -120,8 +120,19 @@ class ZIPPYLOG_EXPORT Store {
         bool StreamInfo(const ::std::string bucket, const ::std::string set, const ::std::string stream, protocol::StreamInfo &info);
         bool StreamInfo(const ::std::string path, protocol::StreamInfo &info);
 
-        bool GetInputStream(const ::std::string path, InputStream &s);
-        bool GetInputStream(const ::std::string bucket, const ::std::string set, const ::std::string stream, InputStream &s);
+        /// Obtain an input stream from the store
+        ///
+        /// Returned pointer is NULL if the stream could not be opened for any
+        /// reason. The returned memory address is owned by the store but the
+        /// returned object is given to the caller and only the caller. This
+        /// means the object will be cleaned up when the store is destroyed and
+        /// the caller need not worry about thread contention on the object.
+        InputStream * GetInputStream(const ::std::string &path);
+
+        /// Obtain an input stream from the store.
+        ///
+        /// See the above function for usage.
+        InputStream * GetInputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
 
         // create a bucket
         // if it exists already, will return true
@@ -180,6 +191,10 @@ class ZIPPYLOG_EXPORT Store {
 
         ::std::string StreamFilesystemPath(const ::std::string path);
 
+        /// holds pointers to retrieved input streams
+        ///
+        /// streams will be destroyed upon object destruction
+        ::std::vector<InputStream *> input_streams;
     private:
         // disable copy constructor and assignment operator
         Store(const Store &orig);

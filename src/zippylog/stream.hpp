@@ -30,35 +30,97 @@ namespace zippylog {
 
 /// Represents a stream that we read from
 ///
-/// This currently represents a file-backed stream. This should really be
-/// an abstract base class.
+/// This is the base class for all readable streams. It is not meant to use
+/// this class directly.
 class ZIPPYLOG_EXPORT InputStream {
     public:
+        /// Construct an empty input stream
+        ///
+        /// This is provided so a default constructor is available. It is
+        /// pretty useless.
         InputStream();
-        InputStream(::std::string file, int64 seek_bytes=0);
+
         ~InputStream();
 
-        bool OpenFile(::std::string file, int64 start_offset = 0);
-
-        // Size (in bytes) of the next envelope in the stream
-        // does NOT include size of envelope size encoding
+        /// Size (in bytes) of the next envelope in the stream
+        /// does NOT include size of envelope size encoding
         uint32 NextEnvelopeSize();
 
+        /// Read an envelope from the stream
+        ///
+        /// If returns true, an envelope is deserialized and placed in the
+        /// variable passed and bytes_read is set to the number of bytes read
+        /// from the stream to obtain this envelope. This number could be
+        /// smaller or larger than the serialized envelope size due to stream
+        /// errors or stream storage techniques.
         bool ReadEnvelope(::zippylog::Envelope &envelope, uint32 &bytes_read);
-        bool Seek(int64 offset);
+
+        /// Can we set absolute stream offsets
+        ///
+        /// If true, calls to SetAbsoluteOffset() are expected to return
+        /// success.
+        virtual bool CanSetAbsoluteOffset() const = 0;
+
+        /// Sets the absolute offset of the stream
+        ///
+        /// Returns false if the operation not supported or if the operation
+        /// failed. See CanSetAbsoluteOffset() to determine whether setting
+        /// absolute offsets is possible.
+        virtual bool SetAbsoluteOffset(int64 offset) = 0;
+
+    protected:
+        /// Reads the stream version
+        ///
+        /// Returns true if successful and the stream is supported.
+        /// This function is meant to be called by stream implementations when
+        /// they have opened the stream.
+        bool ReadVersion();
+
+        ::google::protobuf::io::CodedInputStream *cis;
+
+        /// Stream version
+        char version;
+
+        /// Whether the size of the next envelope is available
+        bool have_next_size;
+
+        /// The size of the next envelope (if available)
+        uint32 next_envelope_size;
 
     private:
         // disable copy constructor and assignment operator
         InputStream(const InputStream &orig);
         InputStream & operator=(const InputStream &orig);
+};
 
-        platform::File file;
+/// An input stream backed by a file
+class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
+    public:
+        /// Construct a stream from an existing file
+        ///
+        /// Optionally seek to specified offset in stream (in bytes)
+        FileInputStream(const ::std::string &path, int64 start_offset = 0);
 
-        ::google::protobuf::io::FileInputStream *_is;
-        ::google::protobuf::io::CodedInputStream *_cis;
-        bool _have_next_size;
-        uint32 _next_envelope_size;
+        /// Construct a new stream from a file descriptor
+        ///
+        /// The file descriptor must be opened for reading. In addition, the
+        /// stream version must be obtained before calling this constructor.
+        FileInputStream(int fd, char version);
 
+        ~FileInputStream();
+
+        bool CanSetAbsoluteOffset() const { return true; }
+
+        bool SetAbsoluteOffset(int64 offset);
+
+    protected:
+        ::zippylog::platform::File file;
+
+        ::google::protobuf::io::FileInputStream *fis;
+
+    private:
+        FileInputStream(const FileInputStream &orig);
+        FileInputStream & operator=(const FileInputStream &orig);
 };
 
 // A stream used for writing data

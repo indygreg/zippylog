@@ -31,21 +31,16 @@ Store::Store(const string path) : _path(path)
     }
 }
 
-Store::Store(const Store &orig)
-{
-    throw "no copy constructor for Store instances";
-}
-
-Store & Store::operator=(const Store &orig)
-{
-    throw "assignment operator for stores is not defined";
-}
-
 Store::~Store()
 {
     map<string, OpenOutputStream>::iterator i = this->out_streams.begin();
     for (; i != this->out_streams.end(); i++) {
         if (i->second.stream) delete i->second.stream;
+    }
+
+    vector<InputStream *>::iterator iter = this->input_streams.begin();
+    for (; iter != this->input_streams.end(); iter++) {
+        if (*iter) delete *iter;
     }
 }
 
@@ -361,18 +356,26 @@ bool Store::StoreInfo(protocol::StoreInfo &info)
     return true;
 }
 
-bool Store::GetInputStream(const string path, InputStream &s)
+InputStream * Store::GetInputStream(const string &path)
 {
-    if (!ValidatePath(path)) return false;
+    if (!ValidatePath(path)) return NULL;
 
-    return s.OpenFile(this->StreamFilesystemPath(path));
+    FileInputStream *s = new FileInputStream(this->StreamFilesystemPath(path));
+
+    this->input_streams.push_back(s);
+
+    return s;
 }
 
-bool Store::GetInputStream(const string bucket, const string stream_set, const string stream, InputStream &s)
+InputStream * Store::GetInputStream(const string &bucket, const string &stream_set, const string &stream)
 {
     string path = this->StreamFilesystemPath(this->StreamPath(bucket, stream_set, stream));
 
-    return s.OpenFile(path);
+    FileInputStream *s = new FileInputStream(path);
+
+    this->input_streams.push_back(s);
+
+    return s;
 }
 
 

@@ -455,9 +455,10 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     }
 
     // pre-load an input stream if we need to
-    InputStream is;
+    InputStream *is = NULL;
     if (process_envelopes && this->HaveEnvelopeSubscription(path)) {
-        if (!this->store->GetInputStream(path, is)) {
+        is = this->store->GetInputStream(path);
+        if (!is) {
             throw "could not obtain input stream";
             return;
         }
@@ -500,7 +501,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
                 uint64 offset = iter->second;
 
-                is.Seek(offset);
+                if (!is->SetAbsoluteOffset(offset)) {
+                    throw "could not set stream offset";
+                }
 
                 Envelope response = Envelope();
                 protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
@@ -512,7 +515,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                 while (offset < stream_length) {
                     Envelope env;
                     uint32 read;
-                    if (!is.ReadEnvelope(env, read)) {
+                    if (!is->ReadEnvelope(env, read)) {
                         break;
                     }
                     offset += read;

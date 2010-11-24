@@ -25,84 +25,46 @@ using ::std::string;
 namespace zippylog {
 
 InputStream::InputStream() :
-    _cis(NULL),
-    _is(NULL)
+    cis(NULL),
+    version(0),
+    have_next_size(false),
+    next_envelope_size(0)
 { }
 
-InputStream::InputStream(const InputStream &orig)
-{
-    throw "copy constructor not available for InputStream";
-}
-
-InputStream::InputStream(string file, int64 seek_bytes) :
-    _cis(NULL),
-    _is(NULL)
-{
-    if (!this->OpenFile(file, seek_bytes)) {
-        throw "could not open stream for reading";
-    }
-}
-
-InputStream & InputStream::operator=(const InputStream &orig)
-{
-    throw "assignment operator not available for InputStream";
-}
-
 InputStream::~InputStream() {
-    delete this->_cis;
-    delete this->_is;
-
-    this->file.Close();
-}
-
-bool InputStream::OpenFile(string file, int64 start_offset)
-{
-    this->file.Close();
-
-    if (this->_cis) delete this->_cis;
-    if (this->_is) delete this->_is;
-    this->_have_next_size = false;
-    this->_next_envelope_size = 0;
-
-    if (!this->file.Open(file, platform::File::READ | platform::File::BINARY)) {
-        return false;
-    }
-
-    if (start_offset > 0) {
-        if (!this->file.Seek(start_offset)) return false;
-    }
-
-    this->_is = new FileInputStream(this->file.FileDescriptor());
-    this->_cis = new CodedInputStream(this->_is);
-
-    if (start_offset == 0) {
-        char v;
-        if (!_cis->ReadRaw(&v, sizeof(v))) {
-            GOOGLE_LOG(FATAL) << "could not read version byte from stream";
-            return false;
-        }
-        else if (v != 1) {
-            GOOGLE_LOG(FATAL) << "stream is not version 1";
-            return false;
-        }
-    }
-
-    return true;
+    if (this->cis) delete this->cis;
 }
 
 uint32 InputStream::NextEnvelopeSize()
 {
-    if (this->_have_next_size) {
-        return this->_next_envelope_size;
+    if (this->have_next_size) {
+        return this->next_envelope_size;
     }
 
-    if (!this->_cis->ReadVarint32(&this->_next_envelope_size)) {
+    if (!this->cis->ReadVarint32(&this->next_envelope_size)) {
         return 0;
     }
 
-    this->_have_next_size = true;
+    this->have_next_size = true;
 
-    return this->_next_envelope_size;
+    return this->next_envelope_size;
+}
+
+bool InputStream::ReadVersion()
+{
+// we read the first byte of the stream
+    char v;
+    if (!this->cis->ReadRaw(&v, sizeof(v))) {
+        return false;
+    }
+
+    this->version = v;
+
+    if (v != 0x01) {
+        return false;
+    }
+
+    return true;
 }
 
 bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
@@ -113,16 +75,16 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
         return false;
     }
 
-    CodedInputStream::Limit limit = _cis->PushLimit(size);
-    if (!e.envelope.ParseFromCodedStream(_cis) || !_cis->ConsumedEntireMessage()) {
-        this->_have_next_size = false;
+    CodedInputStream::Limit limit = this->cis->PushLimit(size);
+    if (!e.envelope.ParseFromCodedStream(this->cis) || !this->cis->ConsumedEntireMessage()) {
+        this->have_next_size = false;
         bytes_read = 0;
         return false;
     }
 
-    this->_have_next_size = false;
+    this->have_next_size = false;
 
-    _cis->PopLimit(limit);
+    this->cis->PopLimit(limit);
 
     if (size <= 0x7f) {          // 127
         bytes_read = size + 1;
@@ -140,20 +102,57 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
     return true;
 }
 
-bool InputStream::Seek(int64 offset)
+
+FileInputStream::FileInputStream(const string &path, int64 offset) :
+    fis(NULL)
 {
-    if (!this->file.Seek(offset)) return false;
+    if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
+        throw "could not open file input stream";
+    }
 
-    delete this->_cis;
-    delete this->_is;
+    this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
+    this->cis = new CodedInputStream(this->fis);
 
-    this->_is = new FileInputStream(this->file.FileDescriptor());
-    this->_cis = new CodedInputStream(this->_is);
+    if (!this->ReadVersion()) {
+        throw "could not read stream version or stream version not supported";
+    }
 
-    return true;
+    if (offset > 0) {
+        if (!this->SetAbsoluteOffset(offset)) {
+            throw "could not set stream offset";
+        }
+    }
 }
 
+FileInputStream::~FileInputStream()
+{
+    if (this->fis) delete this->fis;
 
+    this->file.Close();
+}
+
+bool FileInputStream::SetAbsoluteOffset(int64 offset)
+{
+    if (!this->file.Seek(offset)) {
+        throw "could not seek to requested stream offset";
+    }
+
+    // if we change the underlying file descriptor, we need to rebuild the
+    // protobuf pieces from the new offset in the descriptor b/c the
+    // objects can buffer read data
+    if (this->cis) {
+        delete this->cis;
+        this->cis = NULL;
+    }
+
+    if (this->fis) {
+        delete this->fis;
+        this->fis = NULL;
+    }
+
+    this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
+    this->cis = new CodedInputStream(this->fis);
+}
 
 OutputStream::OutputStream(const string file)
 {
