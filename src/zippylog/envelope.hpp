@@ -39,8 +39,6 @@ inline BOOL GetMessage(LPMSG msg, HWND hwnd, UINT min, UINT max) {
 
 namespace zippylog {
 
-using ::google::protobuf::Message;
-
 class ZIPPYLOG_EXPORT Envelope {
     public:
         // construct an empty envelope
@@ -69,7 +67,7 @@ class ZIPPYLOG_EXPORT Envelope {
         //
         // We require namespace and enumeration now. If we can get around
         // inefficient castings, we'll likely create a new overload
-        bool AddMessage(Message &m, uint32 ns, uint32 enumeration);
+        bool AddMessage(::google::protobuf::Message &m, uint32 ns, uint32 enumeration);
 
         message::Envelope envelope;
 
@@ -94,7 +92,7 @@ class ZIPPYLOG_EXPORT Envelope {
         // the memory won't be accessible once the envelope is destroyed
         // therefore, the caller should NOT free it
         // if the index does not exist, NULL will be returned
-        Message * GetMessage(int index);
+        ::google::protobuf::Message * GetMessage(int index);
 
         // copy a message to another envelope
         bool CopyMessage(int index, Envelope &dest);
@@ -103,7 +101,7 @@ class ZIPPYLOG_EXPORT Envelope {
 
     protected:
         // holds pointer to dynamic array
-        Message ** messages;
+        ::google::protobuf::Message ** messages;
         int message_count;
 };
 

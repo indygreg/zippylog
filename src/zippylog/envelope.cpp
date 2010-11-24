@@ -24,6 +24,7 @@
 
 namespace zippylog {
 
+using ::google::protobuf::Message;
 using ::std::string;
 using ::std::stringstream;
 using ::std::vector;

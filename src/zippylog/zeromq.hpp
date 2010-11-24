@@ -22,8 +22,6 @@
 #include <string>
 #include <vector>
 
-using ::zippylog::Envelope;
-
 namespace zippylog {
 namespace zeromq {
 

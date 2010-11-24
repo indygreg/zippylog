@@ -21,8 +21,6 @@
 
 namespace zippylog {
 
-using ::google::protobuf::Message;
-
 // a central registration service for zippylog message enumerations
 // Currently, instance() is NOT thread safe
 class ZIPPYLOG_EXPORT MessageRegistrar {
@@ -32,15 +30,15 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
         static MessageRegistrar * instance();
         static void TerminateInstance();
 
-        bool register_message(uint32 ns, uint32 enumeration, Message *instance);
-        Message * get_message(uint32 ns, uint32 enumeration);
+        bool register_message(uint32 ns, uint32 enumeration, ::google::protobuf::Message *instance);
+        ::google::protobuf::Message * get_message(uint32 ns, uint32 enumeration);
 
         // cleans up a registrar instance by removing all registered message types
         void Cleanup();
 
     protected:
         // TODO lookup time can be improved since map is nlogn
-        ::std::map< ::std::pair<uint32, uint32>, Message * > _types;
+        ::std::map< ::std::pair<uint32, uint32>, ::google::protobuf::Message * > _types;
 
     private:
         MessageRegistrar();

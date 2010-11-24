@@ -15,6 +15,7 @@
 #include <zippylog/message_registrar.hpp>
 #include <zippylog/messages.hpp>
 
+using ::google::protobuf::Message;
 using ::std::map;
 using ::std::pair;
 
