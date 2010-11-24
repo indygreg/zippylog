@@ -19,6 +19,15 @@
 #include <zippylog/zeromq.hpp>
 #include <zmq.hpp>
 
+using ::std::map;
+using ::std::string;
+using ::std::vector;
+using ::zippylog::protocol::response::SubscriptionStart;
+using ::zmq::context_t;
+using ::zmq::message_t;
+using ::zmq::pollitem_t;
+using ::zmq::socket_t;
+
 namespace zippylog {
 namespace client {
 

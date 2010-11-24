@@ -29,17 +29,6 @@
 namespace zippylog {
 namespace client {
 
-using protocol::StoreInfo;
-using protocol::response::SubscriptionStart;
-using ::std::map;
-using ::std::string;
-using ::std::vector;
-using ::zmq::socket_t;
-using ::zmq::context_t;
-using ::zmq::message_t;
-using ::zmq::pollitem_t;
-using ::zippylog::Envelope;
-
 /*
 The client API is pretty bad at the moment. In the future, everything will
 likely be implemented via callbacks. There will be synchronous and asynchronous
@@ -53,19 +42,19 @@ class ZIPPYLOG_EXPORT StreamSegment {
         StreamSegment();
         ~StreamSegment();
 
-        bool SetPath(const string path);
+        bool SetPath(const ::std::string path);
         bool SetStartOffset(uint64 offset);
         bool SetEndOffset(uint64 offset);
         bool SetBytesSent(uint32 count);
         bool SetEnvelopesSent(uint32 number);
         bool AddEnvelope(Envelope e);
 
-        string Path;
+        ::std::string Path;
         uint64 StartOffset;
         uint64 EndOffset;
         uint32 BytesSent;
         uint32 EnvelopesSent;
-        vector<Envelope> Envelopes;
+        ::std::vector<Envelope> Envelopes;
 
 };
 
@@ -74,24 +63,24 @@ class ZIPPYLOG_EXPORT StreamSegment {
 // callers can associate the subscription id with their own metadata
 // independent of the client API. their callbacks can fetch this data at
 // callback time.
-typedef void (__stdcall * StoreChangeStreamAddedCallback)(string, protocol::StoreChangeStreamAdded &, void *);
-typedef void (__stdcall * StoreChangeStreamDeletedCallback)(string, protocol::StoreChangeStreamDeleted &, void *);
-typedef void (__stdcall * StoreChangeStreamAppendedCallback)(string, protocol::StoreChangeStreamAppended &, void *);
-typedef void (__stdcall * StoreChangeBucketAddedCallback)(string, protocol::StoreChangeBucketAdded &, void *);
-typedef void (__stdcall * StoreChangeBucketDeletedCallback)(string, protocol::StoreChangeBucketDeleted &, void *);
-typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(string, protocol::StoreChangeStreamSetAdded &, void *);
-typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(string, protocol::StoreChangeStreamSetDeleted &, void *);
+typedef void (__stdcall * StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAdded &, void *);
+typedef void (__stdcall * StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeleted &, void *);
+typedef void (__stdcall * StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppended &, void *);
+typedef void (__stdcall * StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAdded &, void *);
+typedef void (__stdcall * StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeleted &, void *);
+typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
+typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
 
 // callback executed when a store info response is received
 typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
 
 // executed when a stream segment is received
 // invoked with the path, start offset, and the data in that segment
-typedef void (__stdcall * StreamSegmentCallback)(const string &, uint64, StreamSegment &, void *);
+typedef void (__stdcall * StreamSegmentCallback)(const ::std::string &, uint64, StreamSegment &, void *);
 
 // executed when an envelope is received
 // invoked with subscription id, the envelope, and supplied user data to subscription
-typedef void (__stdcall * EnvelopeCallback)(const string &, Envelope &, void *);
+typedef void (__stdcall * EnvelopeCallback)(const ::std::string &, Envelope &, void *);
 
 // The SubscriptionCallback defines the set of function callbacks for a
 // subscription. Not all callback types are valid for every subscription
@@ -120,7 +109,7 @@ public:
 
     friend class Client;
 protected:
-    string id;
+    ::std::string id;
 
     platform::Timer expiration_timer;
 
@@ -137,7 +126,7 @@ public:
     friend class Client;
 
 protected:
-    string id;
+    ::std::string id;
 
     StoreInfoCallback cb_store_info;
     StreamSegmentCallback cb_stream_segment;
@@ -150,7 +139,7 @@ protected:
 class ZIPPYLOG_EXPORT Client {
     public:
         // establish a client and bind to the location specified
-        Client(context_t *ctx, const string &connect);
+        Client(::zmq::context_t *ctx, const ::std::string &connect);
         ~Client();
 
         // Asynchronously obtain the store info. Executes supplied callback when store
@@ -158,13 +147,13 @@ class ZIPPYLOG_EXPORT Client {
         bool StoreInfo(StoreInfoCallback callback, void *data = NULL);
 
         // Cancels the subscription with specified ID
-        bool CancelSubscription(const string &id);
+        bool CancelSubscription(const ::std::string &id);
 
         // cancels all subscriptions registered with the client
         bool CancelAllSubscriptions();
 
         // Whether the client has a subscription with the specified subscription ID
-        bool HasSubscription(const string &id);
+        bool HasSubscription(const ::std::string &id);
 
         // Waits up to N microseconds for response messages to arrive and process
         // any that arrive. Returns whether messages were processed
@@ -177,9 +166,9 @@ class ZIPPYLOG_EXPORT Client {
         // be
         bool RenewSubscriptions(bool force=false);
 
-        bool Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data = NULL);
-        bool Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data = NULL);
-        bool Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data = NULL);
 
         // Subscribe to store change events
         // This subscribes to events that describe the store, not envelopes in
@@ -191,22 +180,22 @@ class ZIPPYLOG_EXPORT Client {
         // The subscription will receive notifications for numerous store
         // change events. However, unless your SubscriptionCallback defines
         // functions for all of them, some events will be dropped by the client.
-        bool SubscribeStoreChanges(const string &path, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallback &callback, void *data = NULL);
 
         // Subscribes to new envelopes written on the server
-        bool SubscribeEnvelopes(const string &path, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallback &callback, void *data = NULL);
 
         // subscribes to new envelopes w/ Lua code specifying additional features
-        bool SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallback &callback, void *data = NULL);
 
     protected:
         // socket connect to server
-        socket_t *client_sock;
+        ::zmq::socket_t *client_sock;
 
-        map<string, Subscription> subscriptions;
-        map<string, OutstandingRequest> outstanding;
+        ::std::map< ::std::string, Subscription > subscriptions;
+        ::std::map< ::std::string, OutstandingRequest > outstanding;
 
-        pollitem_t * pollitem;
+        ::zmq::pollitem_t * pollitem;
 
         uint32 subscription_renewal_offset;
 
@@ -220,13 +209,13 @@ class ZIPPYLOG_EXPORT Client {
         // validates that a received SubscriptionStart message is OK
         // returns false if we don't know how to handle message fields or if
         // we don't know about the subscription
-        bool ValidateSubscriptionStart(SubscriptionStart &start);
+        bool ValidateSubscriptionStart(protocol::response::SubscriptionStart &start);
 
         // handles a response to a subscription
-        bool HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, vector<message_t *> &msgs);
+        bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStart &start, ::std::vector< ::zmq::message_t * > &msgs);
 
         // handles a response to a normal/outstanding request
-        bool HandleRequestResponse(Envelope &e, vector<message_t *> &msgs);
+        bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
 
     private:
         // disable copy constructor and assignment operator
