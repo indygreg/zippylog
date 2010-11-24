@@ -162,17 +162,6 @@ class ZIPPYLOG_EXPORT Store {
         /// envelopes. Time semantics are equivalent to the function above.
         bool WriteEnvelope(const ::std::string &bucket, const ::std::string &set, const void *data, int length, int64 time=-1);
 
-        /// Writes raw data to the stream set specified
-        ///
-        /// Time semantics are equivalenet to the function above.
-        bool WriteData(const ::std::string bucket, const ::std::string set, const void *data, int length, int64 time=-1);
-
-        /// Write data in a string to the stream set specified
-        ///
-        /// This is like WriteData(), but the raw data is stored in a string
-        /// type, not a buffer.
-        bool WriteString(const ::std::string bucket, const ::std::string set, const ::std::string &s, int64 time=-1);
-
         /// returns the name of a stream for a particular time value
         static ::std::string StreamNameForTime(int64 time, int seconds_per_file);
         static ::std::string StreamNameForTime(platform::Time &time, int seconds_per_file);

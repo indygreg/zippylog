@@ -431,14 +431,6 @@ bool Store::WriteEnvelope(const string &bucket, const string &set, const void *d
     return os.stream->WriteEnvelope(data, length);
 }
 
-bool Store::WriteData(const string bucket, const string set, const void *data, int length, int64 time)
-{
-    OpenOutputStream os;
-    if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) return false;
-
-    return os.stream->WriteData(data, length);
-}
-
 bool Store::FlushOutputStreams()
 {
     map<string, OpenOutputStream>::iterator i = this->out_streams.begin();
@@ -528,7 +520,7 @@ bool Store::ObtainOutputStream(const string bucket, const string set, int second
         if (!this->CreateStreamset(bucket, set)) return false;
     }
 
-    os.stream = new OutputStream(fs_path);
+    os.stream = new FileOutputStream(fs_path);
     os.last_write_time = -1;
     this->out_streams[store_path] = os;
 

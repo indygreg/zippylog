@@ -152,45 +152,22 @@ bool FileInputStream::SetAbsoluteOffset(int64 offset)
 
     this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
     this->cis = new CodedInputStream(this->fis);
+
+    return true;
 }
 
-OutputStream::OutputStream(const string file)
-{
-    if (!this->file.Open(file, platform::File::CREATE | platform::File::APPEND | platform::File::WRITE)) {
-        throw "could not open file";
-    }
-
-    platform::FileStat stat;
-    if (!platform::stat(file, stat)) {
-        throw "could not stat file opened for writing. weird";
-    }
-
-    // this is a new file, so we need to write out the version
-    if (!stat.size) {
-        char version = 0x01;
-        if (!this->file.Write(&version, 1)) {
-            throw "could not write version byte to stream";
-        }
-    }
-
-    this->os = new FileOutputStream(this->file.FileDescriptor());
-    this->cos = new CodedOutputStream(this->os);
-}
+OutputStream::OutputStream() : cos(NULL)
+{ }
 
 OutputStream::~OutputStream()
 {
-    // we must delete the coded output stream first, so it returns unused
-    // buffer to output stream
-    delete this->cos;
-
-    // we close the output stream manually, which incurs a flush
-    this->os->Close();
-
-    delete this->os;
+    if (this->cos) delete this->cos;
 }
 
 bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
 {
+    if (!this->cos) return false;
+
     int size = e.envelope.ByteSize();
 
     this->cos->WriteVarint32(size);
@@ -199,27 +176,76 @@ bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
 
 bool OutputStream::WriteEnvelope(const void *data, int length)
 {
+    if (!this->cos) return false;
+
     this->cos->WriteVarint32(length);
     this->cos->WriteRaw(data, length);
 
     return true;
 }
 
+bool OutputStream::WriteStreamHeader()
+{
+    if (!this->cos) return false;
+
+    char version = 0x01;
+    this->cos->WriteRaw(&version, sizeof(version));
+    return this->Flush();
+}
+
 bool OutputStream::WriteData(const void *data, int length)
 {
+    if (!this->cos) return false;
+
     this->cos->WriteRaw(data, length);
 
     return true;
 }
 
-bool OutputStream::WriteString(const string &s)
+FileOutputStream::FileOutputStream(const string &path) : os(NULL), OutputStream()
 {
-    this->cos->WriteRaw(s.data(), s.size());
+    if (!this->file.Open(path, platform::File::CREATE | platform::File::APPEND | platform::File::WRITE | platform::File::BINARY)) {
+        throw "could not open file";
+    }
 
-    return true;
+    platform::FileStat stat;
+    if (!platform::stat(path, stat)) {
+        throw "could not stat file opened for writing. weird";
+    }
+
+    if (this->cos) delete this->cos;
+
+    this->os = new ::google::protobuf::io::FileOutputStream(this->file.FileDescriptor());
+    this->cos = new CodedOutputStream(this->os);
+
+    // this is a new file, so we need to write out the version
+    if (!stat.size) {
+        if (!this->WriteStreamHeader()) {
+            throw "could not write stream header to new stream";
+        }
+    }
 }
 
-bool OutputStream::Flush()
+FileOutputStream::~FileOutputStream()
+{
+    // we must delete the coded output stream first, so it returns unused
+    // buffer to output stream
+    if (this->cos) {
+        delete this->cos;
+
+        // we set to NULL to prevent double free in parent dtor
+        this->cos = NULL;
+    }
+
+    if (this->os) {
+        // we close the output stream manually, which incurs a flush
+        this->os->Close();
+
+        delete this->os;
+    }
+}
+
+bool FileOutputStream::Flush()
 {
     // the coded output stream takes ownership of the buffer from the file
     // output stream, which screws with the later's Flush() API (it will
@@ -229,12 +255,13 @@ bool OutputStream::Flush()
     // stream and create a new coded output stream
     // see http://code.google.com/p/protobuf/issues/detail?id=216
 
-    delete this->cos;
+    if (this->cos) {
+        delete this->cos;
+    }
+
     bool result = this->os->Flush();
     this->cos = new CodedOutputStream(this->os);
 
-    // TODO consider using unbuffered I/O for the created file instead
-    // of forcing a file descriptor flush
     return this->file.Flush() && result;
 }
 

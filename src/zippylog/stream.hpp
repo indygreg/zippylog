@@ -123,44 +123,87 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
         FileInputStream & operator=(const FileInputStream &orig);
 };
 
-// A stream used for writing data
-// Currently, OutputStream's are not thread safe. In fact, multiple instances
-// pointing to the same file are not safe. The reason is buffering.
-// Currently, the protocol buffers output streams buffer data before it is
-// written to an underlying file descriptor. Flushes don't necessarily occur
-// at boundaries we desire. If multiple output streams are writing to the same
-// file, for example, a partial envelope could be flushed by one and another
-// could write out a full envelope shortly thereafter, corrupting the stream.
-//
-// In a nutshell, only allow one OutputStream per output file globally
-// TODO establish better sanity around output stream usage
+/// A stream used for writing data
+///
+/// This is an abstract base class. You are likely interested in a class that
+/// actually does something, like FileOutputStream.
+///
+/// Currently, OutputStream's are not thread safe. In fact, multiple instances
+/// pointing to the same file are not safe. The reason is buffering.
+/// Currently, the protocol buffers output streams buffer data before it is
+/// written to an underlying file descriptor. Flushes don't necessarily occur
+/// at boundaries we desire. If multiple output streams are writing to the same
+/// file, for example, a partial envelope could be flushed by one and another
+/// could write out a full envelope shortly thereafter, corrupting the stream.
+///
+/// In a nutshell, only allow one OutputStream per output file globally
+/// TODO establish better sanity around output stream usage
 class ZIPPYLOG_EXPORT OutputStream {
     public:
-        // opens an output stream (always appends)
-        OutputStream(const ::std::string file);
+        /// Create an empty output stream object
+        ///
+        /// Really doesn't do much of anything. Provided for API completeness.
+        OutputStream();
         ~OutputStream();
 
-        // writes an envelope to the stream
-        // NOT thread safe. if multiple threads call this, it may write a corrupt stream
+        /// Writes an envelope to the stream
+        ///
+        /// NOT thread safe. if multiple threads call this, it may write a corrupt stream
         bool WriteEnvelope(::zippylog::Envelope &envelope);
 
-        // writes an envelope from a buffer
-        // unlike WriteData(), this will add the varint length to the stream,
-        // as is necessary from the stream specification
+        /// Writes an envelope from a buffer
+        ///
+        /// Unlike WriteData(), this will add the varint length to the stream,
+        /// as is necessary from the stream specification
         bool WriteEnvelope(const void *data, int length);
 
-        // writes data with specified length to stream
+        /// Flush the written data to the backing store
+        ///
+        /// This may be a noop in implementations.
+        virtual bool Flush() = 0;
+
+protected:
+        /// Writes data with specified length to stream
+        ///
+        /// This is a very low-level API. It should not be used unless
+        /// you know what you are doing.
         bool WriteData(const void *data, int length);
 
-        // writes data inside a string to stream
-        bool WriteString(const ::std::string &s);
+        /// Writes data inside a string to stream
+        ///
+        /// Equivalent to WriteData(), but for data within a string
+        bool WriteString(const ::std::string &s) { return this->WriteData(s.data(), s.length()); }
 
+        /// Writes the stream header
+        ///
+        /// This must be called on new streams. It currently writes the stream
+        /// version byte and flushes output so the stream is available for
+        /// reading immediately.
+        bool WriteStreamHeader();
+
+        ::google::protobuf::io::CodedOutputStream *cos;
+};
+
+class ZIPPYLOG_EXPORT FileOutputStream : public OutputStream {
+    public:
+        /// Opens the file specified by path for writing
+        ///
+        /// File is opened in append mode so all writes automatically go to
+        /// end of file.
+        FileOutputStream(const ::std::string &path);
+
+        ~FileOutputStream();
+
+        /// Flushes the output stream
+        ///
+        /// This will flush all data buffered in the protocol buffer output
+        /// stream classes and flush the underlying file descriptor. This
+        /// should cause pending data to commit to disk.
         bool Flush();
 
-private:
-    platform::File file;
-    ::google::protobuf::io::FileOutputStream *os;
-    ::google::protobuf::io::CodedOutputStream *cos;
+    protected:
+        platform::File file;
+        ::google::protobuf::io::FileOutputStream *os;
 };
 
 } // namespace
