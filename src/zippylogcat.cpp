@@ -29,7 +29,7 @@ using ::std::ostringstream;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
-using ::zippylog::InputStream;
+using ::zippylog::FileInputStream;
 
 class ZippylogcatSource {
 public:
@@ -114,7 +114,7 @@ static bool ParseCommandArguments(
 bool ProcessFilename(string filename)
 {
     try {
-        InputStream is(filename);
+        FileInputStream is(filename);
 
         uint32 read = 0;
         Envelope e;
