@@ -32,7 +32,8 @@ void protobuf_AssignDesc_zippylog_2fmessage_2eproto() {
       "zippylog/message.proto");
   GOOGLE_CHECK(file != NULL);
   Envelope_descriptor_ = file->message_type(0);
-  static const int Envelope_offsets_[8] = {
+  static const int Envelope_offsets_[9] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, version_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_namespace_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Envelope, message_type_),
@@ -108,15 +109,15 @@ void protobuf_AddDesc_zippylog_2fmessage_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\026zippylog/message.proto\022\020zippylog.messa"
-    "ge\"\317\001\n\010Envelope\022\017\n\007message\030\001 \003(\014\022\035\n\021mess"
-    "age_namespace\030\002 \003(\rB\002\020\001\022\030\n\014message_type\030"
-    "\003 \003(\rB\002\020\001\022\023\n\013create_time\030\004 \001(\004\022\013\n\003tag\030\005 "
-    "\003(\014\022*\n\005actor\030\006 \003(\0132\033.zippylog.message.Ac"
-    "torInfo\022\025\n\rnumeric_value\030\007 \001(\004\022\024\n\014string"
-    "_value\030\010 \001(\t\"y\n\tActorInfo\022\022\n\ntouch_time\030"
-    "\001 \001(\004\022\023\n\013sequence_id\030\002 \001(\004\022\020\n\010hostname\030\003"
-    " \001(\t\022\017\n\007host_id\030\004 \001(\014\022\020\n\010actor_id\030\005 \001(\014\022"
-    "\016\n\006app_id\030\006 \001(\014", 375);
+    "ge\"\343\001\n\010Envelope\022\022\n\007version\030\001 \001(\r:\0011\022\017\n\007m"
+    "essage\030\002 \003(\014\022\035\n\021message_namespace\030\003 \003(\rB"
+    "\002\020\001\022\030\n\014message_type\030\004 \003(\rB\002\020\001\022\023\n\013create_"
+    "time\030\005 \001(\004\022\013\n\003tag\030\006 \003(\014\022*\n\005actor\030\007 \003(\0132\033"
+    ".zippylog.message.ActorInfo\022\025\n\rnumeric_v"
+    "alue\030\010 \001(\004\022\024\n\014string_value\030\t \001(\t\"y\n\tActo"
+    "rInfo\022\022\n\ntouch_time\030\001 \001(\004\022\023\n\013sequence_id"
+    "\030\002 \001(\004\022\020\n\010hostname\030\003 \001(\t\022\017\n\007host_id\030\004 \001("
+    "\014\022\020\n\010actor_id\030\005 \001(\014\022\016\n\006app_id\030\006 \001(\014", 395);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/message.proto", &protobuf_RegisterTypes);
   Envelope::default_instance_ = new Envelope();
@@ -138,6 +139,7 @@ struct StaticDescriptorInitializer_zippylog_2fmessage_2eproto {
 
 const ::std::string Envelope::_default_string_value_;
 #ifndef _MSC_VER
+const int Envelope::kVersionFieldNumber;
 const int Envelope::kMessageFieldNumber;
 const int Envelope::kMessageNamespaceFieldNumber;
 const int Envelope::kMessageTypeFieldNumber;
@@ -164,6 +166,7 @@ Envelope::Envelope(const Envelope& from)
 
 void Envelope::SharedCtor() {
   _cached_size_ = 0;
+  version_ = 1u;
   create_time_ = GOOGLE_ULONGLONG(0);
   numeric_value_ = GOOGLE_ULONGLONG(0);
   string_value_ = const_cast< ::std::string*>(&_default_string_value_);
@@ -203,10 +206,13 @@ Envelope* Envelope::New() const {
 }
 
 void Envelope::Clear() {
-  if (_has_bits_[3 / 32] & (0xffu << (3 % 32))) {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    version_ = 1u;
     create_time_ = GOOGLE_ULONGLONG(0);
     numeric_value_ = GOOGLE_ULONGLONG(0);
-    if (_has_bit(7)) {
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (_has_bit(8)) {
       if (string_value_ != &_default_string_value_) {
         string_value_->clear();
       }
@@ -227,8 +233,23 @@ bool Envelope::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // repeated bytes message = 1;
+      // optional uint32 version = 1 [default = 1];
       case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &version_)));
+          _set_bit(0);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_message;
+        break;
+      }
+      
+      // repeated bytes message = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message:
@@ -237,13 +258,13 @@ bool Envelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(10)) goto parse_message;
-        if (input->ExpectTag(18)) goto parse_message_namespace;
+        if (input->ExpectTag(18)) goto parse_message;
+        if (input->ExpectTag(26)) goto parse_message_namespace;
         break;
       }
       
-      // repeated uint32 message_namespace = 2 [packed = true];
-      case 2: {
+      // repeated uint32 message_namespace = 3 [packed = true];
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message_namespace:
@@ -255,16 +276,16 @@ bool Envelope::MergePartialFromCodedStream(
                       WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 1, 18, input, this->mutable_message_namespace())));
+                 1, 26, input, this->mutable_message_namespace())));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_message_type;
+        if (input->ExpectTag(34)) goto parse_message_type;
         break;
       }
       
-      // repeated uint32 message_type = 3 [packed = true];
-      case 3: {
+      // repeated uint32 message_type = 4 [packed = true];
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message_type:
@@ -276,32 +297,32 @@ bool Envelope::MergePartialFromCodedStream(
                       WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 1, 26, input, this->mutable_message_type())));
+                 1, 34, input, this->mutable_message_type())));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_create_time;
+        if (input->ExpectTag(40)) goto parse_create_time;
         break;
       }
       
-      // optional uint64 create_time = 4;
-      case 4: {
+      // optional uint64 create_time = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_create_time:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &create_time_)));
-          _set_bit(3);
+          _set_bit(4);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_tag;
+        if (input->ExpectTag(50)) goto parse_tag;
         break;
       }
       
-      // repeated bytes tag = 5;
-      case 5: {
+      // repeated bytes tag = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_tag:
@@ -310,13 +331,13 @@ bool Envelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_tag;
-        if (input->ExpectTag(50)) goto parse_actor;
+        if (input->ExpectTag(50)) goto parse_tag;
+        if (input->ExpectTag(58)) goto parse_actor;
         break;
       }
       
-      // repeated .zippylog.message.ActorInfo actor = 6;
-      case 6: {
+      // repeated .zippylog.message.ActorInfo actor = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_actor:
@@ -325,29 +346,29 @@ bool Envelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_actor;
-        if (input->ExpectTag(56)) goto parse_numeric_value;
+        if (input->ExpectTag(58)) goto parse_actor;
+        if (input->ExpectTag(64)) goto parse_numeric_value;
         break;
       }
       
-      // optional uint64 numeric_value = 7;
-      case 7: {
+      // optional uint64 numeric_value = 8;
+      case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_numeric_value:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &numeric_value_)));
-          _set_bit(6);
+          _set_bit(7);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(66)) goto parse_string_value;
+        if (input->ExpectTag(74)) goto parse_string_value;
         break;
       }
       
-      // optional string string_value = 8;
-      case 8: {
+      // optional string string_value = 9;
+      case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_string_value:
@@ -381,15 +402,20 @@ bool Envelope::MergePartialFromCodedStream(
 
 void Envelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // repeated bytes message = 1;
-  for (int i = 0; i < this->message_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->message(i), output);
+  // optional uint32 version = 1 [default = 1];
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
   }
   
-  // repeated uint32 message_namespace = 2 [packed = true];
+  // repeated bytes message = 2;
+  for (int i = 0; i < this->message_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      2, this->message(i), output);
+  }
+  
+  // repeated uint32 message_namespace = 3 [packed = true];
   if (this->message_namespace_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_message_namespace_cached_byte_size_);
   }
   for (int i = 0; i < this->message_namespace_size(); i++) {
@@ -397,9 +423,9 @@ void Envelope::SerializeWithCachedSizes(
       this->message_namespace(i), output);
   }
   
-  // repeated uint32 message_type = 3 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   if (this->message_type_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_message_type_cached_byte_size_);
   }
   for (int i = 0; i < this->message_type_size(); i++) {
@@ -407,35 +433,35 @@ void Envelope::SerializeWithCachedSizes(
       this->message_type(i), output);
   }
   
-  // optional uint64 create_time = 4;
-  if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->create_time(), output);
+  // optional uint64 create_time = 5;
+  if (_has_bit(4)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->create_time(), output);
   }
   
-  // repeated bytes tag = 5;
+  // repeated bytes tag = 6;
   for (int i = 0; i < this->tag_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      5, this->tag(i), output);
+      6, this->tag(i), output);
   }
   
-  // repeated .zippylog.message.ActorInfo actor = 6;
+  // repeated .zippylog.message.ActorInfo actor = 7;
   for (int i = 0; i < this->actor_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->actor(i), output);
+      7, this->actor(i), output);
   }
   
-  // optional uint64 numeric_value = 7;
-  if (_has_bit(6)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(7, this->numeric_value(), output);
-  }
-  
-  // optional string string_value = 8;
+  // optional uint64 numeric_value = 8;
   if (_has_bit(7)) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->numeric_value(), output);
+  }
+  
+  // optional string string_value = 9;
+  if (_has_bit(8)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->string_value().data(), this->string_value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      8, this->string_value(), output);
+      9, this->string_value(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -446,16 +472,21 @@ void Envelope::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Envelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // repeated bytes message = 1;
-  for (int i = 0; i < this->message_size(); i++) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteBytesToArray(1, this->message(i), target);
+  // optional uint32 version = 1 [default = 1];
+  if (_has_bit(0)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
   }
   
-  // repeated uint32 message_namespace = 2 [packed = true];
+  // repeated bytes message = 2;
+  for (int i = 0; i < this->message_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteBytesToArray(2, this->message(i), target);
+  }
+  
+  // repeated uint32 message_namespace = 3 [packed = true];
   if (this->message_namespace_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      2,
+      3,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -466,10 +497,10 @@ void Envelope::SerializeWithCachedSizes(
       WriteUInt32NoTagToArray(this->message_namespace(i), target);
   }
   
-  // repeated uint32 message_type = 3 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   if (this->message_type_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      3,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -480,37 +511,37 @@ void Envelope::SerializeWithCachedSizes(
       WriteUInt32NoTagToArray(this->message_type(i), target);
   }
   
-  // optional uint64 create_time = 4;
-  if (_has_bit(3)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->create_time(), target);
+  // optional uint64 create_time = 5;
+  if (_has_bit(4)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(5, this->create_time(), target);
   }
   
-  // repeated bytes tag = 5;
+  // repeated bytes tag = 6;
   for (int i = 0; i < this->tag_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteBytesToArray(5, this->tag(i), target);
+      WriteBytesToArray(6, this->tag(i), target);
   }
   
-  // repeated .zippylog.message.ActorInfo actor = 6;
+  // repeated .zippylog.message.ActorInfo actor = 7;
   for (int i = 0; i < this->actor_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->actor(i), target);
+        7, this->actor(i), target);
   }
   
-  // optional uint64 numeric_value = 7;
-  if (_has_bit(6)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(7, this->numeric_value(), target);
-  }
-  
-  // optional string string_value = 8;
+  // optional uint64 numeric_value = 8;
   if (_has_bit(7)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->numeric_value(), target);
+  }
+  
+  // optional string string_value = 9;
+  if (_has_bit(8)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->string_value().data(), this->string_value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        8, this->string_value(), target);
+        9, this->string_value(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -523,22 +554,31 @@ void Envelope::SerializeWithCachedSizes(
 int Envelope::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[3 / 32] & (0xffu << (3 % 32))) {
-    // optional uint64 create_time = 4;
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint32 version = 1 [default = 1];
+    if (has_version()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->version());
+    }
+    
+    // optional uint64 create_time = 5;
     if (has_create_time()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->create_time());
     }
     
-    // optional uint64 numeric_value = 7;
+    // optional uint64 numeric_value = 8;
     if (has_numeric_value()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->numeric_value());
     }
     
-    // optional string string_value = 8;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional string string_value = 9;
     if (has_string_value()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -546,14 +586,14 @@ int Envelope::ByteSize() const {
     }
     
   }
-  // repeated bytes message = 1;
+  // repeated bytes message = 2;
   total_size += 1 * this->message_size();
   for (int i = 0; i < this->message_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::BytesSize(
       this->message(i));
   }
   
-  // repeated uint32 message_namespace = 2 [packed = true];
+  // repeated uint32 message_namespace = 3 [packed = true];
   {
     int data_size = 0;
     for (int i = 0; i < this->message_namespace_size(); i++) {
@@ -568,7 +608,7 @@ int Envelope::ByteSize() const {
     total_size += data_size;
   }
   
-  // repeated uint32 message_type = 3 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   {
     int data_size = 0;
     for (int i = 0; i < this->message_type_size(); i++) {
@@ -583,14 +623,14 @@ int Envelope::ByteSize() const {
     total_size += data_size;
   }
   
-  // repeated bytes tag = 5;
+  // repeated bytes tag = 6;
   total_size += 1 * this->tag_size();
   for (int i = 0; i < this->tag_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::BytesSize(
       this->tag(i));
   }
   
-  // repeated .zippylog.message.ActorInfo actor = 6;
+  // repeated .zippylog.message.ActorInfo actor = 7;
   total_size += 1 * this->actor_size();
   for (int i = 0; i < this->actor_size(); i++) {
     total_size +=
@@ -628,14 +668,19 @@ void Envelope::MergeFrom(const Envelope& from) {
   message_type_.MergeFrom(from.message_type_);
   tag_.MergeFrom(from.tag_);
   actor_.MergeFrom(from.actor_);
-  if (from._has_bits_[3 / 32] & (0xffu << (3 % 32))) {
-    if (from._has_bit(3)) {
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_version(from.version());
+    }
+    if (from._has_bit(4)) {
       set_create_time(from.create_time());
     }
-    if (from._has_bit(6)) {
+    if (from._has_bit(7)) {
       set_numeric_value(from.numeric_value());
     }
-    if (from._has_bit(7)) {
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from._has_bit(8)) {
       set_string_value(from.string_value());
     }
   }
@@ -661,6 +706,7 @@ bool Envelope::IsInitialized() const {
 
 void Envelope::Swap(Envelope* other) {
   if (other != this) {
+    std::swap(version_, other->version_);
     message_.Swap(&other->message_);
     message_namespace_.Swap(&other->message_namespace_);
     message_type_.Swap(&other->message_type_);

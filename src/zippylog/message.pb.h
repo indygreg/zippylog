@@ -92,10 +92,17 @@ class Envelope : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated bytes message = 1;
+  // optional uint32 version = 1 [default = 1];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // repeated bytes message = 2;
   inline int message_size() const;
   inline void clear_message();
-  static const int kMessageFieldNumber = 1;
+  static const int kMessageFieldNumber = 2;
   inline const ::std::string& message(int index) const;
   inline ::std::string* mutable_message(int index);
   inline void set_message(int index, const ::std::string& value);
@@ -108,10 +115,10 @@ class Envelope : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& message() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_message();
   
-  // repeated uint32 message_namespace = 2 [packed = true];
+  // repeated uint32 message_namespace = 3 [packed = true];
   inline int message_namespace_size() const;
   inline void clear_message_namespace();
-  static const int kMessageNamespaceFieldNumber = 2;
+  static const int kMessageNamespaceFieldNumber = 3;
   inline ::google::protobuf::uint32 message_namespace(int index) const;
   inline void set_message_namespace(int index, ::google::protobuf::uint32 value);
   inline void add_message_namespace(::google::protobuf::uint32 value);
@@ -120,10 +127,10 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_message_namespace();
   
-  // repeated uint32 message_type = 3 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   inline int message_type_size() const;
   inline void clear_message_type();
-  static const int kMessageTypeFieldNumber = 3;
+  static const int kMessageTypeFieldNumber = 4;
   inline ::google::protobuf::uint32 message_type(int index) const;
   inline void set_message_type(int index, ::google::protobuf::uint32 value);
   inline void add_message_type(::google::protobuf::uint32 value);
@@ -132,17 +139,17 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_message_type();
   
-  // optional uint64 create_time = 4;
+  // optional uint64 create_time = 5;
   inline bool has_create_time() const;
   inline void clear_create_time();
-  static const int kCreateTimeFieldNumber = 4;
+  static const int kCreateTimeFieldNumber = 5;
   inline ::google::protobuf::uint64 create_time() const;
   inline void set_create_time(::google::protobuf::uint64 value);
   
-  // repeated bytes tag = 5;
+  // repeated bytes tag = 6;
   inline int tag_size() const;
   inline void clear_tag();
-  static const int kTagFieldNumber = 5;
+  static const int kTagFieldNumber = 6;
   inline const ::std::string& tag(int index) const;
   inline ::std::string* mutable_tag(int index);
   inline void set_tag(int index, const ::std::string& value);
@@ -155,10 +162,10 @@ class Envelope : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& tag() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_tag();
   
-  // repeated .zippylog.message.ActorInfo actor = 6;
+  // repeated .zippylog.message.ActorInfo actor = 7;
   inline int actor_size() const;
   inline void clear_actor();
-  static const int kActorFieldNumber = 6;
+  static const int kActorFieldNumber = 7;
   inline const ::zippylog::message::ActorInfo& actor(int index) const;
   inline ::zippylog::message::ActorInfo* mutable_actor(int index);
   inline ::zippylog::message::ActorInfo* add_actor();
@@ -167,17 +174,17 @@ class Envelope : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::zippylog::message::ActorInfo >*
       mutable_actor();
   
-  // optional uint64 numeric_value = 7;
+  // optional uint64 numeric_value = 8;
   inline bool has_numeric_value() const;
   inline void clear_numeric_value();
-  static const int kNumericValueFieldNumber = 7;
+  static const int kNumericValueFieldNumber = 8;
   inline ::google::protobuf::uint64 numeric_value() const;
   inline void set_numeric_value(::google::protobuf::uint64 value);
   
-  // optional string string_value = 8;
+  // optional string string_value = 9;
   inline bool has_string_value() const;
   inline void clear_string_value();
-  static const int kStringValueFieldNumber = 8;
+  static const int kStringValueFieldNumber = 9;
   inline const ::std::string& string_value() const;
   inline void set_string_value(const ::std::string& value);
   inline void set_string_value(const char* value);
@@ -191,6 +198,7 @@ class Envelope : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::google::protobuf::RepeatedPtrField< ::std::string> message_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > message_namespace_;
   mutable int _message_namespace_cached_byte_size_;
@@ -206,7 +214,7 @@ class Envelope : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_zippylog_2fmessage_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fmessage_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -376,7 +384,23 @@ class ActorInfo : public ::google::protobuf::Message {
 
 // Envelope
 
-// repeated bytes message = 1;
+// optional uint32 version = 1 [default = 1];
+inline bool Envelope::has_version() const {
+  return _has_bit(0);
+}
+inline void Envelope::clear_version() {
+  version_ = 1u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 Envelope::version() const {
+  return version_;
+}
+inline void Envelope::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// repeated bytes message = 2;
 inline int Envelope::message_size() const {
   return message_.size();
 }
@@ -420,7 +444,7 @@ Envelope::mutable_message() {
   return &message_;
 }
 
-// repeated uint32 message_namespace = 2 [packed = true];
+// repeated uint32 message_namespace = 3 [packed = true];
 inline int Envelope::message_namespace_size() const {
   return message_namespace_.size();
 }
@@ -445,7 +469,7 @@ Envelope::mutable_message_namespace() {
   return &message_namespace_;
 }
 
-// repeated uint32 message_type = 3 [packed = true];
+// repeated uint32 message_type = 4 [packed = true];
 inline int Envelope::message_type_size() const {
   return message_type_.size();
 }
@@ -470,23 +494,23 @@ Envelope::mutable_message_type() {
   return &message_type_;
 }
 
-// optional uint64 create_time = 4;
+// optional uint64 create_time = 5;
 inline bool Envelope::has_create_time() const {
-  return _has_bit(3);
+  return _has_bit(4);
 }
 inline void Envelope::clear_create_time() {
   create_time_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(3);
+  _clear_bit(4);
 }
 inline ::google::protobuf::uint64 Envelope::create_time() const {
   return create_time_;
 }
 inline void Envelope::set_create_time(::google::protobuf::uint64 value) {
-  _set_bit(3);
+  _set_bit(4);
   create_time_ = value;
 }
 
-// repeated bytes tag = 5;
+// repeated bytes tag = 6;
 inline int Envelope::tag_size() const {
   return tag_.size();
 }
@@ -530,7 +554,7 @@ Envelope::mutable_tag() {
   return &tag_;
 }
 
-// repeated .zippylog.message.ActorInfo actor = 6;
+// repeated .zippylog.message.ActorInfo actor = 7;
 inline int Envelope::actor_size() const {
   return actor_.size();
 }
@@ -555,58 +579,58 @@ Envelope::mutable_actor() {
   return &actor_;
 }
 
-// optional uint64 numeric_value = 7;
+// optional uint64 numeric_value = 8;
 inline bool Envelope::has_numeric_value() const {
-  return _has_bit(6);
+  return _has_bit(7);
 }
 inline void Envelope::clear_numeric_value() {
   numeric_value_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(6);
+  _clear_bit(7);
 }
 inline ::google::protobuf::uint64 Envelope::numeric_value() const {
   return numeric_value_;
 }
 inline void Envelope::set_numeric_value(::google::protobuf::uint64 value) {
-  _set_bit(6);
+  _set_bit(7);
   numeric_value_ = value;
 }
 
-// optional string string_value = 8;
+// optional string string_value = 9;
 inline bool Envelope::has_string_value() const {
-  return _has_bit(7);
+  return _has_bit(8);
 }
 inline void Envelope::clear_string_value() {
   if (string_value_ != &_default_string_value_) {
     string_value_->clear();
   }
-  _clear_bit(7);
+  _clear_bit(8);
 }
 inline const ::std::string& Envelope::string_value() const {
   return *string_value_;
 }
 inline void Envelope::set_string_value(const ::std::string& value) {
-  _set_bit(7);
+  _set_bit(8);
   if (string_value_ == &_default_string_value_) {
     string_value_ = new ::std::string;
   }
   string_value_->assign(value);
 }
 inline void Envelope::set_string_value(const char* value) {
-  _set_bit(7);
+  _set_bit(8);
   if (string_value_ == &_default_string_value_) {
     string_value_ = new ::std::string;
   }
   string_value_->assign(value);
 }
 inline void Envelope::set_string_value(const char* value, size_t size) {
-  _set_bit(7);
+  _set_bit(8);
   if (string_value_ == &_default_string_value_) {
     string_value_ = new ::std::string;
   }
   string_value_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* Envelope::mutable_string_value() {
-  _set_bit(7);
+  _set_bit(8);
   if (string_value_ == &_default_string_value_) {
     string_value_ = new ::std::string;
   }
