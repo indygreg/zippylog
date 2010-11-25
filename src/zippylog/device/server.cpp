@@ -75,7 +75,7 @@ Server::Server(const string config_file_path) : zctx(3)
         throw error;
     }
 
-    this->store = new Store(this->config.store_path);
+    this->store = Store::CreateStore(this->config.store_path);
 }
 
 Server::~Server()

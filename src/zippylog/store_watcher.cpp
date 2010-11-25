@@ -28,7 +28,7 @@ using ::zippylog::zippylogd::StoreWatcherShutdown;
 using ::zmq::socket_t;
 
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
-    _store(params.store_path),
+    _store(NULL),
     _ctx(params.zctx),
     _endpoint(params.endpoint),
     logging_endpoint(params.logging_endpoint),
@@ -40,6 +40,8 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
     if (!this->active) {
         throw "active semaphore cannot be NULL";
     }
+
+    this->_store = new SimpleDirectoryStore(params.store_path);
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
@@ -53,6 +55,7 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
 StoreWatcher::~StoreWatcher()
 {
     if (this->logging_sock) delete this->logging_sock;
+    if (this->_store) delete this->_store;
 }
 
 void StoreWatcher::Run()
@@ -93,7 +96,7 @@ void StoreWatcher::Run()
                 if (store_path[i-1] == '\\') store_path[i-1] = '/';
             }
 
-            string fs_path = this->_store.PathToFilesystemPath(itor->Path);
+            string fs_path = this->_store->PathToFilesystemPath(itor->Path);
             platform::FileStat stat;
             platform::stat(fs_path, stat);
 

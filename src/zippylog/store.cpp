@@ -24,13 +24,6 @@ using ::std::vector;
 
 namespace zippylog {
 
-Store::Store(const string path) : _path(path)
-{
-    if (!platform::PathIsDirectory(path)) {
-        throw "store path does not exist or could not be read";
-    }
-}
-
 Store::~Store()
 {
     map<string, OpenOutputStream>::iterator i = this->out_streams.begin();
@@ -42,6 +35,23 @@ Store::~Store()
     for (; iter != this->input_streams.end(); iter++) {
         if (*iter) delete *iter;
     }
+}
+
+Store * Store::CreateStore(const string &s)
+{
+    string::size_type i = s.find_first_of("://");
+    if (i == string::npos) {
+        throw "store path not in expected URI format";
+    }
+
+    string proto = s.substr(0, i);
+    if (proto != "simpledirectory") {
+        throw "store protocol not understood";
+    }
+
+    string path = s.substr(i + 2, s.length() - i - 2);
+    SimpleDirectoryStore *store = new SimpleDirectoryStore(path);
+    return store;
 }
 
 bool Store::ValidatePath(const string path)
@@ -84,7 +94,7 @@ bool Store::ValidatePath(const string path)
     return true;
 }
 
-bool Store::ParsePath(const string path, string &bucket, string &set, string &stream)
+bool Store::ParsePath(const string &path, string &bucket, string &set, string &stream)
 {
     if (!Store::ValidatePath(path)) return false;
 
@@ -95,7 +105,6 @@ bool Store::ParsePath(const string path, string &bucket, string &set, string &st
     if (path.length() == 1) {
         return true;
     }
-
 
     int field = 0;
     string::size_type curr = 1;
@@ -148,52 +157,13 @@ bool Store::ParsePath(const string path, string &bucket, string &set, string &st
     return true;
 }
 
-
-const string Store::StorePath()
-{
-    return this->_path;
-}
-
-bool Store::BucketNames(vector<string> &buckets)
-{
-    return platform::DirectoriesInDirectory(this->_path, buckets);
-}
-
-bool Store::StreamSetNames(const string bucket, vector<string> &sets)
-{
-    return platform::DirectoriesInDirectory(
-        this->PathToFilesystemPath(this->BucketPath(bucket)),
-        sets
-    );
-}
-
-bool Store::StreamNames(const string bucket, const string set, vector<string> &streams)
-{
-    platform::FilesInDirectory(
-        this->PathToFilesystemPath(this->StreamsetPath(bucket, set)),
-        streams
-    );
-
-    vector<string>::iterator i = streams.begin();
-    for (; i != streams.end(); ) {
-        if (i->length() < 10 || i->substr(i->length() - 9, 9).compare(".zippylog")) {
-            i = streams.erase(i);
-            continue;
-        }
-        *i = i->substr(0, i->length() - 9);
-        i++;
-    }
-
-    return true;
-}
-
-string Store::BucketPath(const string bucket)
+string Store::BucketPath(const string &bucket)
 {
     string s = "/" + bucket;
     return s;
 }
 
-string Store::StreamsetPath(const string bucket, const string stream_set)
+string Store::StreamsetPath(const string &bucket, const string &stream_set)
 {
     string s = BucketPath(bucket);
     s.append("/");
@@ -201,7 +171,7 @@ string Store::StreamsetPath(const string bucket, const string stream_set)
     return s;
 }
 
-string Store::StreamPath(const string bucket, const string stream_set, const string filename)
+string Store::StreamPath(const string &bucket, const string &stream_set, const string &filename)
 {
     string s = StreamsetPath(bucket, stream_set);
     s.append("/");
@@ -261,22 +231,7 @@ bool Store::StreamPaths(vector<string> &paths)
     return true;
 }
 
-bool Store::StreamLength(const string path, int64 &length)
-{
-    if (!ValidatePath(path)) return false;
-
-    string full = this->StreamFilesystemPath(path);
-
-    platform::FileStat stat;
-    if (!platform::stat(full, stat)) {
-        return false;
-    }
-
-    length = stat.size;
-    return true;
-}
-
-bool Store::StreamInfo(const string path, zippylog::protocol::StreamInfo &info)
+bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfo &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -285,11 +240,11 @@ bool Store::StreamInfo(const string path, zippylog::protocol::StreamInfo &info)
         return false;
     }
 
-    return StreamInfo(bucket, set, stream, info);
+    return this->StreamInfo(bucket, set, stream, info);
 
 }
 
-bool Store::StreamInfo(const string bucket, const string stream_set, const string stream, protocol::StreamInfo &info)
+bool Store::StreamInfo(const string &bucket, const string &stream_set, const string &stream, protocol::StreamInfo &info)
 {
     info.set_path(stream);
     // TODO verify stream exists and populate other stuff
@@ -305,7 +260,7 @@ bool Store::StreamInfo(const string bucket, const string stream_set, const strin
     return true;
 }
 
-bool Store::StreamsetInfo(const string bucket, const string stream_set, protocol::StreamSetInfo &info)
+bool Store::StreamsetInfo(const string &bucket, const string &stream_set, protocol::StreamSetInfo &info)
 {
     info.set_path(stream_set);
 
@@ -319,17 +274,17 @@ bool Store::StreamsetInfo(const string bucket, const string stream_set, protocol
     return true;
 }
 
-bool Store::StreamsetInfo(const string path, zippylog::protocol::StreamSetInfo &info)
+bool Store::StreamsetInfo(const string &path, zippylog::protocol::StreamSetInfo &info)
 {
     if (!ValidatePath(path)) return false;
 
     string bucket, set, stream;
     if (!ParsePath(path, bucket, set, stream)) return false;
 
-    return StreamsetInfo(bucket, set, info);
+    return this->StreamsetInfo(bucket, set, info);
 }
 
-bool Store::BucketInfo(const string bucket, protocol::BucketInfo &info)
+bool Store::BucketInfo(const string &bucket, protocol::BucketInfo &info)
 {
     info.set_path(bucket);
 
@@ -358,62 +313,13 @@ bool Store::StoreInfo(protocol::StoreInfo &info)
 
 InputStream * Store::GetInputStream(const string &path)
 {
-    if (!ValidatePath(path)) return NULL;
+    string bucket, set, stream;
+    if (!ParsePath(path, bucket, set, stream)) return NULL;
 
-    FileInputStream *s = new FileInputStream(this->StreamFilesystemPath(path));
-
-    this->input_streams.push_back(s);
-
-    return s;
+    return this->GetInputStream(bucket, set, path);
 }
 
-InputStream * Store::GetInputStream(const string &bucket, const string &stream_set, const string &stream)
-{
-    string path = this->StreamFilesystemPath(this->StreamPath(bucket, stream_set, stream));
-
-    FileInputStream *s = new FileInputStream(path);
-
-    this->input_streams.push_back(s);
-
-    return s;
-}
-
-
-string Store::PathToFilesystemPath(const string path)
-{
-    string s = string(this->_path);
-    s.append("/");
-    s.append(path);
-
-    return s;
-}
-
-string Store::StreamFilesystemPath(const string path)
-{
-    return this->PathToFilesystemPath(path).append(".zippylog");
-}
-
-bool Store::BucketExists(const string bucket)
-{
-    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
-}
-
-bool Store::StreamsetExists(const string bucket, const string set)
-{
-    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
-}
-
-bool Store::CreateBucket(const string bucket)
-{
-    return platform::MakeDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
-}
-
-bool Store::CreateStreamset(const string bucket, const string set)
-{
-    return platform::MakeDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
-}
-
-bool Store::WriteEnvelope(const string bucket, const string set, Envelope &e, int64 time)
+bool Store::WriteEnvelope(const string &bucket, const string &set, Envelope &e, int64 time)
 {
     OpenOutputStream os;
     if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) {
@@ -429,6 +335,37 @@ bool Store::WriteEnvelope(const string &bucket, const string &set, const void *d
     if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) return false;
 
     return os.stream->WriteEnvelope(data, length);
+}
+
+bool Store::ObtainOutputStream(const string &bucket, const string &set, int seconds_per_file, OpenOutputStream &os, int64 time)
+{
+    platform::Time t;
+
+    if (time < 0) {
+        platform::TimeNow(t);
+    }
+    else {
+        platform::UnixMicroTimeToZippyTime(time, t);
+    }
+
+    string stream = Store::StreamNameForTime(t, seconds_per_file);
+
+    string store_path = Store::StreamPath(bucket, set, stream);
+
+    map<string, OpenOutputStream>::iterator found = this->out_streams.find(store_path);
+
+    if (found != this->out_streams.end()) {
+        os.stream = found->second.stream;
+        os.last_write_time = found->second.last_write_time;
+        return true;
+    }
+    // else
+    os.stream = this->CreateOutputStream(bucket, set, stream);
+    if (!os.stream) return false;
+    os.last_write_time = -1;
+
+    this->out_streams[store_path] = os;
+    return true;
 }
 
 bool Store::FlushOutputStreams()
@@ -487,45 +424,125 @@ string Store::StreamNameForTime(int64 time, int seconds_per_file)
     return Store::StreamNameForTime(t, seconds_per_file);
 }
 
-bool Store::ObtainOutputStream(const string bucket, const string set, int seconds_per_file, OpenOutputStream &os, int64 time)
+SimpleDirectoryStore::SimpleDirectoryStore(const string &path) : root_path(path)
 {
-    platform::Time t;
-
-    if (time < 0) {
-        platform::TimeNow(t);
+    if (!platform::PathIsDirectory(path)) {
+        throw "store path does not exist or could not be read";
     }
-    else {
-        platform::UnixMicroTimeToZippyTime(time, t);
+}
+
+const string SimpleDirectoryStore::RootDirectoryPath() const
+{
+    return this->root_path;
+}
+
+bool SimpleDirectoryStore::BucketNames(vector<string> &buckets)
+{
+    return platform::DirectoriesInDirectory(this->root_path, buckets);
+}
+
+bool SimpleDirectoryStore::StreamSetNames(const string &bucket, vector<string> &sets)
+{
+    return platform::DirectoriesInDirectory(
+        this->PathToFilesystemPath(this->BucketPath(bucket)),
+        sets
+    );
+}
+
+bool SimpleDirectoryStore::StreamNames(const string &bucket, const string &set, vector<string> &streams)
+{
+    platform::FilesInDirectory(
+        this->PathToFilesystemPath(this->StreamsetPath(bucket, set)),
+        streams
+    );
+
+    vector<string>::iterator i = streams.begin();
+    for (; i != streams.end(); ) {
+        if (i->length() < 10 || i->substr(i->length() - 9, 9).compare(".zippylog")) {
+            i = streams.erase(i);
+            continue;
+        }
+        *i = i->substr(0, i->length() - 9);
+        i++;
     }
 
-    string stream = Store::StreamNameForTime(t, seconds_per_file);
+    return true;
+}
 
-    string store_path = Store::StreamPath(bucket, set, stream);
-    string fs_path = this->StreamFilesystemPath(store_path);
+bool SimpleDirectoryStore::StreamLength(const string &path, int64 &length)
+{
+    if (!ValidatePath(path)) return false;
 
-    map<string, OpenOutputStream>::iterator found = this->out_streams.find(store_path);
+    string full = this->StreamFilesystemPath(path);
 
-    if (found != this->out_streams.end()) {
-        os.stream = found->second.stream;
-        os.last_write_time = found->second.last_write_time;
-        return true;
+    platform::FileStat stat;
+    if (!platform::stat(full, stat)) {
+        return false;
     }
-    // else
 
+    length = stat.size;
+    return true;
+}
+
+bool SimpleDirectoryStore::CreateBucket(const string &bucket)
+{
+    return platform::MakeDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
+}
+
+bool SimpleDirectoryStore::CreateStreamset(const string &bucket, const string &set)
+{
+    return platform::MakeDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
+}
+
+string SimpleDirectoryStore::PathToFilesystemPath(const string &path) const
+{
+    string s = string(this->root_path);
+    s.append("/");
+    s.append(path);
+
+    return s;
+}
+
+string SimpleDirectoryStore::StreamFilesystemPath(const string &path)
+{
+    return this->PathToFilesystemPath(path).append(".zippylog");
+}
+
+bool SimpleDirectoryStore::BucketExists(const string &bucket)
+{
+    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
+}
+
+bool SimpleDirectoryStore::StreamsetExists(const string &bucket, const string &set)
+{
+    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
+}
+
+InputStream * SimpleDirectoryStore::GetInputStream(const string &bucket, const string &stream_set, const string &stream)
+{
+    string path = this->StreamFilesystemPath(this->StreamPath(bucket, stream_set, stream));
+
+    FileInputStream *s = new FileInputStream(path);
+
+    this->input_streams.push_back(s);
+
+    return s;
+}
+
+OutputStream * SimpleDirectoryStore::CreateOutputStream(const string &bucket, const string &set, const string &stream)
+{
     if (!this->BucketExists(bucket)) {
-        if (!this->CreateBucket(bucket)) return false;
+        if (!this->CreateBucket(bucket)) return NULL;
     }
 
     if (!this->StreamsetExists(bucket, set)) {
-        if (!this->CreateStreamset(bucket, set)) return false;
+        if (!this->CreateStreamset(bucket, set)) return NULL;
     }
 
-    os.stream = new FileOutputStream(fs_path);
-    os.last_write_time = -1;
-    this->out_streams[store_path] = os;
+    string path = Store::StreamPath(bucket, set, stream);
+    string fs_path = this->PathToFilesystemPath(path);
 
-    return true;
-
+    return new FileOutputStream(fs_path);
 }
 
 } // namespace zippylog

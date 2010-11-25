@@ -43,7 +43,7 @@ StoreWriter::StoreWriter(StoreWriterStartParams &params) :
         this->own_context = true;
     }
 
-    this->store = new ::zippylog::Store(params.store_path);
+    this->store = Store::CreateStore(params.store_path);
 
     if (this->envelope_pull_endpoint.length()) {
         this->envelope_pull_sock = new ::zmq::socket_t(*this->ctx, ZMQ_PULL);

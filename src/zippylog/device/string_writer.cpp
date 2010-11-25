@@ -33,7 +33,7 @@ StringWriter::StringWriter(StringWriterStartParams &params) :
     }
 
     if (params.store_path.length() > 0) {
-        this->store = new ::zippylog::Store(params.store_path);
+        this->store = Store::CreateStore(params.store_path);
     }
 
 }

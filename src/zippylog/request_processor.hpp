@@ -141,7 +141,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ::zmq::socket_t * logger_sock;
         ::zmq::socket_t * socket;
 
-        Store store;
+        Store * store;
 
         ::std::string id;
         ::std::vector< ::std::string > current_request_identities;

@@ -75,7 +75,7 @@ protected:
 
     void SendChangeMessage(Envelope &e);
 
-    Store _store;
+    SimpleDirectoryStore * _store;
     ::zmq::context_t *_ctx;
     ::std::string _endpoint;
     ::std::string logging_endpoint;
@@ -84,8 +84,6 @@ protected:
     ::zmq::socket_t * logging_sock;
     bool *active;
     platform::DirectoryWatcher watcher;
-
-
 
 private:
     // we don't provide these

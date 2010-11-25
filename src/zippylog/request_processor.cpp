@@ -44,9 +44,9 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     client_endpoint(params.client_endpoint),
     logger_sock(NULL),
     socket(NULL),
-    store(params.store_path),
+    store(NULL),
     active(params.active)
-    {
+{
     if (!this->active) {
         throw "active parameter cannot be NULL";
     }
@@ -54,6 +54,8 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     if (!this->ctx) {
         throw "ctx parameter cannot be NULL";
     }
+
+    this->store = Store::CreateStore(params.store_path);
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);
@@ -73,6 +75,7 @@ RequestProcessor::~RequestProcessor()
 {
     if (this->logger_sock) delete this->logger_sock;
     if (this->socket) delete this->socket;
+    if (this->store) delete this->store;
 }
 
 void RequestProcessor::Run()
@@ -273,7 +276,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e)
     LOG_MESSAGE(logstart, this->logger_sock);
 
     protocol::StoreInfo info = protocol::StoreInfo();
-    this->store.StoreInfo(info);
+    this->store->StoreInfo(info);
 
     ::zippylog::zippylogd::WorkerEndProcessStoreInfo logend = ::zippylog::zippylogd::WorkerEndProcessStoreInfo();
     LOG_MESSAGE(logend, this->logger_sock);
@@ -323,7 +326,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
     // TODO perform additional stream verification
 
-    InputStream *stream = this->store.GetInputStream(get->path());
+    InputStream *stream = this->store->GetInputStream(get->path());
     if (!stream) {
         ::zippylog::zippylogd::WorkerGetInvalidStream log = ::zippylog::zippylogd::WorkerGetInvalidStream();
         LOG_MESSAGE(log, this->logger_sock);

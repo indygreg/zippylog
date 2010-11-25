@@ -36,12 +36,9 @@ struct OpenOutputStream {
 /// A stream store is a collection of buckets, stream sets, and streams. The
 /// layout of a stream store is well-defined by the zippylog project.
 ///
-/// Stores are often backed by regular filesystems, but this isn't a hard
-/// requirements.
-///
-/// The implementation here is for a file-backed store. This should change to
-/// an abstract base class.
-/// TODO define an interface for the store API
+/// Stores can be backed in any way possible, as long as basic primitives
+/// are supported. Therefore, this class is an abstract base class that
+/// implementations must inherit from.
 ///
 /// Store objects are currently not thread safe. It is recommended that
 /// multithreaded applications instantiate multiple class instances for
@@ -54,9 +51,20 @@ struct OpenOutputStream {
 /// interfere.
 class ZIPPYLOG_EXPORT Store {
     public:
-        // construct a store from a filesystem path
-        Store(const ::std::string path);
         ~Store();
+
+        /// Create a store object
+        ///
+        /// The store is created by calling the constructor of the store
+        /// implementation referenced by the URI-like string passed.
+        ///
+        /// Currently, the implementation is hard-coded to only support the
+        /// simple directory store, but this will change in future versions.
+        ///
+        /// The passed string should resemble:
+        ///
+        ///    simpledirectory:///path/to/root/dir
+        static Store * CreateStore(const ::std::string &s);
 
         /// Validates that a store path string is sane
         ///
@@ -70,55 +78,51 @@ class ZIPPYLOG_EXPORT Store {
         /// If this returns true, the path is valid and the strings passed
         /// by reference are updated to the extracted values. If a path field
         /// is not set, the corresponding string is empty().
-        static bool ParsePath(const ::std::string path, ::std::string &bucket, ::std::string &set, ::std::string &stream);
+        static bool ParsePath(const ::std::string &path, ::std::string &bucket, ::std::string &set, ::std::string &stream);
 
-        /// Return the path to a specific bucket
-        static ::std::string BucketPath(const ::std::string bucket);
+        /// Return the store path to a specific bucket
+        static ::std::string BucketPath(const ::std::string &bucket);
 
-        /// Return the path to a specific stream set
-        static ::std::string StreamsetPath(const ::std::string bucket, const ::std::string set);
+        /// Return the store path to a specific stream set
+        static ::std::string StreamsetPath(const ::std::string &bucket, const ::std::string &set);
 
-        /// Return the path to a stream within a bucket and set
-        static ::std::string StreamPath(const ::std::string bucket, const ::std::string set, const ::std::string stream);
+        /// Return the store path to a stream within a bucket and set
+        static ::std::string StreamPath(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
 
-        // Return the filesystem path to this store
-        const ::std::string StorePath();
-
-        /// Obtain the set of bucket names in the store
-        bool BucketNames(::std::vector< ::std::string > &buckets);
-
-        /// Obtain the set of stream sets in a specific bucket
-        bool StreamSetNames(const ::std::string bucket, ::std::vector< ::std::string > &buckets);
-
-        /// Obtain the set of stream names in a specific stream set
-        bool StreamNames(const ::std::string bucket, const ::std::string set, ::std::vector< ::std::string > &streams);
+        /// returns the name of a stream for a particular time value
+        static ::std::string StreamNameForTime(int64 time, int seconds_per_file);
+        static ::std::string StreamNameForTime(platform::Time &time, int seconds_per_file);
 
         /// Obtain the set of all paths to known buckets
+        ///
+        /// This is like BucketNames() except the strings are store paths, not
+        /// bucket names.
         bool BucketPaths(::std::vector< ::std::string > &paths);
 
         /// Obtain the set of all paths to known stream sets
+        ///
+        /// This is like StreamSetNames() except the strings are store paths.
         bool StreamsetPaths(::std::vector< ::std::string > &paths);
 
         /// Obtain the set of all paths to all known streams
+        ///
+        /// This is like StreamNames() except the strings are store paths.
         bool StreamPaths(::std::vector< ::std::string > &paths);
-
-        /// Obtain the length of a stream
-        bool StreamLength(const ::std::string path, int64 &length);
 
         /// Obtain a store info message describing this store
         bool StoreInfo(protocol::StoreInfo &info);
 
         /// Obtain a bucket info message describing the specified bucket
-        bool BucketInfo(const ::std::string bucket, protocol::BucketInfo &info);
+        bool BucketInfo(const ::std::string &bucket, protocol::BucketInfo &info);
 
         /// Obtain a stream set info for the stream set specified
-        bool StreamsetInfo(const ::std::string bucket, const ::std::string set, protocol::StreamSetInfo &info);
+        bool StreamsetInfo(const ::std::string &bucket, const ::std::string &set, protocol::StreamSetInfo &info);
 
         /// Obtain a stream set info message for the stream set identifier by a path
-        bool StreamsetInfo(const ::std::string path, protocol::StreamSetInfo &info);
+        bool StreamsetInfo(const ::std::string &path, protocol::StreamSetInfo &info);
 
-        bool StreamInfo(const ::std::string bucket, const ::std::string set, const ::std::string stream, protocol::StreamInfo &info);
-        bool StreamInfo(const ::std::string path, protocol::StreamInfo &info);
+        bool StreamInfo(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream, protocol::StreamInfo &info);
+        bool StreamInfo(const ::std::string &path, protocol::StreamInfo &info);
 
         /// Obtain an input stream from the store
         ///
@@ -129,42 +133,19 @@ class ZIPPYLOG_EXPORT Store {
         /// the caller need not worry about thread contention on the object.
         InputStream * GetInputStream(const ::std::string &path);
 
-        /// Obtain an input stream from the store.
-        ///
-        /// See the above function for usage.
-        InputStream * GetInputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
-
-        // create a bucket
-        // if it exists already, will return true
-        bool CreateBucket(const ::std::string bucket);
-
-        // create a stream set
-        bool CreateStreamset(const ::std::string bucket, const ::std::string stream_set);
-
-        bool BucketExists(const ::std::string bucket);
-        bool StreamsetExists(const ::std::string bucket, const ::std::string stream_set);
-
-        // return the filesystem path for the given store path
-        // no validation of input path is performed
-        ::std::string PathToFilesystemPath(const ::std::string path);
-
         /// Writes an envelope to the stream set specified
         ///
         /// The stream written to corresponds to the time passed. If -1 (the
         /// default), the current time will be used. If a positive number, this
         /// represents the number of microseconds since UNIX epoch and the
         /// stream will be calculated from that.
-        bool WriteEnvelope(const ::std::string bucket, const ::std::string set, Envelope &e, int64 time=-1);
+        bool WriteEnvelope(const ::std::string &bucket, const ::std::string &set, Envelope &e, int64 time=-1);
 
         /// Writes envelope data from a buffer to the stream set specified
         ///
         /// Data is written with the proper serialization format for
         /// envelopes. Time semantics are equivalent to the function above.
         bool WriteEnvelope(const ::std::string &bucket, const ::std::string &set, const void *data, int length, int64 time=-1);
-
-        /// returns the name of a stream for a particular time value
-        static ::std::string StreamNameForTime(int64 time, int seconds_per_file);
-        static ::std::string StreamNameForTime(platform::Time &time, int seconds_per_file);
 
         /// Flushes all registered output streams
         ///
@@ -175,10 +156,41 @@ class ZIPPYLOG_EXPORT Store {
         /// descriptor to its backing store.
         bool FlushOutputStreams();
 
-    protected:
-        bool ObtainOutputStream(const ::std::string bucket, const ::std::string set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
+        /// Obtain the set of bucket names in the store
+        virtual bool BucketNames(::std::vector< ::std::string > &buckets) = 0;
 
-        ::std::string StreamFilesystemPath(const ::std::string path);
+        /// Obtain the set of stream sets in a specific bucket
+        virtual bool StreamSetNames(const ::std::string &bucket, ::std::vector< ::std::string > &buckets) = 0;
+
+        /// Obtain the set of stream names in a specific stream set
+        virtual bool StreamNames(const ::std::string &bucket, const ::std::string &set, ::std::vector< ::std::string > &streams) = 0;
+
+        /// Obtain the length of a stream
+        ///
+        /// The stream is specified by the store path.
+        virtual bool StreamLength(const ::std::string &path, int64 &length) = 0;
+
+        /// Obtain an input stream from the store.
+        ///
+        /// See the above function for usage.
+        virtual InputStream * GetInputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream) = 0;
+
+        // create a bucket
+        // if it exists already, will return true
+        virtual bool CreateBucket(const ::std::string &bucket) = 0;
+
+        // create a stream set
+        virtual bool CreateStreamset(const ::std::string &bucket, const ::std::string &stream_set) = 0;
+
+        virtual bool BucketExists(const ::std::string &bucket) = 0;
+        virtual bool StreamsetExists(const ::std::string &bucket, const ::std::string &stream_set) = 0;
+
+    protected:
+        Store() { };
+        bool ObtainOutputStream(const ::std::string &bucket, const ::std::string &set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
+
+        /// Create an output stream object
+        virtual OutputStream * CreateOutputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream) = 0;
 
         /// holds pointers to retrieved input streams
         ///
@@ -189,8 +201,51 @@ class ZIPPYLOG_EXPORT Store {
         Store(const Store &orig);
         Store & operator=(const Store &orig);
 
-        ::std::string _path;
         ::std::map< ::std::string, OpenOutputStream> out_streams;
+};
+
+/// A stream store backed by a single directory
+///
+/// The store is created by specifying the filesystem path to a directory.
+/// Buckets are subdirectories and stream sets subdirectories of the bucket
+/// directories.
+///
+/// This is likely the simplest of stream store engines, since there are very
+/// few moving parts. Just a simple directory tree constituting the store.
+class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
+    public:
+        /// Create a store using the specified path as the root directory
+        SimpleDirectoryStore(const ::std::string &path);
+        ~SimpleDirectoryStore() { };
+
+        // Return the filesystem path to this store
+        const ::std::string RootDirectoryPath() const;
+
+        ::std::string PathToFilesystemPath(const ::std::string &path) const;
+
+        // implement virtual functions
+        bool BucketNames(::std::vector< ::std::string > &buckets);
+        bool StreamSetNames(const ::std::string &bucket, ::std::vector< ::std::string > &buckets);
+        bool StreamNames(const ::std::string &bucket, const ::std::string &set, ::std::vector< ::std::string > &streams);
+        bool StreamLength(const ::std::string &path, int64 &length);
+        InputStream * GetInputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
+        bool CreateBucket(const ::std::string &bucket);
+        bool CreateStreamset(const ::std::string &bucket, const ::std::string &stream_set);
+        bool BucketExists(const ::std::string &bucket);
+        bool StreamsetExists(const ::std::string &bucket, const ::std::string &stream_set);
+
+    protected:
+        ::std::string root_path;
+
+        ::std::string StreamFilesystemPath(const ::std::string &path);
+
+        // implement virtual functions
+        OutputStream * CreateOutputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
+
+    private:
+        SimpleDirectoryStore(const SimpleDirectoryStore &orig);
+        SimpleDirectoryStore & operator=(const SimpleDirectoryStore &orig);
+
 };
 
 } // namespace zippylog
