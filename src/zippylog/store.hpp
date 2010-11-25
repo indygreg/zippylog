@@ -26,9 +26,13 @@
 
 namespace zippylog {
 
-struct OpenOutputStream {
-    OutputStream *stream;
-    int64 last_write_time;
+/// Record used by store to keep track of open output streams
+class OpenOutputStream {
+    public:
+        OpenOutputStream() : stream(NULL), last_write_time(-1) { }
+
+        OutputStream *stream;
+        int64 last_write_time;
 };
 
 /// Represents a stream store
@@ -42,13 +46,13 @@ struct OpenOutputStream {
 ///
 /// Store objects are currently not thread safe. It is recommended that
 /// multithreaded applications instantiate multiple class instances for
-/// individual stores. However, even this is not thread safe because writing
-/// is not safe across threads nor processes. Therefore, to write to a single
-/// store across many threads or processes, it is recommended to make a
-/// specific class instance the designated writer. All writes then go through
-/// it. The StoreWriter device performs this task well.
-/// TODO create locks on files so store writers in multiple processes can't
-/// interfere.
+/// individual stores. However, even this is not guaranteed to be thread safe
+/// because store implementations may not be safe. Consult the store
+/// implementation's documentation for thread and process safety.
+///
+/// Store instances maintain handles to output streams, which are used for
+/// writing. Each store instance maintains its own set of handles. The store
+/// is guaranteed to have only one output stream open for each physical stream.
 class ZIPPYLOG_EXPORT Store {
     public:
         ~Store();
@@ -212,6 +216,13 @@ class ZIPPYLOG_EXPORT Store {
 ///
 /// This is likely the simplest of stream store engines, since there are very
 /// few moving parts. Just a simple directory tree constituting the store.
+///
+/// Output streams obtained from this implementation have exclusive write
+/// locks on files. This means the first store in the whole operating system
+/// to grab a handle to a specific stream wins. Output streams don't relinquish
+/// the locks until they are closed and output streams generally aren't
+/// closed aggressively by the store implementation. So, care must be taken
+/// to avoid contention on systems running many stores.
 class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
     public:
         /// Create a store using the specified path as the root directory

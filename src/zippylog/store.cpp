@@ -542,7 +542,7 @@ OutputStream * SimpleDirectoryStore::CreateOutputStream(const string &bucket, co
     string path = Store::StreamPath(bucket, set, stream);
     string fs_path = this->PathToFilesystemPath(path);
 
-    return new FileOutputStream(fs_path);
+    return new FileOutputStream(fs_path, true);
 }
 
 } // namespace zippylog

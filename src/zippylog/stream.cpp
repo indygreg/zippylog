@@ -202,9 +202,13 @@ bool OutputStream::WriteData(const void *data, int length)
     return true;
 }
 
-FileOutputStream::FileOutputStream(const string &path) : os(NULL), OutputStream()
+FileOutputStream::FileOutputStream(const string &path, bool write_lock) : os(NULL), OutputStream()
 {
-    if (!this->file.Open(path, platform::File::CREATE | platform::File::APPEND | platform::File::WRITE | platform::File::BINARY)) {
+    int flags = platform::File::CREATE | platform::File::APPEND | platform::File::WRITE | platform::File::BINARY;
+
+    if (write_lock) flags |= platform::File::WRITE_LOCK;
+
+    if (!this->file.Open(path, flags)) {
         throw "could not open file";
     }
 

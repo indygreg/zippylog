@@ -189,8 +189,11 @@ class ZIPPYLOG_EXPORT FileOutputStream : public OutputStream {
         /// Opens the file specified by path for writing
         ///
         /// File is opened in append mode so all writes automatically go to
-        /// end of file.
-        FileOutputStream(const ::std::string &path);
+        /// end of file. Caller can optionally request a write lock on
+        /// the file. The write lock will be exclusive across the entire
+        /// operating system and will apply to the whole file. If the write
+        /// lock cannot be obtained, the constructor will throw an exception.
+        FileOutputStream(const ::std::string &path, bool write_lock = false);
 
         ~FileOutputStream();
 
