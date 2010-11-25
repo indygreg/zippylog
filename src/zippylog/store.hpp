@@ -174,19 +174,25 @@ class ZIPPYLOG_EXPORT Store {
         /// The stream is specified by the store path.
         virtual bool StreamLength(const ::std::string &path, int64 &length) = 0;
 
-        /// Obtain an input stream from the store.
+        /// Obtain an input stream from the store
         ///
         /// See the above function for usage.
         virtual InputStream * GetInputStream(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream) = 0;
 
-        // create a bucket
-        // if it exists already, will return true
+        /// Create a bucket
+        ///
+        // If it exists already, will return true.
         virtual bool CreateBucket(const ::std::string &bucket) = 0;
 
-        // create a stream set
+        /// Create a stream set
+        ///
+        /// If it already exists, will return true.
         virtual bool CreateStreamset(const ::std::string &bucket, const ::std::string &stream_set) = 0;
 
+        /// Returns whether a bucket exists
         virtual bool BucketExists(const ::std::string &bucket) = 0;
+
+        /// Returns whether a stream set exists
         virtual bool StreamsetExists(const ::std::string &bucket, const ::std::string &stream_set) = 0;
 
     protected:
@@ -200,12 +206,21 @@ class ZIPPYLOG_EXPORT Store {
         ///
         /// streams will be destroyed upon object destruction
         ::std::vector<InputStream *> input_streams;
+
+        /// holds output streams the store has open
+        ///
+        /// Key is the stream path and value is an object containing details
+        /// about the stream. Every time we write, we first try to obtain an
+        /// output stream from here. If we can't find one, we create an output
+        /// stream and put it here.
+        ///
+        /// TODO prune this data structure as needed or consider a ceiling
+        /// limit of open streams
+        ::std::map< ::std::string, OpenOutputStream> out_streams;
     private:
         // disable copy constructor and assignment operator
         Store(const Store &orig);
         Store & operator=(const Store &orig);
-
-        ::std::map< ::std::string, OpenOutputStream> out_streams;
 };
 
 /// A stream store backed by a single directory
@@ -226,6 +241,10 @@ class ZIPPYLOG_EXPORT Store {
 class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
     public:
         /// Create a store using the specified path as the root directory
+        ///
+        /// The path should be a valid filesystem path for the current
+        /// system. For UNIX, something like "/var/zippylog/store" or "store"
+        /// should work. For Windows, "C:\zippylog" or similar.
         SimpleDirectoryStore(const ::std::string &path);
         ~SimpleDirectoryStore() { };
 
