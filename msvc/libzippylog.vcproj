@@ -195,6 +195,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				AdditionalDependencies="Rpcrt4.lib"
 				OutputFile="$(OutDir)\..\libzippylog-fullstatic.lib"
 			/>
 			<Tool
