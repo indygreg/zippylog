@@ -24,6 +24,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include <errno.h>
 #include <poll.h>
 #include <string.h>
@@ -434,7 +435,6 @@ bool File::Open(const string &path, int flags)
 {
 #ifdef WINDOWS
     DWORD access = 0;
-    // kindergarten taught me sharing is good. why doesn't Windows know this?
     DWORD share = 0;
     DWORD creation = OPEN_EXISTING;
     DWORD attributes = 0;
@@ -446,8 +446,12 @@ bool File::Open(const string &path, int flags)
     }
 
     if (flags & WRITE) {
+        // allow write sharing unless we want a lock
+        if (!(flags & WRITE_LOCK)) {
+            share |= FILE_SHARE_WRITE;
+        }
+
         access |= GENERIC_WRITE;
-        share |= FILE_SHARE_WRITE;
     }
 
     if (flags & APPEND) {
@@ -508,6 +512,14 @@ bool File::Open(const string &path, int flags)
     }
 
     this->open = true;
+
+    if (flags & WRITE_LOCK) {
+        if (!this->WriteLockEntire()) {
+            this->open = false;
+            ::close(this->fd);
+            return false;
+        }
+    }
 
     return true;
 #else
@@ -609,6 +621,41 @@ int File::FileDescriptor()
     if (!this->open) return 0;
 
     return this->fd;
+}
+
+bool File::WriteLockEntire()
+{
+    if (!this->open) {
+        throw "called WriteLockEntire on unopened file";
+    }
+
+#ifdef WINDOWS
+    throw "WriteLockEntire() is not meant to be called on Windows at this time";
+#elif LINUX
+    flock fl;
+    fl.l_type = F_WRLCK;
+    fl.l_start = 0;
+    fl.l_whence = SEEK_SET;
+    fl.l_len = 0;
+
+    // non-blocking call
+    int result = fcntl(this->fd, F_SETLK, &fl);
+
+    // POSIX says an errno of EACCESS or EAGAIN means we could not obtain
+    // the lock, although it is EAGAIN on most implementations
+    if (result == -1) {
+        if (errno == EACCESS || errno == EAGAIN) {
+            return false;
+        }
+
+        set_system_error();
+        return false;
+    }
+
+    return true;
+#else
+#error "File::WriteLockEntire() not implemented on this platform"
+#endif
 }
 
 string PathJoin(const string &a, const string &b)

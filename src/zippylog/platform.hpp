@@ -153,13 +153,35 @@ namespace platform {
         // returns 0 if file descriptor not available, file not open, etc
         int FileDescriptor();
 
+        /// Obtain an exclusive write lock on the entire file
+        ///
+        /// Returns true only if the write lock could be obtained
+        bool WriteLockEntire();
+
     enum OpenFlags {
-        READ     = 0x01,
-        WRITE    = 0x02,
-        APPEND   = 0x04,
-        CREATE   = 0x08,
-        TRUNCATE = 0x10,
-        BINARY   = 0x20,
+        /// Open file for reading
+        READ       = 0x01,
+
+        /// Open file for writing
+        WRITE      = 0x02,
+
+        /// Open file in append writing mode. Writes will always be
+        /// appended to the file
+        APPEND     = 0x04,
+
+        /// Create the file if it doesn't exist
+        CREATE     = 0x08,
+
+        /// Truncate existing files on open
+        TRUNCATE   = 0x10,
+
+        /// Open the file in binary mode
+        BINARY     = 0x20,
+
+        /// Obtain an exclusive write lock on the file
+        ///
+        /// If the write lock cannot be obtained, the open will fail
+        WRITE_LOCK = 0x40,
     };
 
     protected:
