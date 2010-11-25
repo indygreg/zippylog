@@ -23,8 +23,9 @@ using ::std::sort;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Store;
+using ::zippylog::SimpleDirectoryStore;
 
-TEST(StoreTest, PathValidation) {
+TEST(StorePathTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/"));
     EXPECT_FALSE(Store::ValidatePath(""));
     EXPECT_FALSE(Store::ValidatePath("/a//"));
@@ -45,7 +46,7 @@ TEST(StoreTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/a\0"));
 }
 
-TEST(StoreTest, PathParsing) {
+TEST(StorePathTest, PathParsing) {
     string path;
     string b, ss, s;
 
@@ -101,7 +102,7 @@ TEST(StoreTest, PathParsing) {
     EXPECT_STREQ("streamA", s.c_str());
 }
 
-TEST(StoreTest, StreamNaming)
+TEST(StorePathTest, StreamNaming)
 {
     EXPECT_STREQ("2010-07-27", Store::StreamNameForTime(1280210699000000, 86400).c_str());
     EXPECT_STREQ("2010-07-27-06", Store::StreamNameForTime(1280212529000000, 3600).c_str());
@@ -111,7 +112,7 @@ TEST(StoreTest, StreamNaming)
 
 class StoreContentsTest : public ::testing::Test {
 protected:
-    Store store;
+    SimpleDirectoryStore store;
 
     StoreContentsTest() : store("test/stores/00-simple") { }
 
@@ -120,7 +121,7 @@ protected:
 // verifies that we find files in stores properly
 TEST_F(StoreContentsTest, ContentDiscovery)
 {
-    ASSERT_STREQ("test/stores/00-simple", store.StorePath().c_str());
+    ASSERT_STREQ("test/stores/00-simple", store.RootDirectoryPath().c_str());
 
     vector<string> buckets;
     EXPECT_TRUE(store.BucketNames(buckets));

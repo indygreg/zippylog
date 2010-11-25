@@ -71,23 +71,25 @@ protected:
     ::zmq::context_t ctx;
     ::zmq::socket_t logger;
     ::zmq::socket_t client;
-    Store store;
+    Store *store;
 
     RequestProcessorTest() :
         p(NULL),
         active(true),
         ctx(1),
-        logger(this->ctx, ZMQ_PULL),
-        client(this->ctx, ZMQ_XREQ),
-        store("test/stores/00-simple")
+        logger(ctx, ZMQ_PULL),
+        client(ctx, ZMQ_XREQ),
+        store(NULL)
     {
         this->logger.bind("inproc://logger");
         this->client.bind("inproc://client");
+        this->store = Store::CreateStore("simpledirectory://test/stores/00-simple");
     }
 
     ~RequestProcessorTest()
     {
         if (this->p) delete this->p;
+        if (this->store) delete this->store;
     }
 
     void ResetProcessor()
@@ -96,7 +98,7 @@ protected:
 
         RequestProcessorStartParams params;
         params.active = &this->active;
-        params.store_path = "test/stores/00-simple";
+        params.store_path = "simpledirectory://test/stores/00-simple";
         params.ctx = &this->ctx;
         params.logger_endpoint = "inproc://logger";
         params.client_endpoint = "inproc://client";
@@ -136,7 +138,7 @@ TEST_F(RequestProcessorTest, StoreInfo)
     EXPECT_EQ(2, r->bucket_size());
 
     protocol::StoreInfo esi;
-    EXPECT_TRUE(this->store.StoreInfo(esi));
+    EXPECT_TRUE(this->store->StoreInfo(esi));
     EXPECT_STREQ(esi.SerializeAsString().c_str(), r->SerializeAsString().c_str());
 }
 
