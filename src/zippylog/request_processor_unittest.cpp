@@ -19,6 +19,8 @@
 
 using namespace ::zippylog;
 
+using ::std::vector;
+
 class TestRequestProcessor : public RequestProcessor
 {
 public:
