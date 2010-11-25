@@ -49,7 +49,7 @@ Store * Store::CreateStore(const string &s)
         throw "store protocol not understood";
     }
 
-    string path = s.substr(i + 2, s.length() - i - 2);
+    string path = s.substr(i + 3, s.length() - i - 3);
     SimpleDirectoryStore *store = new SimpleDirectoryStore(path);
     return store;
 }
