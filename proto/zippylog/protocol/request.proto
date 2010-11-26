@@ -18,6 +18,25 @@ message GetStoreInfo {
     optional uint32 version = 1 [default=1];
 }
 
+message GetBucketInfo {
+    optional uint32 version = 1 [default=1];
+    
+    // bucket whose information to obtain
+    optional string bucket = 2;
+}
+
+message GetStreamSetInfo {
+    optional uint32 version = 1 [default=1];
+    
+    optional string path = 2;
+}
+
+message GetStreamInfo {
+    optional uint32 version = 1 [default=1];
+    
+    optional string path = 2;
+}
+
 // request to download part of a stream
 message Get {
     // path of stream to retrieve

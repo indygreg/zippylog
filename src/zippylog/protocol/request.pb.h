@@ -37,6 +37,9 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
 
 class GetFeatures;
 class GetStoreInfo;
+class GetBucketInfo;
+class GetStreamSetInfo;
+class GetStreamInfo;
 class Get;
 class WriteEnvelope;
 class WriteEnvelopeWithMessages;
@@ -220,6 +223,318 @@ class GetStoreInfo : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static GetStoreInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class GetBucketInfo : public ::google::protobuf::Message {
+ public:
+  GetBucketInfo();
+  virtual ~GetBucketInfo();
+  
+  GetBucketInfo(const GetBucketInfo& from);
+  
+  inline GetBucketInfo& operator=(const GetBucketInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetBucketInfo& default_instance();
+  
+  void Swap(GetBucketInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  GetBucketInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const GetBucketInfo& from);
+  void MergeFrom(const GetBucketInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional uint32 version = 1 [default = 1];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional string bucket = 2;
+  inline bool has_bucket() const;
+  inline void clear_bucket();
+  static const int kBucketFieldNumber = 2;
+  inline const ::std::string& bucket() const;
+  inline void set_bucket(const ::std::string& value);
+  inline void set_bucket(const char* value);
+  inline void set_bucket(const char* value, size_t size);
+  inline ::std::string* mutable_bucket();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 100;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetBucketInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::uint32 version_;
+  ::std::string* bucket_;
+  static const ::std::string _default_bucket_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static GetBucketInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class GetStreamSetInfo : public ::google::protobuf::Message {
+ public:
+  GetStreamSetInfo();
+  virtual ~GetStreamSetInfo();
+  
+  GetStreamSetInfo(const GetStreamSetInfo& from);
+  
+  inline GetStreamSetInfo& operator=(const GetStreamSetInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetStreamSetInfo& default_instance();
+  
+  void Swap(GetStreamSetInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  GetStreamSetInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const GetStreamSetInfo& from);
+  void MergeFrom(const GetStreamSetInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional uint32 version = 1 [default = 1];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 101;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamSetInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::uint32 version_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static GetStreamSetInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class GetStreamInfo : public ::google::protobuf::Message {
+ public:
+  GetStreamInfo();
+  virtual ~GetStreamInfo();
+  
+  GetStreamInfo(const GetStreamInfo& from);
+  
+  inline GetStreamInfo& operator=(const GetStreamInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetStreamInfo& default_instance();
+  
+  void Swap(GetStreamInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  GetStreamInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const GetStreamInfo& from);
+  void MergeFrom(const GetStreamInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional uint32 version = 1 [default = 1];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 102;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::uint32 version_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static GetStreamInfo* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1026,6 +1341,192 @@ inline ::google::protobuf::uint32 GetStoreInfo::version() const {
 inline void GetStoreInfo::set_version(::google::protobuf::uint32 value) {
   _set_bit(0);
   version_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// GetBucketInfo
+
+// optional uint32 version = 1 [default = 1];
+inline bool GetBucketInfo::has_version() const {
+  return _has_bit(0);
+}
+inline void GetBucketInfo::clear_version() {
+  version_ = 1u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 GetBucketInfo::version() const {
+  return version_;
+}
+inline void GetBucketInfo::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional string bucket = 2;
+inline bool GetBucketInfo::has_bucket() const {
+  return _has_bit(1);
+}
+inline void GetBucketInfo::clear_bucket() {
+  if (bucket_ != &_default_bucket_) {
+    bucket_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& GetBucketInfo::bucket() const {
+  return *bucket_;
+}
+inline void GetBucketInfo::set_bucket(const ::std::string& value) {
+  _set_bit(1);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void GetBucketInfo::set_bucket(const char* value) {
+  _set_bit(1);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(value);
+}
+inline void GetBucketInfo::set_bucket(const char* value, size_t size) {
+  _set_bit(1);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  bucket_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetBucketInfo::mutable_bucket() {
+  _set_bit(1);
+  if (bucket_ == &_default_bucket_) {
+    bucket_ = new ::std::string;
+  }
+  return bucket_;
+}
+
+// -------------------------------------------------------------------
+
+// GetStreamSetInfo
+
+// optional uint32 version = 1 [default = 1];
+inline bool GetStreamSetInfo::has_version() const {
+  return _has_bit(0);
+}
+inline void GetStreamSetInfo::clear_version() {
+  version_ = 1u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 GetStreamSetInfo::version() const {
+  return version_;
+}
+inline void GetStreamSetInfo::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional string path = 2;
+inline bool GetStreamSetInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void GetStreamSetInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& GetStreamSetInfo::path() const {
+  return *path_;
+}
+inline void GetStreamSetInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void GetStreamSetInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void GetStreamSetInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetStreamSetInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// GetStreamInfo
+
+// optional uint32 version = 1 [default = 1];
+inline bool GetStreamInfo::has_version() const {
+  return _has_bit(0);
+}
+inline void GetStreamInfo::clear_version() {
+  version_ = 1u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 GetStreamInfo::version() const {
+  return version_;
+}
+inline void GetStreamInfo::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional string path = 2;
+inline bool GetStreamInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void GetStreamInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& GetStreamInfo::path() const {
+  return *path_;
+}
+inline void GetStreamInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void GetStreamInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void GetStreamInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetStreamInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
 }
 
 // -------------------------------------------------------------------
