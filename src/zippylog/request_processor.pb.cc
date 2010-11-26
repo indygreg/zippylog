@@ -93,6 +93,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* EndProcessStreamInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   EndProcessStreamInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* BeginProcessWriteEnvelope_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  BeginProcessWriteEnvelope_reflection_ = NULL;
+const ::google::protobuf::Descriptor* EndProcessWriteEnvelope_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  EndProcessWriteEnvelope_reflection_ = NULL;
 
 }  // namespace
 
@@ -504,6 +510,36 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessStreamInfo));
+  BeginProcessWriteEnvelope_descriptor_ = file->message_type(26);
+  static const int BeginProcessWriteEnvelope_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessWriteEnvelope, id_),
+  };
+  BeginProcessWriteEnvelope_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      BeginProcessWriteEnvelope_descriptor_,
+      BeginProcessWriteEnvelope::default_instance_,
+      BeginProcessWriteEnvelope_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessWriteEnvelope, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessWriteEnvelope, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(BeginProcessWriteEnvelope));
+  EndProcessWriteEnvelope_descriptor_ = file->message_type(27);
+  static const int EndProcessWriteEnvelope_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessWriteEnvelope, id_),
+  };
+  EndProcessWriteEnvelope_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      EndProcessWriteEnvelope_descriptor_,
+      EndProcessWriteEnvelope::default_instance_,
+      EndProcessWriteEnvelope_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessWriteEnvelope, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessWriteEnvelope, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(EndProcessWriteEnvelope));
 }
 
 namespace {
@@ -568,6 +604,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     BeginProcessStreamInfo_descriptor_, &BeginProcessStreamInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     EndProcessStreamInfo_descriptor_, &EndProcessStreamInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    BeginProcessWriteEnvelope_descriptor_, &BeginProcessWriteEnvelope::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    EndProcessWriteEnvelope_descriptor_, &EndProcessWriteEnvelope::default_instance());
 }
 
 }  // namespace
@@ -625,6 +665,10 @@ void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto() {
   delete BeginProcessStreamInfo_reflection_;
   delete EndProcessStreamInfo::default_instance_;
   delete EndProcessStreamInfo_reflection_;
+  delete BeginProcessWriteEnvelope::default_instance_;
+  delete BeginProcessWriteEnvelope_reflection_;
+  delete EndProcessWriteEnvelope::default_instance_;
+  delete EndProcessWriteEnvelope_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
@@ -661,7 +705,9 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
     "\001(\t\"3\n\027EndProcessStreamSetInfo\022\n\n\002id\030\001 \001"
     "(\014\022\014\n\004path\030\002 \001(\t\"2\n\026BeginProcessStreamIn"
     "fo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProce"
-    "ssStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t", 1118);
+    "ssStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"\'"
+    "\n\031BeginProcessWriteEnvelope\022\n\n\002id\030\001 \001(\014\""
+    "%\n\027EndProcessWriteEnvelope\022\n\n\002id\030\001 \001(\014", 1198);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/request_processor.proto", &protobuf_RegisterTypes);
   Create::default_instance_ = new Create();
@@ -690,6 +736,8 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   EndProcessStreamSetInfo::default_instance_ = new EndProcessStreamSetInfo();
   BeginProcessStreamInfo::default_instance_ = new BeginProcessStreamInfo();
   EndProcessStreamInfo::default_instance_ = new EndProcessStreamInfo();
+  BeginProcessWriteEnvelope::default_instance_ = new BeginProcessWriteEnvelope();
+  EndProcessWriteEnvelope::default_instance_ = new EndProcessWriteEnvelope();
   Create::default_instance_->InitAsDefaultInstance();
   Destroy::default_instance_->InitAsDefaultInstance();
   RunStart::default_instance_->InitAsDefaultInstance();
@@ -716,6 +764,8 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   EndProcessStreamSetInfo::default_instance_->InitAsDefaultInstance();
   BeginProcessStreamInfo::default_instance_->InitAsDefaultInstance();
   EndProcessStreamInfo::default_instance_->InitAsDefaultInstance();
+  BeginProcessWriteEnvelope::default_instance_->InitAsDefaultInstance();
+  EndProcessWriteEnvelope::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto);
 }
 
@@ -6927,6 +6977,438 @@ void EndProcessStreamInfo::Swap(EndProcessStreamInfo* other) {
 }
 
 
+// ===================================================================
+
+const ::std::string BeginProcessWriteEnvelope::_default_id_;
+#ifndef _MSC_VER
+const int BeginProcessWriteEnvelope::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+BeginProcessWriteEnvelope::BeginProcessWriteEnvelope()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void BeginProcessWriteEnvelope::InitAsDefaultInstance() {
+}
+
+BeginProcessWriteEnvelope::BeginProcessWriteEnvelope(const BeginProcessWriteEnvelope& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void BeginProcessWriteEnvelope::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+BeginProcessWriteEnvelope::~BeginProcessWriteEnvelope() {
+  SharedDtor();
+}
+
+void BeginProcessWriteEnvelope::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void BeginProcessWriteEnvelope::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* BeginProcessWriteEnvelope::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return BeginProcessWriteEnvelope_descriptor_;
+}
+
+const BeginProcessWriteEnvelope& BeginProcessWriteEnvelope::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();  return *default_instance_;
+}
+
+BeginProcessWriteEnvelope* BeginProcessWriteEnvelope::default_instance_ = NULL;
+
+BeginProcessWriteEnvelope* BeginProcessWriteEnvelope::New() const {
+  return new BeginProcessWriteEnvelope;
+}
+
+void BeginProcessWriteEnvelope::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool BeginProcessWriteEnvelope::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void BeginProcessWriteEnvelope::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* BeginProcessWriteEnvelope::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int BeginProcessWriteEnvelope::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void BeginProcessWriteEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const BeginProcessWriteEnvelope* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const BeginProcessWriteEnvelope*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void BeginProcessWriteEnvelope::MergeFrom(const BeginProcessWriteEnvelope& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void BeginProcessWriteEnvelope::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void BeginProcessWriteEnvelope::CopyFrom(const BeginProcessWriteEnvelope& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool BeginProcessWriteEnvelope::IsInitialized() const {
+  
+  return true;
+}
+
+void BeginProcessWriteEnvelope::Swap(BeginProcessWriteEnvelope* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata BeginProcessWriteEnvelope::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = BeginProcessWriteEnvelope_descriptor_;
+  metadata.reflection = BeginProcessWriteEnvelope_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string EndProcessWriteEnvelope::_default_id_;
+#ifndef _MSC_VER
+const int EndProcessWriteEnvelope::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+EndProcessWriteEnvelope::EndProcessWriteEnvelope()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void EndProcessWriteEnvelope::InitAsDefaultInstance() {
+}
+
+EndProcessWriteEnvelope::EndProcessWriteEnvelope(const EndProcessWriteEnvelope& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void EndProcessWriteEnvelope::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+EndProcessWriteEnvelope::~EndProcessWriteEnvelope() {
+  SharedDtor();
+}
+
+void EndProcessWriteEnvelope::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void EndProcessWriteEnvelope::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* EndProcessWriteEnvelope::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return EndProcessWriteEnvelope_descriptor_;
+}
+
+const EndProcessWriteEnvelope& EndProcessWriteEnvelope::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();  return *default_instance_;
+}
+
+EndProcessWriteEnvelope* EndProcessWriteEnvelope::default_instance_ = NULL;
+
+EndProcessWriteEnvelope* EndProcessWriteEnvelope::New() const {
+  return new EndProcessWriteEnvelope;
+}
+
+void EndProcessWriteEnvelope::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool EndProcessWriteEnvelope::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void EndProcessWriteEnvelope::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* EndProcessWriteEnvelope::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int EndProcessWriteEnvelope::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void EndProcessWriteEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const EndProcessWriteEnvelope* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const EndProcessWriteEnvelope*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void EndProcessWriteEnvelope::MergeFrom(const EndProcessWriteEnvelope& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void EndProcessWriteEnvelope::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void EndProcessWriteEnvelope::CopyFrom(const EndProcessWriteEnvelope& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool EndProcessWriteEnvelope::IsInitialized() const {
+  
+  return true;
+}
+
+void EndProcessWriteEnvelope::Swap(EndProcessWriteEnvelope* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata EndProcessWriteEnvelope::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = EndProcessWriteEnvelope_descriptor_;
+  metadata.reflection = EndProcessWriteEnvelope_reflection_;
+  return metadata;
+}
+
+
 
 bool Create::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
@@ -7133,6 +7615,22 @@ bool EndProcessStreamInfo::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool EndProcessStreamInfo::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool BeginProcessWriteEnvelope::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool BeginProcessWriteEnvelope::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool EndProcessWriteEnvelope::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool EndProcessWriteEnvelope::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
