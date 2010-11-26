@@ -50,8 +50,8 @@ class EndProcessStoreInfo;
 class ReceiveInvalidGet;
 class GetInvalidStream;
 class GetInvalidOffset;
-class BeginProcessGet;
-class EndProcessGet;
+class BeginProcessGetStream;
+class EndProcessGetStream;
 class SendErrorResponse;
 class ForwardSubscribeKeepalive;
 class BeginProcessBucketInfo;
@@ -1627,14 +1627,14 @@ class GetInvalidOffset : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class BeginProcessGet : public ::google::protobuf::Message {
+class BeginProcessGetStream : public ::google::protobuf::Message {
  public:
-  BeginProcessGet();
-  virtual ~BeginProcessGet();
+  BeginProcessGetStream();
+  virtual ~BeginProcessGetStream();
   
-  BeginProcessGet(const BeginProcessGet& from);
+  BeginProcessGetStream(const BeginProcessGetStream& from);
   
-  inline BeginProcessGet& operator=(const BeginProcessGet& from) {
+  inline BeginProcessGetStream& operator=(const BeginProcessGetStream& from) {
     CopyFrom(from);
     return *this;
   }
@@ -1648,17 +1648,17 @@ class BeginProcessGet : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const BeginProcessGet& default_instance();
+  static const BeginProcessGetStream& default_instance();
   
-  void Swap(BeginProcessGet* other);
+  void Swap(BeginProcessGetStream* other);
   
   // implements Message ----------------------------------------------
   
-  BeginProcessGet* New() const;
+  BeginProcessGetStream* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const BeginProcessGet& from);
-  void MergeFrom(const BeginProcessGet& from);
+  void CopyFrom(const BeginProcessGetStream& from);
+  void MergeFrom(const BeginProcessGetStream& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -1692,9 +1692,9 @@ class BeginProcessGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 96;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 110;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGet)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGetStream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1719,18 +1719,18 @@ class BeginProcessGet : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static BeginProcessGet* default_instance_;
+  static BeginProcessGetStream* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class EndProcessGet : public ::google::protobuf::Message {
+class EndProcessGetStream : public ::google::protobuf::Message {
  public:
-  EndProcessGet();
-  virtual ~EndProcessGet();
+  EndProcessGetStream();
+  virtual ~EndProcessGetStream();
   
-  EndProcessGet(const EndProcessGet& from);
+  EndProcessGetStream(const EndProcessGetStream& from);
   
-  inline EndProcessGet& operator=(const EndProcessGet& from) {
+  inline EndProcessGetStream& operator=(const EndProcessGetStream& from) {
     CopyFrom(from);
     return *this;
   }
@@ -1744,17 +1744,17 @@ class EndProcessGet : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const EndProcessGet& default_instance();
+  static const EndProcessGetStream& default_instance();
   
-  void Swap(EndProcessGet* other);
+  void Swap(EndProcessGetStream* other);
   
   // implements Message ----------------------------------------------
   
-  EndProcessGet* New() const;
+  EndProcessGetStream* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const EndProcessGet& from);
-  void MergeFrom(const EndProcessGet& from);
+  void CopyFrom(const EndProcessGetStream& from);
+  void MergeFrom(const EndProcessGetStream& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -1788,9 +1788,9 @@ class EndProcessGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 97;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 111;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGet)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGetStream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1815,7 +1815,7 @@ class EndProcessGet : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static EndProcessGet* default_instance_;
+  static EndProcessGetStream* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3496,43 +3496,43 @@ inline ::std::string* GetInvalidOffset::mutable_id() {
 
 // -------------------------------------------------------------------
 
-// BeginProcessGet
+// BeginProcessGetStream
 
 // optional bytes id = 1;
-inline bool BeginProcessGet::has_id() const {
+inline bool BeginProcessGetStream::has_id() const {
   return _has_bit(0);
 }
-inline void BeginProcessGet::clear_id() {
+inline void BeginProcessGetStream::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& BeginProcessGet::id() const {
+inline const ::std::string& BeginProcessGetStream::id() const {
   return *id_;
 }
-inline void BeginProcessGet::set_id(const ::std::string& value) {
+inline void BeginProcessGetStream::set_id(const ::std::string& value) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void BeginProcessGet::set_id(const char* value) {
+inline void BeginProcessGetStream::set_id(const char* value) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void BeginProcessGet::set_id(const void* value, size_t size) {
+inline void BeginProcessGetStream::set_id(const void* value, size_t size) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* BeginProcessGet::mutable_id() {
+inline ::std::string* BeginProcessGetStream::mutable_id() {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
@@ -3542,43 +3542,43 @@ inline ::std::string* BeginProcessGet::mutable_id() {
 
 // -------------------------------------------------------------------
 
-// EndProcessGet
+// EndProcessGetStream
 
 // optional bytes id = 1;
-inline bool EndProcessGet::has_id() const {
+inline bool EndProcessGetStream::has_id() const {
   return _has_bit(0);
 }
-inline void EndProcessGet::clear_id() {
+inline void EndProcessGetStream::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
   _clear_bit(0);
 }
-inline const ::std::string& EndProcessGet::id() const {
+inline const ::std::string& EndProcessGetStream::id() const {
   return *id_;
 }
-inline void EndProcessGet::set_id(const ::std::string& value) {
+inline void EndProcessGetStream::set_id(const ::std::string& value) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void EndProcessGet::set_id(const char* value) {
+inline void EndProcessGetStream::set_id(const char* value) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void EndProcessGet::set_id(const void* value, size_t size) {
+inline void EndProcessGetStream::set_id(const void* value, size_t size) {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* EndProcessGet::mutable_id() {
+inline ::std::string* EndProcessGetStream::mutable_id() {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;

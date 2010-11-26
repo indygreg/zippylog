@@ -40,6 +40,7 @@
       "zippylog.zippylogd.WorkerRequestEmptyEnvelope": 30, 
       "zippylog.request_processor.BeginProcessStreamSetInfo": 105, 
       "zippylog.request_processor.GetInvalidStream": 94, 
+      "zippylog.request_processor.BeginProcessGetStream": 110, 
       "zippylog.device.request_processor.RunStart": 62, 
       "zippylog.zippylogd.WorkerFailReceiveMessage": 27, 
       "zippylog.zippylogd.WorkerInvalidMessageEnumeration": 31, 
@@ -109,7 +110,8 @@
       "zippylog.protocol.StoreChangeStreamDeleted": 16, 
       "zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive": 42, 
       "zippylog.device.request_processor.EndProcessGet": 77, 
-      "zippylog.device.request_processor.Destroy": 61
+      "zippylog.device.request_processor.Destroy": 61, 
+      "zippylog.request_processor.EndProcessGetStream": 111
     }, 
     "google": {
       "google.protobuf.UninterpretedOption": 16, 
