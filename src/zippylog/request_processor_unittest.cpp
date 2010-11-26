@@ -139,7 +139,7 @@ protected:
     }
 };
 
-// this test verifies our core message processing routine is robust
+// this test verifies our core message processing routine is robust and functional
 TEST_F(RequestProcessorTest, ProcessMessages)
 {
     protocol::response::ErrorCode code;
@@ -166,7 +166,6 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     // bad version
     m.rebuild(1);
     *(char *)(m.data()) = 0;
-    input.push_back(&m);
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
     this->p->ProcessMessages(identities, input, output);
     this->ExpectErrorResponse(code, output);
@@ -174,7 +173,6 @@ TEST_F(RequestProcessorTest, ProcessMessages)
 
     m.rebuild(1);
     *(char *)(m.data()) = 0x02;
-    input.push_back(&m);
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
     this->p->ProcessMessages(identities, input, output);
     this->ExpectErrorResponse(code, output);
@@ -183,7 +181,6 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     // no data after version
     m.rebuild(1);
     *(char *)(m.data()) = 0x01;
-    input.push_back(&m);
     code = protocol::response::PROTOCOL_NO_ENVELOPE;
     this->p->ProcessMessages(identities, input, output);
     this->ExpectErrorResponse(code, output);
@@ -192,10 +189,26 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     // bad envelope after version
     m.rebuild(10);
     *(char *)(m.data()) = 0x01;
-    input.push_back(&m);
     code = protocol::response::ENVELOPE_PARSE_FAILURE;
     this->p->ProcessMessages(identities, input, output);
     this->ExpectErrorResponse(code, output);
+    output.clear();
+
+    // working store info request
+    protocol::request::GetStoreInfo gsi;
+    Envelope request;
+    gsi.add_to_envelope(&request);
+    m.rebuild(1 + request.envelope.SerializeAsString().size());
+    *(char *)(m.data()) = 0x01;
+    memcpy((void *)((char *)m.data() + 1), request.envelope.SerializeAsString().data(), m.size() - 1);
+    this->p->ProcessMessages(identities, input, output);
+    ASSERT_EQ(1, output.size());
+    Envelope response = output[0];
+    ASSERT_EQ(1, response.MessageCount());
+    uint32 expected = protocol::StoreInfo::zippylog_namespace;
+    ASSERT_EQ(expected, response.MessageNamespace(0));
+    expected = protocol::StoreInfo::zippylog_enumeration;
+    ASSERT_EQ(expected, response.MessageType(0));
     output.clear();
 }
 
@@ -246,7 +259,7 @@ TEST_F(RequestProcessorTest, SupportedVersions)
 
 }
 
-TEST_F(RequestProcessorTest, StoreInfo)
+TEST_F(RequestProcessorTest, GetStoreInfo)
 {
     protocol::request::GetStoreInfo m;
     Envelope e;
@@ -276,7 +289,7 @@ TEST_F(RequestProcessorTest, StoreInfo)
     EXPECT_STREQ(esi.SerializeAsString().c_str(), r->SerializeAsString().c_str());
 }
 
-TEST_F(RequestProcessorTest, BucketInfo)
+TEST_F(RequestProcessorTest, GetBucketInfo)
 {
     // an empty request should result in missing field
 
