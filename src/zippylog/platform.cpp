@@ -28,7 +28,6 @@
 #include <errno.h>
 #include <poll.h>
 #include <string.h>
-#include <stdio.h> // for FILENAME_MAX
 #include <sys/io.h>
 #include <sys/inotify.h>
 #include <sys/time.h>
@@ -36,6 +35,7 @@
 #endif
 
 #include <fcntl.h>
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -702,6 +702,26 @@ bool CreateUUID(UUID &u)
 #else
 #warning "functionality not implemented on this platform"
 #endif
+}
+
+bool FormatUUID(UUID &u, ::std::string &s)
+{
+    // formatted UUIDs are 36 characters and we have a NULL
+    char buf[37];
+
+#ifdef WINDOWS
+    _snprintf_s(&buf[0], sizeof(buf), sizeof(buf),
+#else
+    snprintf(&buf[0], sizeof(buf),
+#endif
+        "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
+        u.data[0], u.data[1], u.data[2], u.data[3], u.data[4], u.data[5],
+        u.data[6], u.data[7], u.data[7], u.data[8], u.data[9], u.data[10],
+        u.data[11], u.data[12], u.data[13], u.data[14], u.data[15]
+    );
+    s.assign(&buf[0], 36);
+
+    return true;
 }
 
 
