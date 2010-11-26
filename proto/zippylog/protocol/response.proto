@@ -100,4 +100,7 @@ enum ErrorCode {
     // the protocol version number in the 0MQ message (the first byte) is
     // not known to the server
     UNKNOWN_MESSAGE_FORMAT_VERSION = 13;
+    
+    // the path specified is not valid
+    INVALID_PATH = 14;
 }
