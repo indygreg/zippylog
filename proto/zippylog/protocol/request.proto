@@ -15,12 +15,12 @@ message GetFeatures {}
 // Currently, servers can only be bound to one store, so we have no
 // parameters.
 message GetStoreInfo {
-    required uint32 version = 1 [default=1];
+    required uint32 version = 1;
 }
 
 // Obtain information about a specific bucket
 message GetBucketInfo {
-    required uint32 version = 1 [default=1];
+    required uint32 version = 1;
     
     // path to bucket whose info to obtain
     optional string path = 2;
@@ -28,14 +28,14 @@ message GetBucketInfo {
 
 // Obtain information about a specific stream set
 message GetStreamSetInfo {
-    required uint32 version = 1 [default=1];
+    required uint32 version = 1;
     
     optional string path = 2;
 }
 
 // Obtain information about a specific stream
 message GetStreamInfo {
-    required uint32 version = 1 [default=1];
+    required uint32 version = 1;
     
     optional string path = 2;
 }
@@ -47,7 +47,7 @@ message GetStreamInfo {
 // client. Therefore, the limits in the request are merely a theoretical
 // maximum.
 message GetStream {
-    required uint32 version = 1 [default=1];
+    required uint32 version = 1;
 
     // path of stream to retrieve
     optional string path = 2;
@@ -68,7 +68,7 @@ message GetStream {
 // writes 1 or more already serialized envelopes to the store
 message WriteEnvelope {
     // the version of this message the client is sending
-    optional uint32 version = 1 [default=1];
+    required uint32 version = 1;
 
     // store path to write to. must be stream set or stream
     optional string path = 2;
@@ -78,17 +78,19 @@ message WriteEnvelope {
 }
 
 // writes an envelope from messages
-message WriteEnvelopeWithMessages {
+message WriteEnvelopeFromMessages {
+    required uint32 version = 1;
+
     // store path to write to. must be stream set or stream
-    optional string path = 1;
+    optional string path = 2;
 
     // list of serialized protocol buffer messages to write to a single
     // envelope
-    repeated bytes message = 2;
+    repeated bytes message = 3;
 
     // enumerations for protocol buffer messages
-    repeated uint32 message_namespace = 3 [packed=true];
-    repeated uint32 message_type = 4 [packed=true];
+    repeated uint32 message_namespace = 4 [packed=true];
+    repeated uint32 message_type = 5 [packed=true];
 }
 
 // subscribes the client to store changes
@@ -96,36 +98,43 @@ message WriteEnvelopeWithMessages {
 // and modification of buckets, stream sets, and streams. it does not include
 // actual envelopes in streams
 message SubscribeStoreChanges {
+    required uint32 version = 1;
 
     // list of store paths to subscribe to
     // if you want to subscribe to the entire store, add the value "/"
-    repeated string path = 1;
+    repeated string path = 2;
 }
 
 // subscribes to newly-written envelopes
 message SubscribeEnvelopes {
+    required uint32 version = 1;
+
     // list of store paths to subscribe to
     // this can be individual streams, stream sets, buckets, or the entire
     // store ("/")
-    repeated string path = 1;
+    repeated string path = 2;
 
     // TODO add filtering
 
     // Lua code that defines functionality to be executed on the server
-    optional string lua_code = 2;
+    optional string lua_code = 3;
 }
 
 // clients need to send keepalive messages every N seconds or the server drops
 // the subscription. this is that keepalive message
 message SubscribeKeepalive {
+    required uint32 version = 1;
+
     // the subscription identifier to send the keepalive for
     // this identifier is issued by the server when it accepts the
     // subscription
-    optional bytes id = 1;
+    optional bytes id = 2;
 }
 
 // cancels a subscription
 message SubscribeCancel {
+    required uint32 version = 1;
+
     // subscription identifier to cancel
-    optional bytes id = 1;
+    optional bytes id = 2;
 }

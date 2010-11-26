@@ -42,7 +42,7 @@ class GetStreamSetInfo;
 class GetStreamInfo;
 class GetStream;
 class WriteEnvelope;
-class WriteEnvelopeWithMessages;
+class WriteEnvelopeFromMessages;
 class SubscribeStoreChanges;
 class SubscribeEnvelopes;
 class SubscribeKeepalive;
@@ -190,7 +190,7 @@ class GetStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -284,7 +284,7 @@ class GetBucketInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -390,7 +390,7 @@ class GetStreamSetInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -496,7 +496,7 @@ class GetStreamInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -602,7 +602,7 @@ class GetStream : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -732,7 +732,7 @@ class WriteEnvelope : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 version = 1 [default = 1];
+  // required uint32 version = 1;
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -801,14 +801,14 @@ class WriteEnvelope : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
+class WriteEnvelopeFromMessages : public ::google::protobuf::Message {
  public:
-  WriteEnvelopeWithMessages();
-  virtual ~WriteEnvelopeWithMessages();
+  WriteEnvelopeFromMessages();
+  virtual ~WriteEnvelopeFromMessages();
   
-  WriteEnvelopeWithMessages(const WriteEnvelopeWithMessages& from);
+  WriteEnvelopeFromMessages(const WriteEnvelopeFromMessages& from);
   
-  inline WriteEnvelopeWithMessages& operator=(const WriteEnvelopeWithMessages& from) {
+  inline WriteEnvelopeFromMessages& operator=(const WriteEnvelopeFromMessages& from) {
     CopyFrom(from);
     return *this;
   }
@@ -822,17 +822,17 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const WriteEnvelopeWithMessages& default_instance();
+  static const WriteEnvelopeFromMessages& default_instance();
   
-  void Swap(WriteEnvelopeWithMessages* other);
+  void Swap(WriteEnvelopeFromMessages* other);
   
   // implements Message ----------------------------------------------
   
-  WriteEnvelopeWithMessages* New() const;
+  WriteEnvelopeFromMessages* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const WriteEnvelopeWithMessages& from);
-  void MergeFrom(const WriteEnvelopeWithMessages& from);
+  void CopyFrom(const WriteEnvelopeFromMessages& from);
+  void MergeFrom(const WriteEnvelopeFromMessages& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -855,20 +855,27 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required uint32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional string path = 2;
   inline bool has_path() const;
   inline void clear_path();
-  static const int kPathFieldNumber = 1;
+  static const int kPathFieldNumber = 2;
   inline const ::std::string& path() const;
   inline void set_path(const ::std::string& value);
   inline void set_path(const char* value);
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // repeated bytes message = 2;
+  // repeated bytes message = 3;
   inline int message_size() const;
   inline void clear_message();
-  static const int kMessageFieldNumber = 2;
+  static const int kMessageFieldNumber = 3;
   inline const ::std::string& message(int index) const;
   inline ::std::string* mutable_message(int index);
   inline void set_message(int index, const ::std::string& value);
@@ -881,10 +888,10 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& message() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_message();
   
-  // repeated uint32 message_namespace = 3 [packed = true];
+  // repeated uint32 message_namespace = 4 [packed = true];
   inline int message_namespace_size() const;
   inline void clear_message_namespace();
-  static const int kMessageNamespaceFieldNumber = 3;
+  static const int kMessageNamespaceFieldNumber = 4;
   inline ::google::protobuf::uint32 message_namespace(int index) const;
   inline void set_message_namespace(int index, ::google::protobuf::uint32 value);
   inline void add_message_namespace(::google::protobuf::uint32 value);
@@ -893,10 +900,10 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
       mutable_message_namespace();
   
-  // repeated uint32 message_type = 4 [packed = true];
+  // repeated uint32 message_type = 5 [packed = true];
   inline int message_type_size() const;
   inline void clear_message_type();
-  static const int kMessageTypeFieldNumber = 4;
+  static const int kMessageTypeFieldNumber = 5;
   inline ::google::protobuf::uint32 message_type(int index) const;
   inline void set_message_type(int index, ::google::protobuf::uint32 value);
   inline void add_message_type(::google::protobuf::uint32 value);
@@ -906,15 +913,16 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
       mutable_message_type();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 59;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 112;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.WriteEnvelopeWithMessages)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.WriteEnvelopeFromMessages)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::std::string* path_;
   static const ::std::string _default_path_;
   ::google::protobuf::RepeatedPtrField< ::std::string> message_;
@@ -926,7 +934,7 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -940,7 +948,7 @@ class WriteEnvelopeWithMessages : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static WriteEnvelopeWithMessages* default_instance_;
+  static WriteEnvelopeFromMessages* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -998,10 +1006,17 @@ class SubscribeStoreChanges : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated string path = 1;
+  // required uint32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // repeated string path = 2;
   inline int path_size() const;
   inline void clear_path();
-  static const int kPathFieldNumber = 1;
+  static const int kPathFieldNumber = 2;
   inline const ::std::string& path(int index) const;
   inline ::std::string* mutable_path(int index);
   inline void set_path(int index, const ::std::string& value);
@@ -1024,12 +1039,13 @@ class SubscribeStoreChanges : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::google::protobuf::RepeatedPtrField< ::std::string> path_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1101,10 +1117,17 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated string path = 1;
+  // required uint32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // repeated string path = 2;
   inline int path_size() const;
   inline void clear_path();
-  static const int kPathFieldNumber = 1;
+  static const int kPathFieldNumber = 2;
   inline const ::std::string& path(int index) const;
   inline ::std::string* mutable_path(int index);
   inline void set_path(int index, const ::std::string& value);
@@ -1117,10 +1140,10 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
-  // optional string lua_code = 2;
+  // optional string lua_code = 3;
   inline bool has_lua_code() const;
   inline void clear_lua_code();
-  static const int kLuaCodeFieldNumber = 2;
+  static const int kLuaCodeFieldNumber = 3;
   inline const ::std::string& lua_code() const;
   inline void set_lua_code(const ::std::string& value);
   inline void set_lua_code(const char* value);
@@ -1137,6 +1160,7 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::google::protobuf::RepeatedPtrField< ::std::string> path_;
   ::std::string* lua_code_;
   static const ::std::string _default_lua_code_;
@@ -1144,7 +1168,7 @@ class SubscribeEnvelopes : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1216,10 +1240,17 @@ class SubscribeKeepalive : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required uint32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1236,13 +1267,14 @@ class SubscribeKeepalive : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1314,10 +1346,17 @@ class SubscribeCancel : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required uint32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional bytes id = 2;
   inline bool has_id() const;
   inline void clear_id();
-  static const int kIdFieldNumber = 1;
+  static const int kIdFieldNumber = 2;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
@@ -1334,13 +1373,14 @@ class SubscribeCancel : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::std::string* id_;
   static const ::std::string _default_id_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1367,12 +1407,12 @@ class SubscribeCancel : public ::google::protobuf::Message {
 
 // GetStoreInfo
 
-// required uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool GetStoreInfo::has_version() const {
   return _has_bit(0);
 }
 inline void GetStoreInfo::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 GetStoreInfo::version() const {
@@ -1387,12 +1427,12 @@ inline void GetStoreInfo::set_version(::google::protobuf::uint32 value) {
 
 // GetBucketInfo
 
-// required uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool GetBucketInfo::has_version() const {
   return _has_bit(0);
 }
 inline void GetBucketInfo::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 GetBucketInfo::version() const {
@@ -1449,12 +1489,12 @@ inline ::std::string* GetBucketInfo::mutable_path() {
 
 // GetStreamSetInfo
 
-// required uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool GetStreamSetInfo::has_version() const {
   return _has_bit(0);
 }
 inline void GetStreamSetInfo::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 GetStreamSetInfo::version() const {
@@ -1511,12 +1551,12 @@ inline ::std::string* GetStreamSetInfo::mutable_path() {
 
 // GetStreamInfo
 
-// required uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool GetStreamInfo::has_version() const {
   return _has_bit(0);
 }
 inline void GetStreamInfo::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 GetStreamInfo::version() const {
@@ -1573,12 +1613,12 @@ inline ::std::string* GetStreamInfo::mutable_path() {
 
 // GetStream
 
-// required uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool GetStream::has_version() const {
   return _has_bit(0);
 }
 inline void GetStream::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 GetStream::version() const {
@@ -1683,12 +1723,12 @@ inline void GetStream::set_max_response_envelopes(::google::protobuf::uint32 val
 
 // WriteEnvelope
 
-// optional uint32 version = 1 [default = 1];
+// required uint32 version = 1;
 inline bool WriteEnvelope::has_version() const {
   return _has_bit(0);
 }
 inline void WriteEnvelope::clear_version() {
-  version_ = 1u;
+  version_ = 0u;
   _clear_bit(0);
 }
 inline ::google::protobuf::uint32 WriteEnvelope::version() const {
@@ -1787,141 +1827,157 @@ WriteEnvelope::mutable_envelope() {
 
 // -------------------------------------------------------------------
 
-// WriteEnvelopeWithMessages
+// WriteEnvelopeFromMessages
 
-// optional string path = 1;
-inline bool WriteEnvelopeWithMessages::has_path() const {
+// required uint32 version = 1;
+inline bool WriteEnvelopeFromMessages::has_version() const {
   return _has_bit(0);
 }
-inline void WriteEnvelopeWithMessages::clear_path() {
+inline void WriteEnvelopeFromMessages::clear_version() {
+  version_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 WriteEnvelopeFromMessages::version() const {
+  return version_;
+}
+inline void WriteEnvelopeFromMessages::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional string path = 2;
+inline bool WriteEnvelopeFromMessages::has_path() const {
+  return _has_bit(1);
+}
+inline void WriteEnvelopeFromMessages::clear_path() {
   if (path_ != &_default_path_) {
     path_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
-inline const ::std::string& WriteEnvelopeWithMessages::path() const {
+inline const ::std::string& WriteEnvelopeFromMessages::path() const {
   return *path_;
 }
-inline void WriteEnvelopeWithMessages::set_path(const ::std::string& value) {
-  _set_bit(0);
+inline void WriteEnvelopeFromMessages::set_path(const ::std::string& value) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void WriteEnvelopeWithMessages::set_path(const char* value) {
-  _set_bit(0);
+inline void WriteEnvelopeFromMessages::set_path(const char* value) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void WriteEnvelopeWithMessages::set_path(const char* value, size_t size) {
-  _set_bit(0);
+inline void WriteEnvelopeFromMessages::set_path(const char* value, size_t size) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WriteEnvelopeWithMessages::mutable_path() {
-  _set_bit(0);
+inline ::std::string* WriteEnvelopeFromMessages::mutable_path() {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   return path_;
 }
 
-// repeated bytes message = 2;
-inline int WriteEnvelopeWithMessages::message_size() const {
+// repeated bytes message = 3;
+inline int WriteEnvelopeFromMessages::message_size() const {
   return message_.size();
 }
-inline void WriteEnvelopeWithMessages::clear_message() {
+inline void WriteEnvelopeFromMessages::clear_message() {
   message_.Clear();
 }
-inline const ::std::string& WriteEnvelopeWithMessages::message(int index) const {
+inline const ::std::string& WriteEnvelopeFromMessages::message(int index) const {
   return message_.Get(index);
 }
-inline ::std::string* WriteEnvelopeWithMessages::mutable_message(int index) {
+inline ::std::string* WriteEnvelopeFromMessages::mutable_message(int index) {
   return message_.Mutable(index);
 }
-inline void WriteEnvelopeWithMessages::set_message(int index, const ::std::string& value) {
+inline void WriteEnvelopeFromMessages::set_message(int index, const ::std::string& value) {
   message_.Mutable(index)->assign(value);
 }
-inline void WriteEnvelopeWithMessages::set_message(int index, const char* value) {
+inline void WriteEnvelopeFromMessages::set_message(int index, const char* value) {
   message_.Mutable(index)->assign(value);
 }
-inline void WriteEnvelopeWithMessages::set_message(int index, const void* value, size_t size) {
+inline void WriteEnvelopeFromMessages::set_message(int index, const void* value, size_t size) {
   message_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* WriteEnvelopeWithMessages::add_message() {
+inline ::std::string* WriteEnvelopeFromMessages::add_message() {
   return message_.Add();
 }
-inline void WriteEnvelopeWithMessages::add_message(const ::std::string& value) {
+inline void WriteEnvelopeFromMessages::add_message(const ::std::string& value) {
   message_.Add()->assign(value);
 }
-inline void WriteEnvelopeWithMessages::add_message(const char* value) {
+inline void WriteEnvelopeFromMessages::add_message(const char* value) {
   message_.Add()->assign(value);
 }
-inline void WriteEnvelopeWithMessages::add_message(const void* value, size_t size) {
+inline void WriteEnvelopeFromMessages::add_message(const void* value, size_t size) {
   message_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-WriteEnvelopeWithMessages::message() const {
+WriteEnvelopeFromMessages::message() const {
   return message_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-WriteEnvelopeWithMessages::mutable_message() {
+WriteEnvelopeFromMessages::mutable_message() {
   return &message_;
 }
 
-// repeated uint32 message_namespace = 3 [packed = true];
-inline int WriteEnvelopeWithMessages::message_namespace_size() const {
+// repeated uint32 message_namespace = 4 [packed = true];
+inline int WriteEnvelopeFromMessages::message_namespace_size() const {
   return message_namespace_.size();
 }
-inline void WriteEnvelopeWithMessages::clear_message_namespace() {
+inline void WriteEnvelopeFromMessages::clear_message_namespace() {
   message_namespace_.Clear();
 }
-inline ::google::protobuf::uint32 WriteEnvelopeWithMessages::message_namespace(int index) const {
+inline ::google::protobuf::uint32 WriteEnvelopeFromMessages::message_namespace(int index) const {
   return message_namespace_.Get(index);
 }
-inline void WriteEnvelopeWithMessages::set_message_namespace(int index, ::google::protobuf::uint32 value) {
+inline void WriteEnvelopeFromMessages::set_message_namespace(int index, ::google::protobuf::uint32 value) {
   message_namespace_.Set(index, value);
 }
-inline void WriteEnvelopeWithMessages::add_message_namespace(::google::protobuf::uint32 value) {
+inline void WriteEnvelopeFromMessages::add_message_namespace(::google::protobuf::uint32 value) {
   message_namespace_.Add(value);
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-WriteEnvelopeWithMessages::message_namespace() const {
+WriteEnvelopeFromMessages::message_namespace() const {
   return message_namespace_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-WriteEnvelopeWithMessages::mutable_message_namespace() {
+WriteEnvelopeFromMessages::mutable_message_namespace() {
   return &message_namespace_;
 }
 
-// repeated uint32 message_type = 4 [packed = true];
-inline int WriteEnvelopeWithMessages::message_type_size() const {
+// repeated uint32 message_type = 5 [packed = true];
+inline int WriteEnvelopeFromMessages::message_type_size() const {
   return message_type_.size();
 }
-inline void WriteEnvelopeWithMessages::clear_message_type() {
+inline void WriteEnvelopeFromMessages::clear_message_type() {
   message_type_.Clear();
 }
-inline ::google::protobuf::uint32 WriteEnvelopeWithMessages::message_type(int index) const {
+inline ::google::protobuf::uint32 WriteEnvelopeFromMessages::message_type(int index) const {
   return message_type_.Get(index);
 }
-inline void WriteEnvelopeWithMessages::set_message_type(int index, ::google::protobuf::uint32 value) {
+inline void WriteEnvelopeFromMessages::set_message_type(int index, ::google::protobuf::uint32 value) {
   message_type_.Set(index, value);
 }
-inline void WriteEnvelopeWithMessages::add_message_type(::google::protobuf::uint32 value) {
+inline void WriteEnvelopeFromMessages::add_message_type(::google::protobuf::uint32 value) {
   message_type_.Add(value);
 }
 inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
-WriteEnvelopeWithMessages::message_type() const {
+WriteEnvelopeFromMessages::message_type() const {
   return message_type_;
 }
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
-WriteEnvelopeWithMessages::mutable_message_type() {
+WriteEnvelopeFromMessages::mutable_message_type() {
   return &message_type_;
 }
 
@@ -1929,7 +1985,23 @@ WriteEnvelopeWithMessages::mutable_message_type() {
 
 // SubscribeStoreChanges
 
-// repeated string path = 1;
+// required uint32 version = 1;
+inline bool SubscribeStoreChanges::has_version() const {
+  return _has_bit(0);
+}
+inline void SubscribeStoreChanges::clear_version() {
+  version_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 SubscribeStoreChanges::version() const {
+  return version_;
+}
+inline void SubscribeStoreChanges::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// repeated string path = 2;
 inline int SubscribeStoreChanges::path_size() const {
   return path_.size();
 }
@@ -1977,7 +2049,23 @@ SubscribeStoreChanges::mutable_path() {
 
 // SubscribeEnvelopes
 
-// repeated string path = 1;
+// required uint32 version = 1;
+inline bool SubscribeEnvelopes::has_version() const {
+  return _has_bit(0);
+}
+inline void SubscribeEnvelopes::clear_version() {
+  version_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 SubscribeEnvelopes::version() const {
+  return version_;
+}
+inline void SubscribeEnvelopes::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// repeated string path = 2;
 inline int SubscribeEnvelopes::path_size() const {
   return path_.size();
 }
@@ -2021,42 +2109,42 @@ SubscribeEnvelopes::mutable_path() {
   return &path_;
 }
 
-// optional string lua_code = 2;
+// optional string lua_code = 3;
 inline bool SubscribeEnvelopes::has_lua_code() const {
-  return _has_bit(1);
+  return _has_bit(2);
 }
 inline void SubscribeEnvelopes::clear_lua_code() {
   if (lua_code_ != &_default_lua_code_) {
     lua_code_->clear();
   }
-  _clear_bit(1);
+  _clear_bit(2);
 }
 inline const ::std::string& SubscribeEnvelopes::lua_code() const {
   return *lua_code_;
 }
 inline void SubscribeEnvelopes::set_lua_code(const ::std::string& value) {
-  _set_bit(1);
+  _set_bit(2);
   if (lua_code_ == &_default_lua_code_) {
     lua_code_ = new ::std::string;
   }
   lua_code_->assign(value);
 }
 inline void SubscribeEnvelopes::set_lua_code(const char* value) {
-  _set_bit(1);
+  _set_bit(2);
   if (lua_code_ == &_default_lua_code_) {
     lua_code_ = new ::std::string;
   }
   lua_code_->assign(value);
 }
 inline void SubscribeEnvelopes::set_lua_code(const char* value, size_t size) {
-  _set_bit(1);
+  _set_bit(2);
   if (lua_code_ == &_default_lua_code_) {
     lua_code_ = new ::std::string;
   }
   lua_code_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* SubscribeEnvelopes::mutable_lua_code() {
-  _set_bit(1);
+  _set_bit(2);
   if (lua_code_ == &_default_lua_code_) {
     lua_code_ = new ::std::string;
   }
@@ -2067,42 +2155,58 @@ inline ::std::string* SubscribeEnvelopes::mutable_lua_code() {
 
 // SubscribeKeepalive
 
-// optional bytes id = 1;
-inline bool SubscribeKeepalive::has_id() const {
+// required uint32 version = 1;
+inline bool SubscribeKeepalive::has_version() const {
   return _has_bit(0);
+}
+inline void SubscribeKeepalive::clear_version() {
+  version_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 SubscribeKeepalive::version() const {
+  return version_;
+}
+inline void SubscribeKeepalive::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional bytes id = 2;
+inline bool SubscribeKeepalive::has_id() const {
+  return _has_bit(1);
 }
 inline void SubscribeKeepalive::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& SubscribeKeepalive::id() const {
   return *id_;
 }
 inline void SubscribeKeepalive::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void SubscribeKeepalive::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void SubscribeKeepalive::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* SubscribeKeepalive::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
@@ -2113,42 +2217,58 @@ inline ::std::string* SubscribeKeepalive::mutable_id() {
 
 // SubscribeCancel
 
-// optional bytes id = 1;
-inline bool SubscribeCancel::has_id() const {
+// required uint32 version = 1;
+inline bool SubscribeCancel::has_version() const {
   return _has_bit(0);
+}
+inline void SubscribeCancel::clear_version() {
+  version_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 SubscribeCancel::version() const {
+  return version_;
+}
+inline void SubscribeCancel::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional bytes id = 2;
+inline bool SubscribeCancel::has_id() const {
+  return _has_bit(1);
 }
 inline void SubscribeCancel::clear_id() {
   if (id_ != &_default_id_) {
     id_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
 inline const ::std::string& SubscribeCancel::id() const {
   return *id_;
 }
 inline void SubscribeCancel::set_id(const ::std::string& value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void SubscribeCancel::set_id(const char* value) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
 inline void SubscribeCancel::set_id(const void* value, size_t size) {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* SubscribeCancel::mutable_id() {
-  _set_bit(0);
+  _set_bit(1);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;
   }
