@@ -34,6 +34,7 @@
       "zippylog.zippylogd.WorkerRequestParseFailure": 29, 
       "zippylog.request_processor.UnknownMessageVersion": 86, 
       "zippylog.protocol.StoreChangeStreamAdded": 15, 
+      "zippylog.protocol.request.WriteEnvelopeFromMessages": 112, 
       "zippylog.protocol.request.SubscribeEnvelopes": 54, 
       "zippylog.request_processor.BeginProcessStoreInfo": 91, 
       "zippylog.request_processor.BeginProcessGet": 96, 

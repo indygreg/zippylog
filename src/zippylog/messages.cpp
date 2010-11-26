@@ -74,7 +74,7 @@ namespace zippylog {
         registrar->register_message(1, 102, new ::zippylog::protocol::request::GetStreamInfo());
         registrar->register_message(1, 109, new ::zippylog::protocol::request::GetStream());
         registrar->register_message(1, 58, new ::zippylog::protocol::request::WriteEnvelope());
-        registrar->register_message(1, 59, new ::zippylog::protocol::request::WriteEnvelopeWithMessages());
+        registrar->register_message(1, 112, new ::zippylog::protocol::request::WriteEnvelopeFromMessages());
         registrar->register_message(1, 22, new ::zippylog::protocol::request::SubscribeStoreChanges());
         registrar->register_message(1, 54, new ::zippylog::protocol::request::SubscribeEnvelopes());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());

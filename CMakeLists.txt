@@ -77,8 +77,12 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     #src/zippylog/client.cpp
+    src/zippylog/device/server.cpp
+    src/zippylog/device/server_watcher.cpp
+    src/zippylog/device/server_worker.cpp
     src/zippylog/device/store_writer.cpp
     src/zippylog/device/store_writer_sender.cpp
+    src/zippylog/device/streamer.cpp
     src/zippylog/device/string_receiver.cpp
     src/zippylog/device/string_writer.cpp
     src/zippylog/envelope.cpp
@@ -91,6 +95,7 @@ set(libzippylog_sources
     src/zippylog/protocol/request.pb.cc
     src/zippylog/protocol/response.pb.cc
     src/zippylog/request_processor.cpp
+    src/zippylog/request_processor.pb.cc
     src/zippylog/store.cpp
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
@@ -99,10 +104,6 @@ set(libzippylog_sources
     # TODO remove once not needed by source
     src/zippylog/zippylogd.pb.cc
     src/zippylog/zippylog.cpp
-    src/zippylog/zippylogd/broker.cpp
-    src/zippylog/zippylogd/streamer.cpp
-    src/zippylog/zippylogd/watcher.cpp
-    src/zippylog/zippylogd/worker.cpp
     src/zippylog/zippylogd.pb.cc
 
 )
@@ -152,8 +153,8 @@ add_executable(zippylogcat src/zippylogcat.cpp)
 target_link_libraries(zippylogcat libzippylog)
 
 ##################################
-# zippylog_string_writer program #
+# zippylog_string_loader program #
 ##################################
 
-add_executable(zippylog_string_writer src/zippylog_string_writer.cpp)
-target_link_libraries(zippylog_string_writer libzippylog)
+add_executable(zippylog_string_loader src/zippylog_string_loader.cpp)
+target_link_libraries(zippylog_string_loader libzippylog)
