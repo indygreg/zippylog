@@ -15,43 +15,54 @@ message GetFeatures {}
 // Currently, servers can only be bound to one store, so we have no
 // parameters.
 message GetStoreInfo {
-    optional uint32 version = 1 [default=1];
+    required uint32 version = 1 [default=1];
 }
 
+// Obtain information about a specific bucket
 message GetBucketInfo {
-    optional uint32 version = 1 [default=1];
+    required uint32 version = 1 [default=1];
     
     // path to bucket whose info to obtain
     optional string path = 2;
 }
 
+// Obtain information about a specific stream set
 message GetStreamSetInfo {
-    optional uint32 version = 1 [default=1];
+    required uint32 version = 1 [default=1];
     
     optional string path = 2;
 }
 
+// Obtain information about a specific stream
 message GetStreamInfo {
-    optional uint32 version = 1 [default=1];
+    required uint32 version = 1 [default=1];
     
     optional string path = 2;
 }
 
 // request to download part of a stream
-message Get {
+//
+// The server likely imposes limits of how much of a stream can be downloaded
+// in one request. These limits will override whatever is specified by the
+// client. Therefore, the limits in the request are merely a theoretical
+// maximum.
+message GetStream {
+    required uint32 version = 1 [default=1];
+
     // path of stream to retrieve
-    optional string path = 1;
+    optional string path = 2;
 
     // offset from start of stream from which to start sending data
-    // this value has different meaning depending on the backing store of the
-    // remote store. for filesystem stores, it likely corresponds to a byte
-    // offset within a remote file
-    optional uint64 start_offset = 2;
+    // you should never "guess" the offset because the offset likely isn't
+    // valid and the server may reject your request. instead, use the last
+    // offset from a previous fetch
+    optional uint64 start_offset = 3;
 
     // maximum number of bytes to send in response
-    optional uint32 max_response_bytes = 3;
+    optional uint32 max_response_bytes = 4;
 
-    // TODO support max events
+    // maximum number of envelopes to receive
+    optional uint32 max_response_envelopes = 5;
 }
 
 // writes 1 or more already serialized envelopes to the store
