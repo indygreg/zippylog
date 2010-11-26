@@ -181,7 +181,9 @@ Message * Envelope::GetMessage(int index)
     if (!msg) return NULL;
 
     string buffer = envelope.message(index);
-    msg->ParseFromString(buffer);
+    if (!msg->ParseFromString(buffer)) {
+        return NULL;
+    }
 
     if (!this->messages[index]) this->messages[index] = msg;
 
