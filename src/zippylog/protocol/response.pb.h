@@ -40,6 +40,7 @@ class StreamSegmentStart;
 class StreamSegmentEnd;
 class SubscribeAck;
 class SubscriptionStart;
+class WriteAck;
 class Error;
 
 enum ErrorCode {
@@ -598,6 +599,100 @@ class SubscriptionStart : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class WriteAck : public ::google::protobuf::Message {
+ public:
+  WriteAck();
+  virtual ~WriteAck();
+  
+  WriteAck(const WriteAck& from);
+  
+  inline WriteAck& operator=(const WriteAck& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WriteAck& default_instance();
+  
+  void Swap(WriteAck* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WriteAck* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WriteAck& from);
+  void MergeFrom(const WriteAck& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional uint32 envelopes_written = 1;
+  inline bool has_envelopes_written() const;
+  inline void clear_envelopes_written();
+  static const int kEnvelopesWrittenFieldNumber = 1;
+  inline ::google::protobuf::uint32 envelopes_written() const;
+  inline void set_envelopes_written(::google::protobuf::uint32 value);
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 113;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAck)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::uint32 envelopes_written_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static WriteAck* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Error : public ::google::protobuf::Message {
  public:
   Error();
@@ -954,6 +1049,26 @@ inline ::std::string* SubscriptionStart::mutable_id() {
     id_ = new ::std::string;
   }
   return id_;
+}
+
+// -------------------------------------------------------------------
+
+// WriteAck
+
+// optional uint32 envelopes_written = 1;
+inline bool WriteAck::has_envelopes_written() const {
+  return _has_bit(0);
+}
+inline void WriteAck::clear_envelopes_written() {
+  envelopes_written_ = 0u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 WriteAck::envelopes_written() const {
+  return envelopes_written_;
+}
+inline void WriteAck::set_envelopes_written(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  envelopes_written_ = value;
 }
 
 // -------------------------------------------------------------------

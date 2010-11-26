@@ -765,6 +765,20 @@ class WriteEnvelope : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& envelope() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_envelope();
   
+  // optional bool acknowledge = 4 [default = true];
+  inline bool has_acknowledge() const;
+  inline void clear_acknowledge();
+  static const int kAcknowledgeFieldNumber = 4;
+  inline bool acknowledge() const;
+  inline void set_acknowledge(bool value);
+  
+  // optional bool synchronous = 5 [default = false];
+  inline bool has_synchronous() const;
+  inline void clear_synchronous();
+  static const int kSynchronousFieldNumber = 5;
+  inline bool synchronous() const;
+  inline void set_synchronous(bool value);
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 58;
   
@@ -779,11 +793,13 @@ class WriteEnvelope : public ::google::protobuf::Message {
   ::std::string* path_;
   static const ::std::string _default_path_;
   ::google::protobuf::RepeatedPtrField< ::std::string> envelope_;
+  bool acknowledge_;
+  bool synchronous_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -1823,6 +1839,38 @@ WriteEnvelope::envelope() const {
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 WriteEnvelope::mutable_envelope() {
   return &envelope_;
+}
+
+// optional bool acknowledge = 4 [default = true];
+inline bool WriteEnvelope::has_acknowledge() const {
+  return _has_bit(3);
+}
+inline void WriteEnvelope::clear_acknowledge() {
+  acknowledge_ = true;
+  _clear_bit(3);
+}
+inline bool WriteEnvelope::acknowledge() const {
+  return acknowledge_;
+}
+inline void WriteEnvelope::set_acknowledge(bool value) {
+  _set_bit(3);
+  acknowledge_ = value;
+}
+
+// optional bool synchronous = 5 [default = false];
+inline bool WriteEnvelope::has_synchronous() const {
+  return _has_bit(4);
+}
+inline void WriteEnvelope::clear_synchronous() {
+  synchronous_ = false;
+  _clear_bit(4);
+}
+inline bool WriteEnvelope::synchronous() const {
+  return synchronous_;
+}
+inline void WriteEnvelope::set_synchronous(bool value) {
+  _set_bit(4);
+  synchronous_ = value;
 }
 
 // -------------------------------------------------------------------

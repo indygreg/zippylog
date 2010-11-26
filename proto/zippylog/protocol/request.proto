@@ -65,7 +65,12 @@ message GetStream {
     optional uint32 max_response_envelopes = 5;
 }
 
-// writes 1 or more already serialized envelopes to the store
+// writes 1 or more already serialized envelopes to a path in the store
+//
+// Envelopes are defined inline in the message as serialized values. Each
+// serialized envelope may or may not be deserialized on the server. Servers
+// may deserialize the envelope as part of verification as well as to append
+// writer information.
 message WriteEnvelope {
     // the version of this message the client is sending
     required uint32 version = 1;
@@ -75,6 +80,25 @@ message WriteEnvelope {
 
     // list of serialized envelopes to write
     repeated bytes envelope = 3;
+    
+    // Whether to acknowledge the write
+    //
+    // If true, the server will send a WriteAck response. The default is true,
+    // but it can be disabled for potential performance increases.
+    //
+    // Even if acknowledgement is disabled, the server will still send an
+    // error response if there was something wrong with the request or the
+    // request could not be fulfilled.
+    optional bool acknowledge = 4 [default=true];
+    
+    // Request synchronous writes
+    //
+    // Oftentimes, a server will deliver envelopes to a queue for writing and
+    // ack the write as soon as the message has been delivered. If this flag
+    // is set and the server supports the feature, the server won't send an
+    // ack until the envelope has actually been processed on the other side of
+    // the queue.
+    optional bool synchronous = 5 [default=false];
 }
 
 // writes an envelope from messages

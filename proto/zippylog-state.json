@@ -14,6 +14,7 @@
       "zippylog.zippylogd.WorkerSendErrorResponse": 39, 
       "zippylog.device.request_processor.EnvelopeParseFailure": 68, 
       "zippylog.protocol.StoreChangeBucketDeleted": 19, 
+      "zippylog.protocol.response.WriteAck": 113, 
       "zippylog.protocol.request.GetStreamSetInfo": 101, 
       "zippylog.zippylogd.WorkerBeginProcessStoreInfo": 32, 
       "zippylog.request_processor.RunStart": 82, 
