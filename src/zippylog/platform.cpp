@@ -336,6 +336,18 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
+bool PathIsRegularFile(const string &path)
+{
+    FileStat st;
+    int result = stat(path, st);
+    if (result == -1) {
+        set_system_error();
+        return false;
+    }
+
+    return st.type == REGULAR;
+}
+
 bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v)
 {
     v.clear();

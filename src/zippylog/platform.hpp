@@ -111,6 +111,8 @@ namespace platform {
 
     ZIPPYLOG_EXPORT bool PathIsDirectory(const ::std::string path);
 
+    ZIPPYLOG_EXPORT bool PathIsRegularFile(const ::std::string &path);
+
     // obtains a list of directories in a directory
     // recursively descends the path and finds all child directories
     ZIPPYLOG_EXPORT bool DirectoriesInTree(const ::std::string &path, ::std::vector< ::std::string > &paths);
