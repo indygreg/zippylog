@@ -43,7 +43,9 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     logger_sock(NULL),
     socket(NULL),
     store(NULL),
-    active(params.active)
+    active(params.active),
+    get_stream_max_bytes(params.get_stream_max_bytes),
+    get_stream_max_envelopes(params.get_stream_max_envelopes)
 {
     if (!this->active) {
         throw "active parameter cannot be NULL";
@@ -322,8 +324,8 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
             result = this->ProcessStreamInfo(request_envelope, output);
             break;
 
-        case protocol::request::Get::zippylog_enumeration:
-            result = this->ProcessGet(request_envelope, output);
+        case protocol::request::GetStream::zippylog_enumeration:
+            result = this->ProcessGetStream(request_envelope, output);
             break;
 
         case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
@@ -500,7 +502,6 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
 
     if (!this->CheckPath(m->path(), output, true, true, true)) goto LOG_END;
 
-
     Store::ParsePath(m->path(), bucket, set, stream);
     this->store->StreamInfo(bucket, set, stream, info);
     info.add_to_envelope(&response);
@@ -514,9 +515,14 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request, vector<Envelope> &output)
+RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &request, vector<Envelope> &output)
 {
-    protocol::request::Get *get = (protocol::request::Get *)request.GetMessage(0);
+    {
+        ::zippylog::request_processor::BeginProcessGetStream log = ::zippylog::request_processor::BeginProcessGetStream();
+        LOG_MESSAGE(log, this->logger_sock);
+    }
+
+    protocol::request::GetStream *get = (protocol::request::GetStream *)request.GetMessage(0);
     if (!get) {
         ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
         LOG_MESSAGE(log, this->logger_sock);
@@ -526,8 +532,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
             "error parsing get message... weird",
             output
         );
-        return AUTHORITATIVE;
+        goto LOG_END;
     }
+
+    if (!this->CheckMessageVersion(get->version(), 1, output)) goto LOG_END;
 
     if (!get->has_path()) {
         ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
@@ -535,11 +543,13 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
         this->PopulateErrorResponse(
             protocol::response::EMPTY_FIELD,
-            "required field 'path' is empty",
+            "required field 'path' is not set",
             output
         );
-        return AUTHORITATIVE;
+        goto LOG_END;
     }
+
+    if (!this->CheckPath(get->path(), output, true, true, true)) goto LOG_END;
 
     if (!get->has_start_offset()) {
         ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
@@ -547,104 +557,116 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGet(Envelope &request,
 
         this->PopulateErrorResponse(
             protocol::response::EMPTY_FIELD,
-            "required field 'start_offset' is not defined",
+            "required field 'start_offset' is not set",
             output
         );
-        return AUTHORITATIVE;
+        goto LOG_END;
     }
 
-    // TODO perform additional stream verification
+    {
+        InputStream *stream = this->store->GetInputStream(get->path());
+        if (!stream) {
+            // we've already verified the stream exists, so there are one of two possibilities:
+            //   1) it was deleted between then and now
+            //   2) error fetching stream
+            // TODO react accordingly
+            ::zippylog::request_processor::GetInvalidStream log = ::zippylog::request_processor::GetInvalidStream();
+            LOG_MESSAGE(log, this->logger_sock);
 
-    InputStream *stream = this->store->GetInputStream(get->path());
-    if (!stream) {
-        ::zippylog::request_processor::GetInvalidStream log = ::zippylog::request_processor::GetInvalidStream();
-        LOG_MESSAGE(log, this->logger_sock);
-
-        this->PopulateErrorResponse(
-            protocol::response::PATH_NOT_FOUND,
-            "requested stream could not be found",
-            output
-        );
-        return AUTHORITATIVE;
-    }
-
-    uint64 start_offset = get->start_offset();
-    if (!stream->SetAbsoluteOffset(start_offset)) {
-        throw "could not set stream offset";
-    }
-
-    // determine how much to fetch
-    uint32 bytes_left = 256000; // TODO pull from server config
-
-    // client can lower server default if it wants
-    if (get->has_max_response_bytes() && get->max_response_bytes() < bytes_left) {
-        bytes_left = get->max_response_bytes();
-    }
-
-    zippylog::Envelope m = zippylog::Envelope();
-
-    uint32 envelope_size = stream->NextEnvelopeSize();
-    // could not find envelope in stream at offset
-    if (!envelope_size) {
-        ::zippylog::request_processor::GetInvalidOffset log = ::zippylog::request_processor::GetInvalidOffset();
-        LOG_MESSAGE(log, this->logger_sock);
-
-        // TODO need better error code
-        this->PopulateErrorResponse(
-            protocol::response::PATH_NOT_FOUND,
-            "no envelopes found at stream offset",
-            output
-        );
-        return AUTHORITATIVE;
-    }
-
-    // we must have an envelope, so start the send sequence
-    ::zippylog::request_processor::BeginProcessGet logstart = ::zippylog::request_processor::BeginProcessGet();
-    LOG_MESSAGE(logstart, this->logger_sock);
-
-    protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
-    segment_start.set_path(get->path());
-    segment_start.set_offset(get->start_offset());
-    ::zippylog::Envelope env = ::zippylog::Envelope();
-    segment_start.add_to_envelope(&env);
-
-    // copy request tags to response for client association
-    if (request.envelope.tag_size() >= 0) {
-        for (int i = 0; i < request.envelope.tag_size(); i++) {
-            env.envelope.add_tag(request.envelope.tag(i));
+            this->PopulateErrorResponse(
+                protocol::response::PATH_NOT_FOUND,
+                "requested stream could not be found",
+                output
+            );
+            goto LOG_END;
         }
-    }
 
-    output.push_back(env);
+        uint64 start_offset = get->start_offset();
+        if (start_offset && !stream->SetAbsoluteOffset(start_offset)) {
+            throw "TODO handle error setting offset properly";
+        }
 
-    uint32 bytes_read = 0;
-    uint32 envelopes_read = 0;
+        // determine how much to fetch
+        uint32 bytes_left = this->get_stream_max_bytes;
+        uint32 envelopes_left = this->get_stream_max_envelopes;
 
-    while (true) {
-        if (!stream->ReadEnvelope(env, envelope_size)) break;
+        // client can lower server default if it wants
+        if (get->has_max_response_bytes() && get->max_response_bytes() < bytes_left) {
+            bytes_left = get->max_response_bytes();
+        }
+
+        if (get->has_max_response_envelopes() && get->max_response_envelopes() < envelopes_left) {
+            envelopes_left = get->max_response_envelopes();
+        }
+
+        zippylog::Envelope m = zippylog::Envelope();
+
+        uint32 envelope_size = stream->NextEnvelopeSize();
+        // could not find envelope in stream at offset
+        if (!envelope_size) {
+            ::zippylog::request_processor::GetInvalidOffset log = ::zippylog::request_processor::GetInvalidOffset();
+            LOG_MESSAGE(log, this->logger_sock);
+
+            // TODO need better error code
+            this->PopulateErrorResponse(
+                protocol::response::INVALID_STREAM_OFFSET,
+                "no envelopes found at requested stream offset",
+                output
+            );
+            goto LOG_END;
+        }
+
+        // we must have an envelope, so start the send sequence
+
+        protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
+        segment_start.set_path(get->path());
+        segment_start.set_offset(get->start_offset());
+        ::zippylog::Envelope env = ::zippylog::Envelope();
+        segment_start.add_to_envelope(&env);
+
+        // copy request tags to response for client association
+        if (request.envelope.tag_size() >= 0) {
+            for (int i = 0; i < request.envelope.tag_size(); i++) {
+                env.envelope.add_tag(request.envelope.tag(i));
+            }
+        }
 
         output.push_back(env);
 
-        bytes_read += envelope_size;
-        envelopes_read++;
+        uint32 bytes_read = 0;
+        uint32 envelopes_read = 0;
 
-        if (bytes_left - envelope_size < 0) break;
-        bytes_left -= envelope_size;
+        while (true) {
+            // TODO we should be resilient and handle stream errors somehow
+            if (!stream->ReadEnvelope(env, envelope_size)) break;
 
-        envelope_size = stream->NextEnvelopeSize();
-        if (!envelope_size) break;
+            output.push_back(env);
+
+            bytes_read += envelope_size;
+            envelopes_read++;
+
+            if (bytes_left - envelope_size < 0) break;
+            if (envelopes_left-- == 1) break;
+            bytes_left -= envelope_size;
+
+            envelope_size = stream->NextEnvelopeSize();
+            if (!envelope_size) break;
+        }
+
+        protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
+        segment_end.set_envelopes_sent(envelopes_read);
+        segment_end.set_bytes_sent(bytes_read);
+        // TODO not all stores might share this concept of offsets
+        segment_end.set_offset(start_offset + bytes_read);
+
+        env = ::zippylog::Envelope();
+        segment_end.add_to_envelope(&env);
+        output.push_back(env);
     }
 
-    protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
-    segment_end.set_envelopes_sent(envelopes_read);
-    segment_end.set_bytes_sent(bytes_read);
-    segment_end.set_offset(start_offset + bytes_read);
+LOG_END:
 
-    env = ::zippylog::Envelope();
-    segment_end.add_to_envelope(&env);
-    output.push_back(env);
-
-    ::zippylog::request_processor:: EndProcessGet logend = ::zippylog::request_processor:: EndProcessGet();
+    ::zippylog::request_processor:: EndProcessGetStream logend = ::zippylog::request_processor:: EndProcessGetStream();
     LOG_MESSAGE(logend, this->logger_sock);
 
     return AUTHORITATIVE;

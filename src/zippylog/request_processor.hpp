@@ -27,6 +27,13 @@ namespace zippylog {
 /// Used to construct a request processor
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
+    RequestProcessorStartParams() :
+        ctx(NULL),
+        active(NULL),
+        get_stream_max_bytes(256000),
+        get_stream_max_envelopes(10000)
+    { }
+
     /// The path to the store we should operate against
     ::std::string store_path;
 
@@ -46,6 +53,12 @@ public:
     /// When this goes to false, the request processor will cease processing
     /// new messages and will return from its run routine.
     bool *active;
+
+    /// Maximum number of bytes that can be returned from a GetStream request
+    uint32 get_stream_max_bytes;
+
+    /// Maximum number of envelopes that can be returned from a GetStream request
+    uint32 get_stream_max_envelopes;
 };
 
 /// Processes zippylog protocol requests
@@ -143,8 +156,8 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &outpute);
         ResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
 
-        /// Process a Get request
-        ResponseStatus ProcessGet(Envelope &request, ::std::vector<Envelope> &output);
+        /// Process a GetStream request
+        ResponseStatus ProcessGetStream(Envelope &request, ::std::vector<Envelope> &output);
 
         ResponseStatus ProcessSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
 
@@ -184,6 +197,12 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ::std::string id;
         ::std::vector< ::std::string > current_request_identities;
         bool *active;
+
+        /// maximum number of bytes we're allowed to return per GetStream request
+        uint32 get_stream_max_bytes;
+
+        /// maximum number of enevelopes we can return per GetStream request
+        uint32 get_stream_max_envelopes;
 
 private:
         RequestProcessor(const RequestProcessor &orig);

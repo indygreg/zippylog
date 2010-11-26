@@ -24,6 +24,15 @@ using ::std::string;
 using ::std::vector;
 using ::zmq::message_t;
 
+#define EXPECT_ENVELOPE_MESSAGE(index, msg) { \
+    Envelope e = output[index]; \
+    ASSERT_TRUE(e.MessageCount() > 0); \
+    uint32 expected = msg::zippylog_namespace; \
+    ASSERT_EQ(expected, e.MessageNamespace(0)); \
+    expected = msg::zippylog_enumeration; \
+    ASSERT_EQ(expected, e.MessageType(0)); \
+}
+
 /// request processor implementation that we use to test things
 class TestRequestProcessor : public RequestProcessor
 {
@@ -96,18 +105,20 @@ protected:
         if (this->store) delete this->store;
     }
 
-    void ResetProcessor()
+    void ResetProcessor(const string store_path = "simpledirectory://test/stores/00-simple")
     {
         if (this->p) delete this->p;
+        if (this->store) delete this->store;
 
         RequestProcessorStartParams params;
         params.active = &this->active;
-        params.store_path = "simpledirectory://test/stores/00-simple";
+        params.store_path = store_path;
         params.ctx = &this->ctx;
         params.logger_endpoint = "inproc://logger";
         params.client_endpoint = "inproc://client";
 
         this->p = new TestRequestProcessor(params);
+        this->store = Store::CreateStore(store_path);
     }
 
     void ExpectErrorResponse(RequestProcessor::ResponseStatus result, protocol::response::ErrorCode code, vector<Envelope> &msgs)
@@ -196,6 +207,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
 
     // working store info request
     protocol::request::GetStoreInfo gsi;
+    gsi.set_version(1);
     Envelope request;
     gsi.add_to_envelope(&request);
     m.rebuild(1 + request.envelope.SerializeAsString().size());
@@ -205,10 +217,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     ASSERT_EQ(1, response.MessageCount());
-    uint32 expected = protocol::StoreInfo::zippylog_namespace;
-    ASSERT_EQ(expected, response.MessageNamespace(0));
-    expected = protocol::StoreInfo::zippylog_enumeration;
-    ASSERT_EQ(expected, response.MessageType(0));
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfo);
     output.clear();
 }
 
@@ -257,29 +266,33 @@ TEST_F(RequestProcessorTest, SupportedVersions)
         msgs.clear();
     }
 
+    {
+        protocol::request::GetStream m;
+        m.set_version(2);
+        Envelope e;
+        m.add_to_envelope(&e);
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
+        msgs.clear();
+    }
+
 }
 
 TEST_F(RequestProcessorTest, GetStoreInfo)
 {
     protocol::request::GetStoreInfo m;
+    m.set_version(1);
     Envelope e;
     m.add_to_envelope(&e);
 
-    vector<Envelope> msgs;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, msgs);
+    vector<Envelope> output;
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
     EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
 
-    EXPECT_EQ(1, msgs.size());
-    Envelope response = msgs[0];
+    EXPECT_EQ(1, output.size());
+    Envelope response = output[0];
     EXPECT_EQ(1, response.MessageCount());
-
-    // work around taking references of undefined static const enumeration class members
-    // TODO remove if we have a better solution in the future
-    uint32 expected = protocol::StoreInfo::zippylog_namespace;
-    ASSERT_EQ(expected, response.MessageNamespace(0));
-    expected = protocol::StoreInfo::zippylog_enumeration;
-    ASSERT_EQ(expected, response.MessageType(0));
-
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfo);
     protocol::StoreInfo *r = (protocol::StoreInfo *)response.GetMessage(0);
     ASSERT_TRUE(r != NULL);
     EXPECT_EQ(2, r->bucket_size());
@@ -292,8 +305,8 @@ TEST_F(RequestProcessorTest, GetStoreInfo)
 TEST_F(RequestProcessorTest, GetBucketInfo)
 {
     // an empty request should result in missing field
-
     protocol::request::GetBucketInfo m1;
+    m1.set_version(1);
     Envelope e1;
     m1.add_to_envelope(&e1);
 
@@ -303,6 +316,7 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
 
     // path does not contain bucket
     protocol::request::GetBucketInfo m2;
+    m2.set_version(1);
     m2.set_path("/");
     Envelope e2;
     m2.add_to_envelope(&e2);
@@ -311,17 +325,14 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
 
     // this should work
     protocol::request::GetBucketInfo m3;
+    m3.set_version(1);
     m3.set_path("/bucketA");
     Envelope e3;
     m3.add_to_envelope(&e3);
     ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
-    ASSERT_EQ(1, response.MessageCount());
-    uint32 expected = protocol::BucketInfo::zippylog_namespace;
-    ASSERT_EQ(expected, response.MessageNamespace(0));
-    expected = protocol::BucketInfo::zippylog_enumeration;
-    ASSERT_EQ(expected, response.MessageType(0));
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::BucketInfo);
     protocol::BucketInfo *m = (protocol::BucketInfo *)response.GetMessage(0);
     ASSERT_TRUE(m != NULL);
     protocol::BucketInfo ebi;
@@ -331,9 +342,74 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
 
     // bucket doesn't exist
     protocol::request::GetBucketInfo m4;
+    m4.set_version(1);
     m4.set_path("/DOESNOTEXIST");
     Envelope e4;
     m4.add_to_envelope(&e4);
     this->ExpectErrorResponse(this->p->ProcessRequest(e4, output), protocol::response::PATH_NOT_FOUND, output);
+    output.clear();
+}
+
+TEST_F(RequestProcessorTest, GetStream)
+{
+    this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
+
+    string path = "/A/B/2010-11-26-07";
+
+    ASSERT_TRUE(this->store->PathExists(path));
+
+    vector<Envelope> output;
+
+    // missing path
+    protocol::request::GetStream m1 = protocol::request::GetStream();
+    m1.set_version(1);
+    Envelope e1;
+    m1.add_to_envelope(e1);
+    this->ExpectErrorResponse(this->p->ProcessRequest(e1, output), protocol::response::EMPTY_FIELD, output);
+    output.clear();
+
+    // missing start offset
+    protocol::request::GetStream m2 = protocol::request::GetStream();
+    m2.set_version(1);
+    m2.set_path(path);
+    Envelope e2;
+    m2.add_to_envelope(e2);
+    this->ExpectErrorResponse(this->p->ProcessRequest(e2, output), protocol::response::EMPTY_FIELD, output);
+    output.clear();
+
+    // simple fetch of 1 envelope
+    protocol::request::GetStream m3 = protocol::request::GetStream();
+    m3.set_version(1);
+    m3.set_path(path);
+    m3.set_start_offset(0);
+    m3.set_max_response_envelopes(1);
+    Envelope e3;
+    m3.add_to_envelope(e3);
+
+    ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
+
+    // response should have stream segment start + content envelope + stream segment end
+    ASSERT_EQ(3, output.size());
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
+    EXPECT_ENVELOPE_MESSAGE(2, protocol::response::StreamSegmentEnd);
+
+    ASSERT_EQ(1, output[0].MessageCount());
+    ASSERT_EQ(1, output[0].MessageCount());
+    protocol::response::StreamSegmentStart *s1 = (protocol::response::StreamSegmentStart *)output[0].GetMessage(0);
+    ASSERT_TRUE(s1 != NULL);
+    ASSERT_TRUE(s1->has_path());
+    ASSERT_TRUE(s1->has_offset());
+    ASSERT_TRUE(s1->path() == path);
+    ASSERT_EQ(0, s1->offset());
+
+    protocol::response::StreamSegmentEnd *end1 = (protocol::response::StreamSegmentEnd *)output[2].GetMessage(0);
+    ASSERT_TRUE(end1 != NULL);
+    ASSERT_TRUE(end1->has_offset());
+    ASSERT_TRUE(end1->has_bytes_sent());
+    ASSERT_TRUE(end1->has_envelopes_sent());
+    ASSERT_EQ(1, end1->envelopes_sent());
+    ASSERT_EQ(43, end1->offset());
+    ASSERT_EQ(end1->offset(), end1->bytes_sent());
+
     output.clear();
 }
