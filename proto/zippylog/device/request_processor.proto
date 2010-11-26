@@ -1,0 +1,111 @@
+// messages in this package are created by the RequestProcessor device
+package zippylog.device.request_processor;
+
+message Create {
+    optional bytes id = 1;
+}
+
+message Destroy {
+    optional bytes id = 1;
+}
+
+message RunStart {
+    optional bytes id = 1;
+}
+
+message RunStop {
+    optional bytes id = 2;
+}
+
+// failed to receive message from 0MQ socket
+message FailReceiveMessage {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+// received an empty 0MQ message
+message ReceiveEmptyMessage {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message UnknownMessageVersion {
+    optional bytes id = 1;
+
+    optional uint32 version = 2;
+}
+
+message UnknownRequestType {
+    optional bytes id = 1;
+    optional uint32 enumeration = 2;
+}
+
+// when the envelope in a request could not be parsed
+message EnvelopeParseFailure {
+    // unique identifier of worker
+    optional bytes id = 1;
+
+    // data we couldn't parse
+    optional bytes data = 2;
+}
+
+// when the request envelope contains no embedded message
+message EmptyEnvelope {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+// when the message inside the envelope is not proper enumeration
+message InvalidMessageEnumeration {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+// when a worker processes a storeinfo request
+message BeginProcessStoreInfo {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message EndProcessStoreInfo {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message ReceiveInvalidGet {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message GetInvalidStream {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message GetInvalidOffset {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message BeginProcessGet {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message EndProcessGet {
+    // unique identifier of worker
+    optional bytes id = 1;
+}
+
+message SendErrorResponse {
+    // unique identifier of worker
+    optional bytes id = 1;
+
+    optional string message = 2;
+}
+
+message ForwardSubscribeKeepalive {
+    optional bytes id = 1;
+
+    optional bytes subscription = 2;
+}
