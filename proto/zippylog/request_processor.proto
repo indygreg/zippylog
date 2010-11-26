@@ -61,6 +61,11 @@ message InvalidMessageEnumeration {
     optional bytes id = 1;
 }
 
+// could not parse message in request envelope
+message EnvelopeEmbeddedMessageParseFailure {
+    optional bytes id = 1;
+}
+
 // when a worker processes a storeinfo request
 message BeginProcessStoreInfo {
     // unique identifier of worker

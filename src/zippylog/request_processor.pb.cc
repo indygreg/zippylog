@@ -48,6 +48,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* InvalidMessageEnumeration_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   InvalidMessageEnumeration_reflection_ = NULL;
+const ::google::protobuf::Descriptor* EnvelopeEmbeddedMessageParseFailure_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  EnvelopeEmbeddedMessageParseFailure_reflection_ = NULL;
 const ::google::protobuf::Descriptor* BeginProcessStoreInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   BeginProcessStoreInfo_reflection_ = NULL;
@@ -277,7 +280,22 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(InvalidMessageEnumeration));
-  BeginProcessStoreInfo_descriptor_ = file->message_type(11);
+  EnvelopeEmbeddedMessageParseFailure_descriptor_ = file->message_type(11);
+  static const int EnvelopeEmbeddedMessageParseFailure_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EnvelopeEmbeddedMessageParseFailure, id_),
+  };
+  EnvelopeEmbeddedMessageParseFailure_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      EnvelopeEmbeddedMessageParseFailure_descriptor_,
+      EnvelopeEmbeddedMessageParseFailure::default_instance_,
+      EnvelopeEmbeddedMessageParseFailure_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EnvelopeEmbeddedMessageParseFailure, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EnvelopeEmbeddedMessageParseFailure, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(EnvelopeEmbeddedMessageParseFailure));
+  BeginProcessStoreInfo_descriptor_ = file->message_type(12);
   static const int BeginProcessStoreInfo_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessStoreInfo, id_),
   };
@@ -292,7 +310,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessStoreInfo));
-  EndProcessStoreInfo_descriptor_ = file->message_type(12);
+  EndProcessStoreInfo_descriptor_ = file->message_type(13);
   static const int EndProcessStoreInfo_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessStoreInfo, id_),
   };
@@ -307,7 +325,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessStoreInfo));
-  ReceiveInvalidGet_descriptor_ = file->message_type(13);
+  ReceiveInvalidGet_descriptor_ = file->message_type(14);
   static const int ReceiveInvalidGet_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ReceiveInvalidGet, id_),
   };
@@ -322,7 +340,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ReceiveInvalidGet));
-  GetInvalidStream_descriptor_ = file->message_type(14);
+  GetInvalidStream_descriptor_ = file->message_type(15);
   static const int GetInvalidStream_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetInvalidStream, id_),
   };
@@ -337,7 +355,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GetInvalidStream));
-  GetInvalidOffset_descriptor_ = file->message_type(15);
+  GetInvalidOffset_descriptor_ = file->message_type(16);
   static const int GetInvalidOffset_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetInvalidOffset, id_),
   };
@@ -352,7 +370,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GetInvalidOffset));
-  BeginProcessGetStream_descriptor_ = file->message_type(16);
+  BeginProcessGetStream_descriptor_ = file->message_type(17);
   static const int BeginProcessGetStream_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGetStream, id_),
   };
@@ -367,7 +385,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessGetStream));
-  EndProcessGetStream_descriptor_ = file->message_type(17);
+  EndProcessGetStream_descriptor_ = file->message_type(18);
   static const int EndProcessGetStream_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGetStream, id_),
   };
@@ -382,7 +400,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessGetStream));
-  SendErrorResponse_descriptor_ = file->message_type(18);
+  SendErrorResponse_descriptor_ = file->message_type(19);
   static const int SendErrorResponse_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SendErrorResponse, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SendErrorResponse, message_),
@@ -398,7 +416,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SendErrorResponse));
-  ForwardSubscribeKeepalive_descriptor_ = file->message_type(19);
+  ForwardSubscribeKeepalive_descriptor_ = file->message_type(20);
   static const int ForwardSubscribeKeepalive_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ForwardSubscribeKeepalive, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ForwardSubscribeKeepalive, subscription_),
@@ -414,7 +432,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ForwardSubscribeKeepalive));
-  BeginProcessBucketInfo_descriptor_ = file->message_type(20);
+  BeginProcessBucketInfo_descriptor_ = file->message_type(21);
   static const int BeginProcessBucketInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessBucketInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessBucketInfo, path_),
@@ -430,7 +448,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessBucketInfo));
-  EndProcessBucketInfo_descriptor_ = file->message_type(21);
+  EndProcessBucketInfo_descriptor_ = file->message_type(22);
   static const int EndProcessBucketInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessBucketInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessBucketInfo, path_),
@@ -446,7 +464,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessBucketInfo));
-  BeginProcessStreamSetInfo_descriptor_ = file->message_type(22);
+  BeginProcessStreamSetInfo_descriptor_ = file->message_type(23);
   static const int BeginProcessStreamSetInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessStreamSetInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessStreamSetInfo, path_),
@@ -462,7 +480,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessStreamSetInfo));
-  EndProcessStreamSetInfo_descriptor_ = file->message_type(23);
+  EndProcessStreamSetInfo_descriptor_ = file->message_type(24);
   static const int EndProcessStreamSetInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessStreamSetInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessStreamSetInfo, path_),
@@ -478,7 +496,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessStreamSetInfo));
-  BeginProcessStreamInfo_descriptor_ = file->message_type(24);
+  BeginProcessStreamInfo_descriptor_ = file->message_type(25);
   static const int BeginProcessStreamInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessStreamInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessStreamInfo, path_),
@@ -494,7 +512,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessStreamInfo));
-  EndProcessStreamInfo_descriptor_ = file->message_type(25);
+  EndProcessStreamInfo_descriptor_ = file->message_type(26);
   static const int EndProcessStreamInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessStreamInfo, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessStreamInfo, path_),
@@ -510,7 +528,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EndProcessStreamInfo));
-  BeginProcessWriteEnvelope_descriptor_ = file->message_type(26);
+  BeginProcessWriteEnvelope_descriptor_ = file->message_type(27);
   static const int BeginProcessWriteEnvelope_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessWriteEnvelope, id_),
   };
@@ -525,7 +543,7 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BeginProcessWriteEnvelope));
-  EndProcessWriteEnvelope_descriptor_ = file->message_type(27);
+  EndProcessWriteEnvelope_descriptor_ = file->message_type(28);
   static const int EndProcessWriteEnvelope_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessWriteEnvelope, id_),
   };
@@ -574,6 +592,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     EmptyEnvelope_descriptor_, &EmptyEnvelope::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     InvalidMessageEnumeration_descriptor_, &InvalidMessageEnumeration::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    EnvelopeEmbeddedMessageParseFailure_descriptor_, &EnvelopeEmbeddedMessageParseFailure::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     BeginProcessStoreInfo_descriptor_, &BeginProcessStoreInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -635,6 +655,8 @@ void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto() {
   delete EmptyEnvelope_reflection_;
   delete InvalidMessageEnumeration::default_instance_;
   delete InvalidMessageEnumeration_reflection_;
+  delete EnvelopeEmbeddedMessageParseFailure::default_instance_;
+  delete EnvelopeEmbeddedMessageParseFailure_reflection_;
   delete BeginProcessStoreInfo::default_instance_;
   delete BeginProcessStoreInfo_reflection_;
   delete EndProcessStoreInfo::default_instance_;
@@ -689,25 +711,27 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
     "ration\030\002 \001(\r\"0\n\024EnvelopeParseFailure\022\n\n\002"
     "id\030\001 \001(\014\022\014\n\004data\030\002 \001(\014\"\033\n\rEmptyEnvelope\022"
     "\n\n\002id\030\001 \001(\014\"\'\n\031InvalidMessageEnumeration"
-    "\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessStoreInfo\022\n\n"
-    "\002id\030\001 \001(\014\"!\n\023EndProcessStoreInfo\022\n\n\002id\030\001"
-    " \001(\014\"\037\n\021ReceiveInvalidGet\022\n\n\002id\030\001 \001(\014\"\036\n"
-    "\020GetInvalidStream\022\n\n\002id\030\001 \001(\014\"\036\n\020GetInva"
-    "lidOffset\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessGet"
-    "Stream\022\n\n\002id\030\001 \001(\014\"!\n\023EndProcessGetStrea"
-    "m\022\n\n\002id\030\001 \001(\014\"0\n\021SendErrorResponse\022\n\n\002id"
-    "\030\001 \001(\014\022\017\n\007message\030\002 \001(\t\"=\n\031ForwardSubscr"
-    "ibeKeepalive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription"
-    "\030\002 \001(\014\"2\n\026BeginProcessBucketInfo\022\n\n\002id\030\001"
-    " \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProcessBucketIn"
-    "fo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"5\n\031BeginPro"
-    "cessStreamSetInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 "
-    "\001(\t\"3\n\027EndProcessStreamSetInfo\022\n\n\002id\030\001 \001"
-    "(\014\022\014\n\004path\030\002 \001(\t\"2\n\026BeginProcessStreamIn"
-    "fo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProce"
-    "ssStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"\'"
-    "\n\031BeginProcessWriteEnvelope\022\n\n\002id\030\001 \001(\014\""
-    "%\n\027EndProcessWriteEnvelope\022\n\n\002id\030\001 \001(\014", 1198);
+    "\022\n\n\002id\030\001 \001(\014\"1\n#EnvelopeEmbeddedMessageP"
+    "arseFailure\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessS"
+    "toreInfo\022\n\n\002id\030\001 \001(\014\"!\n\023EndProcessStoreI"
+    "nfo\022\n\n\002id\030\001 \001(\014\"\037\n\021ReceiveInvalidGet\022\n\n\002"
+    "id\030\001 \001(\014\"\036\n\020GetInvalidStream\022\n\n\002id\030\001 \001(\014"
+    "\"\036\n\020GetInvalidOffset\022\n\n\002id\030\001 \001(\014\"#\n\025Begi"
+    "nProcessGetStream\022\n\n\002id\030\001 \001(\014\"!\n\023EndProc"
+    "essGetStream\022\n\n\002id\030\001 \001(\014\"0\n\021SendErrorRes"
+    "ponse\022\n\n\002id\030\001 \001(\014\022\017\n\007message\030\002 \001(\t\"=\n\031Fo"
+    "rwardSubscribeKeepalive\022\n\n\002id\030\001 \001(\014\022\024\n\014s"
+    "ubscription\030\002 \001(\014\"2\n\026BeginProcessBucketI"
+    "nfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProc"
+    "essBucketInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\""
+    "5\n\031BeginProcessStreamSetInfo\022\n\n\002id\030\001 \001(\014"
+    "\022\014\n\004path\030\002 \001(\t\"3\n\027EndProcessStreamSetInf"
+    "o\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"2\n\026BeginProc"
+    "essStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\""
+    "0\n\024EndProcessStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004p"
+    "ath\030\002 \001(\t\"\'\n\031BeginProcessWriteEnvelope\022\n"
+    "\n\002id\030\001 \001(\014\"%\n\027EndProcessWriteEnvelope\022\n\n"
+    "\002id\030\001 \001(\014", 1249);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/request_processor.proto", &protobuf_RegisterTypes);
   Create::default_instance_ = new Create();
@@ -721,6 +745,7 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   EnvelopeParseFailure::default_instance_ = new EnvelopeParseFailure();
   EmptyEnvelope::default_instance_ = new EmptyEnvelope();
   InvalidMessageEnumeration::default_instance_ = new InvalidMessageEnumeration();
+  EnvelopeEmbeddedMessageParseFailure::default_instance_ = new EnvelopeEmbeddedMessageParseFailure();
   BeginProcessStoreInfo::default_instance_ = new BeginProcessStoreInfo();
   EndProcessStoreInfo::default_instance_ = new EndProcessStoreInfo();
   ReceiveInvalidGet::default_instance_ = new ReceiveInvalidGet();
@@ -749,6 +774,7 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   EnvelopeParseFailure::default_instance_->InitAsDefaultInstance();
   EmptyEnvelope::default_instance_->InitAsDefaultInstance();
   InvalidMessageEnumeration::default_instance_->InitAsDefaultInstance();
+  EnvelopeEmbeddedMessageParseFailure::default_instance_->InitAsDefaultInstance();
   BeginProcessStoreInfo::default_instance_->InitAsDefaultInstance();
   EndProcessStoreInfo::default_instance_->InitAsDefaultInstance();
   ReceiveInvalidGet::default_instance_->InitAsDefaultInstance();
@@ -3278,6 +3304,222 @@ void InvalidMessageEnumeration::Swap(InvalidMessageEnumeration* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = InvalidMessageEnumeration_descriptor_;
   metadata.reflection = InvalidMessageEnumeration_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+const ::std::string EnvelopeEmbeddedMessageParseFailure::_default_id_;
+#ifndef _MSC_VER
+const int EnvelopeEmbeddedMessageParseFailure::kIdFieldNumber;
+#endif  // !_MSC_VER
+
+EnvelopeEmbeddedMessageParseFailure::EnvelopeEmbeddedMessageParseFailure()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void EnvelopeEmbeddedMessageParseFailure::InitAsDefaultInstance() {
+}
+
+EnvelopeEmbeddedMessageParseFailure::EnvelopeEmbeddedMessageParseFailure(const EnvelopeEmbeddedMessageParseFailure& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void EnvelopeEmbeddedMessageParseFailure::SharedCtor() {
+  _cached_size_ = 0;
+  id_ = const_cast< ::std::string*>(&_default_id_);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+EnvelopeEmbeddedMessageParseFailure::~EnvelopeEmbeddedMessageParseFailure() {
+  SharedDtor();
+}
+
+void EnvelopeEmbeddedMessageParseFailure::SharedDtor() {
+  if (id_ != &_default_id_) {
+    delete id_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void EnvelopeEmbeddedMessageParseFailure::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* EnvelopeEmbeddedMessageParseFailure::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return EnvelopeEmbeddedMessageParseFailure_descriptor_;
+}
+
+const EnvelopeEmbeddedMessageParseFailure& EnvelopeEmbeddedMessageParseFailure::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();  return *default_instance_;
+}
+
+EnvelopeEmbeddedMessageParseFailure* EnvelopeEmbeddedMessageParseFailure::default_instance_ = NULL;
+
+EnvelopeEmbeddedMessageParseFailure* EnvelopeEmbeddedMessageParseFailure::New() const {
+  return new EnvelopeEmbeddedMessageParseFailure;
+}
+
+void EnvelopeEmbeddedMessageParseFailure::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (_has_bit(0)) {
+      if (id_ != &_default_id_) {
+        id_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool EnvelopeEmbeddedMessageParseFailure::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional bytes id = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_id()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void EnvelopeEmbeddedMessageParseFailure::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      1, this->id(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* EnvelopeEmbeddedMessageParseFailure::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional bytes id = 1;
+  if (_has_bit(0)) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        1, this->id(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int EnvelopeEmbeddedMessageParseFailure::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional bytes id = 1;
+    if (has_id()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->id());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void EnvelopeEmbeddedMessageParseFailure::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const EnvelopeEmbeddedMessageParseFailure* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const EnvelopeEmbeddedMessageParseFailure*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void EnvelopeEmbeddedMessageParseFailure::MergeFrom(const EnvelopeEmbeddedMessageParseFailure& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from._has_bit(0)) {
+      set_id(from.id());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void EnvelopeEmbeddedMessageParseFailure::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void EnvelopeEmbeddedMessageParseFailure::CopyFrom(const EnvelopeEmbeddedMessageParseFailure& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool EnvelopeEmbeddedMessageParseFailure::IsInitialized() const {
+  
+  return true;
+}
+
+void EnvelopeEmbeddedMessageParseFailure::Swap(EnvelopeEmbeddedMessageParseFailure* other) {
+  if (other != this) {
+    std::swap(id_, other->id_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata EnvelopeEmbeddedMessageParseFailure::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = EnvelopeEmbeddedMessageParseFailure_descriptor_;
+  metadata.reflection = EnvelopeEmbeddedMessageParseFailure_reflection_;
   return metadata;
 }
 
@@ -7495,6 +7737,14 @@ bool InvalidMessageEnumeration::add_to_envelope(::zippylog::Envelope *envelope) 
 }
 
 bool InvalidMessageEnumeration::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool EnvelopeEmbeddedMessageParseFailure::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool EnvelopeEmbeddedMessageParseFailure::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
