@@ -276,3 +276,51 @@ TEST_F(RequestProcessorTest, StoreInfo)
     EXPECT_STREQ(esi.SerializeAsString().c_str(), r->SerializeAsString().c_str());
 }
 
+TEST_F(RequestProcessorTest, BucketInfo)
+{
+    // an empty request should result in missing field
+
+    protocol::request::GetBucketInfo m1;
+    Envelope e1;
+    m1.add_to_envelope(&e1);
+
+    vector<Envelope> output;
+    this->ExpectErrorResponse(this->p->ProcessRequest(e1, output), protocol::response::EMPTY_FIELD, output);
+    output.clear();
+
+    // path does not contain bucket
+    protocol::request::GetBucketInfo m2;
+    m2.set_path("/");
+    Envelope e2;
+    m2.add_to_envelope(&e2);
+    this->ExpectErrorResponse(this->p->ProcessRequest(e2, output), protocol::response::INVALID_PATH, output);
+    output.clear();
+
+    // this should work
+    protocol::request::GetBucketInfo m3;
+    m3.set_path("/bucketA");
+    Envelope e3;
+    m3.add_to_envelope(&e3);
+    ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
+    ASSERT_EQ(1, output.size());
+    Envelope response = output[0];
+    ASSERT_EQ(1, response.MessageCount());
+    uint32 expected = protocol::BucketInfo::zippylog_namespace;
+    ASSERT_EQ(expected, response.MessageNamespace(0));
+    expected = protocol::BucketInfo::zippylog_enumeration;
+    ASSERT_EQ(expected, response.MessageType(0));
+    protocol::BucketInfo *m = (protocol::BucketInfo *)response.GetMessage(0);
+    ASSERT_TRUE(m != NULL);
+    protocol::BucketInfo ebi;
+    ASSERT_TRUE(this->store->BucketInfo("bucketA", ebi));
+    ASSERT_STREQ(ebi.SerializeAsString().c_str(), m->SerializeAsString().c_str());
+    output.clear();
+
+    // bucket doesn't exist
+    protocol::request::GetBucketInfo m4;
+    m4.set_path("/DOESNOTEXIST");
+    Envelope e4;
+    m4.add_to_envelope(&e4);
+    this->ExpectErrorResponse(this->p->ProcessRequest(e4, output), protocol::response::PATH_NOT_FOUND, output);
+    output.clear();
+}
