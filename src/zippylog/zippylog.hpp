@@ -47,7 +47,16 @@ typedef uint32_t uint32;
 typedef uint64_t uint64;
 #endif
 
+#include <stdexcept>
+
 namespace zippylog {
+
+/// An error when deserializing a message
+class DeserializeException : public ::std::runtime_error
+{
+    public:
+        DeserializeException() : runtime_error("could not deserialize message") { }
+};
 
 // initializes the zippylog system
 // this should be called at the beginning of every program/library that uses zippylog
