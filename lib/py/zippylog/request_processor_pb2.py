@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/request_processor.proto',
   package='zippylog.request_processor',
-  serialized_pb='\n zippylog/request_processor.proto\x12\x1azippylog.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0f\x42\x65ginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c')
+  serialized_pb='\n zippylog/request_processor.proto\x12\x1azippylog.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0f\x42\x65ginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"2\n\x16\x42\x65ginProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"5\n\x19\x42\x65ginProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"3\n\x17\x45ndProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"2\n\x16\x42\x65ginProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t')
 
 
 
@@ -611,6 +611,216 @@ _FORWARDSUBSCRIBEKEEPALIVE = descriptor.Descriptor(
 )
 
 
+_BEGINPROCESSBUCKETINFO = descriptor.Descriptor(
+  name='BeginProcessBucketInfo',
+  full_name='zippylog.request_processor.BeginProcessBucketInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.BeginProcessBucketInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.BeginProcessBucketInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=796,
+  serialized_end=846,
+)
+
+
+_ENDPROCESSBUCKETINFO = descriptor.Descriptor(
+  name='EndProcessBucketInfo',
+  full_name='zippylog.request_processor.EndProcessBucketInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.EndProcessBucketInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.EndProcessBucketInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=848,
+  serialized_end=896,
+)
+
+
+_BEGINPROCESSSTREAMSETINFO = descriptor.Descriptor(
+  name='BeginProcessStreamSetInfo',
+  full_name='zippylog.request_processor.BeginProcessStreamSetInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.BeginProcessStreamSetInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.BeginProcessStreamSetInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=898,
+  serialized_end=951,
+)
+
+
+_ENDPROCESSSTREAMSETINFO = descriptor.Descriptor(
+  name='EndProcessStreamSetInfo',
+  full_name='zippylog.request_processor.EndProcessStreamSetInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.EndProcessStreamSetInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.EndProcessStreamSetInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=953,
+  serialized_end=1004,
+)
+
+
+_BEGINPROCESSSTREAMINFO = descriptor.Descriptor(
+  name='BeginProcessStreamInfo',
+  full_name='zippylog.request_processor.BeginProcessStreamInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.BeginProcessStreamInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.BeginProcessStreamInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1006,
+  serialized_end=1056,
+)
+
+
+_ENDPROCESSSTREAMINFO = descriptor.Descriptor(
+  name='EndProcessStreamInfo',
+  full_name='zippylog.request_processor.EndProcessStreamInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.request_processor.EndProcessStreamInfo.id', index=0,
+      number=1, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='path', full_name='zippylog.request_processor.EndProcessStreamInfo.path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=1058,
+  serialized_end=1106,
+)
+
+
 
 class Create(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -772,6 +982,54 @@ class ForwardSubscribeKeepalive(message.Message):
   ZIPPYLOG_ENUMERATION = 99
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.ForwardSubscribeKeepalive)
 
+class BeginProcessBucketInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BEGINPROCESSBUCKETINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 103
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessBucketInfo)
+
+class EndProcessBucketInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _ENDPROCESSBUCKETINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 104
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessBucketInfo)
+
+class BeginProcessStreamSetInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BEGINPROCESSSTREAMSETINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 105
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamSetInfo)
+
+class EndProcessStreamSetInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _ENDPROCESSSTREAMSETINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 106
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamSetInfo)
+
+class BeginProcessStreamInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _BEGINPROCESSSTREAMINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 107
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamInfo)
+
+class EndProcessStreamInfo(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _ENDPROCESSSTREAMINFO
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 108
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamInfo)
+
 register_message(1, 80, 'zippylog.request_processor_pb2', 'Create')
 register_message(1, 81, 'zippylog.request_processor_pb2', 'Destroy')
 register_message(1, 82, 'zippylog.request_processor_pb2', 'RunStart')
@@ -792,4 +1050,10 @@ register_message(1, 96, 'zippylog.request_processor_pb2', 'BeginProcessGet')
 register_message(1, 97, 'zippylog.request_processor_pb2', 'EndProcessGet')
 register_message(1, 98, 'zippylog.request_processor_pb2', 'SendErrorResponse')
 register_message(1, 99, 'zippylog.request_processor_pb2', 'ForwardSubscribeKeepalive')
+register_message(1, 103, 'zippylog.request_processor_pb2', 'BeginProcessBucketInfo')
+register_message(1, 104, 'zippylog.request_processor_pb2', 'EndProcessBucketInfo')
+register_message(1, 105, 'zippylog.request_processor_pb2', 'BeginProcessStreamSetInfo')
+register_message(1, 106, 'zippylog.request_processor_pb2', 'EndProcessStreamSetInfo')
+register_message(1, 107, 'zippylog.request_processor_pb2', 'BeginProcessStreamInfo')
+register_message(1, 108, 'zippylog.request_processor_pb2', 'EndProcessStreamInfo')
 # @@protoc_insertion_point(module_scope)

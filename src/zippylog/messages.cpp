@@ -31,6 +31,12 @@ namespace zippylog {
         registrar->register_message(1, 97, new ::zippylog::request_processor::EndProcessGet());
         registrar->register_message(1, 98, new ::zippylog::request_processor::SendErrorResponse());
         registrar->register_message(1, 99, new ::zippylog::request_processor::ForwardSubscribeKeepalive());
+        registrar->register_message(1, 103, new ::zippylog::request_processor::BeginProcessBucketInfo());
+        registrar->register_message(1, 104, new ::zippylog::request_processor::EndProcessBucketInfo());
+        registrar->register_message(1, 105, new ::zippylog::request_processor::BeginProcessStreamSetInfo());
+        registrar->register_message(1, 106, new ::zippylog::request_processor::EndProcessStreamSetInfo());
+        registrar->register_message(1, 107, new ::zippylog::request_processor::BeginProcessStreamInfo());
+        registrar->register_message(1, 108, new ::zippylog::request_processor::EndProcessStreamInfo());
         registrar->register_message(1, 1, new ::zippylog::protocol::StreamInfo());
         registrar->register_message(1, 2, new ::zippylog::protocol::StreamSetInfo());
         registrar->register_message(1, 3, new ::zippylog::protocol::BucketInfo());

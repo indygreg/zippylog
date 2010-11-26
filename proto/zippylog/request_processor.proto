@@ -109,3 +109,39 @@ message ForwardSubscribeKeepalive {
 
     optional bytes subscription = 2;
 }
+
+message BeginProcessBucketInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
+
+message EndProcessBucketInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
+
+message BeginProcessStreamSetInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
+
+message EndProcessStreamSetInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
+
+message BeginProcessStreamInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
+
+message EndProcessStreamInfo {
+    optional bytes id = 1;
+    
+    optional string path = 2;
+}
