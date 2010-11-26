@@ -30,6 +30,23 @@ namespace zippylog {
     zeromq::send_envelope(socketvar, logenvelope); \
 }
 
+/// This handy macro obtains the index'th message of an envelope and stores
+/// stores it in a variable, varname. If we can't obtain the message, we record
+/// an error in the output vector<Envelope> variable and goto LOG_END.
+#define OBTAIN_MESSAGE(type, varname, envelope, index) \
+    type * varname = (type *)envelope.GetMessage(index); \
+    if (!varname) { \
+        ::zippylog::request_processor::EnvelopeEmbeddedMessageParseFailure log = ::zippylog::request_processor::EnvelopeEmbeddedMessageParseFailure(); \
+        LOG_MESSAGE(log, this->logger_sock); \
+        \
+        this->PopulateErrorResponse( \
+            protocol::response::UNKNOWN_REQUEST_TYPE, \
+            "error parsing message in envelope", \
+            output \
+        ); \
+        goto LOG_END; \
+    }
+
 using ::std::string;
 using ::std::vector;
 using ::zmq::message_t;
@@ -338,6 +355,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
         case protocol::request::SubscribeKeepalive::zippylog_enumeration:
             result = this->ProcessSubscribeKeepalive(request_envelope, output);
+            break;
+
+        case protocol::request::WriteEnvelope::zippylog_enumeration:
+            result = this->ProcessWriteEnvelope(request_envelope, output);
             break;
 
         default:
@@ -706,6 +727,101 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
     // TODO validation
 
     return this->HandleSubscribeKeepalive(request, output);
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &request, vector<Envelope> &output)
+{
+    {
+        ::zippylog::request_processor::BeginProcessWriteEnvelope log = ::zippylog::request_processor::BeginProcessWriteEnvelope();
+        LOG_MESSAGE(log, this->logger_sock);
+    }
+
+    OBTAIN_MESSAGE(protocol::request::WriteEnvelope, m, request, 0)
+
+    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
+
+    if (!m->has_path()) {
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_FIELD,
+            "required field 'path' missing",
+            output
+        );
+        goto LOG_END;
+    }
+
+    // Path validation is a little tricky for write requests.
+    // If the path is to a stream set, we require the set to exist. This
+    // forces clients to look before they leap. But, they only need to look
+    // once, assuming the set doesn't get deleted. For streams paths, we create
+    // the path as necessary.
+    {
+        string path = m->path();
+        string bucket, set, stream;
+        if (!Store::ParsePath(path, bucket, set, stream)) {
+            this->PopulateErrorResponse(
+                protocol::response::INVALID_PATH,
+                "invalid path: " + path,
+                output
+            );
+            goto LOG_END;
+        }
+
+        if (!stream.length()) {
+            if (!set.length()) {
+                this->PopulateErrorResponse(
+                    protocol::response::INVALID_PATH,
+                    "path not to a stream set or stream: " + path,
+                    output
+                );
+                goto LOG_END;
+            }
+            if (!this->CheckPath(path, output, true, true, false)) goto LOG_END;
+        }
+    }
+
+    // there must be envelopes to write!
+    if (m->envelope_size() < 1) {
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_FIELD,
+            "no envelopes specified in request",
+            output
+        );
+        goto LOG_END;
+    }
+
+    // at this point, we've validated the path is to an existing stream set or
+    // a stream (we don't care which)
+    {
+        bool send_ack = m->acknowledge();
+        bool synchronous = m->synchronous();
+
+        // synchronous implies send_ack
+        if (synchronous) send_ack = true;
+
+        vector<Envelope> envs;
+        for (size_t i = 0; i < m->envelope_size(); i++) {
+            const string s = m->envelope(i);
+
+            // catch parse failures and log then move on
+            try { envs.push_back(Envelope(s.data(), s.size())); }
+            catch (DeserializeException e) {
+                ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
+                log.set_data(s);
+                LOG_MESSAGE(log, this->logger_sock);
+            }
+        }
+
+        if (envs.size()) {
+            this->HandleWriteEnvelopes(m->path(), envs, synchronous);
+        }
+    }
+
+LOG_END:
+
+    ::zippylog::request_processor::EndProcessWriteEnvelope logend = ::zippylog::request_processor::EndProcessWriteEnvelope();
+    LOG_MESSAGE(logend, this->logger_sock);
+
+    return AUTHORITATIVE;
 }
 
 bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code, string message, vector<Envelope> &msgs)
