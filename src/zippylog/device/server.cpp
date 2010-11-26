@@ -59,6 +59,7 @@ Server::Server(const string config_file_path) :
     zctx(3),
     active(true),
     exec_thread(NULL),
+    store_writer_thread(NULL),
     workers_sock(NULL),
     clients_sock(NULL),
     streaming_sock(NULL),
@@ -101,6 +102,8 @@ Server::Server(const string config_file_path) :
     this->streaming_subscriptions_endpoint = "inproc://" + uuid_s + "streaming_subscriptions";
     this->worker_streaming_notify_endpoint = "inproc://" + uuid_s + "worker_streaming_notify";
     this->streaming_streaming_notify_endpoint = "inproc://" + uuid_s + "streaming_notify";
+    this->store_writer_envelope_pull_endpoint = "inproc://" + uuid_s + "store_writer_envelope_pull";
+    this->store_writer_envelope_rep_endpoint = "inproc://" + uuid_s + "store_writer_envelope_rep";
 
     string error;
     if (!ParseConfig(config_file_path, this->config, error)) {
@@ -331,6 +334,8 @@ bool Server::SynchronizeStartParams()
     this->request_processor_params.request_processor_params = params;
     this->request_processor_params.streaming_subscriptions_endpoint = this->worker_subscriptions_endpoint;
     this->request_processor_params.streaming_updates_endpoint = this->worker_streaming_notify_endpoint;
+    this->request_processor_params.store_writer_envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    this->request_processor_params.store_writer_envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
 
     // store watcher
     StoreWatcherStartParams swparams;
@@ -355,6 +360,12 @@ bool Server::SynchronizeStartParams()
     this->streamer_params.lua_allow = this->config.lua_execute_client_code;
     this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
     this->streamer_params.active = &this->active;
+
+    // store writer
+    this->store_writer_params.ctx = &this->zctx;
+    this->store_writer_params.store_path = this->config.store_path;
+    this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    this->store_writer_params.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
 
     return true;
 }
@@ -396,10 +407,16 @@ bool Server::Initialize()
     this->streaming_streaming_notify_sock->bind(this->streaming_streaming_notify_endpoint.c_str());
 
     // now create child threads
+
+    // start with store writer
+    this->store_writer_thread = new Thread(StoreWriterStart, &this->store_writer_params);
+
+    // spin up configured number of workers
     for (int i = this->config.worker_threads; i; --i) {
         if (!this->CreateWorkerThread()) return false;
     }
 
+    // and the streamers
     for (int i = this->config.streaming_threads; i; --i) {
         if (!this->CreateStreamingThread()) return false;
     }
@@ -456,6 +473,12 @@ void Server::Shutdown()
     this->store_watcher_thread->Join();
     delete this->store_watcher_thread;
     this->store_watcher_thread = NULL;
+
+    if (this->store_writer_thread) {
+        this->store_writer_thread->Join();
+        delete this->store_writer_thread;
+        this->store_writer_thread = NULL;
+    }
 
     if (this->exec_thread) {
         this->exec_thread->Join();
@@ -615,6 +638,7 @@ void * Server::StreamingStart(void *d)
 
 void * Server::RequestProcessorStart(void *d)
 {
+    assert(d);
     WorkerStartParams *params = (WorkerStartParams *)d;
     try {
         Worker processor(*params);
@@ -626,6 +650,21 @@ void * Server::RequestProcessorStart(void *d)
     }
     catch (...) {
 
+    }
+
+    return NULL;
+}
+
+void * Server::StoreWriterStart(void *d)
+{
+    assert(d);
+    StoreWriterStartParams *params = (StoreWriterStartParams *)d;
+    try {
+        StoreWriter writer(*params);
+        writer.Run();
+    }
+    catch (::std::exception e) {
+        throw "TODO handle store writer exception";
     }
 
     return NULL;
