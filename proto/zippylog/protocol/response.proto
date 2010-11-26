@@ -106,4 +106,14 @@ enum ErrorCode {
     
     // the version of the operation message is unsupported by the server
     UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15;
+    
+    // received an empty message
+    EMPTY_MESSAGE = 16;
+    
+    // no envelope seen in the 0MQ message
+    PROTOCOL_NO_ENVELOPE = 17;
+    
+    // a general failure occurred when processing the request
+    // this is likely an exception or similar condition
+    GENERAL_ERROR_PROCESSING = 18;
 }
