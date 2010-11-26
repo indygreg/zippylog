@@ -287,15 +287,15 @@ class GetBucketInfo : public ::google::protobuf::Message {
   inline ::google::protobuf::uint32 version() const;
   inline void set_version(::google::protobuf::uint32 value);
   
-  // optional string bucket = 2;
-  inline bool has_bucket() const;
-  inline void clear_bucket();
-  static const int kBucketFieldNumber = 2;
-  inline const ::std::string& bucket() const;
-  inline void set_bucket(const ::std::string& value);
-  inline void set_bucket(const char* value);
-  inline void set_bucket(const char* value, size_t size);
-  inline ::std::string* mutable_bucket();
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 100;
@@ -306,8 +306,8 @@ class GetBucketInfo : public ::google::protobuf::Message {
   mutable int _cached_size_;
   
   ::google::protobuf::uint32 version_;
-  ::std::string* bucket_;
-  static const ::std::string _default_bucket_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
@@ -1363,46 +1363,46 @@ inline void GetBucketInfo::set_version(::google::protobuf::uint32 value) {
   version_ = value;
 }
 
-// optional string bucket = 2;
-inline bool GetBucketInfo::has_bucket() const {
+// optional string path = 2;
+inline bool GetBucketInfo::has_path() const {
   return _has_bit(1);
 }
-inline void GetBucketInfo::clear_bucket() {
-  if (bucket_ != &_default_bucket_) {
-    bucket_->clear();
+inline void GetBucketInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
   }
   _clear_bit(1);
 }
-inline const ::std::string& GetBucketInfo::bucket() const {
-  return *bucket_;
+inline const ::std::string& GetBucketInfo::path() const {
+  return *path_;
 }
-inline void GetBucketInfo::set_bucket(const ::std::string& value) {
+inline void GetBucketInfo::set_path(const ::std::string& value) {
   _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
   }
-  bucket_->assign(value);
+  path_->assign(value);
 }
-inline void GetBucketInfo::set_bucket(const char* value) {
+inline void GetBucketInfo::set_path(const char* value) {
   _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
   }
-  bucket_->assign(value);
+  path_->assign(value);
 }
-inline void GetBucketInfo::set_bucket(const char* value, size_t size) {
+inline void GetBucketInfo::set_path(const char* value, size_t size) {
   _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
   }
-  bucket_->assign(reinterpret_cast<const char*>(value), size);
+  path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* GetBucketInfo::mutable_bucket() {
+inline ::std::string* GetBucketInfo::mutable_path() {
   _set_bit(1);
-  if (bucket_ == &_default_bucket_) {
-    bucket_ = new ::std::string;
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
   }
-  return bucket_;
+  return path_;
 }
 
 // -------------------------------------------------------------------

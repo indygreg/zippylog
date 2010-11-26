@@ -94,7 +94,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
   GetBucketInfo_descriptor_ = file->message_type(2);
   static const int GetBucketInfo_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, bucket_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, path_),
   };
   GetBucketInfo_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -328,22 +328,22 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\037zippylog/protocol/request.proto\022\031zippy"
     "log.protocol.request\"\r\n\013GetFeatures\"\"\n\014G"
-    "etStoreInfo\022\022\n\007version\030\001 \001(\r:\0011\"3\n\rGetBu"
-    "cketInfo\022\022\n\007version\030\001 \001(\r:\0011\022\016\n\006bucket\030\002"
-    " \001(\t\"4\n\020GetStreamSetInfo\022\022\n\007version\030\001 \001("
-    "\r:\0011\022\014\n\004path\030\002 \001(\t\"1\n\rGetStreamInfo\022\022\n\007v"
-    "ersion\030\001 \001(\r:\0011\022\014\n\004path\030\002 \001(\t\"E\n\003Get\022\014\n\004"
-    "path\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022max_"
-    "response_bytes\030\003 \001(\r\"C\n\rWriteEnvelope\022\022\n"
-    "\007version\030\001 \001(\r:\0011\022\014\n\004path\030\002 \001(\t\022\020\n\010envel"
-    "ope\030\003 \003(\014\"s\n\031WriteEnvelopeWithMessages\022\014"
-    "\n\004path\030\001 \001(\t\022\017\n\007message\030\002 \003(\014\022\035\n\021message"
-    "_namespace\030\003 \003(\rB\002\020\001\022\030\n\014message_type\030\004 \003"
-    "(\rB\002\020\001\"%\n\025SubscribeStoreChanges\022\014\n\004path\030"
-    "\001 \003(\t\"4\n\022SubscribeEnvelopes\022\014\n\004path\030\001 \003("
-    "\t\022\020\n\010lua_code\030\002 \001(\t\" \n\022SubscribeKeepaliv"
-    "e\022\n\n\002id\030\001 \001(\014\"\035\n\017SubscribeCancel\022\n\n\002id\030\001"
-    " \001(\014", 684);
+    "etStoreInfo\022\022\n\007version\030\001 \001(\r:\0011\"1\n\rGetBu"
+    "cketInfo\022\022\n\007version\030\001 \001(\r:\0011\022\014\n\004path\030\002 \001"
+    "(\t\"4\n\020GetStreamSetInfo\022\022\n\007version\030\001 \001(\r:"
+    "\0011\022\014\n\004path\030\002 \001(\t\"1\n\rGetStreamInfo\022\022\n\007ver"
+    "sion\030\001 \001(\r:\0011\022\014\n\004path\030\002 \001(\t\"E\n\003Get\022\014\n\004pa"
+    "th\030\001 \001(\t\022\024\n\014start_offset\030\002 \001(\004\022\032\n\022max_re"
+    "sponse_bytes\030\003 \001(\r\"C\n\rWriteEnvelope\022\022\n\007v"
+    "ersion\030\001 \001(\r:\0011\022\014\n\004path\030\002 \001(\t\022\020\n\010envelop"
+    "e\030\003 \003(\014\"s\n\031WriteEnvelopeWithMessages\022\014\n\004"
+    "path\030\001 \001(\t\022\017\n\007message\030\002 \003(\014\022\035\n\021message_n"
+    "amespace\030\003 \003(\rB\002\020\001\022\030\n\014message_type\030\004 \003(\r"
+    "B\002\020\001\"%\n\025SubscribeStoreChanges\022\014\n\004path\030\001 "
+    "\003(\t\"4\n\022SubscribeEnvelopes\022\014\n\004path\030\001 \003(\t\022"
+    "\020\n\010lua_code\030\002 \001(\t\" \n\022SubscribeKeepalive\022"
+    "\n\n\002id\030\001 \001(\014\"\035\n\017SubscribeCancel\022\n\n\002id\030\001 \001"
+    "(\014", 682);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   GetFeatures::default_instance_ = new GetFeatures();
@@ -745,10 +745,10 @@ void GetStoreInfo::Swap(GetStoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string GetBucketInfo::_default_bucket_;
+const ::std::string GetBucketInfo::_default_path_;
 #ifndef _MSC_VER
 const int GetBucketInfo::kVersionFieldNumber;
-const int GetBucketInfo::kBucketFieldNumber;
+const int GetBucketInfo::kPathFieldNumber;
 #endif  // !_MSC_VER
 
 GetBucketInfo::GetBucketInfo()
@@ -768,7 +768,7 @@ GetBucketInfo::GetBucketInfo(const GetBucketInfo& from)
 void GetBucketInfo::SharedCtor() {
   _cached_size_ = 0;
   version_ = 1u;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
+  path_ = const_cast< ::std::string*>(&_default_path_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -777,8 +777,8 @@ GetBucketInfo::~GetBucketInfo() {
 }
 
 void GetBucketInfo::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
-    delete bucket_;
+  if (path_ != &_default_path_) {
+    delete path_;
   }
   if (this != default_instance_) {
   }
@@ -808,8 +808,8 @@ void GetBucketInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     version_ = 1u;
     if (_has_bit(1)) {
-      if (bucket_ != &_default_bucket_) {
-        bucket_->clear();
+      if (path_ != &_default_path_) {
+        path_->clear();
       }
     }
   }
@@ -834,19 +834,19 @@ bool GetBucketInfo::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_bucket;
+        if (input->ExpectTag(18)) goto parse_path;
         break;
       }
       
-      // optional string bucket = 2;
+      // optional string path = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_bucket:
+         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_bucket()));
+                input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->bucket().data(), this->bucket().length(),
+            this->path().data(), this->path().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -878,13 +878,13 @@ void GetBucketInfo::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
   }
   
-  // optional string bucket = 2;
+  // optional string path = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->bucket().data(), this->bucket().length(),
+      this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->bucket(), output);
+      2, this->path(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -900,14 +900,14 @@ void GetBucketInfo::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
   }
   
-  // optional string bucket = 2;
+  // optional string path = 2;
   if (_has_bit(1)) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->bucket().data(), this->bucket().length(),
+      this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->bucket(), target);
+        2, this->path(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -928,11 +928,11 @@ int GetBucketInfo::ByteSize() const {
           this->version());
     }
     
-    // optional string bucket = 2;
-    if (has_bucket()) {
+    // optional string path = 2;
+    if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->bucket());
+          this->path());
     }
     
   }
@@ -966,7 +966,7 @@ void GetBucketInfo::MergeFrom(const GetBucketInfo& from) {
       set_version(from.version());
     }
     if (from._has_bit(1)) {
-      set_bucket(from.bucket());
+      set_path(from.path());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -992,7 +992,7 @@ bool GetBucketInfo::IsInitialized() const {
 void GetBucketInfo::Swap(GetBucketInfo* other) {
   if (other != this) {
     std::swap(version_, other->version_);
-    std::swap(bucket_, other->bucket_);
+    std::swap(path_, other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
