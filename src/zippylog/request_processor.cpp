@@ -118,105 +118,143 @@ void RequestProcessor::Run()
             throw "error receiving multipart message from worker sock";
         }
 
-        // no input is very funky
-        if (!msgs.size()) {
-            // TODO log
-
-            continue;
-        }
-
-        // an empty initial message is very weird
-        if (!msgs[0]->size()) {
-            ::zippylog::request_processor::ReceiveEmptyMessage log = ::zippylog::request_processor::ReceiveEmptyMessage();
-            LOG_MESSAGE(log, this->logger_sock);
-
-            // TODO if there are identities, we should probably send an error response
-            continue;
-        }
-
-        // response object
         vector<Envelope> response_envelopes;
+        this->ProcessMessages(this->current_request_identities, msgs, response_envelopes);
 
-        // the first byte of the message is the message format version
-        // we currently only support 1, as it is the only defined version
-        char version = 0;
-        memcpy(&version, msgs[0]->data(), sizeof(version));
-
-        if (version != 0x01) {
-            this->PopulateErrorResponse(
-                protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION,
-                "protocol message version not understood. server only supports version 1",
-                response_envelopes
-            );
-
-            ::zippylog::request_processor::UnknownMessageVersion log = ::zippylog::request_processor::UnknownMessageVersion();
-            LOG_MESSAGE(log, this->logger_sock);
-
-            // we can't copy request tags b/c we can't parse the request :(
-            if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
-                // TODO log error
-                throw "error sending bad message version response to client";
-                continue;
-            }
-        }
-
-        // this is where we'd switch based on version
-        // we only have version 1 now, so no branching is necessary
-
-        // we expect to see data after the version byte. if we don't, something
-        // is wrong
-        if (msgs[0]->size() < 2) {
-            throw "TODO handle too small message in request processor";
-            continue;
-        }
-
-        Envelope request_envelope;
-
-        try {
-            request_envelope = Envelope(
-                // we can't do math on sizeless void
-                (void *)((char *)msgs[0]->data() + 1),
-                msgs[0]->size() - 1
-            );
-        } catch ( ... ) {
-            // we should only get an exception on parse error
-
-            ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
-            LOG_MESSAGE(log, this->logger_sock);
-
-            throw "TODO handle envelope parse exception in request processor";
-            continue;
-        }
-
-        ResponseStatus result = this->ProcessRequest(request_envelope, response_envelopes);
-
-        // destroy input messages immediately since they aren't needed any more
+        // input messages aren't needed any more, so we destroy them immediately
         vector<message_t *>::iterator iter = msgs.begin();
         for (; iter != msgs.end(); iter++) {
             delete *iter;
         }
 
-        if (result == AUTHORITATIVE) {
-            assert(response_envelopes.size());
-
+        if (response_envelopes.size()) {
             if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
-                // TODO log error
-                throw "error sending envelopes to client";
-                continue;
+                throw "TODO log failure to send response envelopes";
             }
-        }
-        else if (result == DEFERRED) {
-            // we have nothing to send to the client here
-            continue;
-        }
-        else if (result == PROCESS_ERROR) {
-            // TODO log and recover better
-            throw "error when processing request";
         }
     }
 
     ::zippylog::request_processor::RunStop log = ::zippylog::request_processor::RunStop();
     LOG_MESSAGE(log, this->logger_sock);
+
+    return;
+}
+
+void RequestProcessor::ProcessMessages(vector<string> &identities, vector<message_t *> &input, vector<Envelope> &output)
+{
+    // we need to declare all our variables first b/c we use goto
+
+    // always clear the output list so we don't accidentally send leftovers
+    output.clear();
+
+    char msg_version = 0;
+    bool have_request_envelope = false;
+    Envelope request_envelope;
+    ResponseStatus result;
+    bool successful_process = false;
+
+    // TODO should we log?
+    if (!input.size()) return;
+
+    // we expect the first message to have an envelope of some kind
+    if (!input[0]->size()) {
+        ::zippylog::request_processor::ReceiveEmptyMessage log = ::zippylog::request_processor::ReceiveEmptyMessage();
+        LOG_MESSAGE(log, this->logger_sock);
+
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_MESSAGE,
+            "empty 0MQ message received",
+            output
+        );
+        goto CREATE_OUTPUT;
+    }
+
+    // the first byte of the message is the message format version
+    // we currently only support 1, as it is the only defined version
+    memcpy(&msg_version, input[0]->data(), sizeof(msg_version));
+
+    if (msg_version != 0x01) {
+        ::zippylog::request_processor::UnknownMessageVersion log = ::zippylog::request_processor::UnknownMessageVersion();
+        LOG_MESSAGE(log, this->logger_sock);
+
+        this->PopulateErrorResponse(
+            protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION,
+            "protocol message version not understood. server only supports version 1",
+            output
+        );
+        goto CREATE_OUTPUT;
+    }
+
+    // this is where we'd switch based on version
+    // we only have version 1 now, so no branching is necessary
+
+    // we expect to see data after the version byte. if we don't, something
+    // is wrong
+    if (input[0]->size() < 2) {
+        this->PopulateErrorResponse(
+            protocol::response::PROTOCOL_NO_ENVELOPE,
+            "protocol version 1 0MQ message received without an envelope",
+            output
+        );
+        goto CREATE_OUTPUT;
+    }
+
+    try {
+        request_envelope = Envelope(
+            // we can't do math on sizeless void
+            (void *)((char *)input[0]->data() + 1),
+            input[0]->size() - 1
+        );
+    } catch ( ... ) {
+        // we should only get an exception on parse error
+        ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
+        LOG_MESSAGE(log, this->logger_sock);
+
+        this->PopulateErrorResponse(
+            protocol::response::ENVELOPE_PARSE_FAILURE,
+            "error parsing envelope",
+            output
+        );
+        goto CREATE_OUTPUT;
+    }
+
+    have_request_envelope = true;
+    try {
+        result = this->ProcessRequest(request_envelope, output);
+    // TODO catch various types of exceptions
+    } catch ( ... ) {
+        this->PopulateErrorResponse(
+            protocol::response::GENERAL_ERROR_PROCESSING,
+            "exception when processing request",
+            output
+        );
+        goto CREATE_OUTPUT;
+    }
+
+    successful_process = true;
+
+    CREATE_OUTPUT:
+
+    // if we couldn't process the request without throwing an exception, we
+    // need to handle things ourselves
+    if (!successful_process) {
+        // if we have a request envelope and there were tags and we have an
+        // output envelope, copy the tags over
+        if (have_request_envelope && request_envelope.envelope.tag_size() && output.size()) {
+            for (int i = 0; i < request_envelope.envelope.tag_size(); i++) {
+                output[0].envelope.add_tag(request_envelope.envelope.tag(i));
+            }
+        }
+
+        // not much more to do
+        return;
+    }
+
+    if (result == AUTHORITATIVE) {
+        assert(output.size());
+
+        return;
+    }
 
     return;
 }
@@ -578,7 +616,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
 
     if (!m) {
         // TODO log error and send error response
-        return PROCESS_ERROR;
+        throw "TODO handle error";
     }
 
     // TODO validation

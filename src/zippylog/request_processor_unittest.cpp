@@ -16,11 +16,15 @@
 #include <zippylog/protocol/request.pb.h>
 
 #include <gtest/gtest.h>
+#include <zmq.hpp>
 
 using namespace ::zippylog;
 
+using ::std::string;
 using ::std::vector;
+using ::zmq::message_t;
 
+/// request processor implementation that we use to test things
 class TestRequestProcessor : public RequestProcessor
 {
 public:
@@ -106,11 +110,141 @@ protected:
         this->p = new TestRequestProcessor(params);
     }
 
+    void ExpectErrorResponse(RequestProcessor::ResponseStatus result, protocol::response::ErrorCode code, vector<Envelope> &msgs)
+    {
+        EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+        this->ExpectErrorResponse(code, msgs);
+    }
+
+    void ExpectErrorResponse(protocol::response::ErrorCode code, vector<Envelope> &msgs)
+    {
+        ASSERT_EQ(1, msgs.size());
+
+        Envelope response = msgs[0];
+        ASSERT_EQ(1, response.MessageCount());
+
+        ASSERT_EQ(protocol::response::Error::zippylog_namespace, response.MessageNamespace(0));
+        ASSERT_EQ(protocol::response::Error::zippylog_enumeration, response.MessageType(0));
+
+        protocol::response::Error *m = (protocol::response::Error *)response.GetMessage(0);
+        ASSERT_TRUE(m != NULL);
+        ASSERT_TRUE(m->has_code());
+        ASSERT_TRUE(m->has_msg());
+        ASSERT_EQ(code, m->code());
+    }
+
     void SetUp()
     {
         this->ResetProcessor();
     }
 };
+
+// this test verifies our core message processing routine is robust
+TEST_F(RequestProcessorTest, ProcessMessages)
+{
+    protocol::response::ErrorCode code;
+
+    vector<string> identities;
+    identities.push_back("identityA");
+    identities.push_back("identityB");
+
+    vector<message_t *> input;
+    vector<Envelope> output;
+
+    // no input == no output
+    this->p->ProcessMessages(identities, input, output);
+    ASSERT_EQ(0, output.size());
+
+    // empty initial message
+    message_t m(0);
+    input.push_back(&m);
+    code = protocol::response::EMPTY_MESSAGE;
+    this->p->ProcessMessages(identities, input, output);
+    this->ExpectErrorResponse(code, output);
+    output.clear();
+
+    // bad version
+    m.rebuild(1);
+    *(char *)(m.data()) = 0;
+    input.push_back(&m);
+    code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
+    this->p->ProcessMessages(identities, input, output);
+    this->ExpectErrorResponse(code, output);
+    output.clear();
+
+    m.rebuild(1);
+    *(char *)(m.data()) = 0x02;
+    input.push_back(&m);
+    code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
+    this->p->ProcessMessages(identities, input, output);
+    this->ExpectErrorResponse(code, output);
+    output.clear();
+
+    // no data after version
+    m.rebuild(1);
+    *(char *)(m.data()) = 0x01;
+    input.push_back(&m);
+    code = protocol::response::PROTOCOL_NO_ENVELOPE;
+    this->p->ProcessMessages(identities, input, output);
+    this->ExpectErrorResponse(code, output);
+    output.clear();
+
+    // bad envelope after version
+    m.rebuild(10);
+    *(char *)(m.data()) = 0x01;
+    input.push_back(&m);
+    code = protocol::response::ENVELOPE_PARSE_FAILURE;
+    this->p->ProcessMessages(identities, input, output);
+    this->ExpectErrorResponse(code, output);
+    output.clear();
+}
+
+TEST_F(RequestProcessorTest, SupportedVersions)
+{
+    vector<Envelope> msgs;
+    protocol::response::ErrorCode code = protocol::response::UNSUPPORTED_OPERATION_MESSAGE_VERSION;
+
+    {
+        protocol::request::GetStoreInfo m;
+        m.set_version(2);
+        Envelope e;
+        m.add_to_envelope(&e);
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
+        msgs.clear();
+    }
+
+    {
+        protocol::request::GetBucketInfo m;
+        m.set_version(2);
+        Envelope e;
+        m.add_to_envelope(&e);
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
+        msgs.clear();
+    }
+
+    {
+        protocol::request::GetStreamSetInfo m;
+        m.set_version(2);
+        Envelope e;
+        m.add_to_envelope(&e);
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
+        msgs.clear();
+    }
+
+    {
+        protocol::request::GetStreamInfo m;
+        m.set_version(2);
+        Envelope e;
+        m.add_to_envelope(&e);
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
+        msgs.clear();
+    }
+
+}
 
 TEST_F(RequestProcessorTest, StoreInfo)
 {

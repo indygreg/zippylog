@@ -65,19 +65,15 @@ class ZIPPYLOG_EXPORT RequestProcessor {
     public:
         // return code from the various request processors
         enum ResponseStatus {
-            // processor encountered a significant error and couldn't
-            // process the request. this likely resembles a coding bug
-            PROCESS_ERROR = 1,
-
             // processor is authoritative responder for this request
             // the Envelopes/messages set in a passed vector should be
             // sent to the client
-            AUTHORITATIVE = 2,
+            AUTHORITATIVE = 1,
 
             // processor deferred to send a response
             // caller should not send any response to client, as this will be
             // done by some other process
-            DEFERRED = 3,
+            DEFERRED = 2,
         };
 
         RequestProcessor(RequestProcessorStartParams &params);
@@ -89,6 +85,26 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// catastrophic error or the active parameter passed in the start
         /// parameters goes to false
         void Run();
+
+        /// Processes received 0MQ messages
+        ///
+        /// The identities parameter is a list of 0MQ socket identities. These
+        /// are used to craft the appropriate multipart 0MQ response message.
+        /// The input parameter is a list of received 0MQ messages that should
+        /// contain a request of some type. The output parameter will receive
+        /// the list of 0MQ messages that would have been sent back to the
+        /// client immediately.
+        ///
+        /// The request processor is not always authoritative for responses.
+        /// For some request types, control is handed off to another processor
+        /// for additional processing. In these scenarios, the output messages
+        /// list might be empty. It all depends on the implementation.
+        ///
+        /// This function is called by Run() whenever it has received messages
+        /// for processing. The preferred way to pass messages to the request
+        /// processor is by sending them over the socket. However, this
+        /// function is public just in case.
+        void ProcessMessages(::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &input, ::std::vector<Envelope> &output);
 
         /// Processes a request envelope
         ///
