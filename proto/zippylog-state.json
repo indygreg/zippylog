@@ -2,6 +2,7 @@
   "messages": {
     "zippylog": {
       "zippylog.protocol.BucketInfo": 3, 
+      "zippylog.protocol.request.GetStream": 109, 
       "zippylog.request_processor.EndProcessGet": 97, 
       "zippylog.device.request_processor.EndProcessStoreInfo": 72, 
       "zippylog.device.request_processor.BeginProcessStoreInfo": 71, 

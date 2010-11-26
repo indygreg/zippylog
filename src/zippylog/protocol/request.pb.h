@@ -40,7 +40,7 @@ class GetStoreInfo;
 class GetBucketInfo;
 class GetStreamSetInfo;
 class GetStreamInfo;
-class Get;
+class GetStream;
 class WriteEnvelope;
 class WriteEnvelopeWithMessages;
 class SubscribeStoreChanges;
@@ -188,7 +188,7 @@ class GetStoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 version = 1 [default = 1];
+  // required uint32 version = 1 [default = 1];
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -280,7 +280,7 @@ class GetBucketInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 version = 1 [default = 1];
+  // required uint32 version = 1 [default = 1];
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -384,7 +384,7 @@ class GetStreamSetInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 version = 1 [default = 1];
+  // required uint32 version = 1 [default = 1];
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -488,7 +488,7 @@ class GetStreamInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 version = 1 [default = 1];
+  // required uint32 version = 1 [default = 1];
   inline bool has_version() const;
   inline void clear_version();
   static const int kVersionFieldNumber = 1;
@@ -538,14 +538,14 @@ class GetStreamInfo : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class Get : public ::google::protobuf::Message {
+class GetStream : public ::google::protobuf::Message {
  public:
-  Get();
-  virtual ~Get();
+  GetStream();
+  virtual ~GetStream();
   
-  Get(const Get& from);
+  GetStream(const GetStream& from);
   
-  inline Get& operator=(const Get& from) {
+  inline GetStream& operator=(const GetStream& from) {
     CopyFrom(from);
     return *this;
   }
@@ -559,17 +559,17 @@ class Get : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Get& default_instance();
+  static const GetStream& default_instance();
   
-  void Swap(Get* other);
+  void Swap(GetStream* other);
   
   // implements Message ----------------------------------------------
   
-  Get* New() const;
+  GetStream* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Get& from);
-  void MergeFrom(const Get& from);
+  void CopyFrom(const GetStream& from);
+  void MergeFrom(const GetStream& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -592,47 +592,63 @@ class Get : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required uint32 version = 1 [default = 1];
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 version() const;
+  inline void set_version(::google::protobuf::uint32 value);
+  
+  // optional string path = 2;
   inline bool has_path() const;
   inline void clear_path();
-  static const int kPathFieldNumber = 1;
+  static const int kPathFieldNumber = 2;
   inline const ::std::string& path() const;
   inline void set_path(const ::std::string& value);
   inline void set_path(const char* value);
   inline void set_path(const char* value, size_t size);
   inline ::std::string* mutable_path();
   
-  // optional uint64 start_offset = 2;
+  // optional uint64 start_offset = 3;
   inline bool has_start_offset() const;
   inline void clear_start_offset();
-  static const int kStartOffsetFieldNumber = 2;
+  static const int kStartOffsetFieldNumber = 3;
   inline ::google::protobuf::uint64 start_offset() const;
   inline void set_start_offset(::google::protobuf::uint64 value);
   
-  // optional uint32 max_response_bytes = 3;
+  // optional uint32 max_response_bytes = 4;
   inline bool has_max_response_bytes() const;
   inline void clear_max_response_bytes();
-  static const int kMaxResponseBytesFieldNumber = 3;
+  static const int kMaxResponseBytesFieldNumber = 4;
   inline ::google::protobuf::uint32 max_response_bytes() const;
   inline void set_max_response_bytes(::google::protobuf::uint32 value);
   
+  // optional uint32 max_response_envelopes = 5;
+  inline bool has_max_response_envelopes() const;
+  inline void clear_max_response_envelopes();
+  static const int kMaxResponseEnvelopesFieldNumber = 5;
+  inline ::google::protobuf::uint32 max_response_envelopes() const;
+  inline void set_max_response_envelopes(::google::protobuf::uint32 value);
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 11;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 109;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.Get)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
+  ::google::protobuf::uint32 version_;
   ::std::string* path_;
   static const ::std::string _default_path_;
   ::google::protobuf::uint64 start_offset_;
   ::google::protobuf::uint32 max_response_bytes_;
+  ::google::protobuf::uint32 max_response_envelopes_;
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -646,7 +662,7 @@ class Get : public ::google::protobuf::Message {
   }
   
   void InitAsDefaultInstance();
-  static Get* default_instance_;
+  static GetStream* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1327,7 +1343,7 @@ class SubscribeCancel : public ::google::protobuf::Message {
 
 // GetStoreInfo
 
-// optional uint32 version = 1 [default = 1];
+// required uint32 version = 1 [default = 1];
 inline bool GetStoreInfo::has_version() const {
   return _has_bit(0);
 }
@@ -1347,7 +1363,7 @@ inline void GetStoreInfo::set_version(::google::protobuf::uint32 value) {
 
 // GetBucketInfo
 
-// optional uint32 version = 1 [default = 1];
+// required uint32 version = 1 [default = 1];
 inline bool GetBucketInfo::has_version() const {
   return _has_bit(0);
 }
@@ -1409,7 +1425,7 @@ inline ::std::string* GetBucketInfo::mutable_path() {
 
 // GetStreamSetInfo
 
-// optional uint32 version = 1 [default = 1];
+// required uint32 version = 1 [default = 1];
 inline bool GetStreamSetInfo::has_version() const {
   return _has_bit(0);
 }
@@ -1471,7 +1487,7 @@ inline ::std::string* GetStreamSetInfo::mutable_path() {
 
 // GetStreamInfo
 
-// optional uint32 version = 1 [default = 1];
+// required uint32 version = 1 [default = 1];
 inline bool GetStreamInfo::has_version() const {
   return _has_bit(0);
 }
@@ -1531,80 +1547,112 @@ inline ::std::string* GetStreamInfo::mutable_path() {
 
 // -------------------------------------------------------------------
 
-// Get
+// GetStream
 
-// optional string path = 1;
-inline bool Get::has_path() const {
+// required uint32 version = 1 [default = 1];
+inline bool GetStream::has_version() const {
   return _has_bit(0);
 }
-inline void Get::clear_path() {
+inline void GetStream::clear_version() {
+  version_ = 1u;
+  _clear_bit(0);
+}
+inline ::google::protobuf::uint32 GetStream::version() const {
+  return version_;
+}
+inline void GetStream::set_version(::google::protobuf::uint32 value) {
+  _set_bit(0);
+  version_ = value;
+}
+
+// optional string path = 2;
+inline bool GetStream::has_path() const {
+  return _has_bit(1);
+}
+inline void GetStream::clear_path() {
   if (path_ != &_default_path_) {
     path_->clear();
   }
-  _clear_bit(0);
+  _clear_bit(1);
 }
-inline const ::std::string& Get::path() const {
+inline const ::std::string& GetStream::path() const {
   return *path_;
 }
-inline void Get::set_path(const ::std::string& value) {
-  _set_bit(0);
+inline void GetStream::set_path(const ::std::string& value) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void Get::set_path(const char* value) {
-  _set_bit(0);
+inline void GetStream::set_path(const char* value) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void Get::set_path(const char* value, size_t size) {
-  _set_bit(0);
+inline void GetStream::set_path(const char* value, size_t size) {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Get::mutable_path() {
-  _set_bit(0);
+inline ::std::string* GetStream::mutable_path() {
+  _set_bit(1);
   if (path_ == &_default_path_) {
     path_ = new ::std::string;
   }
   return path_;
 }
 
-// optional uint64 start_offset = 2;
-inline bool Get::has_start_offset() const {
-  return _has_bit(1);
+// optional uint64 start_offset = 3;
+inline bool GetStream::has_start_offset() const {
+  return _has_bit(2);
 }
-inline void Get::clear_start_offset() {
+inline void GetStream::clear_start_offset() {
   start_offset_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(1);
+  _clear_bit(2);
 }
-inline ::google::protobuf::uint64 Get::start_offset() const {
+inline ::google::protobuf::uint64 GetStream::start_offset() const {
   return start_offset_;
 }
-inline void Get::set_start_offset(::google::protobuf::uint64 value) {
-  _set_bit(1);
+inline void GetStream::set_start_offset(::google::protobuf::uint64 value) {
+  _set_bit(2);
   start_offset_ = value;
 }
 
-// optional uint32 max_response_bytes = 3;
-inline bool Get::has_max_response_bytes() const {
-  return _has_bit(2);
+// optional uint32 max_response_bytes = 4;
+inline bool GetStream::has_max_response_bytes() const {
+  return _has_bit(3);
 }
-inline void Get::clear_max_response_bytes() {
+inline void GetStream::clear_max_response_bytes() {
   max_response_bytes_ = 0u;
-  _clear_bit(2);
+  _clear_bit(3);
 }
-inline ::google::protobuf::uint32 Get::max_response_bytes() const {
+inline ::google::protobuf::uint32 GetStream::max_response_bytes() const {
   return max_response_bytes_;
 }
-inline void Get::set_max_response_bytes(::google::protobuf::uint32 value) {
-  _set_bit(2);
+inline void GetStream::set_max_response_bytes(::google::protobuf::uint32 value) {
+  _set_bit(3);
   max_response_bytes_ = value;
+}
+
+// optional uint32 max_response_envelopes = 5;
+inline bool GetStream::has_max_response_envelopes() const {
+  return _has_bit(4);
+}
+inline void GetStream::clear_max_response_envelopes() {
+  max_response_envelopes_ = 0u;
+  _clear_bit(4);
+}
+inline ::google::protobuf::uint32 GetStream::max_response_envelopes() const {
+  return max_response_envelopes_;
+}
+inline void GetStream::set_max_response_envelopes(::google::protobuf::uint32 value) {
+  _set_bit(4);
+  max_response_envelopes_ = value;
 }
 
 // -------------------------------------------------------------------
