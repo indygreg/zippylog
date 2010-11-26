@@ -54,6 +54,12 @@ class BeginProcessGet;
 class EndProcessGet;
 class SendErrorResponse;
 class ForwardSubscribeKeepalive;
+class BeginProcessBucketInfo;
+class EndProcessBucketInfo;
+class BeginProcessStreamSetInfo;
+class EndProcessStreamSetInfo;
+class BeginProcessStreamInfo;
+class EndProcessStreamInfo;
 
 // ===================================================================
 
@@ -2027,6 +2033,654 @@ class ForwardSubscribeKeepalive : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static ForwardSubscribeKeepalive* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class BeginProcessBucketInfo : public ::google::protobuf::Message {
+ public:
+  BeginProcessBucketInfo();
+  virtual ~BeginProcessBucketInfo();
+  
+  BeginProcessBucketInfo(const BeginProcessBucketInfo& from);
+  
+  inline BeginProcessBucketInfo& operator=(const BeginProcessBucketInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BeginProcessBucketInfo& default_instance();
+  
+  void Swap(BeginProcessBucketInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  BeginProcessBucketInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const BeginProcessBucketInfo& from);
+  void MergeFrom(const BeginProcessBucketInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 103;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessBucketInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static BeginProcessBucketInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class EndProcessBucketInfo : public ::google::protobuf::Message {
+ public:
+  EndProcessBucketInfo();
+  virtual ~EndProcessBucketInfo();
+  
+  EndProcessBucketInfo(const EndProcessBucketInfo& from);
+  
+  inline EndProcessBucketInfo& operator=(const EndProcessBucketInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EndProcessBucketInfo& default_instance();
+  
+  void Swap(EndProcessBucketInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  EndProcessBucketInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const EndProcessBucketInfo& from);
+  void MergeFrom(const EndProcessBucketInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 104;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessBucketInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static EndProcessBucketInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class BeginProcessStreamSetInfo : public ::google::protobuf::Message {
+ public:
+  BeginProcessStreamSetInfo();
+  virtual ~BeginProcessStreamSetInfo();
+  
+  BeginProcessStreamSetInfo(const BeginProcessStreamSetInfo& from);
+  
+  inline BeginProcessStreamSetInfo& operator=(const BeginProcessStreamSetInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BeginProcessStreamSetInfo& default_instance();
+  
+  void Swap(BeginProcessStreamSetInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  BeginProcessStreamSetInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const BeginProcessStreamSetInfo& from);
+  void MergeFrom(const BeginProcessStreamSetInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 105;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamSetInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static BeginProcessStreamSetInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class EndProcessStreamSetInfo : public ::google::protobuf::Message {
+ public:
+  EndProcessStreamSetInfo();
+  virtual ~EndProcessStreamSetInfo();
+  
+  EndProcessStreamSetInfo(const EndProcessStreamSetInfo& from);
+  
+  inline EndProcessStreamSetInfo& operator=(const EndProcessStreamSetInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EndProcessStreamSetInfo& default_instance();
+  
+  void Swap(EndProcessStreamSetInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  EndProcessStreamSetInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const EndProcessStreamSetInfo& from);
+  void MergeFrom(const EndProcessStreamSetInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 106;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamSetInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static EndProcessStreamSetInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class BeginProcessStreamInfo : public ::google::protobuf::Message {
+ public:
+  BeginProcessStreamInfo();
+  virtual ~BeginProcessStreamInfo();
+  
+  BeginProcessStreamInfo(const BeginProcessStreamInfo& from);
+  
+  inline BeginProcessStreamInfo& operator=(const BeginProcessStreamInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const BeginProcessStreamInfo& default_instance();
+  
+  void Swap(BeginProcessStreamInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  BeginProcessStreamInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const BeginProcessStreamInfo& from);
+  void MergeFrom(const BeginProcessStreamInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 107;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static BeginProcessStreamInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class EndProcessStreamInfo : public ::google::protobuf::Message {
+ public:
+  EndProcessStreamInfo();
+  virtual ~EndProcessStreamInfo();
+  
+  EndProcessStreamInfo(const EndProcessStreamInfo& from);
+  
+  inline EndProcessStreamInfo& operator=(const EndProcessStreamInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EndProcessStreamInfo& default_instance();
+  
+  void Swap(EndProcessStreamInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  EndProcessStreamInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const EndProcessStreamInfo& from);
+  void MergeFrom(const EndProcessStreamInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  // optional string path = 2;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 2;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 108;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamInfo)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  ::std::string* path_;
+  static const ::std::string _default_path_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static EndProcessStreamInfo* default_instance_;
+};
 // ===================================================================
 
 
@@ -3106,6 +3760,534 @@ inline ::std::string* ForwardSubscribeKeepalive::mutable_subscription() {
     subscription_ = new ::std::string;
   }
   return subscription_;
+}
+
+// -------------------------------------------------------------------
+
+// BeginProcessBucketInfo
+
+// optional bytes id = 1;
+inline bool BeginProcessBucketInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void BeginProcessBucketInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BeginProcessBucketInfo::id() const {
+  return *id_;
+}
+inline void BeginProcessBucketInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessBucketInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessBucketInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessBucketInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool BeginProcessBucketInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void BeginProcessBucketInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& BeginProcessBucketInfo::path() const {
+  return *path_;
+}
+inline void BeginProcessBucketInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessBucketInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessBucketInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessBucketInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// EndProcessBucketInfo
+
+// optional bytes id = 1;
+inline bool EndProcessBucketInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void EndProcessBucketInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& EndProcessBucketInfo::id() const {
+  return *id_;
+}
+inline void EndProcessBucketInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessBucketInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessBucketInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessBucketInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool EndProcessBucketInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void EndProcessBucketInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& EndProcessBucketInfo::path() const {
+  return *path_;
+}
+inline void EndProcessBucketInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessBucketInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessBucketInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessBucketInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// BeginProcessStreamSetInfo
+
+// optional bytes id = 1;
+inline bool BeginProcessStreamSetInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void BeginProcessStreamSetInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BeginProcessStreamSetInfo::id() const {
+  return *id_;
+}
+inline void BeginProcessStreamSetInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessStreamSetInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessStreamSetInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessStreamSetInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool BeginProcessStreamSetInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void BeginProcessStreamSetInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& BeginProcessStreamSetInfo::path() const {
+  return *path_;
+}
+inline void BeginProcessStreamSetInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessStreamSetInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessStreamSetInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessStreamSetInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// EndProcessStreamSetInfo
+
+// optional bytes id = 1;
+inline bool EndProcessStreamSetInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void EndProcessStreamSetInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& EndProcessStreamSetInfo::id() const {
+  return *id_;
+}
+inline void EndProcessStreamSetInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessStreamSetInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessStreamSetInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessStreamSetInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool EndProcessStreamSetInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void EndProcessStreamSetInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& EndProcessStreamSetInfo::path() const {
+  return *path_;
+}
+inline void EndProcessStreamSetInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessStreamSetInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessStreamSetInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessStreamSetInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// BeginProcessStreamInfo
+
+// optional bytes id = 1;
+inline bool BeginProcessStreamInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void BeginProcessStreamInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& BeginProcessStreamInfo::id() const {
+  return *id_;
+}
+inline void BeginProcessStreamInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessStreamInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void BeginProcessStreamInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessStreamInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool BeginProcessStreamInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void BeginProcessStreamInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& BeginProcessStreamInfo::path() const {
+  return *path_;
+}
+inline void BeginProcessStreamInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessStreamInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void BeginProcessStreamInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* BeginProcessStreamInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+
+// -------------------------------------------------------------------
+
+// EndProcessStreamInfo
+
+// optional bytes id = 1;
+inline bool EndProcessStreamInfo::has_id() const {
+  return _has_bit(0);
+}
+inline void EndProcessStreamInfo::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& EndProcessStreamInfo::id() const {
+  return *id_;
+}
+inline void EndProcessStreamInfo::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessStreamInfo::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EndProcessStreamInfo::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessStreamInfo::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// optional string path = 2;
+inline bool EndProcessStreamInfo::has_path() const {
+  return _has_bit(1);
+}
+inline void EndProcessStreamInfo::clear_path() {
+  if (path_ != &_default_path_) {
+    path_->clear();
+  }
+  _clear_bit(1);
+}
+inline const ::std::string& EndProcessStreamInfo::path() const {
+  return *path_;
+}
+inline void EndProcessStreamInfo::set_path(const ::std::string& value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessStreamInfo::set_path(const char* value) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void EndProcessStreamInfo::set_path(const char* value, size_t size) {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EndProcessStreamInfo::mutable_path() {
+  _set_bit(1);
+  if (path_ == &_default_path_) {
+    path_ = new ::std::string;
+  }
+  return path_;
 }
 
 
