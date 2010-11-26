@@ -55,11 +55,12 @@ enum ErrorCode {
   INVALID_OFFSET = 10,
   PATH_NOT_FOUND = 11,
   LIMIT_EXCEEDED = 12,
-  UNKNOWN_MESSAGE_FORMAT_VERSION = 13
+  UNKNOWN_MESSAGE_FORMAT_VERSION = 13,
+  INVALID_PATH = 14
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = UNKNOWN_MESSAGE_FORMAT_VERSION;
+const ErrorCode ErrorCode_MAX = INVALID_PATH;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
