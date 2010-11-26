@@ -51,6 +51,11 @@ message SubscriptionStart {
     optional bytes id = 1;
 }
 
+message WriteAck {
+    // number of envelopes written
+    optional uint32 envelopes_written = 1;
+}
+
 message Error {
     optional ErrorCode code = 1;
     optional string msg = 2;

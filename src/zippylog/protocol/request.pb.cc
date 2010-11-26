@@ -159,10 +159,12 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GetStream));
   WriteEnvelope_descriptor_ = file->message_type(6);
-  static const int WriteEnvelope_offsets_[3] = {
+  static const int WriteEnvelope_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, version_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, path_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, envelope_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, acknowledge_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, synchronous_),
   };
   WriteEnvelope_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -342,18 +344,19 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "\r\022\014\n\004path\030\002 \001(\t\"|\n\tGetStream\022\017\n\007version\030"
     "\001 \002(\r\022\014\n\004path\030\002 \001(\t\022\024\n\014start_offset\030\003 \001("
     "\004\022\032\n\022max_response_bytes\030\004 \001(\r\022\036\n\026max_res"
-    "ponse_envelopes\030\005 \001(\r\"@\n\rWriteEnvelope\022\017"
+    "ponse_envelopes\030\005 \001(\r\"w\n\rWriteEnvelope\022\017"
     "\n\007version\030\001 \002(\r\022\014\n\004path\030\002 \001(\t\022\020\n\010envelop"
-    "e\030\003 \003(\014\"\204\001\n\031WriteEnvelopeFromMessages\022\017\n"
-    "\007version\030\001 \002(\r\022\014\n\004path\030\002 \001(\t\022\017\n\007message\030"
-    "\003 \003(\014\022\035\n\021message_namespace\030\004 \003(\rB\002\020\001\022\030\n\014"
-    "message_type\030\005 \003(\rB\002\020\001\"6\n\025SubscribeStore"
-    "Changes\022\017\n\007version\030\001 \002(\r\022\014\n\004path\030\002 \003(\t\"E"
-    "\n\022SubscribeEnvelopes\022\017\n\007version\030\001 \002(\r\022\014\n"
-    "\004path\030\002 \003(\t\022\020\n\010lua_code\030\003 \001(\t\"1\n\022Subscri"
-    "beKeepalive\022\017\n\007version\030\001 \002(\r\022\n\n\002id\030\002 \001(\014"
-    "\".\n\017SubscribeCancel\022\017\n\007version\030\001 \002(\r\022\n\n\002"
-    "id\030\002 \001(\014", 808);
+    "e\030\003 \003(\014\022\031\n\013acknowledge\030\004 \001(\010:\004true\022\032\n\013sy"
+    "nchronous\030\005 \001(\010:\005false\"\204\001\n\031WriteEnvelope"
+    "FromMessages\022\017\n\007version\030\001 \002(\r\022\014\n\004path\030\002 "
+    "\001(\t\022\017\n\007message\030\003 \003(\014\022\035\n\021message_namespac"
+    "e\030\004 \003(\rB\002\020\001\022\030\n\014message_type\030\005 \003(\rB\002\020\001\"6\n"
+    "\025SubscribeStoreChanges\022\017\n\007version\030\001 \002(\r\022"
+    "\014\n\004path\030\002 \003(\t\"E\n\022SubscribeEnvelopes\022\017\n\007v"
+    "ersion\030\001 \002(\r\022\014\n\004path\030\002 \003(\t\022\020\n\010lua_code\030\003"
+    " \001(\t\"1\n\022SubscribeKeepalive\022\017\n\007version\030\001 "
+    "\002(\r\022\n\n\002id\030\002 \001(\014\".\n\017SubscribeCancel\022\017\n\007ve"
+    "rsion\030\001 \002(\r\022\n\n\002id\030\002 \001(\014", 863);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   GetFeatures::default_instance_ = new GetFeatures();
@@ -1945,6 +1948,8 @@ const ::std::string WriteEnvelope::_default_path_;
 const int WriteEnvelope::kVersionFieldNumber;
 const int WriteEnvelope::kPathFieldNumber;
 const int WriteEnvelope::kEnvelopeFieldNumber;
+const int WriteEnvelope::kAcknowledgeFieldNumber;
+const int WriteEnvelope::kSynchronousFieldNumber;
 #endif  // !_MSC_VER
 
 WriteEnvelope::WriteEnvelope()
@@ -1965,6 +1970,8 @@ void WriteEnvelope::SharedCtor() {
   _cached_size_ = 0;
   version_ = 0u;
   path_ = const_cast< ::std::string*>(&_default_path_);
+  acknowledge_ = true;
+  synchronous_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2008,6 +2015,8 @@ void WriteEnvelope::Clear() {
         path_->clear();
       }
     }
+    acknowledge_ = true;
+    synchronous_ = false;
   }
   envelope_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -2063,6 +2072,38 @@ bool WriteEnvelope::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(26)) goto parse_envelope;
+        if (input->ExpectTag(32)) goto parse_acknowledge;
+        break;
+      }
+      
+      // optional bool acknowledge = 4 [default = true];
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_acknowledge:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &acknowledge_)));
+          _set_bit(3);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_synchronous;
+        break;
+      }
+      
+      // optional bool synchronous = 5 [default = false];
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_synchronous:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &synchronous_)));
+          _set_bit(4);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2105,6 +2146,16 @@ void WriteEnvelope::SerializeWithCachedSizes(
       3, this->envelope(i), output);
   }
   
+  // optional bool acknowledge = 4 [default = true];
+  if (_has_bit(3)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->acknowledge(), output);
+  }
+  
+  // optional bool synchronous = 5 [default = false];
+  if (_has_bit(4)) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->synchronous(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2134,6 +2185,16 @@ void WriteEnvelope::SerializeWithCachedSizes(
       WriteBytesToArray(3, this->envelope(i), target);
   }
   
+  // optional bool acknowledge = 4 [default = true];
+  if (_has_bit(3)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->acknowledge(), target);
+  }
+  
+  // optional bool synchronous = 5 [default = false];
+  if (_has_bit(4)) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->synchronous(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -2157,6 +2218,16 @@ int WriteEnvelope::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->path());
+    }
+    
+    // optional bool acknowledge = 4 [default = true];
+    if (has_acknowledge()) {
+      total_size += 1 + 1;
+    }
+    
+    // optional bool synchronous = 5 [default = false];
+    if (has_synchronous()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -2200,6 +2271,12 @@ void WriteEnvelope::MergeFrom(const WriteEnvelope& from) {
     if (from._has_bit(1)) {
       set_path(from.path());
     }
+    if (from._has_bit(3)) {
+      set_acknowledge(from.acknowledge());
+    }
+    if (from._has_bit(4)) {
+      set_synchronous(from.synchronous());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2227,6 +2304,8 @@ void WriteEnvelope::Swap(WriteEnvelope* other) {
     std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     envelope_.Swap(&other->envelope_);
+    std::swap(acknowledge_, other->acknowledge_);
+    std::swap(synchronous_, other->synchronous_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
