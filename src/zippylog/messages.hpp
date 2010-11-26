@@ -8,6 +8,7 @@
 #include <zippylog/message.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/device/request_processor.pb.h>
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
