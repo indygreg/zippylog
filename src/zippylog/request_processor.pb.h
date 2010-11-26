@@ -27,7 +27,6 @@
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
-namespace device {
 namespace request_processor {
 
 // Internal implementation detail -- do not call these.
@@ -123,9 +122,9 @@ class Create : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 60;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 80;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.Create)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.Create)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -219,9 +218,9 @@ class Destroy : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 61;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 81;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.Destroy)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.Destroy)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -315,9 +314,9 @@ class RunStart : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 62;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 82;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.RunStart)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.RunStart)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -411,9 +410,9 @@ class RunStop : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 63;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 83;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.RunStop)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.RunStop)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -507,9 +506,9 @@ class FailReceiveMessage : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 64;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 84;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.FailReceiveMessage)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.FailReceiveMessage)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -603,9 +602,9 @@ class ReceiveEmptyMessage : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 65;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 85;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.ReceiveEmptyMessage)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.ReceiveEmptyMessage)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -706,9 +705,9 @@ class UnknownMessageVersion : public ::google::protobuf::Message {
   inline void set_version(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 66;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 86;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.UnknownMessageVersion)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.UnknownMessageVersion)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -810,9 +809,9 @@ class UnknownRequestType : public ::google::protobuf::Message {
   inline void set_enumeration(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 67;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 87;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.UnknownRequestType)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.UnknownRequestType)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -917,9 +916,9 @@ class EnvelopeParseFailure : public ::google::protobuf::Message {
   inline ::std::string* mutable_data();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 68;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 88;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.EnvelopeParseFailure)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EnvelopeParseFailure)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1015,9 +1014,9 @@ class EmptyEnvelope : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 69;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 89;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.EmptyEnvelope)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EmptyEnvelope)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1111,9 +1110,9 @@ class InvalidMessageEnumeration : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 70;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 90;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.InvalidMessageEnumeration)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.InvalidMessageEnumeration)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1207,9 +1206,9 @@ class BeginProcessStoreInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 71;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 91;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.BeginProcessStoreInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1303,9 +1302,9 @@ class EndProcessStoreInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 72;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 92;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.EndProcessStoreInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStoreInfo)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1399,9 +1398,9 @@ class ReceiveInvalidGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 73;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 93;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.ReceiveInvalidGet)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.ReceiveInvalidGet)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1495,9 +1494,9 @@ class GetInvalidStream : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 74;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 94;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.GetInvalidStream)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.GetInvalidStream)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1591,9 +1590,9 @@ class GetInvalidOffset : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 75;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 95;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.GetInvalidOffset)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.GetInvalidOffset)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1687,9 +1686,9 @@ class BeginProcessGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 76;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 96;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.BeginProcessGet)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGet)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1783,9 +1782,9 @@ class EndProcessGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 77;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 97;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.EndProcessGet)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGet)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1889,9 +1888,9 @@ class SendErrorResponse : public ::google::protobuf::Message {
   inline ::std::string* mutable_message();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 78;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 98;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.SendErrorResponse)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.SendErrorResponse)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -1997,9 +1996,9 @@ class ForwardSubscribeKeepalive : public ::google::protobuf::Message {
   inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 79;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 99;
   bool add_to_envelope(::zippylog::Envelope *envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.device.request_processor.ForwardSubscribeKeepalive)
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.ForwardSubscribeKeepalive)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
@@ -3113,7 +3112,6 @@ inline ::std::string* ForwardSubscribeKeepalive::mutable_subscription() {
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace request_processor
-}  // namespace device
 }  // namespace zippylog
 
 #ifndef SWIG

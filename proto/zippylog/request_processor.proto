@@ -1,5 +1,5 @@
 // messages in this package are created by the RequestProcessor device
-package zippylog.device.request_processor;
+package zippylog.request_processor;
 
 message Create {
     optional bytes id = 1;

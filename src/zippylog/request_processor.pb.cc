@@ -11,7 +11,6 @@
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {
-namespace device {
 namespace request_processor {
 
 namespace {
@@ -497,27 +496,26 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n zippylog/request_processor.proto\022!zipp"
-    "ylog.device.request_processor\"\024\n\006Create\022"
-    "\n\n\002id\030\001 \001(\014\"\025\n\007Destroy\022\n\n\002id\030\001 \001(\014\"\026\n\010Ru"
-    "nStart\022\n\n\002id\030\001 \001(\014\"\025\n\007RunStop\022\n\n\002id\030\002 \001("
-    "\014\" \n\022FailReceiveMessage\022\n\n\002id\030\001 \001(\014\"!\n\023R"
-    "eceiveEmptyMessage\022\n\n\002id\030\001 \001(\014\"4\n\025Unknow"
-    "nMessageVersion\022\n\n\002id\030\001 \001(\014\022\017\n\007version\030\002"
-    " \001(\r\"5\n\022UnknownRequestType\022\n\n\002id\030\001 \001(\014\022\023"
-    "\n\013enumeration\030\002 \001(\r\"0\n\024EnvelopeParseFail"
-    "ure\022\n\n\002id\030\001 \001(\014\022\014\n\004data\030\002 \001(\014\"\033\n\rEmptyEn"
-    "velope\022\n\n\002id\030\001 \001(\014\"\'\n\031InvalidMessageEnum"
-    "eration\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessStore"
-    "Info\022\n\n\002id\030\001 \001(\014\"!\n\023EndProcessStoreInfo\022"
-    "\n\n\002id\030\001 \001(\014\"\037\n\021ReceiveInvalidGet\022\n\n\002id\030\001"
-    " \001(\014\"\036\n\020GetInvalidStream\022\n\n\002id\030\001 \001(\014\"\036\n\020"
-    "GetInvalidOffset\022\n\n\002id\030\001 \001(\014\"\035\n\017BeginPro"
-    "cessGet\022\n\n\002id\030\001 \001(\014\"\033\n\rEndProcessGet\022\n\n\002"
-    "id\030\001 \001(\014\"0\n\021SendErrorResponse\022\n\n\002id\030\001 \001("
-    "\014\022\017\n\007message\030\002 \001(\t\"=\n\031ForwardSubscribeKe"
-    "epalive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001("
-    "\014", 801);
+    "\n zippylog/request_processor.proto\022\032zipp"
+    "ylog.request_processor\"\024\n\006Create\022\n\n\002id\030\001"
+    " \001(\014\"\025\n\007Destroy\022\n\n\002id\030\001 \001(\014\"\026\n\010RunStart\022"
+    "\n\n\002id\030\001 \001(\014\"\025\n\007RunStop\022\n\n\002id\030\002 \001(\014\" \n\022Fa"
+    "ilReceiveMessage\022\n\n\002id\030\001 \001(\014\"!\n\023ReceiveE"
+    "mptyMessage\022\n\n\002id\030\001 \001(\014\"4\n\025UnknownMessag"
+    "eVersion\022\n\n\002id\030\001 \001(\014\022\017\n\007version\030\002 \001(\r\"5\n"
+    "\022UnknownRequestType\022\n\n\002id\030\001 \001(\014\022\023\n\013enume"
+    "ration\030\002 \001(\r\"0\n\024EnvelopeParseFailure\022\n\n\002"
+    "id\030\001 \001(\014\022\014\n\004data\030\002 \001(\014\"\033\n\rEmptyEnvelope\022"
+    "\n\n\002id\030\001 \001(\014\"\'\n\031InvalidMessageEnumeration"
+    "\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessStoreInfo\022\n\n"
+    "\002id\030\001 \001(\014\"!\n\023EndProcessStoreInfo\022\n\n\002id\030\001"
+    " \001(\014\"\037\n\021ReceiveInvalidGet\022\n\n\002id\030\001 \001(\014\"\036\n"
+    "\020GetInvalidStream\022\n\n\002id\030\001 \001(\014\"\036\n\020GetInva"
+    "lidOffset\022\n\n\002id\030\001 \001(\014\"\035\n\017BeginProcessGet"
+    "\022\n\n\002id\030\001 \001(\014\"\033\n\rEndProcessGet\022\n\n\002id\030\001 \001("
+    "\014\"0\n\021SendErrorResponse\022\n\n\002id\030\001 \001(\014\022\017\n\007me"
+    "ssage\030\002 \001(\t\"=\n\031ForwardSubscribeKeepalive"
+    "\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014", 794);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/request_processor.proto", &protobuf_RegisterTypes);
   Create::default_instance_ = new Create();
@@ -5210,7 +5208,6 @@ bool ForwardSubscribeKeepalive::add_to_envelope(::zippylog::Envelope *envelope) 
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace request_processor
-}  // namespace device
 }  // namespace zippylog
 
 // @@protoc_insertion_point(global_scope)
