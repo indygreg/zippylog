@@ -69,7 +69,7 @@ bool Client::StoreInfo(StoreInfoCallback callback, void *data)
     }
 
     Envelope e = Envelope();
-    protocol::request::StoreInfo req = protocol::request::StoreInfo();
+    protocol::request::GetStoreInfo req = protocol::request::GetStoreInfo();
     req.add_to_envelope(&e);
 
     OutstandingRequest info = OutstandingRequest();
@@ -217,7 +217,7 @@ bool Client::ProcessPendingMessage()
     delete messages[0];
     messages.erase(messages.begin());
 
-    Envelope e = Envelope(messages[0]);
+    Envelope e = Envelope(messages[0]->data(), messages[0]->size());
 
     // that's most weird
     if (e.MessageCount() < 1) {
@@ -368,7 +368,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
 
     // for now, assume additional messages envelopes that were streamed
     for (size_t i = 0; i < messages.size(); i++) {
-        Envelope env = Envelope(messages[i]);
+        Envelope env = Envelope(messages[i]->data(), messages[i]->size());
 
         cb.Envelope(start.id(), env, iter->second.data);
     }
@@ -422,7 +422,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetPath(start->path());
             segment.SetStartOffset(start->offset());
 
-            Envelope footer = messages[messages.size() - 1];
+            Envelope footer(messages[messages.size()-1]->data(), messages[messages.size()-1]->size());
 
             protocol::response::StreamSegmentEnd *end =
                 (protocol::response::StreamSegmentEnd *)footer.GetMessage(0);
@@ -432,7 +432,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetEnvelopesSent(end->envelopes_sent());
 
             for (size_t i = 0; i < messages.size() - 1; i++) {
-                Envelope payload(messages[i]);
+                Envelope payload(messages[i]->data(), messages[i]->size());
                 segment.AddEnvelope(payload);
             }
 

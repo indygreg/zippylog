@@ -182,7 +182,7 @@ void Streamer::Run()
                 throw "weird";
             }
 
-            Envelope e = Envelope(&msg);
+            Envelope e = Envelope(msg.data(), msg.size());
             assert(e.MessageCount() == 1);
             assert(e.MessageNamespace(0) == 1);
 
@@ -242,7 +242,7 @@ void Streamer::Run()
 
             assert(msgs.size() > 0);
 
-            Envelope e = Envelope(msgs[0]);
+            Envelope e = Envelope(msgs[0]->data(), msgs[0]->size());
             assert(e.MessageCount() == 1);
             assert(e.MessageNamespace(0) == 1);
 
@@ -276,7 +276,7 @@ void Streamer::Run()
             // if we don't have any subscriptions, do nothing
             if (!this->subscriptions.size()) continue;
 
-            Envelope e = Envelope(&msg);
+            Envelope e = Envelope(msg.data(), msg.size());
 
             assert(e.MessageCount());
             // TODO magic constant

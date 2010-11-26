@@ -38,9 +38,9 @@ Envelope::Envelope() : messages(NULL), message_count(0)
     this->envelope.set_create_time(t.epoch_micro);
 }
 
-Envelope::Envelope( message_t *msg) : messages(NULL), message_count(0)
+Envelope::Envelope( const void * data, int size) : messages(NULL), message_count(0)
 {
-    if (!this->envelope.ParseFromArray(msg->data(), msg->size())) {
+    if (!this->envelope.ParseFromArray(data, size)) {
         throw "could not parse message";
     }
 

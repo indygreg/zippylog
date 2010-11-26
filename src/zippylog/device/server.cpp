@@ -212,7 +212,7 @@ void Server::Run()
                 // once the project has matured
 
 #ifdef _DEBUG
-                Envelope debugEnvelope = Envelope(&msg);
+                Envelope debugEnvelope = Envelope(msg.data(), msg.size());
                 ::std::cout << debugEnvelope.ToString();
 #endif
 

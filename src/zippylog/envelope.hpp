@@ -41,11 +41,11 @@ namespace zippylog {
 
 class ZIPPYLOG_EXPORT Envelope {
     public:
-        // construct an empty envelope
+        /// construct an empty envelope
         Envelope();
 
-        // construct from a 0MQ message
-        Envelope(::zmq::message_t *msg);
+        /// Construct from serialized binary data
+        Envelope(const void *data, int size);
 
         /// construct an envelope having string data
         ///

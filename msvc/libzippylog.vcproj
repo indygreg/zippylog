@@ -264,6 +264,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\request_processor.pb.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\protocol\response.pb.cc"
 				>
 			</File>
@@ -371,6 +375,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\request_processor.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\request_processor.pb.h"
 				>
 			</File>
 			<File
