@@ -147,7 +147,9 @@ class FeatureSpecification : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 55;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.FeatureSpecification)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -249,7 +251,9 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 7;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -367,7 +371,9 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 8;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -473,7 +479,9 @@ class SubscribeAck : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 24;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAck)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -570,7 +578,9 @@ class SubscriptionStart : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 26;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStart)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -673,7 +683,9 @@ class Error : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 9;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.Error)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;

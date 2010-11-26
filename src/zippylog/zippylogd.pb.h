@@ -142,7 +142,9 @@ class BrokerStartup : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 12;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerStartup)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -241,7 +243,9 @@ class BrokerShutdown : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 13;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerShutdown)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -327,7 +331,9 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 14;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -421,7 +427,9 @@ class BrokerFlushOutputStreams : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 53;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -517,7 +525,9 @@ class StreamerStartup : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 49;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerStartup)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -613,7 +623,9 @@ class StreamerShutdown : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 50;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerShutdown)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -719,7 +731,9 @@ class StreamerSubscriptionExpired : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 40;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerSubscriptionExpired)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -827,7 +841,9 @@ class StreamerReceiveKeepalive : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 41;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerReceiveKeepalive)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -935,7 +951,9 @@ class StreamerSubscriptionRenewedFromKeepalive : public ::google::protobuf::Mess
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 42;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -1043,7 +1061,9 @@ class StreamerRejectKeepaliveUnknownSubscription : public ::google::protobuf::Me
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 43;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -1151,7 +1171,9 @@ class StreamerErrorRenewingSubscription : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 44;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerErrorRenewingSubscription)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -1249,7 +1271,9 @@ class StoreWatcherStartup : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 51;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherStartup)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -1345,7 +1369,9 @@ class StoreWatcherShutdown : public ::google::protobuf::Message {
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 52;
+  
   bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherShutdown)
  private:
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
