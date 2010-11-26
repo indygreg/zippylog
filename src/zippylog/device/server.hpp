@@ -270,6 +270,9 @@ class ZIPPYLOG_EXPORT Server {
         bool active;
         ServerConfig config;
 
+        /// Whether the internal structure is set up and ready for running
+        bool initialized;
+
         /// Thread watching the store
         ::zippylog::platform::Thread * store_watcher_thread;
 
@@ -299,11 +302,18 @@ class ZIPPYLOG_EXPORT Server {
         static void * AsyncExecStart(void *data);
         static void * RequestProcessorStart(void *data);
 
-        void create_worker_threads();
-        void create_store_watcher();
-        void create_streaming_threads();
-        void setup_internal_sockets();
-        void setup_listener_sockets();
+        /// Populates the *StartParams members with appropriate values
+        bool SynchronizeStartParams();
+
+        /// Initialize internal sockets and threads
+        bool Initialize();
+
+        /// Spins up a new worker thread
+        bool CreateWorkerThread();
+
+        /// Spins up a new thread to process streaming
+        bool CreateStreamingThread();
+
     private:
         // copy constructor and assignment operator are not available
         Server(const Server &orig);
