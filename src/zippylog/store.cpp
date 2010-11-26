@@ -249,6 +249,25 @@ bool Store::StreamPaths(vector<string> &paths)
     return true;
 }
 
+bool Store::PathExists(const string &path)
+{
+    string bucket, set, stream;
+    if (!ParsePath(path, bucket, set, stream)) return false;
+
+    if (stream.size()) {
+        return this->StreamExists(bucket, set, stream);
+    }
+    else if (set.size()) {
+        return this->StreamSetExists(bucket, set);
+    }
+    else if (bucket.size()) {
+        return this->BucketExists(bucket);
+    }
+    else {
+        return false;
+    }
+}
+
 bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfo &info)
 {
     if (!ValidatePath(path)) return false;
@@ -538,7 +557,7 @@ bool SimpleDirectoryStore::StreamSetExists(const string &bucket, const string &s
 
 bool SimpleDirectoryStore::StreamExists(const string &bucket, const string &set, const string &stream)
 {
-    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamPath(bucket, set, stream)));
+    return platform::PathIsRegularFile(this->StreamFilesystemPath(Store::StreamPath(bucket, set, stream)));
 }
 
 InputStream * SimpleDirectoryStore::GetInputStream(const string &bucket, const string &stream_set, const string &stream)

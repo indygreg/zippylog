@@ -96,6 +96,15 @@ class ZIPPYLOG_EXPORT Store {
         /// If the path does not contain a stream set, returns false.
         static bool ParseStreamSetPath(const ::std::string &path, ::std::string &bucket, ::std::string &set);
 
+        /// Returns whether the path is a path to a bucket
+        static bool IsBucketPath(const ::std::string &path);
+
+        /// Returns whether the path is a path to a stream set
+        static bool IsStreamSetPath(const ::std::string &path);
+
+        /// Returns whether the specified path is a path to a stream
+        static bool IsStreamPath(const ::std::string &path);
+
         /// Return the store path to a specific bucket
         static ::std::string BucketPath(const ::std::string &bucket);
 
@@ -108,6 +117,12 @@ class ZIPPYLOG_EXPORT Store {
         /// returns the name of a stream for a particular time value
         static ::std::string StreamNameForTime(int64 time, int seconds_per_file);
         static ::std::string StreamNameForTime(platform::Time &time, int seconds_per_file);
+
+        /// Returns whether the entity identified by the path exists
+        ///
+        /// This is a convenient wrapper for the *Exists() functions that
+        /// determines the appropriate function to call.
+        bool PathExists(const ::std::string &path);
 
         /// Obtain the set of all paths to known buckets
         ///
