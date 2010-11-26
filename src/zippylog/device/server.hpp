@@ -44,7 +44,15 @@ public:
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
 
-/// Processes zippylog protocol requests for a server device
+/// RequestProcessor implementation for the service device
+///
+/// When this request processor receives a request related to streaming, it
+/// forwards it to the stream processors, via 1 of 2 sockets. The built-in
+/// subscriptions sock load balances among all active streamers in the
+/// server device. The subscription updates sock fans out to all instances.
+/// The former is used when a message only needs to go to 1 streamer and the
+/// latter when all streamers need to see it (e.g. a keepalive message since
+/// the server doesn't know which streamers have which subscriptions).
 class Worker : public ::zippylog::RequestProcessor {
     public:
         Worker(WorkerStartParams &params);
@@ -254,16 +262,14 @@ class ZIPPYLOG_EXPORT Server {
         ::zippylog::device::StreamerStartParams streamer_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
 
-        // TODO these should not be static
-        static const ::std::string WORKER_ENDPOINT;
-        static const ::std::string STORE_CHANGE_ENDPOINT;
-        static const ::std::string STREAMING_ENDPOINT;
-        static const ::std::string LOGGER_ENDPOINT;
-
-        static const ::std::string WORKER_SUBSCRIPTIONS_ENDPOINT;
-        static const ::std::string STREAMING_SUBSCRIPTIONS_ENDPOINT;
-        static const ::std::string WORKER_STREAMING_NOTIFY_ENDPOINT;
-        static const ::std::string STREAMING_STREAMING_NOTIFY_ENDPOINT;
+        ::std::string worker_endpoint;
+        ::std::string store_change_endpoint;
+        ::std::string streaming_endpoint;
+        ::std::string logger_endpoint;
+        ::std::string worker_subscriptions_endpoint;
+        ::std::string streaming_subscriptions_endpoint;
+        ::std::string worker_streaming_notify_endpoint;
+        ::std::string streaming_streaming_notify_endpoint;
 
         static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
 
