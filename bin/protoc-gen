@@ -197,7 +197,10 @@ for i in range(0, len(request.proto_file)):
                 f = response.file.add()
                 f.name = cpp_output_header(filename)
                 f.insertion_point = 'class_scope:%s.%s' % ( package, name )
-                f.content = 'bool add_to_envelope(::zippylog::Envelope *envelope);';
+                f.content = '''
+bool add_to_envelope(::zippylog::Envelope *envelope);
+bool add_to_envelope(::zippylog::Envelope &envelope);
+'''
 
                 f = response.file.add()
                 f.name = cpp_output_source(filename)
@@ -206,7 +209,11 @@ for i in range(0, len(request.proto_file)):
 bool %s::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
-''' % ( name )
+
+bool %s::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+''' % ( name, name )
             
                 f = response.file.add()
                 f.name = cpp_messages_source
