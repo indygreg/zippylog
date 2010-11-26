@@ -55,51 +55,22 @@ using ::zippylog::device::server::WorkerStartParams;
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
 
-Server::Server(const string config_file_path) : zctx(3)
+Server::Server(const string config_file_path) :
+    zctx(3),
+    active(true),
+    exec_thread(NULL),
+    workers_sock(NULL),
+    clients_sock(NULL),
+    streaming_sock(NULL),
+    worker_subscriptions_sock(NULL),
+    streaming_subscriptions_sock(NULL),
+    worker_streaming_notify_sock(NULL),
+    streaming_streaming_notify_sock(NULL),
+    logger_sock(NULL),
+    log_client_sock(NULL),
+    store(NULL),
+    store_watcher_thread(NULL)
 {
-    this->init();
-
-    string error;
-    if (!ParseConfig(config_file_path, this->config, error)) {
-        throw error;
-    }
-
-    this->store = Store::CreateStore(this->config.store_path);
-}
-
-Server::~Server()
-{
-    this->Shutdown();
-
-    if (this->workers_sock) delete this->workers_sock;
-    if (this->clients_sock) delete this->clients_sock;
-    if (this->streaming_sock) delete this->streaming_sock;
-    if (this->worker_subscriptions_sock) delete this->worker_subscriptions_sock;
-    if (this->streaming_subscriptions_sock) delete this->streaming_subscriptions_sock;
-    if (this->worker_streaming_notify_sock) delete this->worker_streaming_notify_sock;
-    if (this->streaming_streaming_notify_sock) delete this->streaming_streaming_notify_sock;
-    if (this->logger_sock) delete this->logger_sock;
-    if (this->log_client_sock) delete this->log_client_sock;
-
-    if (this->store) delete this->store;
-}
-
-void Server::init()
-{
-    this->active = true;
-    this->exec_thread = NULL;
-    this->workers_sock = NULL;
-    this->clients_sock = NULL;
-    this->streaming_sock = NULL;
-    this->worker_subscriptions_sock = NULL;
-    this->streaming_subscriptions_sock = NULL;
-    this->worker_streaming_notify_sock = NULL;
-    this->streaming_streaming_notify_sock = NULL;
-    this->logger_sock = NULL;
-    this->log_client_sock = NULL;
-    this->store = NULL;
-    this->store_watcher_thread = NULL;
-
     platform::UUID uuid;
     if (!platform::CreateUUID(uuid)) {
         throw "could not create UUID";
@@ -129,6 +100,29 @@ void Server::init()
     this->streaming_subscriptions_endpoint = "inproc://" + uuid_s + "streaming_subscriptions";
     this->worker_streaming_notify_endpoint = "inproc://" + uuid_s + "worker_streaming_notify";
     this->streaming_streaming_notify_endpoint = "inproc://" + uuid_s + "streaming_notify";
+
+    string error;
+    if (!ParseConfig(config_file_path, this->config, error)) {
+        throw error;
+    }
+
+    this->store = Store::CreateStore(this->config.store_path);
+}
+
+Server::~Server()
+{
+    this->Shutdown();
+
+    if (this->workers_sock) delete this->workers_sock;
+    if (this->clients_sock) delete this->clients_sock;
+    if (this->streaming_sock) delete this->streaming_sock;
+    if (this->worker_subscriptions_sock) delete this->worker_subscriptions_sock;
+    if (this->streaming_subscriptions_sock) delete this->streaming_subscriptions_sock;
+    if (this->worker_streaming_notify_sock) delete this->worker_streaming_notify_sock;
+    if (this->streaming_streaming_notify_sock) delete this->streaming_streaming_notify_sock;
+    if (this->logger_sock) delete this->logger_sock;
+    if (this->log_client_sock) delete this->log_client_sock;
+    if (this->store) delete this->store;
 }
 
 void Server::Run()

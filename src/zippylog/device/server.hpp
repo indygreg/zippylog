@@ -249,19 +249,39 @@ class ZIPPYLOG_EXPORT Server {
         // yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
+        /// server id
+        ///
+        /// used for identification purposes in logging
         ::std::string id;
+
+        /// Thread running the server
+        ///
+        /// Only present when server is running asynchronously via RunAsync()
         ::zippylog::platform::Thread * exec_thread;
+
+        /// Threads running workers/request processors
         ::std::vector< ::zippylog::platform::Thread * > worker_threads;
+
+        /// Threads running streamers
         ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
+
+        /// The store we are bound to
         ::zippylog::Store * store;
         bool active;
         ServerConfig config;
+
+        /// Thread watching the store
         ::zippylog::platform::Thread * store_watcher_thread;
 
+        /// used to construct child objects
+        ///
+        /// The addresses of these variables are passed when starting the
+        /// threads for these objects.
         ::zippylog::device::server::WorkerStartParams request_processor_params;
         ::zippylog::device::StreamerStartParams streamer_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
 
+        /// 0MQ endpoints used by various internal sockets
         ::std::string worker_endpoint;
         ::std::string store_change_endpoint;
         ::std::string streaming_endpoint;
@@ -273,13 +293,12 @@ class ZIPPYLOG_EXPORT Server {
 
         static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
 
-        // thread start functions
+        /// Thread start functions
         static void * StoreWatcherStart(void *data);
         static void * StreamingStart(void *data);
         static void * AsyncExecStart(void *data);
         static void * RequestProcessorStart(void *data);
 
-        void init();
         void create_worker_threads();
         void create_store_watcher();
         void create_streaming_threads();
