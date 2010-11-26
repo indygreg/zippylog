@@ -399,24 +399,38 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e
     ::zippylog::request_processor::BeginProcessBucketInfo logstart = ::zippylog::request_processor::BeginProcessBucketInfo();
     LOG_MESSAGE(logstart, this->logger_sock);
 
+    string bucket;
+    protocol::BucketInfo info = protocol::BucketInfo();
+    Envelope response;
+
     protocol::request::GetBucketInfo *m = (protocol::request::GetBucketInfo *)e.GetMessage(0);
     if (!m) {
         throw "TODO handle error parsing GetBucketInfo request message";
     }
 
-    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
-    if (!this->CheckPath(m->path(), output, true)) return AUTHORITATIVE;
+    if (!m->has_path()) {
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_FIELD,
+            "required field 'path' missing",
+            output
+        );
+        goto LOG_END;
+    }
 
-    protocol::BucketInfo info = protocol::BucketInfo();
-    string bucket;
+    if (!this->CheckPath(m->path(), output, true)) goto LOG_END;
+
     Store::ParseBucketPath(m->path(), bucket);
     this->store->BucketInfo(bucket, info);
+    info.add_to_envelope(&response);
+    output.push_back(response);
+
+LOG_END:
 
     ::zippylog::request_processor::EndProcessBucketInfo logend = ::zippylog::request_processor::EndProcessBucketInfo();
     LOG_MESSAGE(logend, this->logger_sock);
 
-    info.add_to_envelope(&e);
     return AUTHORITATIVE;
 }
 
@@ -425,25 +439,37 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope
     ::zippylog::request_processor::BeginProcessStreamSetInfo logstart = ::zippylog::request_processor::BeginProcessStreamSetInfo();
     LOG_MESSAGE(logstart, this->logger_sock);
 
+    string bucket, set;
+    protocol::StreamSetInfo info = protocol::StreamSetInfo();
+    Envelope response;
+
     protocol::request::GetStreamSetInfo *m = (protocol::request::GetStreamSetInfo *)e.GetMessage(0);
     if (!m) {
         throw "TODO handle error parsing GetStreamSetInfo request message";
     }
 
-    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
-    if (!this->CheckPath(m->path(), output, true, true)) return AUTHORITATIVE;
+    if (!m->has_path()) {
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_FIELD,
+            "required field 'path' missing",
+            output
+        );
+        goto LOG_END;
+    }
 
-    string bucket, set;
+    if (!this->CheckPath(m->path(), output, true, true)) goto LOG_END;
+
     Store::ParseStreamSetPath(m->path(), bucket, set);
-
-    protocol::StreamSetInfo info = protocol::StreamSetInfo();
     this->store->StreamsetInfo(bucket, set, info);
+    info.add_to_envelope(&response);
+    output.push_back(response);
 
+LOG_END:
     ::zippylog::request_processor::EndProcessStreamSetInfo logend = ::zippylog::request_processor::EndProcessStreamSetInfo();
     LOG_MESSAGE(logend, this->logger_sock);
 
-    info.add_to_envelope(&e);
     return AUTHORITATIVE;
 }
 
@@ -452,24 +478,39 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
     ::zippylog::request_processor::BeginProcessStreamInfo logstart = ::zippylog::request_processor::BeginProcessStreamInfo();
     LOG_MESSAGE(logstart, this->logger_sock);
 
+    string bucket, set, stream;
+    protocol::StreamInfo info = protocol::StreamInfo();
+    Envelope response;
+
     protocol::request::GetStreamInfo *m = (protocol::request::GetStreamInfo *)e.GetMessage(0);
     if (!m) {
         throw "TODO handle error parsing GetStreamSetInfo request message";
     }
 
-    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
-    if (!this->CheckPath(m->path(), output, true, true, true)) return AUTHORITATIVE;
+    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
-    string bucket, set, stream;
+    if (!m->has_path()) {
+        this->PopulateErrorResponse(
+            protocol::response::EMPTY_FIELD,
+            "required field 'path' missing",
+            output
+        );
+        goto LOG_END;
+    }
+
+    if (!this->CheckPath(m->path(), output, true, true, true)) goto LOG_END;
+
+
     Store::ParsePath(m->path(), bucket, set, stream);
-
-    protocol::StreamInfo info = protocol::StreamInfo();
     this->store->StreamInfo(bucket, set, stream, info);
+    info.add_to_envelope(&response);
+    output.push_back(response);
+
+LOG_END:
 
     ::zippylog::request_processor::EndProcessStreamInfo logend = ::zippylog::request_processor::EndProcessStreamInfo();
     LOG_MESSAGE(logend, this->logger_sock);
 
-    info.add_to_envelope(&e);
     return AUTHORITATIVE;
 }
 
