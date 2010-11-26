@@ -63,12 +63,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* GetInvalidOffset_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   GetInvalidOffset_reflection_ = NULL;
-const ::google::protobuf::Descriptor* BeginProcessGet_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* BeginProcessGetStream_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  BeginProcessGet_reflection_ = NULL;
-const ::google::protobuf::Descriptor* EndProcessGet_descriptor_ = NULL;
+  BeginProcessGetStream_reflection_ = NULL;
+const ::google::protobuf::Descriptor* EndProcessGetStream_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  EndProcessGet_reflection_ = NULL;
+  EndProcessGetStream_reflection_ = NULL;
 const ::google::protobuf::Descriptor* SendErrorResponse_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SendErrorResponse_reflection_ = NULL;
@@ -346,36 +346,36 @@ void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(GetInvalidOffset));
-  BeginProcessGet_descriptor_ = file->message_type(16);
-  static const int BeginProcessGet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGet, id_),
+  BeginProcessGetStream_descriptor_ = file->message_type(16);
+  static const int BeginProcessGetStream_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGetStream, id_),
   };
-  BeginProcessGet_reflection_ =
+  BeginProcessGetStream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      BeginProcessGet_descriptor_,
-      BeginProcessGet::default_instance_,
-      BeginProcessGet_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGet, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGet, _unknown_fields_),
+      BeginProcessGetStream_descriptor_,
+      BeginProcessGetStream::default_instance_,
+      BeginProcessGetStream_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGetStream, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BeginProcessGetStream, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(BeginProcessGet));
-  EndProcessGet_descriptor_ = file->message_type(17);
-  static const int EndProcessGet_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGet, id_),
+      sizeof(BeginProcessGetStream));
+  EndProcessGetStream_descriptor_ = file->message_type(17);
+  static const int EndProcessGetStream_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGetStream, id_),
   };
-  EndProcessGet_reflection_ =
+  EndProcessGetStream_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      EndProcessGet_descriptor_,
-      EndProcessGet::default_instance_,
-      EndProcessGet_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGet, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGet, _unknown_fields_),
+      EndProcessGetStream_descriptor_,
+      EndProcessGetStream::default_instance_,
+      EndProcessGetStream_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGetStream, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(EndProcessGetStream, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(EndProcessGet));
+      sizeof(EndProcessGetStream));
   SendErrorResponse_descriptor_ = file->message_type(18);
   static const int SendErrorResponse_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SendErrorResponse, id_),
@@ -549,9 +549,9 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     GetInvalidOffset_descriptor_, &GetInvalidOffset::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    BeginProcessGet_descriptor_, &BeginProcessGet::default_instance());
+    BeginProcessGetStream_descriptor_, &BeginProcessGetStream::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    EndProcessGet_descriptor_, &EndProcessGet::default_instance());
+    EndProcessGetStream_descriptor_, &EndProcessGetStream::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SendErrorResponse_descriptor_, &SendErrorResponse::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -605,10 +605,10 @@ void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto() {
   delete GetInvalidStream_reflection_;
   delete GetInvalidOffset::default_instance_;
   delete GetInvalidOffset_reflection_;
-  delete BeginProcessGet::default_instance_;
-  delete BeginProcessGet_reflection_;
-  delete EndProcessGet::default_instance_;
-  delete EndProcessGet_reflection_;
+  delete BeginProcessGetStream::default_instance_;
+  delete BeginProcessGetStream_reflection_;
+  delete EndProcessGetStream::default_instance_;
+  delete EndProcessGetStream_reflection_;
   delete SendErrorResponse::default_instance_;
   delete SendErrorResponse_reflection_;
   delete ForwardSubscribeKeepalive::default_instance_;
@@ -649,19 +649,19 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
     "\002id\030\001 \001(\014\"!\n\023EndProcessStoreInfo\022\n\n\002id\030\001"
     " \001(\014\"\037\n\021ReceiveInvalidGet\022\n\n\002id\030\001 \001(\014\"\036\n"
     "\020GetInvalidStream\022\n\n\002id\030\001 \001(\014\"\036\n\020GetInva"
-    "lidOffset\022\n\n\002id\030\001 \001(\014\"\035\n\017BeginProcessGet"
-    "\022\n\n\002id\030\001 \001(\014\"\033\n\rEndProcessGet\022\n\n\002id\030\001 \001("
-    "\014\"0\n\021SendErrorResponse\022\n\n\002id\030\001 \001(\014\022\017\n\007me"
-    "ssage\030\002 \001(\t\"=\n\031ForwardSubscribeKeepalive"
-    "\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription\030\002 \001(\014\"2\n\026Be"
-    "ginProcessBucketInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path"
-    "\030\002 \001(\t\"0\n\024EndProcessBucketInfo\022\n\n\002id\030\001 \001"
-    "(\014\022\014\n\004path\030\002 \001(\t\"5\n\031BeginProcessStreamSe"
-    "tInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"3\n\027EndPr"
-    "ocessStreamSetInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002"
-    " \001(\t\"2\n\026BeginProcessStreamInfo\022\n\n\002id\030\001 \001"
-    "(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProcessStreamInfo"
-    "\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t", 1106);
+    "lidOffset\022\n\n\002id\030\001 \001(\014\"#\n\025BeginProcessGet"
+    "Stream\022\n\n\002id\030\001 \001(\014\"!\n\023EndProcessGetStrea"
+    "m\022\n\n\002id\030\001 \001(\014\"0\n\021SendErrorResponse\022\n\n\002id"
+    "\030\001 \001(\014\022\017\n\007message\030\002 \001(\t\"=\n\031ForwardSubscr"
+    "ibeKeepalive\022\n\n\002id\030\001 \001(\014\022\024\n\014subscription"
+    "\030\002 \001(\014\"2\n\026BeginProcessBucketInfo\022\n\n\002id\030\001"
+    " \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProcessBucketIn"
+    "fo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"5\n\031BeginPro"
+    "cessStreamSetInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 "
+    "\001(\t\"3\n\027EndProcessStreamSetInfo\022\n\n\002id\030\001 \001"
+    "(\014\022\014\n\004path\030\002 \001(\t\"2\n\026BeginProcessStreamIn"
+    "fo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t\"0\n\024EndProce"
+    "ssStreamInfo\022\n\n\002id\030\001 \001(\014\022\014\n\004path\030\002 \001(\t", 1118);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/request_processor.proto", &protobuf_RegisterTypes);
   Create::default_instance_ = new Create();
@@ -680,8 +680,8 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   ReceiveInvalidGet::default_instance_ = new ReceiveInvalidGet();
   GetInvalidStream::default_instance_ = new GetInvalidStream();
   GetInvalidOffset::default_instance_ = new GetInvalidOffset();
-  BeginProcessGet::default_instance_ = new BeginProcessGet();
-  EndProcessGet::default_instance_ = new EndProcessGet();
+  BeginProcessGetStream::default_instance_ = new BeginProcessGetStream();
+  EndProcessGetStream::default_instance_ = new EndProcessGetStream();
   SendErrorResponse::default_instance_ = new SendErrorResponse();
   ForwardSubscribeKeepalive::default_instance_ = new ForwardSubscribeKeepalive();
   BeginProcessBucketInfo::default_instance_ = new BeginProcessBucketInfo();
@@ -706,8 +706,8 @@ void protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto() {
   ReceiveInvalidGet::default_instance_->InitAsDefaultInstance();
   GetInvalidStream::default_instance_->InitAsDefaultInstance();
   GetInvalidOffset::default_instance_->InitAsDefaultInstance();
-  BeginProcessGet::default_instance_->InitAsDefaultInstance();
-  EndProcessGet::default_instance_->InitAsDefaultInstance();
+  BeginProcessGetStream::default_instance_->InitAsDefaultInstance();
+  EndProcessGetStream::default_instance_->InitAsDefaultInstance();
   SendErrorResponse::default_instance_->InitAsDefaultInstance();
   ForwardSubscribeKeepalive::default_instance_->InitAsDefaultInstance();
   BeginProcessBucketInfo::default_instance_->InitAsDefaultInstance();
@@ -4314,36 +4314,36 @@ void GetInvalidOffset::Swap(GetInvalidOffset* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessGet::_default_id_;
+const ::std::string BeginProcessGetStream::_default_id_;
 #ifndef _MSC_VER
-const int BeginProcessGet::kIdFieldNumber;
+const int BeginProcessGetStream::kIdFieldNumber;
 #endif  // !_MSC_VER
 
-BeginProcessGet::BeginProcessGet()
+BeginProcessGetStream::BeginProcessGetStream()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void BeginProcessGet::InitAsDefaultInstance() {
+void BeginProcessGetStream::InitAsDefaultInstance() {
 }
 
-BeginProcessGet::BeginProcessGet(const BeginProcessGet& from)
+BeginProcessGetStream::BeginProcessGetStream(const BeginProcessGetStream& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void BeginProcessGet::SharedCtor() {
+void BeginProcessGetStream::SharedCtor() {
   _cached_size_ = 0;
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-BeginProcessGet::~BeginProcessGet() {
+BeginProcessGetStream::~BeginProcessGetStream() {
   SharedDtor();
 }
 
-void BeginProcessGet::SharedDtor() {
+void BeginProcessGetStream::SharedDtor() {
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -4351,27 +4351,27 @@ void BeginProcessGet::SharedDtor() {
   }
 }
 
-void BeginProcessGet::SetCachedSize(int size) const {
+void BeginProcessGetStream::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* BeginProcessGet::descriptor() {
+const ::google::protobuf::Descriptor* BeginProcessGetStream::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return BeginProcessGet_descriptor_;
+  return BeginProcessGetStream_descriptor_;
 }
 
-const BeginProcessGet& BeginProcessGet::default_instance() {
+const BeginProcessGetStream& BeginProcessGetStream::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();  return *default_instance_;
 }
 
-BeginProcessGet* BeginProcessGet::default_instance_ = NULL;
+BeginProcessGetStream* BeginProcessGetStream::default_instance_ = NULL;
 
-BeginProcessGet* BeginProcessGet::New() const {
-  return new BeginProcessGet;
+BeginProcessGetStream* BeginProcessGetStream::New() const {
+  return new BeginProcessGetStream;
 }
 
-void BeginProcessGet::Clear() {
+void BeginProcessGetStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
       if (id_ != &_default_id_) {
@@ -4383,7 +4383,7 @@ void BeginProcessGet::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool BeginProcessGet::MergePartialFromCodedStream(
+bool BeginProcessGetStream::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -4418,7 +4418,7 @@ bool BeginProcessGet::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void BeginProcessGet::SerializeWithCachedSizes(
+void BeginProcessGetStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
   if (_has_bit(0)) {
@@ -4432,7 +4432,7 @@ void BeginProcessGet::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* BeginProcessGet::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* BeginProcessGetStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
   if (_has_bit(0)) {
@@ -4448,7 +4448,7 @@ void BeginProcessGet::SerializeWithCachedSizes(
   return target;
 }
 
-int BeginProcessGet::ByteSize() const {
+int BeginProcessGetStream::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -4471,10 +4471,10 @@ int BeginProcessGet::ByteSize() const {
   return total_size;
 }
 
-void BeginProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
+void BeginProcessGetStream::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const BeginProcessGet* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const BeginProcessGet*>(
+  const BeginProcessGetStream* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const BeginProcessGetStream*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -4483,7 +4483,7 @@ void BeginProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void BeginProcessGet::MergeFrom(const BeginProcessGet& from) {
+void BeginProcessGetStream::MergeFrom(const BeginProcessGetStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
@@ -4493,24 +4493,24 @@ void BeginProcessGet::MergeFrom(const BeginProcessGet& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void BeginProcessGet::CopyFrom(const ::google::protobuf::Message& from) {
+void BeginProcessGetStream::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void BeginProcessGet::CopyFrom(const BeginProcessGet& from) {
+void BeginProcessGetStream::CopyFrom(const BeginProcessGetStream& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool BeginProcessGet::IsInitialized() const {
+bool BeginProcessGetStream::IsInitialized() const {
   
   return true;
 }
 
-void BeginProcessGet::Swap(BeginProcessGet* other) {
+void BeginProcessGetStream::Swap(BeginProcessGetStream* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -4519,47 +4519,47 @@ void BeginProcessGet::Swap(BeginProcessGet* other) {
   }
 }
 
-::google::protobuf::Metadata BeginProcessGet::GetMetadata() const {
+::google::protobuf::Metadata BeginProcessGetStream::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = BeginProcessGet_descriptor_;
-  metadata.reflection = BeginProcessGet_reflection_;
+  metadata.descriptor = BeginProcessGetStream_descriptor_;
+  metadata.reflection = BeginProcessGetStream_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string EndProcessGet::_default_id_;
+const ::std::string EndProcessGetStream::_default_id_;
 #ifndef _MSC_VER
-const int EndProcessGet::kIdFieldNumber;
+const int EndProcessGetStream::kIdFieldNumber;
 #endif  // !_MSC_VER
 
-EndProcessGet::EndProcessGet()
+EndProcessGetStream::EndProcessGetStream()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void EndProcessGet::InitAsDefaultInstance() {
+void EndProcessGetStream::InitAsDefaultInstance() {
 }
 
-EndProcessGet::EndProcessGet(const EndProcessGet& from)
+EndProcessGetStream::EndProcessGetStream(const EndProcessGetStream& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void EndProcessGet::SharedCtor() {
+void EndProcessGetStream::SharedCtor() {
   _cached_size_ = 0;
   id_ = const_cast< ::std::string*>(&_default_id_);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-EndProcessGet::~EndProcessGet() {
+EndProcessGetStream::~EndProcessGetStream() {
   SharedDtor();
 }
 
-void EndProcessGet::SharedDtor() {
+void EndProcessGetStream::SharedDtor() {
   if (id_ != &_default_id_) {
     delete id_;
   }
@@ -4567,27 +4567,27 @@ void EndProcessGet::SharedDtor() {
   }
 }
 
-void EndProcessGet::SetCachedSize(int size) const {
+void EndProcessGetStream::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* EndProcessGet::descriptor() {
+const ::google::protobuf::Descriptor* EndProcessGetStream::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return EndProcessGet_descriptor_;
+  return EndProcessGetStream_descriptor_;
 }
 
-const EndProcessGet& EndProcessGet::default_instance() {
+const EndProcessGetStream& EndProcessGetStream::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();  return *default_instance_;
 }
 
-EndProcessGet* EndProcessGet::default_instance_ = NULL;
+EndProcessGetStream* EndProcessGetStream::default_instance_ = NULL;
 
-EndProcessGet* EndProcessGet::New() const {
-  return new EndProcessGet;
+EndProcessGetStream* EndProcessGetStream::New() const {
+  return new EndProcessGetStream;
 }
 
-void EndProcessGet::Clear() {
+void EndProcessGetStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (_has_bit(0)) {
       if (id_ != &_default_id_) {
@@ -4599,7 +4599,7 @@ void EndProcessGet::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool EndProcessGet::MergePartialFromCodedStream(
+bool EndProcessGetStream::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -4634,7 +4634,7 @@ bool EndProcessGet::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void EndProcessGet::SerializeWithCachedSizes(
+void EndProcessGetStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
   if (_has_bit(0)) {
@@ -4648,7 +4648,7 @@ void EndProcessGet::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* EndProcessGet::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* EndProcessGetStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
   if (_has_bit(0)) {
@@ -4664,7 +4664,7 @@ void EndProcessGet::SerializeWithCachedSizes(
   return target;
 }
 
-int EndProcessGet::ByteSize() const {
+int EndProcessGetStream::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -4687,10 +4687,10 @@ int EndProcessGet::ByteSize() const {
   return total_size;
 }
 
-void EndProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
+void EndProcessGetStream::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const EndProcessGet* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const EndProcessGet*>(
+  const EndProcessGetStream* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const EndProcessGetStream*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -4699,7 +4699,7 @@ void EndProcessGet::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void EndProcessGet::MergeFrom(const EndProcessGet& from) {
+void EndProcessGetStream::MergeFrom(const EndProcessGetStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from._has_bit(0)) {
@@ -4709,24 +4709,24 @@ void EndProcessGet::MergeFrom(const EndProcessGet& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void EndProcessGet::CopyFrom(const ::google::protobuf::Message& from) {
+void EndProcessGetStream::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void EndProcessGet::CopyFrom(const EndProcessGet& from) {
+void EndProcessGetStream::CopyFrom(const EndProcessGetStream& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool EndProcessGet::IsInitialized() const {
+bool EndProcessGetStream::IsInitialized() const {
   
   return true;
 }
 
-void EndProcessGet::Swap(EndProcessGet* other) {
+void EndProcessGetStream::Swap(EndProcessGetStream* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -4735,11 +4735,11 @@ void EndProcessGet::Swap(EndProcessGet* other) {
   }
 }
 
-::google::protobuf::Metadata EndProcessGet::GetMetadata() const {
+::google::protobuf::Metadata EndProcessGetStream::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = EndProcessGet_descriptor_;
-  metadata.reflection = EndProcessGet_reflection_;
+  metadata.descriptor = EndProcessGetStream_descriptor_;
+  metadata.reflection = EndProcessGetStream_reflection_;
   return metadata;
 }
 
@@ -6992,11 +6992,11 @@ bool GetInvalidOffset::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool BeginProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
+bool BeginProcessGetStream::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool EndProcessGet::add_to_envelope(::zippylog::Envelope *envelope) {
+bool EndProcessGetStream::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 

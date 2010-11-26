@@ -87,12 +87,12 @@ message GetInvalidOffset {
     optional bytes id = 1;
 }
 
-message BeginProcessGet {
+message BeginProcessGetStream {
     // unique identifier of worker
     optional bytes id = 1;
 }
 
-message EndProcessGet {
+message EndProcessGetStream {
     // unique identifier of worker
     optional bytes id = 1;
 }

@@ -27,8 +27,8 @@ namespace zippylog {
         registrar->register_message(1, 93, new ::zippylog::request_processor::ReceiveInvalidGet());
         registrar->register_message(1, 94, new ::zippylog::request_processor::GetInvalidStream());
         registrar->register_message(1, 95, new ::zippylog::request_processor::GetInvalidOffset());
-        registrar->register_message(1, 96, new ::zippylog::request_processor::BeginProcessGet());
-        registrar->register_message(1, 97, new ::zippylog::request_processor::EndProcessGet());
+        registrar->register_message(1, 110, new ::zippylog::request_processor::BeginProcessGetStream());
+        registrar->register_message(1, 111, new ::zippylog::request_processor::EndProcessGetStream());
         registrar->register_message(1, 98, new ::zippylog::request_processor::SendErrorResponse());
         registrar->register_message(1, 99, new ::zippylog::request_processor::ForwardSubscribeKeepalive());
         registrar->register_message(1, 103, new ::zippylog::request_processor::BeginProcessBucketInfo());

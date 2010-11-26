@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/request_processor.proto',
   package='zippylog.request_processor',
-  serialized_pb='\n zippylog/request_processor.proto\x12\x1azippylog.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0f\x42\x65ginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"2\n\x16\x42\x65ginProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"5\n\x19\x42\x65ginProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"3\n\x17\x45ndProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"2\n\x16\x42\x65ginProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t')
+  serialized_pb='\n zippylog/request_processor.proto\x12\x1azippylog.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessGetStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessGetStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"2\n\x16\x42\x65ginProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessBucketInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"5\n\x19\x42\x65ginProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"3\n\x17\x45ndProcessStreamSetInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"2\n\x16\x42\x65ginProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t\"0\n\x14\x45ndProcessStreamInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04path\x18\x02 \x01(\t')
 
 
 
@@ -485,15 +485,15 @@ _GETINVALIDOFFSET = descriptor.Descriptor(
 )
 
 
-_BEGINPROCESSGET = descriptor.Descriptor(
-  name='BeginProcessGet',
-  full_name='zippylog.request_processor.BeginProcessGet',
+_BEGINPROCESSGETSTREAM = descriptor.Descriptor(
+  name='BeginProcessGetStream',
+  full_name='zippylog.request_processor.BeginProcessGetStream',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.request_processor.BeginProcessGet.id', index=0,
+      name='id', full_name='zippylog.request_processor.BeginProcessGetStream.id', index=0,
       number=1, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
@@ -509,19 +509,19 @@ _BEGINPROCESSGET = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=623,
-  serialized_end=652,
+  serialized_end=658,
 )
 
 
-_ENDPROCESSGET = descriptor.Descriptor(
-  name='EndProcessGet',
-  full_name='zippylog.request_processor.EndProcessGet',
+_ENDPROCESSGETSTREAM = descriptor.Descriptor(
+  name='EndProcessGetStream',
+  full_name='zippylog.request_processor.EndProcessGetStream',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.request_processor.EndProcessGet.id', index=0,
+      name='id', full_name='zippylog.request_processor.EndProcessGetStream.id', index=0,
       number=1, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
@@ -536,8 +536,8 @@ _ENDPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=654,
-  serialized_end=681,
+  serialized_start=660,
+  serialized_end=693,
 )
 
 
@@ -571,8 +571,8 @@ _SENDERRORRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=683,
-  serialized_end=731,
+  serialized_start=695,
+  serialized_end=743,
 )
 
 
@@ -606,8 +606,8 @@ _FORWARDSUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=733,
-  serialized_end=794,
+  serialized_start=745,
+  serialized_end=806,
 )
 
 
@@ -641,8 +641,8 @@ _BEGINPROCESSBUCKETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=796,
-  serialized_end=846,
+  serialized_start=808,
+  serialized_end=858,
 )
 
 
@@ -676,8 +676,8 @@ _ENDPROCESSBUCKETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=848,
-  serialized_end=896,
+  serialized_start=860,
+  serialized_end=908,
 )
 
 
@@ -711,8 +711,8 @@ _BEGINPROCESSSTREAMSETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=898,
-  serialized_end=951,
+  serialized_start=910,
+  serialized_end=963,
 )
 
 
@@ -746,8 +746,8 @@ _ENDPROCESSSTREAMSETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=953,
-  serialized_end=1004,
+  serialized_start=965,
+  serialized_end=1016,
 )
 
 
@@ -781,8 +781,8 @@ _BEGINPROCESSSTREAMINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1006,
-  serialized_end=1056,
+  serialized_start=1018,
+  serialized_end=1068,
 )
 
 
@@ -816,8 +816,8 @@ _ENDPROCESSSTREAMINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=1058,
-  serialized_end=1106,
+  serialized_start=1070,
+  serialized_end=1118,
 )
 
 
@@ -950,21 +950,21 @@ class GetInvalidOffset(message.Message):
   ZIPPYLOG_ENUMERATION = 95
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.GetInvalidOffset)
 
-class BeginProcessGet(message.Message):
+class BeginProcessGetStream(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _BEGINPROCESSGET
+  DESCRIPTOR = _BEGINPROCESSGETSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 96
-  # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGet)
+  ZIPPYLOG_ENUMERATION = 110
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGetStream)
 
-class EndProcessGet(message.Message):
+class EndProcessGetStream(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _ENDPROCESSGET
+  DESCRIPTOR = _ENDPROCESSGETSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 97
-  # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGet)
+  ZIPPYLOG_ENUMERATION = 111
+  # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGetStream)
 
 class SendErrorResponse(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -1046,8 +1046,8 @@ register_message(1, 92, 'zippylog.request_processor_pb2', 'EndProcessStoreInfo')
 register_message(1, 93, 'zippylog.request_processor_pb2', 'ReceiveInvalidGet')
 register_message(1, 94, 'zippylog.request_processor_pb2', 'GetInvalidStream')
 register_message(1, 95, 'zippylog.request_processor_pb2', 'GetInvalidOffset')
-register_message(1, 96, 'zippylog.request_processor_pb2', 'BeginProcessGet')
-register_message(1, 97, 'zippylog.request_processor_pb2', 'EndProcessGet')
+register_message(1, 110, 'zippylog.request_processor_pb2', 'BeginProcessGetStream')
+register_message(1, 111, 'zippylog.request_processor_pb2', 'EndProcessGetStream')
 register_message(1, 98, 'zippylog.request_processor_pb2', 'SendErrorResponse')
 register_message(1, 99, 'zippylog.request_processor_pb2', 'ForwardSubscribeKeepalive')
 register_message(1, 103, 'zippylog.request_processor_pb2', 'BeginProcessBucketInfo')
