@@ -134,8 +134,10 @@ protected:
         Envelope response = msgs[0];
         ASSERT_EQ(1, response.MessageCount());
 
-        ASSERT_EQ(protocol::response::Error::zippylog_namespace, response.MessageNamespace(0));
-        ASSERT_EQ(protocol::response::Error::zippylog_enumeration, response.MessageType(0));
+        uint32 expected = protocol::response::Error::zippylog_namespace;
+        ASSERT_EQ(expected, response.MessageNamespace(0));
+        expected = protocol::response::Error::zippylog_enumeration;
+        ASSERT_EQ(expected, response.MessageType(0));
 
         protocol::response::Error *m = (protocol::response::Error *)response.GetMessage(0);
         ASSERT_TRUE(m != NULL);

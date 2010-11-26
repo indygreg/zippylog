@@ -40,6 +40,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
+using ::std::map;
 using ::std::string;
 using ::std::vector;
 
@@ -656,7 +657,7 @@ bool File::WriteLockEntire()
     // POSIX says an errno of EACCESS or EAGAIN means we could not obtain
     // the lock, although it is EAGAIN on most implementations
     if (result == -1) {
-        if (errno == EACCESS || errno == EAGAIN) {
+        if (errno == EACCES || errno == EAGAIN) {
             return false;
         }
 
