@@ -84,6 +84,18 @@ class ZIPPYLOG_EXPORT Store {
         /// is not set, the corresponding string is empty().
         static bool ParsePath(const ::std::string &path, ::std::string &bucket, ::std::string &set, ::std::string &stream);
 
+        /// Parses the bucket name from a path string
+        ///
+        /// If the path contains additional path components, they will be ignored.
+        /// If the path does not contain a bucket, will return false.
+        static bool ParseBucketPath(const ::std::string &path, ::std::string &bucket);
+
+        /// Parses the bucket and stream set names from a path string
+        ///
+        /// If the path contains extra fields, they are ignored.
+        /// If the path does not contain a stream set, returns false.
+        static bool ParseStreamSetPath(const ::std::string &path, ::std::string &bucket, ::std::string &set);
+
         /// Return the store path to a specific bucket
         static ::std::string BucketPath(const ::std::string &bucket);
 
@@ -193,7 +205,10 @@ class ZIPPYLOG_EXPORT Store {
         virtual bool BucketExists(const ::std::string &bucket) = 0;
 
         /// Returns whether a stream set exists
-        virtual bool StreamsetExists(const ::std::string &bucket, const ::std::string &stream_set) = 0;
+        virtual bool StreamSetExists(const ::std::string &bucket, const ::std::string &stream_set) = 0;
+
+        /// Returns whether a stream exists
+        virtual bool StreamExists(const ::std::string &bucket, const ::std::string &stream_set, const ::std::string &stream) = 0;
 
     protected:
         Store() { };
@@ -262,7 +277,8 @@ class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
         bool CreateBucket(const ::std::string &bucket);
         bool CreateStreamset(const ::std::string &bucket, const ::std::string &stream_set);
         bool BucketExists(const ::std::string &bucket);
-        bool StreamsetExists(const ::std::string &bucket, const ::std::string &stream_set);
+        bool StreamSetExists(const ::std::string &bucket, const ::std::string &stream_set);
+        bool StreamExists(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream);
 
     protected:
         ::std::string root_path;

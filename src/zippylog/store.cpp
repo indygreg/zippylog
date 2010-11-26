@@ -157,6 +157,24 @@ bool Store::ParsePath(const string &path, string &bucket, string &set, string &s
     return true;
 }
 
+bool Store::ParseBucketPath(const string &path, string &bucket)
+{
+    string set, stream;
+
+    if (!ParsePath(path, bucket, set, stream)) return false;
+
+    return bucket.length() > 0;
+}
+
+bool Store::ParseStreamSetPath(const string &path, string &bucket, string &set)
+{
+    string stream;
+
+    if (!ParsePath(path, bucket, set, stream)) return false;
+
+    return bucket.length() > 0 && set.length() > 0;
+}
+
 string Store::BucketPath(const string &bucket)
 {
     string s = "/" + bucket;
@@ -513,9 +531,14 @@ bool SimpleDirectoryStore::BucketExists(const string &bucket)
     return platform::PathIsDirectory(this->PathToFilesystemPath(Store::BucketPath(bucket)));
 }
 
-bool SimpleDirectoryStore::StreamsetExists(const string &bucket, const string &set)
+bool SimpleDirectoryStore::StreamSetExists(const string &bucket, const string &set)
 {
     return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamsetPath(bucket, set)));
+}
+
+bool SimpleDirectoryStore::StreamExists(const string &bucket, const string &set, const string &stream)
+{
+    return platform::PathIsDirectory(this->PathToFilesystemPath(Store::StreamPath(bucket, set, stream)));
 }
 
 InputStream * SimpleDirectoryStore::GetInputStream(const string &bucket, const string &stream_set, const string &stream)
@@ -535,7 +558,7 @@ OutputStream * SimpleDirectoryStore::CreateOutputStream(const string &bucket, co
         if (!this->CreateBucket(bucket)) return NULL;
     }
 
-    if (!this->StreamsetExists(bucket, set)) {
+    if (!this->StreamSetExists(bucket, set)) {
         if (!this->CreateStreamset(bucket, set)) return NULL;
     }
 

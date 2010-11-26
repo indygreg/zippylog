@@ -152,13 +152,13 @@ TEST_F(StoreContentsTest, ContentDiscovery)
     EXPECT_STREQ("set0", sets[0].c_str());
     EXPECT_STREQ("set1", sets[1].c_str());
     EXPECT_STREQ("set2", sets[2].c_str());
-    EXPECT_TRUE(store.StreamsetExists("bucketA", "set0"));
+    EXPECT_TRUE(store.StreamSetExists("bucketA", "set0"));
 
     EXPECT_TRUE(store.StreamSetNames("bucketB", sets));
     EXPECT_EQ(4, sets.size());
     sort(sets.begin(), sets.end());
     EXPECT_STREQ("b", sets[0].c_str());
-    EXPECT_TRUE(store.StreamsetExists("bucketB", "b"));
+    EXPECT_TRUE(store.StreamSetExists("bucketB", "b"));
 
     EXPECT_TRUE(store.StreamsetPaths(paths));
     EXPECT_EQ(7, paths.size());
