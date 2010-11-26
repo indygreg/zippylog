@@ -57,11 +57,14 @@ enum ErrorCode {
   LIMIT_EXCEEDED = 12,
   UNKNOWN_MESSAGE_FORMAT_VERSION = 13,
   INVALID_PATH = 14,
-  UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15
+  UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15,
+  EMPTY_MESSAGE = 16,
+  PROTOCOL_NO_ENVELOPE = 17,
+  GENERAL_ERROR_PROCESSING = 18
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = UNSUPPORTED_OPERATION_MESSAGE_VERSION;
+const ErrorCode ErrorCode_MAX = GENERAL_ERROR_PROCESSING;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
