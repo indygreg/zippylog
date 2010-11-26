@@ -338,34 +338,24 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
-  inline bool has_path() const;
-  inline void clear_path();
-  static const int kPathFieldNumber = 1;
-  inline const ::std::string& path() const;
-  inline void set_path(const ::std::string& value);
-  inline void set_path(const char* value);
-  inline void set_path(const char* value, size_t size);
-  inline ::std::string* mutable_path();
-  
-  // optional uint64 offset = 2;
+  // optional uint64 offset = 1;
   inline bool has_offset() const;
   inline void clear_offset();
-  static const int kOffsetFieldNumber = 2;
+  static const int kOffsetFieldNumber = 1;
   inline ::google::protobuf::uint64 offset() const;
   inline void set_offset(::google::protobuf::uint64 value);
   
-  // optional uint32 bytes_sent = 3;
+  // optional uint32 bytes_sent = 2;
   inline bool has_bytes_sent() const;
   inline void clear_bytes_sent();
-  static const int kBytesSentFieldNumber = 3;
+  static const int kBytesSentFieldNumber = 2;
   inline ::google::protobuf::uint32 bytes_sent() const;
   inline void set_bytes_sent(::google::protobuf::uint32 value);
   
-  // optional uint32 envelopes_sent = 4;
+  // optional uint32 envelopes_sent = 3;
   inline bool has_envelopes_sent() const;
   inline void clear_envelopes_sent();
-  static const int kEnvelopesSentFieldNumber = 4;
+  static const int kEnvelopesSentFieldNumber = 3;
   inline ::google::protobuf::uint32 envelopes_sent() const;
   inline void set_envelopes_sent(::google::protobuf::uint32 value);
   
@@ -379,8 +369,6 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   mutable int _cached_size_;
   
-  ::std::string* path_;
-  static const ::std::string _default_path_;
   ::google::protobuf::uint64 offset_;
   ::google::protobuf::uint32 bytes_sent_;
   ::google::protobuf::uint32 envelopes_sent_;
@@ -388,7 +376,7 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
   inline bool _has_bit(int index) const {
@@ -812,93 +800,51 @@ inline void StreamSegmentStart::set_offset(::google::protobuf::uint64 value) {
 
 // StreamSegmentEnd
 
-// optional string path = 1;
-inline bool StreamSegmentEnd::has_path() const {
-  return _has_bit(0);
-}
-inline void StreamSegmentEnd::clear_path() {
-  if (path_ != &_default_path_) {
-    path_->clear();
-  }
-  _clear_bit(0);
-}
-inline const ::std::string& StreamSegmentEnd::path() const {
-  return *path_;
-}
-inline void StreamSegmentEnd::set_path(const ::std::string& value) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(value);
-}
-inline void StreamSegmentEnd::set_path(const char* value) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(value);
-}
-inline void StreamSegmentEnd::set_path(const char* value, size_t size) {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  path_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StreamSegmentEnd::mutable_path() {
-  _set_bit(0);
-  if (path_ == &_default_path_) {
-    path_ = new ::std::string;
-  }
-  return path_;
-}
-
-// optional uint64 offset = 2;
+// optional uint64 offset = 1;
 inline bool StreamSegmentEnd::has_offset() const {
-  return _has_bit(1);
+  return _has_bit(0);
 }
 inline void StreamSegmentEnd::clear_offset() {
   offset_ = GOOGLE_ULONGLONG(0);
-  _clear_bit(1);
+  _clear_bit(0);
 }
 inline ::google::protobuf::uint64 StreamSegmentEnd::offset() const {
   return offset_;
 }
 inline void StreamSegmentEnd::set_offset(::google::protobuf::uint64 value) {
-  _set_bit(1);
+  _set_bit(0);
   offset_ = value;
 }
 
-// optional uint32 bytes_sent = 3;
+// optional uint32 bytes_sent = 2;
 inline bool StreamSegmentEnd::has_bytes_sent() const {
-  return _has_bit(2);
+  return _has_bit(1);
 }
 inline void StreamSegmentEnd::clear_bytes_sent() {
   bytes_sent_ = 0u;
-  _clear_bit(2);
+  _clear_bit(1);
 }
 inline ::google::protobuf::uint32 StreamSegmentEnd::bytes_sent() const {
   return bytes_sent_;
 }
 inline void StreamSegmentEnd::set_bytes_sent(::google::protobuf::uint32 value) {
-  _set_bit(2);
+  _set_bit(1);
   bytes_sent_ = value;
 }
 
-// optional uint32 envelopes_sent = 4;
+// optional uint32 envelopes_sent = 3;
 inline bool StreamSegmentEnd::has_envelopes_sent() const {
-  return _has_bit(3);
+  return _has_bit(2);
 }
 inline void StreamSegmentEnd::clear_envelopes_sent() {
   envelopes_sent_ = 0u;
-  _clear_bit(3);
+  _clear_bit(2);
 }
 inline ::google::protobuf::uint32 StreamSegmentEnd::envelopes_sent() const {
   return envelopes_sent_;
 }
 inline void StreamSegmentEnd::set_envelopes_sent(::google::protobuf::uint32 value) {
-  _set_bit(3);
+  _set_bit(2);
   envelopes_sent_ = value;
 }
 
