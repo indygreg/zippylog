@@ -9,9 +9,9 @@ from zippylog.envelope import register_message
 
 
 DESCRIPTOR = descriptor.FileDescriptor(
-  name='zippylog/device/request_processor.proto',
+  name='zippylog/request_processor.proto',
   package='zippylog.device.request_processor',
-  serialized_pb='\n\'zippylog/device/request_processor.proto\x12!zippylog.device.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0f\x42\x65ginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c')
+  serialized_pb='\n zippylog/request_processor.proto\x12!zippylog.device.request_processor\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07RunStop\x12\n\n\x02id\x18\x02 \x01(\x0c\" \n\x12\x46\x61ilReceiveMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13ReceiveEmptyMessage\x12\n\n\x02id\x18\x01 \x01(\x0c\"4\n\x15UnknownMessageVersion\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07version\x18\x02 \x01(\r\"5\n\x12UnknownRequestType\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x13\n\x0b\x65numeration\x18\x02 \x01(\r\"0\n\x14\x45nvelopeParseFailure\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0c\n\x04\x64\x61ta\x18\x02 \x01(\x0c\"\x1b\n\rEmptyEnvelope\x12\n\n\x02id\x18\x01 \x01(\x0c\"\'\n\x19InvalidMessageEnumeration\x12\n\n\x02id\x18\x01 \x01(\x0c\"#\n\x15\x42\x65ginProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13\x45ndProcessStoreInfo\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1f\n\x11ReceiveInvalidGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidStream\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10GetInvalidOffset\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0f\x42\x65ginProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1b\n\rEndProcessGet\x12\n\n\x02id\x18\x01 \x01(\x0c\"0\n\x11SendErrorResponse\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0f\n\x07message\x18\x02 \x01(\t\"=\n\x19\x46orwardSubscribeKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c')
 
 
 
@@ -39,8 +39,8 @@ _CREATE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=78,
-  serialized_end=98,
+  serialized_start=71,
+  serialized_end=91,
 )
 
 
@@ -67,8 +67,8 @@ _DESTROY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=100,
-  serialized_end=121,
+  serialized_start=93,
+  serialized_end=114,
 )
 
 
@@ -95,8 +95,8 @@ _RUNSTART = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=123,
-  serialized_end=145,
+  serialized_start=116,
+  serialized_end=138,
 )
 
 
@@ -123,8 +123,8 @@ _RUNSTOP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=147,
-  serialized_end=168,
+  serialized_start=140,
+  serialized_end=161,
 )
 
 
@@ -151,8 +151,8 @@ _FAILRECEIVEMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=170,
-  serialized_end=202,
+  serialized_start=163,
+  serialized_end=195,
 )
 
 
@@ -179,8 +179,8 @@ _RECEIVEEMPTYMESSAGE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=204,
-  serialized_end=237,
+  serialized_start=197,
+  serialized_end=230,
 )
 
 
@@ -214,8 +214,8 @@ _UNKNOWNMESSAGEVERSION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=239,
-  serialized_end=291,
+  serialized_start=232,
+  serialized_end=284,
 )
 
 
@@ -249,8 +249,8 @@ _UNKNOWNREQUESTTYPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=293,
-  serialized_end=346,
+  serialized_start=286,
+  serialized_end=339,
 )
 
 
@@ -284,8 +284,8 @@ _ENVELOPEPARSEFAILURE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=348,
-  serialized_end=396,
+  serialized_start=341,
+  serialized_end=389,
 )
 
 
@@ -312,8 +312,8 @@ _EMPTYENVELOPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=398,
-  serialized_end=425,
+  serialized_start=391,
+  serialized_end=418,
 )
 
 
@@ -340,8 +340,8 @@ _INVALIDMESSAGEENUMERATION = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=427,
-  serialized_end=466,
+  serialized_start=420,
+  serialized_end=459,
 )
 
 
@@ -368,8 +368,8 @@ _BEGINPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=468,
-  serialized_end=503,
+  serialized_start=461,
+  serialized_end=496,
 )
 
 
@@ -396,8 +396,8 @@ _ENDPROCESSSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=505,
-  serialized_end=538,
+  serialized_start=498,
+  serialized_end=531,
 )
 
 
@@ -424,8 +424,8 @@ _RECEIVEINVALIDGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=540,
-  serialized_end=571,
+  serialized_start=533,
+  serialized_end=564,
 )
 
 
@@ -452,8 +452,8 @@ _GETINVALIDSTREAM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=573,
-  serialized_end=603,
+  serialized_start=566,
+  serialized_end=596,
 )
 
 
@@ -480,8 +480,8 @@ _GETINVALIDOFFSET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=605,
-  serialized_end=635,
+  serialized_start=598,
+  serialized_end=628,
 )
 
 
@@ -508,8 +508,8 @@ _BEGINPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=637,
-  serialized_end=666,
+  serialized_start=630,
+  serialized_end=659,
 )
 
 
@@ -536,8 +536,8 @@ _ENDPROCESSGET = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=668,
-  serialized_end=695,
+  serialized_start=661,
+  serialized_end=688,
 )
 
 
@@ -571,8 +571,8 @@ _SENDERRORRESPONSE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=697,
-  serialized_end=745,
+  serialized_start=690,
+  serialized_end=738,
 )
 
 
@@ -606,8 +606,8 @@ _FORWARDSUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=747,
-  serialized_end=808,
+  serialized_start=740,
+  serialized_end=801,
 )
 
 
@@ -772,24 +772,24 @@ class ForwardSubscribeKeepalive(message.Message):
   ZIPPYLOG_ENUMERATION = 79
   # @@protoc_insertion_point(class_scope:zippylog.device.request_processor.ForwardSubscribeKeepalive)
 
-register_message(1, 60, 'zippylog.device.request_processor_pb2', 'Create')
-register_message(1, 61, 'zippylog.device.request_processor_pb2', 'Destroy')
-register_message(1, 62, 'zippylog.device.request_processor_pb2', 'RunStart')
-register_message(1, 63, 'zippylog.device.request_processor_pb2', 'RunStop')
-register_message(1, 64, 'zippylog.device.request_processor_pb2', 'FailReceiveMessage')
-register_message(1, 65, 'zippylog.device.request_processor_pb2', 'ReceiveEmptyMessage')
-register_message(1, 66, 'zippylog.device.request_processor_pb2', 'UnknownMessageVersion')
-register_message(1, 67, 'zippylog.device.request_processor_pb2', 'UnknownRequestType')
-register_message(1, 68, 'zippylog.device.request_processor_pb2', 'EnvelopeParseFailure')
-register_message(1, 69, 'zippylog.device.request_processor_pb2', 'EmptyEnvelope')
-register_message(1, 70, 'zippylog.device.request_processor_pb2', 'InvalidMessageEnumeration')
-register_message(1, 71, 'zippylog.device.request_processor_pb2', 'BeginProcessStoreInfo')
-register_message(1, 72, 'zippylog.device.request_processor_pb2', 'EndProcessStoreInfo')
-register_message(1, 73, 'zippylog.device.request_processor_pb2', 'ReceiveInvalidGet')
-register_message(1, 74, 'zippylog.device.request_processor_pb2', 'GetInvalidStream')
-register_message(1, 75, 'zippylog.device.request_processor_pb2', 'GetInvalidOffset')
-register_message(1, 76, 'zippylog.device.request_processor_pb2', 'BeginProcessGet')
-register_message(1, 77, 'zippylog.device.request_processor_pb2', 'EndProcessGet')
-register_message(1, 78, 'zippylog.device.request_processor_pb2', 'SendErrorResponse')
-register_message(1, 79, 'zippylog.device.request_processor_pb2', 'ForwardSubscribeKeepalive')
+register_message(1, 60, 'zippylog.request_processor_pb2', 'Create')
+register_message(1, 61, 'zippylog.request_processor_pb2', 'Destroy')
+register_message(1, 62, 'zippylog.request_processor_pb2', 'RunStart')
+register_message(1, 63, 'zippylog.request_processor_pb2', 'RunStop')
+register_message(1, 64, 'zippylog.request_processor_pb2', 'FailReceiveMessage')
+register_message(1, 65, 'zippylog.request_processor_pb2', 'ReceiveEmptyMessage')
+register_message(1, 66, 'zippylog.request_processor_pb2', 'UnknownMessageVersion')
+register_message(1, 67, 'zippylog.request_processor_pb2', 'UnknownRequestType')
+register_message(1, 68, 'zippylog.request_processor_pb2', 'EnvelopeParseFailure')
+register_message(1, 69, 'zippylog.request_processor_pb2', 'EmptyEnvelope')
+register_message(1, 70, 'zippylog.request_processor_pb2', 'InvalidMessageEnumeration')
+register_message(1, 71, 'zippylog.request_processor_pb2', 'BeginProcessStoreInfo')
+register_message(1, 72, 'zippylog.request_processor_pb2', 'EndProcessStoreInfo')
+register_message(1, 73, 'zippylog.request_processor_pb2', 'ReceiveInvalidGet')
+register_message(1, 74, 'zippylog.request_processor_pb2', 'GetInvalidStream')
+register_message(1, 75, 'zippylog.request_processor_pb2', 'GetInvalidOffset')
+register_message(1, 76, 'zippylog.request_processor_pb2', 'BeginProcessGet')
+register_message(1, 77, 'zippylog.request_processor_pb2', 'EndProcessGet')
+register_message(1, 78, 'zippylog.request_processor_pb2', 'SendErrorResponse')
+register_message(1, 79, 'zippylog.request_processor_pb2', 'ForwardSubscribeKeepalive')
 # @@protoc_insertion_point(module_scope)

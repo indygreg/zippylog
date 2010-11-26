@@ -11,6 +11,26 @@ namespace zippylog {
     {
         ::zippylog::MessageRegistrar *registrar = ::zippylog::MessageRegistrar::instance();
 
+        registrar->register_message(1, 60, new ::zippylog::device::request_processor::Create());
+        registrar->register_message(1, 61, new ::zippylog::device::request_processor::Destroy());
+        registrar->register_message(1, 62, new ::zippylog::device::request_processor::RunStart());
+        registrar->register_message(1, 63, new ::zippylog::device::request_processor::RunStop());
+        registrar->register_message(1, 64, new ::zippylog::device::request_processor::FailReceiveMessage());
+        registrar->register_message(1, 65, new ::zippylog::device::request_processor::ReceiveEmptyMessage());
+        registrar->register_message(1, 66, new ::zippylog::device::request_processor::UnknownMessageVersion());
+        registrar->register_message(1, 67, new ::zippylog::device::request_processor::UnknownRequestType());
+        registrar->register_message(1, 68, new ::zippylog::device::request_processor::EnvelopeParseFailure());
+        registrar->register_message(1, 69, new ::zippylog::device::request_processor::EmptyEnvelope());
+        registrar->register_message(1, 70, new ::zippylog::device::request_processor::InvalidMessageEnumeration());
+        registrar->register_message(1, 71, new ::zippylog::device::request_processor::BeginProcessStoreInfo());
+        registrar->register_message(1, 72, new ::zippylog::device::request_processor::EndProcessStoreInfo());
+        registrar->register_message(1, 73, new ::zippylog::device::request_processor::ReceiveInvalidGet());
+        registrar->register_message(1, 74, new ::zippylog::device::request_processor::GetInvalidStream());
+        registrar->register_message(1, 75, new ::zippylog::device::request_processor::GetInvalidOffset());
+        registrar->register_message(1, 76, new ::zippylog::device::request_processor::BeginProcessGet());
+        registrar->register_message(1, 77, new ::zippylog::device::request_processor::EndProcessGet());
+        registrar->register_message(1, 78, new ::zippylog::device::request_processor::SendErrorResponse());
+        registrar->register_message(1, 79, new ::zippylog::device::request_processor::ForwardSubscribeKeepalive());
         registrar->register_message(1, 1, new ::zippylog::protocol::StreamInfo());
         registrar->register_message(1, 2, new ::zippylog::protocol::StreamSetInfo());
         registrar->register_message(1, 3, new ::zippylog::protocol::BucketInfo());
@@ -50,26 +70,6 @@ namespace zippylog {
         registrar->register_message(1, 54, new ::zippylog::protocol::request::SubscribeEnvelopes());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());
         registrar->register_message(1, 25, new ::zippylog::protocol::request::SubscribeCancel());
-        registrar->register_message(1, 60, new ::zippylog::device::request_processor::Create());
-        registrar->register_message(1, 61, new ::zippylog::device::request_processor::Destroy());
-        registrar->register_message(1, 62, new ::zippylog::device::request_processor::RunStart());
-        registrar->register_message(1, 63, new ::zippylog::device::request_processor::RunStop());
-        registrar->register_message(1, 64, new ::zippylog::device::request_processor::FailReceiveMessage());
-        registrar->register_message(1, 65, new ::zippylog::device::request_processor::ReceiveEmptyMessage());
-        registrar->register_message(1, 66, new ::zippylog::device::request_processor::UnknownMessageVersion());
-        registrar->register_message(1, 67, new ::zippylog::device::request_processor::UnknownRequestType());
-        registrar->register_message(1, 68, new ::zippylog::device::request_processor::EnvelopeParseFailure());
-        registrar->register_message(1, 69, new ::zippylog::device::request_processor::EmptyEnvelope());
-        registrar->register_message(1, 70, new ::zippylog::device::request_processor::InvalidMessageEnumeration());
-        registrar->register_message(1, 71, new ::zippylog::device::request_processor::BeginProcessStoreInfo());
-        registrar->register_message(1, 72, new ::zippylog::device::request_processor::EndProcessStoreInfo());
-        registrar->register_message(1, 73, new ::zippylog::device::request_processor::ReceiveInvalidGet());
-        registrar->register_message(1, 74, new ::zippylog::device::request_processor::GetInvalidStream());
-        registrar->register_message(1, 75, new ::zippylog::device::request_processor::GetInvalidOffset());
-        registrar->register_message(1, 76, new ::zippylog::device::request_processor::BeginProcessGet());
-        registrar->register_message(1, 77, new ::zippylog::device::request_processor::EndProcessGet());
-        registrar->register_message(1, 78, new ::zippylog::device::request_processor::SendErrorResponse());
-        registrar->register_message(1, 79, new ::zippylog::device::request_processor::ForwardSubscribeKeepalive());
         // @@protoc_insertion_point(message_registration)
     }
 }
