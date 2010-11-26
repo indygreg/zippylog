@@ -21,8 +21,8 @@ message GetStoreInfo {
 message GetBucketInfo {
     optional uint32 version = 1 [default=1];
     
-    // bucket whose information to obtain
-    optional string bucket = 2;
+    // path to bucket whose info to obtain
+    optional string path = 2;
 }
 
 message GetStreamSetInfo {
