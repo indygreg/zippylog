@@ -60,6 +60,8 @@ ZIPPYLOG_EXPORT void initialize_library();
 // in leaked memory.
 ZIPPYLOG_EXPORT void shutdown_library();
 
+static const uint32 message_namespace = 1;
+
 } // namespace
 
 #endif
