@@ -17,6 +17,7 @@
 
 #include <zippylog/zippylog.hpp>
 #include <zippylog/store.hpp>
+#include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
 
 #include <zmq.hpp>
@@ -120,7 +121,11 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Process a StoreInfo request and populate the passed envelope with the response
         ///
         /// This function is typically called only by ProcessRequest()
-        ResponseStatus ProcessStoreInfo(Envelope &response);
+        ResponseStatus ProcessStoreInfo(Envelope &request, ::std::vector<Envelope> &output);
+
+        ResponseStatus ProcessBucketInfo(Envelope &request, ::std::vector<Envelope> &output);
+        ResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &outpute);
+        ResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a Get request
         ResponseStatus ProcessGet(Envelope &request, ::std::vector<Envelope> &output);
@@ -130,6 +135,23 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
 
         ResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Checks that a path supplied by the client is valid
+        ///
+        /// Returns false if:
+        ///
+        ///  - the path is not a valid path
+        ///  - the require_ values are true and that path component doesn't
+        ///    exist in the path or on the store
+        ///
+        /// If the path does not validate, an error response is added to the
+        /// output messages with an appropriate description of the failure.
+        bool CheckPath(const ::std::string &path, ::std::vector<Envelope> &output, bool require_bucket = false, bool require_set = false, bool require_stream = false);
+
+        /// Checks that the version in a message is THE version we support
+        ///
+        /// If it isn't, an error response is added to the output messages.
+        bool CheckMessageVersion(uint32 seen_version, uint32 supported_version, ::std::vector<Envelope> &output);
 
         bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, ::std::string message, ::std::vector<Envelope> &msgs);
 

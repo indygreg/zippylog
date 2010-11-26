@@ -166,7 +166,7 @@ void RequestProcessor::Run()
         // we expect to see data after the version byte. if we don't, something
         // is wrong
         if (msgs[0]->size() < 2) {
-            // TODO more graceful handling
+            throw "TODO handle too small message in request processor";
             continue;
         }
 
@@ -184,7 +184,7 @@ void RequestProcessor::Run()
             ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
             LOG_MESSAGE(log, this->logger_sock);
 
-            // TODO more graceful handling
+            throw "TODO handle envelope parse exception in request processor";
             continue;
         }
 
@@ -253,7 +253,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     }
 
     /* must be in the zippylog namespace */
-    if (request_envelope.envelope.message_namespace(0) != 1) {
+    if (request_envelope.envelope.message_namespace(0) != ::zippylog::message_namespace) {
         ::zippylog::request_processor::InvalidMessageEnumeration log = ::zippylog::request_processor::InvalidMessageEnumeration();
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -269,13 +269,20 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     request_type = request_envelope.envelope.message_type(0);
     switch (request_type) {
         case protocol::request::GetStoreInfo::zippylog_enumeration:
-        {
-            Envelope response;
-            this->ProcessStoreInfo(response);
-            output.push_back(response);
-            result = AUTHORITATIVE;
+            result = this->ProcessStoreInfo(request_envelope, output);
             break;
-        }
+
+        case protocol::request::GetBucketInfo::zippylog_enumeration:
+            result = this->ProcessBucketInfo(request_envelope, output);
+            break;
+
+        case protocol::request::GetStreamSetInfo::zippylog_enumeration:
+            result = this->ProcessStreamSetInfo(request_envelope, output);
+            break;
+
+        case protocol::request::GetStreamInfo::zippylog_enumeration:
+            result = this->ProcessStreamInfo(request_envelope, output);
+            break;
 
         case protocol::request::Get::zippylog_enumeration:
             result = this->ProcessGet(request_envelope, output);
@@ -325,15 +332,103 @@ SEND_RESPONSE:
     return result;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e)
+RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e, vector<Envelope> &output)
 {
     ::zippylog::request_processor::BeginProcessStoreInfo logstart = ::zippylog::request_processor::BeginProcessStoreInfo();
     LOG_MESSAGE(logstart, this->logger_sock);
+
+    protocol::request::GetStoreInfo *m = (protocol::request::GetStoreInfo *)e.GetMessage(0);
+    if (!m) {
+        throw "TODO handle error parsing GetStoreInfo request message";
+    }
+
+    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
 
     protocol::StoreInfo info = protocol::StoreInfo();
     this->store->StoreInfo(info);
 
     ::zippylog::request_processor::EndProcessStoreInfo logend = ::zippylog::request_processor::EndProcessStoreInfo();
+    LOG_MESSAGE(logend, this->logger_sock);
+
+    Envelope out;
+    info.add_to_envelope(&out);
+    output.push_back(out);
+    return AUTHORITATIVE;
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e, vector<Envelope> &output)
+{
+    ::zippylog::request_processor::BeginProcessBucketInfo logstart = ::zippylog::request_processor::BeginProcessBucketInfo();
+    LOG_MESSAGE(logstart, this->logger_sock);
+
+    protocol::request::GetBucketInfo *m = (protocol::request::GetBucketInfo *)e.GetMessage(0);
+    if (!m) {
+        throw "TODO handle error parsing GetBucketInfo request message";
+    }
+
+    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+
+    if (!this->CheckPath(m->path(), output, true)) return AUTHORITATIVE;
+
+    protocol::BucketInfo info = protocol::BucketInfo();
+    string bucket;
+    Store::ParseBucketPath(m->path(), bucket);
+    this->store->BucketInfo(bucket, info);
+
+    ::zippylog::request_processor::EndProcessBucketInfo logend = ::zippylog::request_processor::EndProcessBucketInfo();
+    LOG_MESSAGE(logend, this->logger_sock);
+
+    info.add_to_envelope(&e);
+    return AUTHORITATIVE;
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope &e, vector<Envelope> &output)
+{
+    ::zippylog::request_processor::BeginProcessStreamSetInfo logstart = ::zippylog::request_processor::BeginProcessStreamSetInfo();
+    LOG_MESSAGE(logstart, this->logger_sock);
+
+    protocol::request::GetStreamSetInfo *m = (protocol::request::GetStreamSetInfo *)e.GetMessage(0);
+    if (!m) {
+        throw "TODO handle error parsing GetStreamSetInfo request message";
+    }
+
+    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+
+    if (!this->CheckPath(m->path(), output, true, true)) return AUTHORITATIVE;
+
+    string bucket, set;
+    Store::ParseStreamSetPath(m->path(), bucket, set);
+
+    protocol::StreamSetInfo info = protocol::StreamSetInfo();
+    this->store->StreamsetInfo(bucket, set, info);
+
+    ::zippylog::request_processor::EndProcessStreamSetInfo logend = ::zippylog::request_processor::EndProcessStreamSetInfo();
+    LOG_MESSAGE(logend, this->logger_sock);
+
+    info.add_to_envelope(&e);
+    return AUTHORITATIVE;
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e, vector<Envelope> &output)
+{
+    ::zippylog::request_processor::BeginProcessStreamInfo logstart = ::zippylog::request_processor::BeginProcessStreamInfo();
+    LOG_MESSAGE(logstart, this->logger_sock);
+
+    protocol::request::GetStreamInfo *m = (protocol::request::GetStreamInfo *)e.GetMessage(0);
+    if (!m) {
+        throw "TODO handle error parsing GetStreamSetInfo request message";
+    }
+
+    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+    if (!this->CheckPath(m->path(), output, true, true, true)) return AUTHORITATIVE;
+
+    string bucket, set, stream;
+    Store::ParsePath(m->path(), bucket, set, stream);
+
+    protocol::StreamInfo info = protocol::StreamInfo();
+    this->store->StreamInfo(bucket, set, stream, info);
+
+    ::zippylog::request_processor::EndProcessStreamInfo logend = ::zippylog::request_processor::EndProcessStreamInfo();
     LOG_MESSAGE(logend, this->logger_sock);
 
     info.add_to_envelope(&e);
@@ -524,6 +619,90 @@ bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code,
     Envelope response = zippylog::Envelope();
     error.add_to_envelope(&response);
     msgs.push_back(response);
+
+    return true;
+}
+
+bool RequestProcessor::CheckPath(const string &path, vector<Envelope> &output, bool require_bucket, bool require_set, bool require_stream)
+{
+    string bucket, set, stream;
+
+    if (!Store::ParsePath(path, bucket, set, stream)) {
+        this->PopulateErrorResponse(
+            protocol::response::INVALID_PATH,
+            "supplied path does not parse",
+            output
+        );
+        return false;
+    }
+
+    if (require_bucket && !bucket.length()) {
+        this->PopulateErrorResponse(
+            protocol::response::INVALID_PATH,
+            "path does not contain a bucket component",
+            output
+        );
+        return false;
+    }
+
+    if (require_set && !set.length()) {
+        this->PopulateErrorResponse(
+            protocol::response::INVALID_PATH,
+            "path does not contain a stream set component",
+            output
+        );
+        return false;
+    }
+
+    if (require_stream && !stream.length()) {
+        this->PopulateErrorResponse(
+            protocol::response::INVALID_PATH,
+            "path does not contain a stream component",
+            output
+        );
+        return false;
+    }
+
+    if (require_bucket && !this->store->BucketExists(bucket)) {
+        this->PopulateErrorResponse(
+            protocol::response::PATH_NOT_FOUND,
+            "bucket does not exist",
+            output
+        );
+        return false;
+    }
+
+    if (require_set && !this->store->StreamSetExists(bucket, set)) {
+        this->PopulateErrorResponse(
+            protocol::response::PATH_NOT_FOUND,
+            "stream set does not exist",
+            output
+        );
+        return false;
+    }
+
+    if (require_stream && !this->store->StreamExists(bucket, set, stream)) {
+        this->PopulateErrorResponse(
+            protocol::response::PATH_NOT_FOUND,
+            "stream does not exist",
+            output
+        );
+        return false;
+    }
+
+    return true;
+}
+
+bool RequestProcessor::CheckMessageVersion(uint32 seen_version, uint32 supported_version, ::std::vector<Envelope> &output)
+{
+    if (seen_version != supported_version) {
+        this->PopulateErrorResponse(
+            protocol::response::UNSUPPORTED_OPERATION_MESSAGE_VERSION,
+            "the version of the message operation is not supported by the server",
+            output
+        );
+        return false;
+    }
 
     return true;
 }

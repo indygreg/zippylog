@@ -114,7 +114,7 @@ protected:
 
 TEST_F(RequestProcessorTest, StoreInfo)
 {
-    protocol::request::StoreInfo m;
+    protocol::request::GetStoreInfo m;
     Envelope e;
     m.add_to_envelope(&e);
 
