@@ -35,6 +35,7 @@ void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
 void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
 
+class FeatureSpecification;
 class StreamSegmentStart;
 class StreamSegmentEnd;
 class SubscribeAck;
@@ -53,11 +54,12 @@ enum ErrorCode {
   INVALID_STREAM_OFFSET = 9,
   INVALID_OFFSET = 10,
   PATH_NOT_FOUND = 11,
-  LIMIT_EXCEEDED = 12
+  LIMIT_EXCEEDED = 12,
+  UNKNOWN_MESSAGE_FORMAT_VERSION = 13
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = LIMIT_EXCEEDED;
+const ErrorCode ErrorCode_MAX = UNKNOWN_MESSAGE_FORMAT_VERSION;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
@@ -71,6 +73,103 @@ inline bool ErrorCode_Parse(
     ErrorCode_descriptor(), name, value);
 }
 // ===================================================================
+
+class FeatureSpecification : public ::google::protobuf::Message {
+ public:
+  FeatureSpecification();
+  virtual ~FeatureSpecification();
+  
+  FeatureSpecification(const FeatureSpecification& from);
+  
+  inline FeatureSpecification& operator=(const FeatureSpecification& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FeatureSpecification& default_instance();
+  
+  void Swap(FeatureSpecification* other);
+  
+  // implements Message ----------------------------------------------
+  
+  FeatureSpecification* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const FeatureSpecification& from);
+  void MergeFrom(const FeatureSpecification& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated uint32 supported_message_version = 1;
+  inline int supported_message_version_size() const;
+  inline void clear_supported_message_version();
+  static const int kSupportedMessageVersionFieldNumber = 1;
+  inline ::google::protobuf::uint32 supported_message_version(int index) const;
+  inline void set_supported_message_version(int index, ::google::protobuf::uint32 value);
+  inline void add_supported_message_version(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      supported_message_version() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_supported_message_version();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 55;
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.FeatureSpecification)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > supported_message_version_;
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static FeatureSpecification* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class StreamSegmentStart : public ::google::protobuf::Message {
  public:
@@ -602,6 +701,35 @@ class Error : public ::google::protobuf::Message {
 
 
 // ===================================================================
+
+// FeatureSpecification
+
+// repeated uint32 supported_message_version = 1;
+inline int FeatureSpecification::supported_message_version_size() const {
+  return supported_message_version_.size();
+}
+inline void FeatureSpecification::clear_supported_message_version() {
+  supported_message_version_.Clear();
+}
+inline ::google::protobuf::uint32 FeatureSpecification::supported_message_version(int index) const {
+  return supported_message_version_.Get(index);
+}
+inline void FeatureSpecification::set_supported_message_version(int index, ::google::protobuf::uint32 value) {
+  supported_message_version_.Set(index, value);
+}
+inline void FeatureSpecification::add_supported_message_version(::google::protobuf::uint32 value) {
+  supported_message_version_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+FeatureSpecification::supported_message_version() const {
+  return supported_message_version_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+FeatureSpecification::mutable_supported_message_version() {
+  return &supported_message_version_;
+}
+
+// -------------------------------------------------------------------
 
 // StreamSegmentStart
 

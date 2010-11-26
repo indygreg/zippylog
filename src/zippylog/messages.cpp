@@ -52,13 +52,17 @@ namespace zippylog {
         registrar->register_message(1, 44, new ::zippylog::zippylogd::StreamerErrorRenewingSubscription());
         registrar->register_message(1, 51, new ::zippylog::zippylogd::StoreWatcherStartup());
         registrar->register_message(1, 52, new ::zippylog::zippylogd::StoreWatcherShutdown());
+        registrar->register_message(1, 55, new ::zippylog::protocol::response::FeatureSpecification());
         registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
         registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
         registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());
         registrar->register_message(1, 26, new ::zippylog::protocol::response::SubscriptionStart());
         registrar->register_message(1, 9, new ::zippylog::protocol::response::Error());
-        registrar->register_message(1, 10, new ::zippylog::protocol::request::StoreInfo());
+        registrar->register_message(1, 56, new ::zippylog::protocol::request::GetFeatures());
+        registrar->register_message(1, 57, new ::zippylog::protocol::request::GetStoreInfo());
         registrar->register_message(1, 11, new ::zippylog::protocol::request::Get());
+        registrar->register_message(1, 58, new ::zippylog::protocol::request::WriteEnvelope());
+        registrar->register_message(1, 59, new ::zippylog::protocol::request::WriteEnvelopeWithMessages());
         registrar->register_message(1, 22, new ::zippylog::protocol::request::SubscribeStoreChanges());
         registrar->register_message(1, 54, new ::zippylog::protocol::request::SubscribeEnvelopes());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());

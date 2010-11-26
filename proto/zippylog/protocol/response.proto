@@ -2,6 +2,12 @@
 
 package zippylog.protocol.response;
 
+// describes features a server supports
+message FeatureSpecification {
+    // list of message versions the server can read
+    repeated uint32 supported_message_version = 1;
+}
+
 // when a stream segment is downloaded, this will be the first message
 // sent by the server. it tells the client what it is receiving
 message StreamSegmentStart {
@@ -90,4 +96,8 @@ enum ErrorCode {
 
     // some type of limit of exceeded
     LIMIT_EXCEEDED = 12;
+    
+    // the protocol version number in the 0MQ message (the first byte) is
+    // not known to the server
+    UNKNOWN_MESSAGE_FORMAT_VERSION = 13;
 }

@@ -9,39 +9,43 @@ package zippylog.message;
 // each instance contains common metadata and 1 or more domain-specific
 // messages
 message Envelope {
+    // envelope version
+    // currently, only version 1 is defined
+    optional uint32 version = 1 [default=1];
+
     // list of protocol buffer serialized messages
-    repeated bytes message = 1;
+    repeated bytes message = 2;
 
     // describe the embedded messages' types
     // if there are N messages, there will be N entries in message_types
     // message_namespaces is optional. if present, will have same number of
     // elements as messages
-    repeated uint32 message_namespace = 2 [packed=true];
-    repeated uint32 message_type = 3 [packed=true];
+    repeated uint32 message_namespace = 3 [packed=true];
+    repeated uint32 message_type = 4 [packed=true];
 
     // time envelope was created, in microseconds since UNIX epoch
-    optional uint64 create_time = 4;
+    optional uint64 create_time = 5;
 
     // list of values that are intended to correlate envelopes
     // the data encoded and order is defined however you want
-    repeated bytes tag = 5;
+    repeated bytes tag = 6;
 
     // metadata deposited by actors that touched this envelope
     // as actors touch the envelope, they may append to this list
     // not all actors may update this field
-    repeated ActorInfo actor = 6;
+    repeated ActorInfo actor = 7;
 
     // numeric value associated with envelope
     // there are a number of applications for this field:
     //   - for logging, value could be associated with a log level (DEBUG, INFO, etc)
     //   - a numeric priority
     //   - recording a single numeric value (instead of adding a message)
-    optional uint64 numeric_value = 7;
+    optional uint64 numeric_value = 8;
 
     // string value of the envelope
     // some may wish to store string content instead of embedded messages
     // this field allows that functionality
-    optional string string_value = 8;
+    optional string string_value = 9;
 }
 
 // metadata describing agents that touched a message

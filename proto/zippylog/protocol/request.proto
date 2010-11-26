@@ -1,9 +1,22 @@
 // this file describes protocol buffer messages sent by the client when
-// communicating with a zippylog server
+// communicating with a remote server agent
+//
+// Messages should have names of actions/verbs which describe the operation
+// being performed.
+
 package zippylog.protocol.request;
 
-// requesting status of the zippylog server's store
-message StoreInfo { }
+// requests the server to return a message that describes features (versions,
+// operations, capabilities, etc) it supports
+message GetFeatures {}
+
+// Obtains information about the store to which the server is bound.
+//
+// Currently, servers can only be bound to one store, so we have no
+// parameters.
+message GetStoreInfo {
+    optional uint32 version = 1 [default=1];
+}
 
 // request to download part of a stream
 message Get {
@@ -20,6 +33,32 @@ message Get {
     optional uint32 max_response_bytes = 3;
 
     // TODO support max events
+}
+
+// writes 1 or more already serialized envelopes to the store
+message WriteEnvelope {
+    // the version of this message the client is sending
+    optional uint32 version = 1 [default=1];
+
+    // store path to write to. must be stream set or stream
+    optional string path = 2;
+
+    // list of serialized envelopes to write
+    repeated bytes envelope = 3;
+}
+
+// writes an envelope from messages
+message WriteEnvelopeWithMessages {
+    // store path to write to. must be stream set or stream
+    optional string path = 1;
+
+    // list of serialized protocol buffer messages to write to a single
+    // envelope
+    repeated bytes message = 2;
+
+    // enumerations for protocol buffer messages
+    repeated uint32 message_namespace = 3 [packed=true];
+    repeated uint32 message_type = 4 [packed=true];
 }
 
 // subscribes the client to store changes
@@ -41,7 +80,7 @@ message SubscribeEnvelopes {
     repeated string path = 1;
 
     // TODO add filtering
-    
+
     // Lua code that defines functionality to be executed on the server
     optional string lua_code = 2;
 }
