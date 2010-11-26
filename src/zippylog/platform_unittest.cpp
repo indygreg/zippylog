@@ -17,6 +17,8 @@
 #include <gtest/gtest.h>
 
 using namespace ::zippylog::platform;
+using ::std::string;
+using ::zippylog::platform::UUID;
 
 TEST(TimerTest, CreateTimers)
 {
@@ -85,4 +87,29 @@ TEST(TimeTest, TimeConversion)
     EXPECT_EQ(30, t.sec);
     EXPECT_EQ(43, t.yday);
     EXPECT_EQ(5, t.wday);
+}
+
+TEST(UUIDTest, CreateUUID)
+{
+    UUID u1;
+    memset(&u1, 0, sizeof(u1));
+    ASSERT_NO_THROW(ASSERT_TRUE(CreateUUID(u1)));
+    bool have_data = false;
+    for (size_t i = 0; i < sizeof(u1); i++) {
+        if (u1.data[i] > 0) {
+            have_data = true;
+            break;
+        }
+    }
+    ASSERT_TRUE(have_data);
+}
+
+TEST(UUIDTest, FormatUUID)
+{
+    UUID u1;
+    memset(&u1, 64, sizeof(u1));
+    string f1;
+    ASSERT_NO_THROW(ASSERT_TRUE(FormatUUID(u1, f1)));
+    ASSERT_EQ(36, f1.length());
+    ASSERT_TRUE("40404040-4040-4040-4040-404040404040" == f1);
 }
