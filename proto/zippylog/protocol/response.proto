@@ -19,16 +19,14 @@ message StreamSegmentStart {
 // the client should use the seen offsets to record which part of the stream(s)
 // it has received and repeat requests, if necessary
 message StreamSegmentEnd {
-    optional string path = 1;
-
     // offset at which next event begins
-    optional uint64 offset = 2;
+    optional uint64 offset = 1;
 
     // total bytes sent in the segment
-    optional uint32 bytes_sent = 3;
+    optional uint32 bytes_sent = 2;
 
     // total envelopes from stream sent
-    optional uint32 envelopes_sent = 4;
+    optional uint32 envelopes_sent = 3;
 
     // TODO record offset ranges that were skipped, possibly why
 }

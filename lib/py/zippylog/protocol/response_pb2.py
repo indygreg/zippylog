@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/response.proto',
   package='zippylog.protocol.response',
-  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"9\n\x14\x46\x65\x61tureSpecification\x12!\n\x19supported_message_version\x18\x01 \x03(\r\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"\\\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\x12\x12\n\nbytes_sent\x18\x03 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x04 \x01(\r\"\'\n\x0cSubscribeAck\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03ttl\x18\x02 \x01(\r\"\x1f\n\x11SubscriptionStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
+  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"9\n\x14\x46\x65\x61tureSpecification\x12!\n\x19supported_message_version\x18\x01 \x03(\r\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"N\n\x10StreamSegmentEnd\x12\x0e\n\x06offset\x18\x01 \x01(\x04\x12\x12\n\nbytes_sent\x18\x02 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x01(\r\"\'\n\x0cSubscribeAck\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03ttl\x18\x02 \x01(\r\"\x1f\n\x11SubscriptionStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -94,8 +94,8 @@ _ERRORCODE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=419,
-  serialized_end=895,
+  serialized_start=405,
+  serialized_end=881,
 )
 
 
@@ -191,29 +191,22 @@ _STREAMSEGMENTEND = descriptor.Descriptor(
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='zippylog.protocol.response.StreamSegmentEnd.path', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=unicode("", "utf-8"),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='offset', full_name='zippylog.protocol.response.StreamSegmentEnd.offset', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='offset', full_name='zippylog.protocol.response.StreamSegmentEnd.offset', index=0,
+      number=1, type=4, cpp_type=4, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='bytes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.bytes_sent', index=2,
+      name='bytes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.bytes_sent', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='envelopes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.envelopes_sent', index=2,
       number=3, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='envelopes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.envelopes_sent', index=3,
-      number=4, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -228,7 +221,7 @@ _STREAMSEGMENTEND = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=175,
-  serialized_end=267,
+  serialized_end=253,
 )
 
 
@@ -262,8 +255,8 @@ _SUBSCRIBEACK = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=269,
-  serialized_end=308,
+  serialized_start=255,
+  serialized_end=294,
 )
 
 
@@ -290,8 +283,8 @@ _SUBSCRIPTIONSTART = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=310,
-  serialized_end=341,
+  serialized_start=296,
+  serialized_end=327,
 )
 
 
@@ -325,8 +318,8 @@ _ERROR = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=343,
-  serialized_end=416,
+  serialized_start=329,
+  serialized_end=402,
 )
 
 
