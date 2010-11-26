@@ -45,6 +45,7 @@ class UnknownRequestType;
 class EnvelopeParseFailure;
 class EmptyEnvelope;
 class InvalidMessageEnumeration;
+class EnvelopeEmbeddedMessageParseFailure;
 class BeginProcessStoreInfo;
 class EndProcessStoreInfo;
 class ReceiveInvalidGet;
@@ -1168,6 +1169,104 @@ class InvalidMessageEnumeration : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static InvalidMessageEnumeration* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class EnvelopeEmbeddedMessageParseFailure : public ::google::protobuf::Message {
+ public:
+  EnvelopeEmbeddedMessageParseFailure();
+  virtual ~EnvelopeEmbeddedMessageParseFailure();
+  
+  EnvelopeEmbeddedMessageParseFailure(const EnvelopeEmbeddedMessageParseFailure& from);
+  
+  inline EnvelopeEmbeddedMessageParseFailure& operator=(const EnvelopeEmbeddedMessageParseFailure& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const EnvelopeEmbeddedMessageParseFailure& default_instance();
+  
+  void Swap(EnvelopeEmbeddedMessageParseFailure* other);
+  
+  // implements Message ----------------------------------------------
+  
+  EnvelopeEmbeddedMessageParseFailure* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const EnvelopeEmbeddedMessageParseFailure& from);
+  void MergeFrom(const EnvelopeEmbeddedMessageParseFailure& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // optional bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 117;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.request_processor.EnvelopeEmbeddedMessageParseFailure)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  ::std::string* id_;
+  static const ::std::string _default_id_;
+  friend void  protobuf_AddDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2frequest_5fprocessor_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2frequest_5fprocessor_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static EnvelopeEmbeddedMessageParseFailure* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3507,6 +3606,52 @@ inline void InvalidMessageEnumeration::set_id(const void* value, size_t size) {
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
 inline ::std::string* InvalidMessageEnumeration::mutable_id() {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+
+// -------------------------------------------------------------------
+
+// EnvelopeEmbeddedMessageParseFailure
+
+// optional bytes id = 1;
+inline bool EnvelopeEmbeddedMessageParseFailure::has_id() const {
+  return _has_bit(0);
+}
+inline void EnvelopeEmbeddedMessageParseFailure::clear_id() {
+  if (id_ != &_default_id_) {
+    id_->clear();
+  }
+  _clear_bit(0);
+}
+inline const ::std::string& EnvelopeEmbeddedMessageParseFailure::id() const {
+  return *id_;
+}
+inline void EnvelopeEmbeddedMessageParseFailure::set_id(const ::std::string& value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EnvelopeEmbeddedMessageParseFailure::set_id(const char* value) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void EnvelopeEmbeddedMessageParseFailure::set_id(const void* value, size_t size) {
+  _set_bit(0);
+  if (id_ == &_default_id_) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* EnvelopeEmbeddedMessageParseFailure::mutable_id() {
   _set_bit(0);
   if (id_ == &_default_id_) {
     id_ = new ::std::string;

@@ -22,6 +22,7 @@ namespace zippylog {
         registrar->register_message(1, 88, new ::zippylog::request_processor::EnvelopeParseFailure());
         registrar->register_message(1, 89, new ::zippylog::request_processor::EmptyEnvelope());
         registrar->register_message(1, 90, new ::zippylog::request_processor::InvalidMessageEnumeration());
+        registrar->register_message(1, 117, new ::zippylog::request_processor::EnvelopeEmbeddedMessageParseFailure());
         registrar->register_message(1, 91, new ::zippylog::request_processor::BeginProcessStoreInfo());
         registrar->register_message(1, 92, new ::zippylog::request_processor::EndProcessStoreInfo());
         registrar->register_message(1, 93, new ::zippylog::request_processor::ReceiveInvalidGet());
