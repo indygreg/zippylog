@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/response.proto',
   package='zippylog.protocol.response',
-  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"9\n\x14\x46\x65\x61tureSpecification\x12!\n\x19supported_message_version\x18\x01 \x03(\r\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"\\\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\x12\x12\n\nbytes_sent\x18\x03 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x04 \x01(\r\"\'\n\x0cSubscribeAck\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03ttl\x18\x02 \x01(\r\"\x1f\n\x11SubscriptionStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xe6\x02\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e')
+  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"9\n\x14\x46\x65\x61tureSpecification\x12!\n\x19supported_message_version\x18\x01 \x03(\r\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"\\\n\x10StreamSegmentEnd\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\x12\x12\n\nbytes_sent\x18\x03 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x04 \x01(\r\"\'\n\x0cSubscribeAck\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03ttl\x18\x02 \x01(\r\"\x1f\n\x11SubscriptionStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\x91\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -75,11 +75,15 @@ _ERRORCODE = descriptor.EnumDescriptor(
       name='INVALID_PATH', index=13, number=14,
       options=None,
       type=None),
+    descriptor.EnumValueDescriptor(
+      name='UNSUPPORTED_OPERATION_MESSAGE_VERSION', index=14, number=15,
+      options=None,
+      type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=419,
-  serialized_end=777,
+  serialized_end=820,
 )
 
 
@@ -97,6 +101,7 @@ PATH_NOT_FOUND = 11
 LIMIT_EXCEEDED = 12
 UNKNOWN_MESSAGE_FORMAT_VERSION = 13
 INVALID_PATH = 14
+UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15
 
 
 

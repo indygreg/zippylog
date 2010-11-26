@@ -202,7 +202,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "Ack\022\n\n\002id\030\001 \001(\014\022\013\n\003ttl\030\002 \001(\r\"\037\n\021Subscrip"
     "tionStart\022\n\n\002id\030\001 \001(\014\"I\n\005Error\0223\n\004code\030\001"
     " \001(\0162%.zippylog.protocol.response.ErrorC"
-    "ode\022\013\n\003msg\030\002 \001(\t*\346\002\n\tErrorCode\022\032\n\026ENVELO"
+    "ode\022\013\n\003msg\030\002 \001(\t*\221\003\n\tErrorCode\022\032\n\026ENVELO"
     "PE_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NA"
     "MESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016E"
     "MPTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020"
@@ -211,7 +211,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "INVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSE"
     "T\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDE"
     "D\020\014\022\"\n\036UNKNOWN_MESSAGE_FORMAT_VERSION\020\r\022"
-    "\020\n\014INVALID_PATH\020\016", 777);
+    "\020\n\014INVALID_PATH\020\016\022)\n%UNSUPPORTED_OPERATI"
+    "ON_MESSAGE_VERSION\020\017", 820);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   FeatureSpecification::default_instance_ = new FeatureSpecification();
@@ -256,6 +257,7 @@ bool ErrorCode_IsValid(int value) {
     case 12:
     case 13:
     case 14:
+    case 15:
       return true;
     default:
       return false;

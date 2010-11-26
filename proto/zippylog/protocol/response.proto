@@ -103,4 +103,7 @@ enum ErrorCode {
     
     // the path specified is not valid
     INVALID_PATH = 14;
+    
+    // the version of the operation message is unsupported by the server
+    UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15;
 }
