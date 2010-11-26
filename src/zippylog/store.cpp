@@ -353,7 +353,7 @@ InputStream * Store::GetInputStream(const string &path)
     string bucket, set, stream;
     if (!ParsePath(path, bucket, set, stream)) return NULL;
 
-    return this->GetInputStream(bucket, set, path);
+    return this->GetInputStream(bucket, set, stream);
 }
 
 bool Store::WriteEnvelope(const string &bucket, const string &set, Envelope &e, int64 time)
