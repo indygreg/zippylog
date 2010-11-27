@@ -42,12 +42,12 @@ StoreWriterSender::StoreWriterSender(StoreWriterSenderStartParams &params) :
 
     if (this->envelope_pull_endpoint.length()) {
         this->envelope_pull_sock = new ::zmq::socket_t(*this->ctx, ZMQ_PUSH);
-        this->envelope_pull_sock->bind(this->envelope_pull_endpoint.c_str());
+        this->envelope_pull_sock->connect(this->envelope_pull_endpoint.c_str());
     }
 
     if (this->envelope_rep_endpoint.length()) {
         this->envelope_rep_sock = new ::zmq::socket_t(*this->ctx, ZMQ_REQ);
-        this->envelope_rep_sock->bind(this->envelope_rep_endpoint.c_str());
+        this->envelope_rep_sock->connect(this->envelope_rep_endpoint.c_str());
     }
 }
 
