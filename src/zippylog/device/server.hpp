@@ -132,6 +132,7 @@ public:
         subscription_ttl(60000),
         log_bucket("zippylog"),
         log_stream_set("server"),
+        stream_flush_interval(5000),
         lua_execute_client_code(false),
         lua_streaming_max_memory(524288)
     { }
@@ -209,6 +210,36 @@ class ZIPPYLOG_EXPORT Server {
 
         ~Server();
 
+        /// Start the server
+        ///
+        /// This sets up all 0MQ sockets and starts up the processing threads.
+        /// It does NOT perform any message processing. If called multiple
+        /// times, subsequent times are noops.
+        ///
+        /// This can throw an exception if an initial call to Start() has not
+        /// finished or if it didn't complete. This represents an unstable
+        /// object which should be disposed of.
+        bool Start();
+
+        /// Perform server functionality
+        ///
+        /// This function is the heart of the server. When called, it looks
+        /// for work to be done (messages ready to be received, background
+        /// operations, etc).
+        ///
+        /// If work is available, it is processed immediately. If not, it can
+        /// wait up to the specified number of microseconds for work to become
+        /// available. If the configured wait time is 0, the function will
+        /// return immediately if no work is ready.
+        ///
+        /// It is not defined by the API how much work this function actually
+        /// performs. Therefore, you should not rely on a call to Pump() to
+        /// flush all pending work from the server.
+        ///
+        /// Returns 1 if work is performed, 0 if no work is performed, or -1 if
+        /// there was an error performing work.
+        int Pump(uint32 wait_microseconds = 250000);
+
         /// Run the server synchronously
         ///
         /// This will block until a fatal error is encountered or until the
@@ -249,9 +280,6 @@ class ZIPPYLOG_EXPORT Server {
 
         /// Populates the *StartParams members with appropriate values
         bool SynchronizeStartParams();
-
-        /// Initialize internal sockets and threads
-        bool Initialize();
 
         /// Spins up a new worker thread
         bool CreateWorkerThread();
@@ -301,6 +329,7 @@ class ZIPPYLOG_EXPORT Server {
         bool active;
 
         /// Whether the internal structure is set up and ready for running
+        bool start_started;
         bool initialized;
 
         /// 0MQ context to use
@@ -357,6 +386,18 @@ class ZIPPYLOG_EXPORT Server {
         /// socket endpoints used by store writer
         ::std::string store_writer_envelope_pull_endpoint;
         ::std::string store_writer_envelope_rep_endpoint;
+
+        /// poll structure for 0MQ
+        ::zmq::pollitem_t pollitems[6];
+
+        /// Timer that signals when we should perform a stream flush
+        ::zippylog::platform::Timer stream_flush_timer;
+
+        /// Timer that signals when we should check on thread status
+        ///
+        /// This is a giant hack until a better solution can be implemented.
+        /// TODO unhackify
+        ::zippylog::platform::Timer thread_check_timer;
 
         /// server id
         ///

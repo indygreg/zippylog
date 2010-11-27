@@ -69,6 +69,7 @@ Server::Server(ServerStartParams &params) :
     lua_streaming_max_memory(params.lua_streaming_max_memory),
     store(NULL),
     active(true),
+    start_started(false),
     initialized(false),
     zctx(3),
     workers_sock(NULL),
@@ -80,6 +81,8 @@ Server::Server(ServerStartParams &params) :
     streaming_streaming_notify_sock(NULL),
     logger_sock(NULL),
     log_client_sock(NULL),
+    stream_flush_timer(params.stream_flush_interval * 1000),
+    thread_check_timer(5000000),
     exec_thread(NULL),
     store_writer_thread(NULL),
     store_watcher_thread(NULL)
@@ -142,7 +145,7 @@ Server::~Server()
 
 void Server::Run()
 {
-    if (!this->initialized) this->Initialize();
+    this->Start();
 
     {
         BrokerStartup log = BrokerStartup();
@@ -152,197 +155,198 @@ void Server::Run()
         zeromq::send_envelope(this->log_client_sock, logenvelope);
     }
 
-    int number_pollitems = 6;
-    zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
+    while (this->active) {
+        this->Pump();
+    }
+}
 
-    pollitems[CLIENT_INDEX].socket = *this->clients_sock;
-    pollitems[CLIENT_INDEX].events = ZMQ_POLLIN;
-    pollitems[CLIENT_INDEX].fd = 0;
-    pollitems[CLIENT_INDEX].revents = 0;
+int Server::Pump(uint32 wait_time)
+{
+    bool work_done = false;
 
-    pollitems[WORKER_INDEX].socket = *this->workers_sock;
-    pollitems[WORKER_INDEX].events = ZMQ_POLLIN;
-    pollitems[WORKER_INDEX].fd = 0;
-    pollitems[WORKER_INDEX].revents = 0;
+    // check on background activities
 
-    pollitems[STREAMING_INDEX].socket = *this->streaming_sock;
-    pollitems[STREAMING_INDEX].events = ZMQ_POLLIN;
-    pollitems[STREAMING_INDEX].fd = 0;
-    pollitems[STREAMING_INDEX].revents = 0;
+    // we flush output streams if we need to
+    // TODO move this to writer thread once we isolate all writing to there
+    if (this->stream_flush_timer.Signaled()) {
+        work_done = true;
+        BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
+        log.set_id(this->id);
+        Envelope e;
+        log.add_to_envelope(&e);
+        zeromq::send_envelope(this->log_client_sock, e);
 
-    pollitems[WORKER_SUBSCRIPTIONS_INDEX].socket = *this->worker_subscriptions_sock;
-    pollitems[WORKER_SUBSCRIPTIONS_INDEX].events = ZMQ_POLLIN;
-    pollitems[WORKER_SUBSCRIPTIONS_INDEX].fd = 0;
-    pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents = 0;
+        this->store->FlushOutputStreams();
+        if (!stream_flush_timer.Start()) {
+            throw Exception("could not restart stream flush timer");
+        }
+    }
 
-    pollitems[STREAMING_NOTIFY_INDEX].socket = *this->worker_streaming_notify_sock;
-    pollitems[STREAMING_NOTIFY_INDEX].events = ZMQ_POLLIN;
-    pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
-    pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
+    if (thread_check_timer.Signaled()) {
+        work_done = true;
+        this->CheckThreads();
+        if (!thread_check_timer.Start()) {
+            throw Exception("TODO handle failure of timer to start");
+        }
+    }
 
-    pollitems[LOGGER_INDEX].socket = *this->logger_sock;
-    pollitems[LOGGER_INDEX].events = ZMQ_POLLIN;
-    pollitems[LOGGER_INDEX].fd = 0;
-    pollitems[LOGGER_INDEX].revents = 0;
+    // look for pending receives on sockets
+    int rc = zmq::poll(&this->pollitems[0], 6, wait_time);
+
+    // if nothing pending, return if we have done anything so far
+    if (rc < 1) return work_done ? 1 : 0;
+
+    // OK, so we have pending 0MQ messages to process!
+    // When processing pending messages, we generally favor shipping messages
+    // out of the server before we take more in. That way, when under high
+    // load, we favor getting smaller before getting bigger.
+    //
+    // Currently, we only process one socket per call. If we wanted to be
+    // exhaustive, we could easily do that.
 
     zmq::message_t msg;
     int64 more;
     size_t moresz = sizeof(more);
+    bool error = false;
 
-    platform::Timer stream_flush_timer(this->stream_flush_interval * 1000);
-    if (!stream_flush_timer.Start()) {
-        throw Exception("could not start stream flush timer");
-    }
-
-    // TODO this is a giant hack until we have a better system in place
-    platform::Timer thread_exit_timer(5000000);
-    if (!thread_exit_timer.Start()) {
-        throw Exception("TODO handle failure to start time");
-    }
-
-    // TODO so much repetition here. it makes me feel dirty
-    // TODO better error handling
-    while (this->active) {
-        // perform maintenance at the top of the loop
-
-        // we flush output streams if we need to
-        // TODO move this to writer thread once we isolate all writing to there
-        if (stream_flush_timer.Signaled()) {
-            BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
-            log.set_id(this->id);
-            Envelope e;
-            log.add_to_envelope(&e);
-            zeromq::send_envelope(this->log_client_sock, e);
-
-            this->store->FlushOutputStreams();
-            if (!stream_flush_timer.Start()) {
-                throw Exception("could not restart stream flush timer");
+    // logging messages have the highest precedence because we want to ensure
+    // that all server events, especially errors, have the greatest chance of
+    // being recorded
+    if (pollitems[LOGGER_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->logger_sock->recv(&msg, 0)) {
+                error = true;
+                break;
             }
-        }
 
-        if (thread_exit_timer.Signaled()) {
-            this->CheckThreads();
-            if (!thread_exit_timer.Start()) {
-                throw Exception("TODO handle failure of timer to start");
-            }
-        }
+            work_done = true;
 
-        // wait up to 0.5s for a message to become available
-        int rc = zmq::poll(pollitems, number_pollitems, 500000);
-        if (rc < 1) continue;
+            this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
 
-        if (pollitems[LOGGER_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->logger_sock->recv(&msg, 0)) break;
-
-                this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
-
-                // TODO this is mostly for debugging purposes and should be implemented another way
-                // once the project has matured
+            // TODO this is mostly for debugging purposes and should be implemented another way
+            // once the project has matured
 
 #ifdef _DEBUG
-                Envelope debugEnvelope = Envelope(msg.data(), msg.size());
-                ::std::cout << debugEnvelope.ToString();
+            Envelope debugEnvelope = Envelope(msg.data(), msg.size());
+            ::std::cout << debugEnvelope.ToString();
 #endif
 
-                moresz = sizeof(more);
-                this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!more) break;
-            }
-        }
-
-        // we always favor shipping messages OUT of the server to the clients
-        // that way, under heavy load, we try to get smaller before we
-        // get bigger
-
-        // move worker responses to client
-        else if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->workers_sock->recv(&msg, 0)) {
-                    break;
-                }
-
-                moresz = sizeof(more);
-                this->workers_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                    break;
-                }
-
-                if (!more) break;
-            }
-        }
-
-        // move streaming messages to client
-        else if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->streaming_sock->recv(&msg, 0)) break;
-
-                moresz = sizeof(more);
-                this->streaming_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
-                if (!more) break;
-            }
-        }
-
-        // move subscriptions requests to streamer
-        else if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->worker_subscriptions_sock->recv(&msg, 0)) break;
-
-                moresz = sizeof(more);
-                this->worker_subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->streaming_subscriptions_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
-                if (!more) break;
-            }
-        }
-
-        // move subscription general messages to all streamers
-        else if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->worker_streaming_notify_sock->recv(&msg, 0)) break;
-
-                moresz = sizeof(more);
-                this->worker_streaming_notify_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->streaming_streaming_notify_sock->send(msg, more ? ZMQ_SNDMORE : 0)) break;
-                if (!more) break;
-            }
-        }
-
-
-        // forward client stream requests to streaming thread pool
-
-        // send client requests to workers
-        else if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
-            while (true) {
-                if (!this->clients_sock->recv(&msg, 0)) {
-                    break;
-                }
-
-                moresz = sizeof(more);
-                this->clients_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-                if (!this->workers_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                    break;
-                }
-
-                if (!more) break;
-            }
+            moresz = sizeof(more);
+            this->logger_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!more) break;
         }
     }
 
-    delete [] pollitems;
+    // move ALL worker responses to client
+    else if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->workers_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->workers_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+    // move streaming messages to client
+    else if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->streaming_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->streaming_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+    // move subscriptions requests to streamer
+    else if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->worker_subscriptions_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->worker_subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->streaming_subscriptions_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+    // move subscription general messages to all streamers
+    else if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->worker_streaming_notify_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->worker_streaming_notify_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->streaming_streaming_notify_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+
+    // forward client stream requests to streaming thread pool
+
+    // send client requests to workers
+    else if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
+        while (true) {
+            if (!this->clients_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->clients_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->workers_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+    if (error) return -1;
+    return work_done ? 1 : 0;
 }
 
 void Server::RunAsync()
 {
     this->exec_thread = new Thread(Server::AsyncExecStart, this);
-}
-
-void * Server::AsyncExecStart(void *data)
-{
-    Server *server = (Server *)data;
-    server->Run();
-
-    return NULL;
 }
 
 bool Server::SynchronizeStartParams()
@@ -397,14 +401,16 @@ bool Server::SynchronizeStartParams()
     return true;
 }
 
-bool Server::Initialize()
+bool Server::Start()
 {
-    if (this->initialized) {
-        throw Exception("Initialized() already called!");
+    // this isn't fully atomic, but do we care?
+    if (this->start_started && !this->initialized) {
+        throw Exception("Start() already called but it hasn't finished yet");
     }
 
-    // we set the flag early to catch partial initialization
-    this->initialized = true;
+    if (this->initialized) return true;
+
+    this->start_started = true;
 
     this->SynchronizeStartParams();
 
@@ -450,6 +456,9 @@ bool Server::Initialize()
 
     this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
 
+    // TODO on threads properly
+    platform::sleep(100);
+
     // bind sockets to listen for client requests
     this->clients_sock = new zmq::socket_t(this->zctx, ZMQ_XREP);
 
@@ -458,6 +467,47 @@ bool Server::Initialize()
     for (size_t i = 0; i < this->listen_endpoints.size(); i++) {
         this->clients_sock->bind(this->listen_endpoints[i].c_str());
     }
+
+    this->pollitems[CLIENT_INDEX].socket = *this->clients_sock;
+    this->pollitems[CLIENT_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[CLIENT_INDEX].fd = 0;
+    this->pollitems[CLIENT_INDEX].revents = 0;
+
+    this->pollitems[WORKER_INDEX].socket = *this->workers_sock;
+    this->pollitems[WORKER_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[WORKER_INDEX].fd = 0;
+    this->pollitems[WORKER_INDEX].revents = 0;
+
+    this->pollitems[STREAMING_INDEX].socket = *this->streaming_sock;
+    this->pollitems[STREAMING_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[STREAMING_INDEX].fd = 0;
+    this->pollitems[STREAMING_INDEX].revents = 0;
+
+    this->pollitems[WORKER_SUBSCRIPTIONS_INDEX].socket = *this->worker_subscriptions_sock;
+    this->pollitems[WORKER_SUBSCRIPTIONS_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[WORKER_SUBSCRIPTIONS_INDEX].fd = 0;
+    this->pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents = 0;
+
+    this->pollitems[STREAMING_NOTIFY_INDEX].socket = *this->worker_streaming_notify_sock;
+    this->pollitems[STREAMING_NOTIFY_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
+    this->pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
+
+    this->pollitems[LOGGER_INDEX].socket = *this->logger_sock;
+    this->pollitems[LOGGER_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[LOGGER_INDEX].fd = 0;
+    this->pollitems[LOGGER_INDEX].revents = 0;
+
+    // start background timers
+    if (!this->stream_flush_timer.Start()) {
+        throw Exception("could not start stream flush timer");
+    }
+
+    if (!this->thread_check_timer.Start()) {
+        throw Exception("TODO handle failure to start time");
+    }
+
+    this->initialized = true;
 
     return true;
 }
@@ -707,6 +757,21 @@ void * Server::StoreWriterStart(void *d)
     try {
         StoreWriter writer(*params);
         writer.Run();
+    }
+    catch (::std::exception e) {
+        string error = e.what();
+        return (void *)1;
+    }
+
+    return (void *)0;
+}
+
+
+void * Server::AsyncExecStart(void *data)
+{
+    try {
+        Server *server = (Server *)data;
+        server->Run();
     }
     catch (::std::exception e) {
         string error = e.what();
