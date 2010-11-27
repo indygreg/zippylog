@@ -56,10 +56,10 @@ using ::zippylog::device::server::WorkerStartParams;
 #define LOGGER_INDEX 5
 
 Server::Server(const string config_file_path) :
-    zctx(3),
+    store(NULL),
     active(true),
-    exec_thread(NULL),
-    store_writer_thread(NULL),
+    initialized(false),
+    zctx(3),
     workers_sock(NULL),
     clients_sock(NULL),
     streaming_sock(NULL),
@@ -69,9 +69,9 @@ Server::Server(const string config_file_path) :
     streaming_streaming_notify_sock(NULL),
     logger_sock(NULL),
     log_client_sock(NULL),
-    store(NULL),
-    store_watcher_thread(NULL),
-    initialized(false)
+    exec_thread(NULL),
+    store_writer_thread(NULL),
+    store_watcher_thread(NULL)
 {
     platform::UUID uuid;
     if (!platform::CreateUUID(uuid)) {
