@@ -716,8 +716,8 @@ bool FormatUUID(UUID &u, ::std::string &s)
 #endif
         "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
         u.data[0], u.data[1], u.data[2], u.data[3], u.data[4], u.data[5],
-        u.data[6], u.data[7], u.data[7], u.data[8], u.data[9], u.data[10],
-        u.data[11], u.data[12], u.data[13], u.data[14], u.data[15]
+        u.data[6], u.data[7], u.data[8], u.data[9], u.data[10], u.data[11],
+        u.data[12], u.data[13], u.data[14], u.data[15]
     );
     s.assign(&buf[0], 36);
 
