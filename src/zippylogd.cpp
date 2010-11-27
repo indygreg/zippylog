@@ -57,17 +57,8 @@ int main(int argc, const char * const argv[])
 #error "not implemented on this platform"
 #endif
     }
-    catch (string s) {
-        cout << "Exception:" << endl;
-        cout << s;
-        return 1;
-    }
-    catch (char * s) {
-        cout << "Exception: " << s << endl;
-        return 1;
-    }
-    catch (...) {
-        cout << "received an exception" << endl;
+    catch (::std::exception e) {
+        cout << "Exception: " << e.what() << endl;
         return 1;
     }
 
