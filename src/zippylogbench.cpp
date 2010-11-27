@@ -122,7 +122,7 @@ void run_lua_function_calls(ZippylogbenchParams &params)
         lua_pop(L, 1);
     }
     TIMER_END;
-    print_result("Lua - calls to empty function", elapsed, 1000000);
+    print_result("Lua - calls to empty function from C", elapsed, 1000000);
 }
 
 void run_benchmarks(ZippylogbenchParams &params)
