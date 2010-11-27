@@ -225,93 +225,6 @@ class ZIPPYLOG_EXPORT Server {
         void Shutdown();
 
     protected:
-        ::zmq::context_t zctx;
-
-        // fans XREQ that fans out to individual worker threads
-        ::zmq::socket_t * workers_sock;
-
-        // binds to listen for client requests on configured interfaces
-        ::zmq::socket_t * clients_sock;
-
-        // XREP that receives all streamed envelopes to be sent to clients
-        ::zmq::socket_t * streaming_sock;
-
-        // PULL that receives processed client subscription requests
-        // messages delivered to one random streamer
-        ::zmq::socket_t * worker_subscriptions_sock;
-
-        // PUSH that sends client subscription requests to streamers
-        ::zmq::socket_t * streaming_subscriptions_sock;
-
-        // PULL that receives processed client streaming messages
-        // messages that need to be forwarded to all streamers
-        // we can't send directly from the workers to the streamers
-        // because there is potentially a many to many mapping there
-        // the broker binds to both endpoints and distributes messages
-        // properly
-        ::zmq::socket_t * worker_streaming_notify_sock;
-
-        // PUB that sends processed client streaming messages to all streamers
-        ::zmq::socket_t * streaming_streaming_notify_sock;
-
-        // PULL that receives logging messages from other threads
-        ::zmq::socket_t * logger_sock;
-
-        // PUSH that sends logging messages to main logging sock
-        // yes, we have both a client and server in the same object. this is easier
-        ::zmq::socket_t * log_client_sock;
-
-        /// server id
-        ///
-        /// used for identification purposes in logging
-        ::std::string id;
-
-        /// Thread running the server
-        ///
-        /// Only present when server is running asynchronously via RunAsync()
-        ::zippylog::platform::Thread * exec_thread;
-
-        /// Threads running workers/request processors
-        ::std::vector< ::zippylog::platform::Thread * > worker_threads;
-
-        /// Threads running streamers
-        ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
-
-        /// Thread writing to the store
-        ::zippylog::platform::Thread * store_writer_thread;
-
-        /// Thread watching the store
-        ::zippylog::platform::Thread * store_watcher_thread;
-
-        /// The store we are bound to
-        ::zippylog::Store * store;
-        bool active;
-        ServerConfig config;
-
-        /// Whether the internal structure is set up and ready for running
-        bool initialized;
-
-        /// used to construct child objects
-        ///
-        /// The addresses of these variables are passed when starting the
-        /// threads for these objects.
-        ::zippylog::device::server::WorkerStartParams request_processor_params;
-        ::zippylog::device::StreamerStartParams streamer_params;
-        ::zippylog::device::server::WatcherStartParams store_watcher_params;
-        ::zippylog::device::StoreWriterStartParams store_writer_params;
-
-        /// 0MQ endpoints used by various internal sockets
-        ::std::string worker_endpoint;
-        ::std::string store_change_endpoint;
-        ::std::string streaming_endpoint;
-        ::std::string logger_endpoint;
-        ::std::string worker_subscriptions_endpoint;
-        ::std::string streaming_subscriptions_endpoint;
-        ::std::string worker_streaming_notify_endpoint;
-        ::std::string streaming_streaming_notify_endpoint;
-        ::std::string store_writer_envelope_pull_endpoint;
-        ::std::string store_writer_envelope_rep_endpoint;
-
         static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
 
         /// Thread start functions
@@ -332,6 +245,105 @@ class ZIPPYLOG_EXPORT Server {
 
         /// Spins up a new thread to process streaming
         bool CreateStreamingThread();
+
+        /// Holds the main server config
+        /// TODO factor this into individual variables and remove
+        ServerConfig config;
+
+        /// The store we are bound to
+        ::zippylog::Store * store;
+
+        /// Whether we are running
+        bool active;
+
+        /// Whether the internal structure is set up and ready for running
+        bool initialized;
+
+        /// 0MQ context to use
+        ///
+        /// Currently, we have our own dedicated context, but this could change
+        ::zmq::context_t zctx;
+
+        // fans XREQ that fans out to individual worker threads
+        ::zmq::socket_t * workers_sock;
+        ::std::string worker_endpoint;
+
+        // binds to listen for client requests on configured interfaces
+        ::zmq::socket_t * clients_sock;
+
+        // XREP that receives all streamed envelopes to be sent to clients
+        ::zmq::socket_t * streaming_sock;
+        ::std::string streaming_endpoint;
+
+        // PULL that receives processed client subscription requests
+        // messages delivered to one random streamer
+        ::zmq::socket_t * worker_subscriptions_sock;
+        ::std::string worker_subscriptions_endpoint;
+
+        // PUSH that sends client subscription requests to streamers
+        ::zmq::socket_t * streaming_subscriptions_sock;
+        ::std::string streaming_subscriptions_endpoint;
+
+        // PULL that receives processed client streaming messages
+        // messages that need to be forwarded to all streamers
+        // we can't send directly from the workers to the streamers
+        // because there is potentially a many to many mapping there
+        // the broker binds to both endpoints and distributes messages
+        // properly
+        ::zmq::socket_t * worker_streaming_notify_sock;
+        ::std::string worker_streaming_notify_endpoint;
+
+        // PUB that sends processed client streaming messages to all streamers
+        ::zmq::socket_t * streaming_streaming_notify_sock;
+        ::std::string streaming_streaming_notify_endpoint;
+
+        // PULL that receives logging messages from other threads
+        ::zmq::socket_t * logger_sock;
+        ::std::string logger_endpoint;
+
+        // PUSH that sends logging messages to main logging sock
+        // yes, we have both a client and server in the same object. this is easier
+        ::zmq::socket_t * log_client_sock;
+
+        /// socket endpoint used to receive store changes
+        /// streamers connect to this directly, so we don't have
+        /// a local socket
+        ::std::string store_change_endpoint;
+
+        /// socket endpoints used by store writer
+        ::std::string store_writer_envelope_pull_endpoint;
+        ::std::string store_writer_envelope_rep_endpoint;
+
+        /// server id
+        ///
+        /// used for identification purposes in logging
+        ::std::string id;
+
+        /// Thread running the server
+        ///
+        /// Only present when server is running asynchronously via RunAsync()
+        ::zippylog::platform::Thread * exec_thread;
+
+        /// Thread writing to the store
+        ::zippylog::platform::Thread * store_writer_thread;
+
+        /// Thread watching the store
+        ::zippylog::platform::Thread * store_watcher_thread;
+
+        /// Threads running workers/request processors
+        ::std::vector< ::zippylog::platform::Thread * > worker_threads;
+
+        /// Threads running streamers
+        ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
+
+        /// used to construct child objects
+        ///
+        /// The addresses of these variables are passed when starting the
+        /// threads for these objects.
+        ::zippylog::device::server::WorkerStartParams request_processor_params;
+        ::zippylog::device::StreamerStartParams streamer_params;
+        ::zippylog::device::server::WatcherStartParams store_watcher_params;
+        ::zippylog::device::StoreWriterStartParams store_writer_params;
 
     private:
         // copy constructor and assignment operator are not available
