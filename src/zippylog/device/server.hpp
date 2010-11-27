@@ -260,6 +260,12 @@ class ZIPPYLOG_EXPORT Server {
         /// TODO need an API to force shutdown
         void Shutdown();
 
+        /// Obtain a list of client 0MQ endpoints
+        ///
+        /// The list is the set of 0MQ endpoints the server will accept client
+        /// requests from.
+        vector<string> ClientEndpoints() const { return this->listen_endpoints; }
+
         /// Parse a config file into a ServerConfig object
         ///
         /// This attempts to load the Lua file referenced by the filesystem
