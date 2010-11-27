@@ -17,6 +17,7 @@
 namespace zippylog {
 namespace device {
 
+using ::std::logic_error;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LineProcessorState;
@@ -32,19 +33,19 @@ StringReceiver::StringReceiver(StringReceiverStartParams &params) :
     if (this->lua_file.size() > 0) {
         // first we increase the memory ceiling
         if (!this->L.SetMemoryCeiling(1024 * this->lua_max_size)) {
-            throw "error setting max memory ceiling on Lua interpreter";
+            throw Exception("error setting max memory ceiling on Lua interpreter");
         }
 
         // load libraries
         // we always enable string, since it is safe and convenient
         if (!this->L.LoadStringLibrary()) {
-            throw "could not load string library into Lua interpreter";
+            throw Exception("could not load string library into Lua interpreter");
         }
 
         // try to load their code
         string error;
         if (!this->L.LoadFile(this->lua_file, error)) {
-            throw "error loading Lua file: " + error;
+            throw Exception("error loading Lua file: " + error);
         }
 
         // define Lua capabilities
@@ -55,7 +56,7 @@ StringReceiver::StringReceiver(StringReceiverStartParams &params) :
 void StringReceiver::ReceiveLine(StringReceiverResult &result)
 {
     if (!this->inpipe) {
-        throw "cannot receive line since no input pipe is defined on StringReceiver";
+        throw Exception("cannot receive line since no input pipe is defined on StringReceiver");
     }
 
     // istream is closed
@@ -114,7 +115,7 @@ void StringReceiver::ProcessLine(const string &line, StringReceiverResult &resul
             return;
         }
 
-        throw "unhandled return code from ProcessLine()";
+        throw logic_error("unhandled return code from ProcessLine()");
     }
 
     // else we don't have a Lua processor, so we treat string as-is

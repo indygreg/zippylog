@@ -48,8 +48,20 @@ typedef uint64_t uint64;
 #endif
 
 #include <stdexcept>
+#include <string>
 
 namespace zippylog {
+
+/// The base zippylog exception
+///
+/// Zippylog code is expected to throw an exception derived from this for all
+/// run-time errors. Zippylog code is allowed to throw exceptions derived from
+/// std::logic_error if it makes sense (e.g. obvious coding error)
+class Exception : public ::std::runtime_error
+{
+    public:
+        Exception(const ::std::string &msg) : ::std::runtime_error(msg) { }
+};
 
 /// An error when deserializing a message
 class DeserializeException : public ::std::runtime_error

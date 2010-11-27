@@ -47,6 +47,7 @@ namespace zippylog {
         goto LOG_END; \
     }
 
+using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
 using ::zmq::message_t;
@@ -65,11 +66,11 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     get_stream_max_envelopes(params.get_stream_max_envelopes)
 {
     if (!this->active) {
-        throw "active parameter cannot be NULL";
+        throw invalid_argument("active parameter cannot be NULL");
     }
 
     if (!this->ctx) {
-        throw "ctx parameter cannot be NULL";
+        throw invalid_argument("ctx parameter cannot be NULL");
     }
 
     this->store = Store::CreateStore(params.store_path);
@@ -134,7 +135,7 @@ void RequestProcessor::Run()
             // TODO we used to rebuild socket here. is this a good recovery strategy?
             // this exception is here so we can see if this actually happens
             // I suspect it doesn't
-            throw "error receiving multipart message from worker sock";
+            throw Exception("error receiving multipart message from worker sock");
         }
 
         vector<Envelope> response_envelopes;
@@ -148,7 +149,7 @@ void RequestProcessor::Run()
 
         if (response_envelopes.size()) {
             if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
-                throw "TODO log failure to send response envelopes";
+                throw Exception("TODO log failure to send response envelopes");
             }
         }
     }
@@ -398,22 +399,24 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e,
     ::zippylog::request_processor::BeginProcessStoreInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
-    protocol::request::GetStoreInfo *m = (protocol::request::GetStoreInfo *)e.GetMessage(0);
-    if (!m) {
-        throw "TODO handle error parsing GetStoreInfo request message";
-    }
+    OBTAIN_MESSAGE(protocol::request::GetStoreInfo, m, e, 0);
 
     if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
 
-    protocol::StoreInfo info = protocol::StoreInfo();
-    this->store->StoreInfo(info);
+    {
+        protocol::StoreInfo info = protocol::StoreInfo();
+        this->store->StoreInfo(info);
+
+        Envelope out;
+        info.add_to_envelope(&out);
+        output.push_back(out);
+    }
+
+LOG_END:
 
     ::zippylog::request_processor::EndProcessStoreInfo logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
-    Envelope out;
-    info.add_to_envelope(&out);
-    output.push_back(out);
     return AUTHORITATIVE;
 }
 
@@ -426,10 +429,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e
     protocol::BucketInfo info = protocol::BucketInfo();
     Envelope response;
 
-    protocol::request::GetBucketInfo *m = (protocol::request::GetBucketInfo *)e.GetMessage(0);
-    if (!m) {
-        throw "TODO handle error parsing GetBucketInfo request message";
-    }
+    OBTAIN_MESSAGE(protocol::request::GetBucketInfo, m, e, 0);
 
     if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
@@ -466,10 +466,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope
     protocol::StreamSetInfo info = protocol::StreamSetInfo();
     Envelope response;
 
-    protocol::request::GetStreamSetInfo *m = (protocol::request::GetStreamSetInfo *)e.GetMessage(0);
-    if (!m) {
-        throw "TODO handle error parsing GetStreamSetInfo request message";
-    }
+    OBTAIN_MESSAGE(protocol::request::GetStreamSetInfo, m, e, 0);
 
     if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
@@ -505,10 +502,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
     protocol::StreamInfo info = protocol::StreamInfo();
     Envelope response;
 
-    protocol::request::GetStreamInfo *m = (protocol::request::GetStreamInfo *)e.GetMessage(0);
-    if (!m) {
-        throw "TODO handle error parsing GetStreamSetInfo request message";
-    }
+    OBTAIN_MESSAGE(protocol::request::GetStreamInfo, m, e, 0);
 
     if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
 
@@ -604,7 +598,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
 
         uint64 start_offset = get->start_offset();
         if (start_offset && !stream->SetAbsoluteOffset(start_offset)) {
-            throw "TODO handle error setting offset properly";
+            throw Exception("TODO handle error setting offset properly");
         }
 
         // determine how much to fetch
@@ -695,15 +689,11 @@ LOG_END:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
-    protocol::request::SubscribeStoreChanges *m =
-        (protocol::request::SubscribeStoreChanges *)request.GetMessage(0);
-
-    if (!m) {
-        // TODO log error and send error response
-        throw "TODO handle error";
-    }
+    OBTAIN_MESSAGE(protocol::request::SubscribeStoreChanges, m, request, 0);
 
     // TODO validation
+
+LOG_END:
 
     return this->HandleSubscribeStoreChanges(request, output);
 }
@@ -717,14 +707,16 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
 {
-    protocol::request::SubscribeKeepalive *m =
-        (protocol::request::SubscribeKeepalive *)request.GetMessage(0);
+    OBTAIN_MESSAGE(protocol::request::SubscribeKeepalive, m, request, 0);
 
-    ::zippylog::request_processor::ForwardSubscribeKeepalive log;
-    log.set_subscription(m->id());
-    LOG_MESSAGE(log, this->logger_sock);
-
+    {
+        ::zippylog::request_processor::ForwardSubscribeKeepalive log;
+        log.set_subscription(m->id());
+        LOG_MESSAGE(log, this->logger_sock);
+    }
     // TODO validation
+
+LOG_END:
 
     return this->HandleSubscribeKeepalive(request, output);
 }

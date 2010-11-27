@@ -18,6 +18,7 @@
 
 #include <stdio.h>
 
+using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
@@ -41,12 +42,12 @@ Store * Store::CreateStore(const string &s)
 {
     string::size_type i = s.find_first_of("://");
     if (i == string::npos) {
-        throw "store path not in expected URI format";
+        throw Exception("store path not in expected URI format");
     }
 
     string proto = s.substr(0, i);
     if (proto != "simpledirectory") {
-        throw "store protocol not understood";
+        throw Exception("store protocol not understood");
     }
 
     string path = s.substr(i + 3, s.length() - i - 3);
@@ -434,13 +435,13 @@ string Store::StreamNameForTime(platform::Time &t, int seconds_per_file)
     }
 
     if (seconds_per_file > 3600 || seconds_per_file < 4) {
-        throw "seconds_per_file value not valid";
+        throw invalid_argument("seconds_per_file value not valid");
     }
 
     // this could be optimized into a static table for faster lookup
 
     if (3600 % seconds_per_file > 0) {
-        throw "seconds_per_file does not divide into 3600 evenly";
+        throw invalid_argument("seconds_per_file does not divide into 3600 evenly");
     }
 
     int series_max = 3600 / seconds_per_file;
@@ -464,7 +465,7 @@ string Store::StreamNameForTime(int64 time, int seconds_per_file)
 SimpleDirectoryStore::SimpleDirectoryStore(const string &path) : root_path(path)
 {
     if (!platform::PathIsDirectory(path)) {
-        throw "store path does not exist or could not be read";
+        throw Exception("store path does not exist or could not be read");
     }
 }
 

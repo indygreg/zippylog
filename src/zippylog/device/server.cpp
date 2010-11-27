@@ -84,9 +84,7 @@ Server::Server(ServerConfig &config) :
     store_watcher_thread(NULL)
 {
     platform::UUID uuid;
-    if (!platform::CreateUUID(uuid)) {
-        throw "could not create UUID";
-    }
+    platform::CreateUUID(uuid);
 
     this->id = string((const char *)&uuid, sizeof(uuid));
 
@@ -100,9 +98,7 @@ Server::Server(ServerConfig &config) :
     // but it might be worth investigating. We preserve human-friendly names
     // until proven otherwise.
     string uuid_s;
-    if (!platform::FormatUUID(uuid, uuid_s)) {
-        throw "could not format UUID";
-    }
+    platform::FormatUUID(uuid, uuid_s);
 
     this->worker_endpoint = "inproc://" + uuid_s + "workers";
     this->store_change_endpoint = "inproc://" + uuid_s + "store_changes";
@@ -185,13 +181,13 @@ void Server::Run()
 
     platform::Timer stream_flush_timer(this->stream_flush_interval * 1000);
     if (!stream_flush_timer.Start()) {
-        throw "could not start stream flush timer";
+        throw Exception("could not start stream flush timer");
     }
 
     // TODO this is a giant hack until we have a better system in place
     platform::Timer thread_exit_timer(5000000);
     if (!thread_exit_timer.Start()) {
-        throw "TODO handle failure to start time";
+        throw Exception("TODO handle failure to start time");
     }
 
     // TODO so much repetition here. it makes me feel dirty
@@ -210,14 +206,14 @@ void Server::Run()
 
             this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
-                throw "could not restart stream flush timer";
+                throw Exception("could not restart stream flush timer");
             }
         }
 
         if (thread_exit_timer.Signaled()) {
             this->CheckThreads();
             if (!thread_exit_timer.Start()) {
-                throw "TODO handle failure of timer to start";
+                throw Exception("TODO handle failure of timer to start");
             }
         }
 
@@ -394,7 +390,7 @@ bool Server::SynchronizeStartParams()
 bool Server::Initialize()
 {
     if (this->initialized) {
-        throw "Initialized() already called!";
+        throw Exception("Initialized() already called!");
     }
 
     // we set the flag early to catch partial initialization

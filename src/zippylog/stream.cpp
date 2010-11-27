@@ -107,19 +107,19 @@ FileInputStream::FileInputStream(const string &path, int64 offset) :
     fis(NULL)
 {
     if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
-        throw "could not open file input stream";
+        throw Exception("could not open file input stream");
     }
 
     this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
     this->cis = new CodedInputStream(this->fis);
 
     if (!this->ReadVersion()) {
-        throw "could not read stream version or stream version not supported";
+        throw Exception("could not read stream version or stream version not supported");
     }
 
     if (offset > 0) {
         if (!this->SetAbsoluteOffset(offset)) {
-            throw "could not set stream offset";
+            throw Exception("could not set stream offset");
         }
     }
 }
@@ -134,7 +134,7 @@ FileInputStream::~FileInputStream()
 bool FileInputStream::SetAbsoluteOffset(int64 offset)
 {
     if (!this->file.Seek(offset)) {
-        throw "could not seek to requested stream offset";
+        throw Exception("could not seek to requested stream offset");
     }
 
     // if we change the underlying file descriptor, we need to rebuild the
@@ -209,12 +209,12 @@ FileOutputStream::FileOutputStream(const string &path, bool write_lock) : Output
     if (write_lock) flags |= platform::File::WRITE_LOCK;
 
     if (!this->file.Open(path, flags)) {
-        throw "could not open file";
+        throw Exception("could not open file");
     }
 
     platform::FileStat stat;
     if (!platform::stat(path, stat)) {
-        throw "could not stat file opened for writing. weird";
+        throw Exception("could not stat file opened for writing. weird");
     }
 
     if (this->cos) delete this->cos;
@@ -225,7 +225,7 @@ FileOutputStream::FileOutputStream(const string &path, bool write_lock) : Output
     // this is a new file, so we need to write out the version
     if (!stat.size) {
         if (!this->WriteStreamHeader()) {
-            throw "could not write stream header to new stream";
+            throw Exception("could not write stream header to new stream");
         }
     }
 }

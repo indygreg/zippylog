@@ -40,6 +40,7 @@
 #include <sys/stat.h>
 #include <time.h>
 
+using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
@@ -502,7 +503,7 @@ bool File::Open(const string &path, int flags)
         open_flags |= O_WRONLY;
     }
     else {
-        throw "must have one of READ or WRITE flag set";
+        throw invalid_argument("must have one of READ or WRITE flag set");
     }
 
     if (flags & APPEND) open_flags |= O_APPEND;
@@ -564,13 +565,13 @@ bool File::Seek(int64 offset)
 
     // TODO fix this limitation
     if (offset < 0) {
-        throw "cannot support seeking back";
+        throw invalid_argument("cannot support seeking back");
     }
 
     LONG high = (offset & 0xffffffff00000000) >> 32;
 
     if (high > 0) {
-        throw "only supports 32 bit seeking currently";
+        throw invalid_argument("only supports 32 bit seeking currently");
     }
 
     LONG low = (offset & 0x00000000ffffffff);
@@ -635,11 +636,11 @@ int File::FileDescriptor()
 bool File::WriteLockEntire()
 {
     if (!this->open) {
-        throw "called WriteLockEntire on unopened file";
+        throw Exception("called WriteLockEntire on unopened file");
     }
 
 #ifdef WINDOWS
-    throw "WriteLockEntire() is not meant to be called on Windows at this time";
+    throw Exception("WriteLockEntire() is not meant to be called on Windows at this time");
 #elif LINUX
     flock fl;
     fl.l_type = F_WRLCK;
@@ -742,7 +743,7 @@ void Timer::Initialize()
 #ifdef WINDOWS
     this->handle = CreateWaitableTimer(NULL, TRUE, NULL);
     if (!this->handle) {
-        throw "timer could not be created";
+        throw Exception("timer could not be created");
     }
 #elif LINUX
     struct sigevent evp;
@@ -752,7 +753,7 @@ void Timer::Initialize()
     int result = timer_create(CLOCK_MONOTONIC, &evp, &this->timer);
     if (result == -1) {
         set_system_error();
-        throw "could not create timer";
+        throw Exception("could not create timer");
     }
 #else
 #error "Timer::Initialize() is not implemented on this platform"
@@ -860,7 +861,7 @@ bool Timer::Signaled()
     if (result == -1) {
         set_system_error();
         // TODO this API breaks convention
-        throw "could not obtain timer result";
+        throw Exception("could not obtain timer result");
     }
 
     if (v.it_value.tv_sec == 0 && v.it_value.tv_nsec == 0) {
@@ -903,26 +904,26 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
     );
 
     if (this->directory == INVALID_HANDLE_VALUE) {
-        throw "invalid handle";
+        throw Exception("invalid handle");
     }
 
     this->completion_port = CreateIoCompletionPort(this->directory, NULL, NULL, 0);
     if (!this->completion_port) {
-        throw "could not create I/O Completion Port";
+        throw Exception("could not create I/O Completion Port");
     }
 
 #elif LINUX
     // we use inotify
     this->fd = inotify_init();
     if (this->fd == -1) {
-        throw "could not initialize inotify descriptor";
+        throw Exception("could not initialize inotify descriptor");
     }
 
     // add watch for root
     int watch = inotify_add_watch(this->fd, this->path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
     if (watch == -1) {
         set_system_error();
-        throw "could not add inotify watch for directory";
+        throw Exception("could not add inotify watch for directory");
     }
 
     this->directories[watch] = "";
@@ -930,7 +931,7 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
     // inotify doesn't support recursive watches, so we need to do it manually
     vector<string> paths;
     if (!DirectoriesInTree(this->path, paths)) {
-        throw "could not obtain directories in tree";
+        throw Exception("could not obtain directories in tree");
     }
 
     vector<string>::iterator i = paths.begin();
@@ -938,7 +939,7 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
         watch = inotify_add_watch(this->fd, i->c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
         if (watch == -1) {
             set_system_error();
-            throw "could not add inotify watch for directory";
+            throw Exception("could not add inotify watch for directory");
         }
 
         this->directories[watch] = i->substr(this->path.length(), FILENAME_MAX);
@@ -961,7 +962,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
             FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
             NULL, &this->overlapped, NULL);
         if (!watch_result) {
-            throw "could not start waiting for directory changes";
+            throw Exception("could not start waiting for directory changes");
         }
 
         this->started_waiting = true;
@@ -1033,7 +1034,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     if (result == -1) {
         set_system_error();
-        throw "error polling inotify descriptor";
+        throw Exception("error polling inotify descriptor");
     }
 
     // no data available
@@ -1045,7 +1046,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     ssize_t available = read(this->fd, &buf, sizeof(buf));
     if (available < 0) {
         set_system_error();
-        throw "could not read from inotify descriptor";
+        throw Exception("could not read from inotify descriptor");
     }
 
     ssize_t i = 0;
@@ -1054,7 +1055,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
         map<int, string>::iterator watch = this->directories.find(e->wd);
         if (watch == this->directories.end()) {
-            throw "unknown watch descriptor seen";
+            throw Exception("unknown watch descriptor seen");
         }
 
         // watch was removed (we don't care how)
@@ -1076,14 +1077,14 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
             // add inotify watcher if this is a directory
             FileStat st;
             if (!stat(fs_path, st)) {
-                throw "could not stat newly created file. weird";
+                throw Exception("could not stat newly created file. weird");
             }
 
             if (st.type == DIRECTORY) {
                 int watch = inotify_add_watch(this->fd, fs_path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY );
                 if (watch == -1) {
                     set_system_error();
-                    throw "could not add watch for directory: " + fs_path;
+                    throw Exception("could not add watch for directory: " + fs_path);
                 }
 
                 this->directories[watch] = change.Path;
@@ -1097,7 +1098,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
             change.Action = change.MODIFIED;
         }
         else {
-            throw "unknown change mask seen. likely coding bug";
+            throw Exception("unknown change mask seen. likely coding bug");
         }
 
         this->changes.push_back(change);
@@ -1135,7 +1136,7 @@ Thread::Thread(thread_start_func func, void *data)
 #elif LINUX
     int result = pthread_create(&this->thread, NULL, func, data);
     if (result != 0) {
-        throw "error creating thread";
+        throw Exception("error creating thread");
     }
 #else
 #error "not supported on this platform yet"
@@ -1185,7 +1186,7 @@ bool Thread::Alive()
     DWORD code = 0;
     BOOL result = GetExitCodeThread(this->thread, &code);
     if (result == 0) {
-        throw "TODO react to bad GetExitCodeThread() result";
+        throw Exception("TODO react to bad GetExitCodeThread() result");
     }
 
     return code == STILL_ACTIVE;

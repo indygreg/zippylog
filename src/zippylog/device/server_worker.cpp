@@ -94,7 +94,7 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &requ
 
 bool Worker::HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous)
 {
-    throw "TODO implement Worker::HandleWriteEnvelopes";
+    throw Exception("TODO implement Worker::HandleWriteEnvelopes");
 }
 
 }}} // namespaces

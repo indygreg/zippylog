@@ -18,6 +18,7 @@
 namespace zippylog {
 namespace device {
 
+using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
 
@@ -46,7 +47,7 @@ StringWriter::~StringWriter()
 void StringWriter::Run(bool *active)
 {
     if (!active) {
-        throw "argument to StringWriter::Run cannot be NULL";
+        throw invalid_argument("argument to StringWriter::Run cannot be NULL");
     }
 
     while (*active) {

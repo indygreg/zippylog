@@ -25,6 +25,7 @@
     zeromq::send_envelope(socketvar, logenvelope); \
 }
 
+using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
@@ -46,7 +47,7 @@ SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
 {
     // milliseconds to microseconds
     if (!this->expiration_timer.Start(expiration_ttl * 1000)) {
-        throw "could not start expiration timer";
+        throw Exception("could not start expiration timer");
     }
 }
 
@@ -73,7 +74,7 @@ Streamer::Streamer(StreamerStartParams params) :
     this->lua_allow = params.lua_allow;
     this->lua_max_memory = params.lua_max_memory;
 
-    if (!params.active) throw "active parameter cannot be NULL";
+    if (!params.active) throw invalid_argument("active parameter cannot be NULL");
 
     this->active = params.active;
 
@@ -171,7 +172,7 @@ void Streamer::Run()
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
             if (!this->subscription_updates_sock->recv(&msg, 0)) {
-                throw "weird";
+                throw Exception("error receiving 0MQ messages");
             }
 
             Envelope e = Envelope(msg.data(), msg.size());
@@ -186,7 +187,7 @@ void Streamer::Run()
             vector<message_t *> msgs;
 
             if (!zeromq::receive_multipart_message(this->subscriptions_sock, identities, msgs)) {
-                throw "TODO log error receiving multipart message on subscriptions sock";
+                throw Exception("TODO log error receiving multipart message on subscriptions sock");
             }
 
             this->ProcessSubscription(identities, msgs);
@@ -277,7 +278,7 @@ bool Streamer::ProcessSubscription(vector<string> &identities, vector<message_t 
      e = Envelope(msgs[0]->data(), msgs[0]->size());
     }
     catch (DeserializeException e) {
-        throw "TODO log deserialize exception";
+        throw Exception("TODO log deserialize exception");
     }
 
     if (e.MessageCount() != 1) return false;
@@ -295,7 +296,7 @@ bool Streamer::ProcessSubscription(vector<string> &identities, vector<message_t 
             break;
 
         default:
-            throw "TODO log unknown subscription message";
+            throw Exception("TODO log unknown subscription message");
             break;
     }
 
@@ -310,7 +311,7 @@ bool Streamer::ProcessStoreChangeMessage(message_t &msg)
     Envelope e;
     try { e = Envelope(msg.data(), msg.size()); }
     catch (DeserializeException ex) {
-        throw "TODO log deserialize error and continue";
+        throw Exception("TODO log deserialize error and continue");
     }
 
     if (!e.MessageCount()) return false;
@@ -331,7 +332,7 @@ bool Streamer::ProcessStoreChangeMessage(message_t &msg)
             this->ProcessStoreChangeEnvelope(e);
             break;
         default:
-            throw "TODO log unknown store change message in streamer";
+            throw Exception("TODO log unknown store change message in streamer");
             break;
     }
 
@@ -387,7 +388,7 @@ void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities
             delete subscription;
 
             // TODO send error response instead
-            throw "error loading user-supplied code";
+            throw Exception("error loading user-supplied code");
         }
     }
 
@@ -490,7 +491,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     if (process_envelopes && this->HaveEnvelopeSubscription(path)) {
         is = this->store->GetInputStream(path);
         if (!is) {
-            throw "could not obtain input stream";
+            throw Exception("could not obtain input stream");
             return;
         }
     }
@@ -517,7 +518,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                 start.add_to_envelope(&response);
 
                 if (!e.CopyMessage(0, response)) {
-                    throw "could not copy message to response envelope. weird";
+                    throw Exception("could not copy message to response envelope. weird");
                 }
 
                 zeromq::send_envelope(this->client_sock, i->second->socket_identifiers, response);
@@ -533,7 +534,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                 uint64 offset = iter->second;
 
                 if (!is->SetAbsoluteOffset(offset)) {
-                    throw "could not set stream offset";
+                    throw Exception("could not set stream offset");
                 }
 
                 Envelope response = Envelope();

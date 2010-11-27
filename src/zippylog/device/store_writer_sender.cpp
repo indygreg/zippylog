@@ -65,7 +65,7 @@ bool StoreWriterSender::DeliverEnvelope(const string &bucket, const string &set,
 {
     // TODO is this appropriate? I think it signifies a coding error (no param to constructor) and thus is
     if (!this->envelope_pull_sock)
-        throw "can not deliver envelopes since the pull socket is not configured";
+        throw Exception("can not deliver envelopes since the pull socket is not configured");
 
     vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);
@@ -77,7 +77,7 @@ bool StoreWriterSender::DeliverEnvelope(const string &bucket, const string &set,
 bool StoreWriterSender::WriteEnvelope(const string &bucket, const string &set, ::zippylog::Envelope &e)
 {
     if (!this->envelope_rep_sock)
-        throw "can not deliver envelopes since the rep sock is not configured";
+        throw Exception("can not deliver envelopes since the rep sock is not configured");
 
     vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);

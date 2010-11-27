@@ -126,7 +126,7 @@ void Watcher::HandleModified(string path, platform::FileStat &stat)
     }
     else {
         // what else is there? buckets and stream sets don't really modify, do they?
-        throw "how did we get here?";
+        throw Exception("how did we get here?");
     }
 }
 

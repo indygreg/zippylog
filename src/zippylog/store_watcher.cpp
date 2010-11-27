@@ -21,6 +21,8 @@
 
 namespace zippylog {
 
+using ::std::invalid_argument;
+using ::std::logic_error;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::zippylogd::StoreWatcherStartup;
@@ -38,7 +40,7 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
     watcher(params.store_path, true)
 {
     if (!this->active) {
-        throw "active semaphore cannot be NULL";
+        throw invalid_argument("active semaphore cannot be NULL");
     }
 
     this->_store = new SimpleDirectoryStore(params.store_path);
@@ -77,7 +79,7 @@ void StoreWatcher::Run()
         vector<platform::DirectoryChange> changes;
 
         if (!this->watcher.GetChanges(changes)) {
-            throw "could not obtain directory changes... weird";
+            Exception("could not obtain directory changes... weird");
         }
 
         vector<platform::DirectoryChange>::iterator itor = changes.begin();
@@ -114,7 +116,7 @@ void StoreWatcher::Run()
                     break;
 
                 default:
-                    throw "unknown action seen. buggy code.";
+                    throw logic_error("unknown action seen. buggy code.");
             }
         }
     }
