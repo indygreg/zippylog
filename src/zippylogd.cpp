@@ -23,7 +23,7 @@ using ::std::endl;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::device::Server;
-using ::zippylog::device::ServerConfig;
+using ::zippylog::device::ServerStartParams;
 
 #ifdef LINUX
 static volatile sig_atomic_t active = 1;
@@ -52,7 +52,7 @@ int main(int argc, const char * const argv[])
     try {
         ::zippylog::initialize_library();
 
-        ServerConfig config;
+        ServerStartParams config;
         string error;
 
         if (!Server::ParseConfig(argv[1], config, error)) {
