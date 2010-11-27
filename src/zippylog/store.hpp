@@ -80,8 +80,7 @@ class ZIPPYLOG_EXPORT Store {
         /// The passed string should resemble:
         ///
         ///    simpledirectory:///path/to/root/dir
-        static Store * CreateStore(const ::std::string &uri)
-            throw(InvalidStoreUriException, UnsupportedStoreUriException);
+        static Store * CreateStore(const ::std::string &uri);
 
         /// Validates that a store path string is sane
         ///
@@ -294,8 +293,7 @@ class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
         /// The path should be a valid filesystem path for the current
         /// system. For UNIX, something like "/var/zippylog/store" or "store"
         /// should work. For Windows, "C:\zippylog" or similar.
-        SimpleDirectoryStore(const ::std::string &path)
-            throw(StorePathNotDirectoryException);
+        SimpleDirectoryStore(const ::std::string &path);
 
         ~SimpleDirectoryStore() { };
 
