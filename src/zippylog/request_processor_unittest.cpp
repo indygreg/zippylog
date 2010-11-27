@@ -41,20 +41,23 @@ public:
       RequestProcessor(params),
       subscribe_store_changes_count(0),
       handle_subscribe_envelopes_count(0),
-      handle_subscribe_keepalive_count(0)
+      handle_subscribe_keepalive_count(0),
+      write_envelopes_count(0)
     {
     }
 
-protected:
     int subscribe_store_changes_count;
     int handle_subscribe_envelopes_count;
     int handle_subscribe_keepalive_count;
+    int write_envelopes_count;
 
+protected:
     void Reset()
     {
         this->subscribe_store_changes_count = 0;
         this->handle_subscribe_envelopes_count = 0;
         this->handle_subscribe_keepalive_count = 0;
+        this->write_envelopes_count = 0;
     }
 
     ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
@@ -75,6 +78,11 @@ protected:
         return AUTHORITATIVE;
     }
 
+    bool HandleWriteEnvelopes(const string &path, vector<Envelope> &to_write, bool synchronous)
+    {
+        this->write_envelopes_count += to_write.size();
+        return true;
+    }
 };
 
 class RequestProcessorTest : public ::testing::Test {
@@ -414,4 +422,90 @@ TEST_F(RequestProcessorTest, GetStream)
     ASSERT_EQ(end1->offset(), end1->bytes_sent());
 
     output.clear();
+}
+
+TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
+{
+    vector<Envelope> output;
+    string path = "/bucketA/set0";
+
+    // empty request should complain about missing path field
+    {
+        protocol::request::WriteEnvelope r;
+        r.set_version(1);
+        Envelope e;
+        r.add_to_envelope(e);
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+        output.clear();
+    }
+
+    // invalid path (to a bucket)
+    {
+        protocol::request::WriteEnvelope r;
+        r.set_version(1);
+        r.set_path("/bucketA");
+        Envelope e;
+        r.add_to_envelope(e);
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        output.clear();
+    }
+
+    // path to non-existing stream set
+    {
+        protocol::request::WriteEnvelope r;
+        r.set_version(1);
+        r.set_path("/bucketA/DOESNOTEXIST");
+        Envelope e;
+        r.add_to_envelope(e);
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+        output.clear();
+    }
+
+    // valid path field, but no envelopes
+    {
+        protocol::request::WriteEnvelope r;
+        r.set_version(1);
+        r.set_path(path);
+        Envelope e;
+        r.add_to_envelope(e);
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+        output.clear();
+    }
+}
+
+TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeAck)
+{
+    vector<Envelope> output;
+
+    protocol::request::WriteEnvelope r;
+    r.set_version(1);
+    r.set_path("/bucketA/set0");
+    Envelope e, w;
+    r.add_to_envelope(w);
+    r.add_envelope(w.envelope.SerializeAsString());
+    r.add_to_envelope(e);
+    ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+    EXPECT_EQ(1, this->p->write_envelopes_count);
+    ASSERT_EQ(1, output.size());
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::WriteAck);
+    protocol::response::WriteAck *m = (protocol::response::WriteAck *)output[0].GetMessage(0);
+    EXPECT_TRUE(m->has_envelopes_written());
+    EXPECT_EQ(1, m->envelopes_written());
+}
+
+TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeNoAck)
+{
+    vector<Envelope> output;
+
+    protocol::request::WriteEnvelope r;
+    r.set_version(1);
+    r.set_path("/bucketA/set0");
+    r.set_acknowledge(false);
+    Envelope e, w;
+    r.add_to_envelope(w);
+    r.add_envelope(w.envelope.SerializeAsString());
+    r.add_to_envelope(e);
+    ASSERT_TRUE(RequestProcessor::DEFERRED == this->p->ProcessRequest(e, output));
+    EXPECT_EQ(1, this->p->write_envelopes_count);
+    ASSERT_EQ(0, output.size());
 }

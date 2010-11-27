@@ -21,6 +21,8 @@
 #include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
+#include <zippylog/device/store_writer.hpp>
+#include <zippylog/device/store_writer_sender.hpp>
 #include <zippylog/device/streamer.hpp>
 
 #include <vector>
@@ -41,25 +43,43 @@ public:
     // where to send updates for existing subscriptions
     ::std::string streaming_updates_endpoint;
 
+    /// 0MQ endpoint for store writer's envelope PULL socket
+    ::std::string store_writer_envelope_pull_endpoint;
+
+    /// 0MQ endpoint for store writer's envelope REP socket
+    ::std::string store_writer_envelope_rep_endpoint;
+
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
 
-/// Processes zippylog protocol requests for a server device
+/// RequestProcessor implementation for the service device
+///
+/// When this request processor receives a request related to streaming, it
+/// forwards it to the stream processors, via 1 of 2 sockets. The built-in
+/// subscriptions sock load balances among all active streamers in the
+/// server device. The subscription updates sock fans out to all instances.
+/// The former is used when a message only needs to go to 1 streamer and the
+/// latter when all streamers need to see it (e.g. a keepalive message since
+/// the server doesn't know which streamers have which subscriptions).
 class Worker : public ::zippylog::RequestProcessor {
     public:
         Worker(WorkerStartParams &params);
         ~Worker();
 
     protected:
+        // implement virtual functions
         ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
         ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
         ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
+        bool HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous);
 
         ::std::string streaming_subscriptions_endpoint;
         ::std::string streaming_updates_endpoint;
 
         ::zmq::socket_t *subscriptions_sock;
         ::zmq::socket_t *subscription_updates_sock;
+
+        ::zippylog::device::StoreWriterSender * store_sender;
 };
 
 /// Create store watchers tailored for the server device
@@ -241,44 +261,78 @@ class ZIPPYLOG_EXPORT Server {
         // yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
+        /// server id
+        ///
+        /// used for identification purposes in logging
         ::std::string id;
+
+        /// Thread running the server
+        ///
+        /// Only present when server is running asynchronously via RunAsync()
         ::zippylog::platform::Thread * exec_thread;
+
+        /// Threads running workers/request processors
         ::std::vector< ::zippylog::platform::Thread * > worker_threads;
+
+        /// Threads running streamers
         ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
+
+        /// Thread writing to the store
+        ::zippylog::platform::Thread * store_writer_thread;
+
+        /// Thread watching the store
+        ::zippylog::platform::Thread * store_watcher_thread;
+
+        /// The store we are bound to
         ::zippylog::Store * store;
         bool active;
         ServerConfig config;
-        ::zippylog::platform::Thread * store_watcher_thread;
 
+        /// Whether the internal structure is set up and ready for running
+        bool initialized;
+
+        /// used to construct child objects
+        ///
+        /// The addresses of these variables are passed when starting the
+        /// threads for these objects.
         ::zippylog::device::server::WorkerStartParams request_processor_params;
         ::zippylog::device::StreamerStartParams streamer_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
+        ::zippylog::device::StoreWriterStartParams store_writer_params;
 
-        // TODO these should not be static
-        static const ::std::string WORKER_ENDPOINT;
-        static const ::std::string STORE_CHANGE_ENDPOINT;
-        static const ::std::string STREAMING_ENDPOINT;
-        static const ::std::string LOGGER_ENDPOINT;
-
-        static const ::std::string WORKER_SUBSCRIPTIONS_ENDPOINT;
-        static const ::std::string STREAMING_SUBSCRIPTIONS_ENDPOINT;
-        static const ::std::string WORKER_STREAMING_NOTIFY_ENDPOINT;
-        static const ::std::string STREAMING_STREAMING_NOTIFY_ENDPOINT;
+        /// 0MQ endpoints used by various internal sockets
+        ::std::string worker_endpoint;
+        ::std::string store_change_endpoint;
+        ::std::string streaming_endpoint;
+        ::std::string logger_endpoint;
+        ::std::string worker_subscriptions_endpoint;
+        ::std::string streaming_subscriptions_endpoint;
+        ::std::string worker_streaming_notify_endpoint;
+        ::std::string streaming_streaming_notify_endpoint;
+        ::std::string store_writer_envelope_pull_endpoint;
+        ::std::string store_writer_envelope_rep_endpoint;
 
         static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
 
-        // thread start functions
+        /// Thread start functions
         static void * StoreWatcherStart(void *data);
         static void * StreamingStart(void *data);
         static void * AsyncExecStart(void *data);
         static void * RequestProcessorStart(void *data);
+        static void * StoreWriterStart(void *data);
 
-        void init();
-        void create_worker_threads();
-        void create_store_watcher();
-        void create_streaming_threads();
-        void setup_internal_sockets();
-        void setup_listener_sockets();
+        /// Populates the *StartParams members with appropriate values
+        bool SynchronizeStartParams();
+
+        /// Initialize internal sockets and threads
+        bool Initialize();
+
+        /// Spins up a new worker thread
+        bool CreateWorkerThread();
+
+        /// Spins up a new thread to process streaming
+        bool CreateStreamingThread();
+
     private:
         // copy constructor and assignment operator are not available
         Server(const Server &orig);

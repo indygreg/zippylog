@@ -128,6 +128,11 @@ namespace platform {
     // UUID type is not defined yet
     ZIPPYLOG_EXPORT bool CreateUUID(UUID &u);
 
+    /// Formats the passed UUID data into a string
+    ///
+    /// String has the common XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX format
+    ZIPPYLOG_EXPORT bool FormatUUID(UUID &e, ::std::string &s);
+
     class ZIPPYLOG_EXPORT File {
     public:
         File();

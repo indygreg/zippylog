@@ -69,6 +69,13 @@ StoreWriter::~StoreWriter()
     if (this->envelope_rep_sock) delete this->envelope_rep_sock;
 }
 
+bool StoreWriter::Run()
+{
+    while (true) {
+        this->ProcessSockets(250000);
+    }
+}
+
 bool StoreWriter::ProcessSockets(long timeout)
 {
     ::zmq::pollitem_t * pollitems = new ::zmq::pollitem_t[this->active_sockets];

@@ -41,13 +41,22 @@ namespace zippylog {
 
 class ZIPPYLOG_EXPORT Envelope {
     public:
-        /// construct an empty envelope
+        /// Construct an empty envelope
         Envelope();
 
         /// Construct from serialized binary data
         Envelope(const void *data, int size);
 
-        /// construct an envelope having string data
+        /// Construct an envelope from a 0MQ message
+        ///
+        /// This function assumes the ENTIRE content of the 0MQ message is
+        /// the serialized envelope. Note that for a zippylog protocol 0MQ
+        /// message (where the first byte is a version byte), this is NOT
+        /// the case. So, if you attempt to construct an envelope from one
+        /// of these messages, it will likely fail.
+        Envelope(::zmq::message_t &m);
+
+        /// Construct an envelope having string data
         ///
         /// This populates the string_value field of the envelope. It does
         /// not build an envelope from the serialized protocol buffer data

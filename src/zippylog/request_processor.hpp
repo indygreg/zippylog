@@ -146,6 +146,15 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// TODO specific class for request
         virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
+        /// Callback to handle writing of envelopes
+        ///
+        /// Receives the path we are writing to (already validated to be a
+        /// stream set or stream). If a stream set, it is validated to exist.
+        /// If a stream, it may not exist.
+        ///
+        /// The synchronous parameter says whether to wait for writes before
+        /// returning.
+        virtual bool HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
 
         /// Process a StoreInfo request and populate the passed envelope with the response
         ///
@@ -164,6 +173,9 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
 
         ResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a WriteEnvelope request
+        ResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Checks that a path supplied by the client is valid
         ///

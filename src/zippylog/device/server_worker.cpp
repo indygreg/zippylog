@@ -37,17 +37,26 @@ Worker::Worker(WorkerStartParams &params) :
     streaming_subscriptions_endpoint(params.streaming_subscriptions_endpoint),
     streaming_updates_endpoint(params.streaming_updates_endpoint),
     subscriptions_sock(NULL),
-    subscription_updates_sock(NULL)
+    subscription_updates_sock(NULL),
+    store_sender(NULL)
 {
     this->subscriptions_sock = new socket_t(*this->ctx, ZMQ_PUSH);
     this->subscriptions_sock->connect(this->streaming_subscriptions_endpoint.c_str());
 
     this->subscription_updates_sock = new socket_t(*this->ctx, ZMQ_PUSH);
     this->subscription_updates_sock->connect(this->streaming_updates_endpoint.c_str());
+
+    StoreWriterSenderStartParams swsp;
+    swsp.ctx = this->ctx;
+    swsp.envelope_pull_endpoint = params.store_writer_envelope_pull_endpoint;
+    swsp.envelope_rep_endpoint = params.store_writer_envelope_rep_endpoint;
+
+    this->store_sender = new StoreWriterSender(swsp);
 }
 
 Worker::~Worker()
 {
+    if (this->store_sender) delete this->store_sender;
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
@@ -83,6 +92,9 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &requ
     return DEFERRED;
 }
 
-
+bool Worker::HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous)
+{
+    throw "TODO implement Worker::HandleWriteEnvelopes";
+}
 
 }}} // namespaces

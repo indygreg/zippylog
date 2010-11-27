@@ -48,17 +48,6 @@ using ::zippylog::device::server::Watcher;
 using ::zippylog::device::server::Worker;
 using ::zippylog::device::server::WorkerStartParams;
 
-const string Server::WORKER_ENDPOINT = "inproc://workers";
-const string Server::STORE_CHANGE_ENDPOINT = "inproc://store_changes";
-const string Server::STREAMING_ENDPOINT = "inproc://streaming";
-const string Server::LOGGER_ENDPOINT = "inproc://logger";
-
-const string Server::WORKER_SUBSCRIPTIONS_ENDPOINT = "inproc://worker_subscriptions";
-const string Server::STREAMING_SUBSCRIPTIONS_ENDPOINT = "inproc://streaming_subscriptions";
-const string Server::WORKER_STREAMING_NOTIFY_ENDPOINT = "inproc://worker_streaming_notify";
-const string Server::STREAMING_STREAMING_NOTIFY_ENDPOINT = "inproc://streaming_notify";
-
-
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
 #define STREAMING_INDEX 2
@@ -66,9 +55,55 @@ const string Server::STREAMING_STREAMING_NOTIFY_ENDPOINT = "inproc://streaming_n
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
 
-Server::Server(const string config_file_path) : zctx(3)
+Server::Server(const string config_file_path) :
+    zctx(3),
+    active(true),
+    exec_thread(NULL),
+    store_writer_thread(NULL),
+    workers_sock(NULL),
+    clients_sock(NULL),
+    streaming_sock(NULL),
+    worker_subscriptions_sock(NULL),
+    streaming_subscriptions_sock(NULL),
+    worker_streaming_notify_sock(NULL),
+    streaming_streaming_notify_sock(NULL),
+    logger_sock(NULL),
+    log_client_sock(NULL),
+    store(NULL),
+    store_watcher_thread(NULL),
+    initialized(false)
 {
-    this->init();
+    platform::UUID uuid;
+    if (!platform::CreateUUID(uuid)) {
+        throw "could not create UUID";
+    }
+
+    this->id = string((const char *)&uuid, sizeof(uuid));
+
+    // the 0MQ socket endpoints used internally are created by taking the UUID
+    // of the server and adding a descriptor to the end of it. The actual
+    // value doesn't matter, since the strings are only passed around within
+    // the object and derived objects. However, they should be unique so
+    // multiple servers can exist within the same process. I don't think
+    // the length of the endpoints will negatively impact runtime performance
+    // since I'm pretty sure everything gets converted to a descriptor by 0MQ,
+    // but it might be worth investigating. We preserve human-friendly names
+    // until proven otherwise.
+    string uuid_s;
+    if (!platform::FormatUUID(uuid, uuid_s)) {
+        throw "could not format UUID";
+    }
+
+    this->worker_endpoint = "inproc://" + uuid_s + "workers";
+    this->store_change_endpoint = "inprox://" + uuid_s + "store_changes";
+    this->streaming_endpoint = "inproc://" + uuid_s + "streaming";
+    this->logger_endpoint = "inproc://" + uuid_s + "logger";
+    this->worker_subscriptions_endpoint = "inproc://" + uuid_s + "worker_subscriptions";
+    this->streaming_subscriptions_endpoint = "inproc://" + uuid_s + "streaming_subscriptions";
+    this->worker_streaming_notify_endpoint = "inproc://" + uuid_s + "worker_streaming_notify";
+    this->streaming_streaming_notify_endpoint = "inproc://" + uuid_s + "streaming_notify";
+    this->store_writer_envelope_pull_endpoint = "inproc://" + uuid_s + "store_writer_envelope_pull";
+    this->store_writer_envelope_rep_endpoint = "inproc://" + uuid_s + "store_writer_envelope_rep";
 
     string error;
     if (!ParseConfig(config_file_path, this->config, error)) {
@@ -91,37 +126,12 @@ Server::~Server()
     if (this->streaming_streaming_notify_sock) delete this->streaming_streaming_notify_sock;
     if (this->logger_sock) delete this->logger_sock;
     if (this->log_client_sock) delete this->log_client_sock;
-
     if (this->store) delete this->store;
-}
-
-void Server::init()
-{
-    this->active = true;
-    this->exec_thread = NULL;
-    this->workers_sock = NULL;
-    this->clients_sock = NULL;
-    this->streaming_sock = NULL;
-    this->worker_subscriptions_sock = NULL;
-    this->streaming_subscriptions_sock = NULL;
-    this->worker_streaming_notify_sock = NULL;
-    this->streaming_streaming_notify_sock = NULL;
-    this->logger_sock = NULL;
-    this->log_client_sock = NULL;
-    this->store = NULL;
-    this->store_watcher_thread = NULL;
-
-    platform::UUID uuid;
-    if (!platform::CreateUUID(uuid)) {
-        throw "could not create UUID";
-    }
-
-    this->id = string((const char *)&uuid, sizeof(uuid));
 }
 
 void Server::Run()
 {
-    this->setup_internal_sockets();
+    if (!this->initialized) this->Initialize();
 
     {
         BrokerStartup log = BrokerStartup();
@@ -130,11 +140,6 @@ void Server::Run()
         log.add_to_envelope(&logenvelope);
         zeromq::send_envelope(this->log_client_sock, logenvelope);
     }
-
-    this->create_worker_threads();
-    this->create_store_watcher();
-    this->create_streaming_threads();
-    this->setup_listener_sockets();
 
     int number_pollitems = 6;
     zmq::pollitem_t* pollitems = new zmq::pollitem_t[number_pollitems];
@@ -316,46 +321,38 @@ void * Server::AsyncExecStart(void *data)
     return NULL;
 }
 
-
-void Server::create_worker_threads()
+bool Server::SynchronizeStartParams()
 {
+    // worker/request processor
     ::zippylog::RequestProcessorStartParams params;
     params.active = &this->active;
     params.ctx = &this->zctx;
-    params.client_endpoint = this->WORKER_ENDPOINT;
-    params.logger_endpoint = this->LOGGER_ENDPOINT;
+    params.client_endpoint = this->worker_endpoint;
+    params.logger_endpoint = this->logger_endpoint;
     params.store_path = this->config.store_path;
 
     this->request_processor_params.request_processor_params = params;
-    this->request_processor_params.streaming_subscriptions_endpoint = this->WORKER_SUBSCRIPTIONS_ENDPOINT;
-    this->request_processor_params.streaming_updates_endpoint = this->WORKER_STREAMING_NOTIFY_ENDPOINT;
+    this->request_processor_params.streaming_subscriptions_endpoint = this->worker_subscriptions_endpoint;
+    this->request_processor_params.streaming_updates_endpoint = this->worker_streaming_notify_endpoint;
+    this->request_processor_params.store_writer_envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    this->request_processor_params.store_writer_envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
 
-    for (int i = this->config.worker_threads; i; --i) {
-        this->worker_threads.push_back(new Thread(Server::RequestProcessorStart, &this->request_processor_params));
-    }
-}
+    // store watcher
+    StoreWatcherStartParams swparams;
+    swparams.active = &this->active;
+    swparams.logging_endpoint = this->logger_endpoint;
+    swparams.store_path = this->config.store_path;
+    swparams.zctx = &this->zctx;
 
-void Server::create_store_watcher()
-{
-    StoreWatcherStartParams params;
-    params.active = &this->active;
-    params.logging_endpoint = this->LOGGER_ENDPOINT;
-    params.store_path = this->config.store_path;
-    params.zctx = &this->zctx;
+    this->store_watcher_params.params = swparams;
+    this->store_watcher_params.socket_endpoint = this->store_change_endpoint;
 
-    this->store_watcher_params.params = params;
-    this->store_watcher_params.socket_endpoint = this->STORE_CHANGE_ENDPOINT;
-
-    this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
-}
-
-void Server::create_streaming_threads()
-{
-    this->streamer_params.client_endpoint = STREAMING_ENDPOINT;
-    this->streamer_params.store_changes_endpoint = STORE_CHANGE_ENDPOINT;
-    this->streamer_params.logging_endpoint = LOGGER_ENDPOINT;
-    this->streamer_params.subscriptions_endpoint = STREAMING_SUBSCRIPTIONS_ENDPOINT;
-    this->streamer_params.subscription_updates_endpoint = STREAMING_STREAMING_NOTIFY_ENDPOINT;
+    // streamer
+    this->streamer_params.client_endpoint = this->streaming_endpoint;
+    this->streamer_params.store_changes_endpoint = this->store_change_endpoint;
+    this->streamer_params.logging_endpoint = this->logger_endpoint;
+    this->streamer_params.subscriptions_endpoint = this->streaming_subscriptions_endpoint;
+    this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
 
     this->streamer_params.ctx = &this->zctx;
     this->streamer_params.store = this->store;
@@ -364,40 +361,69 @@ void Server::create_streaming_threads()
     this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
     this->streamer_params.active = &this->active;
 
-    for (int i = this->config.streaming_threads; i; i--) {
-        this->streaming_threads.push_back(new Thread(Server::StreamingStart, &this->streamer_params));
-    }
+    // store writer
+    this->store_writer_params.ctx = &this->zctx;
+    this->store_writer_params.store_path = this->config.store_path;
+    this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    this->store_writer_params.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
+
+    return true;
 }
 
-void Server::setup_internal_sockets()
+bool Server::Initialize()
 {
+    if (this->initialized) {
+        throw "Initialized() already called!";
+    }
+
+    // we set the flag early to catch partial initialization
+    this->initialized = true;
+
+    this->SynchronizeStartParams();
+
+    // create all our sockets
     this->logger_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->logger_sock->bind(LOGGER_ENDPOINT.c_str());
+    this->logger_sock->bind(this->logger_endpoint.c_str());
 
     this->log_client_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
-    this->log_client_sock->connect(LOGGER_ENDPOINT.c_str());
+    this->log_client_sock->connect(this->logger_endpoint.c_str());
 
     this->workers_sock = new zmq::socket_t(this->zctx, ZMQ_XREQ);
-    this->workers_sock->bind(WORKER_ENDPOINT.c_str());
+    this->workers_sock->bind(this->worker_endpoint.c_str());
 
     this->streaming_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->streaming_sock->bind(STREAMING_ENDPOINT.c_str());
+    this->streaming_sock->bind(this->streaming_endpoint.c_str());
 
     this->worker_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->worker_subscriptions_sock->bind(WORKER_SUBSCRIPTIONS_ENDPOINT.c_str());
+    this->worker_subscriptions_sock->bind(this->worker_subscriptions_endpoint.c_str());
 
     this->worker_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
-    this->worker_streaming_notify_sock->bind(WORKER_STREAMING_NOTIFY_ENDPOINT.c_str());
+    this->worker_streaming_notify_sock->bind(this->worker_streaming_notify_endpoint.c_str());
 
     this->streaming_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
-    this->streaming_subscriptions_sock->bind(STREAMING_SUBSCRIPTIONS_ENDPOINT.c_str());
+    this->streaming_subscriptions_sock->bind(this->streaming_subscriptions_endpoint.c_str());
 
     this->streaming_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PUB);
-    this->streaming_streaming_notify_sock->bind(STREAMING_STREAMING_NOTIFY_ENDPOINT.c_str());
-}
+    this->streaming_streaming_notify_sock->bind(this->streaming_streaming_notify_endpoint.c_str());
 
-void Server::setup_listener_sockets()
-{
+    // now create child threads
+
+    // start with store writer
+    this->store_writer_thread = new Thread(StoreWriterStart, &this->store_writer_params);
+
+    // spin up configured number of workers
+    for (int i = this->config.worker_threads; i; --i) {
+        if (!this->CreateWorkerThread()) return false;
+    }
+
+    // and the streamers
+    for (int i = this->config.streaming_threads; i; --i) {
+        if (!this->CreateStreamingThread()) return false;
+    }
+
+    this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
+
+    // bind sockets to listen for client requests
     this->clients_sock = new zmq::socket_t(this->zctx, ZMQ_XREP);
 
     // 0MQ sockets can bind to multiple endpoints
@@ -405,6 +431,22 @@ void Server::setup_listener_sockets()
     for (size_t i = 0; i < this->config.listen_endpoints.size(); i++) {
         this->clients_sock->bind(this->config.listen_endpoints[i].c_str());
     }
+
+    return true;
+}
+
+bool Server::CreateWorkerThread()
+{
+    this->worker_threads.push_back(new Thread(Server::RequestProcessorStart, &this->request_processor_params));
+
+    return true;
+}
+
+bool Server::CreateStreamingThread()
+{
+    this->streaming_threads.push_back(new Thread(Server::StreamingStart, &this->streamer_params));
+
+    return true;
 }
 
 void Server::Shutdown()
@@ -431,6 +473,12 @@ void Server::Shutdown()
     this->store_watcher_thread->Join();
     delete this->store_watcher_thread;
     this->store_watcher_thread = NULL;
+
+    if (this->store_writer_thread) {
+        this->store_writer_thread->Join();
+        delete this->store_writer_thread;
+        this->store_writer_thread = NULL;
+    }
 
     if (this->exec_thread) {
         this->exec_thread->Join();
@@ -590,6 +638,7 @@ void * Server::StreamingStart(void *d)
 
 void * Server::RequestProcessorStart(void *d)
 {
+    assert(d);
     WorkerStartParams *params = (WorkerStartParams *)d;
     try {
         Worker processor(*params);
@@ -601,6 +650,21 @@ void * Server::RequestProcessorStart(void *d)
     }
     catch (...) {
 
+    }
+
+    return NULL;
+}
+
+void * Server::StoreWriterStart(void *d)
+{
+    assert(d);
+    StoreWriterStartParams *params = (StoreWriterStartParams *)d;
+    try {
+        StoreWriter writer(*params);
+        writer.Run();
+    }
+    catch (::std::exception e) {
+        throw "TODO handle store writer exception";
     }
 
     return NULL;
