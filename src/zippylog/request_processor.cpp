@@ -101,7 +101,7 @@ RequestProcessor::~RequestProcessor()
 void RequestProcessor::Run()
 {
     {
-        ::zippylog::request_processor::RunStart log = ::zippylog::request_processor::RunStart();
+        ::zippylog::request_processor::RunStart log;
         LOG_MESSAGE(log, this->logger_sock);
     }
 
@@ -122,7 +122,7 @@ void RequestProcessor::Run()
         vector<message_t *> msgs;
         this->current_request_identities.clear();
         if (!zeromq::receive_multipart_message(this->socket, this->current_request_identities, msgs)) {
-            ::zippylog::request_processor::FailReceiveMessage log = ::zippylog::request_processor::FailReceiveMessage();
+            ::zippylog::request_processor::FailReceiveMessage log;
             LOG_MESSAGE(log, this->logger_sock);
 
             // TODO shouldn't this be part of the receive_multipart_message API?
@@ -153,7 +153,7 @@ void RequestProcessor::Run()
         }
     }
 
-    ::zippylog::request_processor::RunStop log = ::zippylog::request_processor::RunStop();
+    ::zippylog::request_processor::RunStop log;
     LOG_MESSAGE(log, this->logger_sock);
 
     return;
@@ -177,7 +177,7 @@ void RequestProcessor::ProcessMessages(vector<string> &identities, vector<messag
 
     // we expect the first message to have an envelope of some kind
     if (!input[0]->size()) {
-        ::zippylog::request_processor::ReceiveEmptyMessage log = ::zippylog::request_processor::ReceiveEmptyMessage();
+        ::zippylog::request_processor::ReceiveEmptyMessage log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -193,7 +193,7 @@ void RequestProcessor::ProcessMessages(vector<string> &identities, vector<messag
     memcpy(&msg_version, input[0]->data(), sizeof(msg_version));
 
     if (msg_version != 0x01) {
-        ::zippylog::request_processor::UnknownMessageVersion log = ::zippylog::request_processor::UnknownMessageVersion();
+        ::zippylog::request_processor::UnknownMessageVersion log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -226,7 +226,7 @@ void RequestProcessor::ProcessMessages(vector<string> &identities, vector<messag
         );
     } catch ( ... ) {
         // we should only get an exception on parse error
-        ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
+        ::zippylog::request_processor::EnvelopeParseFailure log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -284,7 +284,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     uint32 request_type; // forward declare b/c of goto
 
     if (request_envelope.envelope.message_size() < 1) {
-        ::zippylog::request_processor::EmptyEnvelope log = ::zippylog::request_processor::EmptyEnvelope();
+        ::zippylog::request_processor::EmptyEnvelope log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -297,7 +297,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     }
 
     if (request_envelope.envelope.message_namespace_size() < 1 || request_envelope.envelope.message_type_size() < 1) {
-        ::zippylog::request_processor::InvalidMessageEnumeration log = ::zippylog::request_processor::InvalidMessageEnumeration();
+        ::zippylog::request_processor::InvalidMessageEnumeration log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -311,7 +311,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
     /* must be in the zippylog namespace */
     if (request_envelope.envelope.message_namespace(0) != ::zippylog::message_namespace) {
-        ::zippylog::request_processor::InvalidMessageEnumeration log = ::zippylog::request_processor::InvalidMessageEnumeration();
+        ::zippylog::request_processor::InvalidMessageEnumeration log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -363,7 +363,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
         default:
         {
-            ::zippylog::request_processor::UnknownRequestType log = ::zippylog::request_processor::UnknownRequestType();
+            ::zippylog::request_processor::UnknownRequestType log;
             log.set_enumeration(request_type);
             LOG_MESSAGE(log, this->logger_sock);
 
@@ -395,7 +395,7 @@ SEND_RESPONSE:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e, vector<Envelope> &output)
 {
-    ::zippylog::request_processor::BeginProcessStoreInfo logstart = ::zippylog::request_processor::BeginProcessStoreInfo();
+    ::zippylog::request_processor::BeginProcessStoreInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
     protocol::request::GetStoreInfo *m = (protocol::request::GetStoreInfo *)e.GetMessage(0);
@@ -408,7 +408,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e,
     protocol::StoreInfo info = protocol::StoreInfo();
     this->store->StoreInfo(info);
 
-    ::zippylog::request_processor::EndProcessStoreInfo logend = ::zippylog::request_processor::EndProcessStoreInfo();
+    ::zippylog::request_processor::EndProcessStoreInfo logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
     Envelope out;
@@ -419,7 +419,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e,
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e, vector<Envelope> &output)
 {
-    ::zippylog::request_processor::BeginProcessBucketInfo logstart = ::zippylog::request_processor::BeginProcessBucketInfo();
+    ::zippylog::request_processor::BeginProcessBucketInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket;
@@ -451,7 +451,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e
 
 LOG_END:
 
-    ::zippylog::request_processor::EndProcessBucketInfo logend = ::zippylog::request_processor::EndProcessBucketInfo();
+    ::zippylog::request_processor::EndProcessBucketInfo logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
     return AUTHORITATIVE;
@@ -459,7 +459,7 @@ LOG_END:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope &e, vector<Envelope> &output)
 {
-    ::zippylog::request_processor::BeginProcessStreamSetInfo logstart = ::zippylog::request_processor::BeginProcessStreamSetInfo();
+    ::zippylog::request_processor::BeginProcessStreamSetInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket, set;
@@ -490,7 +490,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope
     output.push_back(response);
 
 LOG_END:
-    ::zippylog::request_processor::EndProcessStreamSetInfo logend = ::zippylog::request_processor::EndProcessStreamSetInfo();
+    ::zippylog::request_processor::EndProcessStreamSetInfo logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
     return AUTHORITATIVE;
@@ -498,7 +498,7 @@ LOG_END:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e, vector<Envelope> &output)
 {
-    ::zippylog::request_processor::BeginProcessStreamInfo logstart = ::zippylog::request_processor::BeginProcessStreamInfo();
+    ::zippylog::request_processor::BeginProcessStreamInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket, set, stream;
@@ -530,7 +530,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
 
 LOG_END:
 
-    ::zippylog::request_processor::EndProcessStreamInfo logend = ::zippylog::request_processor::EndProcessStreamInfo();
+    ::zippylog::request_processor::EndProcessStreamInfo logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
     return AUTHORITATIVE;
@@ -539,13 +539,13 @@ LOG_END:
 RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &request, vector<Envelope> &output)
 {
     {
-        ::zippylog::request_processor::BeginProcessGetStream log = ::zippylog::request_processor::BeginProcessGetStream();
+        ::zippylog::request_processor::BeginProcessGetStream log;
         LOG_MESSAGE(log, this->logger_sock);
     }
 
     protocol::request::GetStream *get = (protocol::request::GetStream *)request.GetMessage(0);
     if (!get) {
-        ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
+        ::zippylog::request_processor::ReceiveInvalidGet log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -559,7 +559,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
     if (!this->CheckMessageVersion(get->version(), 1, output)) goto LOG_END;
 
     if (!get->has_path()) {
-        ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
+        ::zippylog::request_processor::ReceiveInvalidGet log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -573,7 +573,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
     if (!this->CheckPath(get->path(), output, true, true, true)) goto LOG_END;
 
     if (!get->has_start_offset()) {
-        ::zippylog::request_processor::ReceiveInvalidGet log = ::zippylog::request_processor::ReceiveInvalidGet();
+        ::zippylog::request_processor::ReceiveInvalidGet log;
         LOG_MESSAGE(log, this->logger_sock);
 
         this->PopulateErrorResponse(
@@ -591,7 +591,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             //   1) it was deleted between then and now
             //   2) error fetching stream
             // TODO react accordingly
-            ::zippylog::request_processor::GetInvalidStream log = ::zippylog::request_processor::GetInvalidStream();
+            ::zippylog::request_processor::GetInvalidStream log;
             LOG_MESSAGE(log, this->logger_sock);
 
             this->PopulateErrorResponse(
@@ -625,7 +625,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         uint32 envelope_size = stream->NextEnvelopeSize();
         // could not find envelope in stream at offset
         if (!envelope_size) {
-            ::zippylog::request_processor::GetInvalidOffset log = ::zippylog::request_processor::GetInvalidOffset();
+            ::zippylog::request_processor::GetInvalidOffset log;
             LOG_MESSAGE(log, this->logger_sock);
 
             // TODO need better error code
@@ -639,7 +639,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
 
         // we must have an envelope, so start the send sequence
 
-        protocol::response::StreamSegmentStart segment_start = protocol::response::StreamSegmentStart();
+        protocol::response::StreamSegmentStart segment_start;
         segment_start.set_path(get->path());
         segment_start.set_offset(get->start_offset());
         ::zippylog::Envelope env = ::zippylog::Envelope();
@@ -674,7 +674,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             if (!envelope_size) break;
         }
 
-        protocol::response::StreamSegmentEnd segment_end = protocol::response::StreamSegmentEnd();
+        protocol::response::StreamSegmentEnd segment_end;
         segment_end.set_envelopes_sent(envelopes_read);
         segment_end.set_bytes_sent(bytes_read);
         // TODO not all stores might share this concept of offsets
@@ -687,7 +687,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
 
 LOG_END:
 
-    ::zippylog::request_processor:: EndProcessGetStream logend = ::zippylog::request_processor:: EndProcessGetStream();
+    ::zippylog::request_processor:: EndProcessGetStream logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
     return AUTHORITATIVE;
@@ -720,7 +720,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
     protocol::request::SubscribeKeepalive *m =
         (protocol::request::SubscribeKeepalive *)request.GetMessage(0);
 
-    ::zippylog::request_processor::ForwardSubscribeKeepalive log = ::zippylog::request_processor::ForwardSubscribeKeepalive();
+    ::zippylog::request_processor::ForwardSubscribeKeepalive log;
     log.set_subscription(m->id());
     LOG_MESSAGE(log, this->logger_sock);
 
@@ -732,7 +732,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
 RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &request, vector<Envelope> &output)
 {
     {
-        ::zippylog::request_processor::BeginProcessWriteEnvelope log = ::zippylog::request_processor::BeginProcessWriteEnvelope();
+        ::zippylog::request_processor::BeginProcessWriteEnvelope log;
         LOG_MESSAGE(log, this->logger_sock);
     }
 
@@ -805,7 +805,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
             // catch parse failures and log then move on
             try { envs.push_back(Envelope(s.data(), s.size())); }
             catch (DeserializeException e) {
-                ::zippylog::request_processor::EnvelopeParseFailure log = ::zippylog::request_processor::EnvelopeParseFailure();
+                ::zippylog::request_processor::EnvelopeParseFailure log;
                 log.set_data(s);
                 LOG_MESSAGE(log, this->logger_sock);
             }
@@ -814,19 +814,33 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
         if (envs.size()) {
             this->HandleWriteEnvelopes(m->path(), envs, synchronous);
         }
+
+        if (send_ack) {
+            protocol::response::WriteAck ack = protocol::response::WriteAck();
+            // TODO add number of envelopes written
+
+            Envelope e;
+            ack.add_to_envelope(e);
+            output.push_back(e);
+        }
     }
 
 LOG_END:
 
-    ::zippylog::request_processor::EndProcessWriteEnvelope logend = ::zippylog::request_processor::EndProcessWriteEnvelope();
+    ::zippylog::request_processor::EndProcessWriteEnvelope logend;
     LOG_MESSAGE(logend, this->logger_sock);
 
-    return AUTHORITATIVE;
+    // if we have data in the output, we are authoritative
+    // else, we assume the user requested no ack, so we have no response
+    if (output.size()) {
+        return AUTHORITATIVE;
+    }
+    return DEFERRED;
 }
 
 bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code, string message, vector<Envelope> &msgs)
 {
-    ::zippylog::request_processor::SendErrorResponse log = ::zippylog::request_processor::SendErrorResponse();
+    ::zippylog::request_processor::SendErrorResponse log;
     log.set_message(message);
     LOG_MESSAGE(log, this->logger_sock);
 
