@@ -975,8 +975,9 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     if (!GetQueuedCompletionStatus(this->completion_port,
         &bytes_transferred, &key, &ol, milliseconds))
     {
-        // TODO this is failing immediately and causing the thread to run
-        // way. when did it break?!
+        // TODO we might want to check some error conditions here
+        // otherwise, the function could abort immediately and cause a runaway
+        // thread
         return false;
     }
 
