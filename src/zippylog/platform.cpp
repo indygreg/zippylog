@@ -46,16 +46,6 @@ using ::std::vector;
 
 namespace zippylog {
 
-void windows_error(char *buffer, size_t buffer_size)
-{
-#ifdef WINDOWS
-    DWORD errcode = GetLastError ();
-    DWORD rc = FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM |
-        FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errcode, MAKELANGID(LANG_NEUTRAL,
-        SUBLANG_DEFAULT), buffer, buffer_size, NULL );
-#endif
-}
-
 namespace platform {
 
 #ifdef LINUX
@@ -67,7 +57,7 @@ void set_system_error()
 #ifdef LINUX
     system_error = errno;
 #elif WINDOWS
-    // TODO
+
 #else
 #error "set_system_error() not implemented on this platform"
 #endif
@@ -87,8 +77,14 @@ bool get_system_error(string &s)
     return true;
 
 #elif WINDOWS
-    // TODO implement
-    return false;
+    DWORD errcode = GetLastError();
+    char error[256];
+    DWORD rc = FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM |
+        FORMAT_MESSAGE_IGNORE_INSERTS, NULL, errcode, MAKELANGID(LANG_NEUTRAL,
+        SUBLANG_DEFAULT), &error[0], sizeof(error), NULL );
+
+    s.assign(&error[0], sizeof(error));
+    return true;
 #else
 #error "get_system_error not implemented on this platform"
 #endif
@@ -887,13 +883,15 @@ DirectoryWatcher::~DirectoryWatcher()
 
 DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
 #ifdef WINDOWS
-    : started_waiting(false)
+    : directory(NULL), started_waiting(false), completion_port(NULL)
 #endif
 {
     this->path = directory;
     this->recurse = recurse;
 
 #ifdef WINDOWS
+    memset(&this->overlapped, 0, sizeof(this->overlapped));
+
     this->directory = CreateFile(
         this->path.c_str(),
         GENERIC_READ,
@@ -913,7 +911,6 @@ DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
         throw "could not create I/O Completion Port";
     }
 
-    memset(&this->overlapped, 0, sizeof(this->overlapped));
 #elif LINUX
     // we use inotify
     this->fd = inotify_init();
@@ -972,14 +969,14 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     DWORD milliseconds = time < 0 ? INFINITE : timeout / 1000;
     DWORD bytes_transferred = 0;
-    PULONG_PTR key = NULL;
-    LPOVERLAPPED ol = NULL;
-
+    ULONG_PTR key = 0;
+    OVERLAPPED * ol = NULL;
 
     if (!GetQueuedCompletionStatus(this->completion_port,
-        &bytes_transferred, key, &ol, milliseconds))
+        &bytes_transferred, &key, &ol, milliseconds))
     {
-        // TODO look at MSDN docs for function and verify we shouldn't do more
+        // TODO this is failing immediately and causing the thread to run
+        // way. when did it break?!
         return false;
     }
 
@@ -1179,6 +1176,23 @@ bool Thread::Abort()
 #error "terminate_thread() not implemented on your platform yet"
 #endif
 
+}
+
+bool Thread::Alive()
+{
+#ifdef WINDOWS
+    DWORD code = 0;
+    BOOL result = GetExitCodeThread(this->thread, &code);
+    if (result == 0) {
+        throw "TODO react to bad GetExitCodeThread() result";
+    }
+
+    return code == STILL_ACTIVE;
+#elif LINUX
+    throw "TODO implement on Linux";
+#else
+#error "Thread::Alive() not implemented on your platform yet";
+#endif
 }
 
 } // platform namespace

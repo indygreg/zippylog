@@ -320,6 +320,9 @@ namespace platform {
         bool Join();
         bool Abort();
 
+        /// Returns whether the thread is alive (running)
+        bool Alive();
+
     protected:
 #ifdef WINDOWS
         HANDLE thread;
