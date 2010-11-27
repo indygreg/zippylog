@@ -70,7 +70,7 @@ private:
 /// Used to construct a streamer device
 class ZIPPYLOG_EXPORT StreamerStartParams {
 public:
-    StreamerStartParams();
+    StreamerStartParams() : ctx(NULL), active(NULL) { }
 
     ::zmq::context_t *ctx;
 

@@ -60,8 +60,6 @@ SubscriptionInfo::~SubscriptionInfo()
     if (this->l) delete this->l;
 }
 
-StreamerStartParams::StreamerStartParams() : active(NULL) { }
-
 Streamer::Streamer(StreamerStartParams params) :
     store(NULL),
     zctx(params.ctx),
