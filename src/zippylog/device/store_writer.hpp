@@ -29,7 +29,8 @@ namespace device {
 class ZIPPYLOG_EXPORT StoreWriterStartParams {
 public:
     StoreWriterStartParams() :
-      ctx(NULL)
+      ctx(NULL),
+      active(NULL)
     { }
 
     /// 0MQ context to use
@@ -64,6 +65,9 @@ public:
     /// message with non-0 size will be returned. This message will contain a
     /// string describing the error encountered.
     ::std::string envelope_rep_endpoint;
+
+    /// Semaphore indicating whether device should remain active
+    bool *active;
 };
 
 /// A device that writes data to a zippylog backing store
@@ -98,7 +102,7 @@ public:
 
     /// Runs the store writer
     ///
-    /// Will block until ...
+    /// Will block until the boolean pointed to in the argument goes to false
     bool Run();
 
 protected:
@@ -106,6 +110,8 @@ protected:
 
     // whether we own the 0MQ context
     bool own_context;
+
+    bool *active;
 
     ::std::string store_path;
     ::zippylog::Store *store;

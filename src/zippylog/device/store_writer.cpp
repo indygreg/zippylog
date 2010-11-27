@@ -27,6 +27,7 @@ using ::zmq::message_t;
 StoreWriter::StoreWriter(StoreWriterStartParams &params) :
     ctx(params.ctx),
     own_context(false),
+    active(params.active),
     store(NULL),
     envelope_pull_endpoint(params.envelope_pull_endpoint),
     envelope_rep_endpoint(params.envelope_rep_endpoint),
@@ -36,7 +37,13 @@ StoreWriter::StoreWriter(StoreWriterStartParams &params) :
     envelope_rep_index(-1),
     active_sockets(0)
 {
-    // TODO perform validation
+    if (!active) {
+        throw ::std::invalid_argument("active parameter must be non-NULL");
+    }
+
+    if (!*active) {
+        throw ::std::invalid_argument("active parameter must be true at call time");
+    }
 
     if (!this->ctx) {
         this->ctx = new ::zmq::context_t(1);
@@ -71,10 +78,10 @@ StoreWriter::~StoreWriter()
 
 bool StoreWriter::Run()
 {
-    while (true) {
+    while (*this->active) {
         this->ProcessSockets(250000);
     }
-    
+
     return true;
 }
 
