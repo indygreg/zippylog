@@ -55,7 +55,17 @@ using ::zippylog::device::server::WorkerStartParams;
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
 
-Server::Server(const string config_file_path) :
+Server::Server(ServerConfig &config) :
+    store_path(config.store_path),
+    listen_endpoints(config.listen_endpoints),
+    number_worker_threads(config.worker_threads),
+    number_streaming_threads(config.streaming_threads),
+    subscription_ttl(config.subscription_ttl),
+    log_bucket(config.log_bucket),
+    log_stream_set(config.log_stream_set),
+    stream_flush_interval(config.stream_flush_interval),
+    lua_execute_client_code(config.lua_execute_client_code),
+    lua_streaming_max_memory(config.lua_streaming_max_memory),
     store(NULL),
     active(true),
     initialized(false),
@@ -105,12 +115,7 @@ Server::Server(const string config_file_path) :
     this->store_writer_envelope_pull_endpoint = "inproc://" + uuid_s + "store_writer_envelope_pull";
     this->store_writer_envelope_rep_endpoint = "inproc://" + uuid_s + "store_writer_envelope_rep";
 
-    string error;
-    if (!ParseConfig(config_file_path, this->config, error)) {
-        throw error;
-    }
-
-    this->store = Store::CreateStore(this->config.store_path);
+    this->store = Store::CreateStore(this->store_path);
 }
 
 Server::~Server()
@@ -178,7 +183,7 @@ void Server::Run()
     int64 more;
     size_t moresz = sizeof(more);
 
-    platform::Timer stream_flush_timer(this->config.stream_flush_interval * 1000);
+    platform::Timer stream_flush_timer(this->stream_flush_interval * 1000);
     if (!stream_flush_timer.Start()) {
         throw "could not start stream flush timer";
     }
@@ -224,7 +229,7 @@ void Server::Run()
             while (true) {
                 if (!this->logger_sock->recv(&msg, 0)) break;
 
-                this->store->WriteEnvelope(this->config.log_bucket, this->config.log_stream_set, msg.data(), msg.size());
+                this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
 
                 // TODO this is mostly for debugging purposes and should be implemented another way
                 // once the project has matured
@@ -342,7 +347,7 @@ bool Server::SynchronizeStartParams()
     params.ctx = &this->zctx;
     params.client_endpoint = this->worker_endpoint;
     params.logger_endpoint = this->logger_endpoint;
-    params.store_path = this->config.store_path;
+    params.store_path = this->store_path;
 
     this->request_processor_params.request_processor_params = params;
     this->request_processor_params.streaming_subscriptions_endpoint = this->worker_subscriptions_endpoint;
@@ -370,16 +375,16 @@ bool Server::SynchronizeStartParams()
     this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
 
     this->streamer_params.ctx = &this->zctx;
-    this->streamer_params.store_path = this->config.store_path;
-    this->streamer_params.subscription_ttl = this->config.subscription_ttl;
-    this->streamer_params.lua_allow = this->config.lua_execute_client_code;
-    this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
+    this->streamer_params.store_path = this->store_path;
+    this->streamer_params.subscription_ttl = this->subscription_ttl;
+    this->streamer_params.lua_allow = this->lua_execute_client_code;
+    this->streamer_params.lua_max_memory = this->lua_streaming_max_memory;
     this->streamer_params.active = &this->active;
 
     // store writer
     this->store_writer_params.ctx = &this->zctx;
     this->store_writer_params.active = &this->active;
-    this->store_writer_params.store_path = this->config.store_path;
+    this->store_writer_params.store_path = this->store_path;
     this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
     this->store_writer_params.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
 
@@ -428,12 +433,12 @@ bool Server::Initialize()
     this->store_writer_thread = new Thread(StoreWriterStart, &this->store_writer_params);
 
     // spin up configured number of workers
-    for (int i = this->config.worker_threads; i; --i) {
+    for (int i = this->number_worker_threads; i; --i) {
         if (!this->CreateWorkerThread()) return false;
     }
 
     // and the streamers
-    for (int i = this->config.streaming_threads; i; --i) {
+    for (int i = this->number_streaming_threads; i; --i) {
         if (!this->CreateStreamingThread()) return false;
     }
 
@@ -444,8 +449,8 @@ bool Server::Initialize()
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?
-    for (size_t i = 0; i < this->config.listen_endpoints.size(); i++) {
-        this->clients_sock->bind(this->config.listen_endpoints[i].c_str());
+    for (size_t i = 0; i < this->listen_endpoints.size(); i++) {
+        this->clients_sock->bind(this->listen_endpoints[i].c_str());
     }
 
     return true;

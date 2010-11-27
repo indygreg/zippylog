@@ -18,11 +18,12 @@
 #include <iostream>
 #include <string>
 
-using ::zippylog::device::Server;
 using ::std::cout;
 using ::std::endl;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::device::Server;
+using ::zippylog::device::ServerConfig;
 
 #ifdef LINUX
 static volatile sig_atomic_t active = 1;
@@ -51,7 +52,15 @@ int main(int argc, const char * const argv[])
     try {
         ::zippylog::initialize_library();
 
-        Server server(argv[1]);
+        ServerConfig config;
+        string error;
+
+        if (!Server::ParseConfig(argv[1], config, error)) {
+            cout << "Error loading config file: " << error << endl;
+            return 1;
+        }
+
+        Server server(config);
 
 #ifdef LINUX
         server.RunAsync();

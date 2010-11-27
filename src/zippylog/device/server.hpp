@@ -124,7 +124,7 @@ private:
 ///
 /// Typically this is populated by parsing a Lua file. However, it could also
 /// be created manually and passed into a server's constructor.
-class ServerConfig {
+class ZIPPYLOG_EXPORT ServerConfig {
 public:
     ServerConfig();
 
@@ -196,11 +196,8 @@ public:
 /// of the server.
 class ZIPPYLOG_EXPORT Server {
     public:
-        /// Construct a server from a Lua config file
-        ///
-        /// For a description of what configuration options are read, see
-        /// ParseConfig()
-        Server(const ::std::string config_file_path);
+        /// Construct a server from a server config object
+        Server(ServerConfig &config);
 
         ~Server();
 
@@ -224,8 +221,16 @@ class ZIPPYLOG_EXPORT Server {
         /// TODO need an API to force shutdown
         void Shutdown();
 
-    protected:
+        /// Parse a config file into a ServerConfig object
+        ///
+        /// This attempts to load the Lua file referenced by the filesystem
+        /// path given. If the file cannot be loaded or if there is an error
+        /// with the config, the function returns false and sets error to be
+        /// an error message, suitable for printing to the user. The state of
+        /// the ServerConfig object after failure is undefined.
         static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
+
+    protected:
 
         /// Thread start functions
         static void * StoreWatcherStart(void *data);
@@ -251,9 +256,35 @@ class ZIPPYLOG_EXPORT Server {
         /// Kills the server if any have exited.
         void CheckThreads();
 
-        /// Holds the main server config
-        /// TODO factor this into individual variables and remove
-        ServerConfig config;
+        /// the path to the store the server operates against
+        ::std::string store_path;
+
+        /// 0MQ endpoints to bind XREP sockets to listen for client messages
+        ::std::vector< ::std::string > listen_endpoints;
+
+        /// The number of worker threads to run
+        uint32 number_worker_threads;
+
+        /// The number of streaming threads to run
+        uint32 number_streaming_threads;
+
+        /// The default subscription expiration TTL, in milliseconds
+        uint32 subscription_ttl;
+
+        /// Bucket to log server's own log messages to
+        ::std::string log_bucket;
+
+        /// Stream set to log server's own log messages to
+        ::std::string log_stream_set;
+
+        /// How often to flush written streams, in milliseconds
+        int32 stream_flush_interval;
+
+        /// whether client-supplied Lua code can be executed
+        bool lua_execute_client_code;
+
+        /// max memory size of Lua interpreters attached to streaming
+        uint32 lua_streaming_max_memory;
 
         /// The store we are bound to
         ::zippylog::Store * store;
