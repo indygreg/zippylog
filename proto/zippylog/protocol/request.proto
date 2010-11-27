@@ -98,6 +98,8 @@ message WriteEnvelope {
     // is set and the server supports the feature, the server won't send an
     // ack until the envelope has actually been processed on the other side of
     // the queue.
+    //
+    // A true value implies acknowledge=true.
     optional bool synchronous = 5 [default=false];
 }
 
