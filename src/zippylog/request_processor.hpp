@@ -135,15 +135,12 @@ class ZIPPYLOG_EXPORT RequestProcessor {
     protected:
 
         /// callback to handle a validated request to subscribe to store changes
-        /// TODO should probably have a custom class for the request instance
         virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
         /// callback to handle a subscription to envelopes
-        /// TODO specific class for request
         virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
         /// callback to handle a subscription keepalive
-        /// TODO specific class for request
         virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
 
         /// Callback to handle writing of envelopes
