@@ -95,7 +95,7 @@ Server::Server(const string config_file_path) :
     }
 
     this->worker_endpoint = "inproc://" + uuid_s + "workers";
-    this->store_change_endpoint = "inprox://" + uuid_s + "store_changes";
+    this->store_change_endpoint = "inproc://" + uuid_s + "store_changes";
     this->streaming_endpoint = "inproc://" + uuid_s + "streaming";
     this->logger_endpoint = "inproc://" + uuid_s + "logger";
     this->worker_subscriptions_endpoint = "inproc://" + uuid_s + "worker_subscriptions";
@@ -183,6 +183,12 @@ void Server::Run()
         throw "could not start stream flush timer";
     }
 
+    // TODO this is a giant hack until we have a better system in place
+    platform::Timer thread_exit_timer(5000000);
+    if (!thread_exit_timer.Start()) {
+        throw "TODO handle failure to start time";
+    }
+
     // TODO so much repetition here. it makes me feel dirty
     // TODO better error handling
     while (this->active) {
@@ -200,6 +206,13 @@ void Server::Run()
             this->store->FlushOutputStreams();
             if (!stream_flush_timer.Start()) {
                 throw "could not restart stream flush timer";
+            }
+        }
+
+        if (thread_exit_timer.Signaled()) {
+            this->CheckThreads();
+            if (!thread_exit_timer.Start()) {
+                throw "TODO handle failure of timer to start";
             }
         }
 
@@ -341,7 +354,9 @@ bool Server::SynchronizeStartParams()
     StoreWatcherStartParams swparams;
     swparams.active = &this->active;
     swparams.logging_endpoint = this->logger_endpoint;
-    swparams.store_path = this->config.store_path;
+
+    // TODO this assumes we're using a file-based store, which is a no-no
+    swparams.store_path = ((SimpleDirectoryStore *)(this->store))->RootDirectoryPath();
     swparams.zctx = &this->zctx;
 
     this->store_watcher_params.params = swparams;
@@ -363,6 +378,7 @@ bool Server::SynchronizeStartParams()
 
     // store writer
     this->store_writer_params.ctx = &this->zctx;
+    this->store_writer_params.active = &this->active;
     this->store_writer_params.store_path = this->config.store_path;
     this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
     this->store_writer_params.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
@@ -447,6 +463,33 @@ bool Server::CreateStreamingThread()
     this->streaming_threads.push_back(new Thread(Server::StreamingStart, &this->streamer_params));
 
     return true;
+}
+
+void Server::CheckThreads()
+{
+    if (this->store_writer_thread && !this->store_writer_thread->Alive()) {
+        this->Shutdown();
+        return;
+    }
+
+    if (this->store_watcher_thread && !this->store_watcher_thread->Alive()) {
+        this->Shutdown();
+        return;
+    }
+
+    for (size_t i = 0; i < this->worker_threads.size(); i++) {
+        if (!this->worker_threads[i]->Alive()) {
+            this->Shutdown();
+            return;
+        }
+    }
+
+    for (size_t i = 0; i < this->streaming_threads.size(); i++) {
+        if (!this->streaming_threads[i]->Alive()) {
+            this->Shutdown();
+            return;
+        }
+    }
 }
 
 void Server::Shutdown()
@@ -610,12 +653,12 @@ void * Server::StoreWatcherStart(void *d)
     try {
         Watcher watcher(*params);
         watcher.Run();
-    } catch (...) {
-        // TODO log
-        printf("error in store watcher!\n");
+    } catch (::std::exception e) {
+        string error = e.what();
+        return (void *)1;
     }
 
-    return NULL;
+    return (void *)0;
 }
 
 void * Server::StreamingStart(void *d)
@@ -625,15 +668,12 @@ void * Server::StreamingStart(void *d)
         Streamer streamer(*params);
         streamer.Run();
     }
-    catch (zmq::error_t e) {
-        const char *error = e.what();
-        throw error;
-    }
-    catch (...) {
-
+    catch (::std::exception e) {
+        string error = e.what();
+        return (void *)1;
     }
 
-    return NULL;
+    return (void *)0;
 }
 
 void * Server::RequestProcessorStart(void *d)
@@ -644,15 +684,12 @@ void * Server::RequestProcessorStart(void *d)
         Worker processor(*params);
         processor.Run();
     }
-    catch (zmq::error_t e) {
-        const char *error = e.what();
-        throw error;
-    }
-    catch (...) {
-
+    catch (::std::exception e) {
+        string error = e.what();
+        return (void *)1;
     }
 
-    return NULL;
+    return (void *)0;
 }
 
 void * Server::StoreWriterStart(void *d)
@@ -664,10 +701,11 @@ void * Server::StoreWriterStart(void *d)
         writer.Run();
     }
     catch (::std::exception e) {
-        throw "TODO handle store writer exception";
+        string error = e.what();
+        return (void *)1;
     }
 
-    return NULL;
+    return (void *)0;
 }
 
 }} // namespaces

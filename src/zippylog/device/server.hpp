@@ -246,6 +246,11 @@ class ZIPPYLOG_EXPORT Server {
         /// Spins up a new thread to process streaming
         bool CreateStreamingThread();
 
+        /// Checks that all the threads are still kicking
+        ///
+        /// Kills the server if any have exited.
+        void CheckThreads();
+
         /// Holds the main server config
         /// TODO factor this into individual variables and remove
         ServerConfig config;
