@@ -1190,7 +1190,13 @@ bool Thread::Alive()
 
     return code == STILL_ACTIVE;
 #elif LINUX
-    throw "TODO implement on Linux";
+    // TODO not reliable since thread could be recycled
+    int result = pthread_kill(this->thread, 0);
+    if (result == 0) return true;
+    if (result == ESRCH) return false;
+
+    // error on side of caution
+    return true;
 #else
 #error "Thread::Alive() not implemented on your platform yet";
 #endif
