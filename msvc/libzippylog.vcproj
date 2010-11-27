@@ -308,6 +308,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\streamer.pb.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\string_receiver.cpp"
 				>
 			</File>
@@ -411,6 +415,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\device\streamer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\streamer.pb.h"
 				>
 			</File>
 			<File

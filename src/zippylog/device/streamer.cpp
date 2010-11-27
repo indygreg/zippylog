@@ -13,9 +13,9 @@
 //  limitations under the License.
 
 #include <zippylog/device/streamer.hpp>
+#include <zippylog/device/streamer.pb.h>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
-#include <zippylog/zippylogd.pb.h>
 #include <zippylog/zeromq.hpp>
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
@@ -30,15 +30,10 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
 using ::zippylog::protocol::response::SubscribeAck;
-using ::zippylog::zippylogd::StreamerStartup;
-using ::zippylog::zippylogd::StreamerShutdown;
-using ::zippylog::zippylogd::StreamerSubscriptionExpired;
-using ::zippylog::zippylogd::StreamerReceiveKeepalive;
-using ::zippylog::zippylogd::StreamerRejectKeepaliveUnknownSubscription;
-using ::zippylog::zippylogd::StreamerSubscriptionRenewedFromKeepalive;
-using ::zippylog::zippylogd::StreamerErrorRenewingSubscription;
 using ::zmq::message_t;
 using ::zmq::socket_t;
+
+using namespace ::zippylog::device::streamer;
 
 namespace zippylog {
 namespace device {
@@ -123,7 +118,7 @@ void Streamer::Run()
     this->logging_sock->connect(this->logging_endpoint.c_str());
 
     {
-        StreamerStartup log = StreamerStartup();
+        Create log;
         LOG_MESSAGE(log, this->logging_sock);
     }
 
@@ -174,52 +169,10 @@ void Streamer::Run()
             }
 
             Envelope e = Envelope(msg.data(), msg.size());
-            assert(e.MessageCount() == 1);
-            assert(e.MessageNamespace(0) == 1);
-
-            uint32 type = e.MessageType(0);
-
-            if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
-                protocol::request::SubscribeKeepalive *m =
-                    (protocol::request::SubscribeKeepalive *)e.GetMessage(0);
-
-                string id = m->id();
-
-                StreamerReceiveKeepalive log = StreamerReceiveKeepalive();
-                log.set_subscription(id);
-                LOG_MESSAGE(log, this->logging_sock);
-
-                if (this->HasSubscription(id)) {
-                    if (this->RenewSubscription(id)) {
-                        StreamerSubscriptionRenewedFromKeepalive log = StreamerSubscriptionRenewedFromKeepalive();
-                        log.set_subscription(id);
-                        LOG_MESSAGE(log, this->logging_sock);
-                    }
-                    else {
-                        StreamerErrorRenewingSubscription log = StreamerErrorRenewingSubscription();
-                        log.set_subscription(id);
-                        LOG_MESSAGE(log, this->logging_sock);
-                    }
-                }
-                else {
-                    StreamerRejectKeepaliveUnknownSubscription log = StreamerRejectKeepaliveUnknownSubscription();
-                    log.set_subscription(id);
-                    LOG_MESSAGE(log, this->logging_sock);
-                }
-            }
+            this->ProcessSubscriptionUpdate(e);
         }
 
-        // unsubscribe any expired subscribers
-        map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.begin();
-        for (; iter != this->subscriptions.end(); iter++) {
-            if (iter->second->expiration_timer.Signaled()) {
-                StreamerSubscriptionExpired log = StreamerSubscriptionExpired();
-                log.set_subscription(iter->first);
-                LOG_MESSAGE(log, this->logging_sock);
-                this->subscriptions.erase(iter);
-                break;
-            }
-        }
+        this->RemoveExpiredSubscriptions();
 
         // process new subscriptions
         if (pollitems[1].revents & ZMQ_POLLIN) {
@@ -227,75 +180,156 @@ void Streamer::Run()
             vector<message_t *> msgs;
 
             if (!zeromq::receive_multipart_message(this->subscriptions_sock, identities, msgs)) {
-                // TODO log error here
-                continue;
+                throw "TODO log error receiving multipart message on subscriptions sock";
             }
 
-            assert(msgs.size() > 0);
+            this->ProcessSubscription(identities, msgs);
 
-            Envelope e = Envelope(msgs[0]->data(), msgs[0]->size());
-            assert(e.MessageCount() == 1);
-            assert(e.MessageNamespace(0) == 1);
-
-            uint32 message_type = e.MessageType(0);
-
-            switch (message_type) {
-                case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
-                    this->ProcessSubscribeStoreChanges(e, identities, msgs);
-                    break;
-
-                case protocol::request::SubscribeEnvelopes::zippylog_enumeration:
-                    this->ProcessSubscribeEnvelopes(e, identities, msgs);
-                    break;
-
-                default:
-                    // TODO log here
-                    break;
-            }
-
-            for (vector<message_t *>::iterator msg = msgs.begin(); msg != msgs.end(); msg++) {
+            for(vector<message_t *>::iterator msg = msgs.begin(); msg != msgs.end(); msg++) {
                 delete *msg;
             }
-            msgs.clear();
-
         }
 
         // process store changes and send to subscribers
         if (pollitems[0].revents & ZMQ_POLLIN) {
+            // TODO error checking
             this->changes_sock->recv(&msg, 0);
 
-            // if we don't have any subscriptions, do nothing
-            if (!this->subscriptions.size()) continue;
-
-            Envelope e = Envelope(msg.data(), msg.size());
-
-            assert(e.MessageCount());
-            // TODO magic constant
-            assert(e.MessageNamespace(0) == 1);
-
-            uint32 message_type = e.MessageType(0);
-            switch (message_type) {
-                case protocol::StoreChangeBucketAdded::zippylog_enumeration:
-                case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
-                case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
-                case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
-                case protocol::StoreChangeStreamAppended::zippylog_enumeration:
-                case protocol::StoreChangeStreamAdded::zippylog_enumeration:
-                case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
-                    // if no subscriptions to store changes, do nothing
-                    if (!this->HaveStoreChangeSubscriptions()) break;
-
-                    this->ProcessStoreChangeEnvelope(e);
-                    break;
-                default:
-                    // WTF mate?
-                    break;
-            }
+            this->ProcessStoreChangeMessage(msg);
         }
     }
 
-    StreamerShutdown log = StreamerShutdown();
+    Destroy log;
     LOG_MESSAGE(log, this->logging_sock);
+}
+
+int Streamer::RemoveExpiredSubscriptions()
+{
+    int removed = 0;
+
+    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.begin();
+    for (; iter != this->subscriptions.end(); iter++) {
+        if (iter->second->expiration_timer.Signaled()) {
+            SubscriptionExpired log;
+            log.set_subscription(iter->first);
+            LOG_MESSAGE(log, this->logging_sock);
+            this->subscriptions.erase(iter->first);
+            removed++;
+        }
+    }
+
+    return removed;
+}
+
+bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
+{
+    if (e.MessageCount() != 1) return false;
+    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
+
+    uint32 type = e.MessageType(0);
+
+    if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
+        protocol::request::SubscribeKeepalive *m =
+            (protocol::request::SubscribeKeepalive *)e.GetMessage(0);
+        if (!m) return false;
+
+        string id = m->id();
+
+        ReceiveKeepalive log;
+        log.set_subscription(id);
+        LOG_MESSAGE(log, this->logging_sock);
+
+        if (this->HasSubscription(id)) {
+            if (this->RenewSubscription(id)) {
+                SubscriptionRenewedFromKeepalive log;
+                log.set_subscription(id);
+                LOG_MESSAGE(log, this->logging_sock);
+            }
+            else {
+                ErrorRenewingSubscription log;
+                log.set_subscription(id);
+                LOG_MESSAGE(log, this->logging_sock);
+            }
+        }
+        else {
+            RejectKeepaliveUnknownSubscription log;
+            log.set_subscription(id);
+            LOG_MESSAGE(log, this->logging_sock);
+        }
+    }
+
+    return true;
+}
+
+bool Streamer::ProcessSubscription(vector<string> &identities, vector<message_t *> &msgs)
+{
+    if (msgs.size() < 1) return false;
+
+    Envelope e;
+
+    try {
+     e = Envelope(msgs[0]->data(), msgs[0]->size());
+    }
+    catch (DeserializeException e) {
+        throw "TODO log deserialize exception";
+    }
+
+    if (e.MessageCount() != 1) return false;
+    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
+
+    uint32 message_type = e.MessageType(0);
+
+    switch (message_type) {
+        case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
+            this->ProcessSubscribeStoreChanges(e, identities, msgs);
+            break;
+
+        case protocol::request::SubscribeEnvelopes::zippylog_enumeration:
+            this->ProcessSubscribeEnvelopes(e, identities, msgs);
+            break;
+
+        default:
+            throw "TODO log unknown subscription message";
+            break;
+    }
+
+    return true;
+}
+
+bool Streamer::ProcessStoreChangeMessage(message_t &msg)
+{
+    // if we don't have any subscriptions, do nothing
+    if (!this->subscriptions.size()) return true;
+
+    Envelope e;
+    try { e = Envelope(msg.data(), msg.size()); }
+    catch (DeserializeException ex) {
+        throw "TODO log deserialize error and continue";
+    }
+
+    if (!e.MessageCount()) return false;
+    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
+
+    uint32 message_type = e.MessageType(0);
+    switch (message_type) {
+        case protocol::StoreChangeBucketAdded::zippylog_enumeration:
+        case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
+        case protocol::StoreChangeStreamAppended::zippylog_enumeration:
+        case protocol::StoreChangeStreamAdded::zippylog_enumeration:
+        case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+            // if no subscriptions to store changes, do nothing
+            if (!this->HaveStoreChangeSubscriptions()) return true;
+
+            this->ProcessStoreChangeEnvelope(e);
+            break;
+        default:
+            throw "TODO log unknown store change message in streamer";
+            break;
+    }
+
+    return true;
 }
 
 void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &)

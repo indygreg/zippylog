@@ -72,6 +72,9 @@ class ZIPPYLOG_EXPORT StreamerStartParams {
 public:
     StreamerStartParams() : ctx(NULL), active(NULL) { }
 
+    /// 0MQ context to use.
+    ///
+    /// Must be defined.
     ::zmq::context_t *ctx;
 
     /// Store URI to use
@@ -111,47 +114,50 @@ public:
 /// new subscriptions. When it receives details about events in a store, it
 /// looks at the registered subscriptions and if any are interested, performs
 /// optional data processing and sends messages to interested subscribers.
+///
+/// The streamer interfaces with a handful of 0MQ sockets. The endpoints are
+/// controlled by StreamerStartParams.
+///
+///  - store_changes - SUB socket connected to a store watcher's PUB socket
+///  - client        - PUSH socket that sends messages to clients
+///  - subscriptions - PULL that receives new subscription requests.
+///  - subscription_updates - SUB that receives messages concerning existing
+///                           subscriptions
+///
+/// The streamer, like the RequestProcessor, should probably be abstracted. As
+/// it currently stands, it is tightly coupled with the implementation of the
+/// server device. We'll get there.
+/// TODO make base streamer abstract
 class ZIPPYLOG_EXPORT Streamer {
     public:
         Streamer(StreamerStartParams params);
         ~Streamer();
 
+        /// Runs the streamer
+        ///
+        /// This function will run forever until the boolean pointed to
+        /// in its start parameters goes to false.
         void Run();
 
-        // returns whether the streamer knows of a subscription with the specified id
+        /// Returns whether the streamer knows of a subscription with the specified id
         bool HasSubscription(const ::std::string &id);
 
-        // renews a subscription for the specified id
+        /// Renews a subscription for the specified id
         bool RenewSubscription(const ::std::string &id);
 
     protected:
-        Store * store;
-        ::zmq::context_t * zctx;
-        ::std::string id;
+        /// Processes an envelope received on the subscription updates socket
+        bool ProcessSubscriptionUpdate(Envelope &e);
 
-        ::std::string store_changes_endpoint;
-        ::std::string client_endpoint;
-        ::std::string subscriptions_endpoint;
-        ::std::string subscription_updates_endpoint;
-        ::std::string logging_endpoint;
+        /// Removes expired subscriptions from the streamer
+        ///
+        /// Returns the number of subscriptions removed
+        int RemoveExpiredSubscriptions();
 
-        uint32 subscription_ttl;
+        /// Process a subscription request received on the subscription sock
+        bool ProcessSubscription(::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
 
-        bool lua_allow;
-        uint32 lua_max_memory;
-
-        ::zmq::socket_t * changes_sock;
-        ::zmq::socket_t * client_sock;
-        ::zmq::socket_t * subscriptions_sock;
-        ::zmq::socket_t * subscription_updates_sock;
-        ::zmq::socket_t * logging_sock;
-
-        ::std::map< ::std::string, SubscriptionInfo * > subscriptions;
-
-        // maps read offsets in streams, for envelope streaming
-        ::std::map< ::std::string, uint64 > stream_read_offsets;
-
-        bool * active;
+        bool ProcessStoreChangeMessage(::zmq::message_t &m);
 
         void ProcessStoreChangeEnvelope(Envelope &e);
 
@@ -168,6 +174,44 @@ class ZIPPYLOG_EXPORT Streamer {
 
         // returns whether we have store change subscriptions for the given path
         bool HaveStoreChangeSubscriptions(const ::std::string &path);
+
+        /// Store we are bound to.
+        ///
+        /// It is assumed the streamer receives events from the same store to
+        /// which it is bound. If not, there will likely be large explosions.
+        Store * store;
+
+        ::zmq::context_t * zctx;
+        ::std::string id;
+
+        ::std::string store_changes_endpoint;
+        ::std::string client_endpoint;
+        ::std::string subscriptions_endpoint;
+        ::std::string subscription_updates_endpoint;
+        ::std::string logging_endpoint;
+
+        /// Subscription expiration time, in milliseconds
+        uint32 subscription_ttl;
+
+        /// Do we allow subscriptions with Lua?
+        bool lua_allow;
+
+        /// Max memory per Lua interpreter
+        uint32 lua_max_memory;
+
+        ::zmq::socket_t * changes_sock;
+        ::zmq::socket_t * client_sock;
+        ::zmq::socket_t * subscriptions_sock;
+        ::zmq::socket_t * subscription_updates_sock;
+        ::zmq::socket_t * logging_sock;
+
+        /// Maps subscription id to details about the subscription
+        ::std::map< ::std::string, SubscriptionInfo * > subscriptions;
+
+        // maps read offsets in streams, for envelope streaming
+        ::std::map< ::std::string, uint64 > stream_read_offsets;
+
+        bool * active;
 
     private:
         Streamer(const Streamer &orig);
