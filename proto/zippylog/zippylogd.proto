@@ -32,60 +32,6 @@ message BrokerFlushOutputStreams {
     optional bytes id = 1;
 }
 
-
-// --------------------|
-// Streamer Log Events |
-// --------------------|
-
-message StreamerStartup {
-    optional bytes id = 1;
-}
-
-message StreamerShutdown {
-    optional bytes id = 1;
-}
-
-// when a subscription expires
-message StreamerSubscriptionExpired {
-    // unique identifier of streamer
-    optional bytes id = 1;
-
-    // id of subscription that expired
-    optional bytes subscription = 2;
-}
-
-// when a streamer receives a keepalive message
-// keepalives are sent to all streamers, so all should drop this event
-message StreamerReceiveKeepalive {
-    // unique identifier of streamer
-    optional bytes id = 1;
-
-    optional bytes subscription = 2;
-}
-
-// when a streamer successfully renews a subscription from a keepalive
-message StreamerSubscriptionRenewedFromKeepalive {
-    // unique identifier of streamer
-    optional bytes id = 1;
-
-    optional bytes subscription = 2;
-}
-
-// when a stream rejects a keepalive due to unknown subscription id
-message StreamerRejectKeepaliveUnknownSubscription {
-    // unique identifier of streamer
-    optional bytes id = 1;
-
-    optional bytes subscription = 2;
-}
-
-message StreamerErrorRenewingSubscription {
-    // unique identifier of streamer
-    optional bytes id = 1;
-
-    optional bytes subscription = 2;
-}
-
 // -------------------------|
 // Store Watcher Log Events |
 // -------------------------|

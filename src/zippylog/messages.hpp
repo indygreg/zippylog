@@ -9,6 +9,7 @@
 #include <zippylog/message.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/device/streamer.pb.h>
 // @@protoc_insertion_point(includes)
 
 namespace zippylog {

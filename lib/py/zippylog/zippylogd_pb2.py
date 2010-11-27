@@ -11,7 +11,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"I\n\rBrokerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x03 \x03(\t\"\x1c\n\x0e\x42rokerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x1a\x42rokerReceiveClientMessage\"&\n\x18\x42rokerFlushOutputStreams\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1d\n\x0fStreamerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1e\n\x10StreamerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"?\n\x1bStreamerSubscriptionExpired\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"<\n\x18StreamerReceiveKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"L\n(StreamerSubscriptionRenewedFromKeepalive\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"N\n*StreamerRejectKeepaliveUnknownSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"E\n!StreamerErrorRenewingSubscription\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x14\n\x0csubscription\x18\x02 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"I\n\rBrokerStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x03 \x03(\t\"\x1c\n\x0e\x42rokerShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x1c\n\x1a\x42rokerReceiveClientMessage\"&\n\x18\x42rokerFlushOutputStreams\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
 
@@ -135,237 +135,6 @@ _BROKERFLUSHOUTPUTSTREAMS = descriptor.Descriptor(
 )
 
 
-_STREAMERSTARTUP = descriptor.Descriptor(
-  name='StreamerStartup',
-  full_name='zippylog.zippylogd.StreamerStartup',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerStartup.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=223,
-  serialized_end=252,
-)
-
-
-_STREAMERSHUTDOWN = descriptor.Descriptor(
-  name='StreamerShutdown',
-  full_name='zippylog.zippylogd.StreamerShutdown',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerShutdown.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=254,
-  serialized_end=284,
-)
-
-
-_STREAMERSUBSCRIPTIONEXPIRED = descriptor.Descriptor(
-  name='StreamerSubscriptionExpired',
-  full_name='zippylog.zippylogd.StreamerSubscriptionExpired',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='subscription', full_name='zippylog.zippylogd.StreamerSubscriptionExpired.subscription', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=286,
-  serialized_end=349,
-)
-
-
-_STREAMERRECEIVEKEEPALIVE = descriptor.Descriptor(
-  name='StreamerReceiveKeepalive',
-  full_name='zippylog.zippylogd.StreamerReceiveKeepalive',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerReceiveKeepalive.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='subscription', full_name='zippylog.zippylogd.StreamerReceiveKeepalive.subscription', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=351,
-  serialized_end=411,
-)
-
-
-_STREAMERSUBSCRIPTIONRENEWEDFROMKEEPALIVE = descriptor.Descriptor(
-  name='StreamerSubscriptionRenewedFromKeepalive',
-  full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='subscription', full_name='zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive.subscription', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=413,
-  serialized_end=489,
-)
-
-
-_STREAMERREJECTKEEPALIVEUNKNOWNSUBSCRIPTION = descriptor.Descriptor(
-  name='StreamerRejectKeepaliveUnknownSubscription',
-  full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='subscription', full_name='zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription.subscription', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=491,
-  serialized_end=569,
-)
-
-
-_STREAMERERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
-  name='StreamerErrorRenewingSubscription',
-  full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    descriptor.FieldDescriptor(
-      name='subscription', full_name='zippylog.zippylogd.StreamerErrorRenewingSubscription.subscription', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=571,
-  serialized_end=640,
-)
-
-
 _STOREWATCHERSTARTUP = descriptor.Descriptor(
   name='StoreWatcherStartup',
   full_name='zippylog.zippylogd.StoreWatcherStartup',
@@ -389,8 +158,8 @@ _STOREWATCHERSTARTUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=642,
-  serialized_end=675,
+  serialized_start=223,
+  serialized_end=256,
 )
 
 
@@ -417,8 +186,8 @@ _STOREWATCHERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=677,
-  serialized_end=711,
+  serialized_start=258,
+  serialized_end=292,
 )
 
 
@@ -455,62 +224,6 @@ class BrokerFlushOutputStreams(message.Message):
   ZIPPYLOG_ENUMERATION = 53
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
 
-class StreamerStartup(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERSTARTUP
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 49
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerStartup)
-
-class StreamerShutdown(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERSHUTDOWN
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 50
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerShutdown)
-
-class StreamerSubscriptionExpired(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERSUBSCRIPTIONEXPIRED
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 40
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerSubscriptionExpired)
-
-class StreamerReceiveKeepalive(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERRECEIVEKEEPALIVE
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 41
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerReceiveKeepalive)
-
-class StreamerSubscriptionRenewedFromKeepalive(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERSUBSCRIPTIONRENEWEDFROMKEEPALIVE
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 42
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerSubscriptionRenewedFromKeepalive)
-
-class StreamerRejectKeepaliveUnknownSubscription(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERREJECTKEEPALIVEUNKNOWNSUBSCRIPTION
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 43
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerRejectKeepaliveUnknownSubscription)
-
-class StreamerErrorRenewingSubscription(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMERERRORRENEWINGSUBSCRIPTION
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 44
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StreamerErrorRenewingSubscription)
-
 class StoreWatcherStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _STOREWATCHERSTARTUP
@@ -531,13 +244,6 @@ register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
 register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
 register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
 register_message(1, 53, 'zippylog.zippylogd_pb2', 'BrokerFlushOutputStreams')
-register_message(1, 49, 'zippylog.zippylogd_pb2', 'StreamerStartup')
-register_message(1, 50, 'zippylog.zippylogd_pb2', 'StreamerShutdown')
-register_message(1, 40, 'zippylog.zippylogd_pb2', 'StreamerSubscriptionExpired')
-register_message(1, 41, 'zippylog.zippylogd_pb2', 'StreamerReceiveKeepalive')
-register_message(1, 42, 'zippylog.zippylogd_pb2', 'StreamerSubscriptionRenewedFromKeepalive')
-register_message(1, 43, 'zippylog.zippylogd_pb2', 'StreamerRejectKeepaliveUnknownSubscription')
-register_message(1, 44, 'zippylog.zippylogd_pb2', 'StreamerErrorRenewingSubscription')
 register_message(1, 51, 'zippylog.zippylogd_pb2', 'StoreWatcherStartup')
 register_message(1, 52, 'zippylog.zippylogd_pb2', 'StoreWatcherShutdown')
 # @@protoc_insertion_point(module_scope)
