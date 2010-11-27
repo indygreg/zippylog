@@ -729,7 +729,7 @@ Timer::Timer() : signaled(false), running(false), initialized(false)
 Timer::~Timer()
 {
 #if LINUX
-    timer_delete(this->timer);
+    if (this->initialized) timer_delete(this->timer);
 #endif
 }
 

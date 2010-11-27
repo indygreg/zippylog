@@ -23,6 +23,7 @@ using ::zippylog::platform::UUID;
 TEST(TimerTest, CreateTimers)
 {
     ASSERT_NO_THROW(Timer t(1000000));
+    ASSERT_NO_THROW(Timer t());
 
     Timer t(100000);
     EXPECT_FALSE(t.Signaled());
