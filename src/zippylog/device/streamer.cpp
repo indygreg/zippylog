@@ -160,7 +160,13 @@ void Streamer::Run()
         zmq::message_t msg;
 
         // wait for a message to process
-        zmq::poll(&pollitems[0], 3, 100000);
+        int result = zmq::poll(&pollitems[0], 3, 100000);
+
+        // if we don't have data, perform house keeping and try again
+        if (!result) {
+            this->RemoveExpiredSubscriptions();
+            continue;
+        }
 
         // process subscription updates first
         if (pollitems[2].revents & ZMQ_POLLIN) {
