@@ -19,6 +19,7 @@
 #include <zippylog/zeromq.hpp>
 #include <zmq.hpp>
 
+using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
@@ -45,16 +46,6 @@ Client::Client(context_t *ctx, const string &connect)
     this->pollitem[0].socket = *this->client_sock;
 }
 
-Client::Client(const Client &orig)
-{
-    throw "cannot copy Client instances";
-}
-
-Client & Client::operator=(const Client &orig)
-{
-    throw "cannot assign Client instances";
-}
-
 Client::~Client()
 {
     this->CancelAllSubscriptions();
@@ -65,7 +56,7 @@ Client::~Client()
 bool Client::StoreInfo(StoreInfoCallback callback, void *data)
 {
     if (!callback) {
-        throw "callback parameter not defined";
+        throw invalid_argument("callback parameter not defined");
     }
 
     Envelope e = Envelope();
@@ -82,7 +73,7 @@ bool Client::StoreInfo(StoreInfoCallback callback, void *data)
 bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data)
 {
     if (!callback) {
-        throw "callback parameter not defined";
+        throw invalid_argument("callback parameter not defined");
     }
 
     Envelope e = Envelope();
@@ -101,7 +92,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
 bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data)
 {
     if (!callback) {
-        throw "callback parameter not defined";
+        throw invalid_argument("callback parameter not defined");
     }
 
     Envelope e = Envelope();
@@ -382,7 +373,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     // not for a known tag
 
     if (!e.envelope.tag_size()) {
-        throw "received response with no tag to match to request";
+        throw Exception("received response with no tag to match to request");
     }
 
     string id = e.envelope.tag(0);
@@ -394,7 +385,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     // TODO is an exception always correct? what about a client that restarts
     // with same identity?
     if (iter == this->outstanding.end()) {
-        throw "received a response to an unknown outstanding request";
+        throw Exception("received a response to an unknown outstanding request");
     }
 
     OutstandingRequest req = iter->second;
@@ -455,7 +446,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
 
             uint32 ttl = ack->ttl() * 1000;
             if (ttl < this->subscription_renewal_offset) {
-                throw "subscription TTL less than configured time offset";
+                throw Exception("subscription TTL less than configured time offset");
             }
 
             sub.expiration_timer.Start(ttl - this->subscription_renewal_offset);
