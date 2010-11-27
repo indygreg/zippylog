@@ -202,7 +202,7 @@ bool OutputStream::WriteData(const void *data, int length)
     return true;
 }
 
-FileOutputStream::FileOutputStream(const string &path, bool write_lock) : os(NULL), OutputStream()
+FileOutputStream::FileOutputStream(const string &path, bool write_lock) : OutputStream(), os(NULL)
 {
     int flags = platform::File::CREATE | platform::File::APPEND | platform::File::WRITE | platform::File::BINARY;
 

@@ -159,7 +159,7 @@ void RequestProcessor::Run()
     return;
 }
 
-void RequestProcessor::ProcessMessages(vector<string> &identities, vector<message_t *> &input, vector<Envelope> &output)
+void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &input, vector<Envelope> &output)
 {
     // we need to declare all our variables first b/c we use goto
 
@@ -666,7 +666,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             bytes_read += envelope_size;
             envelopes_read++;
 
-            if (bytes_left - envelope_size < 0) break;
+            if (envelope_size > bytes_left) break;
             if (envelopes_left-- == 1) break;
             bytes_left -= envelope_size;
 
@@ -799,7 +799,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
         if (synchronous) send_ack = true;
 
         vector<Envelope> envs;
-        for (size_t i = 0; i < m->envelope_size(); i++) {
+        for (int i = 0; i < m->envelope_size(); i++) {
             const string s = m->envelope(i);
 
             // catch parse failures and log then move on

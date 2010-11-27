@@ -46,7 +46,7 @@ void Watcher::SendChangeMessage(Envelope &e)
     zeromq::send_envelope(this->socket, e);
 }
 
-void Watcher::HandleAdded(string path, platform::FileStat &stat)
+void Watcher::HandleAdded(string path, platform::FileStat &)
 {
     string bucket, set, stream;
     if (!Store::ParsePath(path, bucket, set, stream)) return;
@@ -76,7 +76,6 @@ void Watcher::HandleAdded(string path, platform::FileStat &stat)
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
     }
-
 }
 
 void Watcher::HandleDeleted(string path)

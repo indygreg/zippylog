@@ -268,9 +268,6 @@ namespace platform {
 
     class ZIPPYLOG_EXPORT DirectoryWatcher {
     public:
-        DirectoryWatcher();
-        DirectoryWatcher(const DirectoryWatcher &orig);
-        DirectoryWatcher & operator=(const DirectoryWatcher &orig);
         ~DirectoryWatcher();
 
         // create a construct that watches the specified directory
@@ -294,6 +291,11 @@ namespace platform {
         ::std::string path;
         bool recurse;
         ::std::vector<DirectoryChange> changes;
+
+    private:
+        DirectoryWatcher();
+        DirectoryWatcher(const DirectoryWatcher &orig);
+        DirectoryWatcher & operator=(const DirectoryWatcher &orig);
 
 #ifdef WINDOWS
         HANDLE directory;

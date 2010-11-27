@@ -61,7 +61,7 @@ Worker::~Worker()
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
 
-RequestProcessor::ResponseStatus Worker::HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
+RequestProcessor::ResponseStatus Worker::HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &)
 {
     // we pass the identities and the original message to the streamer
     // we don't pass the first identity, b/c it belongs to the local socket
@@ -74,7 +74,7 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeStoreChanges(Envelope &r
     return DEFERRED;
 }
 
-RequestProcessor::ResponseStatus Worker::HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
+RequestProcessor::ResponseStatus Worker::HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &)
 {
     // proxy the message w/ identities (minus first one)
     vector<string> subscription_identities = this->current_request_identities;
@@ -85,7 +85,7 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeEnvelopes(Envelope &requ
     return DEFERRED;
 }
 
-RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
+RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
 {
     ::zippylog::zeromq::send_envelope(this->subscription_updates_sock, request);
 

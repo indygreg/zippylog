@@ -74,6 +74,8 @@ bool StoreWriter::Run()
     while (true) {
         this->ProcessSockets(250000);
     }
+    
+    return true;
 }
 
 bool StoreWriter::ProcessSockets(long timeout)

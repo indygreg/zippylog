@@ -880,21 +880,6 @@ bool Timer::Signaled()
 
 DirectoryChange::DirectoryChange() {}
 
-DirectoryWatcher::DirectoryWatcher()
-{
-    throw "default constructor not available";
-}
-
-DirectoryWatcher::DirectoryWatcher(const DirectoryWatcher &orig)
-{
-    throw "copy constructor not available";
-}
-
-DirectoryWatcher & DirectoryWatcher::operator=(const DirectoryWatcher &orig)
-{
-    throw "assignment operator not available";
-}
-
 DirectoryWatcher::~DirectoryWatcher()
 {
     // TODO implement

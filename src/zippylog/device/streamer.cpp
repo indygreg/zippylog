@@ -101,16 +101,6 @@ Streamer::Streamer(StreamerStartParams params) :
     }
 }
 
-Streamer::Streamer(const Streamer &orig)
-{
-    throw "copy constructor not implemented for Streamer";
-}
-
-Streamer & Streamer::operator=(const Streamer &orig)
-{
-    throw "assignment operator not available for Streamer";
-}
-
 Streamer::~Streamer()
 {
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
@@ -307,7 +297,7 @@ void Streamer::Run()
     LOG_MESSAGE(log, this->logging_sock);
 }
 
-void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
+void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &)
 {
     protocol::request::SubscribeStoreChanges *m =
         (protocol::request::SubscribeStoreChanges *)e.GetMessage(0);
@@ -330,7 +320,7 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
     this->SendSubscriptionAck(id, e, identities);
 }
 
-void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &msgs)
+void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &)
 {
     protocol::request::SubscribeEnvelopes *m =
         (protocol::request::SubscribeEnvelopes *)e.GetMessage(0);
