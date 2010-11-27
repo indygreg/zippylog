@@ -73,7 +73,9 @@ public:
     StreamerStartParams();
 
     ::zmq::context_t *ctx;
-    ::zippylog::Store *store;
+
+    /// Store URI to use
+    ::std::string store_path;
 
     /// 0MQ endpoint for SUB socket that receives store changes
     ::std::string store_changes_endpoint;
@@ -123,7 +125,6 @@ class ZIPPYLOG_EXPORT Streamer {
         bool RenewSubscription(const ::std::string &id);
 
     protected:
-
         Store * store;
         ::zmq::context_t * zctx;
         ::std::string id;

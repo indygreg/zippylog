@@ -63,14 +63,14 @@ SubscriptionInfo::~SubscriptionInfo()
 StreamerStartParams::StreamerStartParams() : active(NULL) { }
 
 Streamer::Streamer(StreamerStartParams params) :
+    store(NULL),
+    zctx(params.ctx),
     changes_sock(NULL),
     client_sock(NULL),
     subscriptions_sock(NULL),
     subscription_updates_sock(NULL),
     logging_sock(NULL)
 {
-    this->store = params.store;
-    this->zctx = params.ctx;
     this->store_changes_endpoint = params.store_changes_endpoint;
     this->client_endpoint = params.client_endpoint;
     this->subscriptions_endpoint = params.subscriptions_endpoint;
@@ -88,6 +88,8 @@ Streamer::Streamer(StreamerStartParams params) :
     platform::CreateUUID(uuid);
 
     this->id = string((const char *)&uuid, sizeof(uuid));
+
+    this->store = Store::CreateStore(params.store_path);
 
     // populate stream offsets with current values
     vector<string> streams;
@@ -114,6 +116,7 @@ Streamer::~Streamer()
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
     if (this->logging_sock) delete this->logging_sock;
+    if (this->store) delete this->store;
 }
 
 void Streamer::Run()

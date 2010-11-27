@@ -355,7 +355,7 @@ bool Server::SynchronizeStartParams()
     this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
 
     this->streamer_params.ctx = &this->zctx;
-    this->streamer_params.store = this->store;
+    this->streamer_params.store_path = this->config.store_path;
     this->streamer_params.subscription_ttl = this->config.subscription_ttl;
     this->streamer_params.lua_allow = this->config.lua_execute_client_code;
     this->streamer_params.lua_max_memory = this->config.lua_streaming_max_memory;
