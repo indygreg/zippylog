@@ -321,6 +321,9 @@ namespace platform {
         bool Abort();
 
         /// Returns whether the thread is alive (running)
+        ///
+        /// This function was added as a stop-gap until a more robust could be
+        /// devised. Please don't use it. The implementation sucks.
         bool Alive();
 
     protected:
