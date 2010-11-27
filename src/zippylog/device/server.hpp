@@ -124,9 +124,17 @@ private:
 ///
 /// Typically this is populated by parsing a Lua file. However, it could also
 /// be created manually and passed into a server's constructor.
-class ZIPPYLOG_EXPORT ServerConfig {
+class ZIPPYLOG_EXPORT ServerStartParams {
 public:
-    ServerConfig();
+    ServerStartParams() :
+        worker_threads(3),
+        streaming_threads(3),
+        subscription_ttl(60000),
+        log_bucket("zippylog"),
+        log_stream_set("server"),
+        lua_execute_client_code(false),
+        lua_streaming_max_memory(524288)
+    { }
 
     /// the path to the store the server operates against
     ::std::string store_path;
@@ -197,7 +205,7 @@ public:
 class ZIPPYLOG_EXPORT Server {
     public:
         /// Construct a server from a server config object
-        Server(ServerConfig &config);
+        Server(ServerStartParams &params);
 
         ~Server();
 
@@ -228,7 +236,7 @@ class ZIPPYLOG_EXPORT Server {
         /// with the config, the function returns false and sets error to be
         /// an error message, suitable for printing to the user. The state of
         /// the ServerConfig object after failure is undefined.
-        static bool ParseConfig(const ::std::string path, ServerConfig &config, ::std::string &error);
+        static bool ParseConfig(const ::std::string path, ServerStartParams &params, ::std::string &error);
 
     protected:
 

@@ -34,6 +34,7 @@ extern "C" {
 namespace zippylog {
 namespace device {
 
+using ::std::invalid_argument;
 using ::std::string;
 using ::std::ostringstream;
 using ::std::vector;
@@ -55,17 +56,17 @@ using ::zippylog::device::server::WorkerStartParams;
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
 
-Server::Server(ServerConfig &config) :
-    store_path(config.store_path),
-    listen_endpoints(config.listen_endpoints),
-    number_worker_threads(config.worker_threads),
-    number_streaming_threads(config.streaming_threads),
-    subscription_ttl(config.subscription_ttl),
-    log_bucket(config.log_bucket),
-    log_stream_set(config.log_stream_set),
-    stream_flush_interval(config.stream_flush_interval),
-    lua_execute_client_code(config.lua_execute_client_code),
-    lua_streaming_max_memory(config.lua_streaming_max_memory),
+Server::Server(ServerStartParams &params) :
+    store_path(params.store_path),
+    listen_endpoints(params.listen_endpoints),
+    number_worker_threads(params.worker_threads),
+    number_streaming_threads(params.streaming_threads),
+    subscription_ttl(params.subscription_ttl),
+    log_bucket(params.log_bucket),
+    log_stream_set(params.log_stream_set),
+    stream_flush_interval(params.stream_flush_interval),
+    lua_execute_client_code(params.lua_execute_client_code),
+    lua_streaming_max_memory(params.lua_streaming_max_memory),
     store(NULL),
     active(true),
     initialized(false),
@@ -83,6 +84,15 @@ Server::Server(ServerConfig &config) :
     store_writer_thread(NULL),
     store_watcher_thread(NULL)
 {
+    // validate input
+    if (!params.listen_endpoints.size()) {
+        throw invalid_argument("a listen endpoint must be defined to create a server");
+    }
+
+    if (!params.store_path.length()) {
+        throw invalid_argument("a store path must be defined to create a server");
+    }
+
     platform::UUID uuid;
     platform::CreateUUID(uuid);
 
@@ -514,9 +524,11 @@ void Server::Shutdown()
     }
     this->streaming_threads.clear();
 
-    this->store_watcher_thread->Join();
-    delete this->store_watcher_thread;
-    this->store_watcher_thread = NULL;
+    if (this->store_watcher_thread) {
+        this->store_watcher_thread->Join();
+        delete this->store_watcher_thread;
+        this->store_watcher_thread = NULL;
+    }
 
     if (this->store_writer_thread) {
         this->store_writer_thread->Join();
@@ -531,7 +543,7 @@ void Server::Shutdown()
     }
 }
 
-bool Server::ParseConfig(const string path, ServerConfig &config, string &error)
+bool Server::ParseConfig(const string path, ServerStartParams &params, string &error)
 {
     ostringstream os;
 
@@ -551,7 +563,7 @@ bool Server::ParseConfig(const string path, ServerConfig &config, string &error)
         os << "'store_path' not a string";
         goto cleanup;
     }
-    config.store_path = lua_tostring(L, -1);
+    params.store_path = lua_tostring(L, -1);
     lua_pop(L, 1);
 
     // endpoints is a table of strings representing 0MQ socket endpoints to
@@ -580,54 +592,54 @@ bool Server::ParseConfig(const string path, ServerConfig &config, string &error)
             }
         }
         // else
-        config.listen_endpoints.push_back(lua_tostring(L, -1));
+        params.listen_endpoints.push_back(lua_tostring(L, -1));
         lua_pop(L, 1);
     }
 
     // number of worker threads to run
     lua_getglobal(L, "worker_threads");
-    config.worker_threads = luaL_optinteger(L, -1, 3);
+    params.worker_threads = luaL_optinteger(L, -1, 3);
     lua_pop(L, 1);
 
     // number of streaming threads to run
     lua_getglobal(L, "streaming_threads");
-    config.streaming_threads = luaL_optinteger(L, -1, 1);
+    params.streaming_threads = luaL_optinteger(L, -1, 1);
     lua_pop(L, 1);
 
     // time to live of streaming subscriptions in milliseconds
     lua_getglobal(L, "streaming_subscription_ttl");
-    config.subscription_ttl = luaL_optinteger(L, -1, 60000);
+    params.subscription_ttl = luaL_optinteger(L, -1, 60000);
     lua_pop(L, 1);
 
     // logging settings
     lua_getglobal(L, "log_bucket");
-    config.log_bucket = luaL_optstring(L, -1, "zippylog");
+    params.log_bucket = luaL_optstring(L, -1, "zippylog");
     lua_pop(L, 1);
 
     lua_getglobal(L, "log_stream_set");
-    config.log_stream_set = luaL_optstring(L, -1, "zippylogd");
+    params.log_stream_set = luaL_optstring(L, -1, "zippylogd");
     lua_pop(L, 1);
 
     // interval at which to flush streams in milliseconds
     lua_getglobal(L, "stream_flush_interval");
-    config.stream_flush_interval = luaL_optinteger(L, -1, 5000);
+    params.stream_flush_interval = luaL_optinteger(L, -1, 5000);
     lua_pop(L, 1);
-    if (config.stream_flush_interval < 0) {
+    if (params.stream_flush_interval < 0) {
         os << "stream_flush_interval must be positive";
         goto cleanup;
     }
-    else if (config.stream_flush_interval < 1000) {
+    else if (params.stream_flush_interval < 1000) {
         os << "stream_flush_interval must be greater than 1000";
         goto cleanup;
     }
 
     // Lua settings
     lua_getglobal(L, "lua_execute_client_code");
-    config.lua_execute_client_code = lua_toboolean(L, -1);
+    params.lua_execute_client_code = lua_toboolean(L, -1);
     lua_pop(L, 1);
 
     lua_getglobal(L, "lua_streaming_max_memory");
-    config.lua_streaming_max_memory = luaL_optinteger(L, -1, 524288);
+    params.lua_streaming_max_memory = luaL_optinteger(L, -1, 524288);
     lua_pop(L, 1);
 
 
@@ -640,11 +652,6 @@ cleanup:
     }
 
     return true;
-}
-
-ServerConfig::ServerConfig()
-{
-    listen_endpoints = vector<string>();
 }
 
 void * Server::StoreWatcherStart(void *d)
