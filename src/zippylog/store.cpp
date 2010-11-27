@@ -42,12 +42,12 @@ Store * Store::CreateStore(const string &s)
 {
     string::size_type i = s.find_first_of("://");
     if (i == string::npos) {
-        throw Exception("store path not in expected URI format");
+        throw InvalidStoreUriException("store path not in expected URI format: " + s);
     }
 
     string proto = s.substr(0, i);
     if (proto != "simpledirectory") {
-        throw Exception("store protocol not understood");
+        throw UnsupportedStoreUriException("store protocol not understood: " + proto);
     }
 
     string path = s.substr(i + 3, s.length() - i - 3);
@@ -465,7 +465,9 @@ string Store::StreamNameForTime(int64 time, int seconds_per_file)
 SimpleDirectoryStore::SimpleDirectoryStore(const string &path) : root_path(path)
 {
     if (!platform::PathIsDirectory(path)) {
-        throw Exception("store path does not exist or could not be read");
+        throw StorePathNotDirectoryException(
+            "store path does not exist, could not be read, or is not a directory: " + path
+        );
     }
 }
 

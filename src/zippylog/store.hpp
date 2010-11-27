@@ -35,6 +35,18 @@ class OpenOutputStream {
         int64 last_write_time;
 };
 
+class ZIPPYLOG_EXPORT InvalidStoreUriException : public ::std::invalid_argument
+{
+    public:
+        InvalidStoreUriException(const ::std::string &s) : ::std::invalid_argument(s) { }
+};
+
+class ZIPPYLOG_EXPORT UnsupportedStoreUriException : public ::std::invalid_argument
+{
+    public:
+        UnsupportedStoreUriException(const ::std::string &s) : ::std::invalid_argument(s) { }
+};
+
 /// Represents a stream store
 ///
 /// A stream store is a collection of buckets, stream sets, and streams. The
@@ -68,7 +80,8 @@ class ZIPPYLOG_EXPORT Store {
         /// The passed string should resemble:
         ///
         ///    simpledirectory:///path/to/root/dir
-        static Store * CreateStore(const ::std::string &s);
+        static Store * CreateStore(const ::std::string &uri)
+            throw(InvalidStoreUriException, UnsupportedStoreUriException);
 
         /// Validates that a store path string is sane
         ///
@@ -253,6 +266,12 @@ class ZIPPYLOG_EXPORT Store {
         Store & operator=(const Store &orig);
 };
 
+class ZIPPYLOG_EXPORT StorePathNotDirectoryException : public Exception
+{
+    public:
+        StorePathNotDirectoryException(const ::std::string &s) : Exception(s) { }
+};
+
 /// A stream store backed by a single directory
 ///
 /// The store is created by specifying the filesystem path to a directory.
@@ -275,7 +294,9 @@ class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
         /// The path should be a valid filesystem path for the current
         /// system. For UNIX, something like "/var/zippylog/store" or "store"
         /// should work. For Windows, "C:\zippylog" or similar.
-        SimpleDirectoryStore(const ::std::string &path);
+        SimpleDirectoryStore(const ::std::string &path)
+            throw(StorePathNotDirectoryException);
+
         ~SimpleDirectoryStore() { };
 
         // Return the filesystem path to this store
