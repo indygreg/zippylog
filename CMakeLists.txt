@@ -83,6 +83,7 @@ set(libzippylog_sources
     src/zippylog/device/store_writer.cpp
     src/zippylog/device/store_writer_sender.cpp
     src/zippylog/device/streamer.cpp
+    src/zippylog/device/streamer.pb.cc
     src/zippylog/device/string_receiver.cpp
     src/zippylog/device/string_writer.cpp
     src/zippylog/envelope.cpp
@@ -128,10 +129,12 @@ set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 
 set(libzippylog-test_sources
     src/zippylog/libzippylog-test.cc
+    src/zippylog/device/server_unittest.cpp
+    src/zippylog/device/streamer_unittest.cpp
+    src/zippylog/device/string_receiver_unittest.cpp
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
-    src/zippylog/device/string_receiver_unittest.cpp
 )
 
 add_executable(libzippylog-test ${libzippylog-test_sources})
