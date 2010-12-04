@@ -67,7 +67,7 @@ class ZIPPYLOG_EXPORT UnsupportedStoreUriException : public ::std::invalid_argum
 /// is guaranteed to have only one output stream open for each physical stream.
 class ZIPPYLOG_EXPORT Store {
     public:
-        ~Store();
+        virtual ~Store();
 
         /// Create a store object
         ///
