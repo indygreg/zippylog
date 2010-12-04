@@ -104,7 +104,7 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 
 
 FileInputStream::FileInputStream(const string &path, int64 offset) :
-    fis(NULL)
+    InputStream(), fis(NULL)
 {
     if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
         throw Exception("could not open file input stream");
@@ -126,6 +126,12 @@ FileInputStream::FileInputStream(const string &path, int64 offset) :
 
 FileInputStream::~FileInputStream()
 {
+    // need to destroy coded stream to unassociate from file descriptor
+    if (this->cis) {
+        delete this->cis;
+        this->cis = NULL;
+    }
+
     if (this->fis) delete this->fis;
 
     this->file.Close();
