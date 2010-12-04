@@ -99,6 +99,16 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// parameters goes to false
         void Run();
 
+        /// Perform processing activities
+        ///
+        /// Reads available client messages from the listening socket(s) and
+        /// processes them.
+        ///
+        /// If no messages are available, waits up to the specified number of
+        /// microseconds and process any that arrive before that time window
+        /// expires.
+        int Pump(long wait_microseconds);
+
         /// Processes received 0MQ messages
         ///
         /// The identities parameter is a list of 0MQ socket identities. These

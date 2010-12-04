@@ -106,58 +106,63 @@ void RequestProcessor::Run()
         LOG_MESSAGE(log, this->logger_sock);
     }
 
-    zmq::pollitem_t pollitems[1];
-    pollitems[0].events = ZMQ_POLLIN;
-    pollitems[0].fd = 0;
-    pollitems[0].revents = 0;
-    pollitems[0].socket = *this->socket;
-
     while (*this->active) {
-        // wait up to 250ms for a message to become available
-        // if not, check the active semaphore and try again
-        if (!zmq::poll(&pollitems[0], 1, 250000)) {
-            continue;
-        }
-
-        // we have a message available, so we receive it
-        vector<message_t *> msgs;
-        this->current_request_identities.clear();
-        if (!zeromq::receive_multipart_message(this->socket, this->current_request_identities, msgs)) {
-            ::zippylog::request_processor::FailReceiveMessage log;
-            LOG_MESSAGE(log, this->logger_sock);
-
-            // TODO shouldn't this be part of the receive_multipart_message API?
-            vector<message_t *>::iterator iter = msgs.begin();
-            for (; iter != msgs.end(); iter++) {
-                delete *iter;
-            }
-
-            // TODO we used to rebuild socket here. is this a good recovery strategy?
-            // this exception is here so we can see if this actually happens
-            // I suspect it doesn't
-            throw Exception("error receiving multipart message from worker sock");
-        }
-
-        vector<Envelope> response_envelopes;
-        this->ProcessMessages(this->current_request_identities, msgs, response_envelopes);
-
-        // input messages aren't needed any more, so we destroy them immediately
-        vector<message_t *>::iterator iter = msgs.begin();
-        for (; iter != msgs.end(); iter++) {
-            delete *iter;
-        }
-
-        if (response_envelopes.size()) {
-            if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
-                throw Exception("TODO log failure to send response envelopes");
-            }
-        }
+        this->Pump(250000);
     }
 
     ::zippylog::request_processor::RunStop log;
     LOG_MESSAGE(log, this->logger_sock);
 
     return;
+}
+
+int RequestProcessor::Pump(long wait)
+{
+    zmq::pollitem_t pollitems[1];
+    pollitems[0].events = ZMQ_POLLIN;
+    pollitems[0].fd = 0;
+    pollitems[0].revents = 0;
+    pollitems[0].socket = *this->socket;
+
+    if (!zmq::poll(&pollitems[0], 1, wait)) {
+        return 0;
+    }
+
+    // we have a message available, so we receive it
+    vector<message_t *> msgs;
+    this->current_request_identities.clear();
+    if (!zeromq::receive_multipart_message(this->socket, this->current_request_identities, msgs)) {
+        ::zippylog::request_processor::FailReceiveMessage log;
+        LOG_MESSAGE(log, this->logger_sock);
+
+        // TODO shouldn't this be part of the receive_multipart_message API?
+        vector<message_t *>::iterator iter = msgs.begin();
+        for (; iter != msgs.end(); iter++) {
+            delete *iter;
+        }
+
+        // TODO we used to rebuild socket here. is this a good recovery strategy?
+        // this exception is here so we can see if this actually happens
+        // I suspect it doesn't
+        throw Exception("error receiving multipart message from worker sock");
+    }
+
+    vector<Envelope> response_envelopes;
+    this->ProcessMessages(this->current_request_identities, msgs, response_envelopes);
+
+    // input messages aren't needed any more, so we destroy them immediately
+    vector<message_t *>::iterator iter = msgs.begin();
+    for (; iter != msgs.end(); iter++) {
+        delete *iter;
+    }
+
+    if (response_envelopes.size()) {
+        if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
+            throw Exception("TODO log failure to send response envelopes");
+        }
+    }
+
+    return 1;
 }
 
 void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &input, vector<Envelope> &output)
