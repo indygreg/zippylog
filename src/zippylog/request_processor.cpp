@@ -157,8 +157,27 @@ int RequestProcessor::Pump(long wait)
     }
 
     if (response_envelopes.size()) {
-        if (!zeromq::send_envelopes(this->socket, this->current_request_identities, response_envelopes)) {
-            throw Exception("TODO log failure to send response envelopes");
+        int flags = response_envelopes.size() > 1 ? ZMQ_SNDMORE : 0;
+
+        int result = zeromq::SendEnvelope(*this->socket, this->current_request_identities, response_envelopes[0], true, 0);
+        if (result == -1) {
+            throw Exception("Serialization error in response envelope");
+        }
+        else if (!result) {
+            throw Exception("Send failure for response");
+        }
+
+        if (flags) {
+            vector<Envelope>::iterator itor = response_envelopes.begin()++;
+            while(itor != response_envelopes.end()) {
+                result = zeromq::SendEnvelope(*this->socket, *itor, true, ++itor == response_envelopes.end() ? 0 : ZMQ_SNDMORE);
+                if (result == -1) {
+                    throw Exception("Serialization error in response envelope");
+                }
+                else if (!result) {
+                    throw Exception("Send failure for response envelope");
+                }
+            }
         }
     }
 
