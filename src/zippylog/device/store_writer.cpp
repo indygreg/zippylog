@@ -33,6 +33,7 @@ StoreWriter::StoreWriter(StoreWriterStartParams &params) :
     envelope_rep_endpoint(params.envelope_rep_endpoint),
     envelope_pull_sock(NULL),
     envelope_rep_sock(NULL),
+    pollitem(NULL),
     envelope_pull_index(-1),
     envelope_rep_index(-1),
     active_sockets(0)
@@ -63,6 +64,22 @@ StoreWriter::StoreWriter(StoreWriterStartParams &params) :
         this->envelope_rep_sock->bind(this->envelope_rep_endpoint.c_str());
         this->envelope_rep_index = this->active_sockets++;
     }
+
+    this->pollitem = new ::zmq::pollitem_t[this->active_sockets];
+
+    if (this->envelope_pull_index >= 0) {
+        this->pollitem[this->envelope_pull_index].events = ZMQ_POLLIN;
+        this->pollitem[this->envelope_pull_index].socket = *this->envelope_pull_sock;
+        this->pollitem[this->envelope_pull_index].fd = 0;
+        this->pollitem[this->envelope_pull_index].revents = 0;
+    }
+
+    if (this->envelope_rep_index >= 0) {
+        this->pollitem[this->envelope_rep_index].events = ZMQ_POLLIN;
+        this->pollitem[this->envelope_rep_index].socket = *this->envelope_rep_sock;
+        this->pollitem[this->envelope_rep_index].fd = 0;
+        this->pollitem[this->envelope_rep_index].revents = 0;
+    }
 }
 
 StoreWriter::~StoreWriter()
@@ -71,6 +88,7 @@ StoreWriter::~StoreWriter()
         delete this->ctx;
     }
 
+    if (this->pollitem) delete[] this->pollitem;
     if (this->store) delete this->store;
     if (this->envelope_pull_sock) delete this->envelope_pull_sock;
     if (this->envelope_rep_sock) delete this->envelope_rep_sock;
@@ -79,49 +97,28 @@ StoreWriter::~StoreWriter()
 bool StoreWriter::Run()
 {
     while (*this->active) {
-        this->ProcessSockets(250000);
+        this->Pump(250000);
     }
 
     return true;
 }
 
-bool StoreWriter::ProcessSockets(long timeout)
+int StoreWriter::Pump(long timeout)
 {
-    ::zmq::pollitem_t * pollitems = new ::zmq::pollitem_t[this->active_sockets];
-
-    if (this->envelope_pull_index >= 0) {
-        pollitems[this->envelope_pull_index].events = ZMQ_POLLIN;
-        pollitems[this->envelope_pull_index].socket = *this->envelope_pull_sock;
-        pollitems[this->envelope_pull_index].fd = 0;
-        pollitems[this->envelope_pull_index].revents = 0;
-    }
-
-    if (this->envelope_rep_index >= 0) {
-        pollitems[this->envelope_rep_index].events = ZMQ_POLLIN;
-        pollitems[this->envelope_rep_index].socket = *this->envelope_rep_sock;
-        pollitems[this->envelope_rep_index].fd = 0;
-        pollitems[this->envelope_rep_index].revents = 0;
-    }
-
     bool result = true;
 
-    int rc = ::zmq::poll(pollitems, this->active_sockets, timeout);
-    if (rc < 0) goto cleanup;
+    int rc = ::zmq::poll(&this->pollitem[0], this->active_sockets, timeout);
+    if (rc < 1) return 0;
 
-    if (this->envelope_pull_index >= 0 && pollitems[this->envelope_pull_index].revents & ZMQ_POLLIN) {
-        result = this->ProcessEnvelopePull();
-        if (!result) goto cleanup;
+    if (this->envelope_pull_index >= 0 && this->pollitem[this->envelope_pull_index].revents & ZMQ_POLLIN) {
+        if (!this->ProcessEnvelopePull()) return -1;
     }
 
-    if (this->envelope_rep_index >= 0 && pollitems[this->envelope_rep_index].revents & ZMQ_POLLIN) {
-        result = this->ProcessEnvelopeRep();
-        if (!result) goto cleanup;
+    if (this->envelope_rep_index >= 0 && this->pollitem[this->envelope_rep_index].revents & ZMQ_POLLIN) {
+        if (!this->ProcessEnvelopeRep()) return -1;
     }
 
-cleanup:
-    delete pollitems;
-
-    return result;
+    return 1;
 }
 
 bool StoreWriter::ProcessEnvelopePull()
