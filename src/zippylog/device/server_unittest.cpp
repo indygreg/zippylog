@@ -19,6 +19,9 @@
 using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
+using ::zmq::context_t;
+using ::zmq::message_t;
+using ::zmq::socket_t;
 
 namespace zippylog {
 namespace device {
@@ -28,14 +31,21 @@ class ServerTest : public ::testing::Test
 {
     protected:
         Server * test00_server;
+        vector<socket_t *> sockets;
+        context_t ctx;
 
         ServerTest() :
-            test00_server(NULL)
+            test00_server(NULL),
+            ctx(3)
         { }
 
         ~ServerTest()
         {
             if (this->test00_server) delete test00_server;
+
+            for (int i = 0; i < this->sockets.size(); i++) {
+                if (this->sockets[i]) delete this->sockets[i];
+            }
         }
 
         Server * GetTest00Server()
@@ -48,6 +58,7 @@ class ServerTest : public ::testing::Test
             ServerStartParams p1;
             p1.listen_endpoints.push_back("inproc://test00");
             p1.store_path = "simpledirectory://test/stores/00-simple";
+            p1.ctx = &this->ctx;
 
             // disable log writing
             p1.log_bucket.clear();
@@ -55,6 +66,18 @@ class ServerTest : public ::testing::Test
 
             this->test00_server = new Server(p1);
             return test00_server;
+        }
+
+        socket_t * GetClientSocket(Server *s, int type = ZMQ_REQ)
+        {
+            EXPECT_TRUE(s->ClientEndpoints().size() > 0);
+            string endpoint = s->ClientEndpoints().at(0);
+
+            socket_t * result = new socket_t(this->ctx, type);
+            this->sockets.push_back(result);
+            result->connect(endpoint.c_str());
+
+            return result;
         }
 };
 
@@ -109,6 +132,44 @@ TEST_F(ServerTest, SimplePump)
     for (size_t i = 100; i; --i) {
         ASSERT_NE(-1, s->Pump(0));
     }
+}
+
+// verifies that we can send 0MQ request messages to the server
+TEST_F(ServerTest, SimpleMessageProcessing)
+{
+    Server *s = this->GetTest00Server();
+    s->RunAsync();
+
+    socket_t *sock = this->GetClientSocket(s);
+    ASSERT_TRUE(socket != NULL);
+
+    protocol::request::GetStoreInfo m;
+    m.set_version(1);
+    Envelope e;
+    m.add_to_envelope(&e);
+
+    message_t msg;
+    ASSERT_TRUE(e.ToProtocolZmqMessage(msg));
+
+    ASSERT_TRUE(sock->send(msg, 0));
+
+    // and we wait for a response
+    ASSERT_NO_THROW(sock->recv(&msg, 0));
+
+    ASSERT_TRUE(msg.size() > 1);
+    int64 more;
+    size_t moresz = sizeof(more);
+    sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+    EXPECT_EQ(0, more);
+
+    // first byte is format version and should be 1
+    ASSERT_EQ(0x01, *((char *)msg.data()));
+
+    Envelope response;
+    ASSERT_NO_THROW(response = Envelope(msg, 1));
+    EXPECT_EQ(1, response.MessageCount());
+
+    s->Shutdown();
 }
 
 }}} // namespaces
