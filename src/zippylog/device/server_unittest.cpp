@@ -43,7 +43,7 @@ class ServerTest : public ::testing::Test
         {
             if (this->test00_server) delete test00_server;
 
-            for (int i = 0; i < this->sockets.size(); i++) {
+            for (size_t i = 0; i < this->sockets.size(); i++) {
                 if (this->sockets[i]) delete this->sockets[i];
             }
         }
@@ -141,7 +141,7 @@ TEST_F(ServerTest, SimpleMessageProcessing)
     s->RunAsync();
 
     socket_t *sock = this->GetClientSocket(s);
-    ASSERT_TRUE(socket != NULL);
+    ASSERT_TRUE(sock != NULL);
 
     protocol::request::GetStoreInfo m;
     m.set_version(1);
