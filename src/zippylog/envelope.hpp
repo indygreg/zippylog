@@ -84,6 +84,7 @@ class ZIPPYLOG_EXPORT Envelope {
         // inefficient castings, we'll likely create a new overload
         bool AddMessage(::google::protobuf::Message &m, uint32 ns, uint32 enumeration);
 
+        // TODO make protected and fix leaky class
         message::Envelope envelope;
 
         /// Serializes the envelope into a 0MQ message
