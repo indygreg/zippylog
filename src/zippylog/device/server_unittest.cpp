@@ -18,6 +18,7 @@
 
 using ::std::invalid_argument;
 using ::std::string;
+using ::std::vector;
 
 namespace zippylog {
 namespace device {
@@ -26,6 +27,8 @@ namespace server {
 class ServerTest : public ::testing::Test
 {
     protected:
+        Server * test00_server;
+
         ServerTest() :
             test00_server(NULL)
         { }
@@ -34,8 +37,6 @@ class ServerTest : public ::testing::Test
         {
             if (this->test00_server) delete test00_server;
         }
-
-        Server * test00_server;
 
         Server * GetTest00Server()
         {
@@ -47,6 +48,10 @@ class ServerTest : public ::testing::Test
             ServerStartParams p1;
             p1.listen_endpoints.push_back("inproc://test00");
             p1.store_path = "simpledirectory://test/stores/00-simple";
+
+            // disable log writing
+            p1.log_bucket.clear();
+            p1.log_stream_set.clear();
 
             this->test00_server = new Server(p1);
             return test00_server;
@@ -83,6 +88,11 @@ TEST_F(ServerTest, ConstructSuccess)
     p1.listen_endpoints.push_back("inproc://test00");
     p1.store_path = "simpledirectory://test/stores/00-simple";
     EXPECT_NO_THROW(Server s(p1));
+
+    Server s(p1);
+    vector<string> endpoints = s.ClientEndpoints();
+    EXPECT_EQ(1, endpoints.size());
+    EXPECT_TRUE("inproc://test00" == endpoints[0]);
 }
 
 TEST_F(ServerTest, Startup)

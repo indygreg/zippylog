@@ -48,6 +48,7 @@ using ::zippylog::device::server::WatcherStartParams;
 using ::zippylog::device::server::Watcher;
 using ::zippylog::device::server::Worker;
 using ::zippylog::device::server::WorkerStartParams;
+using ::zmq::socket_t;
 
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
@@ -55,6 +56,7 @@ using ::zippylog::device::server::WorkerStartParams;
 #define WORKER_SUBSCRIPTIONS_INDEX 3
 #define STREAMING_NOTIFY_INDEX 4
 #define LOGGER_INDEX 5
+#define STORE_CHANGES_INPUT_INDEX 6
 
 Server::Server(ServerStartParams &params) :
     store_path(params.store_path),
@@ -64,6 +66,7 @@ Server::Server(ServerStartParams &params) :
     subscription_ttl(params.subscription_ttl),
     log_bucket(params.log_bucket),
     log_stream_set(params.log_stream_set),
+    write_logs(false),
     stream_flush_interval(params.stream_flush_interval),
     lua_execute_client_code(params.lua_execute_client_code),
     lua_streaming_max_memory(params.lua_streaming_max_memory),
@@ -79,6 +82,8 @@ Server::Server(ServerStartParams &params) :
     streaming_subscriptions_sock(NULL),
     worker_streaming_notify_sock(NULL),
     streaming_streaming_notify_sock(NULL),
+    store_changes_input_sock(NULL),
+    store_changes_output_sock(NULL),
     logger_sock(NULL),
     log_client_sock(NULL),
     stream_flush_timer(params.stream_flush_interval * 1000),
@@ -114,7 +119,6 @@ Server::Server(ServerStartParams &params) :
     platform::FormatUUID(uuid, uuid_s);
 
     this->worker_endpoint = "inproc://" + uuid_s + "workers";
-    this->store_change_endpoint = "inproc://" + uuid_s + "store_changes";
     this->streaming_endpoint = "inproc://" + uuid_s + "streaming";
     this->logger_endpoint = "inproc://" + uuid_s + "logger";
     this->worker_subscriptions_endpoint = "inproc://" + uuid_s + "worker_subscriptions";
@@ -123,8 +127,13 @@ Server::Server(ServerStartParams &params) :
     this->streaming_streaming_notify_endpoint = "inproc://" + uuid_s + "streaming_notify";
     this->store_writer_envelope_pull_endpoint = "inproc://" + uuid_s + "store_writer_envelope_pull";
     this->store_writer_envelope_rep_endpoint = "inproc://" + uuid_s + "store_writer_envelope_rep";
+    this->store_changes_input_endpoint = "inproc://" + uuid_s + "store_changes_input";
+    this->store_changes_output_endpoint = "inproc://" + uuid_s + "store_changes_output";
 
     this->store = Store::CreateStore(this->store_path);
+
+    if (this->log_bucket.length() && this->log_stream_set.length())
+        this->write_logs = true;
 }
 
 Server::~Server()
@@ -138,6 +147,8 @@ Server::~Server()
     if (this->streaming_subscriptions_sock) delete this->streaming_subscriptions_sock;
     if (this->worker_streaming_notify_sock) delete this->worker_streaming_notify_sock;
     if (this->streaming_streaming_notify_sock) delete this->streaming_streaming_notify_sock;
+    if (this->store_changes_input_sock) delete this->store_changes_input_sock;
+    if (this->store_changes_output_sock) delete this->store_changes_output_sock;
     if (this->logger_sock) delete this->logger_sock;
     if (this->log_client_sock) delete this->log_client_sock;
     if (this->store) delete this->store;
@@ -191,7 +202,7 @@ int Server::Pump(uint32 wait_time)
     }
 
     // look for pending receives on sockets
-    int rc = zmq::poll(&this->pollitems[0], 6, wait_time);
+    int rc = zmq::poll(&this->pollitems[0], 7, wait_time);
 
     // if nothing pending, return if we have done anything so far
     if (rc < 1) return work_done ? 1 : 0;
@@ -221,7 +232,10 @@ int Server::Pump(uint32 wait_time)
 
             work_done = true;
 
-            this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
+            // TODO this should arguably be performed by the dedicated store writer
+            if (this->write_logs) {
+                this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
+            }
 
             // TODO this is mostly for debugging purposes and should be implemented another way
             // once the project has matured
@@ -288,6 +302,26 @@ int Server::Pump(uint32 wait_time)
             moresz = sizeof(more);
             this->worker_subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
             if (!this->streaming_subscriptions_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
+                error = true;
+                break;
+            }
+            work_done = true;
+
+            if (!more) break;
+        }
+    }
+
+    // move store changes to all subscribed parties
+    else if (pollitems[STORE_CHANGES_INPUT_INDEX].revents & ZMQ_POLLIN) {
+        while(true) {
+            if (!this->store_changes_input_sock->recv(&msg, 0)) {
+                error = true;
+                break;
+            }
+
+            moresz = sizeof(more);
+            this->store_changes_input_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
+            if (!this->store_changes_output_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
                 error = true;
                 break;
             }
@@ -375,11 +409,11 @@ bool Server::SynchronizeStartParams()
     swparams.zctx = &this->zctx;
 
     this->store_watcher_params.params = swparams;
-    this->store_watcher_params.socket_endpoint = this->store_change_endpoint;
+    this->store_watcher_params.socket_endpoint = this->store_changes_input_endpoint;
 
     // streamer
     this->streamer_params.client_endpoint = this->streaming_endpoint;
-    this->streamer_params.store_changes_endpoint = this->store_change_endpoint;
+    this->streamer_params.store_changes_endpoint = this->store_changes_output_endpoint;
     this->streamer_params.logging_endpoint = this->logger_endpoint;
     this->streamer_params.subscriptions_endpoint = this->streaming_subscriptions_endpoint;
     this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
@@ -415,29 +449,35 @@ bool Server::Start()
     this->SynchronizeStartParams();
 
     // create all our sockets
-    this->logger_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
+    this->logger_sock = new socket_t(this->zctx, ZMQ_PULL);
     this->logger_sock->bind(this->logger_endpoint.c_str());
 
-    this->log_client_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
+    this->log_client_sock = new socket_t(this->zctx, ZMQ_PUSH);
     this->log_client_sock->connect(this->logger_endpoint.c_str());
 
-    this->workers_sock = new zmq::socket_t(this->zctx, ZMQ_XREQ);
+    this->workers_sock = new socket_t(this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 
-    this->streaming_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
+    this->streaming_sock = new socket_t(this->zctx, ZMQ_PULL);
     this->streaming_sock->bind(this->streaming_endpoint.c_str());
 
-    this->worker_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
+    this->worker_subscriptions_sock = new socket_t(this->zctx, ZMQ_PULL);
     this->worker_subscriptions_sock->bind(this->worker_subscriptions_endpoint.c_str());
 
-    this->worker_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PULL);
+    this->worker_streaming_notify_sock = new socket_t(this->zctx, ZMQ_PULL);
     this->worker_streaming_notify_sock->bind(this->worker_streaming_notify_endpoint.c_str());
 
-    this->streaming_subscriptions_sock = new zmq::socket_t(this->zctx, ZMQ_PUSH);
+    this->streaming_subscriptions_sock = new socket_t(this->zctx, ZMQ_PUSH);
     this->streaming_subscriptions_sock->bind(this->streaming_subscriptions_endpoint.c_str());
 
-    this->streaming_streaming_notify_sock = new zmq::socket_t(this->zctx, ZMQ_PUB);
+    this->streaming_streaming_notify_sock = new socket_t(this->zctx, ZMQ_PUB);
     this->streaming_streaming_notify_sock->bind(this->streaming_streaming_notify_endpoint.c_str());
+
+    this->store_changes_input_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->store_changes_input_sock->bind(this->store_changes_input_endpoint.c_str());
+
+    this->store_changes_output_sock = new socket_t(this->zctx, ZMQ_PUB);
+    this->store_changes_output_sock->bind(this->store_changes_output_endpoint.c_str());
 
     // now create child threads
 
@@ -460,7 +500,7 @@ bool Server::Start()
     platform::sleep(100);
 
     // bind sockets to listen for client requests
-    this->clients_sock = new zmq::socket_t(this->zctx, ZMQ_XREP);
+    this->clients_sock = new socket_t(this->zctx, ZMQ_XREP);
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?
@@ -492,6 +532,11 @@ bool Server::Start()
     this->pollitems[STREAMING_NOTIFY_INDEX].events = ZMQ_POLLIN;
     this->pollitems[STREAMING_NOTIFY_INDEX].fd = 0;
     this->pollitems[STREAMING_NOTIFY_INDEX].revents = 0;
+
+    this->pollitems[STORE_CHANGES_INPUT_INDEX].socket = *this->store_changes_input_sock;
+    this->pollitems[STORE_CHANGES_INPUT_INDEX].events = ZMQ_POLLIN;
+    this->pollitems[STORE_CHANGES_INPUT_INDEX].fd = 0;
+    this->pollitems[STORE_CHANGES_INPUT_INDEX].revents = 0;
 
     this->pollitems[LOGGER_INDEX].socket = *this->logger_sock;
     this->pollitems[LOGGER_INDEX].events = ZMQ_POLLIN;

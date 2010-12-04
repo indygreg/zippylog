@@ -31,8 +31,8 @@ Watcher::Watcher(WatcherStartParams &params) :
     endpoint(params.socket_endpoint),
     socket(NULL)
 {
-    this->socket = new socket_t(*this->_ctx, ZMQ_PUB);
-    this->socket->bind(this->endpoint.c_str());
+    this->socket = new socket_t(*this->_ctx, ZMQ_PUSH);
+    this->socket->connect(this->endpoint.c_str());
 }
 
 Watcher::~Watcher()
