@@ -39,23 +39,21 @@ Envelope::Envelope() : messages(NULL), message_count(0)
     this->envelope.set_create_time(t.epoch_micro);
 }
 
+Envelope::Envelope(message_t &msg, uint32 offset)
+{
+    if (!msg.size()) throw invalid_argument("0MQ message is empty");
+    if (offset + 1 >= msg.size()) throw invalid_argument("specified offset is larger than message");
+
+    this->InitializeFromBuffer((const void *)((char *)msg.data() + offset), msg.size() - offset);
+}
+
 Envelope::Envelope( const void * data, int size) : messages(NULL), message_count(0)
 {
     if (!data) throw invalid_argument("NULL data pointer");
     if (!size) throw invalid_argument("0 size data buffer");
     if (size < 0) throw invalid_argument("size <0: " + size);
 
-    if (!this->envelope.ParseFromArray(data, size)) {
-        throw DeserializeException();
-    }
-
-    int count = this->MessageCount();
-
-    this->messages = new Message *[count];
-    this->message_count = count;
-    for (int i = 0; i < count; i++) {
-        this->messages[i] = NULL;
-    }
+    this->InitializeFromBuffer(data, size);
 }
 
 Envelope::Envelope(const string &s) :
@@ -120,6 +118,21 @@ Envelope & Envelope::operator=(const Envelope &orig)
     this->envelope = orig.envelope;
 
     return *this;
+}
+
+void Envelope::InitializeFromBuffer(const void * data, int size)
+{
+    if (!this->envelope.ParseFromArray(data, size)) {
+        throw DeserializeException();
+    }
+
+    int count = this->MessageCount();
+
+    this->messages = new Message *[count];
+    this->message_count = count;
+    for (int i = 0; i < count; i++) {
+        this->messages[i] = NULL;
+    }
 }
 
 bool Envelope::Serialize(string &s) const

@@ -49,12 +49,11 @@ class ZIPPYLOG_EXPORT Envelope {
 
         /// Construct an envelope from a 0MQ message
         ///
-        /// This function assumes the ENTIRE content of the 0MQ message is
-        /// the serialized envelope. Note that for a zippylog protocol 0MQ
-        /// message (where the first byte is a version byte), this is NOT
-        /// the case. So, if you attempt to construct an envelope from one
-        /// of these messages, it will likely fail.
-        Envelope(::zmq::message_t &m);
+        /// The optional second parameter defines the byte start offset from
+        /// which to start deserialization. This is required for protocol
+        /// messages, where the first byte is a format version. It defaults
+        /// to 0, which means to deserialize from the entire message.
+        Envelope(::zmq::message_t &m, uint32 start_offset = 0);
 
         /// Construct an envelope having string data
         ///
@@ -128,6 +127,11 @@ class ZIPPYLOG_EXPORT Envelope {
         ::std::string ToString();
 
     protected:
+        /// Initializes the envelope from a buffer
+        ///
+        /// This is likely only called from a constructor.
+        void InitializeFromBuffer(const void * data, int size);
+
         // holds pointer to dynamic array
         ::google::protobuf::Message ** messages;
         int message_count;
