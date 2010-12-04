@@ -388,6 +388,9 @@ int Server::Pump(uint32 wait_time)
 void Server::RunAsync()
 {
     this->exec_thread = new Thread(Server::AsyncExecStart, this);
+
+    // TODO better ways to do this
+    while (!this->initialized);
 }
 
 bool Server::SynchronizeStartParams()
