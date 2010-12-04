@@ -127,6 +127,7 @@ private:
 class ZIPPYLOG_EXPORT ServerStartParams {
 public:
     ServerStartParams() :
+        ctx(NULL),
         worker_threads(3),
         streaming_threads(3),
         subscription_ttl(60000),
@@ -136,6 +137,11 @@ public:
         lua_execute_client_code(false),
         lua_streaming_max_memory(524288)
     { }
+
+    /// 0MQ context to use
+    ///
+    /// If not defined, a new context will be created automatically
+    ::zmq::context_t *ctx;
 
     /// the path to the store the server operates against
     ::std::string store_path;
@@ -344,9 +350,10 @@ class ZIPPYLOG_EXPORT Server {
         bool initialized;
 
         /// 0MQ context to use
-        ///
-        /// Currently, we have our own dedicated context, but this could change
-        ::zmq::context_t zctx;
+        ::zmq::context_t * zctx;
+
+        /// Whether we own the 0MQ context (whether to delete in dtor)
+        bool own_context;
 
         // fans XREQ that fans out to individual worker threads
         ::zmq::socket_t * workers_sock;

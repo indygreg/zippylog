@@ -74,7 +74,8 @@ Server::Server(ServerStartParams &params) :
     active(true),
     start_started(false),
     initialized(false),
-    zctx(3),
+    zctx(params.ctx),
+    own_context(false),
     workers_sock(NULL),
     clients_sock(NULL),
     streaming_sock(NULL),
@@ -134,6 +135,11 @@ Server::Server(ServerStartParams &params) :
 
     if (this->log_bucket.length() && this->log_stream_set.length())
         this->write_logs = true;
+
+    if (!this->zctx) {
+        this->zctx = new ::zmq::context_t(3);
+        this->own_context = true;
+    }
 }
 
 Server::~Server()
@@ -152,6 +158,7 @@ Server::~Server()
     if (this->logger_sock) delete this->logger_sock;
     if (this->log_client_sock) delete this->log_client_sock;
     if (this->store) delete this->store;
+    if (this->own_context && this->zctx) delete this->zctx;
 }
 
 void Server::Run()
@@ -388,7 +395,7 @@ bool Server::SynchronizeStartParams()
     // worker/request processor
     ::zippylog::RequestProcessorStartParams params;
     params.active = &this->active;
-    params.ctx = &this->zctx;
+    params.ctx = this->zctx;
     params.client_endpoint = this->worker_endpoint;
     params.logger_endpoint = this->logger_endpoint;
     params.store_path = this->store_path;
@@ -406,7 +413,7 @@ bool Server::SynchronizeStartParams()
 
     // TODO this assumes we're using a file-based store, which is a no-no
     swparams.store_path = ((SimpleDirectoryStore *)(this->store))->RootDirectoryPath();
-    swparams.zctx = &this->zctx;
+    swparams.zctx = this->zctx;
 
     this->store_watcher_params.params = swparams;
     this->store_watcher_params.socket_endpoint = this->store_changes_input_endpoint;
@@ -418,7 +425,7 @@ bool Server::SynchronizeStartParams()
     this->streamer_params.subscriptions_endpoint = this->streaming_subscriptions_endpoint;
     this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
 
-    this->streamer_params.ctx = &this->zctx;
+    this->streamer_params.ctx = this->zctx;
     this->streamer_params.store_path = this->store_path;
     this->streamer_params.subscription_ttl = this->subscription_ttl;
     this->streamer_params.lua_allow = this->lua_execute_client_code;
@@ -426,7 +433,7 @@ bool Server::SynchronizeStartParams()
     this->streamer_params.active = &this->active;
 
     // store writer
-    this->store_writer_params.ctx = &this->zctx;
+    this->store_writer_params.ctx = this->zctx;
     this->store_writer_params.active = &this->active;
     this->store_writer_params.store_path = this->store_path;
     this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
@@ -449,34 +456,34 @@ bool Server::Start()
     this->SynchronizeStartParams();
 
     // create all our sockets
-    this->logger_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
     this->logger_sock->bind(this->logger_endpoint.c_str());
 
-    this->log_client_sock = new socket_t(this->zctx, ZMQ_PUSH);
+    this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->log_client_sock->connect(this->logger_endpoint.c_str());
 
-    this->workers_sock = new socket_t(this->zctx, ZMQ_XREQ);
+    this->workers_sock = new socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 
-    this->streaming_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->streaming_sock = new socket_t(*this->zctx, ZMQ_PULL);
     this->streaming_sock->bind(this->streaming_endpoint.c_str());
 
-    this->worker_subscriptions_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->worker_subscriptions_sock = new socket_t(*this->zctx, ZMQ_PULL);
     this->worker_subscriptions_sock->bind(this->worker_subscriptions_endpoint.c_str());
 
-    this->worker_streaming_notify_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->worker_streaming_notify_sock = new socket_t(*this->zctx, ZMQ_PULL);
     this->worker_streaming_notify_sock->bind(this->worker_streaming_notify_endpoint.c_str());
 
-    this->streaming_subscriptions_sock = new socket_t(this->zctx, ZMQ_PUSH);
+    this->streaming_subscriptions_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->streaming_subscriptions_sock->bind(this->streaming_subscriptions_endpoint.c_str());
 
-    this->streaming_streaming_notify_sock = new socket_t(this->zctx, ZMQ_PUB);
+    this->streaming_streaming_notify_sock = new socket_t(*this->zctx, ZMQ_PUB);
     this->streaming_streaming_notify_sock->bind(this->streaming_streaming_notify_endpoint.c_str());
 
-    this->store_changes_input_sock = new socket_t(this->zctx, ZMQ_PULL);
+    this->store_changes_input_sock = new socket_t(*this->zctx, ZMQ_PULL);
     this->store_changes_input_sock->bind(this->store_changes_input_endpoint.c_str());
 
-    this->store_changes_output_sock = new socket_t(this->zctx, ZMQ_PUB);
+    this->store_changes_output_sock = new socket_t(*this->zctx, ZMQ_PUB);
     this->store_changes_output_sock->bind(this->store_changes_output_endpoint.c_str());
 
     // now create child threads
@@ -500,7 +507,7 @@ bool Server::Start()
     platform::sleep(100);
 
     // bind sockets to listen for client requests
-    this->clients_sock = new socket_t(this->zctx, ZMQ_XREP);
+    this->clients_sock = new socket_t(*this->zctx, ZMQ_XREP);
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?
