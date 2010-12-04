@@ -27,7 +27,7 @@ namespace zippylog {
 TEST(EnvelopeTest, EmptyConstructor)
 {
     ASSERT_NO_THROW(Envelope e());
-    
+
     Envelope e;
     EXPECT_EQ(0, e.MessageCount());
     string s;
@@ -40,6 +40,27 @@ TEST(EnvelopeTest, InvalidDataConstruct)
     ASSERT_THROW(Envelope e(NULL, 10), invalid_argument);
     ASSERT_THROW(Envelope e((void *)324234, 0), invalid_argument);
     ASSERT_THROW(Envelope e((void *)352537, -10), invalid_argument);
+}
+
+TEST(EnvelopeTest, ZmqMessageConstructor)
+{
+    message_t m;
+
+    // empty message
+    EXPECT_THROW(Envelope e(m), invalid_argument);
+
+    // offset >= size
+    m.rebuild(10);
+    EXPECT_THROW(Envelope e(m, 9), invalid_argument);
+
+    Envelope e;
+    ASSERT_TRUE(e.ToZmqMessage(m));
+    EXPECT_NO_THROW(Envelope e2(m));
+
+    message_t m2(m.size() + 1);
+    memset(m.data(), 1, 1);
+    memcpy((void *)((char *)m2.data() + 1), m.data(), m.size());
+    EXPECT_NO_THROW(Envelope e2(m2, 1));
 }
 
 TEST(EnvelopeTest, Serialize)
