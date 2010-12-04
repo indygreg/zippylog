@@ -29,14 +29,10 @@
 namespace zippylog {
 namespace client {
 
-/*
-The client API is pretty bad at the moment. In the future, everything will
-likely be implemented via callbacks. There will be synchronous and asynchronous
-calls for every functionality. Subscriptions, by definition, will be
-asynchronous. This will all get flushed out eventually.
-*/
-
-// represents a stream segment response (from Get requests)
+/// Represents a segment of a stream
+///
+/// Stream segments have begin and end offsets and contain envelopes.
+/// Segments are returned from requests to obtain parts of streams.
 class ZIPPYLOG_EXPORT StreamSegment {
     public:
         StreamSegment();
@@ -58,11 +54,12 @@ class ZIPPYLOG_EXPORT StreamSegment {
 
 };
 
-// function types for callbacks when the client has received a subscribed event
-// the first string parameter is the subscription id
-// callers can associate the subscription id with their own metadata
-// independent of the client API. their callbacks can fetch this data at
-// callback time.
+/// Function types for callbacks when the client has received a subscribed event
+///
+/// The first string parameter is the subscription id. The final parameter is
+/// always a void *. Callers can associate the subscription id with their own
+/// metadata independent of the client API. Their callbacks can fetch this data
+/// at callback time.
 typedef void (__stdcall * StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAdded &, void *);
 typedef void (__stdcall * StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeleted &, void *);
 typedef void (__stdcall * StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppended &, void *);
@@ -71,22 +68,24 @@ typedef void (__stdcall * StoreChangeBucketDeletedCallback)(::std::string, proto
 typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
 typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
 
-// callback executed when a store info response is received
+/// Callback executed when a store info response is received
 typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
 
-// executed when a stream segment is received
-// invoked with the path, start offset, and the data in that segment
+/// Executed when a stream segment is received
+///
+/// Invoked with the path, start offset, and the data in that segment
 typedef void (__stdcall * StreamSegmentCallback)(const ::std::string &, uint64, StreamSegment &, void *);
 
-// executed when an envelope is received
-// invoked with subscription id, the envelope, and supplied user data to subscription
+/// Executed when an envelope is received
+///
+/// Invoked with subscription id, the envelope, and supplied user data to subscription
 typedef void (__stdcall * EnvelopeCallback)(const ::std::string &, Envelope &, void *);
 
-// The SubscriptionCallback defines the set of function callbacks for a
-// subscription. Not all callback types are valid for every subscription
-// type.
-// If a callback in not defined, no function is executed when an event for
-// that callback is received.
+/// Defines the set of function callbacks for a subscription.
+///
+/// Not all callback types are valid for every subscription type. If a
+/// callback in not defined, no function is executed when an event for that
+/// callback is received.
 class ZIPPYLOG_EXPORT SubscriptionCallback {
 public:
     SubscriptionCallback();
@@ -102,7 +101,9 @@ public:
     EnvelopeCallback                    Envelope;
 };
 
-// represents a client subscription
+/// Represents a client subscription
+///
+/// Used internally by the client to keep track of state.
 class Subscription {
 public:
     Subscription();
@@ -118,7 +119,9 @@ protected:
     void *data;
 };
 
-// keeps track of requests sent whose replies have not yet been seen
+/// Keeps track of requests sent whose replies have not yet been seen
+///
+/// Used internally by the client.
 class OutstandingRequest {
 public:
     OutstandingRequest();
@@ -135,11 +138,17 @@ protected:
     void *data;
 };
 
-// Client instances talk to zippylog servers
+/// zippylog protocol client
+///
+/// Clients connect to 0MQ endpoints and send zippylog protocol requests and
+/// react to responses.
 class ZIPPYLOG_EXPORT Client {
     public:
-        // establish a client and bind to the location specified
-        Client(::zmq::context_t *ctx, const ::std::string &connect);
+        /// Create a client that connects to the specified 0MQ endpoint
+        ///
+        /// The 0MQ context is required. If not set, an exception will be
+        /// thrown.
+        Client(::zmq::context_t *ctx, const ::std::string &endpoint);
         ~Client();
 
         // Asynchronously obtain the store info. Executes supplied callback when store
@@ -195,7 +204,7 @@ class ZIPPYLOG_EXPORT Client {
         ::std::map< ::std::string, Subscription > subscriptions;
         ::std::map< ::std::string, OutstandingRequest > outstanding;
 
-        ::zmq::pollitem_t * pollitem;
+        ::zmq::pollitem_t pollitem[1];
 
         uint32 subscription_renewal_offset;
 

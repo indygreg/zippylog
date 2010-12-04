@@ -32,15 +32,17 @@ using ::zmq::socket_t;
 namespace zippylog {
 namespace client {
 
-Client::Client(context_t *ctx, const string &connect)
+Client::Client(context_t *ctx, const string &endpoint) :
+    client_sock(NULL),
+    subscription_renewal_offset(5000000) // 5 seconds
 {
+    if (!ctx) {
+        throw invalid_argument("ctx parameter cannot be NULL");
+    }
+
     this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
-    this->client_sock->connect(connect.c_str());
+    this->client_sock->connect(endpoint.c_str());
 
-    // by default, renew 5 seconds before expiration
-    this->subscription_renewal_offset = 5000000;
-
-    this->pollitem = new pollitem_t[1];
     this->pollitem[0].events = ZMQ_POLLIN;
     this->pollitem[0].fd = 0;
     this->pollitem[0].socket = *this->client_sock;
@@ -49,8 +51,8 @@ Client::Client(context_t *ctx, const string &connect)
 Client::~Client()
 {
     this->CancelAllSubscriptions();
-    delete this->client_sock;
-    delete this->pollitem;
+
+    if (this->client_sock) delete this->client_sock;
 }
 
 bool Client::StoreInfo(StoreInfoCallback callback, void *data)
