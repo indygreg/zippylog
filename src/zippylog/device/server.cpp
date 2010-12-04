@@ -66,6 +66,7 @@ Server::Server(ServerStartParams &params) :
     subscription_ttl(params.subscription_ttl),
     log_bucket(params.log_bucket),
     log_stream_set(params.log_stream_set),
+    write_logs(false),
     stream_flush_interval(params.stream_flush_interval),
     lua_execute_client_code(params.lua_execute_client_code),
     lua_streaming_max_memory(params.lua_streaming_max_memory),
@@ -130,6 +131,9 @@ Server::Server(ServerStartParams &params) :
     this->store_changes_output_endpoint = "inproc://" + uuid_s + "store_changes_output";
 
     this->store = Store::CreateStore(this->store_path);
+
+    if (this->log_bucket.length() && this->log_stream_set.length())
+        this->write_logs = true;
 }
 
 Server::~Server()
@@ -228,7 +232,10 @@ int Server::Pump(uint32 wait_time)
 
             work_done = true;
 
-            this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
+            // TODO this should arguably be performed by the dedicated store writer
+            if (this->write_logs) {
+                this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
+            }
 
             // TODO this is mostly for debugging purposes and should be implemented another way
             // once the project has matured

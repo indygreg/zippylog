@@ -319,6 +319,11 @@ class ZIPPYLOG_EXPORT Server {
         /// Stream set to log server's own log messages to
         ::std::string log_stream_set;
 
+        /// Whether we write logs
+        ///
+        /// This is a convenience variable set at construction time.
+        bool write_logs;
+
         /// How often to flush written streams, in milliseconds
         int32 stream_flush_interval;
 
