@@ -1,4 +1,4 @@
-This document describes the zippylog protocol as it relates to developes. The actual protocol definition is defined by the .proto source files and the documentation on the zippylog wiki.
+This document describes the zippylog protocol as it relates to developers. The actual protocol definition is defined by the .proto source files and the documentation on the zippylog wiki.
 
 # Design Guidelines
 
