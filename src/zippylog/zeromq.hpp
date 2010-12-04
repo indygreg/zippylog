@@ -67,6 +67,27 @@ bool send_envelope_more(::zmq::socket_t *socket, ::std::vector< ::std::string > 
 // this inserts an empty message part to cover the missing identity message
 bool send_envelope_xreq(::zmq::socket_t *socket, Envelope &envelope);
 
+/// Sends an envelope over a socket
+///
+/// @param socket Socket to send over
+/// @param e Envelope to send
+/// @param is_protocol Serialize as a protocol message
+/// @param flags 0MQ send flags
+/// @return 0 on send failure (try again), -1 on serialization failure, 1 success
+int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int flags);
+
+/// Sends an envelope over a socket with message identities
+///
+/// This is a convenience method to sends an envelope over an XREQ/XREP socket
+/// with message identities.
+///
+/// If the identities list is empty, an empty message will be sent before
+/// the envelope. The send flags for the identities messages and the empty
+/// message always include ZMQ_SNDMORE. The flags for the envelope message
+/// are always from the parameter flags. If the ZMQ_NOBLOCK flag is set, it
+/// is set on all message parts.
+int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string > &identities, Envelope &e, bool is_protocol, int flags);
+
 }} // end namespaces
 
 #endif

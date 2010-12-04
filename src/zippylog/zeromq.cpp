@@ -195,4 +195,43 @@ bool send_envelope_xreq(socket_t *socket, Envelope &envelope)
     return send_envelope(socket, envelope);
 }
 
+int SendEnvelope(socket_t &socket, Envelope &e, bool is_protocol, int flags)
+{
+    message_t msg;
+
+    if (is_protocol) {
+        if (!e.ToProtocolZmqMessage(msg)) return -1;
+    }
+    else {
+        if (!e.ToZmqMessage(msg)) return -1;
+    }
+
+    return socket.send(msg, flags) ? 1 : 0;
+}
+
+int SendEnvelope(socket_t &socket, vector<string> &identities, Envelope &e, bool is_protocol, int flags)
+{
+    message_t msg;
+    int initial_flags = ZMQ_SNDMORE | (ZMQ_NOBLOCK & flags);
+
+    message_t e_msg;
+    if (is_protocol) {
+        if (!e.ToProtocolZmqMessage(e_msg)) return -1;
+    }
+    else {
+        if (!e.ToZmqMessage(e_msg)) return -1;
+    }
+
+    for (vector<string>::iterator i = identities.begin(); i != identities.end(); i++) {
+        msg.rebuild(i->size());
+        memcpy(msg.data(), i->data(), msg.size());
+        if (!socket.send(msg, initial_flags)) return 0;
+    }
+
+    msg.rebuild(0);
+    if (!socket.send(msg, initial_flags)) return 0;
+
+    return socket.send(e_msg, flags) ? 1 : 0;
+}
+
 }} // namespaces
