@@ -105,8 +105,6 @@ bool StoreWriter::Run()
 
 int StoreWriter::Pump(long timeout)
 {
-    bool result = true;
-
     int rc = ::zmq::poll(&this->pollitem[0], this->active_sockets, timeout);
     if (rc < 1) return 0;
 
