@@ -68,6 +68,12 @@ class ZIPPYLOG_EXPORT Envelope {
         Envelope & operator=(const Envelope &orig);
         Envelope(const Envelope &e);
 
+        /// Serialize the envelope to the passed string
+        ///
+        /// The serialized envelope will be appended to the string. If the
+        /// original string contains data, it will be preserved.
+        bool Serialize(::std::string &s) const;
+
         // adds a protobuf messsage to the payload.
         //
         // message is effectively copied to the envelope. any modifications
@@ -80,9 +86,17 @@ class ZIPPYLOG_EXPORT Envelope {
 
         message::Envelope envelope;
 
-        // serializes the envelope into a 0MQ message
-        // existing message content will be overwritten
+        /// Serializes the envelope into a 0MQ message
+        ///
+        /// This does NOT add a protocol format header. For that, see
+        /// ToZmqProtocolMessage().
         bool ToZmqMessage(::zmq::message_t &msg);
+
+        /// Serializes to a 0MQ message for the zippylog protocol
+        ///
+        /// This adds the appropriate header to the message to identify it as
+        /// an envelope.
+        bool ToProtocolZmqMessage(::zmq::message_t &msg);
 
         int MessageCount();
 
@@ -106,6 +120,10 @@ class ZIPPYLOG_EXPORT Envelope {
         // copy a message to another envelope
         bool CopyMessage(int index, Envelope &dest);
 
+        /// Returns a human-readable string that describes the envelope
+        ///
+        /// The returned string shows all the envelope's fields and messages
+        /// within.
         ::std::string ToString();
 
     protected:
