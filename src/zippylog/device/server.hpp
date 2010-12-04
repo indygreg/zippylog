@@ -87,17 +87,17 @@ class WatcherStartParams {
 public:
     ::zippylog::StoreWatcherStartParams params;
 
-    // 0MQ socket endpoint on which to bind a PUB socket
+    // 0MQ socket endpoint on which to connect a PUSH socket
     ::std::string socket_endpoint;
 };
 
 /// Store watcher implementation for the server device
 ///
-/// Whenever changes are seen, forwards store change events on a 0MQ PUB socket
+/// Whenever changes are seen, forwards store change events on a 0MQ PUSH socket
 /// whose endpoint is defined at construction time.
 class Watcher : public ::zippylog::StoreWatcher {
 public:
-    // Construct a watcher that sends events to a 0MQ PUB socket
+    // Construct a watcher that sends events to a 0MQ PUSH socket
     Watcher(WatcherStartParams &params);
     ~Watcher();
 
@@ -264,7 +264,7 @@ class ZIPPYLOG_EXPORT Server {
         ///
         /// The list is the set of 0MQ endpoints the server will accept client
         /// requests from.
-        vector<string> ClientEndpoints() const { return this->listen_endpoints; }
+        ::std::vector< ::std::string > ClientEndpoints() const { return this->listen_endpoints; }
 
         /// Parse a config file into a ServerConfig object
         ///
@@ -376,6 +376,14 @@ class ZIPPYLOG_EXPORT Server {
         ::zmq::socket_t * streaming_streaming_notify_sock;
         ::std::string streaming_streaming_notify_endpoint;
 
+        // PULL that receives store changes
+        ::zmq::socket_t * store_changes_input_sock;
+        ::std::string store_changes_input_endpoint;
+
+        // PUB that sends store changes to streamers
+        ::zmq::socket_t * store_changes_output_sock;
+        ::std::string store_changes_output_endpoint;
+
         // PULL that receives logging messages from other threads
         ::zmq::socket_t * logger_sock;
         ::std::string logger_endpoint;
@@ -384,17 +392,12 @@ class ZIPPYLOG_EXPORT Server {
         // yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
-        /// socket endpoint used to receive store changes
-        /// streamers connect to this directly, so we don't have
-        /// a local socket
-        ::std::string store_change_endpoint;
-
         /// socket endpoints used by store writer
         ::std::string store_writer_envelope_pull_endpoint;
         ::std::string store_writer_envelope_rep_endpoint;
 
         /// poll structure for 0MQ
-        ::zmq::pollitem_t pollitems[6];
+        ::zmq::pollitem_t pollitems[7];
 
         /// Timer that signals when we should perform a stream flush
         ::zippylog::platform::Timer stream_flush_timer;
