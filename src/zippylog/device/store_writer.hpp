@@ -97,8 +97,8 @@ public:
     /// available, will process immediately. Else, it will block for up to
     /// the specified number of microseconds before giving up.
     ///
-    /// @param timeout Number of microseconds we should wait for messages
-    bool ProcessSockets(long timeout = 0);
+    /// @param timeout Maximum microseconds we should wait for messages
+    int Pump(long timeout = 0);
 
     /// Runs the store writer
     ///
@@ -121,6 +121,8 @@ protected:
 
     ::zmq::socket_t *envelope_pull_sock;
     ::zmq::socket_t *envelope_rep_sock;
+
+    ::zmq::pollitem_t *pollitem;
 
     enum ReceiveResult {
         OK = 1,

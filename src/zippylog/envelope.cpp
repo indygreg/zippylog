@@ -25,6 +25,7 @@
 namespace zippylog {
 
 using ::google::protobuf::Message;
+using ::std::invalid_argument;
 using ::std::string;
 using ::std::stringstream;
 using ::std::vector;
@@ -40,6 +41,10 @@ Envelope::Envelope() : messages(NULL), message_count(0)
 
 Envelope::Envelope( const void * data, int size) : messages(NULL), message_count(0)
 {
+    if (!data) throw invalid_argument("NULL data pointer");
+    if (!size) throw invalid_argument("0 size data buffer");
+    if (size < 0) throw invalid_argument("size <0: " + size);
+
     if (!this->envelope.ParseFromArray(data, size)) {
         throw DeserializeException();
     }
@@ -117,6 +122,11 @@ Envelope & Envelope::operator=(const Envelope &orig)
     return *this;
 }
 
+bool Envelope::Serialize(string &s) const
+{
+    return this->envelope.AppendToString(&s);
+}
+
 bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 {
     if (!this->messages) {
@@ -154,9 +164,19 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 bool Envelope::ToZmqMessage(message_t &msg)
 {
     string buffer;
-    this->envelope.SerializeToString(&buffer);
+    if (!this->envelope.AppendToString(&buffer)) return false;
     msg.rebuild(buffer.length());
-    memcpy(msg.data(), (void *)buffer.c_str(), buffer.length());
+    memcpy(msg.data(), buffer.data(), buffer.length());
+
+    return true;
+}
+
+bool Envelope::ToProtocolZmqMessage(message_t &msg)
+{
+    string buffer(1, 0x01);
+    if (!this->envelope.AppendToString(&buffer)) return false;
+    msg.rebuild(buffer.length());
+    memcpy(msg.data(), buffer.data(), buffer.length());
 
     return true;
 }
