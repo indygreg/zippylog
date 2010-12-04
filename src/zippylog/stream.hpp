@@ -40,7 +40,7 @@ class ZIPPYLOG_EXPORT InputStream {
         /// pretty useless.
         InputStream();
 
-        ~InputStream();
+        virtual ~InputStream();
 
         /// Size (in bytes) of the next envelope in the stream
         /// does NOT include size of envelope size encoding
@@ -144,7 +144,7 @@ class ZIPPYLOG_EXPORT OutputStream {
         ///
         /// Really doesn't do much of anything. Provided for API completeness.
         OutputStream();
-        ~OutputStream();
+        virtual ~OutputStream();
 
         /// Writes an envelope to the stream
         ///
