@@ -55,7 +55,7 @@ Client::~Client()
     if (this->client_sock) delete this->client_sock;
 }
 
-bool Client::StoreInfo(StoreInfoCallback callback, void *data)
+bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -72,7 +72,7 @@ bool Client::StoreInfo(StoreInfoCallback callback, void *data)
     return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback callback, void *data)
+bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -91,7 +91,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
     return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data)
+bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -111,7 +111,7 @@ bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_by
     return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data)
+bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data)
 {
     return this->Get(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
 }
@@ -533,25 +533,6 @@ bool StreamSegment::AddEnvelope(Envelope e)
 {
     this->Envelopes.push_back(e);
     return true;
-}
-
-SubscriptionCallback::SubscriptionCallback()
-{
-    this->BucketAdded = NULL;
-    this->BucketDeleted = NULL;
-    this->StreamSetAdded = NULL;
-    this->StreamSetDeleted = NULL;
-    this->StreamAdded = NULL;
-    this->StreamDeleted = NULL;
-    this->StreamAppended = NULL;
-    this->StoreInfo = NULL;
-    this->Envelope = NULL;
-}
-
-OutstandingRequest::OutstandingRequest()
-{
-    this->cb_store_info = NULL;
-    this->cb_stream_segment = NULL;
 }
 
 Subscription::Subscription() : expiration_timer()

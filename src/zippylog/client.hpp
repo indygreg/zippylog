@@ -60,26 +60,26 @@ class ZIPPYLOG_EXPORT StreamSegment {
 /// always a void *. Callers can associate the subscription id with their own
 /// metadata independent of the client API. Their callbacks can fetch this data
 /// at callback time.
-typedef void (__stdcall * StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAdded &, void *);
-typedef void (__stdcall * StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeleted &, void *);
-typedef void (__stdcall * StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppended &, void *);
-typedef void (__stdcall * StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAdded &, void *);
-typedef void (__stdcall * StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeleted &, void *);
-typedef void (__stdcall * StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
-typedef void (__stdcall * StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
+typedef void (StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAdded &, void *);
+typedef void (StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeleted &, void *);
+typedef void (StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppended &, void *);
+typedef void (StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAdded &, void *);
+typedef void (StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeleted &, void *);
+typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
+typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
 
 /// Callback executed when a store info response is received
-typedef void (__stdcall * StoreInfoCallback)(protocol::StoreInfo &, void *);
+typedef void (StoreInfoCallback)(protocol::StoreInfo &, void *);
 
 /// Executed when a stream segment is received
 ///
 /// Invoked with the path, start offset, and the data in that segment
-typedef void (__stdcall * StreamSegmentCallback)(const ::std::string &, uint64, StreamSegment &, void *);
+typedef void (StreamSegmentCallback)(const ::std::string &, uint64, StreamSegment &, void *);
 
 /// Executed when an envelope is received
 ///
 /// Invoked with subscription id, the envelope, and supplied user data to subscription
-typedef void (__stdcall * EnvelopeCallback)(const ::std::string &, Envelope &, void *);
+typedef void (EnvelopeCallback)(const ::std::string &, Envelope &, void *);
 
 /// Defines the set of function callbacks for a subscription.
 ///
@@ -88,17 +88,27 @@ typedef void (__stdcall * EnvelopeCallback)(const ::std::string &, Envelope &, v
 /// callback is received.
 class ZIPPYLOG_EXPORT SubscriptionCallback {
 public:
-    SubscriptionCallback();
+    SubscriptionCallback() :
+        StreamAdded(NULL),
+        StreamDeleted(NULL),
+        StreamAppended(NULL),
+        BucketAdded(NULL),
+        BucketDeleted(NULL),
+        StreamSetAdded(NULL),
+        StreamSetDeleted(NULL),
+        StoreInfo(NULL),
+        Envelope(NULL)
+    { }
 
-    StoreChangeStreamAddedCallback      StreamAdded;
-    StoreChangeStreamDeletedCallback    StreamDeleted;
-    StoreChangeStreamAppendedCallback   StreamAppended;
-    StoreChangeBucketAddedCallback      BucketAdded;
-    StoreChangeBucketDeletedCallback    BucketDeleted;
-    StoreChangeStreamSetAddedCallback   StreamSetAdded;
-    StoreChangeStreamSetDeletedCallback StreamSetDeleted;
-    StoreInfoCallback                   StoreInfo;
-    EnvelopeCallback                    Envelope;
+    StoreChangeStreamAddedCallback *      StreamAdded;
+    StoreChangeStreamDeletedCallback *    StreamDeleted;
+    StoreChangeStreamAppendedCallback *   StreamAppended;
+    StoreChangeBucketAddedCallback *      BucketAdded;
+    StoreChangeBucketDeletedCallback *    BucketDeleted;
+    StoreChangeStreamSetAddedCallback *   StreamSetAdded;
+    StoreChangeStreamSetDeletedCallback * StreamSetDeleted;
+    StoreInfoCallback *                   StoreInfo;
+    EnvelopeCallback *                    Envelope;
 };
 
 /// Represents a client subscription
@@ -124,15 +134,20 @@ protected:
 /// Used internally by the client.
 class OutstandingRequest {
 public:
-    OutstandingRequest();
+    OutstandingRequest() :
+        cb_store_info(NULL),
+        cb_stream_segment(NULL),
+        data(NULL)
+    { }
 
     friend class Client;
 
 protected:
     ::std::string id;
 
-    StoreInfoCallback cb_store_info;
-    StreamSegmentCallback cb_stream_segment;
+    StoreInfoCallback *     cb_store_info;
+    StreamSegmentCallback * cb_stream_segment;
+
     SubscriptionCallback subscription_callback;
 
     void *data;
@@ -153,7 +168,7 @@ class ZIPPYLOG_EXPORT Client {
 
         // Asynchronously obtain the store info. Executes supplied callback when store
         // info available
-        bool StoreInfo(StoreInfoCallback callback, void *data = NULL);
+        bool StoreInfo(StoreInfoCallback * callback, void *data = NULL);
 
         // Cancels the subscription with specified ID
         bool CancelSubscription(const ::std::string &id);
@@ -175,9 +190,9 @@ class ZIPPYLOG_EXPORT Client {
         // be
         bool RenewSubscriptions(bool force=false);
 
-        bool Get(const ::std::string &path, uint64 start_offset, StreamSegmentCallback callback, void *data = NULL);
-        bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback callback, void *data = NULL);
-        bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
         // Subscribe to store change events
         // This subscribes to events that describe the store, not envelopes in
