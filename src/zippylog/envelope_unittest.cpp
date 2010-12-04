@@ -42,6 +42,17 @@ TEST(EnvelopeTest, InvalidDataConstruct)
     ASSERT_THROW(Envelope e((void *)352537, -10), invalid_argument);
 }
 
+TEST(EnvelopeTest, Serialize)
+{
+    Envelope e;
+    string s;
+    ASSERT_TRUE(e.Serialize(s));
+
+    string s2 = "foo";
+    ASSERT_TRUE(e.Serialize(s2));
+    ASSERT_EQ(3 + s.length(), s2.length());
+}
+
 TEST(EnvelopeTest, ZMQSerialization)
 {
     Envelope e;
