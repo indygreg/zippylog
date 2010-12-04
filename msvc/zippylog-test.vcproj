@@ -235,6 +235,14 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\zippylog\client_unittest.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\envelope_unittest.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\libzippylog-test.cc"
 				>
 			</File>
