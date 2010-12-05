@@ -67,6 +67,7 @@ find_package(Threads REQUIRED)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 add_definitions(-DLINUX)
+add_definitions(-DPOSIX)
 endif()
 
 # add our source directory
