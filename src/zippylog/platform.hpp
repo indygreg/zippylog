@@ -337,6 +337,58 @@ namespace platform {
         Thread(const Thread &orig);
         Thread & operator=(const Thread &orig);
     };
+
+    /// A conditional variable that can be waited upon for completion
+    ///
+    /// Each variable can be waited upon by multiple simultaneous consumers.
+    /// If Signal() is called and multiple threads are stuck in Wait(), then
+    /// they will all be notified. It is possible for a thread to be in Wait()
+    /// but not receive the signal if it has just entered the function but
+    /// hasn't registered with the OS yet.
+    ///
+    /// Once signaled, these variables stay signaled until Reset() is called.
+    /// This allows them to function as flags.
+    ///
+    /// ConditionalWait variables are guaranteed to only work within the same
+    /// process. If they are used among multiple processes, results are
+    /// undefined (possibly explosions).
+    class ConditionalWait {
+        public:
+            /// Create a new conditional wait variable in the unsignaled state
+            ConditionalWait();
+
+            ~ConditionalWait();
+
+            /// Signals the condition variable
+            ///
+            /// Once this has been called, the variable is marked as signaled
+            /// and all calls to Wait() immediately return true until Reset()
+            /// is called.
+            bool Signal();
+
+            /// Resets the condition variable
+            ///
+            /// Clears the signaled flag of the variable.
+            bool Reset();
+
+            /// Waits for the variable to be signaled
+            ///
+            /// The parameter is the timeout at which to give up waiting. If -1,
+            /// will wait forever. If 0, will test the condition and move on
+            /// if signaled. Value is in microseconds from call time.
+            bool Wait(int32 timeout_microseconds);
+
+    protected:
+        /// whether the condition variable is signaled
+        bool signaled;
+#ifdef POSIX
+        pthread_cond_t cond;
+        pthread_mutex_t mutex;
+#elif WINDOWS
+        HANDLE cond;
+        HANDLE mutex;
+#endif
+    };
 }
 
 } // namespace

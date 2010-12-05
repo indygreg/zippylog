@@ -12,12 +12,14 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "zippylog/platform.hpp"
+#include <zippylog/platform.hpp>
 
 #include <gtest/gtest.h>
 
 using namespace ::zippylog::platform;
 using ::std::string;
+using ::zippylog::platform::ConditionalWait;
+using ::zippylog::platform::Time;
 using ::zippylog::platform::UUID;
 
 TEST(TimerTest, CreateTimers)
@@ -113,4 +115,98 @@ TEST(UUIDTest, FormatUUID)
     ASSERT_NO_THROW(ASSERT_TRUE(FormatUUID(u1, f1)));
     ASSERT_EQ(36, f1.length());
     ASSERT_TRUE("40404040-4040-4040-4040-404040404040" == f1);
+}
+
+TEST(PlatformTest, ConditionalWaitConstructor)
+{
+    ASSERT_NO_THROW(ConditionalWait w);
+}
+
+TEST(PlatformTest, ConditionalWaitNoWait)
+{
+    ConditionalWait w;
+    Time start;
+    ASSERT_TRUE(TimeNow(start));
+    ASSERT_NO_THROW(EXPECT_FALSE(w.Wait(0)));
+    Time end;
+    ASSERT_TRUE(TimeNow(end));
+
+    // 10ms seems reasonable
+    EXPECT_LE(end.epoch_micro - start.epoch_micro, 10000);
+}
+
+TEST(PlatformTest, ConditionalWaitWaitTimeout)
+{
+    ConditionalWait w;
+    Time start;
+    ASSERT_TRUE(TimeNow(start));
+
+    // wait 0.25s
+    ASSERT_NO_THROW(EXPECT_FALSE(w.Wait(250000)));
+
+    Time end;
+    ASSERT_TRUE(TimeNow(end));
+    EXPECT_GE(end.epoch_micro, start.epoch_micro + 200000);
+}
+
+typedef struct conditional_wait_start {
+    ConditionalWait *w;
+    uint32 sleep;
+} conditional_wait_start;
+
+void * sleep_n_and_signal(void *d)
+{
+    conditional_wait_start *s = (conditional_wait_start *)d;
+
+    if (s->sleep) ::zippylog::platform::sleep(s->sleep / 1000);
+
+    s->w->Signal();
+
+    return NULL;
+}
+
+TEST(PlatformTest, ConditionalWaitSimpleSignal)
+{
+    ConditionalWait w;
+
+    conditional_wait_start start;
+    start.w = &w;
+    start.sleep = 250000;
+
+    Time begin;
+    ASSERT_TRUE(TimeNow(begin));
+    Thread t1(sleep_n_and_signal, &start);
+
+    ASSERT_NO_THROW(EXPECT_FALSE(w.Wait(100000)));
+    ASSERT_NO_THROW(EXPECT_TRUE(w.Wait(200000)));
+
+    Time end;
+    ASSERT_TRUE(TimeNow(end));
+    EXPECT_GE(end.epoch_micro, begin.epoch_micro + 250000);
+
+    t1.Join();
+}
+
+void * cond_wait_waiter(void *d)
+{
+    ConditionalWait *w = (ConditionalWait *)d;
+
+    EXPECT_NO_THROW(EXPECT_TRUE(w->Wait(-1)));
+
+    return NULL;
+}
+
+
+TEST(PlatformTest, ConditionalWaitMultipleWaiters)
+{
+    ConditionalWait w;
+
+    Thread t1(cond_wait_waiter, &w);
+    Thread t2(cond_wait_waiter, &w);
+
+    ::zippylog::platform::sleep(100);
+    EXPECT_TRUE(w.Signal());
+
+    t1.Join();
+    t2.Join();
 }

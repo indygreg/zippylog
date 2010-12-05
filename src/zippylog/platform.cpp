@@ -41,6 +41,7 @@
 #include <time.h>
 
 using ::std::invalid_argument;
+using ::std::logic_error;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
@@ -1200,6 +1201,152 @@ bool Thread::Alive()
     return true;
 #else
 #error "Thread::Alive() not implemented on your platform yet";
+#endif
+}
+
+ConditionalWait::ConditionalWait() : signaled(false)
+#ifdef WINDOWS
+    ,cond(NULL)
+#endif
+{
+#ifdef POSIX
+    // TODO verify POSIX says no error codes for this (Linux says none)
+    assert(!pthread_cond_init(&this->cond, NULL));
+    assert(!pthread_mutex_init(&this->mutex, NULL));
+#elif WINDOWS
+    this->cond = CreateEvent(NULL, TRUE, FALSE, NULL);
+    if (!this->cond) {
+        throw Exception("could not create Event handle");
+    }
+#else
+#error "ConditionalWait constructor not implemented on your platform";
+#endif
+}
+
+ConditionalWait::~ConditionalWait()
+{
+#ifdef POSIX
+    int result;
+    do {
+        result = pthread_cond_destroy(&this->cond);
+        if (result == EBUSY) {
+            pthread_cond_signal(&this->cond);
+        }
+    } while (result == EBUSY);
+
+    pthread_mutex_destroy(&this->mutex);
+#elif WINDOWS
+    if (this->cond) CloseHandle(this->cond);
+#else
+#error "ConditionalWait destructor not implemented on your platform";
+#endif
+}
+
+bool ConditionalWait::Signal()
+{
+    this->signaled = true;
+
+#ifdef POSIX
+    return pthread_cond_broadcast(&this->cond) == 0;
+#elif WINDOWS
+    return SetEvent(this->cond) != 0;
+#else
+#error "ConditionalWait::Signal() not implemented on your platform";
+#endif
+}
+
+bool ConditionalWait::Reset()
+{
+    this->signaled = false;
+
+#ifdef WINDOWS
+    return ResetEvent(this->cond) != 0;
+#endif
+
+    return true;
+}
+
+bool ConditionalWait::Wait(int32 microseconds)
+{
+    if (microseconds < -1) {
+        throw invalid_argument("timeout cannot be less than -1");
+    }
+
+    if (this->signaled) return true;
+
+#ifdef POSIX
+    bool ret;
+    if (microseconds == -1) {
+        assert(!pthread_mutex_lock(&this->mutex));
+        assert(!pthread_cond_wait(&this->cond, &this->mutex));
+        assert(!pthread_mutex_unlock(&this->mutex));
+        return true;
+    }
+    else if (microseconds == 0) {
+        int result = pthread_mutex_trylock(&this->mutex);
+        if (result == EBUSY) return false;
+    }
+    else {
+        assert(!pthread_mutex_lock(&this->mutex));
+    }
+
+    struct timeval now;
+    gettimeofday(&now);
+
+    struct timespec ts;
+    ts.tv_sec = now.tc_sec;
+    ts.tv_nsec = now.tv_usec * 1000;
+
+    ts.tv_sec += microseconds / 1000000;
+    ts.tv_nsec += 1000 * (microseconds % 1000000);
+
+    int result;
+    do {
+        result = pthread_cond_timedwait(&this->cond, &this->mutex, &ts);
+    } while (result == EINTR);
+
+    if (result == 0) {
+        ret = true;
+    }
+    else if (result == ETIMEDOUT) {
+        ret = false;
+    }
+    else {
+        pthread_mutex_unlock(&this->mutex);
+        throw logic_error("Unknown result code from pthread_cond_timedwait(): " + result);
+    }
+
+    pthread_mutex_unlock(&this->mutex);
+
+    return ret;
+#elif WINDOWS
+
+
+    DWORD result;
+    if (microseconds == -1) {
+        result = WaitForSingleObject(this->cond, INFINITE);
+    }
+    else {
+        result = WaitForSingleObject(this->cond, microseconds / 1000);
+    }
+
+    if (result == WAIT_OBJECT_0) {
+        return true;
+    }
+    else if (result == WAIT_TIMEOUT) {
+        return false;
+    }
+    else if (result == WAIT_ABANDONED) {
+        throw Exception("wait abandoned");
+    }
+    else if (result == WAIT_FAILED) {
+        throw Exception("wait failed");
+    }
+    else {
+        throw logic_error("unknown result from WaitForSingleObject: " + result);
+    }
+#else
+#error "ConditionalWait::Wait() not implemented on your platform";
 #endif
 }
 
