@@ -1300,6 +1300,10 @@ bool ConditionalWait::Wait(int32 microseconds)
 
     ts.tv_sec += microseconds / 1000000;
     ts.tv_nsec += 1000 * (microseconds % 1000000);
+    if (ts.tv_nsec > 1000000000) {
+        ts.tv_sec++;
+        ts.tv_nsec -= 1000000000;
+    }
 
     int result;
     do {
