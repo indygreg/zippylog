@@ -21,6 +21,7 @@
 #endif
 
 #ifdef LINUX
+#include <assert.h>
 #include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
@@ -1291,10 +1292,10 @@ bool ConditionalWait::Wait(int32 microseconds)
     }
 
     struct timeval now;
-    gettimeofday(&now);
+    gettimeofday(&now, NULL);
 
     struct timespec ts;
-    ts.tv_sec = now.tc_sec;
+    ts.tv_sec = now.tv_sec;
     ts.tv_nsec = now.tv_usec * 1000;
 
     ts.tv_sec += microseconds / 1000000;
