@@ -827,13 +827,21 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
             }
         }
 
+        int written = 0;
+
         if (envs.size()) {
-            this->HandleWriteEnvelopes(m->path(), envs, synchronous);
+            written = this->HandleWriteEnvelopes(m->path(), envs, synchronous);
         }
 
         if (send_ack) {
             protocol::response::WriteAck ack = protocol::response::WriteAck();
-            // TODO add number of envelopes written
+            if (written >= 0) {
+                ack.set_envelopes_written(written);
+            }
+            else {
+                // TODO should have error field in ack
+                throw Exception("TODO implement error reporting on failed write");
+            }
 
             Envelope e;
             ack.add_to_envelope(e);

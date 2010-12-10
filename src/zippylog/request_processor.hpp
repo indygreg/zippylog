@@ -161,7 +161,13 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ///
         /// The synchronous parameter says whether to wait for writes before
         /// returning.
-        virtual bool HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
+        ///
+        /// Returns the number of envelopes written or -1 on failure. If not
+        /// performing synchronous writes, it is OK to return 0. However, if
+        /// performing synchronous writes the caller will log an unexpected
+        /// condition if the number of envelopes written is not equal to the
+        /// number requested.
+        virtual int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
 
         /// Process a StoreInfo request and populate the passed envelope with the response
         ///

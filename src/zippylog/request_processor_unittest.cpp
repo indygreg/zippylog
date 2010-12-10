@@ -78,10 +78,10 @@ protected:
         return AUTHORITATIVE;
     }
 
-    bool HandleWriteEnvelopes(const string &path, vector<Envelope> &to_write, bool synchronous)
+    int HandleWriteEnvelopes(const string &path, vector<Envelope> &to_write, bool synchronous)
     {
         this->write_envelopes_count += to_write.size();
-        return true;
+        return to_write.size();
     }
 };
 

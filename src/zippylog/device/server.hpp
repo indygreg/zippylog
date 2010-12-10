@@ -71,7 +71,7 @@ class Worker : public ::zippylog::RequestProcessor {
         ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
         ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
         ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
-        bool HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous);
+        int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous);
 
         ::std::string streaming_subscriptions_endpoint;
         ::std::string streaming_updates_endpoint;
