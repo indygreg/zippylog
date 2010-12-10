@@ -608,6 +608,7 @@ void Server::CheckThreads()
     }
 }
 
+// TODO consider flushing log socket on shutdown
 void Server::Shutdown()
 {
     if (!this->active) return;
