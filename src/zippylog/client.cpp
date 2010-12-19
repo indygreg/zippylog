@@ -72,6 +72,28 @@ bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
     return this->SendRequest(e, info);
 }
 
+bool Client::StoreInfo(protocol::StoreInfo &info, int32 timeout)
+{
+    Envelope e;
+    protocol::request::GetStoreInfo req;
+    req.set_version(1);
+    req.add_to_envelope(&e);
+
+    OutstandingRequest or;
+    or.data = &info;
+    or.cb_store_info = CallbackStoreInfo;
+
+    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+}
+
+void Client::CallbackStoreInfo(protocol::StoreInfo &info, void *data)
+{
+    protocol::StoreInfo *si = (protocol::StoreInfo *)data;
+
+    si->CopyFrom(info);
+}
+
+
 bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
@@ -117,7 +139,7 @@ bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, St
 }
 
 
-bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallback &cb, void *data)
+bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
     // TODO validate path
 
@@ -129,12 +151,12 @@ bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallback &cb,
 
     OutstandingRequest info = OutstandingRequest();
     info.data = data;
-    info.subscription_callback = cb;
+    info.callbacks = cb;
 
     return this->SendRequest(e, info);
 }
 
-bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallback &cb, void *data)
+bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
     // TODO validate path
 
@@ -145,12 +167,12 @@ bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallback &cb, vo
 
     OutstandingRequest info = OutstandingRequest();
     info.data = data;
-    info.subscription_callback = cb;
+    info.callbacks = cb;
 
     return this->SendRequest(e, info);
 }
 
-bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallback &cb, void *data)
+bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallbackInfo &cb, void *data)
 {
     // TODO validate
 
@@ -162,7 +184,7 @@ bool Client::SubscribeEnvelopes(const string &path, const string &lua, Subscript
 
     OutstandingRequest info = OutstandingRequest();
     info.data = data;
-    info.subscription_callback = cb;
+    info.callbacks = cb;
 
     return this->SendRequest(e, info);
 }
@@ -187,41 +209,86 @@ bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
     return true;
 }
 
-bool Client::TryProcessMessages(uint32 timeout)
+bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &req, int32 timeout)
 {
-    if (::zmq::poll(this->pollitem, 1, timeout) > 0) {
-        return this->ProcessPendingMessage();
+    platform::UUID uuid;
+    platform::CreateUUID(uuid);
+
+    string id = string((const char *)&uuid, sizeof(uuid));
+    e.envelope.add_tag(id);
+    req.id = id;
+
+    vector<string> identities;
+
+    if (!zeromq::SendEnvelope(*this->client_sock, identities, e, true, 0)) {
+        return false;
     }
 
-    return false;
+    this->outstanding[id] = req;
+
+    platform::Timer timer(timeout);
+    timer.Start();
+
+    bool result = false;
+    bool have_timer = timeout > 0;
+
+    // TODO this can be done with fewer system calls
+    do {
+        // we wait up to 25 in each iteration
+        this->Pump(25000);
+
+        // this must mean we processed it
+        if (!this->HaveOutstandingRequest(id)) {
+            result = true;
+            break;
+        }
+    } while (!have_timer || (have_timer && !timer.Signaled()));
+
+    return result;
+}
+
+int Client::Pump(int32 timeout)
+{
+    if (::zmq::poll(this->pollitem, 1, timeout) > 0) {
+        return this->ProcessPendingMessage() ? 1 : -1;
+    }
+
+    return 0;
 }
 
 bool Client::ProcessPendingMessage()
 {
-    bool result = false;
-
     vector<message_t *> messages;
     if (!zeromq::receive_multipart_message(this->client_sock, messages)) {
         return false;
     }
 
+    bool result = this->ProcessResponseMessage(messages);
+
+    for (vector<message_t *>::iterator i = messages.begin(); i != messages.end(); i++) {
+        delete *i;
+    }
+
+    return result;
+}
+
+bool Client::ProcessResponseMessage(vector<message_t *> &messages)
+{
     // first message is an empty message. we delete it
     assert(messages.size() > 1);
     delete messages[0];
     messages.erase(messages.begin());
 
-    Envelope e = Envelope(messages[0]->data(), messages[0]->size());
+    Envelope e(*messages[0], 1);
 
     // that's most weird
     if (e.MessageCount() < 1) {
-        result = false;
-        goto CLEANUP;
+        return false;
     }
 
     // first message is always in the zippylog namespace
     if (e.MessageNamespace(0) != 1) {
-        result = false;
-        goto CLEANUP;
+        return false;
     }
 
     // two major branches follow the division in message types:
@@ -236,20 +303,18 @@ bool Client::ProcessPendingMessage()
                 (protocol::response::SubscriptionStart *)e.GetMessage(0);
 
             if (!this->ValidateSubscriptionStart(*start)) {
-                result = false;
-                goto CLEANUP;
+                return false;
             }
 
             messages.pop_back();
-            result = this->HandleSubscriptionResponse(e, *start, messages);
-            goto CLEANUP;
+            return this->HandleSubscriptionResponse(e, *start, messages);
             break;
         }
 
         case protocol::StoreInfo::zippylog_enumeration:
         case protocol::response::StreamSegmentStart::zippylog_enumeration:
         case protocol::response::SubscribeAck::zippylog_enumeration:
-            result = this->HandleRequestResponse(e, messages);
+            return this->HandleRequestResponse(e, messages);
             break;
 
         default:
@@ -257,12 +322,7 @@ bool Client::ProcessPendingMessage()
             break;
     }
 
-CLEANUP:
-    for (vector<message_t *>::iterator i = messages.begin(); i != messages.end(); i++) {
-        delete *i;
-    }
-
-    return result;
+    return false;
 }
 
 bool Client::ValidateSubscriptionStart(SubscriptionStart &start)
@@ -300,7 +360,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStart &start, v
     // subscription could have disappeared since it was validated
     if (iter == this->subscriptions.end()) return false;
 
-    SubscriptionCallback cb = iter->second.cb;
+    SubscriptionCallbackInfo cb = iter->second.cb;
 
     for (int i = 1; i < e.MessageCount(); i++) {
         switch (e.MessageType(i)) {
@@ -392,6 +452,10 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
 
     OutstandingRequest req = iter->second;
 
+    // at this point, the outstanding request entry isn't consulted, so we
+    // dispose of it
+    this->outstanding.erase(iter);
+
     switch (e.MessageType(0)) {
         case protocol::StoreInfo::zippylog_enumeration:
         {
@@ -442,7 +506,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             string id = ack->id();
 
             Subscription sub;
-            sub.cb = req.subscription_callback;
+            sub.cb = req.callbacks;
             sub.id = id;
             sub.data = req.data;
 
@@ -486,6 +550,13 @@ bool Client::RenewSubscriptions(bool force)
     }
 
     return result;
+}
+
+bool Client::HaveOutstandingRequest(string &id)
+{
+    map<string, OutstandingRequest>::iterator iter = this->outstanding.find(id);
+
+    return iter != this->outstanding.end();
 }
 
 

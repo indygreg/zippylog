@@ -51,7 +51,6 @@ class ZIPPYLOG_EXPORT StreamSegment {
         uint32 BytesSent;
         uint32 EnvelopesSent;
         ::std::vector<Envelope> Envelopes;
-
 };
 
 /// Function types for callbacks when the client has received a subscribed event
@@ -86,9 +85,9 @@ typedef void (EnvelopeCallback)(const ::std::string &, Envelope &, void *);
 /// Not all callback types are valid for every subscription type. If a
 /// callback in not defined, no function is executed when an event for that
 /// callback is received.
-class ZIPPYLOG_EXPORT SubscriptionCallback {
+class ZIPPYLOG_EXPORT SubscriptionCallbackInfo {
 public:
-    SubscriptionCallback() :
+    SubscriptionCallbackInfo() :
         StreamAdded(NULL),
         StreamDeleted(NULL),
         StreamAppended(NULL),
@@ -124,7 +123,7 @@ protected:
 
     platform::Timer expiration_timer;
 
-    SubscriptionCallback cb;
+    SubscriptionCallbackInfo cb;
 
     void *data;
 };
@@ -148,7 +147,7 @@ protected:
     StoreInfoCallback *     cb_store_info;
     StreamSegmentCallback * cb_stream_segment;
 
-    SubscriptionCallback subscription_callback;
+    SubscriptionCallbackInfo callbacks;
 
     void *data;
 };
@@ -170,6 +169,13 @@ class ZIPPYLOG_EXPORT Client {
         // info available
         bool StoreInfo(StoreInfoCallback * callback, void *data = NULL);
 
+        /// Synchronously obtain store info
+        ///
+        /// Will wait up to specified microseconds for store info to be
+        /// returned. If we find the store info in the time specified, returns
+        /// true. Else, returns false.
+        bool StoreInfo(protocol::StoreInfo &info, int32 timeout_microseconds = -1);
+
         // Cancels the subscription with specified ID
         bool CancelSubscription(const ::std::string &id);
 
@@ -179,10 +185,16 @@ class ZIPPYLOG_EXPORT Client {
         // Whether the client has a subscription with the specified subscription ID
         bool HasSubscription(const ::std::string &id);
 
-        // Waits up to N microseconds for response messages to arrive and process
-        // any that arrive. Returns whether messages were processed
-        // callers will likely want to call this function in an event loop
-        bool TryProcessMessages(uint32 timeout);
+        /// Perform pending operations
+        ///
+        /// This effectively processes responses from the server.
+        ///
+        /// Function will wait up to specified microseconds for messages to
+        /// become available. -1 is infinite.
+        ///
+        /// Returns 1 if messages processed, 0 if no messages processed, or -1
+        /// on error.
+        int Pump(int32 timeout_microseconds);
 
         // renew all subscriptions
         // unless the bool parameter is true, only the subscriptions that are
@@ -202,15 +214,15 @@ class ZIPPYLOG_EXPORT Client {
         // subscribe to all paths, set this path to "/".
         //
         // The subscription will receive notifications for numerous store
-        // change events. However, unless your SubscriptionCallback defines
+        // change events. However, unless your SubscriptionCallbackInfo defines
         // functions for all of them, some events will be dropped by the client.
-        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         // Subscribes to new envelopes written on the server
-        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         // subscribes to new envelopes w/ Lua code specifying additional features
-        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallback &callback, void *data = NULL);
+        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
     protected:
         // socket connect to server
@@ -225,10 +237,18 @@ class ZIPPYLOG_EXPORT Client {
 
         bool SendRequest(Envelope &e, OutstandingRequest &req);
 
+        /// Sends a synchronous request and wait for a response
+        ///
+        /// Returns true if the response was processed in the time specified.
+        bool SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &req, int32 timeout);
+
         // processe an individual pending zeromq message on the socket
         // this function assumes messages are available
         // pending message could be multipart
         bool ProcessPendingMessage();
+
+        /// Processes received response messages
+        bool ProcessResponseMessage(::std::vector< ::zmq::message_t * > &msgs);
 
         // validates that a received SubscriptionStart message is OK
         // returns false if we don't know how to handle message fields or if
@@ -240,6 +260,12 @@ class ZIPPYLOG_EXPORT Client {
 
         // handles a response to a normal/outstanding request
         bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
+
+        /// Returns if we have an outstanding request with the specified id
+        bool HaveOutstandingRequest(::std::string &id);
+
+        /// Internal callback used for synchronous store info requests
+        static void CallbackStoreInfo(protocol::StoreInfo &info, void *data);
 
     private:
         // disable copy constructor and assignment operator
