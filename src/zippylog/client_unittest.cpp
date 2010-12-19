@@ -124,4 +124,20 @@ TEST_F(ClientTest, StoreInfoSynchronous)
     ASSERT_TRUE(si.SerializeAsString() == expected.SerializeAsString());
 }
 
+TEST_F(ClientTest, GetSynchronous)
+{
+    string endpoint;
+    string store_path = "simpledirectory://test/stores/01-singlestream";
+    Server *s = this->GetServer(store_path, endpoint);
+    Store *store = this->GetStore(store_path);
+
+    Client c(this->GetContext(), endpoint);
+
+    StreamSegment segment;
+    ASSERT_TRUE(c.Get("/A/B/2010-11-26-07", 0, segment, 5000000));
+
+    EXPECT_EQ(segment.EnvelopesSent, segment.Envelopes.size());
+    EXPECT_EQ(160, segment.EnvelopesSent);
+}
+
 }} // namespaces
