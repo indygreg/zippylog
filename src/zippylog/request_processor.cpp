@@ -159,7 +159,7 @@ int RequestProcessor::Pump(long wait)
     if (response_envelopes.size()) {
         int flags = response_envelopes.size() > 1 ? ZMQ_SNDMORE : 0;
 
-        int result = zeromq::SendEnvelope(*this->socket, this->current_request_identities, response_envelopes[0], true, 0);
+        int result = zeromq::SendEnvelope(*this->socket, this->current_request_identities, response_envelopes[0], true, flags);
         if (result == -1) {
             throw Exception("Serialization error in response envelope");
         }
@@ -168,9 +168,12 @@ int RequestProcessor::Pump(long wait)
         }
 
         if (flags) {
+            int i = 0;
             vector<Envelope>::iterator itor = response_envelopes.begin()++;
-            while(itor != response_envelopes.end()) {
-                result = zeromq::SendEnvelope(*this->socket, *itor, true, ++itor == response_envelopes.end() ? 0 : ZMQ_SNDMORE);
+            for (; itor < response_envelopes.end(); itor++) {
+                flags = itor == response_envelopes.end() - 1 ? 0 : ZMQ_SNDMORE;
+
+                result = zeromq::SendEnvelope(*this->socket, *itor, true, flags);
                 if (result == -1) {
                     throw Exception("Serialization error in response envelope");
                 }
