@@ -113,6 +113,28 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
     return this->SendRequest(e, info);
 }
 
+bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
+{
+    protocol ::request::GetStream req;
+    req.set_version(1);
+    req.set_path(path);
+    req.set_start_offset(start_offset);
+    Envelope e;
+    req.add_to_envelope(&e);
+
+    OutstandingRequest or;
+    or.data = &segment;
+    or.cb_stream_segment = CallbackStreamSegment;
+
+    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+}
+
+void Client::CallbackStreamSegment(const string &path, uint64 offset, StreamSegment &segment, void *data)
+{
+    StreamSegment *s = (StreamSegment *)data;
+    s->CopyFrom(segment);
+}
+
 bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
@@ -479,7 +501,9 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetPath(start->path());
             segment.SetStartOffset(start->offset());
 
-            Envelope footer(messages[messages.size()-1]->data(), messages[messages.size()-1]->size());
+            void * start_addr = (void *)((const char *)(messages[messages.size()-1]->data()) + 1);
+
+            Envelope footer(start_addr, messages[messages.size()-1]->size() - 1);
 
             protocol::response::StreamSegmentEnd *end =
                 (protocol::response::StreamSegmentEnd *)footer.GetMessage(0);
@@ -488,8 +512,9 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetBytesSent(end->bytes_sent());
             segment.SetEnvelopesSent(end->envelopes_sent());
 
-            for (size_t i = 0; i < messages.size() - 1; i++) {
-                Envelope payload(messages[i]->data(), messages[i]->size());
+            for (size_t i = 1; i < messages.size() - 2; i++) {
+                start_addr = (void *)((const char *)(messages[i]->data()) + 1);
+                Envelope payload(start_addr, messages[i]->size() - 1);
                 segment.AddEnvelope(payload);
             }
 
@@ -568,6 +593,18 @@ StreamSegment::StreamSegment()
 StreamSegment::~StreamSegment()
 {
 
+}
+
+bool StreamSegment::CopyFrom(const StreamSegment &orig)
+{
+    this->BytesSent = orig.BytesSent;
+    this->EndOffset = orig.EndOffset;
+    this->Envelopes = orig.Envelopes;
+    this->EnvelopesSent = orig.EnvelopesSent;
+    this->Path = orig.Path;
+    this->StartOffset = orig.StartOffset;
+
+    return true;
 }
 
 bool StreamSegment::SetPath(const string path)

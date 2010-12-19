@@ -45,6 +45,9 @@ class ZIPPYLOG_EXPORT StreamSegment {
         bool SetEnvelopesSent(uint32 number);
         bool AddEnvelope(Envelope e);
 
+        /// Set fields in the stream segment from values in another instance
+        bool CopyFrom(const StreamSegment &orig);
+
         ::std::string Path;
         uint64 StartOffset;
         uint64 EndOffset;
@@ -154,8 +157,31 @@ protected:
 
 /// zippylog protocol client
 ///
-/// Clients connect to 0MQ endpoints and send zippylog protocol requests and
-/// react to responses.
+/// An individual client instance connects to a single zippylog server, which
+/// is defined by a 0MQ socket endpoint.
+///
+/// The client formulates zippylog protocol request messages, sends them to
+/// a server, and processes server responses.
+///
+/// For many methods, the client has both a synchronous and asynchronous mode
+/// of operation. In asynchronous mode, the caller supplies a function callback
+/// which will be called when the response to said request is received.
+///
+/// For synchronous mode, the caller supplies a reference to the data structure
+/// that is typically sent to the callback and the function blocks until the
+/// response is received or until the timeout specified is reached. Behind the
+/// scenes, synchronous calls are calling Pump() until the response for the
+/// request is seen. This means that responses to asynchronous requests might
+/// be processed during synchronous calls.
+///
+/// In asynchronous mode, it is the caller's responsibility to periodically
+/// trigger response processing. This is typically accomplished by calling
+/// Pump() repeatedly.
+///
+/// Streaming operations are by definition asynchronous, so no synchronous
+/// API is available for these.
+///
+/// The class is not thread safe.
 class ZIPPYLOG_EXPORT Client {
     public:
         /// Create a client that connects to the specified 0MQ endpoint
@@ -165,8 +191,11 @@ class ZIPPYLOG_EXPORT Client {
         Client(::zmq::context_t *ctx, const ::std::string &endpoint);
         ~Client();
 
-        // Asynchronously obtain the store info. Executes supplied callback when store
-        // info available
+        /// Asynchronously obtain the store info.
+        ///
+        /// Executes supplied callback when store info response received.
+        ///
+        /// Returns true if request was sent without error.
         bool StoreInfo(StoreInfoCallback * callback, void *data = NULL);
 
         /// Synchronously obtain store info
@@ -176,13 +205,13 @@ class ZIPPYLOG_EXPORT Client {
         /// true. Else, returns false.
         bool StoreInfo(protocol::StoreInfo &info, int32 timeout_microseconds = -1);
 
-        // Cancels the subscription with specified ID
+        /// Cancels the subscription with specified ID
         bool CancelSubscription(const ::std::string &id);
 
-        // cancels all subscriptions registered with the client
+        /// Cancels all subscriptions registered with the client
         bool CancelAllSubscriptions();
 
-        // Whether the client has a subscription with the specified subscription ID
+        /// Whether the client has a subscription with the specified subscription ID
         bool HasSubscription(const ::std::string &id);
 
         /// Perform pending operations
@@ -206,22 +235,26 @@ class ZIPPYLOG_EXPORT Client {
         bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
         bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
-        // Subscribe to store change events
-        // This subscribes to events that describe the store, not envelopes in
-        // streams. For that, use one of the other Subscribe* functions.
-        //
-        // The first argument is the path in the store to subscribe to. To
-        // subscribe to all paths, set this path to "/".
-        //
-        // The subscription will receive notifications for numerous store
-        // change events. However, unless your SubscriptionCallbackInfo defines
-        // functions for all of them, some events will be dropped by the client.
+        /// Synchronously obtain a stream segment starting from an offset
+        bool Get(const ::std::string &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
+
+        /// Subscribe to store change events
+        ///
+        /// This subscribes to events that describe the store, not envelopes in
+        /// streams. For that, use one of the other Subscribe* functions.
+        ///
+        /// The first argument is the path in the store to subscribe to. To
+        /// subscribe to all paths, set this path to "/".
+        ///
+        /// The subscription will receive notifications for numerous store
+        /// change events. However, unless your SubscriptionCallbackInfo defines
+        /// functions for all of them, some events will be dropped by the client.
         bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
-        // Subscribes to new envelopes written on the server
+        /// Subscribes to new envelopes written on the server
         bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
-        // subscribes to new envelopes w/ Lua code specifying additional features
+        /// subscribes to new envelopes w/ Lua code specifying additional features
         bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
     protected:
@@ -266,6 +299,8 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Internal callback used for synchronous store info requests
         static void CallbackStoreInfo(protocol::StoreInfo &info, void *data);
+
+        static void CallbackStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
 
     private:
         // disable copy constructor and assignment operator
