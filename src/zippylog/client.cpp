@@ -63,6 +63,7 @@ bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
 
     Envelope e = Envelope();
     protocol::request::GetStoreInfo req = protocol::request::GetStoreInfo();
+    req.set_version(1);
     req.add_to_envelope(&e);
 
     OutstandingRequest info = OutstandingRequest();
@@ -102,6 +103,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
 
     Envelope e = Envelope();
     protocol::request::GetStream req = protocol::request::GetStream();
+    req.set_version(1);
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.add_to_envelope(&e);
@@ -143,6 +145,7 @@ bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_by
 
     Envelope e = Envelope();
     protocol::request::GetStream req = protocol::request::GetStream();
+    req.set_version(1);
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.set_max_response_bytes(max_response_bytes);
@@ -166,6 +169,7 @@ bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo 
     // TODO validate path
 
     protocol::request::SubscribeStoreChanges req = protocol::request::SubscribeStoreChanges();
+    req.set_version(1);
     req.add_path(path);
 
     Envelope e = Envelope();
@@ -183,6 +187,7 @@ bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb
     // TODO validate path
 
     protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
+    req.set_version(1);
     req.add_path(path);
     Envelope e = Envelope();
     req.add_to_envelope(&e);
@@ -199,6 +204,7 @@ bool Client::SubscribeEnvelopes(const string &path, const string &lua, Subscript
     // TODO validate
 
     protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
+    req.set_version(1);
     req.add_path(path);
     req.set_lua_code(lua);
     Envelope e = Envelope();
