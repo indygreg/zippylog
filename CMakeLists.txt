@@ -158,6 +158,13 @@ target_link_libraries(zippylogd libzippylog)
 add_executable(zippylogcat src/zippylogcat.cpp)
 target_link_libraries(zippylogcat libzippylog)
 
+##########################
+# zippylogclient program #
+##########################
+
+add_executable(zippylogclient src/zippylogclient.cpp)
+target_link_libraries(zippylogclient libzippylog)
+
 ##################################
 # zippylog_string_loader program #
 ##################################
