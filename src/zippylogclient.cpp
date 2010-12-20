@@ -16,25 +16,155 @@
 
 #include <zippylog/client.hpp>
 
-#include <google/protobuf/text_format.h>
-#include <google/protobuf/io/zero_copy_stream_impl.h>
-#include <zmq.hpp>
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
-using namespace zippylog;
-using ::zmq::context_t;
-using namespace ::std;
+using ::std::cout;
+using ::std::endl;
+using ::std::ostringstream;
+using ::std::string;
+using ::std::vector;
+using ::zippylog::client::Client;
+using ::zippylog::protocol::StoreInfo;
+using ::zippylog::Exception;
 
-int main(int argc, const char * const argv[])
+class ZippylogclientParams {
+public:
+    ZippylogclientParams() :
+        store_info(false)
+    { }
+
+    bool store_info;
+
+    vector<string> servers;
+};
+
+static bool ParseCommandArguments(
+    vector<string> args,
+    ZippylogclientParams &params,
+    string &error)
 {
-    context_t zctx(1);
-    //client::Client c(&zctx, "tcp://192.168.1.69:52483");
-    client::Client c(&zctx, "tcp://localhost:5000");
+    if (args.size() < 2) {
+        ostringstream usage;
+        usage
+<< "zippylogclient - A client for zippylog servers"                                 << endl
+<<                                                                                     endl
+<< "Usage: zippylogclient [options] server0 [server1 ... serverN]"                  << endl
+<<                                                                                     endl
+<< "The program is invoked with arguments pointing to 1 or more zippylog servers"   << endl
+<< "zippylog servers along with optional arguments that control behavior."          << endl
+<<                                                                                     endl
+<< "SERVER ARGUMENTS"                                                               << endl
+<<                                                                                     endl
+<< "The server arguments are 0MQ endpoints/URIs of zippylog server agents."         << endl
+<< "e.g. tcp://myhost.mydomain:52483 or ipc:///tmp/zippylogd"                       << endl
+<<                                                                                     endl
+<< "PROGRAM OPTIONS"                                                                << endl
+<<                                                                                     endl
+<< "The following program options control behavior:"                                << endl
+<<                                                                                     endl
+<< "  --storeinfo    Obtain the store info and exit"                                << endl
+        ;
+        error = usage.str();
 
-    int i = 0;
+        return false;
+    }
 
-    ::google::protobuf::TextFormat::Printer printer = ::google::protobuf::TextFormat::Printer();
-    ::google::protobuf::io::FileOutputStream os(1, -1);
+    // get rid of first element, the program name
+    args.erase(args.begin());
+
+    for (int i = 0; i < args.size(); i++) {
+        string arg = args[i];
+
+        if (arg == "--storeinfo") {
+            params.store_info = true;
+        }
+        else if (arg[0] != '-') {
+            params.servers.push_back(arg);
+        }
+    }
+
+    return true;
+}
+
+int ShowStoreInfo(vector<Client *> &clients)
+{
+    for (vector<Client *>::iterator itor = clients.begin(); itor != clients.end(); itor++) {
+        StoreInfo si;
+
+        if ((*itor)->StoreInfo(si, 10000000)) {
+            cout << si.DebugString() << endl;
+        }
+    }
 
     return 0;
 }
+
+int main(int argc, const char * const argv[])
+{
+    try {
+        ::zippylog::initialize_library();
+
+        vector<string> args;
+        for (int i = 0; i < argc; i++) {
+            args.push_back(argv[i]);
+        }
+
+        string error;
+        ZippylogclientParams params;
+
+        if (!ParseCommandArguments(args, params, error)) {
+            cout << error << endl;
+            return 1;
+        }
+
+        vector<Client *> clients;
+
+        ::zmq::context_t ctx(2);
+
+        for (size_t i = 0; i < params.servers.size(); i++) {
+            clients.push_back(new Client(&ctx, params.servers[i]));
+        }
+
+        int result;
+
+        if (params.store_info) {
+            result = ShowStoreInfo(clients);
+        }
+
+        else {
+            cout << "Not sure what to do!" << endl;
+            return 1;
+        }
+
+        for (vector<Client *>::iterator itor = clients.begin(); itor != clients.end(); itor++) {
+            delete *itor;
+        }
+        clients.clear();
+
+        ::zippylog::shutdown_library();
+    }
+    catch (Exception e) {
+        cout << "zippylog Exception:" << endl;
+        cout << e.what() << endl;
+        return 1;
+    }
+    catch (string s) {
+        cout << "Exception:" << endl;
+        cout << s;
+        return 1;
+    }
+    catch (char * s) {
+        cout << "Exception: " << s << endl;
+        return 1;
+    }
+    catch (...) {
+        cout << "received an exception" << endl;
+        return 1;
+    }
+
+    return 0;
+}
+
