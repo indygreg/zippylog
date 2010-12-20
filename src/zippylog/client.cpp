@@ -80,11 +80,11 @@ bool Client::StoreInfo(protocol::StoreInfo &info, int32 timeout)
     req.set_version(1);
     req.add_to_envelope(&e);
 
-    OutstandingRequest or;
-    or.data = &info;
-    or.cb_store_info = CallbackStoreInfo;
+    OutstandingRequest outr;
+    outr.data = &info;
+    outr.cb_store_info = CallbackStoreInfo;
 
-    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+    return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
 void Client::CallbackStoreInfo(protocol::StoreInfo &info, void *data)
@@ -124,11 +124,11 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment
     Envelope e;
     req.add_to_envelope(&e);
 
-    OutstandingRequest or;
-    or.data = &segment;
-    or.cb_stream_segment = CallbackStreamSegment;
+    OutstandingRequest outr;
+    outr.data = &segment;
+    outr.cb_stream_segment = CallbackStreamSegment;
 
-    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+    return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
 void Client::CallbackStreamSegment(const string &path, uint64 offset, StreamSegment &segment, void *data)
