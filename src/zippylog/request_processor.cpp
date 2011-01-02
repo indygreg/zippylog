@@ -663,7 +663,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         protocol::response::StreamSegmentStart segment_start;
         segment_start.set_path(get->path());
         segment_start.set_offset(get->start_offset());
-        ::zippylog::Envelope env = ::zippylog::Envelope();
+        ::zippylog::Envelope env;
         segment_start.add_to_envelope(&env);
 
         // copy request tags to response for client association
