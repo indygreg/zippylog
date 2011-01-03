@@ -15,11 +15,14 @@
 #pragma once
 
 #include <zippylog/client.hpp>
+#include <zippylog/util.hpp>
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include <stdlib.h>
 
 using ::std::cout;
 using ::std::endl;
@@ -27,16 +30,30 @@ using ::std::ostringstream;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::client::Client;
+using ::zippylog::client::StoreMirrorState;
+using ::zippylog::client::StreamSegment;
 using ::zippylog::protocol::StoreInfo;
 using ::zippylog::Exception;
+using ::zippylog::util::GetArgumentValueAndPop;
 
 class ZippylogclientParams {
 public:
     ZippylogclientParams() :
-        store_info(false)
+        store_info(false),
+        mirror(false),
+        mirror_interval(-1)
     { }
 
     bool store_info;
+
+    /// whether to mirror
+    bool mirror;
+
+    /// path to state file (not required)
+    string mirror_state;
+
+    /// sleep period between mirror operations. if -1, only mirror once
+    int mirror_interval;
 
     vector<string> servers;
 };
@@ -65,7 +82,14 @@ static bool ParseCommandArguments(
 <<                                                                                     endl
 << "The following program options control behavior:"                                << endl
 <<                                                                                     endl
-<< "  --storeinfo    Obtain the store info and exit"                                << endl
+<< "  --mirror          Fetches all content from remote stream."                    << endl
+<< "  --mirror-state    Path to file to hold mirror state. If file exists, state"   << endl
+<< "                    will be read from it. If does not exist, it will be"  << endl
+<< "                    created. Upon mirroring, this file will be updated with"    << endl
+<< "                    the latest mirror state."                                   << endl
+<< "  --mirror-interval If specified, mirroring will repeat after sleeping N"       << endl
+<< "                    seconds where N is the value after this argument."          << endl
+<< "  --storeinfo       Obtain the store info and exit"                             << endl
         ;
         error = usage.str();
 
@@ -75,15 +99,47 @@ static bool ParseCommandArguments(
     // get rid of first element, the program name
     args.erase(args.begin());
 
-    for (int i = 0; i < args.size(); i++) {
+    for (size_t i = 0; i < args.size();) {
         string arg = args[i];
 
         if (arg == "--storeinfo") {
             params.store_info = true;
         }
+        else if (arg == "--mirror") {
+            params.mirror = true;
+        }
+        else if (arg == "--mirror-state") {
+            string value;
+            if (!GetArgumentValueAndPop(args, i, value)) {
+                error = "--mirror-state requires a value";
+                return false;
+            }
+            params.mirror_state = value;
+            params.mirror = true;
+            continue;
+        }
+        else if (arg == "--mirror-interval") {
+            string value;
+            if (!GetArgumentValueAndPop(args, i, value)) {
+                error = "--mirror-interval requires a value";
+                return false;
+            }
+
+            int result = atoi(value.c_str());
+            if (errno == EINVAL) {
+                error = "--mirror-interval value could not be parsed. is it a positive integer?";
+                return false;
+            }
+
+            params.mirror_interval = result;
+            params.mirror = true;
+            continue;
+        }
         else if (arg[0] != '-') {
             params.servers.push_back(arg);
         }
+
+        i++;
     }
 
     return true;
@@ -97,6 +153,28 @@ int ShowStoreInfo(vector<Client *> &clients)
         if ((*itor)->StoreInfo(si, 10000000)) {
             cout << si.DebugString() << endl;
         }
+    }
+
+    return 0;
+}
+
+// TODO actually do something
+void MirrorCallback(const string & path, uint64 start_offset, StreamSegment & segment, void * data)
+{
+    cout << path << ": " << start_offset << "-" << segment.EndOffset << endl;
+}
+
+int Mirror(vector<Client *> &clients, vector<StoreMirrorState> &states)
+{
+    if (!states.size()) {
+        for (int i = 0; i < clients.size(); i++) {
+            StoreMirrorState s;
+            states.push_back(s);
+        }
+    }
+
+    for (int i = 0; i < clients.size(); i++) {
+        clients[i]->Mirror(states[i], MirrorCallback, NULL);
     }
 
     return 0;
@@ -132,6 +210,23 @@ int main(int argc, const char * const argv[])
 
         if (params.store_info) {
             result = ShowStoreInfo(clients);
+        }
+        else if (params.mirror) {
+            vector<StoreMirrorState> states;
+
+            // TODO handle interrupts and exit gracefully
+            while (true) {
+                Mirror(clients, states);
+
+                // TODO write out state file
+
+                if (params.mirror_interval > 0) {
+                    ::zippylog::platform::sleep(params.mirror_interval * 1000);
+                    continue;
+                }
+
+                break;
+            }
         }
 
         else {
