@@ -138,6 +138,7 @@ set(libzippylog-test_sources
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
+    src/zippylog/stream_unittest.cpp
 )
 
 add_executable(libzippylog-test ${libzippylog-test_sources})

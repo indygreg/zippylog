@@ -263,6 +263,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\stream_unittest.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\streamer_unittest.cpp"
 				>
 			</File>
