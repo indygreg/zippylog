@@ -55,6 +55,16 @@ class ZIPPYLOG_EXPORT InputStream {
         /// errors or stream storage techniques.
         bool ReadEnvelope(::zippylog::Envelope &envelope, uint32 &bytes_read);
 
+        /// Obtains the current envelope offset of the stream
+        ///
+        /// Note that if the stream is backed by a file descriptor or similar,
+        /// that offset is different from this one. This offset is the offset
+        /// within the stream at which this class itself is reading.
+        ///
+        /// The offset value can also disagree slightly with how much data has
+        /// already been read, as the class sometimes reads ahead.
+        int64 CurrentEnvelopeOffset() const { return this->offset; }
+
         /// Can we set absolute stream offsets
         ///
         /// If true, calls to SetAbsoluteOffset() are expected to return
@@ -86,6 +96,9 @@ class ZIPPYLOG_EXPORT InputStream {
 
         /// The size of the next envelope (if available)
         uint32 next_envelope_size;
+
+        /// Current stream read offset
+        int64 offset;
 
     private:
         // disable copy constructor and assignment operator

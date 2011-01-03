@@ -28,7 +28,8 @@ InputStream::InputStream() :
     cis(NULL),
     version(0),
     have_next_size(false),
-    next_envelope_size(0)
+    next_envelope_size(0),
+    offset(-1)
 { }
 
 InputStream::~InputStream() {
@@ -52,13 +53,14 @@ uint32 InputStream::NextEnvelopeSize()
 
 bool InputStream::ReadVersion()
 {
-// we read the first byte of the stream
+    // we read the first byte of the stream
     char v;
     if (!this->cis->ReadRaw(&v, sizeof(v))) {
         return false;
     }
 
     this->version = v;
+    this->offset = 1;
 
     if (v != 0x01) {
         return false;
@@ -98,6 +100,8 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
     else {                       // 2,684,35,455 (well, actually a little less due to 32 bit limit
         bytes_read = size + 4;
     }
+
+    this->offset += bytes_read;
 
     return true;
 }
@@ -139,10 +143,6 @@ FileInputStream::~FileInputStream()
 
 bool FileInputStream::SetAbsoluteOffset(int64 offset)
 {
-    if (!this->file.Seek(offset)) {
-        throw Exception("could not seek to requested stream offset");
-    }
-
     // if we change the underlying file descriptor, we need to rebuild the
     // protobuf pieces from the new offset in the descriptor b/c the
     // objects can buffer read data
@@ -156,8 +156,13 @@ bool FileInputStream::SetAbsoluteOffset(int64 offset)
         this->fis = NULL;
     }
 
+    if (!this->file.Seek(offset)) {
+        throw Exception("could not seek to requested stream offset");
+    }
+
     this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
     this->cis = new CodedInputStream(this->fis);
+    this->offset = offset;
 
     return true;
 }
