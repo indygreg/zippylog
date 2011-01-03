@@ -584,7 +584,7 @@ OutputStream * SimpleDirectoryStore::CreateOutputStream(const string &bucket, co
         if (!this->CreateStreamset(bucket, set)) return NULL;
     }
 
-    string path = Store::StreamPath(bucket, set, stream);
+    string path = Store::StreamPath(bucket, set, stream) + ".zippylog";
     string fs_path = this->PathToFilesystemPath(path);
 
     return new FileOutputStream(fs_path, true);
