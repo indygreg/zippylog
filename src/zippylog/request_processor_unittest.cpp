@@ -418,8 +418,8 @@ TEST_F(RequestProcessorTest, GetStream)
     ASSERT_TRUE(end1->has_bytes_sent());
     ASSERT_TRUE(end1->has_envelopes_sent());
     ASSERT_EQ(1, end1->envelopes_sent());
-    ASSERT_EQ(43, end1->offset());
-    ASSERT_EQ(end1->offset(), end1->bytes_sent());
+    ASSERT_EQ(44, end1->offset());
+    ASSERT_EQ(end1->offset() - 1, end1->bytes_sent());
 
     output.clear();
 }

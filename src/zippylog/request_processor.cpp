@@ -699,7 +699,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         segment_end.set_envelopes_sent(envelopes_read);
         segment_end.set_bytes_sent(bytes_read);
         // TODO not all stores might share this concept of offsets
-        segment_end.set_offset(start_offset + bytes_read);
+        segment_end.set_offset(stream->CurrentEnvelopeOffset());
 
         env = ::zippylog::Envelope();
         segment_end.add_to_envelope(&env);
