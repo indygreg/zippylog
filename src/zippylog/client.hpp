@@ -56,6 +56,29 @@ class ZIPPYLOG_EXPORT StreamSegment {
         ::std::vector<Envelope> Envelopes;
 };
 
+/// Records what parts of a stream have been fetched
+class ZIPPYLOG_EXPORT StreamFetchState {
+public:
+    StreamFetchState() : end_offset(0) { }
+
+    uint64 end_offset;
+};
+
+class ZIPPYLOG_EXPORT StoreMirrorState {
+public:
+    StoreMirrorState() { }
+
+    void SetStreamState(const ::std::string &path, StreamFetchState state);
+
+    void SetStreamEndOffset(const ::std::string &path, uint64 offset);
+
+    friend class Client;
+protected:
+
+    // maps path to fetch state
+    ::std::map< ::std::string, StreamFetchState > states;
+};
+
 /// Function types for callbacks when the client has received a subscribed event
 ///
 /// The first string parameter is the subscription id. The final parameter is
@@ -72,6 +95,8 @@ typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::Stor
 
 /// Callback executed when a store info response is received
 typedef void (StoreInfoCallback)(protocol::StoreInfo &, void *);
+
+typedef void (StreamInfoCallback)(protocol::StreamInfo &, void *);
 
 /// Executed when a stream segment is received
 ///
@@ -138,6 +163,7 @@ class OutstandingRequest {
 public:
     OutstandingRequest() :
         cb_store_info(NULL),
+        cb_stream_info(NULL),
         cb_stream_segment(NULL),
         data(NULL)
     { }
@@ -148,6 +174,7 @@ protected:
     ::std::string id;
 
     StoreInfoCallback *     cb_store_info;
+    StreamInfoCallback *    cb_stream_info;
     StreamSegmentCallback * cb_stream_segment;
 
     SubscriptionCallbackInfo callbacks;
@@ -205,6 +232,20 @@ class ZIPPYLOG_EXPORT Client {
         /// true. Else, returns false.
         bool StoreInfo(protocol::StoreInfo &info, int32 timeout_microseconds = -1);
 
+        /// Asynchronously obtain stream info.
+        ///
+        /// Supplied callback will be invoked when stream info response is
+        /// received.
+        ///
+        /// Returns true if request sent without error.
+        bool StreamInfo(const ::std::string &path, StreamInfoCallback * callback, void * data = NULL);
+
+        /// Synchronously obtain stream info
+        ///
+        /// Will wait up to specified microseconds for response.
+        /// Returns true if info retrieved or false if error or timeout.
+        bool StreamInfo(const ::std::string &path, protocol::StreamInfo &info, int32 timeout_microseconds = -1);
+
         /// Cancels the subscription with specified ID
         bool CancelSubscription(const ::std::string &id);
 
@@ -235,8 +276,52 @@ class ZIPPYLOG_EXPORT Client {
         bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
         bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
+        /// Synchronously fetch all unfetched parts of a stream
+        ///
+        /// The function consults the StreamFetchState object passed and
+        /// fetches all unfetched segments from the server. For each segment
+        /// retrieved, the StreamSegmentCallback callback will be called with
+        /// the userdata specified.
+        ///
+        /// The end_offset parameter can set an end offset ceiling. If 0, the
+        /// client will query the remote server for the size of the stream
+        /// before fetching. If not 0, this step is skipped.
+        ///
+        /// The function doesn't return until all stream segments have been
+        /// fetched.
+        ///
+        /// Unlike many other synchronous functions, this one has a callback.
+        /// The rationale for the callback is that it is the most flexible way
+        /// to handle received stream segments. If we were to pass in a
+        /// store writer, for example, we'd be limiting ourselves to what
+        /// callers could do with stream segments.
+        bool GetStream(const ::std::string &path,
+                       StreamFetchState &state,
+                       StreamSegmentCallback *callback,
+                       void *data = NULL,
+                       uint64 end_offset = 0);
+
         /// Synchronously obtain a stream segment starting from an offset
         bool Get(const ::std::string &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
+
+        /// Synchronously mirror the remote server
+        ///
+        /// The function receives a state object that keeps track of what
+        /// stream segments have been received. The initial time this function
+        /// is called, it is sufficient to pass an empty state object via its
+        /// default constructor.
+        ///
+        /// When called, this function will query the remote server for
+        /// available stream data and will request stream segments for
+        /// all unfetched data. For each stream segment returned, the passed
+        /// StreamSegmentCallback will be invoked with the user data
+        /// passed into the function.
+        ///
+        /// This function blocks until all stream segments have been fetched.
+        ///
+        /// Under the hood, this function invokes GetStream() for all remote
+        /// streams. This function is provided as a convenience API.
+        bool Mirror(StoreMirrorState &state, StreamSegmentCallback *callback, void *data = NULL);
 
         /// Subscribe to store change events
         ///
@@ -299,6 +384,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Internal callback used for synchronous store info requests
         static void CallbackStoreInfo(protocol::StoreInfo &info, void *data);
+
+        /// Internal callback used for synchronous stream info requests
+        static void CallbackStreamInfo(protocol::StreamInfo &info, void *data);
 
         static void CallbackStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
 

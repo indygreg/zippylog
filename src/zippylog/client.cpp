@@ -16,6 +16,7 @@
 
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/store.hpp>
 #include <zippylog/zeromq.hpp>
 #include <zmq.hpp>
 
@@ -24,6 +25,7 @@ using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::protocol::response::SubscriptionStart;
+using ::zippylog::Store;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::pollitem_t;
@@ -94,6 +96,26 @@ void Client::CallbackStoreInfo(protocol::StoreInfo &info, void *data)
     si->CopyFrom(info);
 }
 
+bool Client::StreamInfo(const string &path, protocol::StreamInfo &info, int32 timeout)
+{
+    Envelope e;
+    protocol::request::GetStreamInfo req;
+    req.set_version(1);
+    req.set_path(path);
+    req.add_to_envelope(e);
+
+    OutstandingRequest outr;
+    outr.data = &info;
+    outr.cb_stream_info = CallbackStreamInfo;
+
+    return this->SendAndProcessSynchronousRequest(e, outr, timeout);
+}
+
+void Client::CallbackStreamInfo(protocol::StreamInfo &info, void *data)
+{
+    protocol::StreamInfo *si = (protocol::StreamInfo *)data;
+    si->CopyFrom(info);
+}
 
 bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
 {
@@ -163,6 +185,86 @@ bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, St
     return this->Get(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
 }
 
+bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmentCallback * callback, void * data, uint64 end_offset)
+{
+    if (!callback) {
+        throw invalid_argument("callback parameter not defined");
+    }
+
+    if (!end_offset) {
+        protocol::StreamInfo si;
+        if (!this->StreamInfo(path, si, -1)) {
+            return false;
+        }
+
+        end_offset = si.length();
+    }
+
+    // we've already fetched it all
+    if (state.end_offset >= end_offset) return true;
+
+    uint64 start_offset = state.end_offset;
+
+    while (true) {
+        StreamSegment segment;
+        if (!this->Get(path, start_offset, segment, -1)) {
+            return false;
+        }
+
+        if (!segment.BytesSent) break;
+
+        callback(path, start_offset, segment, data);
+
+        start_offset = segment.EndOffset;
+
+        if (start_offset >= end_offset) break;
+    }
+
+    state.end_offset = start_offset;
+
+    return true;
+}
+
+bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, void * data)
+{
+    if (!callback) {
+        throw invalid_argument("callback parameter not defined");
+    }
+
+    protocol::StoreInfo info;
+    if (!this->StoreInfo(info, -1)) {
+        return false;
+    }
+
+    for (int i = 0; i < info.bucket_size(); i++) {
+        protocol::BucketInfo bi = info.bucket(i);
+
+        for (int j = 0; j < bi.stream_set_size(); j++) {
+            protocol::StreamSetInfo ssi = bi.stream_set(j);
+
+            for (int k = 0; k < ssi.stream_size(); k++) {
+                protocol::StreamInfo si = ssi.stream(k);
+
+                string path = Store::StreamPath(bi.path(), ssi.path(), si.path());
+
+                map<string, StreamFetchState>::iterator itor = state.states.find(path);
+
+                if (itor == state.states.end()) {
+                    StreamFetchState fetch_state;
+                    fetch_state.end_offset = 0;
+
+                    state.states[path] = fetch_state;
+                }
+
+                if (!this->GetStream(path, state.states[path], callback, data, si.length())) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
 
 bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
@@ -491,6 +593,16 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             protocol::StoreInfo *info = (protocol::StoreInfo *)e.GetMessage(0);
 
             req.cb_store_info(*info, req.data);
+
+            return true;
+        }
+
+        case protocol::StreamInfo::zippylog_enumeration:
+        {
+            assert(req.cb_stream_info);
+            protocol::StreamInfo *info = (protocol::StreamInfo *)e.GetMessage(0);
+
+            req.cb_stream_info(*info, req.data);
 
             return true;
         }
