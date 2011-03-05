@@ -13,7 +13,9 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/envelope.hpp>
 #include <zippylog/platform.hpp>
+#include <zippylog/request_processor.pb.h>
 
 extern "C" {
 #include <lua.h>
@@ -33,17 +35,21 @@ using ::std::endl;
 using ::std::ostringstream;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::Envelope;
 
-#define TIMER_START \
+#define TIMER_START(iterations) { \
+    int TIMER_ITERATIONS = iterations; \
     ::zippylog::platform::Time __tstart; \
     ::zippylog::platform::TimeNow(__tstart); \
+    for (int TIMER_LOOP_VALUE = TIMER_ITERATIONS; TIMER_LOOP_VALUE; TIMER_LOOP_VALUE--) { \
 
 
-#define TIMER_END \
+#define TIMER_END(description) } \
     ::zippylog::platform::Time __tend; \
     ::zippylog::platform::TimeNow(__tend); \
     uint64 elapsed = __tend.epoch_micro - __tstart.epoch_micro; \
-
+    print_result(description, elapsed, TIMER_ITERATIONS); \
+    }
 
 class ZippylogbenchParams {
 public:
@@ -115,14 +121,115 @@ void run_lua_function_calls(ZippylogbenchParams &params)
     const char *function = "function test()\n    return nil\nend";
     assert(!luaL_loadstring(L, function));
 
-    TIMER_START;
-    for (size_t i = 1000000; i; --i) {
-        lua_getglobal(L, "test");
-        lua_pcall(L, 0, 1, 0);
-        lua_pop(L, 1);
+    TIMER_START(1000000);
+    lua_getglobal(L, "test");
+    lua_pcall(L, 0, 1, 0);
+    lua_pop(L, 1);
+    TIMER_END("lua.pcall_empty_function");
+}
+
+void run_zmq_benches(ZippylogbenchParams &params)
+{
+    TIMER_START(1000000);
+    ::zmq::message_t *msg = new ::zmq::message_t();
+    delete msg;
+    TIMER_END("zmq.empty_message_allocation");
+
+    TIMER_START(1000000);
+    ::zmq::message_t *msg = new ::zmq::message_t(100);
+    delete msg;
+    TIMER_END("zmq.100_byte_message_allocation");
+
+    TIMER_START(1000000);
+    ::zmq::message_t *msg = new ::zmq::message_t(1000);
+    delete msg;
+    TIMER_END("zmq.1000_byte_message_allocation");
+
+    TIMER_START(100000);
+    ::zmq::message_t *msg = new ::zmq::message_t(10000);
+    delete msg;
+    TIMER_END("zmq.10000_byte_message_allocation");
+
+    TIMER_START(10000);
+    ::zmq::message_t *msg = new ::zmq::message_t(100000);
+    delete msg;
+    TIMER_END("zmq.100000_byte_message_allocation");
+}
+
+void run_envelope_benches(ZippylogbenchParams &params)
+{
+    TIMER_START(1000000);
+    Envelope *e = new Envelope();
+    delete e;
+    TIMER_END("zippylog.envelope.empty_allocations");
+
+    {
+        Envelope e;
+        string s;
+        TIMER_START(1000000);
+        e.Serialize(s);
+        TIMER_END("zippylog.envelope.empty_serialize");
     }
-    TIMER_END;
-    print_result("Lua - calls to empty function from C", elapsed, 1000000);
+
+    {
+        Envelope e;
+        ::zmq::message_t msg;
+        TIMER_START(1000000);
+        e.ToZmqMessage(msg);
+        TIMER_END("zippylog.envelope.empty_zmq_serialize");
+    }
+
+    {
+        Envelope e;
+        ::zmq::message_t msg;
+        TIMER_START(1000000);
+        e.ToProtocolZmqMessage(msg);
+        TIMER_END("zippylog.envelope.empty_zmq_protocol_serialize");
+    }
+
+    {
+        Envelope empty;
+        string serialized;
+        empty.Serialize(serialized);
+        void * buffer = (void *)serialized.data();
+        int length = serialized.length();
+        TIMER_START(1000000);
+        Envelope e(buffer, length);
+        TIMER_END("zippylog.envelope.empty_construct_from_buffer");
+    }
+
+    {
+        Envelope empty;
+        string serialized;
+        empty.Serialize(serialized);
+        TIMER_START(1000000);
+        Envelope e(serialized);
+        TIMER_END("zippylog.envelope.empty_construct_from_string");
+    }
+
+    {
+        Envelope empty;
+        ::zmq::message_t msg;
+        empty.ToZmqMessage(msg);
+        TIMER_START(1000000);
+        Envelope e(msg);
+        TIMER_END("zippylog.envelope.empty.construct_from_zmq");
+    }
+
+    {
+        Envelope empty;
+        TIMER_START(1000000);
+        Envelope e(empty);
+        TIMER_END("zippylog.envelope.empty_copy_constructor");
+    }
+
+    /*
+    TIMER_START(1000000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    msg.add_to_envelope(e);
+    TIMER_END("zippylog.envelope.create_and_add_message");
+    */
 }
 
 void run_benchmarks(ZippylogbenchParams &params)
@@ -130,6 +237,9 @@ void run_benchmarks(ZippylogbenchParams &params)
     if (params.do_lua_function_calls || params.do_all) {
         run_lua_function_calls(params);
     }
+
+    run_zmq_benches(params);
+    run_envelope_benches(params);
 }
 
 int main(int argc, const char * const argv[])
