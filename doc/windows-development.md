@@ -38,6 +38,10 @@ The following projects exist in the solution:
 * libzippylog - zippylog core routines library. This is the heart of zippylog.
 * libzmq - ZeroMQ shared library.
 * zippylog-test - zippylog unit tests. Generates an executable that can test zippylog.
+* zippylog_string_loader - builds the zippylog_string_loader executable
+* zippylogbench - builds the zippylogbench executable
+* zippylogcat - builds the zippylogcat executable
+* zippylogclient - builds the zippylogclient executable
 * zippylogd - zippylogd program. Generates zippylogd.exe. Contains main() for zippylogd.
 
 # Compiler Output
@@ -46,7 +50,7 @@ Generated files from the Visual Studio solution will be placed in a subdirectory
 
 In this directory, there will be directory trees first for the system platform, then by the configuration. All libraries and executables will be placed in a common directory, so the runtime linker should have no problem finding dependencies.
 
-e.g. if you are building the Debug x64 version of zippylogd, you would find the binary at:
+e.g. if you are building the Debug Win32 version of zippylogd, you would find the binary at:
 
     /msvc/Win32/Debug/zippylogd.exe
 
