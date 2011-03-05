@@ -223,13 +223,11 @@ void run_envelope_benches(ZippylogbenchParams &params)
         TIMER_END("zippylog.envelope.empty_copy_constructor");
     }
 
-    /*
     TIMER_START(1000000);
     Envelope e;
     ::zippylog::request_processor::Destroy msg;
     msg.add_to_envelope(e);
     TIMER_END("zippylog.envelope.create_and_add_message");
-    */
 }
 
 void run_benchmarks(ZippylogbenchParams &params)
