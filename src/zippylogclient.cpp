@@ -71,7 +71,7 @@ static bool ParseCommandArguments(
 << "Usage: zippylogclient [options] server0 [server1 ... serverN]"                  << endl
 <<                                                                                     endl
 << "The program is invoked with arguments pointing to 1 or more zippylog servers"   << endl
-<< "zippylog servers along with optional arguments that control behavior."          << endl
+<< "along with optional arguments that control behavior."                           << endl
 <<                                                                                     endl
 << "SERVER ARGUMENTS"                                                               << endl
 <<                                                                                     endl
