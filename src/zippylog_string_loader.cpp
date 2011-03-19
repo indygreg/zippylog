@@ -41,19 +41,22 @@ static bool ParseCommandArguments(
     if (args.size() < 2) {
         ostringstream usage;
         usage
-            << "Usage: " << args[0] << " [arguments]" << endl
+            << "Usage: " << args[0] << " [arguments]"                                   << endl
             << endl
-            << "Where the following arguments control behavior:" << endl
+            << "Where the following arguments control behavior:"                        << endl
             << endl
-            << "    --stdout             Send processed string output to stdout"  << endl
-            << "    --store <path>       Path to store to write to"               << endl
-            << "    --default-bucket     Default bucket in store to write to"     << endl
-            << "    --default-stream-set Default stream set in store to write to" << endl
-            << "    --lua-file <path>    Lua file to load for processing"         << endl
+            << "    --stdout             Send processed string output to stdout"        << endl
+            << "    --server <endpoint>  0MQ endpoint of a zippylog server to write to" << endl
+            << "    --store <path>       Path to store to write to"                     << endl
+            << "    --default-bucket     Default bucket in store to write to"           << endl
+            << "    --default-stream-set Default stream set in store to write to"       << endl
+            << "    --lua-file <path>    Lua file to load for processing"               << endl
             << endl
-            << "If a Lua file is loaded, the following callbacks are registered:" << endl
+            << "If a Lua file is loaded, the following callbacks are registered:"       << endl
             << endl
-            << "    zippylog_process_line - Called on every received line"
+            << "    zippylog_process_line - Called on every received line"              << endl
+            << endl
+            << "One of --store, --server, or --stdout must be specified."               << endl
         ;
         error = usage.str();
 
@@ -163,6 +166,10 @@ int main(int argc, const char * const argv[])
     }
     catch (char * s) {
         cout << "Exception: " << s << endl;
+        return 1;
+    }
+    catch (::std::exception e) {
+        cout << "Exception: " << e.what() << endl;
         return 1;
     }
     catch (...) {
