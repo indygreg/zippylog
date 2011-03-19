@@ -35,6 +35,7 @@ void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
 void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
 void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
 
+class Pong;
 class FeatureSpecification;
 class StreamSegmentStart;
 class StreamSegmentEnd;
@@ -79,6 +80,92 @@ inline bool ErrorCode_Parse(
     ErrorCode_descriptor(), name, value);
 }
 // ===================================================================
+
+class Pong : public ::google::protobuf::Message {
+ public:
+  Pong();
+  virtual ~Pong();
+  
+  Pong(const Pong& from);
+  
+  inline Pong& operator=(const Pong& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Pong& default_instance();
+  
+  void Swap(Pong* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Pong* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Pong& from);
+  void MergeFrom(const Pong& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 126;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.Pong)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static Pong* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class FeatureSpecification : public ::google::protobuf::Message {
  public:
@@ -801,6 +888,10 @@ class Error : public ::google::protobuf::Message {
 
 
 // ===================================================================
+
+// Pong
+
+// -------------------------------------------------------------------
 
 // FeatureSpecification
 

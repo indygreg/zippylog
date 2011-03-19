@@ -16,6 +16,9 @@ namespace response {
 
 namespace {
 
+const ::google::protobuf::Descriptor* Pong_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  Pong_reflection_ = NULL;
 const ::google::protobuf::Descriptor* FeatureSpecification_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   FeatureSpecification_reflection_ = NULL;
@@ -48,7 +51,21 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "zippylog/protocol/response.proto");
   GOOGLE_CHECK(file != NULL);
-  FeatureSpecification_descriptor_ = file->message_type(0);
+  Pong_descriptor_ = file->message_type(0);
+  static const int Pong_offsets_[1] = {
+  };
+  Pong_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      Pong_descriptor_,
+      Pong::default_instance_,
+      Pong_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Pong, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Pong, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(Pong));
+  FeatureSpecification_descriptor_ = file->message_type(1);
   static const int FeatureSpecification_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecification, supported_message_version_),
   };
@@ -63,7 +80,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(FeatureSpecification));
-  StreamSegmentStart_descriptor_ = file->message_type(1);
+  StreamSegmentStart_descriptor_ = file->message_type(2);
   static const int StreamSegmentStart_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, path_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentStart, offset_),
@@ -79,7 +96,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamSegmentStart));
-  StreamSegmentEnd_descriptor_ = file->message_type(2);
+  StreamSegmentEnd_descriptor_ = file->message_type(3);
   static const int StreamSegmentEnd_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, offset_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StreamSegmentEnd, bytes_sent_),
@@ -96,7 +113,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StreamSegmentEnd));
-  SubscribeAck_descriptor_ = file->message_type(3);
+  SubscribeAck_descriptor_ = file->message_type(4);
   static const int SubscribeAck_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeAck, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeAck, ttl_),
@@ -112,7 +129,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeAck));
-  SubscriptionStart_descriptor_ = file->message_type(4);
+  SubscriptionStart_descriptor_ = file->message_type(5);
   static const int SubscriptionStart_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscriptionStart, id_),
   };
@@ -127,7 +144,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscriptionStart));
-  WriteAck_descriptor_ = file->message_type(5);
+  WriteAck_descriptor_ = file->message_type(6);
   static const int WriteAck_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteAck, envelopes_written_),
   };
@@ -142,7 +159,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WriteAck));
-  Error_descriptor_ = file->message_type(6);
+  Error_descriptor_ = file->message_type(7);
   static const int Error_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, code_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, msg_),
@@ -172,6 +189,8 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    Pong_descriptor_, &Pong::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     FeatureSpecification_descriptor_, &FeatureSpecification::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StreamSegmentStart_descriptor_, &StreamSegmentStart::default_instance());
@@ -190,6 +209,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto() {
+  delete Pong::default_instance_;
+  delete Pong_reflection_;
   delete FeatureSpecification::default_instance_;
   delete FeatureSpecification_reflection_;
   delete StreamSegmentStart::default_instance_;
@@ -214,30 +235,32 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n zippylog/protocol/response.proto\022\032zipp"
-    "ylog.protocol.response\"9\n\024FeatureSpecifi"
-    "cation\022!\n\031supported_message_version\030\001 \003("
-    "\r\"2\n\022StreamSegmentStart\022\014\n\004path\030\001 \001(\t\022\016\n"
-    "\006offset\030\002 \001(\004\"N\n\020StreamSegmentEnd\022\016\n\006off"
-    "set\030\001 \001(\004\022\022\n\nbytes_sent\030\002 \001(\r\022\026\n\016envelop"
-    "es_sent\030\003 \001(\r\"\'\n\014SubscribeAck\022\n\n\002id\030\001 \001("
-    "\014\022\013\n\003ttl\030\002 \001(\r\"\037\n\021SubscriptionStart\022\n\n\002i"
-    "d\030\001 \001(\014\"%\n\010WriteAck\022\031\n\021envelopes_written"
-    "\030\001 \001(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%.zippylog"
-    ".protocol.response.ErrorCode\022\013\n\003msg\030\002 \001("
-    "\t*\334\003\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAILUR"
-    "E\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024UN"
-    "KNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020\004"
-    "\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQUEST_NO"
-    "T_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIEL"
-    "D_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID_STREAM_"
-    "OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NOT"
-    "_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014\022\"\n\036UNKNOWN_"
-    "MESSAGE_FORMAT_VERSION\020\r\022\020\n\014INVALID_PATH"
-    "\020\016\022)\n%UNSUPPORTED_OPERATION_MESSAGE_VERS"
-    "ION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024PROTOCOL_NO_"
-    "ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_PROCESSING\020\022", 920);
+    "ylog.protocol.response\"\006\n\004Pong\"9\n\024Featur"
+    "eSpecification\022!\n\031supported_message_vers"
+    "ion\030\001 \003(\r\"2\n\022StreamSegmentStart\022\014\n\004path\030"
+    "\001 \001(\t\022\016\n\006offset\030\002 \001(\004\"N\n\020StreamSegmentEn"
+    "d\022\016\n\006offset\030\001 \001(\004\022\022\n\nbytes_sent\030\002 \001(\r\022\026\n"
+    "\016envelopes_sent\030\003 \001(\r\"\'\n\014SubscribeAck\022\n\n"
+    "\002id\030\001 \001(\014\022\013\n\003ttl\030\002 \001(\r\"\037\n\021SubscriptionSt"
+    "art\022\n\n\002id\030\001 \001(\014\"%\n\010WriteAck\022\031\n\021envelopes"
+    "_written\030\001 \001(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%."
+    "zippylog.protocol.response.ErrorCode\022\013\n\003"
+    "msg\030\002 \001(\t*\334\003\n\tErrorCode\022\032\n\026ENVELOPE_PARS"
+    "E_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE"
+    "\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_EN"
+    "VELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027RE"
+    "QUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007"
+    "\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID"
+    "_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016"
+    "PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014\022\"\n\036"
+    "UNKNOWN_MESSAGE_FORMAT_VERSION\020\r\022\020\n\014INVA"
+    "LID_PATH\020\016\022)\n%UNSUPPORTED_OPERATION_MESS"
+    "AGE_VERSION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024PROT"
+    "OCOL_NO_ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_PROC"
+    "ESSING\020\022", 928);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
+  Pong::default_instance_ = new Pong();
   FeatureSpecification::default_instance_ = new FeatureSpecification();
   StreamSegmentStart::default_instance_ = new StreamSegmentStart();
   StreamSegmentEnd::default_instance_ = new StreamSegmentEnd();
@@ -245,6 +268,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
   SubscriptionStart::default_instance_ = new SubscriptionStart();
   WriteAck::default_instance_ = new WriteAck();
   Error::default_instance_ = new Error();
+  Pong::default_instance_->InitAsDefaultInstance();
   FeatureSpecification::default_instance_->InitAsDefaultInstance();
   StreamSegmentStart::default_instance_->InitAsDefaultInstance();
   StreamSegmentEnd::default_instance_->InitAsDefaultInstance();
@@ -290,6 +314,161 @@ bool ErrorCode_IsValid(int value) {
     default:
       return false;
   }
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+#endif  // !_MSC_VER
+
+Pong::Pong()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void Pong::InitAsDefaultInstance() {
+}
+
+Pong::Pong(const Pong& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void Pong::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+Pong::~Pong() {
+  SharedDtor();
+}
+
+void Pong::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void Pong::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* Pong::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return Pong_descriptor_;
+}
+
+const Pong& Pong::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
+}
+
+Pong* Pong::default_instance_ = NULL;
+
+Pong* Pong::New() const {
+  return new Pong;
+}
+
+void Pong::Clear() {
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool Pong::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
+    }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
+  }
+  return true;
+#undef DO_
+}
+
+void Pong::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* Pong::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int Pong::ByteSize() const {
+  int total_size = 0;
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void Pong::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const Pong* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const Pong*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void Pong::MergeFrom(const Pong& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void Pong::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void Pong::CopyFrom(const Pong& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool Pong::IsInitialized() const {
+  
+  return true;
+}
+
+void Pong::Swap(Pong* other) {
+  if (other != this) {
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata Pong::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = Pong_descriptor_;
+  metadata.reflection = Pong_reflection_;
+  return metadata;
 }
 
 
@@ -2005,6 +2184,14 @@ void Error::Swap(Error* other) {
 }
 
 
+
+bool Pong::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool Pong::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
 
 bool FeatureSpecification::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);

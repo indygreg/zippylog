@@ -11,9 +11,30 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\r\n\x0bGetFeatures\"\x1f\n\x0cGetStoreInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\".\n\rGetBucketInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStreamSetInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\".\n\rGetStreamInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\"|\n\tGetStream\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x14\n\x0cstart_offset\x18\x03 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x04 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x05 \x01(\r\"w\n\rWriteEnvelope\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x10\n\x08\x65nvelope\x18\x03 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x04 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x05 \x01(\x08:\x05\x66\x61lse\"\x84\x01\n\x19WriteEnvelopeFromMessages\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x04 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x05 \x03(\rB\x02\x10\x01\"6\n\x15SubscribeStoreChanges\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x03(\t\"E\n\x12SubscribeEnvelopes\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x03(\t\x12\x10\n\x08lua_code\x18\x03 \x01(\t\"1\n\x12SubscribeKeepalive\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\n\n\x02id\x18\x02 \x01(\x0c\".\n\x0fSubscribeCancel\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\n\n\x02id\x18\x02 \x01(\x0c')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x06\n\x04Ping\"\r\n\x0bGetFeatures\"\x1f\n\x0cGetStoreInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\".\n\rGetBucketInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\"1\n\x10GetStreamSetInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\".\n\rGetStreamInfo\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\"|\n\tGetStream\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x14\n\x0cstart_offset\x18\x03 \x01(\x04\x12\x1a\n\x12max_response_bytes\x18\x04 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x05 \x01(\r\"w\n\rWriteEnvelope\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x10\n\x08\x65nvelope\x18\x03 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x04 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x05 \x01(\x08:\x05\x66\x61lse\"\x84\x01\n\x19WriteEnvelopeFromMessages\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x04 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x05 \x03(\rB\x02\x10\x01\"6\n\x15SubscribeStoreChanges\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x03(\t\"E\n\x12SubscribeEnvelopes\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\x0c\n\x04path\x18\x02 \x03(\t\x12\x10\n\x08lua_code\x18\x03 \x01(\t\"1\n\x12SubscribeKeepalive\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\n\n\x02id\x18\x02 \x01(\x0c\".\n\x0fSubscribeCancel\x12\x0f\n\x07version\x18\x01 \x02(\r\x12\n\n\x02id\x18\x02 \x01(\x0c')
 
 
+
+
+_PING = descriptor.Descriptor(
+  name='Ping',
+  full_name='zippylog.protocol.request.Ping',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=62,
+  serialized_end=68,
+)
 
 
 _GETFEATURES = descriptor.Descriptor(
@@ -32,8 +53,8 @@ _GETFEATURES = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=62,
-  serialized_end=75,
+  serialized_start=70,
+  serialized_end=83,
 )
 
 
@@ -60,8 +81,8 @@ _GETSTOREINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=77,
-  serialized_end=108,
+  serialized_start=85,
+  serialized_end=116,
 )
 
 
@@ -95,8 +116,8 @@ _GETBUCKETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=110,
-  serialized_end=156,
+  serialized_start=118,
+  serialized_end=164,
 )
 
 
@@ -130,8 +151,8 @@ _GETSTREAMSETINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=158,
-  serialized_end=207,
+  serialized_start=166,
+  serialized_end=215,
 )
 
 
@@ -165,8 +186,8 @@ _GETSTREAMINFO = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=209,
-  serialized_end=255,
+  serialized_start=217,
+  serialized_end=263,
 )
 
 
@@ -221,8 +242,8 @@ _GETSTREAM = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=257,
-  serialized_end=381,
+  serialized_start=265,
+  serialized_end=389,
 )
 
 
@@ -277,8 +298,8 @@ _WRITEENVELOPE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=383,
-  serialized_end=502,
+  serialized_start=391,
+  serialized_end=510,
 )
 
 
@@ -333,8 +354,8 @@ _WRITEENVELOPEFROMMESSAGES = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=505,
-  serialized_end=637,
+  serialized_start=513,
+  serialized_end=645,
 )
 
 
@@ -368,8 +389,8 @@ _SUBSCRIBESTORECHANGES = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=639,
-  serialized_end=693,
+  serialized_start=647,
+  serialized_end=701,
 )
 
 
@@ -410,8 +431,8 @@ _SUBSCRIBEENVELOPES = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=695,
-  serialized_end=764,
+  serialized_start=703,
+  serialized_end=772,
 )
 
 
@@ -445,8 +466,8 @@ _SUBSCRIBEKEEPALIVE = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=766,
-  serialized_end=815,
+  serialized_start=774,
+  serialized_end=823,
 )
 
 
@@ -480,11 +501,19 @@ _SUBSCRIBECANCEL = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=817,
-  serialized_end=863,
+  serialized_start=825,
+  serialized_end=871,
 )
 
 
+
+class Ping(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _PING
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 125
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.request.Ping)
 
 class GetFeatures(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -582,6 +611,7 @@ class SubscribeCancel(message.Message):
   ZIPPYLOG_ENUMERATION = 25
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeCancel)
 
+register_message(1, 125, 'zippylog.protocol.request_pb2', 'Ping')
 register_message(1, 56, 'zippylog.protocol.request_pb2', 'GetFeatures')
 register_message(1, 57, 'zippylog.protocol.request_pb2', 'GetStoreInfo')
 register_message(1, 100, 'zippylog.protocol.request_pb2', 'GetBucketInfo')

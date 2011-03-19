@@ -57,13 +57,7 @@ namespace zippylog {
         registrar->register_message(1, 53, new ::zippylog::zippylogd::BrokerFlushOutputStreams());
         registrar->register_message(1, 51, new ::zippylog::zippylogd::StoreWatcherStartup());
         registrar->register_message(1, 52, new ::zippylog::zippylogd::StoreWatcherShutdown());
-        registrar->register_message(1, 55, new ::zippylog::protocol::response::FeatureSpecification());
-        registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
-        registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
-        registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());
-        registrar->register_message(1, 26, new ::zippylog::protocol::response::SubscriptionStart());
-        registrar->register_message(1, 113, new ::zippylog::protocol::response::WriteAck());
-        registrar->register_message(1, 9, new ::zippylog::protocol::response::Error());
+        registrar->register_message(1, 125, new ::zippylog::protocol::request::Ping());
         registrar->register_message(1, 56, new ::zippylog::protocol::request::GetFeatures());
         registrar->register_message(1, 57, new ::zippylog::protocol::request::GetStoreInfo());
         registrar->register_message(1, 100, new ::zippylog::protocol::request::GetBucketInfo());
@@ -76,13 +70,14 @@ namespace zippylog {
         registrar->register_message(1, 54, new ::zippylog::protocol::request::SubscribeEnvelopes());
         registrar->register_message(1, 23, new ::zippylog::protocol::request::SubscribeKeepalive());
         registrar->register_message(1, 25, new ::zippylog::protocol::request::SubscribeCancel());
-        registrar->register_message(1, 118, new ::zippylog::device::streamer::Create());
-        registrar->register_message(1, 119, new ::zippylog::device::streamer::Destroy());
-        registrar->register_message(1, 120, new ::zippylog::device::streamer::SubscriptionExpired());
-        registrar->register_message(1, 121, new ::zippylog::device::streamer::ReceiveKeepalive());
-        registrar->register_message(1, 122, new ::zippylog::device::streamer::SubscriptionRenewedFromKeepalive());
-        registrar->register_message(1, 123, new ::zippylog::device::streamer::RejectKeepaliveUnknownSubscription());
-        registrar->register_message(1, 124, new ::zippylog::device::streamer::ErrorRenewingSubscription());
+        registrar->register_message(1, 126, new ::zippylog::protocol::response::Pong());
+        registrar->register_message(1, 55, new ::zippylog::protocol::response::FeatureSpecification());
+        registrar->register_message(1, 7, new ::zippylog::protocol::response::StreamSegmentStart());
+        registrar->register_message(1, 8, new ::zippylog::protocol::response::StreamSegmentEnd());
+        registrar->register_message(1, 24, new ::zippylog::protocol::response::SubscribeAck());
+        registrar->register_message(1, 26, new ::zippylog::protocol::response::SubscriptionStart());
+        registrar->register_message(1, 113, new ::zippylog::protocol::response::WriteAck());
+        registrar->register_message(1, 9, new ::zippylog::protocol::response::Error());
         // @@protoc_insertion_point(message_registration)
     }
 }

@@ -35,6 +35,7 @@ void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
 void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
 void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
 
+class Ping;
 class GetFeatures;
 class GetStoreInfo;
 class GetBucketInfo;
@@ -49,6 +50,92 @@ class SubscribeKeepalive;
 class SubscribeCancel;
 
 // ===================================================================
+
+class Ping : public ::google::protobuf::Message {
+ public:
+  Ping();
+  virtual ~Ping();
+  
+  Ping(const Ping& from);
+  
+  inline Ping& operator=(const Ping& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Ping& default_instance();
+  
+  void Swap(Ping* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Ping* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Ping& from);
+  void MergeFrom(const Ping& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 125;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.Ping)
+ private:
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  mutable int _cached_size_;
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  ::google::protobuf::uint32 _has_bits_[1];
+  
+  // WHY DOES & HAVE LOWER PRECEDENCE THAN != !?
+  inline bool _has_bit(int index) const {
+    return (_has_bits_[index / 32] & (1u << (index % 32))) != 0;
+  }
+  inline void _set_bit(int index) {
+    _has_bits_[index / 32] |= (1u << (index % 32));
+  }
+  inline void _clear_bit(int index) {
+    _has_bits_[index / 32] &= ~(1u << (index % 32));
+  }
+  
+  void InitAsDefaultInstance();
+  static Ping* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class GetFeatures : public ::google::protobuf::Message {
  public:
@@ -1416,6 +1503,10 @@ class SubscribeCancel : public ::google::protobuf::Message {
 
 
 // ===================================================================
+
+// Ping
+
+// -------------------------------------------------------------------
 
 // GetFeatures
 
