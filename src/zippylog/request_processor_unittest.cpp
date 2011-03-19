@@ -386,6 +386,72 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
     output.clear();
 }
 
+TEST_F(RequestProcessorTest, GetStreamSetInfo)
+{
+    // missing path argument should result in empty field error
+    {
+        protocol::request::GetStreamSetInfo req;
+        req.set_version(1);
+        Envelope e;
+        req.add_to_envelope(e);
+
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+    }
+
+    // path does not contain bucket nor stream set
+    {
+        protocol::request::GetStreamSetInfo req;
+        req.set_version(1);
+        req.set_path("/");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+    }
+
+    // path contains bucket but not stream set
+    {
+        protocol::request::GetStreamSetInfo req;
+        req.set_version(1);
+        req.set_path("/bucketA");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+    }
+
+    // this should work
+    {
+        protocol::request::GetStreamSetInfo req;
+        req.set_version(1);
+        req.set_path("/bucketA/set0");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_EQ(1, output.size());
+        Envelope response = output[0];
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamSetInfo);
+        protocol::StreamSetInfo *m = (protocol::StreamSetInfo *)response.GetMessage(0);
+        ASSERT_TRUE(m != NULL);
+        ASSERT_TRUE(m->has_path());
+        EXPECT_EQ(0, m->stream_size());
+        EXPECT_STREQ("set0", m->path().c_str());
+    }
+
+    // path to set that does not exist
+    {
+        protocol::request::GetStreamSetInfo req;
+        req.set_version(1);
+        req.set_path("/bucketA/DOESNOTEXIST");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+    }
+}
+
 TEST_F(RequestProcessorTest, GetStream)
 {
     this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
