@@ -189,11 +189,10 @@ int RequestProcessor::Pump(long wait)
 
 void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &input, vector<Envelope> &output)
 {
-    // we need to declare all our variables first b/c we use goto
-
     // always clear the output list so we don't accidentally send leftovers
     output.clear();
 
+    // we need to declare all our variables first b/c we use goto
     char msg_version = 0;
     bool have_request_envelope = false;
     Envelope request_envelope;
@@ -353,6 +352,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
     request_type = request_envelope.envelope.message_type(0);
     switch (request_type) {
+        case protocol::request::GetFeatures::zippylog_enumeration:
+            result = this->ProcessFeatures(request_envelope, output);
+            break;
+
         case protocol::request::GetStoreInfo::zippylog_enumeration:
             result = this->ProcessStoreInfo(request_envelope, output);
             break;
@@ -419,6 +422,20 @@ SEND_RESPONSE:
     }
 
     return result;
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &e, vector<Envelope> &output)
+{
+    protocol::response::FeatureSpecification response;
+
+    // we currently support version 1 only
+    response.add_supported_message_version(1);
+
+    Envelope out;
+    response.add_to_envelope(out);
+    output.push_back(out);
+
+    return AUTHORITATIVE;
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e, vector<Envelope> &output)

@@ -35,6 +35,8 @@ public:
     { }
 
     /// The path to the store we should operate against
+    ///
+    /// A new store instance is created within the processor instance.
     ::std::string store_path;
 
     /// 0MQ context to use
@@ -65,15 +67,23 @@ public:
 ///
 /// This class is designed to be an abstract base class. It implements core
 /// functionality for parsing and verifying protocol requests. However, the
-/// actual implementation is abstracted away in the various Handle* functions.
-/// Derived classes should implement these functions.
+/// behavior controlling what happens when specific requests are received is
+/// abstracted away in the various Handle* functions. Derived classes should
+/// implement these functions.
+///
+/// In other words, this class can be thought of as the library that handles
+/// zippylog protocol processing. The library can be utilized to provide
+/// server capabilities.
+///
+/// If you are implementing core protocol parsing somewhere not in this class,
+/// you are likely doing something wrong.
 ///
 /// Currently, we make the assumption that protocol requests arrive via
 /// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
 /// the various Process* functions don't expose 0MQ details, so it should be
 /// possible to call into this class without serializing envelopes as 0MQ
 /// messages. That being said, the constructor still requires the 0MQ
-/// parameters (for now, at least)
+/// parameters (for now, at least).
 class ZIPPYLOG_EXPORT RequestProcessor {
     public:
         // return code from the various request processors
@@ -169,13 +179,16 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// number requested.
         virtual int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
 
-        /// Process a StoreInfo request and populate the passed envelope with the response
+        /// Process a GetFeatures request
+        ResponseStatus ProcessFeatures(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a GetStoreInfo request and populate the passed envelope with the response
         ///
         /// This function is typically called only by ProcessRequest()
         ResponseStatus ProcessStoreInfo(Envelope &request, ::std::vector<Envelope> &output);
 
         ResponseStatus ProcessBucketInfo(Envelope &request, ::std::vector<Envelope> &output);
-        ResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &outpute);
+        ResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &output);
         ResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetStream request

@@ -85,6 +85,12 @@ protected:
     }
 };
 
+/// Request processor tester
+///
+/// This verifies that the core request processor properly handles all
+/// zippylog protocol request types. It only verifies incoming protocol
+/// message and the validation component associated with it are working
+/// properly.
 class RequestProcessorTest : public ::testing::Test {
 protected:
     TestRequestProcessor *p;
@@ -286,6 +292,26 @@ TEST_F(RequestProcessorTest, SupportedVersions)
         msgs.clear();
     }
 
+}
+
+TEST_F(RequestProcessorTest, GetFeatures)
+{
+    protocol::request::GetFeatures m;
+    Envelope e;
+    m.add_to_envelope(e);
+
+    vector<Envelope> output;
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+
+    EXPECT_EQ(1, output.size());
+    Envelope response = output[0];
+    EXPECT_EQ(1, response.MessageCount());
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::FeatureSpecification);
+    protocol::response::FeatureSpecification *features = (protocol::response::FeatureSpecification *)response.GetMessage(0);
+    ASSERT_TRUE(features != NULL);
+    EXPECT_EQ(1, features->supported_message_version_size());
+    EXPECT_EQ(1, features->supported_message_version(0));
 }
 
 TEST_F(RequestProcessorTest, GetStoreInfo)
