@@ -543,60 +543,63 @@ TEST_F(RequestProcessorTest, GetStream)
 
     ASSERT_TRUE(this->store->PathExists(path));
 
-    vector<Envelope> output;
-
     // missing path
-    protocol::request::GetStream m1 = protocol::request::GetStream();
-    m1.set_version(1);
-    Envelope e1;
-    m1.add_to_envelope(e1);
-    this->ExpectErrorResponse(this->p->ProcessRequest(e1, output), protocol::response::EMPTY_FIELD, output);
-    output.clear();
+    {
+        protocol::request::GetStream m = protocol::request::GetStream();
+        m.set_version(1);
+        Envelope e;
+        m.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+    }
 
     // missing start offset
-    protocol::request::GetStream m2 = protocol::request::GetStream();
-    m2.set_version(1);
-    m2.set_path(path);
-    Envelope e2;
-    m2.add_to_envelope(e2);
-    this->ExpectErrorResponse(this->p->ProcessRequest(e2, output), protocol::response::EMPTY_FIELD, output);
-    output.clear();
+    {
+        protocol::request::GetStream m = protocol::request::GetStream();
+        m.set_version(1);
+        m.set_path(path);
+        Envelope e;
+        m.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+    }
 
     // simple fetch of 1 envelope
-    protocol::request::GetStream m3 = protocol::request::GetStream();
-    m3.set_version(1);
-    m3.set_path(path);
-    m3.set_start_offset(0);
-    m3.set_max_response_envelopes(1);
-    Envelope e3;
-    m3.add_to_envelope(e3);
+    {
+        protocol::request::GetStream m = protocol::request::GetStream();
+        m.set_version(1);
+        m.set_path(path);
+        m.set_start_offset(0);
+        m.set_max_response_envelopes(1);
+        Envelope e;
+        m.add_to_envelope(e);
+        vector<Envelope> output;
 
-    ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
+        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
 
-    // response should have stream segment start + content envelope + stream segment end
-    ASSERT_EQ(3, output.size());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
-    EXPECT_ENVELOPE_MESSAGE(2, protocol::response::StreamSegmentEnd);
+        // response should have stream segment start + content envelope + stream segment end
+        ASSERT_EQ(3, output.size());
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
+        EXPECT_ENVELOPE_MESSAGE(2, protocol::response::StreamSegmentEnd);
 
-    ASSERT_EQ(1, output[0].MessageCount());
-    ASSERT_EQ(1, output[0].MessageCount());
-    protocol::response::StreamSegmentStart *s1 = (protocol::response::StreamSegmentStart *)output[0].GetMessage(0);
-    ASSERT_TRUE(s1 != NULL);
-    ASSERT_TRUE(s1->has_path());
-    ASSERT_TRUE(s1->has_offset());
-    ASSERT_TRUE(s1->path() == path);
-    ASSERT_EQ(0, s1->offset());
+        ASSERT_EQ(1, output[0].MessageCount());
+        ASSERT_EQ(1, output[0].MessageCount());
+        protocol::response::StreamSegmentStart *s1 = (protocol::response::StreamSegmentStart *)output[0].GetMessage(0);
+        ASSERT_TRUE(s1 != NULL);
+        ASSERT_TRUE(s1->has_path());
+        ASSERT_TRUE(s1->has_offset());
+        ASSERT_TRUE(s1->path() == path);
+        ASSERT_EQ(0, s1->offset());
 
-    protocol::response::StreamSegmentEnd *end1 = (protocol::response::StreamSegmentEnd *)output[2].GetMessage(0);
-    ASSERT_TRUE(end1 != NULL);
-    ASSERT_TRUE(end1->has_offset());
-    ASSERT_TRUE(end1->has_bytes_sent());
-    ASSERT_TRUE(end1->has_envelopes_sent());
-    ASSERT_EQ(1, end1->envelopes_sent());
-    ASSERT_EQ(44, end1->offset());
-    ASSERT_EQ(end1->offset() - 1, end1->bytes_sent());
-
-    output.clear();
+        protocol::response::StreamSegmentEnd *end1 = (protocol::response::StreamSegmentEnd *)output[2].GetMessage(0);
+        ASSERT_TRUE(end1 != NULL);
+        ASSERT_TRUE(end1->has_offset());
+        ASSERT_TRUE(end1->has_bytes_sent());
+        ASSERT_TRUE(end1->has_envelopes_sent());
+        ASSERT_EQ(1, end1->envelopes_sent());
+        ASSERT_EQ(44, end1->offset());
+        ASSERT_EQ(end1->offset() - 1, end1->bytes_sent());
+    }
 }
 
 TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
