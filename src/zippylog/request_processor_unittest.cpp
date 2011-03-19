@@ -638,6 +638,44 @@ TEST_F(RequestProcessorTest, GetStream)
         EXPECT_EQ(stream->CurrentEnvelopeOffset(), end->offset());
         EXPECT_EQ(end->offset() - 1, end->bytes_sent());
     }
+
+    // fetch with valid offset
+    {
+        protocol::request::GetStream m;
+        m.set_version(1);
+        m.set_path(path);
+
+        InputStream * stream = this->store->GetInputStream(path);
+        Envelope expected;
+        uint32 bytes_read;
+        stream->ReadEnvelope(expected, bytes_read);
+        stream->ReadEnvelope(expected, bytes_read);
+
+        m.set_start_offset(stream->CurrentEnvelopeOffset());
+        m.set_max_response_envelopes(2);
+        Envelope req;
+        m.add_to_envelope(req);
+        vector<Envelope> output;
+
+        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(req, output));
+        ASSERT_EQ(4, output.size());
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
+        EXPECT_ENVELOPE_MESSAGE(3, protocol::response::StreamSegmentEnd);
+    }
+
+    // fetch with invalid offset
+    {
+        protocol::request::GetStream m;
+        m.set_version(1);
+        m.set_path(path);
+        m.set_start_offset(2);
+        m.set_max_response_envelopes(2);
+        Envelope req;
+        m.add_to_envelope(req);
+        vector<Envelope> output;
+
+        this->ExpectErrorResponse(this->p->ProcessRequest(req, output), protocol::response::INVALID_STREAM_OFFSET, output);
+    }
 }
 
 TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)

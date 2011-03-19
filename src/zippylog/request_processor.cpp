@@ -661,8 +661,9 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         zippylog::Envelope m = zippylog::Envelope();
 
         uint32 envelope_size = stream->NextEnvelopeSize();
+        ::zippylog::Envelope env;
         // could not find envelope in stream at offset
-        if (!envelope_size) {
+        if (!envelope_size || !stream->ReadEnvelope(env, envelope_size)) {
             ::zippylog::request_processor::GetInvalidOffset log;
             LOG_MESSAGE(log, this->logger_sock);
 
@@ -676,40 +677,48 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         }
 
         // we must have an envelope, so start the send sequence
+        {
+            Envelope start_envelope;
+            protocol::response::StreamSegmentStart segment_start;
+            segment_start.set_path(get->path());
+            segment_start.set_offset(get->start_offset());
+            segment_start.add_to_envelope(start_envelope);
 
-        protocol::response::StreamSegmentStart segment_start;
-        segment_start.set_path(get->path());
-        segment_start.set_offset(get->start_offset());
-        ::zippylog::Envelope env;
-        segment_start.add_to_envelope(&env);
-
-        // copy request tags to response for client association
-        if (request.envelope.tag_size() >= 0) {
-            for (int i = 0; i < request.envelope.tag_size(); i++) {
-                env.envelope.add_tag(request.envelope.tag(i));
+            // copy request tags to response for client association
+            if (request.envelope.tag_size() >= 0) {
+                for (int i = 0; i < request.envelope.tag_size(); i++) {
+                    start_envelope.envelope.add_tag(request.envelope.tag(i));
+                }
             }
+
+            output.push_back(start_envelope);
         }
 
         output.push_back(env);
 
-        uint32 bytes_read = 0;
-        uint32 envelopes_read = 0;
+        uint32 bytes_read = envelope_size;
+        uint32 envelopes_read = 1;
+        envelopes_left--;
 
-        while (true) {
-            // TODO we should be resilient and handle stream errors somehow
-            if (!stream->ReadEnvelope(env, envelope_size)) break;
-
-            output.push_back(env);
-
-            bytes_read += envelope_size;
-            envelopes_read++;
-
-            if (envelope_size > bytes_left) break;
-            if (envelopes_left-- == 1) break;
+        if (bytes_read < bytes_left && envelopes_left) {
             bytes_left -= envelope_size;
 
-            envelope_size = stream->NextEnvelopeSize();
-            if (!envelope_size) break;
+            while (true) {
+                envelope_size = stream->NextEnvelopeSize();
+                if (!envelope_size) break;
+
+                // TODO we should be resilient and handle stream errors somehow
+                if (!stream->ReadEnvelope(env, envelope_size)) break;
+
+                output.push_back(env);
+
+                bytes_read += envelope_size;
+                envelopes_read++;
+
+                if (envelope_size > bytes_left) break;
+                if (envelopes_left-- == 1) break;
+                bytes_left -= envelope_size;
+            }
         }
 
         protocol::response::StreamSegmentEnd segment_end;
