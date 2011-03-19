@@ -16,6 +16,7 @@
 #include <zippylog/envelope.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/request_processor.pb.h>
+#include <zippylog/device/server.hpp>
 
 extern "C" {
 #include <lua.h>
@@ -36,6 +37,7 @@ using ::std::ostringstream;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::Envelope;
+using ::zippylog::device::ServerStartParams;
 
 #define TIMER_START(iterations) { \
     int TIMER_ITERATIONS = iterations; \
@@ -256,6 +258,39 @@ void run_envelope_benches(ZippylogbenchParams &params)
     TIMER_END("zippylog.envelope.create_and_add_message");
 }
 
+void run_server_benches(ZippylogbenchParams &params)
+{
+    ::zmq::context_t ctx(3);
+
+    ServerStartParams start_params;
+    start_params.ctx = &ctx;
+    start_params.store_path = "simpledirectory://test/stores/00-simple";
+    start_params.listen_endpoints.push_back("inproc://server00");
+
+    ::zippylog::device::Server server(start_params);
+    server.RunAsync();
+
+    {
+        ::zmq::socket_t cs(ctx, ZMQ_REQ);
+        cs.connect("inproc://server00");
+
+        ::zippylog::protocol::request::Ping ping;
+        Envelope e;
+        ping.add_to_envelope(e);
+
+        TIMER_START(100000);
+        ::zmq::message_t msg;
+        e.ToProtocolZmqMessage(msg);
+        cs.send(msg, NULL);
+        ::zmq::message_t response;
+        cs.recv(&response, NULL);
+        TIMER_END("zippylog.server.ping_request_reply");
+    }
+
+    server.Shutdown();
+
+}
+
 void run_benchmarks(ZippylogbenchParams &params)
 {
     if (params.do_lua_function_calls || params.do_all) {
@@ -264,6 +299,7 @@ void run_benchmarks(ZippylogbenchParams &params)
 
     run_zmq_benches(params);
     run_envelope_benches(params);
+    run_server_benches(params);
 }
 
 int main(int argc, const char * const argv[])
