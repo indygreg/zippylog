@@ -98,13 +98,13 @@ TEST_F(ClientTest, StartParamValidation)
 TEST_F(ClientTest, SynchronousTimeout)
 {
     string endpoint;
-    Server *s = this->GetServer("simpledirectory://test/stores/00-simple", endpoint);
+    Server *s = this->GetServer("simpledirectory://test/stores/02-multiple", endpoint);
     Client c(this->GetContext(), endpoint);
 
     protocol::StoreInfo si;
     // it is not reasonable to expect the server to respond in 1 microsecond
     // although, it could be possible
-    ASSERT_FALSE(c.StoreInfo(si, 1));
+    EXPECT_FALSE(c.StoreInfo(si, 1));
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)
