@@ -128,6 +128,25 @@ void run_lua_function_calls(ZippylogbenchParams &params)
     TIMER_END("lua.pcall_empty_function");
 }
 
+void zmq_socket_send_recv(char *address, int sender_type, int receiver_type, int message_size, int iterations, char *name)
+{
+    ::zmq::context_t ctx(1);
+    ::zmq::socket_t sender(ctx, sender_type);
+    ::zmq::socket_t receiver(ctx, receiver_type);
+
+    sender.bind(address);
+    receiver.connect(address);
+
+    TIMER_START(iterations);
+    ::zmq::message_t msg(message_size);
+    ::zmq::message_t received;
+
+    sender.send(msg, NULL);
+    receiver.recv(&received, NULL);
+    TIMER_END(name);
+}
+
+
 void run_zmq_benches(ZippylogbenchParams &params)
 {
     TIMER_START(1000000);
@@ -154,6 +173,13 @@ void run_zmq_benches(ZippylogbenchParams &params)
     ::zmq::message_t *msg = new ::zmq::message_t(100000);
     delete msg;
     TIMER_END("zmq.100000_byte_message_allocation");
+
+    zmq_socket_send_recv("inproc://00", ZMQ_PUSH, ZMQ_PULL, 0, 1000000, "zmq.socket.inproc.pushpull.empty");
+    zmq_socket_send_recv("inproc://01", ZMQ_PUSH, ZMQ_PULL, 100, 1000000, "zmq.socket.inproc.pushpull.100_byte_message");
+    zmq_socket_send_recv("inproc://02", ZMQ_PUSH, ZMQ_PULL, 1000, 1000000, "zmq.socket.inproc.pushpull.1000_byte_message");
+    zmq_socket_send_recv("inproc://03", ZMQ_PUSH, ZMQ_PULL, 10000, 1000000, "zmq.socket.inproc.pushpull.10000_byte_message");
+    zmq_socket_send_recv("inproc://04", ZMQ_PUSH, ZMQ_PULL, 100000, 100000, "zmq.socket.inproc.pushpull.100000_byte_message");
+    zmq_socket_send_recv("inproc://05", ZMQ_PUSH, ZMQ_PULL, 1000000, 100000, "zmq.socket.inproc.pushpull.1000000_byte_message");
 }
 
 void run_envelope_benches(ZippylogbenchParams &params)
