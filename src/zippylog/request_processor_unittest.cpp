@@ -452,6 +452,89 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
     }
 }
 
+TEST_F(RequestProcessorTest, GetStreamInfo)
+{
+    this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
+
+    // missing path argument should result in empty field error
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        Envelope e;
+        req.add_to_envelope(e);
+
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+    }
+
+    // path does not contain bucket nor stream set nor stream
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        req.set_path("/");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+    }
+
+    // path contains bucket but not stream set nor stream
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        req.set_path("/A");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+    }
+
+    // path contains bucket and stream set but not stream
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        req.set_path("/A/B");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+    }
+
+    // this should work
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        req.set_path("/A/B/2010-11-26-07");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_EQ(1, output.size());
+        Envelope response = output[0];
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamInfo);
+        protocol::StreamInfo *m = (protocol::StreamInfo *)response.GetMessage(0);
+        ASSERT_TRUE(m != NULL);
+        ASSERT_TRUE(m->has_path());
+        EXPECT_STREQ("2010-11-26-07", m->path().c_str());
+        EXPECT_TRUE(m->has_length());
+
+        protocol::StreamInfo expected;
+        EXPECT_TRUE(this->store->StreamInfo("/A/B/2010-11-26-07", expected));
+        EXPECT_EQ(expected.length(), m->length());
+    }
+
+    // path to stream that does not exist
+    {
+        protocol::request::GetStreamInfo req;
+        req.set_version(1);
+        req.set_path("/A/B/2011-01-01-00");
+        Envelope e;
+        req.add_to_envelope(e);
+        vector<Envelope> output;
+        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+    }
+}
+
 TEST_F(RequestProcessorTest, GetStream)
 {
     this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
