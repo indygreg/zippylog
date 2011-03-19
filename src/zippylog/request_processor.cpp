@@ -352,6 +352,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
     request_type = request_envelope.envelope.message_type(0);
     switch (request_type) {
+        case protocol::request::Ping::zippylog_enumeration:
+            result = this->ProcessPing(request_envelope, output);
+            break;
+
         case protocol::request::GetFeatures::zippylog_enumeration:
             result = this->ProcessFeatures(request_envelope, output);
             break;
@@ -422,6 +426,16 @@ SEND_RESPONSE:
     }
 
     return result;
+}
+
+RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &e, vector<Envelope> &output)
+{
+    protocol::response::Pong pong;
+    Envelope out;
+    pong.add_to_envelope(out);
+    output.push_back(out);
+
+    return AUTHORITATIVE;
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &e, vector<Envelope> &output)

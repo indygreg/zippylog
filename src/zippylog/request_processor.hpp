@@ -179,6 +179,9 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// number requested.
         virtual int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
 
+        /// Process a ping request
+        ResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
+
         /// Process a GetFeatures request
         ResponseStatus ProcessFeatures(Envelope &request, ::std::vector<Envelope> &output);
 

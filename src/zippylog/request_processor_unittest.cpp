@@ -294,6 +294,21 @@ TEST_F(RequestProcessorTest, SupportedVersions)
 
 }
 
+TEST_F(RequestProcessorTest, Ping)
+{
+    protocol::request::Ping ping;
+    Envelope e;
+    ping.add_to_envelope(e);
+
+    vector<Envelope> output;
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+    ASSERT_EQ(1, output.size());
+    Envelope response = output[0];
+    EXPECT_EQ(1, response.MessageCount());
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::Pong);
+}
+
 TEST_F(RequestProcessorTest, GetFeatures)
 {
     protocol::request::GetFeatures m;
