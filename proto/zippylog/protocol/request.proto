@@ -6,6 +6,9 @@
 
 package zippylog.protocol.request;
 
+// just pings the server to see if it is responding
+message Ping {}
+
 // requests the server to return a message that describes features (versions,
 // operations, capabilities, etc) it supports
 message GetFeatures {}

@@ -2,6 +2,9 @@
 
 package zippylog.protocol.response;
 
+// response to a ping
+message Pong {}
+
 // describes features a server supports
 message FeatureSpecification {
     // list of message versions the server can read
