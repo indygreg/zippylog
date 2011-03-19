@@ -600,6 +600,44 @@ TEST_F(RequestProcessorTest, GetStream)
         ASSERT_EQ(44, end1->offset());
         ASSERT_EQ(end1->offset() - 1, end1->bytes_sent());
     }
+
+    // fetch of 10 envelopes
+    {
+        protocol::request::GetStream m;
+        m.set_version(1);
+        m.set_path(path);
+        m.set_start_offset(0);
+        m.set_max_response_envelopes(10);
+        Envelope e;
+        m.add_to_envelope(e);
+        vector<Envelope> output;
+
+        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_EQ(12, output.size());
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
+        EXPECT_ENVELOPE_MESSAGE(11, protocol::response::StreamSegmentEnd);
+
+        // we aren't testing that the store reads properly - we have other
+        // tests for that
+        InputStream * stream = this->store->GetInputStream(path);
+        for (int i = 0; i < 10; i++) {
+            Envelope expected;
+            uint32 bytes_read;
+            ASSERT_TRUE(stream->ReadEnvelope(expected, bytes_read));
+
+            EXPECT_EQ(expected.MessageCount(), output[1+i].MessageCount());
+            EXPECT_STREQ(expected.ToString().c_str(), output[i+1].ToString().c_str());
+        }
+
+        protocol::response::StreamSegmentEnd *end = (protocol::response::StreamSegmentEnd *)output[11].GetMessage(0);
+        ASSERT_TRUE(end != NULL);
+        ASSERT_TRUE(end->has_offset());
+        ASSERT_TRUE(end->has_bytes_sent());
+        ASSERT_TRUE(end->has_envelopes_sent());
+        EXPECT_EQ(10, end->envelopes_sent());
+        EXPECT_EQ(stream->CurrentEnvelopeOffset(), end->offset());
+        EXPECT_EQ(end->offset() - 1, end->bytes_sent());
+    }
 }
 
 TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
