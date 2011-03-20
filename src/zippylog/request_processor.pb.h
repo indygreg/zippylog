@@ -131,7 +131,7 @@ class Create : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 80;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 1;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -229,7 +229,7 @@ class Destroy : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 81;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 2;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -327,7 +327,7 @@ class RunStart : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 82;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 3;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -425,7 +425,7 @@ class RunStop : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 83;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 4;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -523,7 +523,7 @@ class FailReceiveMessage : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 84;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 5;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -621,7 +621,7 @@ class ReceiveEmptyMessage : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 85;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 6;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -726,7 +726,7 @@ class UnknownMessageVersion : public ::google::protobuf::Message {
   inline void set_version(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 86;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 7;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -832,7 +832,7 @@ class UnknownRequestType : public ::google::protobuf::Message {
   inline void set_enumeration(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 87;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 8;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -941,7 +941,7 @@ class EnvelopeParseFailure : public ::google::protobuf::Message {
   inline ::std::string* mutable_data();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 88;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 9;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1041,7 +1041,7 @@ class EmptyEnvelope : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 89;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 10;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1139,7 +1139,7 @@ class InvalidMessageEnumeration : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 90;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 11;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1237,7 +1237,7 @@ class EnvelopeEmbeddedMessageParseFailure : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 117;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 12;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1335,7 +1335,7 @@ class BeginProcessStoreInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 91;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 13;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1433,7 +1433,7 @@ class EndProcessStoreInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 92;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 14;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1531,7 +1531,7 @@ class ReceiveInvalidGet : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 93;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 15;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1629,7 +1629,7 @@ class GetInvalidStream : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 94;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 16;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1727,7 +1727,7 @@ class GetInvalidOffset : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 95;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 17;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1825,7 +1825,7 @@ class BeginProcessGetStream : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 110;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 18;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1923,7 +1923,7 @@ class EndProcessGetStream : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 111;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 19;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2031,7 +2031,7 @@ class SendErrorResponse : public ::google::protobuf::Message {
   inline ::std::string* mutable_message();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 98;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 20;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2141,7 +2141,7 @@ class ForwardSubscribeKeepalive : public ::google::protobuf::Message {
   inline ::std::string* mutable_subscription();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 99;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 21;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2251,7 +2251,7 @@ class BeginProcessBucketInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 103;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 22;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2361,7 +2361,7 @@ class EndProcessBucketInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 104;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 23;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2471,7 +2471,7 @@ class BeginProcessStreamSetInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 105;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 24;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2581,7 +2581,7 @@ class EndProcessStreamSetInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 106;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 25;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2691,7 +2691,7 @@ class BeginProcessStreamInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 107;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 26;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2801,7 +2801,7 @@ class EndProcessStreamInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 108;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 27;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2901,7 +2901,7 @@ class BeginProcessWriteEnvelope : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 114;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 28;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -2999,7 +2999,7 @@ class EndProcessWriteEnvelope : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 115;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 29;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);

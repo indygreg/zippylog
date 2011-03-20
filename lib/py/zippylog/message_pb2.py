@@ -169,7 +169,7 @@ class Envelope(message.Message):
   DESCRIPTOR = _ENVELOPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 5
+  ZIPPYLOG_ENUMERATION = 30
   # @@protoc_insertion_point(class_scope:zippylog.message.Envelope)
 
 class ActorInfo(message.Message):
@@ -177,7 +177,7 @@ class ActorInfo(message.Message):
   DESCRIPTOR = _ACTORINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 6
+  ZIPPYLOG_ENUMERATION = 31
   # @@protoc_insertion_point(class_scope:zippylog.message.ActorInfo)
 
 # @@protoc_insertion_point(module_scope)

@@ -120,7 +120,7 @@ class StreamInfo : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 32;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -231,7 +231,7 @@ class StreamSetInfo : public ::google::protobuf::Message {
       mutable_stream();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 2;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 33;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -342,7 +342,7 @@ class BucketInfo : public ::google::protobuf::Message {
       mutable_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 3;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 34;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -443,7 +443,7 @@ class StoreInfo : public ::google::protobuf::Message {
       mutable_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 4;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 35;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -567,7 +567,7 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 15;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 36;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -697,7 +697,7 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 16;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 37;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -827,7 +827,7 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 17;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 38;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -930,7 +930,7 @@ class StoreChangeBucketAdded : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 18;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 39;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1028,7 +1028,7 @@ class StoreChangeBucketDeleted : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 19;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 40;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1136,7 +1136,7 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   inline ::std::string* mutable_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 20;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 41;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -1246,7 +1246,7 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   inline ::std::string* mutable_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 21;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 42;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);

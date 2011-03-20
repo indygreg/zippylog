@@ -911,7 +911,7 @@ class Create(message.Message):
   DESCRIPTOR = _CREATE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 80
+  ZIPPYLOG_ENUMERATION = 1
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.Create)
 
 class Destroy(message.Message):
@@ -919,7 +919,7 @@ class Destroy(message.Message):
   DESCRIPTOR = _DESTROY
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 81
+  ZIPPYLOG_ENUMERATION = 2
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.Destroy)
 
 class RunStart(message.Message):
@@ -927,7 +927,7 @@ class RunStart(message.Message):
   DESCRIPTOR = _RUNSTART
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 82
+  ZIPPYLOG_ENUMERATION = 3
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.RunStart)
 
 class RunStop(message.Message):
@@ -935,7 +935,7 @@ class RunStop(message.Message):
   DESCRIPTOR = _RUNSTOP
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 83
+  ZIPPYLOG_ENUMERATION = 4
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.RunStop)
 
 class FailReceiveMessage(message.Message):
@@ -943,7 +943,7 @@ class FailReceiveMessage(message.Message):
   DESCRIPTOR = _FAILRECEIVEMESSAGE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 84
+  ZIPPYLOG_ENUMERATION = 5
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.FailReceiveMessage)
 
 class ReceiveEmptyMessage(message.Message):
@@ -951,7 +951,7 @@ class ReceiveEmptyMessage(message.Message):
   DESCRIPTOR = _RECEIVEEMPTYMESSAGE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 85
+  ZIPPYLOG_ENUMERATION = 6
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.ReceiveEmptyMessage)
 
 class UnknownMessageVersion(message.Message):
@@ -959,7 +959,7 @@ class UnknownMessageVersion(message.Message):
   DESCRIPTOR = _UNKNOWNMESSAGEVERSION
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 86
+  ZIPPYLOG_ENUMERATION = 7
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.UnknownMessageVersion)
 
 class UnknownRequestType(message.Message):
@@ -967,7 +967,7 @@ class UnknownRequestType(message.Message):
   DESCRIPTOR = _UNKNOWNREQUESTTYPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 87
+  ZIPPYLOG_ENUMERATION = 8
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.UnknownRequestType)
 
 class EnvelopeParseFailure(message.Message):
@@ -975,7 +975,7 @@ class EnvelopeParseFailure(message.Message):
   DESCRIPTOR = _ENVELOPEPARSEFAILURE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 88
+  ZIPPYLOG_ENUMERATION = 9
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EnvelopeParseFailure)
 
 class EmptyEnvelope(message.Message):
@@ -983,7 +983,7 @@ class EmptyEnvelope(message.Message):
   DESCRIPTOR = _EMPTYENVELOPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 89
+  ZIPPYLOG_ENUMERATION = 10
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EmptyEnvelope)
 
 class InvalidMessageEnumeration(message.Message):
@@ -991,7 +991,7 @@ class InvalidMessageEnumeration(message.Message):
   DESCRIPTOR = _INVALIDMESSAGEENUMERATION
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 90
+  ZIPPYLOG_ENUMERATION = 11
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.InvalidMessageEnumeration)
 
 class EnvelopeEmbeddedMessageParseFailure(message.Message):
@@ -999,7 +999,7 @@ class EnvelopeEmbeddedMessageParseFailure(message.Message):
   DESCRIPTOR = _ENVELOPEEMBEDDEDMESSAGEPARSEFAILURE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 117
+  ZIPPYLOG_ENUMERATION = 12
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EnvelopeEmbeddedMessageParseFailure)
 
 class BeginProcessStoreInfo(message.Message):
@@ -1007,7 +1007,7 @@ class BeginProcessStoreInfo(message.Message):
   DESCRIPTOR = _BEGINPROCESSSTOREINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 91
+  ZIPPYLOG_ENUMERATION = 13
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStoreInfo)
 
 class EndProcessStoreInfo(message.Message):
@@ -1015,7 +1015,7 @@ class EndProcessStoreInfo(message.Message):
   DESCRIPTOR = _ENDPROCESSSTOREINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 92
+  ZIPPYLOG_ENUMERATION = 14
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStoreInfo)
 
 class ReceiveInvalidGet(message.Message):
@@ -1023,7 +1023,7 @@ class ReceiveInvalidGet(message.Message):
   DESCRIPTOR = _RECEIVEINVALIDGET
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 93
+  ZIPPYLOG_ENUMERATION = 15
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.ReceiveInvalidGet)
 
 class GetInvalidStream(message.Message):
@@ -1031,7 +1031,7 @@ class GetInvalidStream(message.Message):
   DESCRIPTOR = _GETINVALIDSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 94
+  ZIPPYLOG_ENUMERATION = 16
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.GetInvalidStream)
 
 class GetInvalidOffset(message.Message):
@@ -1039,7 +1039,7 @@ class GetInvalidOffset(message.Message):
   DESCRIPTOR = _GETINVALIDOFFSET
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 95
+  ZIPPYLOG_ENUMERATION = 17
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.GetInvalidOffset)
 
 class BeginProcessGetStream(message.Message):
@@ -1047,7 +1047,7 @@ class BeginProcessGetStream(message.Message):
   DESCRIPTOR = _BEGINPROCESSGETSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 110
+  ZIPPYLOG_ENUMERATION = 18
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessGetStream)
 
 class EndProcessGetStream(message.Message):
@@ -1055,7 +1055,7 @@ class EndProcessGetStream(message.Message):
   DESCRIPTOR = _ENDPROCESSGETSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 111
+  ZIPPYLOG_ENUMERATION = 19
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessGetStream)
 
 class SendErrorResponse(message.Message):
@@ -1063,7 +1063,7 @@ class SendErrorResponse(message.Message):
   DESCRIPTOR = _SENDERRORRESPONSE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 98
+  ZIPPYLOG_ENUMERATION = 20
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.SendErrorResponse)
 
 class ForwardSubscribeKeepalive(message.Message):
@@ -1071,7 +1071,7 @@ class ForwardSubscribeKeepalive(message.Message):
   DESCRIPTOR = _FORWARDSUBSCRIBEKEEPALIVE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 99
+  ZIPPYLOG_ENUMERATION = 21
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.ForwardSubscribeKeepalive)
 
 class BeginProcessBucketInfo(message.Message):
@@ -1079,7 +1079,7 @@ class BeginProcessBucketInfo(message.Message):
   DESCRIPTOR = _BEGINPROCESSBUCKETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 103
+  ZIPPYLOG_ENUMERATION = 22
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessBucketInfo)
 
 class EndProcessBucketInfo(message.Message):
@@ -1087,7 +1087,7 @@ class EndProcessBucketInfo(message.Message):
   DESCRIPTOR = _ENDPROCESSBUCKETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 104
+  ZIPPYLOG_ENUMERATION = 23
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessBucketInfo)
 
 class BeginProcessStreamSetInfo(message.Message):
@@ -1095,7 +1095,7 @@ class BeginProcessStreamSetInfo(message.Message):
   DESCRIPTOR = _BEGINPROCESSSTREAMSETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 105
+  ZIPPYLOG_ENUMERATION = 24
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamSetInfo)
 
 class EndProcessStreamSetInfo(message.Message):
@@ -1103,7 +1103,7 @@ class EndProcessStreamSetInfo(message.Message):
   DESCRIPTOR = _ENDPROCESSSTREAMSETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 106
+  ZIPPYLOG_ENUMERATION = 25
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamSetInfo)
 
 class BeginProcessStreamInfo(message.Message):
@@ -1111,7 +1111,7 @@ class BeginProcessStreamInfo(message.Message):
   DESCRIPTOR = _BEGINPROCESSSTREAMINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 107
+  ZIPPYLOG_ENUMERATION = 26
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessStreamInfo)
 
 class EndProcessStreamInfo(message.Message):
@@ -1119,7 +1119,7 @@ class EndProcessStreamInfo(message.Message):
   DESCRIPTOR = _ENDPROCESSSTREAMINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 108
+  ZIPPYLOG_ENUMERATION = 27
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessStreamInfo)
 
 class BeginProcessWriteEnvelope(message.Message):
@@ -1127,7 +1127,7 @@ class BeginProcessWriteEnvelope(message.Message):
   DESCRIPTOR = _BEGINPROCESSWRITEENVELOPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 114
+  ZIPPYLOG_ENUMERATION = 28
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.BeginProcessWriteEnvelope)
 
 class EndProcessWriteEnvelope(message.Message):
@@ -1135,36 +1135,36 @@ class EndProcessWriteEnvelope(message.Message):
   DESCRIPTOR = _ENDPROCESSWRITEENVELOPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 115
+  ZIPPYLOG_ENUMERATION = 29
   # @@protoc_insertion_point(class_scope:zippylog.request_processor.EndProcessWriteEnvelope)
 
-register_message(1, 80, 'zippylog.request_processor_pb2', 'Create')
-register_message(1, 81, 'zippylog.request_processor_pb2', 'Destroy')
-register_message(1, 82, 'zippylog.request_processor_pb2', 'RunStart')
-register_message(1, 83, 'zippylog.request_processor_pb2', 'RunStop')
-register_message(1, 84, 'zippylog.request_processor_pb2', 'FailReceiveMessage')
-register_message(1, 85, 'zippylog.request_processor_pb2', 'ReceiveEmptyMessage')
-register_message(1, 86, 'zippylog.request_processor_pb2', 'UnknownMessageVersion')
-register_message(1, 87, 'zippylog.request_processor_pb2', 'UnknownRequestType')
-register_message(1, 88, 'zippylog.request_processor_pb2', 'EnvelopeParseFailure')
-register_message(1, 89, 'zippylog.request_processor_pb2', 'EmptyEnvelope')
-register_message(1, 90, 'zippylog.request_processor_pb2', 'InvalidMessageEnumeration')
-register_message(1, 117, 'zippylog.request_processor_pb2', 'EnvelopeEmbeddedMessageParseFailure')
-register_message(1, 91, 'zippylog.request_processor_pb2', 'BeginProcessStoreInfo')
-register_message(1, 92, 'zippylog.request_processor_pb2', 'EndProcessStoreInfo')
-register_message(1, 93, 'zippylog.request_processor_pb2', 'ReceiveInvalidGet')
-register_message(1, 94, 'zippylog.request_processor_pb2', 'GetInvalidStream')
-register_message(1, 95, 'zippylog.request_processor_pb2', 'GetInvalidOffset')
-register_message(1, 110, 'zippylog.request_processor_pb2', 'BeginProcessGetStream')
-register_message(1, 111, 'zippylog.request_processor_pb2', 'EndProcessGetStream')
-register_message(1, 98, 'zippylog.request_processor_pb2', 'SendErrorResponse')
-register_message(1, 99, 'zippylog.request_processor_pb2', 'ForwardSubscribeKeepalive')
-register_message(1, 103, 'zippylog.request_processor_pb2', 'BeginProcessBucketInfo')
-register_message(1, 104, 'zippylog.request_processor_pb2', 'EndProcessBucketInfo')
-register_message(1, 105, 'zippylog.request_processor_pb2', 'BeginProcessStreamSetInfo')
-register_message(1, 106, 'zippylog.request_processor_pb2', 'EndProcessStreamSetInfo')
-register_message(1, 107, 'zippylog.request_processor_pb2', 'BeginProcessStreamInfo')
-register_message(1, 108, 'zippylog.request_processor_pb2', 'EndProcessStreamInfo')
-register_message(1, 114, 'zippylog.request_processor_pb2', 'BeginProcessWriteEnvelope')
-register_message(1, 115, 'zippylog.request_processor_pb2', 'EndProcessWriteEnvelope')
+register_message(1, 1, 'zippylog.request_processor_pb2', 'Create')
+register_message(1, 2, 'zippylog.request_processor_pb2', 'Destroy')
+register_message(1, 3, 'zippylog.request_processor_pb2', 'RunStart')
+register_message(1, 4, 'zippylog.request_processor_pb2', 'RunStop')
+register_message(1, 5, 'zippylog.request_processor_pb2', 'FailReceiveMessage')
+register_message(1, 6, 'zippylog.request_processor_pb2', 'ReceiveEmptyMessage')
+register_message(1, 7, 'zippylog.request_processor_pb2', 'UnknownMessageVersion')
+register_message(1, 8, 'zippylog.request_processor_pb2', 'UnknownRequestType')
+register_message(1, 9, 'zippylog.request_processor_pb2', 'EnvelopeParseFailure')
+register_message(1, 10, 'zippylog.request_processor_pb2', 'EmptyEnvelope')
+register_message(1, 11, 'zippylog.request_processor_pb2', 'InvalidMessageEnumeration')
+register_message(1, 12, 'zippylog.request_processor_pb2', 'EnvelopeEmbeddedMessageParseFailure')
+register_message(1, 13, 'zippylog.request_processor_pb2', 'BeginProcessStoreInfo')
+register_message(1, 14, 'zippylog.request_processor_pb2', 'EndProcessStoreInfo')
+register_message(1, 15, 'zippylog.request_processor_pb2', 'ReceiveInvalidGet')
+register_message(1, 16, 'zippylog.request_processor_pb2', 'GetInvalidStream')
+register_message(1, 17, 'zippylog.request_processor_pb2', 'GetInvalidOffset')
+register_message(1, 18, 'zippylog.request_processor_pb2', 'BeginProcessGetStream')
+register_message(1, 19, 'zippylog.request_processor_pb2', 'EndProcessGetStream')
+register_message(1, 20, 'zippylog.request_processor_pb2', 'SendErrorResponse')
+register_message(1, 21, 'zippylog.request_processor_pb2', 'ForwardSubscribeKeepalive')
+register_message(1, 22, 'zippylog.request_processor_pb2', 'BeginProcessBucketInfo')
+register_message(1, 23, 'zippylog.request_processor_pb2', 'EndProcessBucketInfo')
+register_message(1, 24, 'zippylog.request_processor_pb2', 'BeginProcessStreamSetInfo')
+register_message(1, 25, 'zippylog.request_processor_pb2', 'EndProcessStreamSetInfo')
+register_message(1, 26, 'zippylog.request_processor_pb2', 'BeginProcessStreamInfo')
+register_message(1, 27, 'zippylog.request_processor_pb2', 'EndProcessStreamInfo')
+register_message(1, 28, 'zippylog.request_processor_pb2', 'BeginProcessWriteEnvelope')
+register_message(1, 29, 'zippylog.request_processor_pb2', 'EndProcessWriteEnvelope')
 # @@protoc_insertion_point(module_scope)

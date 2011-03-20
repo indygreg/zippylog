@@ -379,7 +379,7 @@ class Pong(message.Message):
   DESCRIPTOR = _PONG
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 126
+  ZIPPYLOG_ENUMERATION = 62
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.Pong)
 
 class FeatureSpecification(message.Message):
@@ -387,7 +387,7 @@ class FeatureSpecification(message.Message):
   DESCRIPTOR = _FEATURESPECIFICATION
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 55
+  ZIPPYLOG_ENUMERATION = 63
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.FeatureSpecification)
 
 class StreamSegmentStart(message.Message):
@@ -395,7 +395,7 @@ class StreamSegmentStart(message.Message):
   DESCRIPTOR = _STREAMSEGMENTSTART
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 7
+  ZIPPYLOG_ENUMERATION = 64
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
 
 class StreamSegmentEnd(message.Message):
@@ -403,7 +403,7 @@ class StreamSegmentEnd(message.Message):
   DESCRIPTOR = _STREAMSEGMENTEND
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 8
+  ZIPPYLOG_ENUMERATION = 65
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
 
 class SubscribeAck(message.Message):
@@ -411,7 +411,7 @@ class SubscribeAck(message.Message):
   DESCRIPTOR = _SUBSCRIBEACK
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 24
+  ZIPPYLOG_ENUMERATION = 66
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAck)
 
 class SubscriptionStart(message.Message):
@@ -419,7 +419,7 @@ class SubscriptionStart(message.Message):
   DESCRIPTOR = _SUBSCRIPTIONSTART
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 26
+  ZIPPYLOG_ENUMERATION = 67
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStart)
 
 class WriteAck(message.Message):
@@ -427,7 +427,7 @@ class WriteAck(message.Message):
   DESCRIPTOR = _WRITEACK
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 113
+  ZIPPYLOG_ENUMERATION = 68
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAck)
 
 class Error(message.Message):
@@ -435,15 +435,15 @@ class Error(message.Message):
   DESCRIPTOR = _ERROR
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 9
+  ZIPPYLOG_ENUMERATION = 69
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.Error)
 
-register_message(1, 126, 'zippylog.protocol.response_pb2', 'Pong')
-register_message(1, 55, 'zippylog.protocol.response_pb2', 'FeatureSpecification')
-register_message(1, 7, 'zippylog.protocol.response_pb2', 'StreamSegmentStart')
-register_message(1, 8, 'zippylog.protocol.response_pb2', 'StreamSegmentEnd')
-register_message(1, 24, 'zippylog.protocol.response_pb2', 'SubscribeAck')
-register_message(1, 26, 'zippylog.protocol.response_pb2', 'SubscriptionStart')
-register_message(1, 113, 'zippylog.protocol.response_pb2', 'WriteAck')
-register_message(1, 9, 'zippylog.protocol.response_pb2', 'Error')
+register_message(1, 62, 'zippylog.protocol.response_pb2', 'Pong')
+register_message(1, 63, 'zippylog.protocol.response_pb2', 'FeatureSpecification')
+register_message(1, 64, 'zippylog.protocol.response_pb2', 'StreamSegmentStart')
+register_message(1, 65, 'zippylog.protocol.response_pb2', 'StreamSegmentEnd')
+register_message(1, 66, 'zippylog.protocol.response_pb2', 'SubscribeAck')
+register_message(1, 67, 'zippylog.protocol.response_pb2', 'SubscriptionStart')
+register_message(1, 68, 'zippylog.protocol.response_pb2', 'WriteAck')
+register_message(1, 69, 'zippylog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

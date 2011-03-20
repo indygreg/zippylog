@@ -134,7 +134,7 @@ class BrokerStartup : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_listen_endpoints();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 12;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 43;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -235,7 +235,7 @@ class BrokerShutdown : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 13;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 44;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -323,7 +323,7 @@ class BrokerReceiveClientMessage : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 14;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 45;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -419,7 +419,7 @@ class BrokerFlushOutputStreams : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 53;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 46;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -517,7 +517,7 @@ class StoreWatcherStartup : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 51;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 47;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -615,7 +615,7 @@ class StoreWatcherShutdown : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 52;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 48;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);

@@ -431,7 +431,7 @@ class StreamInfo(message.Message):
   DESCRIPTOR = _STREAMINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 1
+  ZIPPYLOG_ENUMERATION = 32
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StreamInfo)
 
 class StreamSetInfo(message.Message):
@@ -439,7 +439,7 @@ class StreamSetInfo(message.Message):
   DESCRIPTOR = _STREAMSETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 2
+  ZIPPYLOG_ENUMERATION = 33
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StreamSetInfo)
 
 class BucketInfo(message.Message):
@@ -447,7 +447,7 @@ class BucketInfo(message.Message):
   DESCRIPTOR = _BUCKETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 3
+  ZIPPYLOG_ENUMERATION = 34
   # @@protoc_insertion_point(class_scope:zippylog.protocol.BucketInfo)
 
 class StoreInfo(message.Message):
@@ -455,7 +455,7 @@ class StoreInfo(message.Message):
   DESCRIPTOR = _STOREINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 4
+  ZIPPYLOG_ENUMERATION = 35
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreInfo)
 
 class StoreChangeStreamAdded(message.Message):
@@ -463,7 +463,7 @@ class StoreChangeStreamAdded(message.Message):
   DESCRIPTOR = _STORECHANGESTREAMADDED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 15
+  ZIPPYLOG_ENUMERATION = 36
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAdded)
 
 class StoreChangeStreamDeleted(message.Message):
@@ -471,7 +471,7 @@ class StoreChangeStreamDeleted(message.Message):
   DESCRIPTOR = _STORECHANGESTREAMDELETED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 16
+  ZIPPYLOG_ENUMERATION = 37
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamDeleted)
 
 class StoreChangeStreamAppended(message.Message):
@@ -479,7 +479,7 @@ class StoreChangeStreamAppended(message.Message):
   DESCRIPTOR = _STORECHANGESTREAMAPPENDED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 17
+  ZIPPYLOG_ENUMERATION = 38
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAppended)
 
 class StoreChangeBucketAdded(message.Message):
@@ -487,7 +487,7 @@ class StoreChangeBucketAdded(message.Message):
   DESCRIPTOR = _STORECHANGEBUCKETADDED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 18
+  ZIPPYLOG_ENUMERATION = 39
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketAdded)
 
 class StoreChangeBucketDeleted(message.Message):
@@ -495,7 +495,7 @@ class StoreChangeBucketDeleted(message.Message):
   DESCRIPTOR = _STORECHANGEBUCKETDELETED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 19
+  ZIPPYLOG_ENUMERATION = 40
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketDeleted)
 
 class StoreChangeStreamSetAdded(message.Message):
@@ -503,7 +503,7 @@ class StoreChangeStreamSetAdded(message.Message):
   DESCRIPTOR = _STORECHANGESTREAMSETADDED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 20
+  ZIPPYLOG_ENUMERATION = 41
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetAdded)
 
 class StoreChangeStreamSetDeleted(message.Message):
@@ -511,18 +511,18 @@ class StoreChangeStreamSetDeleted(message.Message):
   DESCRIPTOR = _STORECHANGESTREAMSETDELETED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 21
+  ZIPPYLOG_ENUMERATION = 42
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeleted)
 
-register_message(1, 1, 'zippylog.protocol_pb2', 'StreamInfo')
-register_message(1, 2, 'zippylog.protocol_pb2', 'StreamSetInfo')
-register_message(1, 3, 'zippylog.protocol_pb2', 'BucketInfo')
-register_message(1, 4, 'zippylog.protocol_pb2', 'StoreInfo')
-register_message(1, 15, 'zippylog.protocol_pb2', 'StoreChangeStreamAdded')
-register_message(1, 16, 'zippylog.protocol_pb2', 'StoreChangeStreamDeleted')
-register_message(1, 17, 'zippylog.protocol_pb2', 'StoreChangeStreamAppended')
-register_message(1, 18, 'zippylog.protocol_pb2', 'StoreChangeBucketAdded')
-register_message(1, 19, 'zippylog.protocol_pb2', 'StoreChangeBucketDeleted')
-register_message(1, 20, 'zippylog.protocol_pb2', 'StoreChangeStreamSetAdded')
-register_message(1, 21, 'zippylog.protocol_pb2', 'StoreChangeStreamSetDeleted')
+register_message(1, 32, 'zippylog.protocol_pb2', 'StreamInfo')
+register_message(1, 33, 'zippylog.protocol_pb2', 'StreamSetInfo')
+register_message(1, 34, 'zippylog.protocol_pb2', 'BucketInfo')
+register_message(1, 35, 'zippylog.protocol_pb2', 'StoreInfo')
+register_message(1, 36, 'zippylog.protocol_pb2', 'StoreChangeStreamAdded')
+register_message(1, 37, 'zippylog.protocol_pb2', 'StoreChangeStreamDeleted')
+register_message(1, 38, 'zippylog.protocol_pb2', 'StoreChangeStreamAppended')
+register_message(1, 39, 'zippylog.protocol_pb2', 'StoreChangeBucketAdded')
+register_message(1, 40, 'zippylog.protocol_pb2', 'StoreChangeBucketDeleted')
+register_message(1, 41, 'zippylog.protocol_pb2', 'StoreChangeStreamSetAdded')
+register_message(1, 42, 'zippylog.protocol_pb2', 'StoreChangeStreamSetDeleted')
 # @@protoc_insertion_point(module_scope)

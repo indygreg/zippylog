@@ -197,7 +197,7 @@ class BrokerStartup(message.Message):
   DESCRIPTOR = _BROKERSTARTUP
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 12
+  ZIPPYLOG_ENUMERATION = 43
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerStartup)
 
 class BrokerShutdown(message.Message):
@@ -205,7 +205,7 @@ class BrokerShutdown(message.Message):
   DESCRIPTOR = _BROKERSHUTDOWN
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 13
+  ZIPPYLOG_ENUMERATION = 44
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerShutdown)
 
 class BrokerReceiveClientMessage(message.Message):
@@ -213,7 +213,7 @@ class BrokerReceiveClientMessage(message.Message):
   DESCRIPTOR = _BROKERRECEIVECLIENTMESSAGE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 14
+  ZIPPYLOG_ENUMERATION = 45
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
 
 class BrokerFlushOutputStreams(message.Message):
@@ -221,7 +221,7 @@ class BrokerFlushOutputStreams(message.Message):
   DESCRIPTOR = _BROKERFLUSHOUTPUTSTREAMS
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 53
+  ZIPPYLOG_ENUMERATION = 46
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
 
 class StoreWatcherStartup(message.Message):
@@ -229,7 +229,7 @@ class StoreWatcherStartup(message.Message):
   DESCRIPTOR = _STOREWATCHERSTARTUP
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 51
+  ZIPPYLOG_ENUMERATION = 47
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherStartup)
 
 class StoreWatcherShutdown(message.Message):
@@ -237,13 +237,13 @@ class StoreWatcherShutdown(message.Message):
   DESCRIPTOR = _STOREWATCHERSHUTDOWN
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 52
+  ZIPPYLOG_ENUMERATION = 48
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherShutdown)
 
-register_message(1, 12, 'zippylog.zippylogd_pb2', 'BrokerStartup')
-register_message(1, 13, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
-register_message(1, 14, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
-register_message(1, 53, 'zippylog.zippylogd_pb2', 'BrokerFlushOutputStreams')
-register_message(1, 51, 'zippylog.zippylogd_pb2', 'StoreWatcherStartup')
-register_message(1, 52, 'zippylog.zippylogd_pb2', 'StoreWatcherShutdown')
+register_message(1, 43, 'zippylog.zippylogd_pb2', 'BrokerStartup')
+register_message(1, 44, 'zippylog.zippylogd_pb2', 'BrokerShutdown')
+register_message(1, 45, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
+register_message(1, 46, 'zippylog.zippylogd_pb2', 'BrokerFlushOutputStreams')
+register_message(1, 47, 'zippylog.zippylogd_pb2', 'StoreWatcherStartup')
+register_message(1, 48, 'zippylog.zippylogd_pb2', 'StoreWatcherShutdown')
 # @@protoc_insertion_point(module_scope)

@@ -136,7 +136,7 @@ class Pong : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 126;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 62;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -234,7 +234,7 @@ class FeatureSpecification : public ::google::protobuf::Message {
       mutable_supported_message_version();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 55;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 63;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -338,7 +338,7 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline void set_offset(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 7;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 64;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -448,7 +448,7 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   inline void set_envelopes_sent(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 8;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 65;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -554,7 +554,7 @@ class SubscribeAck : public ::google::protobuf::Message {
   inline void set_ttl(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 24;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 66;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -653,7 +653,7 @@ class SubscriptionStart : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 26;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 67;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -748,7 +748,7 @@ class WriteAck : public ::google::protobuf::Message {
   inline void set_envelopes_written(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 113;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 68;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
@@ -852,7 +852,7 @@ class Error : public ::google::protobuf::Message {
   inline ::std::string* mutable_msg();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 9;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 69;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);

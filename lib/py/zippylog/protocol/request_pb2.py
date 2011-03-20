@@ -512,7 +512,7 @@ class Ping(message.Message):
   DESCRIPTOR = _PING
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 125
+  ZIPPYLOG_ENUMERATION = 49
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.Ping)
 
 class GetFeatures(message.Message):
@@ -520,7 +520,7 @@ class GetFeatures(message.Message):
   DESCRIPTOR = _GETFEATURES
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 56
+  ZIPPYLOG_ENUMERATION = 50
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetFeatures)
 
 class GetStoreInfo(message.Message):
@@ -528,7 +528,7 @@ class GetStoreInfo(message.Message):
   DESCRIPTOR = _GETSTOREINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 57
+  ZIPPYLOG_ENUMERATION = 51
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStoreInfo)
 
 class GetBucketInfo(message.Message):
@@ -536,7 +536,7 @@ class GetBucketInfo(message.Message):
   DESCRIPTOR = _GETBUCKETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 100
+  ZIPPYLOG_ENUMERATION = 52
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetBucketInfo)
 
 class GetStreamSetInfo(message.Message):
@@ -544,7 +544,7 @@ class GetStreamSetInfo(message.Message):
   DESCRIPTOR = _GETSTREAMSETINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 101
+  ZIPPYLOG_ENUMERATION = 53
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamSetInfo)
 
 class GetStreamInfo(message.Message):
@@ -552,7 +552,7 @@ class GetStreamInfo(message.Message):
   DESCRIPTOR = _GETSTREAMINFO
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 102
+  ZIPPYLOG_ENUMERATION = 54
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamInfo)
 
 class GetStream(message.Message):
@@ -560,7 +560,7 @@ class GetStream(message.Message):
   DESCRIPTOR = _GETSTREAM
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 109
+  ZIPPYLOG_ENUMERATION = 55
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStream)
 
 class WriteEnvelope(message.Message):
@@ -568,7 +568,7 @@ class WriteEnvelope(message.Message):
   DESCRIPTOR = _WRITEENVELOPE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 58
+  ZIPPYLOG_ENUMERATION = 56
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.WriteEnvelope)
 
 class WriteEnvelopeFromMessages(message.Message):
@@ -576,7 +576,7 @@ class WriteEnvelopeFromMessages(message.Message):
   DESCRIPTOR = _WRITEENVELOPEFROMMESSAGES
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 112
+  ZIPPYLOG_ENUMERATION = 57
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.WriteEnvelopeFromMessages)
 
 class SubscribeStoreChanges(message.Message):
@@ -584,7 +584,7 @@ class SubscribeStoreChanges(message.Message):
   DESCRIPTOR = _SUBSCRIBESTORECHANGES
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 22
+  ZIPPYLOG_ENUMERATION = 58
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeStoreChanges)
 
 class SubscribeEnvelopes(message.Message):
@@ -592,7 +592,7 @@ class SubscribeEnvelopes(message.Message):
   DESCRIPTOR = _SUBSCRIBEENVELOPES
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 54
+  ZIPPYLOG_ENUMERATION = 59
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeEnvelopes)
 
 class SubscribeKeepalive(message.Message):
@@ -600,7 +600,7 @@ class SubscribeKeepalive(message.Message):
   DESCRIPTOR = _SUBSCRIBEKEEPALIVE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 23
+  ZIPPYLOG_ENUMERATION = 60
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeKeepalive)
 
 class SubscribeCancel(message.Message):
@@ -608,20 +608,20 @@ class SubscribeCancel(message.Message):
   DESCRIPTOR = _SUBSCRIBECANCEL
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 25
+  ZIPPYLOG_ENUMERATION = 61
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeCancel)
 
-register_message(1, 125, 'zippylog.protocol.request_pb2', 'Ping')
-register_message(1, 56, 'zippylog.protocol.request_pb2', 'GetFeatures')
-register_message(1, 57, 'zippylog.protocol.request_pb2', 'GetStoreInfo')
-register_message(1, 100, 'zippylog.protocol.request_pb2', 'GetBucketInfo')
-register_message(1, 101, 'zippylog.protocol.request_pb2', 'GetStreamSetInfo')
-register_message(1, 102, 'zippylog.protocol.request_pb2', 'GetStreamInfo')
-register_message(1, 109, 'zippylog.protocol.request_pb2', 'GetStream')
-register_message(1, 58, 'zippylog.protocol.request_pb2', 'WriteEnvelope')
-register_message(1, 112, 'zippylog.protocol.request_pb2', 'WriteEnvelopeFromMessages')
-register_message(1, 22, 'zippylog.protocol.request_pb2', 'SubscribeStoreChanges')
-register_message(1, 54, 'zippylog.protocol.request_pb2', 'SubscribeEnvelopes')
-register_message(1, 23, 'zippylog.protocol.request_pb2', 'SubscribeKeepalive')
-register_message(1, 25, 'zippylog.protocol.request_pb2', 'SubscribeCancel')
+register_message(1, 49, 'zippylog.protocol.request_pb2', 'Ping')
+register_message(1, 50, 'zippylog.protocol.request_pb2', 'GetFeatures')
+register_message(1, 51, 'zippylog.protocol.request_pb2', 'GetStoreInfo')
+register_message(1, 52, 'zippylog.protocol.request_pb2', 'GetBucketInfo')
+register_message(1, 53, 'zippylog.protocol.request_pb2', 'GetStreamSetInfo')
+register_message(1, 54, 'zippylog.protocol.request_pb2', 'GetStreamInfo')
+register_message(1, 55, 'zippylog.protocol.request_pb2', 'GetStream')
+register_message(1, 56, 'zippylog.protocol.request_pb2', 'WriteEnvelope')
+register_message(1, 57, 'zippylog.protocol.request_pb2', 'WriteEnvelopeFromMessages')
+register_message(1, 58, 'zippylog.protocol.request_pb2', 'SubscribeStoreChanges')
+register_message(1, 59, 'zippylog.protocol.request_pb2', 'SubscribeEnvelopes')
+register_message(1, 60, 'zippylog.protocol.request_pb2', 'SubscribeKeepalive')
+register_message(1, 61, 'zippylog.protocol.request_pb2', 'SubscribeCancel')
 # @@protoc_insertion_point(module_scope)
