@@ -282,6 +282,8 @@ void run_server_benches(ZippylogbenchParams &params)
     start_params.ctx = &ctx;
     start_params.store_path = "simpledirectory://test/stores/00-simple";
     start_params.listen_endpoints.push_back("inproc://server00");
+    start_params.log_bucket.clear();
+    start_params.log_stream_set.clear();
 
     ::zippylog::device::Server server(start_params);
     server.RunAsync();
@@ -324,7 +326,7 @@ void run_benchmarks(ZippylogbenchParams &params)
 
     run_zmq_benches(params);
     run_envelope_benches(params);
-    run_server_benches(params);
+    //run_server_benches(params);
 }
 
 int main(int argc, const char * const argv[])
