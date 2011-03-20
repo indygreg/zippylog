@@ -67,11 +67,11 @@ bool Client::Ping(PingCallback *callback, void *data)
     protocol::request::Ping ping;
     ping.add_to_envelope(e);
 
-    OutstandingRequest or;
-    or.cb_ping = callback;
-    or.data = data;
+    OutstandingRequest outr;
+    outr.cb_ping = callback;
+    outr.data = data;
 
-    return this->SendRequest(e, or);
+    return this->SendRequest(e, outr);
 }
 
 bool Client::Ping(int32 timeout)
@@ -80,10 +80,10 @@ bool Client::Ping(int32 timeout)
     protocol::request::Ping ping;
     ping.add_to_envelope(e);
 
-    OutstandingRequest or;
-    or.cb_ping = CallbackPing;
+    OutstandingRequest outr;
+    outr.cb_ping = CallbackPing;
 
-    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+    return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
 void Client::CallbackPing(void *data)
