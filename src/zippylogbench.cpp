@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/client.hpp>
 #include <zippylog/envelope.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/request_processor.pb.h>
@@ -36,6 +37,7 @@ using ::std::endl;
 using ::std::ostringstream;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::client::Client;
 using ::zippylog::Envelope;
 using ::zippylog::device::ServerStartParams;
 
@@ -45,8 +47,17 @@ using ::zippylog::device::ServerStartParams;
     ::zippylog::platform::TimeNow(__tstart); \
     for (int TIMER_LOOP_VALUE = TIMER_ITERATIONS; TIMER_LOOP_VALUE; TIMER_LOOP_VALUE--) { \
 
-
 #define TIMER_END(description) } \
+    ::zippylog::platform::Time __tend; \
+    ::zippylog::platform::TimeNow(__tend); \
+    uint64 elapsed = __tend.epoch_micro - __tstart.epoch_micro; \
+    print_result(description, elapsed, TIMER_ITERATIONS); \
+    }
+
+// this is like the one above except we take an int whose value
+// we wait to go to the number of iterations
+#define TIMER_END_WAIT(description, tracking) } \
+    while (tracking != TIMER_ITERATIONS); \
     ::zippylog::platform::Time __tend; \
     ::zippylog::platform::TimeNow(__tend); \
     uint64 elapsed = __tend.epoch_micro - __tstart.epoch_micro; \
@@ -258,6 +269,11 @@ void run_envelope_benches(ZippylogbenchParams &params)
     TIMER_END("zippylog.envelope.create_and_add_message");
 }
 
+void client_ping_callback(void *data) {
+    uint32 *i = (uint32 *)data;
+    (*i)++;
+}
+
 void run_server_benches(ZippylogbenchParams &params)
 {
     ::zmq::context_t ctx(3);
@@ -285,6 +301,15 @@ void run_server_benches(ZippylogbenchParams &params)
         ::zmq::message_t response;
         cs.recv(&response, NULL);
         TIMER_END("zippylog.server.ping_request_reply");
+    }
+
+    {
+        Client client(&ctx, "inproc://server00");
+        int count = 0;
+
+        TIMER_START(100000);
+        client.Ping(client_ping_callback, (void *)&count);
+        TIMER_END_WAIT("zippylog.server.ping_bulk_send", count);
     }
 
     server.Shutdown();

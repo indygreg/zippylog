@@ -57,6 +57,38 @@ Client::~Client()
     if (this->client_sock) delete this->client_sock;
 }
 
+bool Client::Ping(PingCallback *callback, void *data)
+{
+    if (!callback) {
+        throw invalid_argument("callback parameter not defined");
+    }
+
+    Envelope e;
+    protocol::request::Ping ping;
+    ping.add_to_envelope(e);
+
+    OutstandingRequest or;
+    or.cb_ping = callback;
+    or.data = data;
+
+    return this->SendRequest(e, or);
+}
+
+bool Client::Ping(int32 timeout)
+{
+    Envelope e;
+    protocol::request::Ping ping;
+    ping.add_to_envelope(e);
+
+    OutstandingRequest or;
+    or.cb_ping = CallbackPing;
+
+    return this->SendAndProcessSynchronousRequest(e, or, timeout);
+}
+
+void Client::CallbackPing(void *data)
+{}
+
 bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
 {
     if (!callback) {

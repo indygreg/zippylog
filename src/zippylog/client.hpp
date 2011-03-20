@@ -93,6 +93,9 @@ typedef void (StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreCh
 typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
 typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
 
+/// Callback executed when a ping response is received
+typedef void (PingCallback)(void *);
+
 /// Callback executed when a store info response is received
 typedef void (StoreInfoCallback)(protocol::StoreInfo &, void *);
 
@@ -173,6 +176,7 @@ public:
 protected:
     ::std::string id;
 
+    PingCallback *          cb_ping;
     StoreInfoCallback *     cb_store_info;
     StreamInfoCallback *    cb_stream_info;
     StreamSegmentCallback * cb_stream_segment;
@@ -217,6 +221,12 @@ class ZIPPYLOG_EXPORT Client {
         /// thrown.
         Client(::zmq::context_t *ctx, const ::std::string &endpoint);
         ~Client();
+
+        /// Asynchronously send a ping request
+        bool Ping(PingCallback * callback, void *data = NULL);
+
+        /// Synchronously send a ping request
+        bool Ping(int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain the store info.
         ///
@@ -381,6 +391,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Returns if we have an outstanding request with the specified id
         bool HaveOutstandingRequest(::std::string &id);
+
+        /// Internal callback used for synchronous ping requests
+        static void CallbackPing(void *data);
 
         /// Internal callback used for synchronous store info requests
         static void CallbackStoreInfo(protocol::StoreInfo &info, void *data);

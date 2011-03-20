@@ -140,4 +140,15 @@ TEST_F(ClientTest, GetSynchronous)
     EXPECT_EQ(160, segment.EnvelopesSent);
 }
 
+TEST_F(ClientTest, PingSynchronous)
+{
+    string endpoint;
+    string store_path = "simpledirectory://test/stores/01-singlestream";
+    Server *s = this->GetServer(store_path, endpoint);
+
+    Client c(this->GetContext(), endpoint);
+
+    EXPECT_TRUE(c.Ping());
+}
+
 }} // namespaces
