@@ -473,6 +473,7 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
             break;
         }
 
+        case protocol::response::Pong::zippylog_enumeration:
         case protocol::StoreInfo::zippylog_enumeration:
         case protocol::response::StreamSegmentStart::zippylog_enumeration:
         case protocol::response::SubscribeAck::zippylog_enumeration:
@@ -619,6 +620,14 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     this->outstanding.erase(iter);
 
     switch (e.MessageType(0)) {
+        case protocol::response::Pong::zippylog_enumeration:
+        {
+            assert(req.cb_ping);
+            req.cb_ping(req.data);
+
+            return true;
+        }
+
         case protocol::StoreInfo::zippylog_enumeration:
         {
             assert(req.cb_store_info);
