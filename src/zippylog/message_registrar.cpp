@@ -63,7 +63,7 @@ bool MessageRegistrar::register_message(uint32 ns, uint32 enumeration, Message *
     return true;
 }
 
-Message * MessageRegistrar::get_message(uint32 ns, uint32 enumeration)
+Message * MessageRegistrar::GetMessage(uint32 ns, uint32 enumeration)
 {
     pair<uint32, uint32> p(ns, enumeration);
     map<pair<uint32, uint32>, Message *>::iterator iter = this->_types.find(p);

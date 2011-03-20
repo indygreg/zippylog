@@ -31,7 +31,18 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
         static void TerminateInstance();
 
         bool register_message(uint32 ns, uint32 enumeration, ::google::protobuf::Message *instance);
-        ::google::protobuf::Message * get_message(uint32 ns, uint32 enumeration);
+
+        /// Obtains a new, empty instance of a message of the specified
+        /// enumeration.
+        ///
+        /// The returned message is actually an instance of the message type
+        /// requested, just casted as the base protocol buffer message type.
+        ///
+        /// The memory address returned is owned by the caller. Therefore,
+        /// the caller needs to free it when it is done with it. This is one
+        /// of the few places in the library where a returned pointer is owned
+        /// by the caller.
+        ::google::protobuf::Message * GetMessage(uint32 ns, uint32 enumeration);
 
         // cleans up a registrar instance by removing all registered message types
         void Cleanup();

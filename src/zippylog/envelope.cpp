@@ -233,7 +233,7 @@ Message * Envelope::GetMessage(int index)
     uint32 ns = this->envelope.message_namespace(index);
     uint32 enumeration = this->envelope.message_type(index);
 
-    Message *msg = MessageRegistrar::instance()->get_message(ns, enumeration);
+    Message *msg = MessageRegistrar::instance()->GetMessage(ns, enumeration);
     if (!msg) return NULL;
 
     string buffer = envelope.message(index);
