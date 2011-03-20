@@ -31,7 +31,7 @@ using ::std::stringstream;
 using ::std::vector;
 using ::zmq::message_t;
 
-Envelope::Envelope() : messages(NULL), message_count(0)
+Envelope::Envelope() : messages(NULL), messages_size(0)
 {
     platform::Time t;
     platform::TimeNow(t);
@@ -47,7 +47,7 @@ Envelope::Envelope(message_t &msg, uint32 offset)
     this->InitializeFromBuffer((const void *)((char *)msg.data() + offset), msg.size() - offset);
 }
 
-Envelope::Envelope( const void * data, int size) : messages(NULL), message_count(0)
+Envelope::Envelope( const void * data, int size) : messages(NULL), messages_size(0)
 {
     if (!data) throw invalid_argument("NULL data pointer");
     if (!size) throw invalid_argument("0 size data buffer");
@@ -58,7 +58,7 @@ Envelope::Envelope( const void * data, int size) : messages(NULL), message_count
 
 Envelope::Envelope(const string &s) :
     messages(NULL),
-    message_count(0)
+    messages_size(0)
 {
     platform::Time t;
     platform::TimeNow(t);
@@ -70,7 +70,7 @@ Envelope::Envelope(const string &s) :
 Envelope::~Envelope()
 {
     if (this->messages) {
-        for (int i = 0; i < this->message_count; i++) {
+        for (int i = 0; i < this->messages_size; i++) {
             if (this->messages[i]) {
                 delete this->messages[i];
             }
@@ -84,15 +84,15 @@ Envelope::~Envelope()
 
 Envelope::Envelope(const Envelope &e)
 {
-    if (e.message_count > 0) {
-        this->message_count = e.message_count;
-        this->messages = new Message *[this->message_count];
-        for (int i = 0; i < this->message_count; i++) {
+    if (e.messages_size > 0) {
+        this->messages_size = e.messages_size;
+        this->messages = new Message *[this->messages_size];
+        for (int i = 0; i < this->messages_size; i++) {
             this->messages[i] = NULL;
         }
     }
     else {
-        this->message_count = 0;
+        this->messages_size = 0;
         this->messages = NULL;
     }
 
@@ -103,21 +103,37 @@ Envelope & Envelope::operator=(const Envelope &orig)
 {
     if (this == &orig) return *this;
 
-    if (orig.message_count > 0) {
-        this->message_count = orig.message_count;
-        this->messages = new Message *[this->message_count];
-        for (int i = 0; i < this->message_count; i++) {
+    if (orig.messages_size > 0) {
+        this->messages_size = orig.messages_size;
+        this->messages = new Message *[this->messages_size];
+        for (int i = 0; i < this->messages_size; i++) {
             this->messages[i] = NULL;
         }
     }
     else {
-        this->message_count = 0;
+        this->messages_size = 0;
         this->messages = NULL;
     }
 
     this->envelope = orig.envelope;
 
     return *this;
+}
+
+bool Envelope::operator==(const Envelope &other) const
+{
+    if (this == &other) return true;
+
+    string s1, s2;
+    this->Serialize(s1);
+    other.Serialize(s2);
+
+    return s1.compare(s2) == 0;
+}
+
+bool Envelope::operator!=(const Envelope &other) const
+{
+    return !(*this == other);
 }
 
 void Envelope::InitializeFromBuffer(const void * data, int size)
@@ -129,7 +145,7 @@ void Envelope::InitializeFromBuffer(const void * data, int size)
     int count = this->MessageCount();
 
     this->messages = new Message *[count];
-    this->message_count = count;
+    this->messages_size = count;
     for (int i = 0; i < count; i++) {
         this->messages[i] = NULL;
     }
@@ -146,7 +162,7 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
         assert(this->MessageCount() == 0);
 
         this->messages = new Message *[1];
-        this->message_count = 1;
+        this->messages_size = 1;
         // don't bother caching it, cuz that would take memory
         this->messages[0] = NULL;
     }
@@ -154,10 +170,10 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
         // we need to resize the array
         Message **old = this->messages;
 
-        this->messages = new Message *[this->message_count + 1];
-        this->messages[this->message_count+1] = NULL;
+        this->messages = new Message *[this->messages_size + 1];
+        this->messages[this->messages_size+1] = NULL;
 
-        for (int i = 0; i < this->message_count; i++) {
+        for (int i = 0; i < this->messages_size; i++) {
             this->messages[i] = old[i];
         }
 
@@ -201,11 +217,18 @@ int Envelope::MessageCount()
 
 Message * Envelope::GetMessage(int index)
 {
+    if (index < 0) throw invalid_argument("index must be non-negative");
+
     if (this->MessageCount() < index + 1) return NULL;
     if (this->envelope.message_namespace_size() < index + 1) return NULL;
     if (this->envelope.message_type_size() < index + 1) return NULL;
 
+    // the messages cache should be initialized at construction time and
+    // modified whenever messages are added
     assert(this->messages);
+
+    if (this->messages[index])
+        return this->messages[index];
 
     uint32 ns = this->envelope.message_namespace(index);
     uint32 enumeration = this->envelope.message_type(index);
@@ -215,10 +238,11 @@ Message * Envelope::GetMessage(int index)
 
     string buffer = envelope.message(index);
     if (!msg->ParseFromString(buffer)) {
+        delete msg;
         return NULL;
     }
 
-    if (!this->messages[index]) this->messages[index] = msg;
+    this->messages[index] = msg;
 
     return this->messages[index];
 }
