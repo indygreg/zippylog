@@ -247,6 +247,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\lua_unittest.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform_unittest.cpp"
 				>
 			</File>

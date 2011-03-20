@@ -23,6 +23,8 @@ extern "C" {
 
 using ::std::string;
 
+#define LOAD_STRING_FUNCTION "zippylog_load_string"
+
 namespace zippylog {
 namespace lua {
 
@@ -60,6 +62,11 @@ bool LuaState::HasEnvelopeFilter()
 bool LuaState::HasLineProcessor()
 {
     return this->have_line_processor;
+}
+
+bool LuaState::HasLoadString()
+{
+    return this->have_load_string;
 }
 
 // TODO verify we can't load binary Lua code (textual only) b/c bytecode
@@ -103,6 +110,128 @@ bool LuaState::DetermineCapabilities()
     lua_getglobal(this->L, "zippylog_process_line");
     this->have_line_processor = lua_isfunction(this->L, -1);
     lua_pop(this->L, 1);
+
+    lua_getglobal(this->L, LOAD_STRING_FUNCTION);
+    this->have_load_string = lua_isfunction(this->L, -1);
+    lua_pop(this->L, 1);
+
+    return true;
+}
+
+bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
+{
+    if (!this->have_load_string) return false;
+
+    int stack_size = lua_gettop(this->L);
+
+    lua_getglobal(this->L, LOAD_STRING_FUNCTION);
+    lua_pushlstring(this->L, s.c_str(), s.length());
+    if (lua_pcall(this->L, 1, LUA_MULTRET, 0) != 0) {
+        result.execution_success = false;
+        size_t len = 0;
+        const char *error = lua_tolstring(this->L, -1, &len);
+        result.lua_error = string(error, len);
+        lua_pop(this->L, 1);
+        return true;
+    }
+
+    result.execution_success = true;
+
+    int nresults = lua_gettop(L) - stack_size;
+    if (nresults < 1) {
+        result.return_type = result.NONE;
+        return true;
+    }
+
+    // as a refresher, the following type conventions are handled:
+    //
+    //  nil
+    //  bool
+    //  1 or more strings
+    //  1 or more messages
+    //  1 or more envelopes
+    //  table, <any of above except nil>
+
+    // handle the one off case for a single nil
+    if (nresults == 1 && lua_isnil(this->L, -1)) {
+        result.return_type = result.NIL;
+        goto LOAD_STRING_POP_AND_RETURN;
+    }
+
+    int stpos = -1 * nresults;
+    int value_results = nresults;
+
+    // so we have a type that could be repeated
+    // the first and only first one could be a table, so handle that
+    if (lua_istable(this->L, stpos)) {
+        value_results--;
+
+        if (value_results < 1) {
+            result.return_type = result.INVALID;
+            goto LOAD_STRING_POP_AND_RETURN;
+        }
+
+        // TODO should we error if type is not a string?
+
+        lua_getfield(this->L, stpos, "bucket");
+        if (lua_isstring(this->L, -1)) {
+            size_t len;
+            const char *s = lua_tolstring(this->L, -1, &len);
+            result.has_bucket = true;
+            result.bucket = string(s, len);
+        }
+        lua_pop(this->L, 1);
+
+        lua_getfield(this->L, stpos, "set");
+        if (lua_isstring(this->L, -1)) {
+            size_t len;
+            const char *s = lua_tolstring(this->L, -1, &len);
+            result.has_set = true;
+            result.set = string(s, len);
+        }
+        lua_pop(this->L, 1);
+
+        stpos++;
+    }
+
+    bool got_type = false;
+    // ok, now iterate through the remaining values
+    // make sure the types are consistent along the way
+    for (int i = stpos; i < 0; i++) {
+        if (lua_isboolean(this->L, i)) {
+            // multiple booleans doesn't make any sense. catch it
+            if (value_results > 1) {
+                result.return_type = result.INVALID;
+                goto LOAD_STRING_POP_AND_RETURN;
+            }
+
+            result.return_type = lua_toboolean(this->L, i) ? result.BOOLTRUE : result.BOOLFALSE;
+            got_type = true;
+            continue;
+        }
+
+        if (lua_isstring(this->L, i)) {
+            // can't mix types
+            if (got_type && result.return_type != result.STRING) {
+                result.return_type = result.INVALID;
+                goto LOAD_STRING_POP_AND_RETURN;
+            }
+
+            size_t len = 0;
+            const char *s = lua_tolstring(this->L, i, &len);
+            result.return_type = result.STRING;
+            result.strings.push_back(string(s, len));
+            got_type = true;
+            continue;
+        }
+
+        // TODO handle envelope and message cases
+        result.return_type = result.INVALID;
+        break;
+    }
+
+LOAD_STRING_POP_AND_RETURN:
+    lua_pop(this->L, nresults);
 
     return true;
 }

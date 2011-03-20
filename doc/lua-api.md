@@ -17,42 +17,83 @@ Lua interpreters inside zippylog either have no libraries or very few libraries 
 
 Libraries can be enabled through various mechanisms. See the process documentation for the specifics.
 
+# Envelope and Message API
+
+You'll often encounter Zippylog envelopes and individual messages inside Lua.
+Here is what you can do with the envelope API:
+
+
+
 # Callback Functions
 
 In this section, we describe the various Lua functions that can be executed during processing.
 
 The function name is the default value looked for when no custom function name is defined using the *zippylog_options* table.
 
-## zippylog_process_line(string)
+## zippylog_load_string(string)
 
-Called when a line of text is received. This is executed in the context of *a client sent a log message to zippylog for logging*.
+Called when string data is being loaded into zippylog. This could be done via
+zippylog_string_loader or a similar process.
 
-This function can return one of the following type patterns:
+This function performs a number of roles:
 
-* nil - the function didn't do anything. Default behavior depending on the situation is invoked
-* true - the string should be forwarded as-is. If changes were made to the string, they won't be reflected.
-* false - the string should not be forwarded.
-* string - new string value to be forwarded
-* string, string, ... - any number of strings. each is treated as a separate output
-* protocol buffer message - message to be wrapped in an envelope for passing on
+* Determine whether to accept the data
+* Determines where to route the data (if applicable)
+* Makes modifications to the string (as necessary)
+* Splits the string into multiple components
+* Converts the string into a set of messages
+* Converts the string into a set of envelopes
 
-An optional table can be returned before one of the above patterns. If a table is returned, the following keys have meaning:
+The function communicates what it did via its return type pattern. It must
+return one of the following type patterns:
 
-* bucket - bucket to write the message to
-* stream_set - stream set to write the message to
+* nil - the function didn't do anything. Calling tool defines the appropriate behavior
+* true - the string should be loaded as-is. If changes were made to the string, they won't be reflected.
+* false - the string should not be loaded.
+* string - use the returned string value as the new string.
+* string, string, ... - any number of strings. Each string is independent and has no association with each other. It is as if the strings were loaded separately.
+* protocol buffer message - message representation of this string
+* message, message, ... - any number of protocol buffer messages to be added to one envelope
+* envelope - a specific envelope to produce
+* envelope, envelope, ... - any number of envelopes
+* table, any of above - table controls routing based on the keys *bucket* and *set*
+
+When string data is returned (includes true, false, and possibly nil cases),
+the behavior is for a new envelope to be created that has the string data from
+this function for each string emitted.
+
+When a protocol buffer message is emitted, a new envelope is created containing
+that message or list of messages.
+
+When an envelope is emitted, that envelope is used verbatim.
 
 Here are some examples (we assume the string standard library is availble):
 
     -- forward lines beginning w/ "apache" as-is and drop everything else
-    function zippylog_process_line(s)
+    function zippylog_load_string(s)
         if string.sub(s, 0, 6) == "apache" then
             return true
         end
-        
+
         return false
     end
-    
+
     -- reverse the input string
     function zippylog_process_line(s)
         return string.reverse(s)
     end
+
+    -- route strings based on the first 5 characters
+    function zippylog_load_string(s)
+       return { ["set"] = string.sub(s, 0, 5) }, true
+    end
+
+## zippylog_filter_envelope(envelope)
+
+This function is called when filtering envelopes. The callback's job is to
+determine whether the envelope is appropriate to pass on.
+
+This function can return one of the following type patterns:
+
+* true - the envelope passes the filter
+* false - the envelope does not pass the filter
