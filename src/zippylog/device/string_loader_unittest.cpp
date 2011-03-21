@@ -64,7 +64,7 @@ TEST(StringLoaderTest, ProcessStringSimple)
     EXPECT_EQ(0, result.error.size());
     ASSERT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(result.envelopes[0] != NULL);
-    EXPECT_STREQ(input.c_str(), result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ(input, result.envelopes[0]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, DetectNullInputStream)
@@ -93,7 +93,7 @@ TEST(StringLoaderTest, ClosedInputStream)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ(expected.c_str(), result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ(expected, result.envelopes[0]->envelope.string_value());
 
     ss.setstate(::std::ios_base::eofbit | ::std::ios_base::failbit);
     StringLoaderProcessingResult result2;
@@ -119,7 +119,7 @@ TEST(StringLoaderTest, LuaReturnNil)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("foo", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
 }
 
 // same as above
@@ -141,7 +141,7 @@ TEST(StringLoaderTest, LuaReturnTrue)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("foo", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, LuaReturnFalse)
@@ -181,7 +181,7 @@ TEST(StringLoaderTest, LuaReturnSingleString)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("bar", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, LuaReturnMultipleString)
@@ -203,8 +203,8 @@ TEST(StringLoaderTest, LuaReturnMultipleString)
     EXPECT_EQ(2, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
     EXPECT_TRUE(NULL != result.envelopes[1]);
-    EXPECT_STREQ("bar", result.envelopes[0]->envelope.string_value().c_str());
-    EXPECT_STREQ("baz", result.envelopes[1]->envelope.string_value().c_str());
+    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("baz", result.envelopes[1]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, LuaBucketAndTrue)
@@ -223,10 +223,10 @@ TEST(StringLoaderTest, LuaBucketAndTrue)
     EXPECT_TRUE(result.success);
     EXPECT_TRUE(result.has_bucket);
     EXPECT_FALSE(result.has_set);
-    EXPECT_STREQ("buck", result.bucket.c_str());
+    EXPECT_EQ("buck", result.bucket);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("foo", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, LuaSetAndTrue)
@@ -245,10 +245,10 @@ TEST(StringLoaderTest, LuaSetAndTrue)
     EXPECT_TRUE(result.success);
     EXPECT_FALSE(result.has_bucket);
     EXPECT_TRUE(result.has_set);
-    EXPECT_STREQ("ss", result.set.c_str());
+    EXPECT_EQ("ss", result.set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("foo", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
 }
 
 TEST(StringLoaderTest, LuaBucketAndSetAndString)
@@ -267,11 +267,27 @@ TEST(StringLoaderTest, LuaBucketAndSetAndString)
     EXPECT_TRUE(result.success);
     EXPECT_TRUE(result.has_bucket);
     EXPECT_TRUE(result.has_set);
-    EXPECT_STREQ("buck", result.bucket.c_str());
-    EXPECT_STREQ("ss", result.set.c_str());
+    EXPECT_EQ("buck", result.bucket);
+    EXPECT_EQ("ss", result.set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_STREQ("bar", result.envelopes[0]->envelope.string_value().c_str());
+    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
+}
+
+TEST(StringLoaderTest, SendResultOutputStream)
+{
+    StringLoaderProcessingResult result;
+    result.success = true;
+    result.envelopes.push_back(new Envelope("foo"));
+
+    stringstream ss;
+
+    StringLoaderStartParams p;
+    p.output_stream = &ss;
+    StringLoader l(p);
+
+    EXPECT_NO_THROW(l.SendResult(result));
+    EXPECT_EQ(result.envelopes[0]->ToString(), ss.str());
 }
 
 }} // namespaces

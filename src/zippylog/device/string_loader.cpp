@@ -192,7 +192,7 @@ void StringLoader::SendResult(StringLoaderProcessingResult const& result)
 
     if (this->outstream) {
         for (size_t i = 0; i < result.envelopes.size(); i++) {
-            *this->outstream << result.envelopes[i]->ToString() << ::std::endl;
+            *this->outstream << result.envelopes[i]->ToString();
         }
     }
 
