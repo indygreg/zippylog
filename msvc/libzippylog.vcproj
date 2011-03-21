@@ -378,11 +378,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\device\string_receiver.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\string_writer.cpp"
+				RelativePath="..\src\zippylog\device\string_loader.cpp"
 				>
 			</File>
 			<File
@@ -488,11 +484,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\device\string_receiver.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\string_writer.hpp"
+				RelativePath="..\src\zippylog\device\string_loader.hpp"
 				>
 			</File>
 			<File

@@ -26,7 +26,6 @@ TEST(LuaTest, SimpleExecution)
 {
     LuaState l;
     EXPECT_TRUE(l.LoadLuaCode("function test()\nreturn true\nend"));
-    EXPECT_FALSE(l.HasLineProcessor());
     EXPECT_FALSE(l.HasEnvelopeFilter());
 }
 

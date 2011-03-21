@@ -13,8 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.hpp>
-#include <zippylog/device/string_receiver.hpp>
-#include <zippylog/device/string_writer.hpp>
+#include <zippylog/device/string_loader.hpp>
 #include <zippylog/util.hpp>
 
 #include <sstream>
@@ -26,39 +25,57 @@ using ::std::endl;
 using ::std::string;
 using ::std::ostringstream;
 using ::std::vector;
-using ::zippylog::device::StringReceiver;
-using ::zippylog::device::StringReceiverStartParams;
-using ::zippylog::device::StringWriterStartParams;
-using ::zippylog::device::StringWriter;
+using ::zippylog::device::StringLoader;
+using ::zippylog::device::StringLoaderStartParams;
 using ::zippylog::util::GetArgumentValueAndPop;
+
+string usage =
+"zippylog_string_loader - loads string data into zippylog\n"
+"\n"
+"The purpose of this program is to convert string data to zippylog\n"
+"envelopes and then to send those envelopes somewhere, probably for\n"
+"writing.\n"
+"\n"
+"Usage: zippylog_string_loader [arguments]\n"
+"\n"
+"The following arguments control behavior:\n"
+"\n"
+"  Output Control (must specify one)\n"
+"    --stdout             Send processed string output to stdout\n"
+"    --server <endpoint>  0MQ endpoint of a zippylog server to write to\n"
+"    --store <path>       Path to store to write to\n"
+"\n"
+"  Output Options (required if writing to a server or store)\n"
+"    --default-bucket     Default bucket in store to write to\n"
+"    --default-stream-set Default stream set in store to write to\n"
+"\n"
+"  Processing Options\n"
+"    --lua-file <path>    Lua file to load\n"
+"\n"
+"If a Lua file is loaded, the following functions are called:\n"
+"\n"
+"    zippylog_load_string - Called on every string being loaded\n"
+"\n"
+"The default reading behavior is to read 1 line at a time from stdin.\n"
+"\n"
+"The default loading behavior is to convert every string into an\n"
+"envelope whose string data field is set to the loaded string. If Lua\n"
+"is used, loaded strings can be changed, split, combined, converted to\n"
+"message, or converted to envelopes directly. Lua can also be used to\n"
+"overwrite the default bucket and stream set for envelopes.\n"
+"\n"
+"The program exits when stdin is closed or an unrecoverable error\n"
+"occurs. In the case of abnormal exit, the return code will be 1 and an\n"
+"error will be printed to stderr.\n"
+;
 
 static bool ParseCommandArguments(
     vector<string> args,
-    StringReceiverStartParams &sr_params,
-    StringWriterStartParams &sw_params,
+    StringLoaderStartParams &params,
     string &error)
 {
     if (args.size() < 2) {
-        ostringstream usage;
-        usage
-            << "Usage: " << args[0] << " [arguments]"                                   << endl
-            << endl
-            << "Where the following arguments control behavior:"                        << endl
-            << endl
-            << "    --stdout             Send processed string output to stdout"        << endl
-            << "    --server <endpoint>  0MQ endpoint of a zippylog server to write to" << endl
-            << "    --store <path>       Path to store to write to"                     << endl
-            << "    --default-bucket     Default bucket in store to write to"           << endl
-            << "    --default-stream-set Default stream set in store to write to"       << endl
-            << "    --lua-file <path>    Lua file to load for processing"               << endl
-            << endl
-            << "If a Lua file is loaded, the following callbacks are registered:"       << endl
-            << endl
-            << "    zippylog_process_line - Called on every received line"              << endl
-            << endl
-            << "One of --store, --server, or --stdout must be specified."               << endl
-        ;
-        error = usage.str();
+        error = usage;
 
         return false;
     }
@@ -68,7 +85,7 @@ static bool ParseCommandArguments(
 
     for (size_t i = 0; i < args.size();) {
         if (args[i] == "--stdout") {
-            sw_params.output_stream = &::std::cout;
+            params.output_stream = &::std::cout;
             i++;
             continue;
         }
@@ -78,7 +95,7 @@ static bool ParseCommandArguments(
                 error = "--store argument requires a value. None found";
                 return false;
             }
-            sw_params.store_path = value;
+            params.store_path = value;
             continue;
         }
         else if (args[i] == "--default-bucket") {
@@ -87,7 +104,7 @@ static bool ParseCommandArguments(
                 error = "--default-bucket argument requires a value";
                 return false;
             }
-            sw_params.default_bucket = value;
+            params.default_bucket = value;
             continue;
         }
         else if (args[i] == "--default-stream-set") {
@@ -96,7 +113,7 @@ static bool ParseCommandArguments(
                 error = "--default-stream-set argument requires a value";
                 return false;
             }
-            sw_params.default_stream_set = value;
+            params.default_set = value;
             continue;
         }
         else if (args[i] == "--lua-file") {
@@ -105,20 +122,20 @@ static bool ParseCommandArguments(
                 error = "--lua-file argument requires a value";
                 return false;
             }
-            sr_params.lua_file = value;
+            params.lua_file = value;
             continue;
         }
 
         i++;
     }
 
-    if (sw_params.store_path.length() > 0) {
-        if (sw_params.default_bucket.length() < 1) {
+    if (params.store_path.length() > 0) {
+        if (params.default_bucket.length() < 1) {
             error = "--default-bucket required when --store is defined";
             return false;
         }
 
-        if (sw_params.default_stream_set.length() < 1) {
+        if (params.default_set.length() < 1) {
             error = "--default-stream-set required when --store is defined";
             return false;
         }
@@ -139,23 +156,21 @@ int main(int argc, const char * const argv[])
         }
 
         string error;
-        StringReceiverStartParams sr_params;
-        StringWriterStartParams sw_params;
+        StringLoaderStartParams params;
 
-        if (!ParseCommandArguments(args, sr_params, sw_params, error)) {
+        if (!ParseCommandArguments(args, params, error)) {
             cout << error << endl;
             return 1;
         }
 
-        sr_params.stream = &::std::cin;
+        params.input_stream = &::std::cin;
 
-        StringReceiver receiver(sr_params);
-        sw_params.receiver = &receiver;
-
-        StringWriter writer(sw_params);
         bool active = true;
+        params.active = &active;
 
-        writer.Run(&active);
+        StringLoader loader(params);
+
+        loader.Run();
 
         ::zippylog::shutdown_library();
     }

@@ -38,7 +38,7 @@ LuaState::LuaState() :
     memory_max_tried(0),
     memory_max_allowed(0),
     have_envelope_filter(false),
-    have_line_processor(false)
+    have_load_string(false)
 {
     this->L = lua_newstate(LuaState::LuaAlloc, (void *)this);
 }
@@ -57,11 +57,6 @@ bool LuaState::SetMemoryCeiling(uint32 size)
 bool LuaState::HasEnvelopeFilter()
 {
     return this->have_envelope_filter;
-}
-
-bool LuaState::HasLineProcessor()
-{
-    return this->have_line_processor;
 }
 
 bool LuaState::HasLoadString()
@@ -107,10 +102,6 @@ bool LuaState::DetermineCapabilities()
     this->have_envelope_filter = lua_isfunction(this->L, -1);
     lua_pop(this->L, 1);
 
-    lua_getglobal(this->L, "zippylog_process_line");
-    this->have_line_processor = lua_isfunction(this->L, -1);
-    lua_pop(this->L, 1);
-
     lua_getglobal(this->L, LOAD_STRING_FUNCTION);
     this->have_load_string = lua_isfunction(this->L, -1);
     lua_pop(this->L, 1);
@@ -139,7 +130,7 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
 
     int nresults = lua_gettop(L) - stack_size;
     if (nresults < 1) {
-        result.return_type = result.NONE;
+        result.return_type = result.INVALID;
         return true;
     }
 
@@ -231,93 +222,6 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
     }
 
 LOAD_STRING_POP_AND_RETURN:
-    lua_pop(this->L, nresults);
-
-    return true;
-}
-
-bool LuaState::ProcessLine(LineProcessorState &st)
-{
-    if (!this->have_line_processor) return false;
-
-    int stack_size = lua_gettop(this->L);
-
-    lua_getglobal(this->L, "zippylog_process_line");
-    lua_pushstring(this->L, st.string_in.c_str());
-    if (lua_pcall(this->L, 1, LUA_MULTRET, 0) != 0) {
-        // TODO need better error handling
-        return false;
-    }
-
-    int nresults = lua_gettop(L) - stack_size;
-    if (nresults < 1) {
-        // TODO better error handling
-        return false;
-    }
-
-    int stpos = -1 * nresults;
-
-    // base of stack is the first result, which can be a table or a value
-    if (lua_istable(this->L, -1 * nresults)) {
-        if (nresults < 2) {
-            // TODO need better error handling
-            lua_pop(this->L, nresults);
-            return false;
-        }
-        // we need to look for the special keys
-
-        // bucket selects where output goes
-        lua_pushlstring(this->L, "bucket", strlen("bucket"));
-        lua_gettable(this->L, -1 * nresults);
-
-        if (lua_isstring(this->L, -1)) {
-            st.bucket = lua_tostring(this->L, -1);
-        }
-        lua_pop(this->L, 1);
-
-        // stream_set selects where output goes
-        lua_pushlstring(this->L, "stream_set", strlen("stream_set"));
-        lua_gettable(this->L, -1 * nresults);
-        if (lua_isstring(this->L, -1)) {
-            st.stream_set = lua_tostring(this->L, -1);
-        }
-        lua_pop(this->L, 1);
-
-        stpos++;
-    }
-
-    // now we have the normal values
-    if (lua_isnil(this->L, stpos)) {
-        st.result = LineProcessorState::NOTHING;
-        st.string_out = st.string_in;
-    }
-    else if (lua_isboolean(this->L, stpos)) {
-        st.result = lua_toboolean(this->L, stpos) ? LineProcessorState::YES : LineProcessorState::NO;
-
-        if (st.result == LineProcessorState::YES) {
-            st.string_out = st.string_in;
-        }
-        else {
-            st.string_out.clear();
-        }
-    }
-    else if (lua_isstring(this->L, stpos)) {
-        // TODO support multiple output strings
-
-        // this constructor copies data, so it is safe to use
-        // (Lua strings allocated out of Lua)
-        st.string_out = string(lua_tostring(this->L, stpos));
-
-        st.result = LineProcessorState::STRING_MODIFIED;
-    }
-    // TODO handle protocol buffer userdata
-    else {
-        // TODO better error handling
-        lua_pop(this->L, nresults);
-        return false;
-    }
-
-    // clear all results
     lua_pop(this->L, nresults);
 
     return true;

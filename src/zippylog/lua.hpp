@@ -29,63 +29,35 @@ extern "C" {
 namespace zippylog {
 namespace lua {
 
-/// represents the input and output to a line processing function call
-class ZIPPYLOG_EXPORT LineProcessorState {
-public:
-    // DEFINITIONS
-    enum CallbackResult {
-        // take/took no action
-        NOTHING = 1,
-
-        YES = 2,
-
-        NO = 3,
-
-        STRING_MODIFIED = 4,
-    };
-
-    // INPUT parameters
-    ::std::string string_in;
-
-    // OUTPUT parameters
-    CallbackResult result;
-    ::std::string string_out;
-    ::std::string bucket;
-    ::std::string stream_set;
-};
-
 /// Represents the result of a load string function execution
 /// via LuaState::ExecuteLoadString()
 class ZIPPYLOG_EXPORT LoadStringResult {
 public:
     /// Describes how the function returned
     enum ReturnType {
-        /// No return from the function. You executed a bad function.
-        NONE = 1,
-
         /// Function returned nil
-        NIL = 2,
+        NIL = 1,
 
         /// Function returned true
         ///
         /// Sadly, we can't use the literal "TRUE" here b/c that is
         /// preprocessor definition in many headers
-        BOOLTRUE = 3,
+        BOOLTRUE = 2,
 
         /// Function returned false
-        BOOLFALSE = 4,
+        BOOLFALSE = 3,
 
         /// One or more strings were returned
-        STRING = 5,
+        STRING = 4,
 
         /// One or more protocol buffer messages were returned
-        MESSAGE = 6,
+        MESSAGE = 5,
 
         /// One or more envelopes were returned
-        ENVELOPE = 7,
+        ENVELOPE = 6,
 
         /// Invalid return type pattern seen
-        INVALID = 8,
+        INVALID = 7,
     };
 
     LoadStringResult() :
@@ -152,11 +124,11 @@ public:
     // sets the limit for memory consumption of the interpreter
     bool SetMemoryCeiling(uint32 size);
 
+    /// Obtains the set memory ceiling for the interpreter
+    inline uint32 GetMemoryCeiling() const { return this->memory_ceiling; }
+
     // whether the state has an enveloper filter function
     bool HasEnvelopeFilter();
-
-    // whether the interpreter can process text lines
-    bool HasLineProcessor();
 
     /// Whether we have a zippylog_load_string() function
     bool HasLoadString();
@@ -169,13 +141,6 @@ public:
 
     // loads the string standard library into the Lua interpreter
     bool LoadStringLibrary();
-
-    // process a line via the interpreter's line processor
-    //
-    // Returns true if the function executed without triggering an error.
-    // Returns false if there is no line processor or if there was an error.
-    // TODO we really need something better than a bool
-    bool ProcessLine(LineProcessorState &state);
 
     /// Executes the load string callback
     ///
@@ -202,8 +167,6 @@ protected:
     uint32 memory_max_allowed;
 
     bool have_envelope_filter;
-    bool have_line_processor;
-
     bool have_load_string;
 
 private:

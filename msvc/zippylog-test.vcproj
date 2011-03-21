@@ -275,7 +275,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\device\string_receiver_unittest.cpp"
+				RelativePath="..\src\zippylog\device\string_loader_unittest.cpp"
 				>
 			</File>
 		</Filter>
