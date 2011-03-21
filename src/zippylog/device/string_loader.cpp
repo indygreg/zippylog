@@ -209,7 +209,7 @@ void StringLoader::Run()
         throw new Exception("StringLoader cannot be executed because no active semaphore defined");
     }
 
-    while (!this->active) {
+    while (*this->active) {
         StringLoaderProcessingResult result;
         this->ReadLineAndProcess(result);
         if (result.success) {
