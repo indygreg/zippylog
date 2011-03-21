@@ -168,7 +168,6 @@ int RequestProcessor::Pump(long wait)
         }
 
         if (flags) {
-            int i = 0;
             vector<Envelope>::iterator itor = response_envelopes.begin()++;
             for (; itor < response_envelopes.end(); itor++) {
                 flags = itor == response_envelopes.end() - 1 ? 0 : ZMQ_SNDMORE;
@@ -428,7 +427,7 @@ SEND_RESPONSE:
     return result;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &e, vector<Envelope> &output)
+RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &, vector<Envelope> &output)
 {
     protocol::response::Pong pong;
     Envelope out;
@@ -438,7 +437,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &e, vect
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &e, vector<Envelope> &output)
+RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, vector<Envelope> &output)
 {
     protocol::response::FeatureSpecification response;
 
