@@ -92,7 +92,7 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &requ
     return DEFERRED;
 }
 
-int Worker::HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous)
+int Worker::HandleWriteEnvelopes(const ::std::string &, ::std::vector<Envelope> &, bool)
 {
     throw Exception("TODO implement Worker::HandleWriteEnvelopes");
 }

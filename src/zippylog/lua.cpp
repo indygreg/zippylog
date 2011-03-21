@@ -143,14 +143,15 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
     //  1 or more envelopes
     //  table, <any of above except nil>
 
+    int stpos = -1 * nresults;
+    int value_results = nresults;
+    bool got_type = false;
+
     // handle the one off case for a single nil
     if (nresults == 1 && lua_isnil(this->L, -1)) {
         result.return_type = result.NIL;
         goto LOAD_STRING_POP_AND_RETURN;
     }
-
-    int stpos = -1 * nresults;
-    int value_results = nresults;
 
     // so we have a type that could be repeated
     // the first and only first one could be a table, so handle that
@@ -185,7 +186,6 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
         stpos++;
     }
 
-    bool got_type = false;
     // ok, now iterate through the remaining values
     // make sure the types are consistent along the way
     for (int i = stpos; i < 0; i++) {
@@ -258,7 +258,7 @@ void * LuaState::LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize)
     return realloc(ptr, nsize);
 }
 
-int LuaState::LuaPanic(lua_State *L)
+int LuaState::LuaPanic(lua_State *)
 {
     return 0;
 }

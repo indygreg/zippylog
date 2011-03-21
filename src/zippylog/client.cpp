@@ -86,7 +86,7 @@ bool Client::Ping(int32 timeout)
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackPing(void *data)
+void Client::CallbackPing(void *)
 {}
 
 bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
@@ -185,7 +185,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackStreamSegment(const string &path, uint64 offset, StreamSegment &segment, void *data)
+void Client::CallbackStreamSegment(const string &, uint64, StreamSegment &segment, void *data)
 {
     StreamSegment *s = (StreamSegment *)data;
     s->CopyFrom(segment);
@@ -512,7 +512,7 @@ bool Client::CancelAllSubscriptions()
     return true;
 }
 
-bool Client::CancelSubscription(const string &id)
+bool Client::CancelSubscription(const string &)
 {
     return false;
 }
