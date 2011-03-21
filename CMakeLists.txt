@@ -85,8 +85,7 @@ set(libzippylog_sources
     src/zippylog/device/store_writer_sender.cpp
     src/zippylog/device/streamer.cpp
     src/zippylog/device/streamer.pb.cc
-    src/zippylog/device/string_receiver.cpp
-    src/zippylog/device/string_writer.cpp
+    src/zippylog/device/string_loader.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
@@ -133,7 +132,7 @@ set(libzippylog-test_sources
     src/zippylog/client_unittest.cpp
     src/zippylog/device/server_unittest.cpp
     src/zippylog/device/streamer_unittest.cpp
-    src/zippylog/device/string_receiver_unittest.cpp
+    src/zippylog/device/string_loader_unittest.cpp
     src/zippylog/envelope_unittest.cpp
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
