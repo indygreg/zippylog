@@ -60,25 +60,25 @@ protected:
         this->write_envelopes_count = 0;
     }
 
-    ResponseStatus HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
+    ResponseStatus HandleSubscribeStoreChanges(Envelope &, vector<Envelope> &)
     {
         this->subscribe_store_changes_count++;
         return AUTHORITATIVE;
     }
 
-    ResponseStatus HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
+    ResponseStatus HandleSubscribeEnvelopes(Envelope &, vector<Envelope> &)
     {
         this->handle_subscribe_envelopes_count++;
         return AUTHORITATIVE;
     }
 
-    ResponseStatus HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
+    ResponseStatus HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)
     {
         this->handle_subscribe_keepalive_count++;
         return AUTHORITATIVE;
     }
 
-    int HandleWriteEnvelopes(const string &path, vector<Envelope> &to_write, bool synchronous)
+    int HandleWriteEnvelopes(const string &, vector<Envelope> &to_write, bool)
     {
         this->write_envelopes_count += to_write.size();
         return to_write.size();

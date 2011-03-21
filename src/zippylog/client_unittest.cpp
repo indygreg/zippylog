@@ -98,7 +98,7 @@ TEST_F(ClientTest, StartParamValidation)
 TEST_F(ClientTest, SynchronousTimeout)
 {
     string endpoint;
-    Server *s = this->GetServer("simpledirectory://test/stores/02-multiple", endpoint);
+    this->GetServer("simpledirectory://test/stores/02-multiple", endpoint);
     Client c(this->GetContext(), endpoint);
 
     protocol::StoreInfo si;
@@ -111,7 +111,7 @@ TEST_F(ClientTest, StoreInfoSynchronous)
 {
     string endpoint;
     string store_path = "simpledirectory://test/stores/00-simple";
-    Server *s = this->GetServer(store_path, endpoint);
+    this->GetServer(store_path, endpoint);
     Store *store = this->GetStore(store_path);
 
     Client c(this->GetContext(), endpoint);
@@ -128,8 +128,8 @@ TEST_F(ClientTest, GetSynchronous)
 {
     string endpoint;
     string store_path = "simpledirectory://test/stores/01-singlestream";
-    Server *s = this->GetServer(store_path, endpoint);
-    Store *store = this->GetStore(store_path);
+    this->GetServer(store_path, endpoint);
+    this->GetStore(store_path);
 
     Client c(this->GetContext(), endpoint);
 
@@ -144,7 +144,7 @@ TEST_F(ClientTest, PingSynchronous)
 {
     string endpoint;
     string store_path = "simpledirectory://test/stores/01-singlestream";
-    Server *s = this->GetServer(store_path, endpoint);
+    this->GetServer(store_path, endpoint);
 
     Client c(this->GetContext(), endpoint);
 
