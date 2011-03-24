@@ -121,6 +121,11 @@ class ZIPPYLOG_EXPORT Envelope {
         /// inefficient castings, we'll likely create a new overload
         bool AddMessage(::google::protobuf::Message &m, uint32 ns, uint32 enumeration);
 
+        /// Read an envelope from a coded input stream into the instance
+        ///
+        /// Returns whether the parse was successful.
+        bool ParseFromCodedInputStream(::google::protobuf::io::CodedInputStream &cis);
+
         /// The underlying protocol buffer message
         ///
         /// @todo make protected so the class isn't leaky and so we can guard

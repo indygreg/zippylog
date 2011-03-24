@@ -190,6 +190,35 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
     return true;
 }
 
+bool Envelope::ParseFromCodedInputStream(::google::protobuf::io::CodedInputStream &cis)
+{
+    if (this->messages) {
+        for (int i = 0; i < this->messages_size; i++) {
+            if (this->messages[i]) {
+                delete this->messages[i];
+            }
+        }
+
+        delete [] this->messages;
+        this->messages = NULL;
+        this->messages_size = 0;
+    }
+
+    bool result = this->envelope.ParseFromCodedStream(&cis) && cis.ConsumedEntireMessage();
+
+    if (result) {
+        int count = this->MessageCount();
+
+        this->messages = new Message *[count];
+        for (int i = 0; i < count; i++) {
+            this->messages[i] = NULL;
+        }
+        this->messages_size = count;
+    }
+
+    return result;
+}
+
 bool Envelope::ToZmqMessage(message_t &msg)
 {
     string buffer;
@@ -283,9 +312,10 @@ string Envelope::ToString()
     for (int i = 0; i < this->MessageCount(); i++) {
         string s;
         ::google::protobuf::Message *m = this->GetMessage(i);
-        printer.PrintToString(*m, &s);
-
-        ss << "  " << m->GetTypeName() << ::std::endl << s;
+        if (m) {
+            printer.PrintToString(*m, &s);
+            ss << "  " << m->GetTypeName() << ::std::endl << s;
+        }
     }
 
     return ss.str();

@@ -78,7 +78,7 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
     }
 
     CodedInputStream::Limit limit = this->cis->PushLimit(size);
-    if (!e.envelope.ParseFromCodedStream(this->cis) || !this->cis->ConsumedEntireMessage()) {
+    if (!e.ParseFromCodedInputStream(*this->cis)) {
         this->have_next_size = false;
         bytes_read = 0;
         return false;
