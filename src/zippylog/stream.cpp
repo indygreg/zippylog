@@ -179,10 +179,10 @@ bool OutputStream::WriteEnvelope(::zippylog::Envelope &e)
 {
     if (!this->cos) return false;
 
-    int size = e.envelope.ByteSize();
+    int size = e.SerializedByteSize();
 
     this->cos->WriteVarint32(size);
-    return e.envelope.SerializeToCodedStream(this->cos);
+    return e.Serialize(this->cos);
 }
 
 bool OutputStream::WriteEnvelope(const void *data, int length)

@@ -630,8 +630,8 @@ void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string>
     Envelope response = Envelope();
 
     // copy tags to response because that's what the protocol does
-    for (int i = 0; i < e.envelope.tag_size(); i++) {
-        response.envelope.add_tag(e.envelope.tag(i));
+    for (int i = 0; i < e.TagSize(); i++) {
+        response.AddTag(e.GetTag(i));
     }
 
     ack.add_to_envelope(&response);

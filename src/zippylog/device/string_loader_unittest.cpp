@@ -64,7 +64,7 @@ TEST(StringLoaderTest, ProcessStringSimple)
     EXPECT_EQ(0, result.error.size());
     ASSERT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(result.envelopes[0] != NULL);
-    EXPECT_EQ(input, result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ(input, result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, DetectNullInputStream)
@@ -93,7 +93,7 @@ TEST(StringLoaderTest, ClosedInputStream)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ(expected, result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ(expected, result.envelopes[0]->GetStringValueField());
 
     ss.setstate(::std::ios_base::eofbit | ::std::ios_base::failbit);
     StringLoaderProcessingResult result2;
@@ -119,7 +119,7 @@ TEST(StringLoaderTest, LuaReturnNil)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("foo", result.envelopes[0]->GetStringValueField());
 }
 
 // same as above
@@ -141,7 +141,7 @@ TEST(StringLoaderTest, LuaReturnTrue)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("foo", result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, LuaReturnFalse)
@@ -181,7 +181,7 @@ TEST(StringLoaderTest, LuaReturnSingleString)
     EXPECT_FALSE(result.has_set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("bar", result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, LuaReturnMultipleString)
@@ -203,8 +203,8 @@ TEST(StringLoaderTest, LuaReturnMultipleString)
     EXPECT_EQ(2, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
     EXPECT_TRUE(NULL != result.envelopes[1]);
-    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
-    EXPECT_EQ("baz", result.envelopes[1]->envelope.string_value());
+    EXPECT_EQ("bar", result.envelopes[0]->GetStringValueField());
+    EXPECT_EQ("baz", result.envelopes[1]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, LuaBucketAndTrue)
@@ -226,7 +226,7 @@ TEST(StringLoaderTest, LuaBucketAndTrue)
     EXPECT_EQ("buck", result.bucket);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("foo", result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, LuaSetAndTrue)
@@ -248,7 +248,7 @@ TEST(StringLoaderTest, LuaSetAndTrue)
     EXPECT_EQ("ss", result.set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("foo", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("foo", result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, LuaBucketAndSetAndString)
@@ -271,7 +271,7 @@ TEST(StringLoaderTest, LuaBucketAndSetAndString)
     EXPECT_EQ("ss", result.set);
     EXPECT_EQ(1, result.envelopes.size());
     EXPECT_TRUE(NULL != result.envelopes[0]);
-    EXPECT_EQ("bar", result.envelopes[0]->envelope.string_value());
+    EXPECT_EQ("bar", result.envelopes[0]->GetStringValueField());
 }
 
 TEST(StringLoaderTest, SendResultOutputStream)

@@ -17,6 +17,7 @@
 #include <zippylog/message.pb.h>
 
 #include <google/protobuf/message.h>
+#include <gtest/gtest_prod.h>
 #include <zmq.hpp>
 
 #include <string>
@@ -109,6 +110,15 @@ class ZIPPYLOG_EXPORT Envelope {
         /// @return whether we completely serialized to the string
         bool Serialize(::std::string &s) const;
 
+        /// Serialize the envelope to a coded output stream
+        ///
+        /// The envelope's protocol buffer serialization is written to the
+        /// stream.
+        inline bool Serialize(::google::protobuf::io::CodedOutputStream * cos) const
+        {
+            return this->envelope.SerializePartialToCodedStream(cos);
+        }
+
         /// Adds a zippylog message (protocol buffer message) to the envelope
         ///
         /// The protocol message should have an enumerated namespace and type
@@ -125,12 +135,6 @@ class ZIPPYLOG_EXPORT Envelope {
         ///
         /// Returns whether the parse was successful.
         bool ParseFromCodedInputStream(::google::protobuf::io::CodedInputStream &cis);
-
-        /// The underlying protocol buffer message
-        ///
-        /// @todo make protected so the class isn't leaky and so we can guard
-        /// against stupidity
-        message::Envelope envelope;
 
         /// Serializes the envelope into a 0MQ message
         ///
@@ -166,6 +170,48 @@ class ZIPPYLOG_EXPORT Envelope {
         inline uint32 MessageType(int index)
         {
             return this->envelope.message_type(index);
+        }
+
+        /// The number of tags on the underlying envelope
+        inline int TagSize() const
+        {
+            return this->envelope.tag_size();
+        }
+
+        /// Adds a tag to the envelope
+        inline void AddTag(const ::std::string &s)
+        {
+            this->envelope.add_tag(s);
+        }
+
+        /// Obtains a tag at the specified offset
+        inline const ::std::string & GetTag(int index) const
+        {
+            return this->envelope.tag(index);
+        }
+
+        /// The number of elements in the message_namespace field
+        inline int MessageNamespaceSize() const
+        {
+            return this->envelope.message_namespace_size();
+        }
+
+        /// The number of elements in the message_type field
+        inline int MessageTypeSize() const
+        {
+            return this->envelope.message_type_size();
+        }
+
+        /// The size in bytes of the serialized envelope
+        inline int SerializedByteSize() const
+        {
+            return this->envelope.ByteSize();
+        }
+
+        /// Obtains the string value field on the envelope
+        inline const ::std::string & GetStringValueField() const
+        {
+            return this->envelope.string_value();
         }
 
         /// Obtain the protocol buffer message at given index
@@ -206,6 +252,9 @@ class ZIPPYLOG_EXPORT Envelope {
         ::std::string ToString();
 
     protected:
+        /// The underlying protocol buffer message
+        message::Envelope envelope;
+
         /// Initializes the envelope from a buffer
         ///
         /// This is likely only called from a constructor.
@@ -216,6 +265,9 @@ class ZIPPYLOG_EXPORT Envelope {
 
         /// size of messages member
         int messages_size;
+
+    private:
+        FRIEND_TEST(EnvelopeTest, UnknownMessageTypes);
 };
 
 } // namespace

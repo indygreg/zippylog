@@ -101,7 +101,7 @@ public:
     /// Whether to allow Lua code to be executed
     bool lua_allow;
 
-    /// Memory memory a Lua interpreter can grow to
+    /// Memory (in bytes) a Lua interpreter can grow to
     uint32 lua_max_memory;
 
     /// Semaphore stating whether streamer should remain active
@@ -127,7 +127,7 @@ public:
 /// The streamer, like the RequestProcessor, should probably be abstracted. As
 /// it currently stands, it is tightly coupled with the implementation of the
 /// server device. We'll get there.
-/// TODO make base streamer abstract
+/// @todo make base streamer abstract
 class ZIPPYLOG_EXPORT Streamer {
     public:
         Streamer(StreamerStartParams params);

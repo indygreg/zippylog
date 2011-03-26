@@ -70,7 +70,7 @@ TEST(EnvelopeTest, ConstructorString)
     EXPECT_NO_THROW(Envelope e("hello, world"));
 
     Envelope e("hello, world");
-    EXPECT_STREQ("hello, world", e.envelope.string_value().c_str());
+    EXPECT_EQ("hello, world", e.GetStringValueField());
 }
 
 TEST(EnvelopeTest, EquivalenceAndCopying)

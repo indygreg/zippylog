@@ -225,10 +225,8 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     protocol::request::GetStoreInfo gsi;
     gsi.set_version(1);
     Envelope request;
-    gsi.add_to_envelope(&request);
-    m.rebuild(1 + request.envelope.SerializeAsString().size());
-    *(char *)(m.data()) = 0x01;
-    memcpy((void *)((char *)m.data() + 1), request.envelope.SerializeAsString().data(), m.size() - 1);
+    gsi.add_to_envelope(request);
+    ASSERT_TRUE(request.ToProtocolZmqMessage(m));
     this->p->ProcessMessages(identities, input, output);
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
@@ -751,7 +749,9 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeAck)
     r.set_path("/bucketA/set0");
     Envelope e, w;
     r.add_to_envelope(w);
-    r.add_envelope(w.envelope.SerializeAsString());
+    string serialized;
+    w.Serialize(serialized);
+    r.add_envelope(serialized);
     r.add_to_envelope(e);
     ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);
@@ -772,7 +772,9 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeNoAck)
     r.set_acknowledge(false);
     Envelope e, w;
     r.add_to_envelope(w);
-    r.add_envelope(w.envelope.SerializeAsString());
+    string serialized;
+    w.Serialize(serialized);
+    r.add_envelope(serialized);
     r.add_to_envelope(e);
     ASSERT_TRUE(RequestProcessor::DEFERRED == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);

@@ -285,9 +285,9 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
     if (!successful_process) {
         // if we have a request envelope and there were tags and we have an
         // output envelope, copy the tags over
-        if (have_request_envelope && request_envelope.envelope.tag_size() && output.size()) {
-            for (int i = 0; i < request_envelope.envelope.tag_size(); i++) {
-                output[0].envelope.add_tag(request_envelope.envelope.tag(i));
+        if (have_request_envelope && request_envelope.TagSize() && output.size()) {
+            for (int i = 0; i < request_envelope.TagSize(); i++) {
+                output[0].AddTag(request_envelope.GetTag(i));
             }
         }
 
@@ -309,7 +309,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     RequestProcessor::ResponseStatus result;
     uint32 request_type; // forward declare b/c of goto
 
-    if (request_envelope.envelope.message_size() < 1) {
+    if (request_envelope.MessageCount() < 1) {
         ::zippylog::request_processor::EmptyEnvelope log;
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -322,7 +322,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
         goto SEND_RESPONSE;
     }
 
-    if (request_envelope.envelope.message_namespace_size() < 1 || request_envelope.envelope.message_type_size() < 1) {
+    if (request_envelope.MessageNamespaceSize() < 1 || request_envelope.MessageTypeSize() < 1) {
         ::zippylog::request_processor::InvalidMessageEnumeration log;
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -336,7 +336,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
     }
 
     /* must be in the zippylog namespace */
-    if (request_envelope.envelope.message_namespace(0) != ::zippylog::message_namespace) {
+    if (request_envelope.MessageNamespace(0) != ::zippylog::message_namespace) {
         ::zippylog::request_processor::InvalidMessageEnumeration log;
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -349,7 +349,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
         goto SEND_RESPONSE;
     }
 
-    request_type = request_envelope.envelope.message_type(0);
+    request_type = request_envelope.MessageType(0);
     switch (request_type) {
         case protocol::request::Ping::zippylog_enumeration:
             result = this->ProcessPing(request_envelope, output);
@@ -417,9 +417,9 @@ SEND_RESPONSE:
 
         // tags associated with request attached to response so client
         // can associate a single response to a request
-        if (request_envelope.envelope.tag_size() >= 0) {
-            for (int i = 0; i < request_envelope.envelope.tag_size(); i++) {
-                output[0].envelope.add_tag(request_envelope.envelope.tag(i));
+        if (request_envelope.TagSize() >= 0) {
+            for (int i = 0; i < request_envelope.TagSize(); i++) {
+                output[0].AddTag(request_envelope.GetTag(i));
             }
         }
     }
@@ -698,9 +698,9 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             segment_start.add_to_envelope(start_envelope);
 
             // copy request tags to response for client association
-            if (request.envelope.tag_size() >= 0) {
-                for (int i = 0; i < request.envelope.tag_size(); i++) {
-                    start_envelope.envelope.add_tag(request.envelope.tag(i));
+            if (request.TagSize() >= 0) {
+                for (int i = 0; i < request.TagSize(); i++) {
+                    start_envelope.AddTag(request.GetTag(i));
                 }
             }
 

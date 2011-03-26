@@ -359,7 +359,7 @@ bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
 
     string id = string((const char *)&uuid, sizeof(uuid));
 
-    e.envelope.add_tag(id);
+    e.AddTag(id);
     req.id = id;
 
     if (!zeromq::send_envelope_xreq(this->client_sock, e)) {
@@ -377,7 +377,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
     platform::CreateUUID(uuid);
 
     string id = string((const char *)&uuid, sizeof(uuid));
-    e.envelope.add_tag(id);
+    e.AddTag(id);
     req.id = id;
 
     vector<string> identities;
@@ -597,11 +597,11 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     // all requests are tagged with a request identifier, so ignore any responses
     // not for a known tag
 
-    if (!e.envelope.tag_size()) {
+    if (!e.TagSize()) {
         throw Exception("received response with no tag to match to request");
     }
 
-    string id = e.envelope.tag(0);
+    string id = e.GetTag(0);
 
     // try to find the outstanding request
     map<string, OutstandingRequest>::iterator iter = this->outstanding.find(id);
