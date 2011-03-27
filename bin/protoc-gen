@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#  Copyright 2010 Gregory Szorc
+#  Copyright 2011 Gregory Szorc
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 # see http://code.google.com/apis/protocolbuffers/docs/reference/other.html
 #
 # this plugin is likely executed by zippylog_compile
-# it inserts the zippylog enumerations into the generated files built by protoc
-# currently, it only supports Python, but that will change as things mature
+# it inserts the zippylog enumerations into the generated files built by
+# protoc. currently, it supports C++ and Python.
 
 from json import dump, load
 from google.protobuf.compiler.plugin_pb2 import CodeGeneratorRequest, CodeGeneratorResponse
@@ -192,7 +192,7 @@ for i in range(0, len(request.proto_file)):
             f.name = cpp_output_header(filename)
             f.insertion_point = 'class_scope:%s.%s' % ( package, name )
             f.content = 'static const ::google::protobuf::uint32 zippylog_enumeration = %d;' % message_index
-            
+
             if package != 'zippylog.message' and package[0:6] != 'google':
                 f = response.file.add()
                 f.name = cpp_output_header(filename)
@@ -214,7 +214,7 @@ bool %s::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 ''' % ( name, name )
-            
+
                 f = response.file.add()
                 f.name = cpp_messages_source
                 f.insertion_point = 'message_registration'
@@ -246,4 +246,3 @@ with open(state_file, 'w') as fh:
 
 stdout.write(response.SerializeToString())
 exit(0)
-

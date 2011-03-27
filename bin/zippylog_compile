@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#  Copyright 2010 Gregory Szorc
+#  Copyright 2011 Gregory Szorc
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ protoc_args = [ options.protoc, '-I%s' % out_dir, '-I%s' % messages_dir ]
 py_out = join(out_dir, 'py')
 cpp_out = join(out_dir, 'cpp')
 java_out = join(out_dir, 'java')
+lua_out = join(out_dir, 'lua')
 
 if not exists(py_out):
     os.makedirs(py_out)
@@ -67,6 +68,8 @@ if not exists(cpp_out):
     os.makedirs(cpp_out)
 if not exists(java_out):
     os.makedirs(java_out)
+if not exists(lua_out):
+    os.makedirs(lua_out)
 
 # the standard generators
 protoc_args.append('--python_out=%s' % py_out)
@@ -76,12 +79,18 @@ protoc_args.append('--java_out=%s' % java_out)
 # our custom generators
 protoc_args.append('--python_zippylog_out=%s' % py_out)
 protoc_args.append('--cpp_zippylog_out=%s' % cpp_out)
+protoc_args.append('--lua_out=%s' % lua_out)
 
 protoc_args.extend(message_files)
 
+luaprotobuf_path = join(dirname(__file__), '..', 'external', 'lua-protobuf')
+if not exists(luaprotobuf_path):
+    print 'lua-protobuf project not found'
+    exit(1)
+
 env = os.environ
 env['ZIPPYLOG_STATE_FILE'] = state_file
-env['PATH'] = ':'.join([dirname(__file__), env['PATH']])
+env['PATH'] = ':'.join([dirname(__file__), luaprotobuf_path, env['PATH']])
 
 if options.cpp_namespace:
     env['ZIPPYLOG_CPP_MESSAGES_NAMESPACE'] = options.cpp_namespace
@@ -96,3 +105,6 @@ for root, dirs, files in os.walk(py_out):
     if not exists(init):
         with open(init, 'w') as fh:
             pass
+
+print 'generated files are in %s' % out_dir
+exit(0)

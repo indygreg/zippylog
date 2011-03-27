@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-#  Copyright 2010 Gregory Szorc
+#  Copyright 2011 Gregory Szorc
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -60,5 +60,14 @@ for root, dirs, files in walk(join(out_dir, 'cpp', 'zippylog')):
         src = join(root, f)
         dst = src[len(out_dir)+5:]
         copy2(src, join(base_dir, 'src', dst))
+
+for root, dirs, files in walk(join(out_dir, 'lua', 'zippylog')):
+    for f in filter(lambda x: splitext(x)[1] in ['.h', '.cc'], files):
+        src = join(root, f)
+        dst = src[len(out_dir)+5:]
+        copy2(src, join(base_dir, 'src', dst))
+
+copy2(join(out_dir, 'lua', 'lua-protobuf.h'), join(base_dir, 'src', 'lua-protobuf.h'))
+copy2(join(out_dir, 'lua', 'lua-protobuf.cc'), join(base_dir, 'src', 'lua-protobuf.cc'))
 
 rmtree(out_dir)
