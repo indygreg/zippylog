@@ -12,8 +12,6 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#pragma once
-
 #include <zippylog/client.hpp>
 #include <zippylog/util.hpp>
 
@@ -159,7 +157,7 @@ int ShowStoreInfo(vector<Client *> &clients)
 }
 
 // TODO actually do something
-void MirrorCallback(const string & path, uint64 start_offset, StreamSegment & segment, void * data)
+void MirrorCallback(const string & path, uint64 start_offset, StreamSegment & segment, void *)
 {
     cout << path << ": " << start_offset << "-" << segment.EndOffset << endl;
 }
@@ -167,13 +165,13 @@ void MirrorCallback(const string & path, uint64 start_offset, StreamSegment & se
 int Mirror(vector<Client *> &clients, vector<StoreMirrorState> &states)
 {
     if (!states.size()) {
-        for (int i = 0; i < clients.size(); i++) {
+        for (size_t i = 0; i < clients.size(); i++) {
             StoreMirrorState s;
             states.push_back(s);
         }
     }
 
-    for (int i = 0; i < clients.size(); i++) {
+    for (size_t i = 0; i < clients.size(); i++) {
         clients[i]->Mirror(states[i], MirrorCallback, NULL);
     }
 
