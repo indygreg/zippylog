@@ -78,14 +78,14 @@ static bool ParseCommandArguments(
     // get rid of first element, the program name
     args.erase(args.begin());
 
-    for (int i = 0; i < args.size(); i++) {
+    for (size_t i = 0; i < args.size(); i++) {
         if (args[i][0] == '-') {
             error = "unrecognized argument: " + args[i];
             return false;
         }
     }
 
-    for (int i = 0; i < args.size(); i++) {
+    for (size_t i = 0; i < args.size(); i++) {
         string arg = args[i];
 
         ZippylogcatSource source;
@@ -121,6 +121,8 @@ bool ProcessFilename(string filename)
         while (is.ReadEnvelope(e, read)) {
             cout << e.ToString();
         }
+
+        return true;
     }
     catch (::std::exception e) {
         cerr << "Exception when processing file: " << e.what() << endl;
@@ -146,7 +148,7 @@ int main(int argc, const char * const argv[])
             return 1;
         }
 
-        for (int i = 0; i < params.sources.size(); i++) {
+        for (size_t i = 0; i < params.sources.size(); i++) {
             ZippylogcatSource source = params.sources[i];
 
             if (source.type == ZippylogcatSource::FILENAME) {
