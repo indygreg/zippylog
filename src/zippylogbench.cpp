@@ -106,7 +106,7 @@ static bool ParseCommandArguments(
         }
     }
 
-    for (int i = 0; i < args.size(); i++) {
+    for (size_t i = 0; i < args.size(); i++) {
         string arg = args[i];
         if (arg == "--all") {
             params.do_all = true;
@@ -128,7 +128,7 @@ void print_result(string what, uint64 microseconds, uint64 ops)
     cout << what << " " << rate << "/s" << endl;
 }
 
-void run_lua_function_calls(ZippylogbenchParams &params)
+void run_lua_function_calls(ZippylogbenchParams &)
 {
     lua_State *L = luaL_newstate();
     const char *function = "function test()\n    return nil\nend";
@@ -141,7 +141,7 @@ void run_lua_function_calls(ZippylogbenchParams &params)
     TIMER_END("lua.pcall_empty_function");
 }
 
-void zmq_socket_send_recv(char *address, int sender_type, int receiver_type, int message_size, int iterations, char *name)
+void zmq_socket_send_recv(const char *address, int sender_type, int receiver_type, int message_size, int iterations, const char *name)
 {
     ::zmq::context_t ctx(1);
     ::zmq::socket_t sender(ctx, sender_type);
@@ -160,7 +160,7 @@ void zmq_socket_send_recv(char *address, int sender_type, int receiver_type, int
 }
 
 
-void run_zmq_benches(ZippylogbenchParams &params)
+void run_zmq_benches(ZippylogbenchParams &)
 {
     TIMER_START(1000000);
     ::zmq::message_t *msg = new ::zmq::message_t();
@@ -195,7 +195,7 @@ void run_zmq_benches(ZippylogbenchParams &params)
     zmq_socket_send_recv("inproc://05", ZMQ_PUSH, ZMQ_PULL, 1000000, 100000, "zmq.socket.inproc.pushpull.1000000_byte_message");
 }
 
-void run_envelope_benches(ZippylogbenchParams &params)
+void run_envelope_benches(ZippylogbenchParams &)
 {
     TIMER_START(1000000);
     Envelope *e = new Envelope();
@@ -274,7 +274,7 @@ void client_ping_callback(void *data) {
     (*i)++;
 }
 
-void run_server_benches(ZippylogbenchParams &params)
+void run_server_benches(ZippylogbenchParams &)
 {
     ::zmq::context_t ctx(3);
 
