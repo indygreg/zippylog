@@ -22,6 +22,9 @@ using ::std::string;
 using ::zippylog::lua::LuaState;
 using ::zippylog::lua::LoadStringResult;
 
+namespace zippylog {
+namespace lua {
+
 TEST(LuaTest, SimpleExecution)
 {
     LuaState l;
@@ -33,6 +36,57 @@ TEST(LuaTest, DetectBadCode)
 {
     LuaState l;
     EXPECT_FALSE(l.LoadLuaCode("function foo(32r"));
+}
+
+TEST(LuaTest, EnvelopeConstruction)
+{
+    LuaState l;
+    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()"));
+}
+
+TEST(LuaTest, EnvelopeApi)
+{
+    LuaState l;
+
+    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()"));
+    EXPECT_TRUE(l.LoadLuaCode("count = e:message_count()"));
+    int64 ivalue = -100;
+    EXPECT_TRUE(l.GetGlobal("count", ivalue));
+    EXPECT_EQ(0, ivalue);
+
+    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
+    EXPECT_TRUE(l.GetGlobal("count", ivalue));
+    EXPECT_EQ(0, ivalue);
+
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag()"));
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(0)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(1)"));
+    EXPECT_TRUE(l.LoadLuaCode("e:add_tag(\"foo\")"));
+    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
+    EXPECT_TRUE(l.GetGlobal("count", ivalue));
+    EXPECT_EQ(1, ivalue);
+
+    string svalue;
+    EXPECT_TRUE(l.LoadLuaCode("tag = e:get_tag(1)"));
+    EXPECT_TRUE(l.GetGlobal("tag", svalue));
+    EXPECT_EQ("foo", svalue);
+
+    EXPECT_FALSE(l.LoadLuaCode("tag = e:get_tag(2)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:add_tag()"));
+
+    EXPECT_TRUE(l.LoadLuaCode("size = e:serialized_byte_size()"));
+    EXPECT_TRUE(l.GetGlobal("size", ivalue));
+    EXPECT_EQ(14, ivalue);
+
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration()"));
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(0)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(1)"));
+
+    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_TRUE(l.LoadLuaCode("e:set_string_value(\"bar\")"));
+    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_TRUE(l.GetGlobal("s", svalue));
+    EXPECT_EQ("bar", svalue);
 }
 
 TEST(LuaTest, DetectLoadString)
@@ -268,3 +322,5 @@ TEST(LuaTest, LoadStringTableThenStrings)
 
 // TODO need tests for protocol buffer message and envelope returns
 // but, we need code for that first
+
+}} // namespaces

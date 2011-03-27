@@ -208,10 +208,22 @@ class ZIPPYLOG_EXPORT Envelope {
             return this->envelope.ByteSize();
         }
 
+        /// Whether the envelope has a simple string value
+        inline bool HasStringValue() const
+        {
+            return this->envelope.has_string_value();
+        }
+
         /// Obtains the string value field on the envelope
         inline const ::std::string & GetStringValueField() const
         {
             return this->envelope.string_value();
+        }
+
+        /// Sets the string value field for the envelope
+        inline void SetStringValueField(const ::std::string &s)
+        {
+            this->envelope.set_string_value(s);
         }
 
         /// Obtain the protocol buffer message at given index

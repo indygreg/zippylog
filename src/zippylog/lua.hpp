@@ -23,6 +23,8 @@ extern "C" {
 #include <lauxlib.h>
 }
 
+#include <gtest/gtest_prod.h>
+
 #include <string>
 #include <vector>
 
@@ -159,6 +161,25 @@ protected:
     bool PushFilterFunction();
     bool DetermineCapabilities();
 
+    /// Initializes a state instance
+    ///
+    /// Registers zippylog types, etc
+    void InitializeState();
+
+    /// Registers the zippylog.envelope type with the interpreter
+    int RegisterEnvelopeType();
+
+    /// Obtain the integer value of a global variable
+    ///
+    /// This is a convenience method. It likely has no use outside of testing
+    bool GetGlobal(const ::std::string &s, int64 &value);
+
+    /// Obtain the string value of a global variable
+    ///
+    /// This is a convenience method and likely has no use outside of testing
+    bool GetGlobal(const ::std::string &s, ::std::string &value);
+
+    /// Member variables
     lua_State *L;
     bool memory_exceeded;
     uint32 memory_ceiling;
@@ -172,6 +193,8 @@ protected:
 private:
     LuaState(const LuaState &);
     LuaState & operator=(const LuaState &);
+
+    FRIEND_TEST(LuaTest, EnvelopeApi);
 };
 
 }} // end namespaces

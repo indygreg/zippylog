@@ -17,12 +17,58 @@ Lua interpreters inside zippylog either have no libraries or very few libraries 
 
 Libraries can be enabled through various mechanisms. See the process documentation for the specifics.
 
-# Envelope and Message API
+# Envelope API
 
-You'll often encounter Zippylog envelopes and individual messages inside Lua.
-Here is what you can do with the envelope API:
+You'll likely encounter a zippylog envelope inside Lua. Envelopes are typically passed as function parameters or returned as a result of an operation.
 
+Envelopes can be created in the following manner:
 
+    -- construct a new, empty envelope
+    -- equivalent to the default constructor in C++
+    e = zippylog.envelope.new()
+
+Envelope instances in Lua have the following API:
+
+    -- assuming our envelope instance is stored in the local variable, e
+
+    -- obtain the serialized value of the envelope (as string)
+    serialized = e:serialize()
+
+    -- obtain the number of messages embedded in the envelope
+    count = e:message_count()
+
+    -- obtain the namespace and type of the message at offset i, where i starts at 1
+    namespace, type = e:message_enumeration(i)
+
+    -- obtain the number of tags on the envelope
+    count = e:tag_count()
+
+    -- add a string tag to the envelope
+    e:add_tag("foo")
+
+    -- obtain the tag at offset i, where i starts at 1
+    tag = e:get_tag(i)
+
+    -- obtain the size of the serialized envelope
+    size = e:serialized_byte_size()
+
+    -- obtain the value in the string_value field or nil if not set
+    s = e:get_string_value()
+
+    -- set the string value to the specified string, s
+    e:set_string_value(s)
+
+    -- obtain the message at offset i, where i starts at 1
+    message = e:get_message(i)
+
+    -- add a message instance (see below for API) to an envelope
+    e:add_message(m)
+
+# Message API
+
+Messages (the things inside envelopes) can be interacted with inside Lua.
+
+Messages are protocol buffer message types. Therefore, their behavior is mostly governed by the [lua-protobuf](https://github.com/indygreg/lua-protobuf) project.
 
 # Callback Functions
 
