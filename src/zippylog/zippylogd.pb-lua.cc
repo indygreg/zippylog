@@ -124,7 +124,22 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::BrokerStartup * msg = new ::zippylog::zippylogd::BrokerStartup();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_gc(lua_State *L)
@@ -136,7 +151,6 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
@@ -282,7 +296,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_listen_endpoints(lua_State
             return luaL_error(L, "required 2 arguments not passed to function");
     }
     lua_Integer index = luaL_checkinteger(L, 2);
-    size_t current_size = m->listen_endpoints_size();
+    int current_size = m->listen_endpoints_size();
     if (index < 1 || index > current_size + 1) {
         return luaL_error(L, "index must be between 1 and %d", current_size + 1);
     }
@@ -374,7 +388,22 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::BrokerShutdown * msg = new ::zippylog::zippylogd::BrokerShutdown();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_gc(lua_State *L)
@@ -386,7 +415,6 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
@@ -517,7 +545,22 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::BrokerReceiveClientMessage * msg = new ::zippylog::zippylogd::BrokerReceiveClientMessage();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_gc(lua_State *L)
@@ -529,7 +572,6 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
@@ -620,7 +662,22 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::BrokerFlushOutputStreams * msg = new ::zippylog::zippylogd::BrokerFlushOutputStreams();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_gc(lua_State *L)
@@ -632,7 +689,6 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
@@ -767,7 +823,22 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::StoreWatcherStartup * msg = new ::zippylog::zippylogd::StoreWatcherStartup();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_gc(lua_State *L)
@@ -779,7 +850,6 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
@@ -914,7 +984,22 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_new(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_parsefromstring(lua_State *L)
 {
-    assert(0);
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::zippylogd::StoreWatcherShutdown * msg = new ::zippylog::zippylogd::StoreWatcherShutdown();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_setmetatable(L, -2);
     return 1;
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_gc(lua_State *L)
@@ -926,7 +1011,6 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_gc(lua_State *L)
         mud->msg = NULL;
         return 0;
     }
-    
     if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
         delete mud->msg;
         mud->msg = NULL;
