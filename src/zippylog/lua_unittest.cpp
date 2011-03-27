@@ -308,7 +308,7 @@ TEST(LuaTest, LoadStringTableThenStrings)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
-    EXPECT_TRUE(result.execution_success);
+    ASSERT_TRUE(result.execution_success);
 
     EXPECT_TRUE(result.has_bucket);
     EXPECT_STREQ("buck", result.bucket.c_str());
@@ -320,7 +320,84 @@ TEST(LuaTest, LoadStringTableThenStrings)
     EXPECT_STREQ("bar", result.strings[1].c_str());
 }
 
-// TODO need tests for protocol buffer message and envelope returns
+TEST(LuaTest, LoadStringSingleEnvelope)
+{
+    LuaState l;
+    ASSERT_TRUE(l.LoadStringLibrary());
+    string code = "function zippylog_load_string(s)\n"
+                  "  e = zippylog.envelope.new()\n"
+                  "  e:set_string_value(string.reverse(s))\n"
+                  "  return e\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+
+    LoadStringResult result;
+    ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_TRUE(result.execution_success);
+
+    EXPECT_FALSE(result.has_bucket);
+    EXPECT_FALSE(result.has_set);
+
+    EXPECT_EQ(LoadStringResult::ENVELOPE, result.return_type);
+    ASSERT_EQ(1, result.envelopes.size());
+    EXPECT_EQ("oof", result.envelopes[0].GetStringValueField());
+}
+
+TEST(LuaTest, LoadStringMultipleEnvelopes)
+{
+    LuaState l;
+    string code = "function zippylog_load_string(s)\n"
+                  "  e1 = zippylog.envelope.new()\n"
+                  "  e2 = zippylog.envelope.new()\n"
+                  "  e3 = zippylog.envelope.new()\n"
+                  "  e1:set_string_value(\"foo\")\n"
+                  "  e2:set_string_value(\"bar\")\n"
+                  "  e3:set_string_value(\"baz\")\n"
+                  "  return e1, e2, e3\n"
+                  "end";
+    EXPECT_TRUE(l.LoadLuaCode(code));
+
+    LoadStringResult result;
+    ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    ASSERT_TRUE(result.execution_success);
+
+    EXPECT_EQ(LoadStringResult::ENVELOPE, result.return_type);
+    ASSERT_EQ(3, result.envelopes.size());
+    EXPECT_EQ(0, result.strings.size());
+    EXPECT_EQ("foo", result.envelopes[0].GetStringValueField());
+    EXPECT_EQ("bar", result.envelopes[1].GetStringValueField());
+    EXPECT_EQ("baz", result.envelopes[2].GetStringValueField());
+}
+
+TEST(LuaTest, LoadStringTableThenEnvelopes)
+{
+    LuaState l;
+    string code = "function zippylog_load_string(s)\n"
+                  "  e1 = zippylog.envelope.new()\n"
+                  "  e2 = zippylog.envelope.new()\n"
+                  "  t = {}\n"
+                  "  t[\"bucket\"] = \"buck\"\n"
+                  "  t[\"set\"] = \"stream_set\"\n"
+                  "  return t, e1, e2\n"
+                  "end";
+
+    ASSERT_TRUE(l.LoadLuaCode(code));
+
+    LoadStringResult result;
+    ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    ASSERT_TRUE(result.execution_success);
+
+    EXPECT_EQ(LoadStringResult::ENVELOPE, result.return_type);
+    EXPECT_TRUE(result.has_bucket);
+    EXPECT_TRUE(result.has_set);
+
+    EXPECT_EQ("buck", result.bucket);
+    EXPECT_EQ("stream_set", result.set);
+    ASSERT_EQ(2, result.envelopes.size());
+}
+
+// TODO need tests for protocol buffer message returns
 // but, we need code for that first
 
 }} // namespaces

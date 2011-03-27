@@ -395,7 +395,41 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
             continue;
         }
 
-        // TODO handle envelope and message cases
+        void *ud = lua_touserdata(this->L, i);
+        if (ud == NULL) {
+            result.return_type = result.INVALID;
+            break;
+        }
+
+        if (lua_getmetatable(this->L, i) == 0) {
+            result.return_type = result.INVALID;
+            break;
+        }
+
+        // is it an envelope type
+        lua_getfield(this->L, LUA_REGISTRYINDEX, LUA_ENVELOPE_METHOD_TABLENAME);
+        if (lua_rawequal(this->L, -2, -1)) {
+            // don't need the metatables
+            lua_pop(this->L, 2);
+
+            if (got_type && result.return_type != result.ENVELOPE) {
+                result.return_type = result.INVALID;
+                goto LOAD_STRING_POP_AND_RETURN;
+            }
+
+            envelope_udata *ed = (envelope_udata *)ud;
+
+            // we copy the envelope since poorly designed Lua scripts could
+            // do evil things with the envelope in Lua land and we don't want
+            // that to impact us here
+            result.envelopes.push_back(Envelope(*ed->e));
+
+            result.return_type = result.ENVELOPE;
+            got_type = true;
+            continue;
+        }
+
+        // TODO handle message case
         result.return_type = result.INVALID;
         break;
     }
