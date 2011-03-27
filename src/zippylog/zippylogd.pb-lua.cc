@@ -16,16 +16,6 @@ extern "C" { // make sure functions treated with C naming
 #endif
 
 #include <string>
-
-// this represents Lua udata for a protocol buffer message
-// we record where a message came from so we can GC it properly
-typedef struct msg_udata { // confuse over-simplified pretty-printer
-    ::google::protobuf::Message * msg;
-    bool lua_owns;
-    lua_protobuf_gc_callback gc_callback;
-    void * callback_data;
-} msg_udata;
-
 using ::std::string;
 
 int lua_protobuf_zippylog_zippylogd_open(lua_State *L)
@@ -82,6 +72,8 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_open(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, BrokerStartup_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.BrokerStartup", BrokerStartup_functions);
     lua_pop(L, 1);
     return 1;
@@ -90,7 +82,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_open(lua_State *L)
 
 bool lua_protobuf_zippylog_zippylogd_BrokerStartup_pushcopy(lua_State *L, const ::zippylog::zippylogd::BrokerStartup &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerStartup(from);
     ud->gc_callback = NULL;
@@ -101,7 +93,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerStartup_pushcopy(lua_State *L, const 
 }
 bool lua_protobuf_zippylog_zippylogd_BrokerStartup_pushreference(lua_State *L, ::zippylog::zippylogd::BrokerStartup *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -112,7 +104,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerStartup_pushreference(lua_State *L, :
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerStartup();
     ud->gc_callback = NULL;
@@ -133,7 +125,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_parsefromstring(lua_State *L)
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -144,7 +136,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_parsefromstring(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -160,14 +152,14 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -178,7 +170,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_serialized(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     m->clear_id();
     return 0;
@@ -186,7 +178,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -195,7 +187,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
@@ -214,7 +206,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
@@ -222,7 +214,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_has_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_store_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     m->clear_store_path();
     return 0;
@@ -230,7 +222,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_store_path(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_store_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     string s = m->store_path();
     m->has_store_path() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -239,7 +231,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_store_path(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_store_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_store_path();
@@ -258,7 +250,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_store_path(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_has_store_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     lua_pushboolean(L, m->has_store_path());
     return 1;
@@ -266,7 +258,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_has_store_path(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_listen_endpoints(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     m->clear_listen_endpoints();
     return 0;
@@ -274,7 +266,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_clear_listen_endpoints(lua_Sta
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_listen_endpoints(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     if (lua_gettop(L) != 2) {
         return luaL_error(L, "missing required numeric argument");
@@ -290,7 +282,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_get_listen_endpoints(lua_State
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_listen_endpoints(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     if (lua_gettop(L) != 3) {
             return luaL_error(L, "required 2 arguments not passed to function");
@@ -316,7 +308,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerStartup_set_listen_endpoints(lua_State
 
 int lua_protobuf_zippylog_zippylogd_BrokerStartup_size_listen_endpoints(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerStartup");
     ::zippylog::zippylogd::BrokerStartup *m = (::zippylog::zippylogd::BrokerStartup *)mud->msg;
     int size = m->listen_endpoints_size();
     lua_pushinteger(L, size);
@@ -346,6 +338,8 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_open(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, BrokerShutdown_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.BrokerShutdown", BrokerShutdown_functions);
     lua_pop(L, 1);
     return 1;
@@ -354,7 +348,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_open(lua_State *L)
 
 bool lua_protobuf_zippylog_zippylogd_BrokerShutdown_pushcopy(lua_State *L, const ::zippylog::zippylogd::BrokerShutdown &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerShutdown(from);
     ud->gc_callback = NULL;
@@ -365,7 +359,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerShutdown_pushcopy(lua_State *L, const
 }
 bool lua_protobuf_zippylog_zippylogd_BrokerShutdown_pushreference(lua_State *L, ::zippylog::zippylogd::BrokerShutdown *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -376,7 +370,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerShutdown_pushreference(lua_State *L, 
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerShutdown();
     ud->gc_callback = NULL;
@@ -397,7 +391,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_parsefromstring(lua_State *L)
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -408,7 +402,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_parsefromstring(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -424,14 +418,14 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -442,7 +436,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_serialized(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     m->clear_id();
     return 0;
@@ -450,7 +444,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_clear_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -459,7 +453,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_get_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
@@ -478,7 +472,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerShutdown_set_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_BrokerShutdown_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerShutdown");
     ::zippylog::zippylogd::BrokerShutdown *m = (::zippylog::zippylogd::BrokerShutdown *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
@@ -503,6 +497,8 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_open(lua_State *L
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, BrokerReceiveClientMessage_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.BrokerReceiveClientMessage", BrokerReceiveClientMessage_functions);
     lua_pop(L, 1);
     return 1;
@@ -511,7 +507,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_open(lua_State *L
 
 bool lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_pushcopy(lua_State *L, const ::zippylog::zippylogd::BrokerReceiveClientMessage &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerReceiveClientMessage(from);
     ud->gc_callback = NULL;
@@ -522,7 +518,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_pushcopy(lua_Sta
 }
 bool lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_pushreference(lua_State *L, ::zippylog::zippylogd::BrokerReceiveClientMessage *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -533,7 +529,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_pushreference(lu
 }
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerReceiveClientMessage();
     ud->gc_callback = NULL;
@@ -554,7 +550,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_parsefromstring(l
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -565,7 +561,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_parsefromstring(l
 }
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
     ::zippylog::zippylogd::BrokerReceiveClientMessage *m = (::zippylog::zippylogd::BrokerReceiveClientMessage *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -581,14 +577,14 @@ int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
     ::zippylog::zippylogd::BrokerReceiveClientMessage *m = (::zippylog::zippylogd::BrokerReceiveClientMessage *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerReceiveClientMessage_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerReceiveClientMessage");
     ::zippylog::zippylogd::BrokerReceiveClientMessage *m = (::zippylog::zippylogd::BrokerReceiveClientMessage *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -620,6 +616,8 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_open(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, BrokerFlushOutputStreams_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.BrokerFlushOutputStreams", BrokerFlushOutputStreams_functions);
     lua_pop(L, 1);
     return 1;
@@ -628,7 +626,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_open(lua_State *L)
 
 bool lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_pushcopy(lua_State *L, const ::zippylog::zippylogd::BrokerFlushOutputStreams &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerFlushOutputStreams(from);
     ud->gc_callback = NULL;
@@ -639,7 +637,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_pushcopy(lua_State
 }
 bool lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_pushreference(lua_State *L, ::zippylog::zippylogd::BrokerFlushOutputStreams *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -650,7 +648,7 @@ bool lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_pushreference(lua_
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::BrokerFlushOutputStreams();
     ud->gc_callback = NULL;
@@ -671,7 +669,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_parsefromstring(lua
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -682,7 +680,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_parsefromstring(lua
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -698,14 +696,14 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -716,7 +714,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_serialized(lua_Stat
 }
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     m->clear_id();
     return 0;
@@ -724,7 +722,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_clear_id(lua_State 
 
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -733,7 +731,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_get_id(lua_State *L
 
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
@@ -752,7 +750,7 @@ int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_set_id(lua_State *L
 
 int lua_protobuf_zippylog_zippylogd_BrokerFlushOutputStreams_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.BrokerFlushOutputStreams");
     ::zippylog::zippylogd::BrokerFlushOutputStreams *m = (::zippylog::zippylogd::BrokerFlushOutputStreams *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
@@ -781,6 +779,8 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_open(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, StoreWatcherStartup_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.StoreWatcherStartup", StoreWatcherStartup_functions);
     lua_pop(L, 1);
     return 1;
@@ -789,7 +789,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_open(lua_State *L)
 
 bool lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_pushcopy(lua_State *L, const ::zippylog::zippylogd::StoreWatcherStartup &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::StoreWatcherStartup(from);
     ud->gc_callback = NULL;
@@ -800,7 +800,7 @@ bool lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_pushcopy(lua_State *L, 
 }
 bool lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_pushreference(lua_State *L, ::zippylog::zippylogd::StoreWatcherStartup *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -811,7 +811,7 @@ bool lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_pushreference(lua_State
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::StoreWatcherStartup();
     ud->gc_callback = NULL;
@@ -832,7 +832,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_parsefromstring(lua_Stat
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -843,7 +843,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_parsefromstring(lua_Stat
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -859,14 +859,14 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -877,7 +877,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_serialized(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     m->clear_id();
     return 0;
@@ -885,7 +885,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_clear_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -894,7 +894,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_get_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
@@ -913,7 +913,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_set_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherStartup_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherStartup");
     ::zippylog::zippylogd::StoreWatcherStartup *m = (::zippylog::zippylogd::StoreWatcherStartup *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
@@ -942,6 +942,8 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_open(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, StoreWatcherShutdown_methods);
+    lua_pushboolean(L, 1);
+    lua_setfield(L, -1, "_isprotobuf");
     luaL_register(L, "protobuf.zippylog.zippylogd.StoreWatcherShutdown", StoreWatcherShutdown_functions);
     lua_pop(L, 1);
     return 1;
@@ -950,7 +952,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_open(lua_State *L)
 
 bool lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_pushcopy(lua_State *L, const ::zippylog::zippylogd::StoreWatcherShutdown &from)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::StoreWatcherShutdown(from);
     ud->gc_callback = NULL;
@@ -961,7 +963,7 @@ bool lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_pushcopy(lua_State *L,
 }
 bool lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_pushreference(lua_State *L, ::zippylog::zippylogd::StoreWatcherShutdown *msg, lua_protobuf_gc_callback f, void *data)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
@@ -972,7 +974,7 @@ bool lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_pushreference(lua_Stat
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_new(lua_State *L)
 {
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = new ::zippylog::zippylogd::StoreWatcherShutdown();
     ud->gc_callback = NULL;
@@ -993,7 +995,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_parsefromstring(lua_Sta
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
-    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    lua_protobuf_udata_t * ud = (lua_protobuf_udata_t *)lua_newuserdata(L, sizeof(lua_protobuf_udata_t));
     ud->lua_owns = true;
     ud->msg = msg;
     ud->gc_callback = NULL;
@@ -1004,7 +1006,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_parsefromstring(lua_Sta
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
@@ -1020,14 +1022,14 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_gc(lua_State *L)
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     m->Clear();
     return 0;
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
@@ -1038,7 +1040,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_serialized(lua_State *L
 }
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     m->clear_id();
     return 0;
@@ -1046,7 +1048,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_clear_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
@@ -1055,7 +1057,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_get_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
@@ -1074,7 +1076,7 @@ int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_set_id(lua_State *L)
 
 int lua_protobuf_zippylog_zippylogd_StoreWatcherShutdown_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
+    lua_protobuf_udata_t * mud = (lua_protobuf_udata_t *)luaL_checkudata(L, 1, "protobuf_.zippylog.zippylogd.StoreWatcherShutdown");
     ::zippylog::zippylogd::StoreWatcherShutdown *m = (::zippylog::zippylogd::StoreWatcherShutdown *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
