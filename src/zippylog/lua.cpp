@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/lua.hpp>
+#include <lua-protobuf.h>
 
 #include <stdlib.h>
 #include <string.h>
@@ -429,7 +430,11 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
             continue;
         }
 
+        // remove metatables
+        lua_pop(this->L, 2);
+
         // TODO handle message case
+
         result.return_type = result.INVALID;
         break;
     }
