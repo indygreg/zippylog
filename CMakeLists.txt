@@ -134,6 +134,7 @@ set(libzippylog-test_sources
     src/zippylog/device/streamer_unittest.cpp
     src/zippylog/device/string_loader_unittest.cpp
     src/zippylog/envelope_unittest.cpp
+    src/zippylog/lua_unittest.cpp
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
