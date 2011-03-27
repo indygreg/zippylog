@@ -89,14 +89,19 @@ set(libzippylog_sources
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
     src/zippylog/message.pb.cc
+    src/zippylog/message.pb-lua.cc
     src/zippylog/message_registrar.cpp
     src/zippylog/messages.cpp
     src/zippylog/platform.cpp
     src/zippylog/protocol.pb.cc
+    src/zippylog/protocol.pb-lua.cc
     src/zippylog/protocol/request.pb.cc
+    src/zippylog/protocol/request.pb-lua.cc
     src/zippylog/protocol/response.pb.cc
+    src/zippylog/protocol/response.pb-lua.cc
     src/zippylog/request_processor.cpp
     src/zippylog/request_processor.pb.cc
+    src/zippylog/request_processor.pb-lua.cc
     src/zippylog/store.cpp
     src/zippylog/store_watcher.cpp
     src/zippylog/stream.cpp
@@ -104,9 +109,9 @@ set(libzippylog_sources
     src/zippylog/zeromq.cpp
     # TODO remove once not needed by source
     src/zippylog/zippylogd.pb.cc
+    src/zippylog/zippylogd.pb-lua.cc
     src/zippylog/zippylog.cpp
-    src/zippylog/zippylogd.pb.cc
-
+    src/lua-protobuf.cc
 )
 set(libzippylog_link_libraries
     ${LUA_LIBRARIES}
