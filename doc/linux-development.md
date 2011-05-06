@@ -6,7 +6,7 @@ This document describes how to get started with zippylog development on Linux.
 2. Install required dependencies
 3. Build
 
-# Installing Dependecies
+# Installing Dependencies
 
 zippylog on Linux requires the following dependencies:
 
@@ -73,6 +73,12 @@ Google Test is zippylog's C++ unit testing framework. Some distros have a packag
 On Ubuntu:
 
     apt-get install libgtest0 libgtest-dev
+
+## Misc
+
+libuuid is not available on all systems by default. On Ubuntu:
+
+    apt-get install uuid-dev
 
 # Configuring and Compiling
 
