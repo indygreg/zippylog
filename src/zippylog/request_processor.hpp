@@ -100,7 +100,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         };
 
         RequestProcessor(RequestProcessorStartParams &params);
-        ~RequestProcessor();
+        virtual ~RequestProcessor();
 
         /// Runs the request processor
         /// Will listen for messages on the 0MQ socket specified in the start parameters

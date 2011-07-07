@@ -51,7 +51,7 @@ public:
     // Will not actually start the store watcher. To do that, execute
     // Run().
     StoreWatcher(StoreWatcherStartParams params);
-    ~StoreWatcher();
+    virtual ~StoreWatcher();
 
     // Run the store watcher
     //
