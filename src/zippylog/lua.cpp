@@ -25,6 +25,7 @@ extern "C" {
 using ::std::string;
 using ::zippylog::Envelope;
 
+#define ENVELOPE_FILTER_FUNCTION "zippylog_envelope_filter"
 #define LOAD_STRING_FUNCTION "zippylog_load_string"
 #define LUA_ENVELOPE_METHOD_TABLENAME "zippylog._envelope"
 #define LUA_ENVELOPE_FUNCTION_TABLENAME "zippylog.envelope"
@@ -277,8 +278,7 @@ bool LuaState::LoadStringLibrary()
 
 bool LuaState::DetermineCapabilities()
 {
-    // TODO need more robust logic here
-    lua_getglobal(this->L, "zippylog_envelope_filter");
+    lua_getglobal(this->L, ENVELOPE_FILTER_FUNCTION);
     this->have_envelope_filter = lua_isfunction(this->L, -1);
     lua_pop(this->L, 1);
 

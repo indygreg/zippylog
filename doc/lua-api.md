@@ -2,18 +2,15 @@ This document details how Lua code can operate within zippylog.
 
 # Parsing Lua Code
 
-When zippylog receives Lua code, it first loads it into a Lua interpreter. The code is compiled by the interpreter. It is highly likely that if the Lua code could not be compiled, the operation will abort immediately.
+When zippylog receives Lua code, it first loads it into a new Lua interpreter (or a state in Lua lingo). The code is compiled by the state. It is highly likely that if the Lua code could not be compiled, the operation will abort immediately or the requested operation will fail.
 
 After the Lua code is loaded, zippylog looks for specifically named variables in the global environment. These variables are Lua functions which represent callbacks that are executed at various phases or variables that tell zippylog how to execute.
 
-The heuristics for determining the abilities defined in your Lua code are as follows:
-
-1. Attempt to read the variable *zippylog_options* from the global environment. If this variable is defined and is a table, zippylog uses it to determine the code's abilities. See the section below for the format of this table. If this variable is a function, then it should return a table that defines the code's abilities.
-2. Test for existence of specifically named functions in the global environment. Abilities are detected by the presence of the functions it uses.
+*Future Improvement: determine capabilities from a table instead. i.e. don't pollute global namespace*
 
 # Available Libraries
 
-Lua interpreters inside zippylog either have no libraries or very few libraries loaded by default. This is a security feature. Since the process can run user-supplied code, we'd rather start with a secure system than an insecure one.
+Lua interpreters inside zippylog either have no libraries or very few libraries loaded by default. This is a security feature. Since the process can run user-supplied code, we'd rather start with a more secure system than a more insecure one.
 
 Libraries can be enabled through various mechanisms. See the process documentation for the specifics.
 
@@ -24,7 +21,7 @@ You'll likely encounter a zippylog envelope inside Lua. Envelopes are typically 
 Envelopes can be created in the following manner:
 
     -- construct a new, empty envelope
-    -- equivalent to the default constructor in C++
+    -- equivalent to the default constructor in the C++ API
     e = zippylog.envelope.new()
 
 Envelope instances in Lua have the following API:
@@ -72,9 +69,7 @@ Messages are protocol buffer message types. Therefore, their behavior is mostly 
 
 # Callback Functions
 
-In this section, we describe the various Lua functions that can be executed during processing.
-
-The function name is the default value looked for when no custom function name is defined using the *zippylog_options* table.
+In this section, we describe the various Lua functions that can be executed during processing. The section name is the function name that needs to exist in the global namespace for the capability to work.
 
 ## zippylog_load_string(string)
 
