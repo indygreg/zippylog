@@ -1,21 +1,16 @@
-This document describes the zippylog protocol as it relates to developers. The actual protocol definition is defined by the .proto source files and the documentation on the zippylog wiki.
+This document describes the zippylog protocol as it relates to developers. The actual protocol definition is defined by the .proto source files located in proto/ directory and the documentation on the zippylog wiki.
 
 # Design Guidelines
 
 ## Versioning
 
-The zippylog protocol is not strictly globally versioned (at least not yet). Instead, the 0MQ message format is versioned and individual messages can opt to have a verion identifier.
+The zippylog protocol is not strictly globally versioned (at least not yet). Instead, the 0MQ message format is versioned and individual request and response messages have a verion identifier in the message name.
 
-Protocol buffer messages constituting the protocol should be as backwards compatibile as possible and should leave the door open for future refactoring. This means a number of things:
-
-* declare fields as optional, never required
-* consider adding a _version_ field to the message that allows clients to tell which version features/semantics to allow/follow.
-
-If message cannot be versioned cleanly, create a new message type instead of hacking things into the existing message.
+The protocol buffer message definitions do not change once they are shipped in a stable release. The rationale here is backwards compatibility. If a message or the semantics need changed, a new message type should be created.
 
 ## Naming
 
-Request message names should be actions/verbs. Response messages should be things/nouns or state.
+Request message names should be actions/verbs. Response messages should be things/nouns or state. For both types of messages, a version identifier is typically added at the end of the message. e.g. *V1*.
 
 ## Limited Functionality
 

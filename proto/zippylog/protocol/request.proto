@@ -6,41 +6,33 @@
 
 package zippylog.protocol.request;
 
-// just pings the server to see if it is responding
+// pings the server to see if it is responding
 message Ping {}
 
 // requests the server to return a message that describes features (versions,
 // operations, capabilities, etc) it supports
-message GetFeatures {}
+message GetFeaturesV1 {}
 
 // Obtains information about the store to which the server is bound.
 //
 // Currently, servers can only be bound to one store, so we have no
 // parameters.
-message GetStoreInfo {
-    required uint32 version = 1;
-}
+message GetStoreInfoV1 {}
 
 // Obtain information about a specific bucket
-message GetBucketInfo {
-    required uint32 version = 1;
-    
+message GetBucketInfoV1 {
     // path to bucket whose info to obtain
-    optional string path = 2;
+    optional string path = 1;
 }
 
 // Obtain information about a specific stream set
-message GetStreamSetInfo {
-    required uint32 version = 1;
-    
-    optional string path = 2;
+message GetStreamSetInfoV1 {
+    optional string path = 1;
 }
 
 // Obtain information about a specific stream
-message GetStreamInfo {
-    required uint32 version = 1;
-    
-    optional string path = 2;
+message GetStreamInfoV1 {
+    optional string path = 1;
 }
 
 // request to download part of a stream
@@ -49,23 +41,21 @@ message GetStreamInfo {
 // in one request. These limits will override whatever is specified by the
 // client. Therefore, the limits in the request are merely a theoretical
 // maximum.
-message GetStream {
-    required uint32 version = 1;
-
+message GetStreamV1 {
     // path of stream to retrieve
-    optional string path = 2;
+    optional string path = 1;
 
     // offset from start of stream from which to start sending data
     // you should never "guess" the offset because the offset likely isn't
     // valid and the server may reject your request. instead, use the last
     // offset from a previous fetch
-    optional uint64 start_offset = 3;
+    optional uint64 start_offset = 2;
 
     // maximum number of bytes to send in response
-    optional uint32 max_response_bytes = 4;
+    optional uint32 max_response_bytes = 3;
 
     // maximum number of envelopes to receive
-    optional uint32 max_response_envelopes = 5;
+    optional uint32 max_response_envelopes = 4;
 }
 
 // writes 1 or more already serialized envelopes to a path in the store
@@ -74,15 +64,12 @@ message GetStream {
 // serialized envelope may or may not be deserialized on the server. Servers
 // may deserialize the envelope as part of verification as well as to append
 // writer information.
-message WriteEnvelope {
-    // the version of this message the client is sending
-    required uint32 version = 1;
-
+message WriteEnvelopeV1 {
     // store path to write to. must be stream set or stream
-    optional string path = 2;
+    optional string path = 1;
 
     // list of serialized envelopes to write
-    repeated bytes envelope = 3;
+    repeated bytes envelope = 2;
     
     // Whether to acknowledge the write
     //
@@ -92,7 +79,7 @@ message WriteEnvelope {
     // Even if acknowledgement is disabled, the server will still send an
     // error response if there was something wrong with the request or the
     // request could not be fulfilled.
-    optional bool acknowledge = 4 [default=true];
+    optional bool acknowledge = 3 [default=true];
     
     // Request synchronous writes
     //
@@ -103,67 +90,57 @@ message WriteEnvelope {
     // the queue.
     //
     // A true value implies acknowledge=true.
-    optional bool synchronous = 5 [default=false];
+    optional bool synchronous = 4 [default=false];
 }
 
 // writes an envelope from messages
-message WriteEnvelopeFromMessages {
-    required uint32 version = 1;
-
+message WriteEnvelopeFromMessagesV1 {
     // store path to write to. must be stream set or stream
-    optional string path = 2;
+    optional string path = 1;
 
     // list of serialized protocol buffer messages to write to a single
     // envelope
-    repeated bytes message = 3;
+    repeated bytes message = 2;
 
     // enumerations for protocol buffer messages
-    repeated uint32 message_namespace = 4 [packed=true];
-    repeated uint32 message_type = 5 [packed=true];
+    repeated uint32 message_namespace = 3 [packed=true];
+    repeated uint32 message_type = 4 [packed=true];
 }
 
 // subscribes the client to store changes
 // store changes describe changes to the store. this covers creating, deletion,
 // and modification of buckets, stream sets, and streams. it does not include
 // actual envelopes in streams
-message SubscribeStoreChanges {
-    required uint32 version = 1;
-
+message SubscribeStoreChangesV1 {
     // list of store paths to subscribe to
     // if you want to subscribe to the entire store, add the value "/"
-    repeated string path = 2;
+    repeated string path = 1;
 }
 
 // subscribes to newly-written envelopes
-message SubscribeEnvelopes {
-    required uint32 version = 1;
-
+message SubscribeEnvelopesV1 {
     // list of store paths to subscribe to
     // this can be individual streams, stream sets, buckets, or the entire
     // store ("/")
-    repeated string path = 2;
+    repeated string path = 1;
 
     // TODO add filtering
 
     // Lua code that defines functionality to be executed on the server
-    optional string lua_code = 3;
+    optional string lua_code = 2;
 }
 
 // clients need to send keepalive messages every N seconds or the server drops
 // the subscription. this is that keepalive message
-message SubscribeKeepalive {
-    required uint32 version = 1;
-
+message SubscribeKeepaliveV1 {
     // the subscription identifier to send the keepalive for
     // this identifier is issued by the server when it accepts the
     // subscription
-    optional bytes id = 2;
+    optional bytes id = 1;
 }
 
 // cancels a subscription
-message SubscribeCancel {
-    required uint32 version = 1;
-
+message SubscribeCancelV1 {
     // subscription identifier to cancel
-    optional bytes id = 2;
+    optional bytes id = 1;
 }
