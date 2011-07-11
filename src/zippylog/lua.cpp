@@ -13,6 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/lua.hpp>
+#include <zippylog/store.hpp>
 #include <lua-protobuf.h>
 
 #include <stdlib.h>
@@ -24,6 +25,7 @@ extern "C" {
 
 using ::std::string;
 using ::zippylog::Envelope;
+using ::zippylog::Store;
 
 #define SUBSCRIPTION_FILTER_ENVELOPE "zippylog_subscription_filter_envelope"
 #define SUBSCRIPTION_TIMER_INTERVAL "zippylog_subscription_timer_interval"
@@ -243,7 +245,15 @@ bool LuaState::SetMemoryCeiling(uint32 size)
 
 bool LuaState::LoadLuaCode(const string &code)
 {
-    if (luaL_dostring(this->L, code.c_str())) {
+    if (luaL_loadstring(this->L, code.c_str()) != 0) {
+        // error on top of stack
+        lua_pop(this->L, 1);
+        return false;
+    }
+
+    if (lua_pcall(L, 0, LUA_MULTRET, 0) != 0) {
+        // error on top of stack
+        lua_pop(this->L, 1);
         return false;
     }
 
@@ -265,6 +275,7 @@ bool LuaState::LoadFile(const string &filename, string &error)
 bool LuaState::LoadStringLibrary()
 {
     luaopen_string(this->L);
+    lua_pop(this->L, 1);
 
     return true;
 }
@@ -449,6 +460,46 @@ LOAD_STRING_POP_AND_RETURN:
     return true;
 }
 
+bool LuaState::ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const string &path, EnvelopeFilterResult &result)
+{
+    if (!this->have_subscription_envelope_filter) return false;
+
+    string bucket, stream_set, stream;
+    if (!Store::ParsePath(path, bucket, stream_set, stream)) {
+        // TODO is this right?
+        throw new Exception("unable to parse path. this should never happen");
+    }
+
+    // f(envelope, bucket, stream_set, stream)
+    lua_getglobal(this->L, SUBSCRIPTION_FILTER_ENVELOPE);
+    this->PushEnvelope(e);
+    lua_pushlstring(this->L, bucket.c_str(), bucket.length());
+    lua_pushlstring(this->L, stream_set.c_str(), stream_set.length());
+    lua_pushlstring(this->L, stream.c_str(), stream.length());
+
+    if (lua_pcall(this->L, 4, 1, 0) != 0) {
+        result.execution_success = false;
+        size_t len = 0;
+        const char *error = lua_tolstring(this->L, -1, &len);
+        result.lua_error = string(error, len);
+        lua_pop(this->L, 1);
+        return true;
+    }
+
+    result.execution_success = true;
+
+    if (!lua_isboolean(this->L, -1)) {
+        result.return_type = EnvelopeFilterResult::OTHER;
+        lua_pop(this->L, 1);
+        return true;
+    }
+
+    result.return_type = lua_toboolean(this->L, -1) ? EnvelopeFilterResult::BOOLTRUE : EnvelopeFilterResult::BOOLFALSE;
+    lua_pop(this->L, 1);
+
+    return true;
+}
+
 void LuaState::InitializeState()
 {
     this->RegisterEnvelopeType();
@@ -512,8 +563,18 @@ int LuaState::RegisterEnvelopeType()
     lua_setfield(this->L, -2, "__index");
     luaL_register(this->L, NULL, EnvelopeMethods);
     luaL_register(this->L, LUA_ENVELOPE_FUNCTION_TABLENAME, EnvelopeFunctions);
-    lua_pop(this->L, 1);
+    lua_pop(this->L, 2);
     return 1;
+}
+
+bool LuaState::PushEnvelope(const Envelope &e)
+{
+    envelope_udata *ud = (envelope_udata *)lua_newuserdata(L, sizeof(envelope_udata));
+    ud->e = new Envelope(e);
+    luaL_getmetatable(L, LUA_ENVELOPE_METHOD_TABLENAME);
+    lua_setmetatable(L, -2);
+
+    return true;
 }
 
 void * LuaState::LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize)

@@ -21,6 +21,7 @@
 using ::std::string;
 using ::zippylog::lua::LuaState;
 using ::zippylog::lua::LoadStringResult;
+using ::zippylog::lua::EnvelopeFilterResult;
 
 namespace zippylog {
 namespace lua {
@@ -28,20 +29,33 @@ namespace lua {
 TEST(LuaTest, SimpleExecution)
 {
     LuaState l;
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.LoadLuaCode("function test()\nreturn true\nend"));
-    EXPECT_FALSE(l.HasEnvelopeFilter());
+    EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_FALSE(l.HasLoadString());
+    EXPECT_FALSE(l.HasSubscriptionEnvelopeFilter());
+    EXPECT_FALSE(l.HasSubscriptionTimer());
+}
+
+TEST(LuaTest, LoadStringLibrary)
+{
+    LuaState l;
+    ASSERT_TRUE(l.LoadStringLibrary());
+    EXPECT_EQ(0, l.GetStackSize());
 }
 
 TEST(LuaTest, DetectBadCode)
 {
     LuaState l;
     EXPECT_FALSE(l.LoadLuaCode("function foo(32r"));
+    EXPECT_EQ(0, l.GetStackSize());
 }
 
 TEST(LuaTest, EnvelopeConstruction)
 {
     LuaState l;
     EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()"));
+    EXPECT_EQ(0, l.GetStackSize());
 }
 
 TEST(LuaTest, EnvelopeApi)
@@ -52,6 +66,7 @@ TEST(LuaTest, EnvelopeApi)
     EXPECT_TRUE(l.LoadLuaCode("count = e:message_count()"));
     int64 ivalue = -100;
     EXPECT_TRUE(l.GetGlobal("count", ivalue));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_EQ(0, ivalue);
 
     EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
@@ -59,32 +74,48 @@ TEST(LuaTest, EnvelopeApi)
     EXPECT_EQ(0, ivalue);
 
     EXPECT_FALSE(l.LoadLuaCode("e:get_tag()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(l.LoadLuaCode("e:get_tag(0)"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(l.LoadLuaCode("e:get_tag(1)"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.LoadLuaCode("e:add_tag(\"foo\")"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("count", ivalue));
     EXPECT_EQ(1, ivalue);
 
     string svalue;
     EXPECT_TRUE(l.LoadLuaCode("tag = e:get_tag(1)"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("tag", svalue));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_EQ("foo", svalue);
 
     EXPECT_FALSE(l.LoadLuaCode("tag = e:get_tag(2)"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(l.LoadLuaCode("e:add_tag()"));
+    EXPECT_EQ(0, l.GetStackSize());
 
     EXPECT_TRUE(l.LoadLuaCode("size = e:serialized_byte_size()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("size", ivalue));
     EXPECT_EQ(14, ivalue);
 
     EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(0)"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(1)"));
+    EXPECT_EQ(0, l.GetStackSize());
 
     EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.LoadLuaCode("e:set_string_value(\"bar\")"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("s", svalue));
     EXPECT_EQ("bar", svalue);
 }
@@ -97,6 +128,7 @@ TEST(LuaTest, DetectLoadString)
                   "end";
 
     EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.HasLoadString());
 }
 
@@ -111,6 +143,7 @@ TEST(LuaTest, LoadStringLuaError)
 
     LoadStringResult result;
     EXPECT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
 
     EXPECT_FALSE(result.execution_success);
     EXPECT_GT(result.lua_error.size(), 0);
@@ -123,9 +156,11 @@ TEST(LuaTest, LoadStringSingleNil)
                   "  return nil\n"
                   "end";
     EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_EQ(0, l.GetStackSize());
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -143,6 +178,7 @@ TEST(LuaTest, LoadStringMultipleNil)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -160,6 +196,7 @@ TEST(LuaTest, LoadStringTrue)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -177,6 +214,7 @@ TEST(LuaTest, LoadStringMultipleTrue)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -194,6 +232,7 @@ TEST(LuaTest, LoadStringFalse)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -211,6 +250,7 @@ TEST(LuaTest, LoadStringMultipleFalse)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -228,6 +268,8 @@ TEST(LuaTest, LoadStringSingleString)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -247,6 +289,7 @@ TEST(LuaTest, LoadStringMultipleStrings)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -267,6 +310,7 @@ TEST(LuaTest, LoadStringTableBucketThenString)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_TRUE(result.has_bucket);
@@ -287,6 +331,7 @@ TEST(LuaTest, LoadStringTableBucketAndSetThenString)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_TRUE(result.has_bucket);
@@ -308,6 +353,7 @@ TEST(LuaTest, LoadStringTableThenStrings)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     ASSERT_TRUE(result.execution_success);
 
     EXPECT_TRUE(result.has_bucket);
@@ -334,6 +380,7 @@ TEST(LuaTest, LoadStringSingleEnvelope)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(result.execution_success);
 
     EXPECT_FALSE(result.has_bucket);
@@ -360,6 +407,7 @@ TEST(LuaTest, LoadStringMultipleEnvelopes)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     ASSERT_TRUE(result.execution_success);
 
     EXPECT_EQ(LoadStringResult::ENVELOPE, result.return_type);
@@ -386,6 +434,7 @@ TEST(LuaTest, LoadStringTableThenEnvelopes)
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
+    EXPECT_EQ(0, l.GetStackSize());
     ASSERT_TRUE(result.execution_success);
 
     EXPECT_EQ(LoadStringResult::ENVELOPE, result.return_type);
@@ -399,5 +448,92 @@ TEST(LuaTest, LoadStringTableThenEnvelopes)
 
 // TODO need tests for protocol buffer message returns
 // but, we need code for that first
+
+TEST(LuaTest, DetectSubscriptionEnvelopeFilter)
+{
+    LuaState l;
+    string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
+                  "  return true\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
+    EXPECT_EQ(0, l.GetStackSize());
+}
+
+TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
+{
+    LuaState l;
+    string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
+                  "  return foo.bar()\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
+
+    Envelope e;
+    EnvelopeFilterResult result;
+
+    EXPECT_TRUE(l.ExecuteSubscriptionEnvelopeFilter(e, "/buck/set/stream", result));
+        EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_FALSE(result.execution_success);
+}
+
+TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
+{
+    LuaState l;
+    string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
+                  "  return true\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
+
+    Envelope e;
+    EnvelopeFilterResult result;
+
+    EXPECT_TRUE(l.ExecuteSubscriptionEnvelopeFilter(e, "/buck/set/stream", result));
+    EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_TRUE(result.execution_success);
+    EXPECT_EQ(EnvelopeFilterResult::BOOLTRUE, result.return_type);
+}
+
+TEST(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
+{
+    LuaState l;
+    string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
+                  "  return false\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
+
+    Envelope e;
+    EnvelopeFilterResult result;
+
+    EXPECT_TRUE(l.ExecuteSubscriptionEnvelopeFilter(e, "/buck/set/stream", result));
+    EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_TRUE(result.execution_success);
+    EXPECT_EQ(EnvelopeFilterResult::BOOLFALSE, result.return_type);
+}
+
+TEST(LuaTest, SubscriptionEnvelopeFilterFilterOther)
+{
+    LuaState l;
+    string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
+                  "  return 5\n"
+                  "end";
+
+    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
+
+    Envelope e;
+    EnvelopeFilterResult result;
+
+    EXPECT_TRUE(l.ExecuteSubscriptionEnvelopeFilter(e, "/buck/set/stream", result));
+    EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_TRUE(result.execution_success);
+    EXPECT_EQ(EnvelopeFilterResult::OTHER, result.return_type);
+}
 
 }} // namespaces

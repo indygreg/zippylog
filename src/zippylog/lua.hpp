@@ -117,6 +117,35 @@ public:
     ::std::vector< ::zippylog::Envelope > envelopes;
 };
 
+class ZIPPYLOG_EXPORT EnvelopeFilterResult {
+public:
+    enum ReturnType {
+        BOOLTRUE = 1,
+        BOOLFALSE = 2,
+        OTHER = 3,
+    };
+
+    EnvelopeFilterResult() :
+        execution_success(false),
+        return_type(ReturnType::OTHER)
+    { }
+
+    /// Whether the filter function executed successfully, without error
+    ///
+    /// If this is false, lua_error will be populated
+    bool execution_success;
+
+    /// Describes the return type of the function
+    ///
+    /// Only defined if execution_success is true
+    ReturnType return_type;
+
+    /// Lua error message on Lua execution failure
+    ///
+    /// Only defined if execution_success is false
+    ::std::string lua_error;
+};
+
 // class that handles common Lua functionality
 class ZIPPYLOG_EXPORT LuaState {
 public:
@@ -138,6 +167,9 @@ public:
     /// Whether the state has a subscription timer
     inline bool HasSubscriptionTimer() const { return this->have_subscription_timer; }
 
+    /// Returns the current Lua stack size
+    inline int GetStackSize() const { return lua_gettop(this->L); }
+
     // loads user-supplied Lua code into the interpreter
     bool LoadLuaCode(const ::std::string &code);
 
@@ -156,6 +188,14 @@ public:
     ///
     /// @return whether we executed any Lua code
     bool ExecuteLoadString(const ::std::string &s, LoadStringResult &result);
+
+    /// Executes the subscription envelope filter callback
+    ///
+    /// A side-effect is the EnvelopeFilterResult passed is populated with
+    /// details of the execution.
+    ///
+    /// @return whether we executed any Lua code
+    bool ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const ::std::string &path, EnvelopeFilterResult &result);
 
     static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
     static int LuaPanic(lua_State *L);
@@ -180,6 +220,9 @@ protected:
     ///
     /// This is a convenience method and likely has no use outside of testing
     bool GetGlobal(const ::std::string &s, ::std::string &value);
+
+    /// Pushes an envelope onto the Lua stack
+    bool PushEnvelope(const Envelope &e);
 
     /// Member variables
     lua_State *L;

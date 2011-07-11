@@ -30,6 +30,8 @@ using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
+using ::zippylog::protocol::response::Error;
+using ::zippylog::protocol::response::ErrorCode;
 using ::zippylog::protocol::response::SubscribeAckV1;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -497,6 +499,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     }
 
     // iterate over all the subscribers
+    // TODO address runaway resource consumption when many subscriptions
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
         // for each path they are subscribed to
@@ -560,6 +563,24 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                         }
 
                         // else
+                        lua::EnvelopeFilterResult filter_result;
+                        if (!i->second->l->ExecuteSubscriptionEnvelopeFilter(env, path, filter_result)) {
+                            throw Exception("envelope filter not executed. very weird");
+                        }
+
+                        if (!filter_result.execution_success) {
+                            Error error;
+                            error.set_code(ErrorCode::LUA_ERROR);
+                            error.set_msg(filter_result.lua_error);
+
+                            Envelope error_e;
+                            error.add_to_envelope(error_e);
+                            zeromq::send_envelope(this->changes_sock, error_e);
+                            break;
+                        }
+
+                        if (filter_result.return_type != lua::EnvelopeFilterResult::BOOLTRUE)
+                            continue;
 
                     }
                     else {
