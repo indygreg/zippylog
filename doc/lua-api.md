@@ -124,7 +124,7 @@ Here are some examples (we assume the string standard library is availble):
        return { ["set"] = string.sub(s, 0, 5) }, true
     end
 
-## zippylog_subscription_filter_envelope(envelope, bucket, stream_set, path)
+## zippylog_subscription_filter_envelope(envelope, bucket, stream_set, stream)
 
 This function is called when subscribed to written envelopes in a remote store (e.g. *SubscribeEnvelopesV1* protocol). The function is called for every envelope that matches the subscription.
 
