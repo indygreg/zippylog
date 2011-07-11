@@ -10,7 +10,7 @@ This document describes how to get started with zippylog development on Linux.
 
 zippylog on Linux requires the following dependencies:
 
-* Protocol Buffers 2.3.0
+* Protocol Buffers 2.3.0 or later
 * Lua 5.1 (or any Lua interpreter featuring the official C API - LuaJIT should work)
 * ZeroMQ 2.0.10 (or later)
 * pthreads
@@ -26,7 +26,7 @@ Most of zippylog's library dependencies are included as Git submodules. If you o
 
 Currently, only protocol buffers is not included as a submodule. However, you can easily pull it from Subversion:
 
-    svn co -r 298 http://protobuf.googlecode.com/svn/tags/2.3.0 external/protobuf
+    svn co -r 391 http://protobuf.googlecode.com/svn/tags/2.4.1 external/protobuf
 
 ## Protocol Buffers
 
