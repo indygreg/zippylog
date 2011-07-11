@@ -57,6 +57,13 @@ namespace zippylog {
         registrar->register_message(1, 40, new ::zippylog::protocol::StoreChangeBucketDeleted());
         registrar->register_message(1, 41, new ::zippylog::protocol::StoreChangeStreamSetAdded());
         registrar->register_message(1, 42, new ::zippylog::protocol::StoreChangeStreamSetDeleted());
+        registrar->register_message(1, 84, new ::zippylog::device::streamer::Create());
+        registrar->register_message(1, 85, new ::zippylog::device::streamer::Destroy());
+        registrar->register_message(1, 86, new ::zippylog::device::streamer::SubscriptionExpired());
+        registrar->register_message(1, 87, new ::zippylog::device::streamer::ReceiveKeepalive());
+        registrar->register_message(1, 88, new ::zippylog::device::streamer::SubscriptionRenewedFromKeepalive());
+        registrar->register_message(1, 89, new ::zippylog::device::streamer::RejectKeepaliveUnknownSubscription());
+        registrar->register_message(1, 90, new ::zippylog::device::streamer::ErrorRenewingSubscription());
         registrar->register_message(1, 70, new ::zippylog::protocol::response::PongV1());
         registrar->register_message(1, 71, new ::zippylog::protocol::response::FeatureSpecificationV1());
         registrar->register_message(1, 64, new ::zippylog::protocol::response::StreamSegmentStart());

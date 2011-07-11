@@ -8,6 +8,7 @@ from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/streamer.proto',
   package='zippylog.device.streamer',
@@ -246,14 +247,20 @@ _ERRORRENEWINGSUBSCRIPTION = descriptor.Descriptor(
   serialized_end=419,
 )
 
-
+DESCRIPTOR.message_types_by_name['Create'] = _CREATE
+DESCRIPTOR.message_types_by_name['Destroy'] = _DESTROY
+DESCRIPTOR.message_types_by_name['SubscriptionExpired'] = _SUBSCRIPTIONEXPIRED
+DESCRIPTOR.message_types_by_name['ReceiveKeepalive'] = _RECEIVEKEEPALIVE
+DESCRIPTOR.message_types_by_name['SubscriptionRenewedFromKeepalive'] = _SUBSCRIPTIONRENEWEDFROMKEEPALIVE
+DESCRIPTOR.message_types_by_name['RejectKeepaliveUnknownSubscription'] = _REJECTKEEPALIVEUNKNOWNSUBSCRIPTION
+DESCRIPTOR.message_types_by_name['ErrorRenewingSubscription'] = _ERRORRENEWINGSUBSCRIPTION
 
 class Create(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _CREATE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 118
+  ZIPPYLOG_ENUMERATION = 84
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.Create)
 
 class Destroy(message.Message):
@@ -261,7 +268,7 @@ class Destroy(message.Message):
   DESCRIPTOR = _DESTROY
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 119
+  ZIPPYLOG_ENUMERATION = 85
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.Destroy)
 
 class SubscriptionExpired(message.Message):
@@ -269,7 +276,7 @@ class SubscriptionExpired(message.Message):
   DESCRIPTOR = _SUBSCRIPTIONEXPIRED
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 120
+  ZIPPYLOG_ENUMERATION = 86
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.SubscriptionExpired)
 
 class ReceiveKeepalive(message.Message):
@@ -277,7 +284,7 @@ class ReceiveKeepalive(message.Message):
   DESCRIPTOR = _RECEIVEKEEPALIVE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 121
+  ZIPPYLOG_ENUMERATION = 87
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.ReceiveKeepalive)
 
 class SubscriptionRenewedFromKeepalive(message.Message):
@@ -285,7 +292,7 @@ class SubscriptionRenewedFromKeepalive(message.Message):
   DESCRIPTOR = _SUBSCRIPTIONRENEWEDFROMKEEPALIVE
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 122
+  ZIPPYLOG_ENUMERATION = 88
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.SubscriptionRenewedFromKeepalive)
 
 class RejectKeepaliveUnknownSubscription(message.Message):
@@ -293,7 +300,7 @@ class RejectKeepaliveUnknownSubscription(message.Message):
   DESCRIPTOR = _REJECTKEEPALIVEUNKNOWNSUBSCRIPTION
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 123
+  ZIPPYLOG_ENUMERATION = 89
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.RejectKeepaliveUnknownSubscription)
 
 class ErrorRenewingSubscription(message.Message):
@@ -301,14 +308,14 @@ class ErrorRenewingSubscription(message.Message):
   DESCRIPTOR = _ERRORRENEWINGSUBSCRIPTION
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 124
+  ZIPPYLOG_ENUMERATION = 90
   # @@protoc_insertion_point(class_scope:zippylog.device.streamer.ErrorRenewingSubscription)
 
-register_message(1, 118, 'zippylog.device.streamer_pb2', 'Create')
-register_message(1, 119, 'zippylog.device.streamer_pb2', 'Destroy')
-register_message(1, 120, 'zippylog.device.streamer_pb2', 'SubscriptionExpired')
-register_message(1, 121, 'zippylog.device.streamer_pb2', 'ReceiveKeepalive')
-register_message(1, 122, 'zippylog.device.streamer_pb2', 'SubscriptionRenewedFromKeepalive')
-register_message(1, 123, 'zippylog.device.streamer_pb2', 'RejectKeepaliveUnknownSubscription')
-register_message(1, 124, 'zippylog.device.streamer_pb2', 'ErrorRenewingSubscription')
+register_message(1, 84, 'zippylog.device.streamer_pb2', 'Create')
+register_message(1, 85, 'zippylog.device.streamer_pb2', 'Destroy')
+register_message(1, 86, 'zippylog.device.streamer_pb2', 'SubscriptionExpired')
+register_message(1, 87, 'zippylog.device.streamer_pb2', 'ReceiveKeepalive')
+register_message(1, 88, 'zippylog.device.streamer_pb2', 'SubscriptionRenewedFromKeepalive')
+register_message(1, 89, 'zippylog.device.streamer_pb2', 'RejectKeepaliveUnknownSubscription')
+register_message(1, 90, 'zippylog.device.streamer_pb2', 'ErrorRenewingSubscription')
 # @@protoc_insertion_point(module_scope)

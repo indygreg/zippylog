@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/device/streamer.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -251,7 +254,6 @@ struct StaticDescriptorInitializer_zippylog_2fdevice_2fstreamer_2eproto {
 
 // ===================================================================
 
-const ::std::string Create::_default_id_;
 #ifndef _MSC_VER
 const int Create::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -272,7 +274,7 @@ Create::Create(const Create& from)
 
 void Create::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -281,7 +283,7 @@ Create::~Create() {
 }
 
 void Create::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -310,8 +312,8 @@ Create* Create::New() const {
 
 void Create::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -358,7 +360,7 @@ bool Create::MergePartialFromCodedStream(
 void Create::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -372,7 +374,7 @@ void Create::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Create::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -423,7 +425,7 @@ void Create::MergeFrom(const ::google::protobuf::Message& from) {
 void Create::MergeFrom(const Create& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -467,7 +469,6 @@ void Create::Swap(Create* other) {
 
 // ===================================================================
 
-const ::std::string Destroy::_default_id_;
 #ifndef _MSC_VER
 const int Destroy::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -488,7 +489,7 @@ Destroy::Destroy(const Destroy& from)
 
 void Destroy::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -497,7 +498,7 @@ Destroy::~Destroy() {
 }
 
 void Destroy::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -526,8 +527,8 @@ Destroy* Destroy::New() const {
 
 void Destroy::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -574,7 +575,7 @@ bool Destroy::MergePartialFromCodedStream(
 void Destroy::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -588,7 +589,7 @@ void Destroy::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Destroy::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -639,7 +640,7 @@ void Destroy::MergeFrom(const ::google::protobuf::Message& from) {
 void Destroy::MergeFrom(const Destroy& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -683,8 +684,6 @@ void Destroy::Swap(Destroy* other) {
 
 // ===================================================================
 
-const ::std::string SubscriptionExpired::_default_id_;
-const ::std::string SubscriptionExpired::_default_subscription_;
 #ifndef _MSC_VER
 const int SubscriptionExpired::kIdFieldNumber;
 const int SubscriptionExpired::kSubscriptionFieldNumber;
@@ -706,8 +705,8 @@ SubscriptionExpired::SubscriptionExpired(const SubscriptionExpired& from)
 
 void SubscriptionExpired::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -716,10 +715,10 @@ SubscriptionExpired::~SubscriptionExpired() {
 }
 
 void SubscriptionExpired::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -748,13 +747,13 @@ SubscriptionExpired* SubscriptionExpired::New() const {
 
 void SubscriptionExpired::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -815,13 +814,13 @@ bool SubscriptionExpired::MergePartialFromCodedStream(
 void SubscriptionExpired::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -835,14 +834,14 @@ void SubscriptionExpired::SerializeWithCachedSizes(
 ::google::protobuf::uint8* SubscriptionExpired::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -900,10 +899,10 @@ void SubscriptionExpired::MergeFrom(const ::google::protobuf::Message& from) {
 void SubscriptionExpired::MergeFrom(const SubscriptionExpired& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
@@ -948,8 +947,6 @@ void SubscriptionExpired::Swap(SubscriptionExpired* other) {
 
 // ===================================================================
 
-const ::std::string ReceiveKeepalive::_default_id_;
-const ::std::string ReceiveKeepalive::_default_subscription_;
 #ifndef _MSC_VER
 const int ReceiveKeepalive::kIdFieldNumber;
 const int ReceiveKeepalive::kSubscriptionFieldNumber;
@@ -971,8 +968,8 @@ ReceiveKeepalive::ReceiveKeepalive(const ReceiveKeepalive& from)
 
 void ReceiveKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -981,10 +978,10 @@ ReceiveKeepalive::~ReceiveKeepalive() {
 }
 
 void ReceiveKeepalive::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -1013,13 +1010,13 @@ ReceiveKeepalive* ReceiveKeepalive::New() const {
 
 void ReceiveKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -1080,13 +1077,13 @@ bool ReceiveKeepalive::MergePartialFromCodedStream(
 void ReceiveKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -1100,14 +1097,14 @@ void ReceiveKeepalive::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ReceiveKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -1165,10 +1162,10 @@ void ReceiveKeepalive::MergeFrom(const ::google::protobuf::Message& from) {
 void ReceiveKeepalive::MergeFrom(const ReceiveKeepalive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
@@ -1213,8 +1210,6 @@ void ReceiveKeepalive::Swap(ReceiveKeepalive* other) {
 
 // ===================================================================
 
-const ::std::string SubscriptionRenewedFromKeepalive::_default_id_;
-const ::std::string SubscriptionRenewedFromKeepalive::_default_subscription_;
 #ifndef _MSC_VER
 const int SubscriptionRenewedFromKeepalive::kIdFieldNumber;
 const int SubscriptionRenewedFromKeepalive::kSubscriptionFieldNumber;
@@ -1236,8 +1231,8 @@ SubscriptionRenewedFromKeepalive::SubscriptionRenewedFromKeepalive(const Subscri
 
 void SubscriptionRenewedFromKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1246,10 +1241,10 @@ SubscriptionRenewedFromKeepalive::~SubscriptionRenewedFromKeepalive() {
 }
 
 void SubscriptionRenewedFromKeepalive::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -1278,13 +1273,13 @@ SubscriptionRenewedFromKeepalive* SubscriptionRenewedFromKeepalive::New() const 
 
 void SubscriptionRenewedFromKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -1345,13 +1340,13 @@ bool SubscriptionRenewedFromKeepalive::MergePartialFromCodedStream(
 void SubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -1365,14 +1360,14 @@ void SubscriptionRenewedFromKeepalive::SerializeWithCachedSizes(
 ::google::protobuf::uint8* SubscriptionRenewedFromKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -1430,10 +1425,10 @@ void SubscriptionRenewedFromKeepalive::MergeFrom(const ::google::protobuf::Messa
 void SubscriptionRenewedFromKeepalive::MergeFrom(const SubscriptionRenewedFromKeepalive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
@@ -1478,8 +1473,6 @@ void SubscriptionRenewedFromKeepalive::Swap(SubscriptionRenewedFromKeepalive* ot
 
 // ===================================================================
 
-const ::std::string RejectKeepaliveUnknownSubscription::_default_id_;
-const ::std::string RejectKeepaliveUnknownSubscription::_default_subscription_;
 #ifndef _MSC_VER
 const int RejectKeepaliveUnknownSubscription::kIdFieldNumber;
 const int RejectKeepaliveUnknownSubscription::kSubscriptionFieldNumber;
@@ -1501,8 +1494,8 @@ RejectKeepaliveUnknownSubscription::RejectKeepaliveUnknownSubscription(const Rej
 
 void RejectKeepaliveUnknownSubscription::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1511,10 +1504,10 @@ RejectKeepaliveUnknownSubscription::~RejectKeepaliveUnknownSubscription() {
 }
 
 void RejectKeepaliveUnknownSubscription::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -1543,13 +1536,13 @@ RejectKeepaliveUnknownSubscription* RejectKeepaliveUnknownSubscription::New() co
 
 void RejectKeepaliveUnknownSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -1610,13 +1603,13 @@ bool RejectKeepaliveUnknownSubscription::MergePartialFromCodedStream(
 void RejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -1630,14 +1623,14 @@ void RejectKeepaliveUnknownSubscription::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RejectKeepaliveUnknownSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -1695,10 +1688,10 @@ void RejectKeepaliveUnknownSubscription::MergeFrom(const ::google::protobuf::Mes
 void RejectKeepaliveUnknownSubscription::MergeFrom(const RejectKeepaliveUnknownSubscription& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
@@ -1743,8 +1736,6 @@ void RejectKeepaliveUnknownSubscription::Swap(RejectKeepaliveUnknownSubscription
 
 // ===================================================================
 
-const ::std::string ErrorRenewingSubscription::_default_id_;
-const ::std::string ErrorRenewingSubscription::_default_subscription_;
 #ifndef _MSC_VER
 const int ErrorRenewingSubscription::kIdFieldNumber;
 const int ErrorRenewingSubscription::kSubscriptionFieldNumber;
@@ -1766,8 +1757,8 @@ ErrorRenewingSubscription::ErrorRenewingSubscription(const ErrorRenewingSubscrip
 
 void ErrorRenewingSubscription::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1776,10 +1767,10 @@ ErrorRenewingSubscription::~ErrorRenewingSubscription() {
 }
 
 void ErrorRenewingSubscription::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -1808,13 +1799,13 @@ ErrorRenewingSubscription* ErrorRenewingSubscription::New() const {
 
 void ErrorRenewingSubscription::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -1875,13 +1866,13 @@ bool ErrorRenewingSubscription::MergePartialFromCodedStream(
 void ErrorRenewingSubscription::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -1895,14 +1886,14 @@ void ErrorRenewingSubscription::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ErrorRenewingSubscription::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -1960,10 +1951,10 @@ void ErrorRenewingSubscription::MergeFrom(const ::google::protobuf::Message& fro
 void ErrorRenewingSubscription::MergeFrom(const ErrorRenewingSubscription& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
