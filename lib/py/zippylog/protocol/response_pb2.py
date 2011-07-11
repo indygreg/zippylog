@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/response.proto',
   package='zippylog.protocol.response',
-  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"\x08\n\x06PongV1\"}\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\"2\n\x12StreamSegmentStart\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0e\n\x06offset\x18\x02 \x01(\x04\"N\n\x10StreamSegmentEnd\x12\x0e\n\x06offset\x18\x01 \x01(\x04\x12\x12\n\nbytes_sent\x18\x02 \x01(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x01(\r\"\'\n\x0cSubscribeAck\x12\n\n\x02id\x18\x01 \x01(\x0c\x12\x0b\n\x03ttl\x18\x02 \x01(\r\"\x1f\n\x11SubscriptionStart\x12\n\n\x02id\x18\x01 \x01(\x0c\"%\n\x08WriteAck\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x01(\r\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
+  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"\x08\n\x06PongV1\"}\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\"4\n\x14StreamSegmentStartV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06offset\x18\x02 \x02(\x04\"P\n\x12StreamSegmentEndV1\x12\x0e\n\x06offset\x18\x01 \x02(\x04\x12\x12\n\nbytes_sent\x18\x02 \x02(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x02(\r\")\n\x0eSubscribeAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x0b\n\x03ttl\x18\x02 \x02(\r\"!\n\x13SubscriptionStartV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\'\n\nWriteAckV1\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x02(\r\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -95,8 +95,8 @@ _ERRORCODE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=522,
-  serialized_end=998,
+  serialized_start=532,
+  serialized_end=1008,
 )
 
 
@@ -184,23 +184,23 @@ _FEATURESPECIFICATIONV1 = descriptor.Descriptor(
 )
 
 
-_STREAMSEGMENTSTART = descriptor.Descriptor(
-  name='StreamSegmentStart',
-  full_name='zippylog.protocol.response.StreamSegmentStart',
+_STREAMSEGMENTSTARTV1 = descriptor.Descriptor(
+  name='StreamSegmentStartV1',
+  full_name='zippylog.protocol.response.StreamSegmentStartV1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='path', full_name='zippylog.protocol.response.StreamSegmentStart.path', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='path', full_name='zippylog.protocol.response.StreamSegmentStartV1.path', index=0,
+      number=1, type=9, cpp_type=9, label=2,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='offset', full_name='zippylog.protocol.response.StreamSegmentStart.offset', index=1,
-      number=2, type=4, cpp_type=4, label=1,
+      name='offset', full_name='zippylog.protocol.response.StreamSegmentStartV1.offset', index=1,
+      number=2, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -215,34 +215,34 @@ _STREAMSEGMENTSTART = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=201,
-  serialized_end=251,
+  serialized_end=253,
 )
 
 
-_STREAMSEGMENTEND = descriptor.Descriptor(
-  name='StreamSegmentEnd',
-  full_name='zippylog.protocol.response.StreamSegmentEnd',
+_STREAMSEGMENTENDV1 = descriptor.Descriptor(
+  name='StreamSegmentEndV1',
+  full_name='zippylog.protocol.response.StreamSegmentEndV1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='offset', full_name='zippylog.protocol.response.StreamSegmentEnd.offset', index=0,
-      number=1, type=4, cpp_type=4, label=1,
+      name='offset', full_name='zippylog.protocol.response.StreamSegmentEndV1.offset', index=0,
+      number=1, type=4, cpp_type=4, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='bytes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.bytes_sent', index=1,
-      number=2, type=13, cpp_type=3, label=1,
+      name='bytes_sent', full_name='zippylog.protocol.response.StreamSegmentEndV1.bytes_sent', index=1,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='envelopes_sent', full_name='zippylog.protocol.response.StreamSegmentEnd.envelopes_sent', index=2,
-      number=3, type=13, cpp_type=3, label=1,
+      name='envelopes_sent', full_name='zippylog.protocol.response.StreamSegmentEndV1.envelopes_sent', index=2,
+      number=3, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -256,28 +256,28 @@ _STREAMSEGMENTEND = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=253,
-  serialized_end=331,
+  serialized_start=255,
+  serialized_end=335,
 )
 
 
-_SUBSCRIBEACK = descriptor.Descriptor(
-  name='SubscribeAck',
-  full_name='zippylog.protocol.response.SubscribeAck',
+_SUBSCRIBEACKV1 = descriptor.Descriptor(
+  name='SubscribeAckV1',
+  full_name='zippylog.protocol.response.SubscribeAckV1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.protocol.response.SubscribeAck.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
+      name='id', full_name='zippylog.protocol.response.SubscribeAckV1.id', index=0,
+      number=1, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='ttl', full_name='zippylog.protocol.response.SubscribeAck.ttl', index=1,
-      number=2, type=13, cpp_type=3, label=1,
+      name='ttl', full_name='zippylog.protocol.response.SubscribeAckV1.ttl', index=1,
+      number=2, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -291,21 +291,21 @@ _SUBSCRIBEACK = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=333,
-  serialized_end=372,
+  serialized_start=337,
+  serialized_end=378,
 )
 
 
-_SUBSCRIPTIONSTART = descriptor.Descriptor(
-  name='SubscriptionStart',
-  full_name='zippylog.protocol.response.SubscriptionStart',
+_SUBSCRIPTIONSTARTV1 = descriptor.Descriptor(
+  name='SubscriptionStartV1',
+  full_name='zippylog.protocol.response.SubscriptionStartV1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.protocol.response.SubscriptionStart.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
+      name='id', full_name='zippylog.protocol.response.SubscriptionStartV1.id', index=0,
+      number=1, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -319,21 +319,21 @@ _SUBSCRIPTIONSTART = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=374,
-  serialized_end=405,
+  serialized_start=380,
+  serialized_end=413,
 )
 
 
-_WRITEACK = descriptor.Descriptor(
-  name='WriteAck',
-  full_name='zippylog.protocol.response.WriteAck',
+_WRITEACKV1 = descriptor.Descriptor(
+  name='WriteAckV1',
+  full_name='zippylog.protocol.response.WriteAckV1',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     descriptor.FieldDescriptor(
-      name='envelopes_written', full_name='zippylog.protocol.response.WriteAck.envelopes_written', index=0,
-      number=1, type=13, cpp_type=3, label=1,
+      name='envelopes_written', full_name='zippylog.protocol.response.WriteAckV1.envelopes_written', index=0,
+      number=1, type=13, cpp_type=3, label=2,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -347,8 +347,8 @@ _WRITEACK = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=407,
-  serialized_end=444,
+  serialized_start=415,
+  serialized_end=454,
 )
 
 
@@ -382,18 +382,18 @@ _ERROR = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=446,
-  serialized_end=519,
+  serialized_start=456,
+  serialized_end=529,
 )
 
 _ERROR.fields_by_name['code'].enum_type = _ERRORCODE
 DESCRIPTOR.message_types_by_name['PongV1'] = _PONGV1
 DESCRIPTOR.message_types_by_name['FeatureSpecificationV1'] = _FEATURESPECIFICATIONV1
-DESCRIPTOR.message_types_by_name['StreamSegmentStart'] = _STREAMSEGMENTSTART
-DESCRIPTOR.message_types_by_name['StreamSegmentEnd'] = _STREAMSEGMENTEND
-DESCRIPTOR.message_types_by_name['SubscribeAck'] = _SUBSCRIBEACK
-DESCRIPTOR.message_types_by_name['SubscriptionStart'] = _SUBSCRIPTIONSTART
-DESCRIPTOR.message_types_by_name['WriteAck'] = _WRITEACK
+DESCRIPTOR.message_types_by_name['StreamSegmentStartV1'] = _STREAMSEGMENTSTARTV1
+DESCRIPTOR.message_types_by_name['StreamSegmentEndV1'] = _STREAMSEGMENTENDV1
+DESCRIPTOR.message_types_by_name['SubscribeAckV1'] = _SUBSCRIBEACKV1
+DESCRIPTOR.message_types_by_name['SubscriptionStartV1'] = _SUBSCRIPTIONSTARTV1
+DESCRIPTOR.message_types_by_name['WriteAckV1'] = _WRITEACKV1
 DESCRIPTOR.message_types_by_name['Error'] = _ERROR
 
 class PongV1(message.Message):
@@ -412,45 +412,45 @@ class FeatureSpecificationV1(message.Message):
   ZIPPYLOG_ENUMERATION = 71
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.FeatureSpecificationV1)
 
-class StreamSegmentStart(message.Message):
+class StreamSegmentStartV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMSEGMENTSTART
+  DESCRIPTOR = _STREAMSEGMENTSTARTV1
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 64
-  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
+  ZIPPYLOG_ENUMERATION = 104
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStartV1)
 
-class StreamSegmentEnd(message.Message):
+class StreamSegmentEndV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _STREAMSEGMENTEND
+  DESCRIPTOR = _STREAMSEGMENTENDV1
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 65
-  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
+  ZIPPYLOG_ENUMERATION = 105
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEndV1)
 
-class SubscribeAck(message.Message):
+class SubscribeAckV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _SUBSCRIBEACK
+  DESCRIPTOR = _SUBSCRIBEACKV1
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 66
-  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAck)
+  ZIPPYLOG_ENUMERATION = 106
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAckV1)
 
-class SubscriptionStart(message.Message):
+class SubscriptionStartV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _SUBSCRIPTIONSTART
+  DESCRIPTOR = _SUBSCRIPTIONSTARTV1
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 67
-  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStart)
+  ZIPPYLOG_ENUMERATION = 107
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStartV1)
 
-class WriteAck(message.Message):
+class WriteAckV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _WRITEACK
+  DESCRIPTOR = _WRITEACKV1
   
   ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 68
-  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAck)
+  ZIPPYLOG_ENUMERATION = 108
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAckV1)
 
 class Error(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -462,10 +462,10 @@ class Error(message.Message):
 
 register_message(1, 70, 'zippylog.protocol.response_pb2', 'PongV1')
 register_message(1, 71, 'zippylog.protocol.response_pb2', 'FeatureSpecificationV1')
-register_message(1, 64, 'zippylog.protocol.response_pb2', 'StreamSegmentStart')
-register_message(1, 65, 'zippylog.protocol.response_pb2', 'StreamSegmentEnd')
-register_message(1, 66, 'zippylog.protocol.response_pb2', 'SubscribeAck')
-register_message(1, 67, 'zippylog.protocol.response_pb2', 'SubscriptionStart')
-register_message(1, 68, 'zippylog.protocol.response_pb2', 'WriteAck')
+register_message(1, 104, 'zippylog.protocol.response_pb2', 'StreamSegmentStartV1')
+register_message(1, 105, 'zippylog.protocol.response_pb2', 'StreamSegmentEndV1')
+register_message(1, 106, 'zippylog.protocol.response_pb2', 'SubscribeAckV1')
+register_message(1, 107, 'zippylog.protocol.response_pb2', 'SubscriptionStartV1')
+register_message(1, 108, 'zippylog.protocol.response_pb2', 'WriteAckV1')
 register_message(1, 69, 'zippylog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

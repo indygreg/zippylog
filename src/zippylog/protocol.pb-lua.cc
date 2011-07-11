@@ -41,96 +41,96 @@ int lua_protobuf_zippylog_protocol_open(lua_State *L)
     lua_pop(L, 1);
     luaL_Reg funcs [] = { { NULL, NULL } };
     luaL_register(L, "protobuf.zippylog.protocol", funcs);
-    lua_protobuf_zippylog_protocol_StreamInfo_open(L);
-    lua_protobuf_zippylog_protocol_StreamSetInfo_open(L);
-    lua_protobuf_zippylog_protocol_BucketInfo_open(L);
-    lua_protobuf_zippylog_protocol_StoreInfo_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_open(L);
-    lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_open(L);
+    lua_protobuf_zippylog_protocol_StreamInfoV1_open(L);
+    lua_protobuf_zippylog_protocol_StreamSetInfoV1_open(L);
+    lua_protobuf_zippylog_protocol_BucketInfoV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreInfoV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_open(L);
+    lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_open(L);
     return 1;
 }
 
 
-static const struct luaL_Reg StreamInfo_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StreamInfo_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StreamInfo_parsefromstring},
+static const struct luaL_Reg StreamInfoV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StreamInfoV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StreamInfoV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StreamInfo_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StreamInfo_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StreamInfo_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StreamInfo_gc},
-    {"clear_path", lua_protobuf_zippylog_protocol_StreamInfo_clear_path},
-    {"get_path", lua_protobuf_zippylog_protocol_StreamInfo_get_path},
-    {"set_path", lua_protobuf_zippylog_protocol_StreamInfo_set_path},
-    {"has_path", lua_protobuf_zippylog_protocol_StreamInfo_has_path},
-    {"clear_length", lua_protobuf_zippylog_protocol_StreamInfo_clear_length},
-    {"get_length", lua_protobuf_zippylog_protocol_StreamInfo_get_length},
-    {"set_length", lua_protobuf_zippylog_protocol_StreamInfo_set_length},
-    {"has_length", lua_protobuf_zippylog_protocol_StreamInfo_has_length},
+static const struct luaL_Reg StreamInfoV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StreamInfoV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StreamInfoV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StreamInfoV1_gc},
+    {"clear_path", lua_protobuf_zippylog_protocol_StreamInfoV1_clear_path},
+    {"get_path", lua_protobuf_zippylog_protocol_StreamInfoV1_get_path},
+    {"set_path", lua_protobuf_zippylog_protocol_StreamInfoV1_set_path},
+    {"has_path", lua_protobuf_zippylog_protocol_StreamInfoV1_has_path},
+    {"clear_length", lua_protobuf_zippylog_protocol_StreamInfoV1_clear_length},
+    {"get_length", lua_protobuf_zippylog_protocol_StreamInfoV1_get_length},
+    {"set_length", lua_protobuf_zippylog_protocol_StreamInfoV1_set_length},
+    {"has_length", lua_protobuf_zippylog_protocol_StreamInfoV1_has_length},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StreamInfo_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StreamInfo");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StreamInfoV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StreamInfo_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StreamInfo", StreamInfo_functions);
+    luaL_register(L, NULL, StreamInfoV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StreamInfoV1", StreamInfoV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StreamInfo_pushcopy(lua_State *L, const ::zippylog::protocol::StreamInfo &from)
+bool lua_protobuf_zippylog_protocol_StreamInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::StreamInfoV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StreamInfo(from);
+    ud->msg = new ::zippylog::protocol::StreamInfoV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StreamInfo_pushreference(lua_State *L, ::zippylog::protocol::StreamInfo *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StreamInfoV1_pushreference(lua_State *L, ::zippylog::protocol::StreamInfoV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StreamInfo_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StreamInfo();
+    ud->msg = new ::zippylog::protocol::StreamInfoV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StreamInfo * msg = new ::zippylog::protocol::StreamInfo();
+    ::zippylog::protocol::StreamInfoV1 * msg = new ::zippylog::protocol::StreamInfoV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -139,14 +139,14 @@ int lua_protobuf_zippylog_protocol_StreamInfo_parsefromstring(lua_State *L)
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StreamInfo_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -159,17 +159,17 @@ int lua_protobuf_zippylog_protocol_StreamInfo_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StreamInfo_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StreamInfo_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -177,27 +177,27 @@ int lua_protobuf_zippylog_protocol_StreamInfo_serialized(lua_State *L)
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StreamInfo_clear_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_clear_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     m->clear_path();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_get_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_get_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     string s = m->path();
     m->has_path() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_set_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_set_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_path();
         return 0;
@@ -213,34 +213,34 @@ int lua_protobuf_zippylog_protocol_StreamInfo_set_path(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_has_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_has_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     lua_pushboolean(L, m->has_path());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_clear_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_clear_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     m->clear_length();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_get_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_get_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     m->has_length() ? lua_pushinteger(L, m->length()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_set_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_set_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_length();
         return 0;
@@ -251,90 +251,90 @@ int lua_protobuf_zippylog_protocol_StreamInfo_set_length(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamInfo_has_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamInfoV1_has_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfo");
-    ::zippylog::protocol::StreamInfo *m = (::zippylog::protocol::StreamInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamInfoV1");
+    ::zippylog::protocol::StreamInfoV1 *m = (::zippylog::protocol::StreamInfoV1 *)mud->msg;
     lua_pushboolean(L, m->has_length());
     return 1;
 }
 
-static const struct luaL_Reg StreamSetInfo_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StreamSetInfo_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StreamSetInfo_parsefromstring},
+static const struct luaL_Reg StreamSetInfoV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StreamSetInfoV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StreamSetInfoV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StreamSetInfo_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StreamSetInfo_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StreamSetInfo_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StreamSetInfo_gc},
-    {"clear_path", lua_protobuf_zippylog_protocol_StreamSetInfo_clear_path},
-    {"get_path", lua_protobuf_zippylog_protocol_StreamSetInfo_get_path},
-    {"set_path", lua_protobuf_zippylog_protocol_StreamSetInfo_set_path},
-    {"has_path", lua_protobuf_zippylog_protocol_StreamSetInfo_has_path},
-    {"clear_stream", lua_protobuf_zippylog_protocol_StreamSetInfo_clear_stream},
-    {"get_stream", lua_protobuf_zippylog_protocol_StreamSetInfo_get_stream},
-    {"set_stream", lua_protobuf_zippylog_protocol_StreamSetInfo_set_stream},
-    {"size_stream", lua_protobuf_zippylog_protocol_StreamSetInfo_size_stream},
-    {"add_stream", lua_protobuf_zippylog_protocol_StreamSetInfo_add_stream},
+static const struct luaL_Reg StreamSetInfoV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StreamSetInfoV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StreamSetInfoV1_gc},
+    {"clear_path", lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear_path},
+    {"get_path", lua_protobuf_zippylog_protocol_StreamSetInfoV1_get_path},
+    {"set_path", lua_protobuf_zippylog_protocol_StreamSetInfoV1_set_path},
+    {"has_path", lua_protobuf_zippylog_protocol_StreamSetInfoV1_has_path},
+    {"clear_stream", lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear_stream},
+    {"get_stream", lua_protobuf_zippylog_protocol_StreamSetInfoV1_get_stream},
+    {"set_stream", lua_protobuf_zippylog_protocol_StreamSetInfoV1_set_stream},
+    {"size_stream", lua_protobuf_zippylog_protocol_StreamSetInfoV1_size_stream},
+    {"add_stream", lua_protobuf_zippylog_protocol_StreamSetInfoV1_add_stream},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfo");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfoV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StreamSetInfo_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StreamSetInfo", StreamSetInfo_functions);
+    luaL_register(L, NULL, StreamSetInfoV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StreamSetInfoV1", StreamSetInfoV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StreamSetInfo_pushcopy(lua_State *L, const ::zippylog::protocol::StreamSetInfo &from)
+bool lua_protobuf_zippylog_protocol_StreamSetInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::StreamSetInfoV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StreamSetInfo(from);
+    ud->msg = new ::zippylog::protocol::StreamSetInfoV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StreamSetInfo_pushreference(lua_State *L, ::zippylog::protocol::StreamSetInfo *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StreamSetInfoV1_pushreference(lua_State *L, ::zippylog::protocol::StreamSetInfoV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StreamSetInfo_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StreamSetInfo();
+    ud->msg = new ::zippylog::protocol::StreamSetInfoV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StreamSetInfo * msg = new ::zippylog::protocol::StreamSetInfo();
+    ::zippylog::protocol::StreamSetInfoV1 * msg = new ::zippylog::protocol::StreamSetInfoV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -343,14 +343,14 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_parsefromstring(lua_State *L)
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StreamSetInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StreamSetInfo_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -363,17 +363,17 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StreamSetInfo_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StreamSetInfo_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -381,27 +381,27 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_serialized(lua_State *L)
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StreamSetInfo_clear_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     m->clear_path();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_get_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_get_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     string s = m->path();
     m->has_path() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_set_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_set_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_path();
         return 0;
@@ -417,26 +417,26 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_set_path(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_has_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_has_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     lua_pushboolean(L, m->has_path());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_clear_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_clear_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     m->clear_stream();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_get_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_get_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     if (lua_gettop(L) != 2) {
         return luaL_error(L, "missing required numeric argument");
     }
@@ -444,15 +444,15 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_get_stream(lua_State *L)
     if (index < 1 || index > m->stream_size()) {
         return luaL_error(L, "index must be between 1 and current size: %d", m->stream_size());
     }
-    ::zippylog::protocol::StreamInfo * got_msg = m->mutable_stream(index-1);
-    lua_protobuf_zippylog_protocol_StreamInfo_pushreference(L, got_msg, NULL, NULL);
+    ::zippylog::protocol::StreamInfoV1 * got_msg = m->mutable_stream(index-1);
+    lua_protobuf_zippylog_protocol_StreamInfoV1_pushreference(L, got_msg, NULL, NULL);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_set_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_set_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     if (lua_gettop(L) != 3) {
             return luaL_error(L, "required 2 arguments not passed to function");
     }
@@ -468,100 +468,100 @@ int lua_protobuf_zippylog_protocol_StreamSetInfo_set_stream(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_size_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_size_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
     int size = m->stream_size();
     lua_pushinteger(L, size);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StreamSetInfo_add_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StreamSetInfoV1_add_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfo");
-    ::zippylog::protocol::StreamSetInfo *m = (::zippylog::protocol::StreamSetInfo *)mud->msg;
-    ::zippylog::protocol::StreamInfo *msg_new = m->add_stream();
-    lua_protobuf_zippylog_protocol_StreamInfo_pushreference(L, msg_new, NULL, NULL);
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StreamSetInfoV1");
+    ::zippylog::protocol::StreamSetInfoV1 *m = (::zippylog::protocol::StreamSetInfoV1 *)mud->msg;
+    ::zippylog::protocol::StreamInfoV1 *msg_new = m->add_stream();
+    lua_protobuf_zippylog_protocol_StreamInfoV1_pushreference(L, msg_new, NULL, NULL);
     return 1;
 }
 
-static const struct luaL_Reg BucketInfo_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_BucketInfo_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_BucketInfo_parsefromstring},
+static const struct luaL_Reg BucketInfoV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_BucketInfoV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_BucketInfoV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg BucketInfo_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_BucketInfo_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_BucketInfo_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_BucketInfo_gc},
-    {"clear_path", lua_protobuf_zippylog_protocol_BucketInfo_clear_path},
-    {"get_path", lua_protobuf_zippylog_protocol_BucketInfo_get_path},
-    {"set_path", lua_protobuf_zippylog_protocol_BucketInfo_set_path},
-    {"has_path", lua_protobuf_zippylog_protocol_BucketInfo_has_path},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_BucketInfo_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_BucketInfo_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_BucketInfo_set_stream_set},
-    {"size_stream_set", lua_protobuf_zippylog_protocol_BucketInfo_size_stream_set},
-    {"add_stream_set", lua_protobuf_zippylog_protocol_BucketInfo_add_stream_set},
+static const struct luaL_Reg BucketInfoV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_BucketInfoV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_BucketInfoV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_BucketInfoV1_gc},
+    {"clear_path", lua_protobuf_zippylog_protocol_BucketInfoV1_clear_path},
+    {"get_path", lua_protobuf_zippylog_protocol_BucketInfoV1_get_path},
+    {"set_path", lua_protobuf_zippylog_protocol_BucketInfoV1_set_path},
+    {"has_path", lua_protobuf_zippylog_protocol_BucketInfoV1_has_path},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_BucketInfoV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_BucketInfoV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_BucketInfoV1_set_stream_set},
+    {"size_stream_set", lua_protobuf_zippylog_protocol_BucketInfoV1_size_stream_set},
+    {"add_stream_set", lua_protobuf_zippylog_protocol_BucketInfoV1_add_stream_set},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_BucketInfo_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.BucketInfo");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.BucketInfoV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, BucketInfo_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.BucketInfo", BucketInfo_functions);
+    luaL_register(L, NULL, BucketInfoV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.BucketInfoV1", BucketInfoV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_BucketInfo_pushcopy(lua_State *L, const ::zippylog::protocol::BucketInfo &from)
+bool lua_protobuf_zippylog_protocol_BucketInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::BucketInfoV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::BucketInfo(from);
+    ud->msg = new ::zippylog::protocol::BucketInfoV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_BucketInfo_pushreference(lua_State *L, ::zippylog::protocol::BucketInfo *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_BucketInfoV1_pushreference(lua_State *L, ::zippylog::protocol::BucketInfoV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_BucketInfo_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::BucketInfo();
+    ud->msg = new ::zippylog::protocol::BucketInfoV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::BucketInfo * msg = new ::zippylog::protocol::BucketInfo();
+    ::zippylog::protocol::BucketInfoV1 * msg = new ::zippylog::protocol::BucketInfoV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -570,14 +570,14 @@ int lua_protobuf_zippylog_protocol_BucketInfo_parsefromstring(lua_State *L)
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.BucketInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_BucketInfo_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -590,17 +590,17 @@ int lua_protobuf_zippylog_protocol_BucketInfo_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_BucketInfo_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_BucketInfo_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -608,27 +608,27 @@ int lua_protobuf_zippylog_protocol_BucketInfo_serialized(lua_State *L)
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_BucketInfo_clear_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_clear_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     m->clear_path();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_get_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_get_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     string s = m->path();
     m->has_path() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_set_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_set_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_path();
         return 0;
@@ -644,26 +644,26 @@ int lua_protobuf_zippylog_protocol_BucketInfo_set_path(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_has_path(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_has_path(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     lua_pushboolean(L, m->has_path());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     if (lua_gettop(L) != 2) {
         return luaL_error(L, "missing required numeric argument");
     }
@@ -671,15 +671,15 @@ int lua_protobuf_zippylog_protocol_BucketInfo_get_stream_set(lua_State *L)
     if (index < 1 || index > m->stream_set_size()) {
         return luaL_error(L, "index must be between 1 and current size: %d", m->stream_set_size());
     }
-    ::zippylog::protocol::StreamSetInfo * got_msg = m->mutable_stream_set(index-1);
-    lua_protobuf_zippylog_protocol_StreamSetInfo_pushreference(L, got_msg, NULL, NULL);
+    ::zippylog::protocol::StreamSetInfoV1 * got_msg = m->mutable_stream_set(index-1);
+    lua_protobuf_zippylog_protocol_StreamSetInfoV1_pushreference(L, got_msg, NULL, NULL);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     if (lua_gettop(L) != 3) {
             return luaL_error(L, "required 2 arguments not passed to function");
     }
@@ -695,96 +695,96 @@ int lua_protobuf_zippylog_protocol_BucketInfo_set_stream_set(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_size_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_size_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
     int size = m->stream_set_size();
     lua_pushinteger(L, size);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_BucketInfo_add_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_BucketInfoV1_add_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfo");
-    ::zippylog::protocol::BucketInfo *m = (::zippylog::protocol::BucketInfo *)mud->msg;
-    ::zippylog::protocol::StreamSetInfo *msg_new = m->add_stream_set();
-    lua_protobuf_zippylog_protocol_StreamSetInfo_pushreference(L, msg_new, NULL, NULL);
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.BucketInfoV1");
+    ::zippylog::protocol::BucketInfoV1 *m = (::zippylog::protocol::BucketInfoV1 *)mud->msg;
+    ::zippylog::protocol::StreamSetInfoV1 *msg_new = m->add_stream_set();
+    lua_protobuf_zippylog_protocol_StreamSetInfoV1_pushreference(L, msg_new, NULL, NULL);
     return 1;
 }
 
-static const struct luaL_Reg StoreInfo_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreInfo_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreInfo_parsefromstring},
+static const struct luaL_Reg StoreInfoV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreInfoV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreInfoV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreInfo_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreInfo_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreInfo_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreInfo_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreInfo_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreInfo_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreInfo_set_bucket},
-    {"size_bucket", lua_protobuf_zippylog_protocol_StoreInfo_size_bucket},
-    {"add_bucket", lua_protobuf_zippylog_protocol_StoreInfo_add_bucket},
+static const struct luaL_Reg StoreInfoV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreInfoV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreInfoV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreInfoV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreInfoV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreInfoV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreInfoV1_set_bucket},
+    {"size_bucket", lua_protobuf_zippylog_protocol_StoreInfoV1_size_bucket},
+    {"add_bucket", lua_protobuf_zippylog_protocol_StoreInfoV1_add_bucket},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreInfo_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreInfo");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreInfoV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreInfo_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreInfo", StoreInfo_functions);
+    luaL_register(L, NULL, StoreInfoV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreInfoV1", StoreInfoV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreInfo_pushcopy(lua_State *L, const ::zippylog::protocol::StoreInfo &from)
+bool lua_protobuf_zippylog_protocol_StoreInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreInfoV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreInfo(from);
+    ud->msg = new ::zippylog::protocol::StoreInfoV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreInfo_pushreference(lua_State *L, ::zippylog::protocol::StoreInfo *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreInfoV1_pushreference(lua_State *L, ::zippylog::protocol::StoreInfoV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfoV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreInfo_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreInfo();
+    ud->msg = new ::zippylog::protocol::StoreInfoV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreInfo_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreInfo * msg = new ::zippylog::protocol::StoreInfo();
+    ::zippylog::protocol::StoreInfoV1 * msg = new ::zippylog::protocol::StoreInfoV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -793,14 +793,14 @@ int lua_protobuf_zippylog_protocol_StoreInfo_parsefromstring(lua_State *L)
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfo");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreInfoV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreInfo_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -813,17 +813,17 @@ int lua_protobuf_zippylog_protocol_StoreInfo_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreInfo_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreInfo_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -831,18 +831,18 @@ int lua_protobuf_zippylog_protocol_StoreInfo_serialized(lua_State *L)
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreInfo_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreInfo_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     if (lua_gettop(L) != 2) {
         return luaL_error(L, "missing required numeric argument");
     }
@@ -850,15 +850,15 @@ int lua_protobuf_zippylog_protocol_StoreInfo_get_bucket(lua_State *L)
     if (index < 1 || index > m->bucket_size()) {
         return luaL_error(L, "index must be between 1 and current size: %d", m->bucket_size());
     }
-    ::zippylog::protocol::BucketInfo * got_msg = m->mutable_bucket(index-1);
-    lua_protobuf_zippylog_protocol_BucketInfo_pushreference(L, got_msg, NULL, NULL);
+    ::zippylog::protocol::BucketInfoV1 * got_msg = m->mutable_bucket(index-1);
+    lua_protobuf_zippylog_protocol_BucketInfoV1_pushreference(L, got_msg, NULL, NULL);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreInfo_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     if (lua_gettop(L) != 3) {
             return luaL_error(L, "required 2 arguments not passed to function");
     }
@@ -874,107 +874,107 @@ int lua_protobuf_zippylog_protocol_StoreInfo_set_bucket(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreInfo_size_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_size_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
     int size = m->bucket_size();
     lua_pushinteger(L, size);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreInfo_add_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreInfoV1_add_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfo");
-    ::zippylog::protocol::StoreInfo *m = (::zippylog::protocol::StoreInfo *)mud->msg;
-    ::zippylog::protocol::BucketInfo *msg_new = m->add_bucket();
-    lua_protobuf_zippylog_protocol_BucketInfo_pushreference(L, msg_new, NULL, NULL);
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreInfoV1");
+    ::zippylog::protocol::StoreInfoV1 *m = (::zippylog::protocol::StoreInfoV1 *)mud->msg;
+    ::zippylog::protocol::BucketInfoV1 *msg_new = m->add_bucket();
+    lua_protobuf_zippylog_protocol_BucketInfoV1_pushreference(L, msg_new, NULL, NULL);
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeStreamAdded_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_parsefromstring},
+static const struct luaL_Reg StoreChangeStreamAddedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeStreamAdded_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_bucket},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream_set},
-    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_stream_set},
-    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_stream},
-    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_stream},
-    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream},
-    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_stream},
-    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_length},
-    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_length},
-    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_length},
-    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_length},
+static const struct luaL_Reg StoreChangeStreamAddedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_bucket},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_stream_set},
+    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_stream_set},
+    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_stream},
+    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_stream},
+    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_stream},
+    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_stream},
+    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_length},
+    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_length},
+    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_length},
+    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_length},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeStreamAdded_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamAdded", StoreChangeStreamAdded_functions);
+    luaL_register(L, NULL, StoreChangeStreamAddedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamAddedV1", StoreChangeStreamAddedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamAdded &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamAddedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamAdded(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamAddedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamAdded *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamAddedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamAdded();
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamAddedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeStreamAdded * msg = new ::zippylog::protocol::StoreChangeStreamAdded();
+    ::zippylog::protocol::StoreChangeStreamAddedV1 * msg = new ::zippylog::protocol::StoreChangeStreamAddedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -983,14 +983,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_parsefromstring(lua_St
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -1003,17 +1003,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -1021,27 +1021,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_serialized(lua_State *
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -1057,35 +1057,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_bucket(lua_State *
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     string s = m->stream_set();
     m->has_stream_set() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream_set();
         return 0;
@@ -1101,35 +1101,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream_set(lua_Sta
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream_set());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->clear_stream();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     string s = m->stream();
     m->has_stream() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream();
         return 0;
@@ -1145,34 +1145,34 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_stream(lua_State *
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_clear_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_clear_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->clear_length();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_get_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_get_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     m->has_length() ? lua_pushinteger(L, m->length()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_set_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_length();
         return 0;
@@ -1183,97 +1183,97 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_set_length(lua_State *
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAdded_has_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAddedV1_has_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAdded");
-    ::zippylog::protocol::StoreChangeStreamAdded *m = (::zippylog::protocol::StoreChangeStreamAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAddedV1");
+    ::zippylog::protocol::StoreChangeStreamAddedV1 *m = (::zippylog::protocol::StoreChangeStreamAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_length());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeStreamDeleted_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_parsefromstring},
+static const struct luaL_Reg StoreChangeStreamDeletedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeStreamDeleted_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_bucket},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream_set},
-    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_stream_set},
-    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_stream},
-    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_stream},
-    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream},
-    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_stream},
-    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_length},
-    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_length},
-    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_length},
-    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_length},
+static const struct luaL_Reg StoreChangeStreamDeletedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_bucket},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_stream_set},
+    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_stream_set},
+    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_stream},
+    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_stream},
+    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_stream},
+    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_stream},
+    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_length},
+    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_length},
+    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_length},
+    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_length},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeStreamDeleted_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamDeleted", StoreChangeStreamDeleted_functions);
+    luaL_register(L, NULL, StoreChangeStreamDeletedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamDeletedV1", StoreChangeStreamDeletedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamDeleted &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamDeletedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamDeleted(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamDeletedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamDeleted *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamDeletedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamDeleted();
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamDeletedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeStreamDeleted * msg = new ::zippylog::protocol::StoreChangeStreamDeleted();
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 * msg = new ::zippylog::protocol::StoreChangeStreamDeletedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -1282,14 +1282,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_parsefromstring(lua_
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -1302,17 +1302,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -1320,27 +1320,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_serialized(lua_State
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -1356,35 +1356,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_bucket(lua_State
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     string s = m->stream_set();
     m->has_stream_set() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream_set();
         return 0;
@@ -1400,35 +1400,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream_set(lua_S
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream_set());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->clear_stream();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     string s = m->stream();
     m->has_stream() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream();
         return 0;
@@ -1444,34 +1444,34 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_stream(lua_State
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_clear_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_clear_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->clear_length();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_get_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_get_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     m->has_length() ? lua_pushinteger(L, m->length()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_set_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_length();
         return 0;
@@ -1482,97 +1482,97 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_set_length(lua_State
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamDeleted_has_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamDeletedV1_has_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeleted");
-    ::zippylog::protocol::StoreChangeStreamDeleted *m = (::zippylog::protocol::StoreChangeStreamDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_length());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeStreamAppended_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_parsefromstring},
+static const struct luaL_Reg StoreChangeStreamAppendedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeStreamAppended_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_bucket},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream_set},
-    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_stream_set},
-    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_stream},
-    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_stream},
-    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream},
-    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_stream},
-    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_length},
-    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_length},
-    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_length},
-    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_length},
+static const struct luaL_Reg StoreChangeStreamAppendedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_bucket},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_stream_set},
+    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_stream_set},
+    {"clear_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_stream},
+    {"get_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_stream},
+    {"set_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_stream},
+    {"has_stream", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_stream},
+    {"clear_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_length},
+    {"get_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_length},
+    {"set_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_length},
+    {"has_length", lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_length},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeStreamAppended_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamAppended", StoreChangeStreamAppended_functions);
+    luaL_register(L, NULL, StoreChangeStreamAppendedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamAppendedV1", StoreChangeStreamAppendedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamAppended &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamAppendedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamAppended(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamAppendedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamAppended *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamAppendedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamAppended();
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamAppendedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeStreamAppended * msg = new ::zippylog::protocol::StoreChangeStreamAppended();
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 * msg = new ::zippylog::protocol::StoreChangeStreamAppendedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -1581,14 +1581,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_parsefromstring(lua
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -1601,17 +1601,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -1619,27 +1619,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_serialized(lua_Stat
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -1655,35 +1655,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_bucket(lua_Stat
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     string s = m->stream_set();
     m->has_stream_set() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream_set();
         return 0;
@@ -1699,35 +1699,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream_set(lua_
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream_set());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->clear_stream();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     string s = m->stream();
     m->has_stream() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream();
         return 0;
@@ -1743,34 +1743,34 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_stream(lua_Stat
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_stream(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_stream(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_clear_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_clear_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->clear_length();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_get_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_get_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     m->has_length() ? lua_pushinteger(L, m->length()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_set_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_length();
         return 0;
@@ -1781,85 +1781,85 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_set_length(lua_Stat
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamAppended_has_length(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamAppendedV1_has_length(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppended");
-    ::zippylog::protocol::StoreChangeStreamAppended *m = (::zippylog::protocol::StoreChangeStreamAppended *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamAppendedV1");
+    ::zippylog::protocol::StoreChangeStreamAppendedV1 *m = (::zippylog::protocol::StoreChangeStreamAppendedV1 *)mud->msg;
     lua_pushboolean(L, m->has_length());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeBucketAdded_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_parsefromstring},
+static const struct luaL_Reg StoreChangeBucketAddedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeBucketAdded_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_has_bucket},
+static const struct luaL_Reg StoreChangeBucketAddedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_has_bucket},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeBucketAdded_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeBucketAdded", StoreChangeBucketAdded_functions);
+    luaL_register(L, NULL, StoreChangeBucketAddedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeBucketAddedV1", StoreChangeBucketAddedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeBucketAdded &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeBucketAddedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeBucketAdded(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeBucketAddedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeBucketAdded *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeBucketAddedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeBucketAdded();
+    ud->msg = new ::zippylog::protocol::StoreChangeBucketAddedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeBucketAdded * msg = new ::zippylog::protocol::StoreChangeBucketAdded();
+    ::zippylog::protocol::StoreChangeBucketAddedV1 * msg = new ::zippylog::protocol::StoreChangeBucketAddedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -1868,14 +1868,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_parsefromstring(lua_St
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -1888,17 +1888,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -1906,27 +1906,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_serialized(lua_State *
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -1942,85 +1942,85 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_set_bucket(lua_State *
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketAdded_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketAddedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAdded");
-    ::zippylog::protocol::StoreChangeBucketAdded *m = (::zippylog::protocol::StoreChangeBucketAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketAddedV1");
+    ::zippylog::protocol::StoreChangeBucketAddedV1 *m = (::zippylog::protocol::StoreChangeBucketAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeBucketDeleted_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_parsefromstring},
+static const struct luaL_Reg StoreChangeBucketDeletedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeBucketDeleted_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_has_bucket},
+static const struct luaL_Reg StoreChangeBucketDeletedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_has_bucket},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeBucketDeleted_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeBucketDeleted", StoreChangeBucketDeleted_functions);
+    luaL_register(L, NULL, StoreChangeBucketDeletedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeBucketDeletedV1", StoreChangeBucketDeletedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeBucketDeleted &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeBucketDeletedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeBucketDeleted(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeBucketDeletedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeBucketDeleted *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeBucketDeletedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeBucketDeleted();
+    ud->msg = new ::zippylog::protocol::StoreChangeBucketDeletedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeBucketDeleted * msg = new ::zippylog::protocol::StoreChangeBucketDeleted();
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 * msg = new ::zippylog::protocol::StoreChangeBucketDeletedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -2029,14 +2029,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_parsefromstring(lua_
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -2049,17 +2049,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -2067,27 +2067,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_serialized(lua_State
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -2103,89 +2103,89 @@ int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_set_bucket(lua_State
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeBucketDeleted_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeBucketDeletedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeleted");
-    ::zippylog::protocol::StoreChangeBucketDeleted *m = (::zippylog::protocol::StoreChangeBucketDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeBucketDeletedV1");
+    ::zippylog::protocol::StoreChangeBucketDeletedV1 *m = (::zippylog::protocol::StoreChangeBucketDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeStreamSetAdded_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_parsefromstring},
+static const struct luaL_Reg StoreChangeStreamSetAddedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeStreamSetAdded_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_has_bucket},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_stream_set},
-    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_has_stream_set},
+static const struct luaL_Reg StoreChangeStreamSetAddedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_has_bucket},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_set_stream_set},
+    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_has_stream_set},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeStreamSetAdded_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamSetAdded", StoreChangeStreamSetAdded_functions);
+    luaL_register(L, NULL, StoreChangeStreamSetAddedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamSetAddedV1", StoreChangeStreamSetAddedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamSetAdded &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamSetAddedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetAdded(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetAddedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamSetAdded *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamSetAddedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetAdded();
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetAddedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeStreamSetAdded * msg = new ::zippylog::protocol::StoreChangeStreamSetAdded();
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 * msg = new ::zippylog::protocol::StoreChangeStreamSetAddedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -2194,14 +2194,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_parsefromstring(lua
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -2214,17 +2214,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -2232,27 +2232,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_serialized(lua_Stat
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -2268,35 +2268,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_bucket(lua_Stat
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     string s = m->stream_set();
     m->has_stream_set() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream_set();
         return 0;
@@ -2312,89 +2312,89 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_set_stream_set(lua_
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAdded_has_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetAddedV1_has_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAdded");
-    ::zippylog::protocol::StoreChangeStreamSetAdded *m = (::zippylog::protocol::StoreChangeStreamSetAdded *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetAddedV1");
+    ::zippylog::protocol::StoreChangeStreamSetAddedV1 *m = (::zippylog::protocol::StoreChangeStreamSetAddedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream_set());
     return 1;
 }
 
-static const struct luaL_Reg StoreChangeStreamSetDeleted_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_parsefromstring},
+static const struct luaL_Reg StoreChangeStreamSetDeletedV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg StoreChangeStreamSetDeleted_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_gc},
-    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear_bucket},
-    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_get_bucket},
-    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_bucket},
-    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_has_bucket},
-    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear_stream_set},
-    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_get_stream_set},
-    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_stream_set},
-    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_has_stream_set},
+static const struct luaL_Reg StoreChangeStreamSetDeletedV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_gc},
+    {"clear_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear_bucket},
+    {"get_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_get_bucket},
+    {"set_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_set_bucket},
+    {"has_bucket", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_has_bucket},
+    {"clear_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear_stream_set},
+    {"get_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_get_stream_set},
+    {"set_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_set_stream_set},
+    {"has_stream_set", lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_has_stream_set},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, StoreChangeStreamSetDeleted_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamSetDeleted", StoreChangeStreamSetDeleted_functions);
+    luaL_register(L, NULL, StoreChangeStreamSetDeletedV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.StoreChangeStreamSetDeletedV1", StoreChangeStreamSetDeletedV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamSetDeleted &from)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_pushcopy(lua_State *L, const ::zippylog::protocol::StoreChangeStreamSetDeletedV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetDeleted(from);
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetDeletedV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamSetDeleted *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_pushreference(lua_State *L, ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetDeleted();
+    ud->msg = new ::zippylog::protocol::StoreChangeStreamSetDeletedV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::StoreChangeStreamSetDeleted * msg = new ::zippylog::protocol::StoreChangeStreamSetDeleted();
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 * msg = new ::zippylog::protocol::StoreChangeStreamSetDeletedV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -2403,14 +2403,14 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_parsefromstring(l
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -2423,17 +2423,17 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -2441,27 +2441,27 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_serialized(lua_St
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     m->clear_bucket();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_get_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_get_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     string s = m->bucket();
     m->has_bucket() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_set_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_bucket();
         return 0;
@@ -2477,35 +2477,35 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_bucket(lua_St
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_has_bucket(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_has_bucket(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_bucket());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_clear_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_clear_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     m->clear_stream_set();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_get_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_get_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     string s = m->stream_set();
     m->has_stream_set() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_set_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_stream_set();
         return 0;
@@ -2521,10 +2521,10 @@ int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_set_stream_set(lu
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeleted_has_stream_set(lua_State *L)
+int lua_protobuf_zippylog_protocol_StoreChangeStreamSetDeletedV1_has_stream_set(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeleted");
-    ::zippylog::protocol::StoreChangeStreamSetDeleted *m = (::zippylog::protocol::StoreChangeStreamSetDeleted *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.StoreChangeStreamSetDeletedV1");
+    ::zippylog::protocol::StoreChangeStreamSetDeletedV1 *m = (::zippylog::protocol::StoreChangeStreamSetDeletedV1 *)mud->msg;
     lua_pushboolean(L, m->has_stream_set());
     return 1;
 }

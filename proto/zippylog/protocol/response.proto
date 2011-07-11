@@ -20,50 +20,50 @@ message FeatureSpecificationV1 {
 
 // when a stream segment is downloaded, this will be the first message
 // sent by the server. it tells the client what it is receiving
-message StreamSegmentStart {
-    optional string path = 1;
-    optional uint64 offset = 2;
+message StreamSegmentStartV1 {
+    required string path = 1;
+    required uint64 offset = 2;
 }
 
 // this terminates a stream segment sent by the server
 // the client should use the seen offsets to record which part of the stream(s)
 // it has received and repeat requests, if necessary
-message StreamSegmentEnd {
+message StreamSegmentEndV1 {
     // offset at which next event begins
-    optional uint64 offset = 1;
+    required uint64 offset = 1;
 
     // total bytes sent in the segment
-    optional uint32 bytes_sent = 2;
+    required uint32 bytes_sent = 2;
 
     // total envelopes from stream sent
-    optional uint32 envelopes_sent = 3;
+    required uint32 envelopes_sent = 3;
 
     // TODO record offset ranges that were skipped, possibly why
 }
 
 // acknowledges a subscription request
-message SubscribeAck {
+message SubscribeAckV1 {
     // unique identifier for this subscription
     // client needs to record this identifier to send in SubscribeKeepalive
     // messages to keep the subscription active
-    optional bytes id = 1;
+    required bytes id = 1;
 
     // number of milliseconds (roughly) client has to renew subscription via a
     // SubscribeKeepalive message before the server drops the subscription
     // the timer starts on the server before the client receives this message
     // so, clients should probably send an ack a few seconds before this TTL is
     // expired (5s would be reasonable)
-    optional uint32 ttl = 2;
+    required uint32 ttl = 2;
 }
 
 // first message in sequence of a subscription response
-message SubscriptionStart {
-    optional bytes id = 1;
+message SubscriptionStartV1 {
+    required bytes id = 1;
 }
 
-message WriteAck {
+message WriteAckV1 {
     // number of envelopes written
-    optional uint32 envelopes_written = 1;
+    required uint32 envelopes_written = 1;
 }
 
 message Error {

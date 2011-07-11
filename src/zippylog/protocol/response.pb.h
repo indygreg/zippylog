@@ -37,11 +37,11 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
 
 class PongV1;
 class FeatureSpecificationV1;
-class StreamSegmentStart;
-class StreamSegmentEnd;
-class SubscribeAck;
-class SubscriptionStart;
-class WriteAck;
+class StreamSegmentStartV1;
+class StreamSegmentEndV1;
+class SubscribeAckV1;
+class SubscriptionStartV1;
+class WriteAckV1;
 class Error;
 
 enum ErrorCode {
@@ -278,14 +278,14 @@ class FeatureSpecificationV1 : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class StreamSegmentStart : public ::google::protobuf::Message {
+class StreamSegmentStartV1 : public ::google::protobuf::Message {
  public:
-  StreamSegmentStart();
-  virtual ~StreamSegmentStart();
+  StreamSegmentStartV1();
+  virtual ~StreamSegmentStartV1();
   
-  StreamSegmentStart(const StreamSegmentStart& from);
+  StreamSegmentStartV1(const StreamSegmentStartV1& from);
   
-  inline StreamSegmentStart& operator=(const StreamSegmentStart& from) {
+  inline StreamSegmentStartV1& operator=(const StreamSegmentStartV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -299,17 +299,17 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StreamSegmentStart& default_instance();
+  static const StreamSegmentStartV1& default_instance();
   
-  void Swap(StreamSegmentStart* other);
+  void Swap(StreamSegmentStartV1* other);
   
   // implements Message ----------------------------------------------
   
-  StreamSegmentStart* New() const;
+  StreamSegmentStartV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StreamSegmentStart& from);
-  void MergeFrom(const StreamSegmentStart& from);
+  void CopyFrom(const StreamSegmentStartV1& from);
+  void MergeFrom(const StreamSegmentStartV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -332,7 +332,7 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -343,7 +343,7 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   inline ::std::string* release_path();
   
-  // optional uint64 offset = 2;
+  // required uint64 offset = 2;
   inline bool has_offset() const;
   inline void clear_offset();
   static const int kOffsetFieldNumber = 2;
@@ -351,11 +351,11 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   inline void set_offset(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 64;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 104;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStart)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentStartV1)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -375,18 +375,18 @@ class StreamSegmentStart : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static StreamSegmentStart* default_instance_;
+  static StreamSegmentStartV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StreamSegmentEnd : public ::google::protobuf::Message {
+class StreamSegmentEndV1 : public ::google::protobuf::Message {
  public:
-  StreamSegmentEnd();
-  virtual ~StreamSegmentEnd();
+  StreamSegmentEndV1();
+  virtual ~StreamSegmentEndV1();
   
-  StreamSegmentEnd(const StreamSegmentEnd& from);
+  StreamSegmentEndV1(const StreamSegmentEndV1& from);
   
-  inline StreamSegmentEnd& operator=(const StreamSegmentEnd& from) {
+  inline StreamSegmentEndV1& operator=(const StreamSegmentEndV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -400,17 +400,17 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StreamSegmentEnd& default_instance();
+  static const StreamSegmentEndV1& default_instance();
   
-  void Swap(StreamSegmentEnd* other);
+  void Swap(StreamSegmentEndV1* other);
   
   // implements Message ----------------------------------------------
   
-  StreamSegmentEnd* New() const;
+  StreamSegmentEndV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StreamSegmentEnd& from);
-  void MergeFrom(const StreamSegmentEnd& from);
+  void CopyFrom(const StreamSegmentEndV1& from);
+  void MergeFrom(const StreamSegmentEndV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -433,21 +433,21 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint64 offset = 1;
+  // required uint64 offset = 1;
   inline bool has_offset() const;
   inline void clear_offset();
   static const int kOffsetFieldNumber = 1;
   inline ::google::protobuf::uint64 offset() const;
   inline void set_offset(::google::protobuf::uint64 value);
   
-  // optional uint32 bytes_sent = 2;
+  // required uint32 bytes_sent = 2;
   inline bool has_bytes_sent() const;
   inline void clear_bytes_sent();
   static const int kBytesSentFieldNumber = 2;
   inline ::google::protobuf::uint32 bytes_sent() const;
   inline void set_bytes_sent(::google::protobuf::uint32 value);
   
-  // optional uint32 envelopes_sent = 3;
+  // required uint32 envelopes_sent = 3;
   inline bool has_envelopes_sent() const;
   inline void clear_envelopes_sent();
   static const int kEnvelopesSentFieldNumber = 3;
@@ -455,11 +455,11 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   inline void set_envelopes_sent(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 65;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 105;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEnd)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.StreamSegmentEndV1)
  private:
   inline void set_has_offset();
   inline void clear_has_offset();
@@ -482,18 +482,18 @@ class StreamSegmentEnd : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static StreamSegmentEnd* default_instance_;
+  static StreamSegmentEndV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class SubscribeAck : public ::google::protobuf::Message {
+class SubscribeAckV1 : public ::google::protobuf::Message {
  public:
-  SubscribeAck();
-  virtual ~SubscribeAck();
+  SubscribeAckV1();
+  virtual ~SubscribeAckV1();
   
-  SubscribeAck(const SubscribeAck& from);
+  SubscribeAckV1(const SubscribeAckV1& from);
   
-  inline SubscribeAck& operator=(const SubscribeAck& from) {
+  inline SubscribeAckV1& operator=(const SubscribeAckV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -507,17 +507,17 @@ class SubscribeAck : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SubscribeAck& default_instance();
+  static const SubscribeAckV1& default_instance();
   
-  void Swap(SubscribeAck* other);
+  void Swap(SubscribeAckV1* other);
   
   // implements Message ----------------------------------------------
   
-  SubscribeAck* New() const;
+  SubscribeAckV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SubscribeAck& from);
-  void MergeFrom(const SubscribeAck& from);
+  void CopyFrom(const SubscribeAckV1& from);
+  void MergeFrom(const SubscribeAckV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -540,7 +540,7 @@ class SubscribeAck : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
@@ -551,7 +551,7 @@ class SubscribeAck : public ::google::protobuf::Message {
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
-  // optional uint32 ttl = 2;
+  // required uint32 ttl = 2;
   inline bool has_ttl() const;
   inline void clear_ttl();
   static const int kTtlFieldNumber = 2;
@@ -559,11 +559,11 @@ class SubscribeAck : public ::google::protobuf::Message {
   inline void set_ttl(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 66;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 106;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAck)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAckV1)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -583,18 +583,18 @@ class SubscribeAck : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static SubscribeAck* default_instance_;
+  static SubscribeAckV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class SubscriptionStart : public ::google::protobuf::Message {
+class SubscriptionStartV1 : public ::google::protobuf::Message {
  public:
-  SubscriptionStart();
-  virtual ~SubscriptionStart();
+  SubscriptionStartV1();
+  virtual ~SubscriptionStartV1();
   
-  SubscriptionStart(const SubscriptionStart& from);
+  SubscriptionStartV1(const SubscriptionStartV1& from);
   
-  inline SubscriptionStart& operator=(const SubscriptionStart& from) {
+  inline SubscriptionStartV1& operator=(const SubscriptionStartV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -608,17 +608,17 @@ class SubscriptionStart : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SubscriptionStart& default_instance();
+  static const SubscriptionStartV1& default_instance();
   
-  void Swap(SubscriptionStart* other);
+  void Swap(SubscriptionStartV1* other);
   
   // implements Message ----------------------------------------------
   
-  SubscriptionStart* New() const;
+  SubscriptionStartV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SubscriptionStart& from);
-  void MergeFrom(const SubscriptionStart& from);
+  void CopyFrom(const SubscriptionStartV1& from);
+  void MergeFrom(const SubscriptionStartV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -641,7 +641,7 @@ class SubscriptionStart : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
@@ -653,11 +653,11 @@ class SubscriptionStart : public ::google::protobuf::Message {
   inline ::std::string* release_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 67;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 107;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStart)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionStartV1)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -674,18 +674,18 @@ class SubscriptionStart : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static SubscriptionStart* default_instance_;
+  static SubscriptionStartV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class WriteAck : public ::google::protobuf::Message {
+class WriteAckV1 : public ::google::protobuf::Message {
  public:
-  WriteAck();
-  virtual ~WriteAck();
+  WriteAckV1();
+  virtual ~WriteAckV1();
   
-  WriteAck(const WriteAck& from);
+  WriteAckV1(const WriteAckV1& from);
   
-  inline WriteAck& operator=(const WriteAck& from) {
+  inline WriteAckV1& operator=(const WriteAckV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -699,17 +699,17 @@ class WriteAck : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const WriteAck& default_instance();
+  static const WriteAckV1& default_instance();
   
-  void Swap(WriteAck* other);
+  void Swap(WriteAckV1* other);
   
   // implements Message ----------------------------------------------
   
-  WriteAck* New() const;
+  WriteAckV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const WriteAck& from);
-  void MergeFrom(const WriteAck& from);
+  void CopyFrom(const WriteAckV1& from);
+  void MergeFrom(const WriteAckV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -732,7 +732,7 @@ class WriteAck : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional uint32 envelopes_written = 1;
+  // required uint32 envelopes_written = 1;
   inline bool has_envelopes_written() const;
   inline void clear_envelopes_written();
   static const int kEnvelopesWrittenFieldNumber = 1;
@@ -740,11 +740,11 @@ class WriteAck : public ::google::protobuf::Message {
   inline void set_envelopes_written(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 68;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 108;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAck)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.WriteAckV1)
  private:
   inline void set_has_envelopes_written();
   inline void clear_has_envelopes_written();
@@ -761,7 +761,7 @@ class WriteAck : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static WriteAck* default_instance_;
+  static WriteAckV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -971,56 +971,56 @@ FeatureSpecificationV1::mutable_supported_request_names() {
 
 // -------------------------------------------------------------------
 
-// StreamSegmentStart
+// StreamSegmentStartV1
 
-// optional string path = 1;
-inline bool StreamSegmentStart::has_path() const {
+// required string path = 1;
+inline bool StreamSegmentStartV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StreamSegmentStart::set_has_path() {
+inline void StreamSegmentStartV1::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StreamSegmentStart::clear_has_path() {
+inline void StreamSegmentStartV1::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StreamSegmentStart::clear_path() {
+inline void StreamSegmentStartV1::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& StreamSegmentStart::path() const {
+inline const ::std::string& StreamSegmentStartV1::path() const {
   return *path_;
 }
-inline void StreamSegmentStart::set_path(const ::std::string& value) {
+inline void StreamSegmentStartV1::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSegmentStart::set_path(const char* value) {
+inline void StreamSegmentStartV1::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSegmentStart::set_path(const char* value, size_t size) {
+inline void StreamSegmentStartV1::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamSegmentStart::mutable_path() {
+inline ::std::string* StreamSegmentStartV1::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* StreamSegmentStart::release_path() {
+inline ::std::string* StreamSegmentStartV1::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1031,150 +1031,150 @@ inline ::std::string* StreamSegmentStart::release_path() {
   }
 }
 
-// optional uint64 offset = 2;
-inline bool StreamSegmentStart::has_offset() const {
+// required uint64 offset = 2;
+inline bool StreamSegmentStartV1::has_offset() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StreamSegmentStart::set_has_offset() {
+inline void StreamSegmentStartV1::set_has_offset() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StreamSegmentStart::clear_has_offset() {
+inline void StreamSegmentStartV1::clear_has_offset() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StreamSegmentStart::clear_offset() {
+inline void StreamSegmentStartV1::clear_offset() {
   offset_ = GOOGLE_ULONGLONG(0);
   clear_has_offset();
 }
-inline ::google::protobuf::uint64 StreamSegmentStart::offset() const {
+inline ::google::protobuf::uint64 StreamSegmentStartV1::offset() const {
   return offset_;
 }
-inline void StreamSegmentStart::set_offset(::google::protobuf::uint64 value) {
+inline void StreamSegmentStartV1::set_offset(::google::protobuf::uint64 value) {
   set_has_offset();
   offset_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// StreamSegmentEnd
+// StreamSegmentEndV1
 
-// optional uint64 offset = 1;
-inline bool StreamSegmentEnd::has_offset() const {
+// required uint64 offset = 1;
+inline bool StreamSegmentEndV1::has_offset() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StreamSegmentEnd::set_has_offset() {
+inline void StreamSegmentEndV1::set_has_offset() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StreamSegmentEnd::clear_has_offset() {
+inline void StreamSegmentEndV1::clear_has_offset() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StreamSegmentEnd::clear_offset() {
+inline void StreamSegmentEndV1::clear_offset() {
   offset_ = GOOGLE_ULONGLONG(0);
   clear_has_offset();
 }
-inline ::google::protobuf::uint64 StreamSegmentEnd::offset() const {
+inline ::google::protobuf::uint64 StreamSegmentEndV1::offset() const {
   return offset_;
 }
-inline void StreamSegmentEnd::set_offset(::google::protobuf::uint64 value) {
+inline void StreamSegmentEndV1::set_offset(::google::protobuf::uint64 value) {
   set_has_offset();
   offset_ = value;
 }
 
-// optional uint32 bytes_sent = 2;
-inline bool StreamSegmentEnd::has_bytes_sent() const {
+// required uint32 bytes_sent = 2;
+inline bool StreamSegmentEndV1::has_bytes_sent() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StreamSegmentEnd::set_has_bytes_sent() {
+inline void StreamSegmentEndV1::set_has_bytes_sent() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StreamSegmentEnd::clear_has_bytes_sent() {
+inline void StreamSegmentEndV1::clear_has_bytes_sent() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StreamSegmentEnd::clear_bytes_sent() {
+inline void StreamSegmentEndV1::clear_bytes_sent() {
   bytes_sent_ = 0u;
   clear_has_bytes_sent();
 }
-inline ::google::protobuf::uint32 StreamSegmentEnd::bytes_sent() const {
+inline ::google::protobuf::uint32 StreamSegmentEndV1::bytes_sent() const {
   return bytes_sent_;
 }
-inline void StreamSegmentEnd::set_bytes_sent(::google::protobuf::uint32 value) {
+inline void StreamSegmentEndV1::set_bytes_sent(::google::protobuf::uint32 value) {
   set_has_bytes_sent();
   bytes_sent_ = value;
 }
 
-// optional uint32 envelopes_sent = 3;
-inline bool StreamSegmentEnd::has_envelopes_sent() const {
+// required uint32 envelopes_sent = 3;
+inline bool StreamSegmentEndV1::has_envelopes_sent() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void StreamSegmentEnd::set_has_envelopes_sent() {
+inline void StreamSegmentEndV1::set_has_envelopes_sent() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void StreamSegmentEnd::clear_has_envelopes_sent() {
+inline void StreamSegmentEndV1::clear_has_envelopes_sent() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void StreamSegmentEnd::clear_envelopes_sent() {
+inline void StreamSegmentEndV1::clear_envelopes_sent() {
   envelopes_sent_ = 0u;
   clear_has_envelopes_sent();
 }
-inline ::google::protobuf::uint32 StreamSegmentEnd::envelopes_sent() const {
+inline ::google::protobuf::uint32 StreamSegmentEndV1::envelopes_sent() const {
   return envelopes_sent_;
 }
-inline void StreamSegmentEnd::set_envelopes_sent(::google::protobuf::uint32 value) {
+inline void StreamSegmentEndV1::set_envelopes_sent(::google::protobuf::uint32 value) {
   set_has_envelopes_sent();
   envelopes_sent_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// SubscribeAck
+// SubscribeAckV1
 
-// optional bytes id = 1;
-inline bool SubscribeAck::has_id() const {
+// required bytes id = 1;
+inline bool SubscribeAckV1::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SubscribeAck::set_has_id() {
+inline void SubscribeAckV1::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SubscribeAck::clear_has_id() {
+inline void SubscribeAckV1::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SubscribeAck::clear_id() {
+inline void SubscribeAckV1::clear_id() {
   if (id_ != &::google::protobuf::internal::kEmptyString) {
     id_->clear();
   }
   clear_has_id();
 }
-inline const ::std::string& SubscribeAck::id() const {
+inline const ::std::string& SubscribeAckV1::id() const {
   return *id_;
 }
-inline void SubscribeAck::set_id(const ::std::string& value) {
+inline void SubscribeAckV1::set_id(const ::std::string& value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscribeAck::set_id(const char* value) {
+inline void SubscribeAckV1::set_id(const char* value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscribeAck::set_id(const void* value, size_t size) {
+inline void SubscribeAckV1::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SubscribeAck::mutable_id() {
+inline ::std::string* SubscribeAckV1::mutable_id() {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   return id_;
 }
-inline ::std::string* SubscribeAck::release_id() {
+inline ::std::string* SubscribeAckV1::release_id() {
   clear_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1185,80 +1185,80 @@ inline ::std::string* SubscribeAck::release_id() {
   }
 }
 
-// optional uint32 ttl = 2;
-inline bool SubscribeAck::has_ttl() const {
+// required uint32 ttl = 2;
+inline bool SubscribeAckV1::has_ttl() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void SubscribeAck::set_has_ttl() {
+inline void SubscribeAckV1::set_has_ttl() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void SubscribeAck::clear_has_ttl() {
+inline void SubscribeAckV1::clear_has_ttl() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void SubscribeAck::clear_ttl() {
+inline void SubscribeAckV1::clear_ttl() {
   ttl_ = 0u;
   clear_has_ttl();
 }
-inline ::google::protobuf::uint32 SubscribeAck::ttl() const {
+inline ::google::protobuf::uint32 SubscribeAckV1::ttl() const {
   return ttl_;
 }
-inline void SubscribeAck::set_ttl(::google::protobuf::uint32 value) {
+inline void SubscribeAckV1::set_ttl(::google::protobuf::uint32 value) {
   set_has_ttl();
   ttl_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// SubscriptionStart
+// SubscriptionStartV1
 
-// optional bytes id = 1;
-inline bool SubscriptionStart::has_id() const {
+// required bytes id = 1;
+inline bool SubscriptionStartV1::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SubscriptionStart::set_has_id() {
+inline void SubscriptionStartV1::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SubscriptionStart::clear_has_id() {
+inline void SubscriptionStartV1::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SubscriptionStart::clear_id() {
+inline void SubscriptionStartV1::clear_id() {
   if (id_ != &::google::protobuf::internal::kEmptyString) {
     id_->clear();
   }
   clear_has_id();
 }
-inline const ::std::string& SubscriptionStart::id() const {
+inline const ::std::string& SubscriptionStartV1::id() const {
   return *id_;
 }
-inline void SubscriptionStart::set_id(const ::std::string& value) {
+inline void SubscriptionStartV1::set_id(const ::std::string& value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscriptionStart::set_id(const char* value) {
+inline void SubscriptionStartV1::set_id(const char* value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscriptionStart::set_id(const void* value, size_t size) {
+inline void SubscriptionStartV1::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SubscriptionStart::mutable_id() {
+inline ::std::string* SubscriptionStartV1::mutable_id() {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   return id_;
 }
-inline ::std::string* SubscriptionStart::release_id() {
+inline ::std::string* SubscriptionStartV1::release_id() {
   clear_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1271,26 +1271,26 @@ inline ::std::string* SubscriptionStart::release_id() {
 
 // -------------------------------------------------------------------
 
-// WriteAck
+// WriteAckV1
 
-// optional uint32 envelopes_written = 1;
-inline bool WriteAck::has_envelopes_written() const {
+// required uint32 envelopes_written = 1;
+inline bool WriteAckV1::has_envelopes_written() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void WriteAck::set_has_envelopes_written() {
+inline void WriteAckV1::set_has_envelopes_written() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void WriteAck::clear_has_envelopes_written() {
+inline void WriteAckV1::clear_has_envelopes_written() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void WriteAck::clear_envelopes_written() {
+inline void WriteAckV1::clear_envelopes_written() {
   envelopes_written_ = 0u;
   clear_has_envelopes_written();
 }
-inline ::google::protobuf::uint32 WriteAck::envelopes_written() const {
+inline ::google::protobuf::uint32 WriteAckV1::envelopes_written() const {
   return envelopes_written_;
 }
-inline void WriteAck::set_envelopes_written(::google::protobuf::uint32 value) {
+inline void WriteAckV1::set_envelopes_written(::google::protobuf::uint32 value) {
   set_has_envelopes_written();
   envelopes_written_ = value;
 }

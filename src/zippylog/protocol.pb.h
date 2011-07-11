@@ -34,28 +34,28 @@ void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
 void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
 void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
 
-class StreamInfo;
-class StreamSetInfo;
-class BucketInfo;
-class StoreInfo;
-class StoreChangeStreamAdded;
-class StoreChangeStreamDeleted;
-class StoreChangeStreamAppended;
-class StoreChangeBucketAdded;
-class StoreChangeBucketDeleted;
-class StoreChangeStreamSetAdded;
-class StoreChangeStreamSetDeleted;
+class StreamInfoV1;
+class StreamSetInfoV1;
+class BucketInfoV1;
+class StoreInfoV1;
+class StoreChangeStreamAddedV1;
+class StoreChangeStreamDeletedV1;
+class StoreChangeStreamAppendedV1;
+class StoreChangeBucketAddedV1;
+class StoreChangeBucketDeletedV1;
+class StoreChangeStreamSetAddedV1;
+class StoreChangeStreamSetDeletedV1;
 
 // ===================================================================
 
-class StreamInfo : public ::google::protobuf::Message {
+class StreamInfoV1 : public ::google::protobuf::Message {
  public:
-  StreamInfo();
-  virtual ~StreamInfo();
+  StreamInfoV1();
+  virtual ~StreamInfoV1();
   
-  StreamInfo(const StreamInfo& from);
+  StreamInfoV1(const StreamInfoV1& from);
   
-  inline StreamInfo& operator=(const StreamInfo& from) {
+  inline StreamInfoV1& operator=(const StreamInfoV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -69,17 +69,17 @@ class StreamInfo : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StreamInfo& default_instance();
+  static const StreamInfoV1& default_instance();
   
-  void Swap(StreamInfo* other);
+  void Swap(StreamInfoV1* other);
   
   // implements Message ----------------------------------------------
   
-  StreamInfo* New() const;
+  StreamInfoV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StreamInfo& from);
-  void MergeFrom(const StreamInfo& from);
+  void CopyFrom(const StreamInfoV1& from);
+  void MergeFrom(const StreamInfoV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -102,7 +102,7 @@ class StreamInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -121,11 +121,11 @@ class StreamInfo : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 32;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 93;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StreamInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StreamInfoV1)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -145,18 +145,18 @@ class StreamInfo : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StreamInfo* default_instance_;
+  static StreamInfoV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StreamSetInfo : public ::google::protobuf::Message {
+class StreamSetInfoV1 : public ::google::protobuf::Message {
  public:
-  StreamSetInfo();
-  virtual ~StreamSetInfo();
+  StreamSetInfoV1();
+  virtual ~StreamSetInfoV1();
   
-  StreamSetInfo(const StreamSetInfo& from);
+  StreamSetInfoV1(const StreamSetInfoV1& from);
   
-  inline StreamSetInfo& operator=(const StreamSetInfo& from) {
+  inline StreamSetInfoV1& operator=(const StreamSetInfoV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -170,17 +170,17 @@ class StreamSetInfo : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StreamSetInfo& default_instance();
+  static const StreamSetInfoV1& default_instance();
   
-  void Swap(StreamSetInfo* other);
+  void Swap(StreamSetInfoV1* other);
   
   // implements Message ----------------------------------------------
   
-  StreamSetInfo* New() const;
+  StreamSetInfoV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StreamSetInfo& from);
-  void MergeFrom(const StreamSetInfo& from);
+  void CopyFrom(const StreamSetInfoV1& from);
+  void MergeFrom(const StreamSetInfoV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -203,7 +203,7 @@ class StreamSetInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -214,24 +214,24 @@ class StreamSetInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   inline ::std::string* release_path();
   
-  // repeated .zippylog.protocol.StreamInfo stream = 2;
+  // repeated .zippylog.protocol.StreamInfoV1 stream = 2;
   inline int stream_size() const;
   inline void clear_stream();
   static const int kStreamFieldNumber = 2;
-  inline const ::zippylog::protocol::StreamInfo& stream(int index) const;
-  inline ::zippylog::protocol::StreamInfo* mutable_stream(int index);
-  inline ::zippylog::protocol::StreamInfo* add_stream();
-  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfo >&
+  inline const ::zippylog::protocol::StreamInfoV1& stream(int index) const;
+  inline ::zippylog::protocol::StreamInfoV1* mutable_stream(int index);
+  inline ::zippylog::protocol::StreamInfoV1* add_stream();
+  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfoV1 >&
       stream() const;
-  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfo >*
+  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfoV1 >*
       mutable_stream();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 33;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 94;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StreamSetInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StreamSetInfoV1)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -239,7 +239,7 @@ class StreamSetInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* path_;
-  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfo > stream_;
+  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfoV1 > stream_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
@@ -249,18 +249,18 @@ class StreamSetInfo : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StreamSetInfo* default_instance_;
+  static StreamSetInfoV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class BucketInfo : public ::google::protobuf::Message {
+class BucketInfoV1 : public ::google::protobuf::Message {
  public:
-  BucketInfo();
-  virtual ~BucketInfo();
+  BucketInfoV1();
+  virtual ~BucketInfoV1();
   
-  BucketInfo(const BucketInfo& from);
+  BucketInfoV1(const BucketInfoV1& from);
   
-  inline BucketInfo& operator=(const BucketInfo& from) {
+  inline BucketInfoV1& operator=(const BucketInfoV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -274,17 +274,17 @@ class BucketInfo : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const BucketInfo& default_instance();
+  static const BucketInfoV1& default_instance();
   
-  void Swap(BucketInfo* other);
+  void Swap(BucketInfoV1* other);
   
   // implements Message ----------------------------------------------
   
-  BucketInfo* New() const;
+  BucketInfoV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const BucketInfo& from);
-  void MergeFrom(const BucketInfo& from);
+  void CopyFrom(const BucketInfoV1& from);
+  void MergeFrom(const BucketInfoV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -307,7 +307,7 @@ class BucketInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -318,24 +318,24 @@ class BucketInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   inline ::std::string* release_path();
   
-  // repeated .zippylog.protocol.StreamSetInfo stream_set = 2;
+  // repeated .zippylog.protocol.StreamSetInfoV1 stream_set = 2;
   inline int stream_set_size() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
-  inline const ::zippylog::protocol::StreamSetInfo& stream_set(int index) const;
-  inline ::zippylog::protocol::StreamSetInfo* mutable_stream_set(int index);
-  inline ::zippylog::protocol::StreamSetInfo* add_stream_set();
-  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfo >&
+  inline const ::zippylog::protocol::StreamSetInfoV1& stream_set(int index) const;
+  inline ::zippylog::protocol::StreamSetInfoV1* mutable_stream_set(int index);
+  inline ::zippylog::protocol::StreamSetInfoV1* add_stream_set();
+  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfoV1 >&
       stream_set() const;
-  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfo >*
+  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfoV1 >*
       mutable_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 34;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 95;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.BucketInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.BucketInfoV1)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -343,7 +343,7 @@ class BucketInfo : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* path_;
-  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfo > stream_set_;
+  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfoV1 > stream_set_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
@@ -353,18 +353,18 @@ class BucketInfo : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static BucketInfo* default_instance_;
+  static BucketInfoV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreInfo : public ::google::protobuf::Message {
+class StoreInfoV1 : public ::google::protobuf::Message {
  public:
-  StoreInfo();
-  virtual ~StoreInfo();
+  StoreInfoV1();
+  virtual ~StoreInfoV1();
   
-  StoreInfo(const StoreInfo& from);
+  StoreInfoV1(const StoreInfoV1& from);
   
-  inline StoreInfo& operator=(const StoreInfo& from) {
+  inline StoreInfoV1& operator=(const StoreInfoV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -378,17 +378,17 @@ class StoreInfo : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreInfo& default_instance();
+  static const StoreInfoV1& default_instance();
   
-  void Swap(StoreInfo* other);
+  void Swap(StoreInfoV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreInfo* New() const;
+  StoreInfoV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreInfo& from);
-  void MergeFrom(const StoreInfo& from);
+  void CopyFrom(const StoreInfoV1& from);
+  void MergeFrom(const StoreInfoV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -411,29 +411,29 @@ class StoreInfo : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // repeated .zippylog.protocol.BucketInfo bucket = 1;
+  // repeated .zippylog.protocol.BucketInfoV1 bucket = 1;
   inline int bucket_size() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
-  inline const ::zippylog::protocol::BucketInfo& bucket(int index) const;
-  inline ::zippylog::protocol::BucketInfo* mutable_bucket(int index);
-  inline ::zippylog::protocol::BucketInfo* add_bucket();
-  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfo >&
+  inline const ::zippylog::protocol::BucketInfoV1& bucket(int index) const;
+  inline ::zippylog::protocol::BucketInfoV1* mutable_bucket(int index);
+  inline ::zippylog::protocol::BucketInfoV1* add_bucket();
+  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfoV1 >&
       bucket() const;
-  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfo >*
+  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfoV1 >*
       mutable_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 35;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 96;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreInfo)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreInfoV1)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfo > bucket_;
+  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfoV1 > bucket_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -443,18 +443,18 @@ class StoreInfo : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreInfo* default_instance_;
+  static StoreInfoV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeStreamAdded : public ::google::protobuf::Message {
+class StoreChangeStreamAddedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeStreamAdded();
-  virtual ~StoreChangeStreamAdded();
+  StoreChangeStreamAddedV1();
+  virtual ~StoreChangeStreamAddedV1();
   
-  StoreChangeStreamAdded(const StoreChangeStreamAdded& from);
+  StoreChangeStreamAddedV1(const StoreChangeStreamAddedV1& from);
   
-  inline StoreChangeStreamAdded& operator=(const StoreChangeStreamAdded& from) {
+  inline StoreChangeStreamAddedV1& operator=(const StoreChangeStreamAddedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -468,17 +468,17 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeStreamAdded& default_instance();
+  static const StoreChangeStreamAddedV1& default_instance();
   
-  void Swap(StoreChangeStreamAdded* other);
+  void Swap(StoreChangeStreamAddedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeStreamAdded* New() const;
+  StoreChangeStreamAddedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeStreamAdded& from);
-  void MergeFrom(const StoreChangeStreamAdded& from);
+  void CopyFrom(const StoreChangeStreamAddedV1& from);
+  void MergeFrom(const StoreChangeStreamAddedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -501,7 +501,7 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -512,7 +512,7 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   inline ::std::string* release_bucket();
   
-  // optional string stream_set = 2;
+  // required string stream_set = 2;
   inline bool has_stream_set() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
@@ -523,7 +523,7 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   inline ::std::string* mutable_stream_set();
   inline ::std::string* release_stream_set();
   
-  // optional string stream = 3;
+  // required string stream = 3;
   inline bool has_stream() const;
   inline void clear_stream();
   static const int kStreamFieldNumber = 3;
@@ -542,11 +542,11 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 36;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 97;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAdded)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAddedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -572,18 +572,18 @@ class StoreChangeStreamAdded : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamAdded* default_instance_;
+  static StoreChangeStreamAddedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeStreamDeleted : public ::google::protobuf::Message {
+class StoreChangeStreamDeletedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeStreamDeleted();
-  virtual ~StoreChangeStreamDeleted();
+  StoreChangeStreamDeletedV1();
+  virtual ~StoreChangeStreamDeletedV1();
   
-  StoreChangeStreamDeleted(const StoreChangeStreamDeleted& from);
+  StoreChangeStreamDeletedV1(const StoreChangeStreamDeletedV1& from);
   
-  inline StoreChangeStreamDeleted& operator=(const StoreChangeStreamDeleted& from) {
+  inline StoreChangeStreamDeletedV1& operator=(const StoreChangeStreamDeletedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -597,17 +597,17 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeStreamDeleted& default_instance();
+  static const StoreChangeStreamDeletedV1& default_instance();
   
-  void Swap(StoreChangeStreamDeleted* other);
+  void Swap(StoreChangeStreamDeletedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeStreamDeleted* New() const;
+  StoreChangeStreamDeletedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeStreamDeleted& from);
-  void MergeFrom(const StoreChangeStreamDeleted& from);
+  void CopyFrom(const StoreChangeStreamDeletedV1& from);
+  void MergeFrom(const StoreChangeStreamDeletedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -630,7 +630,7 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -641,7 +641,7 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   inline ::std::string* release_bucket();
   
-  // optional string stream_set = 2;
+  // required string stream_set = 2;
   inline bool has_stream_set() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
@@ -652,7 +652,7 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   inline ::std::string* mutable_stream_set();
   inline ::std::string* release_stream_set();
   
-  // optional string stream = 3;
+  // required string stream = 3;
   inline bool has_stream() const;
   inline void clear_stream();
   static const int kStreamFieldNumber = 3;
@@ -671,11 +671,11 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 37;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 98;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamDeleted)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamDeletedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -701,18 +701,18 @@ class StoreChangeStreamDeleted : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamDeleted* default_instance_;
+  static StoreChangeStreamDeletedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeStreamAppended : public ::google::protobuf::Message {
+class StoreChangeStreamAppendedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeStreamAppended();
-  virtual ~StoreChangeStreamAppended();
+  StoreChangeStreamAppendedV1();
+  virtual ~StoreChangeStreamAppendedV1();
   
-  StoreChangeStreamAppended(const StoreChangeStreamAppended& from);
+  StoreChangeStreamAppendedV1(const StoreChangeStreamAppendedV1& from);
   
-  inline StoreChangeStreamAppended& operator=(const StoreChangeStreamAppended& from) {
+  inline StoreChangeStreamAppendedV1& operator=(const StoreChangeStreamAppendedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -726,17 +726,17 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeStreamAppended& default_instance();
+  static const StoreChangeStreamAppendedV1& default_instance();
   
-  void Swap(StoreChangeStreamAppended* other);
+  void Swap(StoreChangeStreamAppendedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeStreamAppended* New() const;
+  StoreChangeStreamAppendedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeStreamAppended& from);
-  void MergeFrom(const StoreChangeStreamAppended& from);
+  void CopyFrom(const StoreChangeStreamAppendedV1& from);
+  void MergeFrom(const StoreChangeStreamAppendedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -759,7 +759,7 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -770,7 +770,7 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   inline ::std::string* release_bucket();
   
-  // optional string stream_set = 2;
+  // required string stream_set = 2;
   inline bool has_stream_set() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
@@ -781,7 +781,7 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   inline ::std::string* mutable_stream_set();
   inline ::std::string* release_stream_set();
   
-  // optional string stream = 3;
+  // required string stream = 3;
   inline bool has_stream() const;
   inline void clear_stream();
   static const int kStreamFieldNumber = 3;
@@ -800,11 +800,11 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   inline void set_length(::google::protobuf::uint64 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 38;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 99;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAppended)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamAppendedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -830,18 +830,18 @@ class StoreChangeStreamAppended : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamAppended* default_instance_;
+  static StoreChangeStreamAppendedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeBucketAdded : public ::google::protobuf::Message {
+class StoreChangeBucketAddedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeBucketAdded();
-  virtual ~StoreChangeBucketAdded();
+  StoreChangeBucketAddedV1();
+  virtual ~StoreChangeBucketAddedV1();
   
-  StoreChangeBucketAdded(const StoreChangeBucketAdded& from);
+  StoreChangeBucketAddedV1(const StoreChangeBucketAddedV1& from);
   
-  inline StoreChangeBucketAdded& operator=(const StoreChangeBucketAdded& from) {
+  inline StoreChangeBucketAddedV1& operator=(const StoreChangeBucketAddedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -855,17 +855,17 @@ class StoreChangeBucketAdded : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeBucketAdded& default_instance();
+  static const StoreChangeBucketAddedV1& default_instance();
   
-  void Swap(StoreChangeBucketAdded* other);
+  void Swap(StoreChangeBucketAddedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeBucketAdded* New() const;
+  StoreChangeBucketAddedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeBucketAdded& from);
-  void MergeFrom(const StoreChangeBucketAdded& from);
+  void CopyFrom(const StoreChangeBucketAddedV1& from);
+  void MergeFrom(const StoreChangeBucketAddedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -888,7 +888,7 @@ class StoreChangeBucketAdded : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -900,11 +900,11 @@ class StoreChangeBucketAdded : public ::google::protobuf::Message {
   inline ::std::string* release_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 39;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 100;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketAdded)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketAddedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -921,18 +921,18 @@ class StoreChangeBucketAdded : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeBucketAdded* default_instance_;
+  static StoreChangeBucketAddedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeBucketDeleted : public ::google::protobuf::Message {
+class StoreChangeBucketDeletedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeBucketDeleted();
-  virtual ~StoreChangeBucketDeleted();
+  StoreChangeBucketDeletedV1();
+  virtual ~StoreChangeBucketDeletedV1();
   
-  StoreChangeBucketDeleted(const StoreChangeBucketDeleted& from);
+  StoreChangeBucketDeletedV1(const StoreChangeBucketDeletedV1& from);
   
-  inline StoreChangeBucketDeleted& operator=(const StoreChangeBucketDeleted& from) {
+  inline StoreChangeBucketDeletedV1& operator=(const StoreChangeBucketDeletedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -946,17 +946,17 @@ class StoreChangeBucketDeleted : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeBucketDeleted& default_instance();
+  static const StoreChangeBucketDeletedV1& default_instance();
   
-  void Swap(StoreChangeBucketDeleted* other);
+  void Swap(StoreChangeBucketDeletedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeBucketDeleted* New() const;
+  StoreChangeBucketDeletedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeBucketDeleted& from);
-  void MergeFrom(const StoreChangeBucketDeleted& from);
+  void CopyFrom(const StoreChangeBucketDeletedV1& from);
+  void MergeFrom(const StoreChangeBucketDeletedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -979,7 +979,7 @@ class StoreChangeBucketDeleted : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 2;
+  // required string bucket = 2;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 2;
@@ -991,11 +991,11 @@ class StoreChangeBucketDeleted : public ::google::protobuf::Message {
   inline ::std::string* release_bucket();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 40;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 101;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketDeleted)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeBucketDeletedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -1012,18 +1012,18 @@ class StoreChangeBucketDeleted : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeBucketDeleted* default_instance_;
+  static StoreChangeBucketDeletedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
+class StoreChangeStreamSetAddedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeStreamSetAdded();
-  virtual ~StoreChangeStreamSetAdded();
+  StoreChangeStreamSetAddedV1();
+  virtual ~StoreChangeStreamSetAddedV1();
   
-  StoreChangeStreamSetAdded(const StoreChangeStreamSetAdded& from);
+  StoreChangeStreamSetAddedV1(const StoreChangeStreamSetAddedV1& from);
   
-  inline StoreChangeStreamSetAdded& operator=(const StoreChangeStreamSetAdded& from) {
+  inline StoreChangeStreamSetAddedV1& operator=(const StoreChangeStreamSetAddedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -1037,17 +1037,17 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeStreamSetAdded& default_instance();
+  static const StoreChangeStreamSetAddedV1& default_instance();
   
-  void Swap(StoreChangeStreamSetAdded* other);
+  void Swap(StoreChangeStreamSetAddedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeStreamSetAdded* New() const;
+  StoreChangeStreamSetAddedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeStreamSetAdded& from);
-  void MergeFrom(const StoreChangeStreamSetAdded& from);
+  void CopyFrom(const StoreChangeStreamSetAddedV1& from);
+  void MergeFrom(const StoreChangeStreamSetAddedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -1070,7 +1070,7 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -1081,7 +1081,7 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   inline ::std::string* release_bucket();
   
-  // optional string stream_set = 2;
+  // required string stream_set = 2;
   inline bool has_stream_set() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
@@ -1093,11 +1093,11 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   inline ::std::string* release_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 41;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 102;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetAdded)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetAddedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -1117,18 +1117,18 @@ class StoreChangeStreamSetAdded : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamSetAdded* default_instance_;
+  static StoreChangeStreamSetAddedV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
+class StoreChangeStreamSetDeletedV1 : public ::google::protobuf::Message {
  public:
-  StoreChangeStreamSetDeleted();
-  virtual ~StoreChangeStreamSetDeleted();
+  StoreChangeStreamSetDeletedV1();
+  virtual ~StoreChangeStreamSetDeletedV1();
   
-  StoreChangeStreamSetDeleted(const StoreChangeStreamSetDeleted& from);
+  StoreChangeStreamSetDeletedV1(const StoreChangeStreamSetDeletedV1& from);
   
-  inline StoreChangeStreamSetDeleted& operator=(const StoreChangeStreamSetDeleted& from) {
+  inline StoreChangeStreamSetDeletedV1& operator=(const StoreChangeStreamSetDeletedV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -1142,17 +1142,17 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const StoreChangeStreamSetDeleted& default_instance();
+  static const StoreChangeStreamSetDeletedV1& default_instance();
   
-  void Swap(StoreChangeStreamSetDeleted* other);
+  void Swap(StoreChangeStreamSetDeletedV1* other);
   
   // implements Message ----------------------------------------------
   
-  StoreChangeStreamSetDeleted* New() const;
+  StoreChangeStreamSetDeletedV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StoreChangeStreamSetDeleted& from);
-  void MergeFrom(const StoreChangeStreamSetDeleted& from);
+  void CopyFrom(const StoreChangeStreamSetDeletedV1& from);
+  void MergeFrom(const StoreChangeStreamSetDeletedV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -1175,7 +1175,7 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string bucket = 1;
+  // required string bucket = 1;
   inline bool has_bucket() const;
   inline void clear_bucket();
   static const int kBucketFieldNumber = 1;
@@ -1186,7 +1186,7 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   inline ::std::string* mutable_bucket();
   inline ::std::string* release_bucket();
   
-  // optional string stream_set = 2;
+  // required string stream_set = 2;
   inline bool has_stream_set() const;
   inline void clear_stream_set();
   static const int kStreamSetFieldNumber = 2;
@@ -1198,11 +1198,11 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   inline ::std::string* release_stream_set();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 42;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 103;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeleted)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeletedV1)
  private:
   inline void set_has_bucket();
   inline void clear_has_bucket();
@@ -1222,63 +1222,63 @@ class StoreChangeStreamSetDeleted : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
   
   void InitAsDefaultInstance();
-  static StoreChangeStreamSetDeleted* default_instance_;
+  static StoreChangeStreamSetDeletedV1* default_instance_;
 };
 // ===================================================================
 
 
 // ===================================================================
 
-// StreamInfo
+// StreamInfoV1
 
-// optional string path = 1;
-inline bool StreamInfo::has_path() const {
+// required string path = 1;
+inline bool StreamInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StreamInfo::set_has_path() {
+inline void StreamInfoV1::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StreamInfo::clear_has_path() {
+inline void StreamInfoV1::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StreamInfo::clear_path() {
+inline void StreamInfoV1::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& StreamInfo::path() const {
+inline const ::std::string& StreamInfoV1::path() const {
   return *path_;
 }
-inline void StreamInfo::set_path(const ::std::string& value) {
+inline void StreamInfoV1::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamInfo::set_path(const char* value) {
+inline void StreamInfoV1::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamInfo::set_path(const char* value, size_t size) {
+inline void StreamInfoV1::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamInfo::mutable_path() {
+inline ::std::string* StreamInfoV1::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* StreamInfo::release_path() {
+inline ::std::string* StreamInfoV1::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1290,79 +1290,79 @@ inline ::std::string* StreamInfo::release_path() {
 }
 
 // optional uint64 length = 2;
-inline bool StreamInfo::has_length() const {
+inline bool StreamInfoV1::has_length() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StreamInfo::set_has_length() {
+inline void StreamInfoV1::set_has_length() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StreamInfo::clear_has_length() {
+inline void StreamInfoV1::clear_has_length() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StreamInfo::clear_length() {
+inline void StreamInfoV1::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
   clear_has_length();
 }
-inline ::google::protobuf::uint64 StreamInfo::length() const {
+inline ::google::protobuf::uint64 StreamInfoV1::length() const {
   return length_;
 }
-inline void StreamInfo::set_length(::google::protobuf::uint64 value) {
+inline void StreamInfoV1::set_length(::google::protobuf::uint64 value) {
   set_has_length();
   length_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// StreamSetInfo
+// StreamSetInfoV1
 
-// optional string path = 1;
-inline bool StreamSetInfo::has_path() const {
+// required string path = 1;
+inline bool StreamSetInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StreamSetInfo::set_has_path() {
+inline void StreamSetInfoV1::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StreamSetInfo::clear_has_path() {
+inline void StreamSetInfoV1::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StreamSetInfo::clear_path() {
+inline void StreamSetInfoV1::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& StreamSetInfo::path() const {
+inline const ::std::string& StreamSetInfoV1::path() const {
   return *path_;
 }
-inline void StreamSetInfo::set_path(const ::std::string& value) {
+inline void StreamSetInfoV1::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSetInfo::set_path(const char* value) {
+inline void StreamSetInfoV1::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void StreamSetInfo::set_path(const char* value, size_t size) {
+inline void StreamSetInfoV1::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StreamSetInfo::mutable_path() {
+inline ::std::string* StreamSetInfoV1::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* StreamSetInfo::release_path() {
+inline ::std::string* StreamSetInfoV1::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1373,83 +1373,83 @@ inline ::std::string* StreamSetInfo::release_path() {
   }
 }
 
-// repeated .zippylog.protocol.StreamInfo stream = 2;
-inline int StreamSetInfo::stream_size() const {
+// repeated .zippylog.protocol.StreamInfoV1 stream = 2;
+inline int StreamSetInfoV1::stream_size() const {
   return stream_.size();
 }
-inline void StreamSetInfo::clear_stream() {
+inline void StreamSetInfoV1::clear_stream() {
   stream_.Clear();
 }
-inline const ::zippylog::protocol::StreamInfo& StreamSetInfo::stream(int index) const {
+inline const ::zippylog::protocol::StreamInfoV1& StreamSetInfoV1::stream(int index) const {
   return stream_.Get(index);
 }
-inline ::zippylog::protocol::StreamInfo* StreamSetInfo::mutable_stream(int index) {
+inline ::zippylog::protocol::StreamInfoV1* StreamSetInfoV1::mutable_stream(int index) {
   return stream_.Mutable(index);
 }
-inline ::zippylog::protocol::StreamInfo* StreamSetInfo::add_stream() {
+inline ::zippylog::protocol::StreamInfoV1* StreamSetInfoV1::add_stream() {
   return stream_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfo >&
-StreamSetInfo::stream() const {
+inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfoV1 >&
+StreamSetInfoV1::stream() const {
   return stream_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfo >*
-StreamSetInfo::mutable_stream() {
+inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamInfoV1 >*
+StreamSetInfoV1::mutable_stream() {
   return &stream_;
 }
 
 // -------------------------------------------------------------------
 
-// BucketInfo
+// BucketInfoV1
 
-// optional string path = 1;
-inline bool BucketInfo::has_path() const {
+// required string path = 1;
+inline bool BucketInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void BucketInfo::set_has_path() {
+inline void BucketInfoV1::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void BucketInfo::clear_has_path() {
+inline void BucketInfoV1::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void BucketInfo::clear_path() {
+inline void BucketInfoV1::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& BucketInfo::path() const {
+inline const ::std::string& BucketInfoV1::path() const {
   return *path_;
 }
-inline void BucketInfo::set_path(const ::std::string& value) {
+inline void BucketInfoV1::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void BucketInfo::set_path(const char* value) {
+inline void BucketInfoV1::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void BucketInfo::set_path(const char* value, size_t size) {
+inline void BucketInfoV1::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* BucketInfo::mutable_path() {
+inline ::std::string* BucketInfoV1::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* BucketInfo::release_path() {
+inline ::std::string* BucketInfoV1::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1460,112 +1460,112 @@ inline ::std::string* BucketInfo::release_path() {
   }
 }
 
-// repeated .zippylog.protocol.StreamSetInfo stream_set = 2;
-inline int BucketInfo::stream_set_size() const {
+// repeated .zippylog.protocol.StreamSetInfoV1 stream_set = 2;
+inline int BucketInfoV1::stream_set_size() const {
   return stream_set_.size();
 }
-inline void BucketInfo::clear_stream_set() {
+inline void BucketInfoV1::clear_stream_set() {
   stream_set_.Clear();
 }
-inline const ::zippylog::protocol::StreamSetInfo& BucketInfo::stream_set(int index) const {
+inline const ::zippylog::protocol::StreamSetInfoV1& BucketInfoV1::stream_set(int index) const {
   return stream_set_.Get(index);
 }
-inline ::zippylog::protocol::StreamSetInfo* BucketInfo::mutable_stream_set(int index) {
+inline ::zippylog::protocol::StreamSetInfoV1* BucketInfoV1::mutable_stream_set(int index) {
   return stream_set_.Mutable(index);
 }
-inline ::zippylog::protocol::StreamSetInfo* BucketInfo::add_stream_set() {
+inline ::zippylog::protocol::StreamSetInfoV1* BucketInfoV1::add_stream_set() {
   return stream_set_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfo >&
-BucketInfo::stream_set() const {
+inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfoV1 >&
+BucketInfoV1::stream_set() const {
   return stream_set_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfo >*
-BucketInfo::mutable_stream_set() {
+inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::StreamSetInfoV1 >*
+BucketInfoV1::mutable_stream_set() {
   return &stream_set_;
 }
 
 // -------------------------------------------------------------------
 
-// StoreInfo
+// StoreInfoV1
 
-// repeated .zippylog.protocol.BucketInfo bucket = 1;
-inline int StoreInfo::bucket_size() const {
+// repeated .zippylog.protocol.BucketInfoV1 bucket = 1;
+inline int StoreInfoV1::bucket_size() const {
   return bucket_.size();
 }
-inline void StoreInfo::clear_bucket() {
+inline void StoreInfoV1::clear_bucket() {
   bucket_.Clear();
 }
-inline const ::zippylog::protocol::BucketInfo& StoreInfo::bucket(int index) const {
+inline const ::zippylog::protocol::BucketInfoV1& StoreInfoV1::bucket(int index) const {
   return bucket_.Get(index);
 }
-inline ::zippylog::protocol::BucketInfo* StoreInfo::mutable_bucket(int index) {
+inline ::zippylog::protocol::BucketInfoV1* StoreInfoV1::mutable_bucket(int index) {
   return bucket_.Mutable(index);
 }
-inline ::zippylog::protocol::BucketInfo* StoreInfo::add_bucket() {
+inline ::zippylog::protocol::BucketInfoV1* StoreInfoV1::add_bucket() {
   return bucket_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfo >&
-StoreInfo::bucket() const {
+inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfoV1 >&
+StoreInfoV1::bucket() const {
   return bucket_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfo >*
-StoreInfo::mutable_bucket() {
+inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::BucketInfoV1 >*
+StoreInfoV1::mutable_bucket() {
   return &bucket_;
 }
 
 // -------------------------------------------------------------------
 
-// StoreChangeStreamAdded
+// StoreChangeStreamAddedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeStreamAdded::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeStreamAddedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeStreamAdded::set_has_bucket() {
+inline void StoreChangeStreamAddedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeStreamAdded::clear_has_bucket() {
+inline void StoreChangeStreamAddedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeStreamAdded::clear_bucket() {
+inline void StoreChangeStreamAddedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeStreamAdded::bucket() const {
+inline const ::std::string& StoreChangeStreamAddedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeStreamAdded::set_bucket(const ::std::string& value) {
+inline void StoreChangeStreamAddedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_bucket(const char* value) {
+inline void StoreChangeStreamAddedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_bucket(const char* value, size_t size) {
+inline void StoreChangeStreamAddedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAdded::mutable_bucket() {
+inline ::std::string* StoreChangeStreamAddedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeStreamAdded::release_bucket() {
+inline ::std::string* StoreChangeStreamAddedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1576,54 +1576,54 @@ inline ::std::string* StoreChangeStreamAdded::release_bucket() {
   }
 }
 
-// optional string stream_set = 2;
-inline bool StoreChangeStreamAdded::has_stream_set() const {
+// required string stream_set = 2;
+inline bool StoreChangeStreamAddedV1::has_stream_set() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StoreChangeStreamAdded::set_has_stream_set() {
+inline void StoreChangeStreamAddedV1::set_has_stream_set() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StoreChangeStreamAdded::clear_has_stream_set() {
+inline void StoreChangeStreamAddedV1::clear_has_stream_set() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StoreChangeStreamAdded::clear_stream_set() {
+inline void StoreChangeStreamAddedV1::clear_stream_set() {
   if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     stream_set_->clear();
   }
   clear_has_stream_set();
 }
-inline const ::std::string& StoreChangeStreamAdded::stream_set() const {
+inline const ::std::string& StoreChangeStreamAddedV1::stream_set() const {
   return *stream_set_;
 }
-inline void StoreChangeStreamAdded::set_stream_set(const ::std::string& value) {
+inline void StoreChangeStreamAddedV1::set_stream_set(const ::std::string& value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_stream_set(const char* value) {
+inline void StoreChangeStreamAddedV1::set_stream_set(const char* value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_stream_set(const char* value, size_t size) {
+inline void StoreChangeStreamAddedV1::set_stream_set(const char* value, size_t size) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAdded::mutable_stream_set() {
+inline ::std::string* StoreChangeStreamAddedV1::mutable_stream_set() {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   return stream_set_;
 }
-inline ::std::string* StoreChangeStreamAdded::release_stream_set() {
+inline ::std::string* StoreChangeStreamAddedV1::release_stream_set() {
   clear_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1634,54 +1634,54 @@ inline ::std::string* StoreChangeStreamAdded::release_stream_set() {
   }
 }
 
-// optional string stream = 3;
-inline bool StoreChangeStreamAdded::has_stream() const {
+// required string stream = 3;
+inline bool StoreChangeStreamAddedV1::has_stream() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void StoreChangeStreamAdded::set_has_stream() {
+inline void StoreChangeStreamAddedV1::set_has_stream() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void StoreChangeStreamAdded::clear_has_stream() {
+inline void StoreChangeStreamAddedV1::clear_has_stream() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void StoreChangeStreamAdded::clear_stream() {
+inline void StoreChangeStreamAddedV1::clear_stream() {
   if (stream_ != &::google::protobuf::internal::kEmptyString) {
     stream_->clear();
   }
   clear_has_stream();
 }
-inline const ::std::string& StoreChangeStreamAdded::stream() const {
+inline const ::std::string& StoreChangeStreamAddedV1::stream() const {
   return *stream_;
 }
-inline void StoreChangeStreamAdded::set_stream(const ::std::string& value) {
+inline void StoreChangeStreamAddedV1::set_stream(const ::std::string& value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_stream(const char* value) {
+inline void StoreChangeStreamAddedV1::set_stream(const char* value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamAdded::set_stream(const char* value, size_t size) {
+inline void StoreChangeStreamAddedV1::set_stream(const char* value, size_t size) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAdded::mutable_stream() {
+inline ::std::string* StoreChangeStreamAddedV1::mutable_stream() {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   return stream_;
 }
-inline ::std::string* StoreChangeStreamAdded::release_stream() {
+inline ::std::string* StoreChangeStreamAddedV1::release_stream() {
   clear_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1693,79 +1693,79 @@ inline ::std::string* StoreChangeStreamAdded::release_stream() {
 }
 
 // optional uint64 length = 4;
-inline bool StoreChangeStreamAdded::has_length() const {
+inline bool StoreChangeStreamAddedV1::has_length() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void StoreChangeStreamAdded::set_has_length() {
+inline void StoreChangeStreamAddedV1::set_has_length() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void StoreChangeStreamAdded::clear_has_length() {
+inline void StoreChangeStreamAddedV1::clear_has_length() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void StoreChangeStreamAdded::clear_length() {
+inline void StoreChangeStreamAddedV1::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
   clear_has_length();
 }
-inline ::google::protobuf::uint64 StoreChangeStreamAdded::length() const {
+inline ::google::protobuf::uint64 StoreChangeStreamAddedV1::length() const {
   return length_;
 }
-inline void StoreChangeStreamAdded::set_length(::google::protobuf::uint64 value) {
+inline void StoreChangeStreamAddedV1::set_length(::google::protobuf::uint64 value) {
   set_has_length();
   length_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// StoreChangeStreamDeleted
+// StoreChangeStreamDeletedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeStreamDeleted::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeStreamDeletedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeStreamDeleted::set_has_bucket() {
+inline void StoreChangeStreamDeletedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeStreamDeleted::clear_has_bucket() {
+inline void StoreChangeStreamDeletedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeStreamDeleted::clear_bucket() {
+inline void StoreChangeStreamDeletedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeStreamDeleted::bucket() const {
+inline const ::std::string& StoreChangeStreamDeletedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeStreamDeleted::set_bucket(const ::std::string& value) {
+inline void StoreChangeStreamDeletedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_bucket(const char* value) {
+inline void StoreChangeStreamDeletedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_bucket(const char* value, size_t size) {
+inline void StoreChangeStreamDeletedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamDeleted::mutable_bucket() {
+inline ::std::string* StoreChangeStreamDeletedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeStreamDeleted::release_bucket() {
+inline ::std::string* StoreChangeStreamDeletedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1776,54 +1776,54 @@ inline ::std::string* StoreChangeStreamDeleted::release_bucket() {
   }
 }
 
-// optional string stream_set = 2;
-inline bool StoreChangeStreamDeleted::has_stream_set() const {
+// required string stream_set = 2;
+inline bool StoreChangeStreamDeletedV1::has_stream_set() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StoreChangeStreamDeleted::set_has_stream_set() {
+inline void StoreChangeStreamDeletedV1::set_has_stream_set() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StoreChangeStreamDeleted::clear_has_stream_set() {
+inline void StoreChangeStreamDeletedV1::clear_has_stream_set() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StoreChangeStreamDeleted::clear_stream_set() {
+inline void StoreChangeStreamDeletedV1::clear_stream_set() {
   if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     stream_set_->clear();
   }
   clear_has_stream_set();
 }
-inline const ::std::string& StoreChangeStreamDeleted::stream_set() const {
+inline const ::std::string& StoreChangeStreamDeletedV1::stream_set() const {
   return *stream_set_;
 }
-inline void StoreChangeStreamDeleted::set_stream_set(const ::std::string& value) {
+inline void StoreChangeStreamDeletedV1::set_stream_set(const ::std::string& value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_stream_set(const char* value) {
+inline void StoreChangeStreamDeletedV1::set_stream_set(const char* value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_stream_set(const char* value, size_t size) {
+inline void StoreChangeStreamDeletedV1::set_stream_set(const char* value, size_t size) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamDeleted::mutable_stream_set() {
+inline ::std::string* StoreChangeStreamDeletedV1::mutable_stream_set() {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   return stream_set_;
 }
-inline ::std::string* StoreChangeStreamDeleted::release_stream_set() {
+inline ::std::string* StoreChangeStreamDeletedV1::release_stream_set() {
   clear_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1834,54 +1834,54 @@ inline ::std::string* StoreChangeStreamDeleted::release_stream_set() {
   }
 }
 
-// optional string stream = 3;
-inline bool StoreChangeStreamDeleted::has_stream() const {
+// required string stream = 3;
+inline bool StoreChangeStreamDeletedV1::has_stream() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void StoreChangeStreamDeleted::set_has_stream() {
+inline void StoreChangeStreamDeletedV1::set_has_stream() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void StoreChangeStreamDeleted::clear_has_stream() {
+inline void StoreChangeStreamDeletedV1::clear_has_stream() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void StoreChangeStreamDeleted::clear_stream() {
+inline void StoreChangeStreamDeletedV1::clear_stream() {
   if (stream_ != &::google::protobuf::internal::kEmptyString) {
     stream_->clear();
   }
   clear_has_stream();
 }
-inline const ::std::string& StoreChangeStreamDeleted::stream() const {
+inline const ::std::string& StoreChangeStreamDeletedV1::stream() const {
   return *stream_;
 }
-inline void StoreChangeStreamDeleted::set_stream(const ::std::string& value) {
+inline void StoreChangeStreamDeletedV1::set_stream(const ::std::string& value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_stream(const char* value) {
+inline void StoreChangeStreamDeletedV1::set_stream(const char* value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamDeleted::set_stream(const char* value, size_t size) {
+inline void StoreChangeStreamDeletedV1::set_stream(const char* value, size_t size) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamDeleted::mutable_stream() {
+inline ::std::string* StoreChangeStreamDeletedV1::mutable_stream() {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   return stream_;
 }
-inline ::std::string* StoreChangeStreamDeleted::release_stream() {
+inline ::std::string* StoreChangeStreamDeletedV1::release_stream() {
   clear_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1893,79 +1893,79 @@ inline ::std::string* StoreChangeStreamDeleted::release_stream() {
 }
 
 // optional uint64 length = 4;
-inline bool StoreChangeStreamDeleted::has_length() const {
+inline bool StoreChangeStreamDeletedV1::has_length() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void StoreChangeStreamDeleted::set_has_length() {
+inline void StoreChangeStreamDeletedV1::set_has_length() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void StoreChangeStreamDeleted::clear_has_length() {
+inline void StoreChangeStreamDeletedV1::clear_has_length() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void StoreChangeStreamDeleted::clear_length() {
+inline void StoreChangeStreamDeletedV1::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
   clear_has_length();
 }
-inline ::google::protobuf::uint64 StoreChangeStreamDeleted::length() const {
+inline ::google::protobuf::uint64 StoreChangeStreamDeletedV1::length() const {
   return length_;
 }
-inline void StoreChangeStreamDeleted::set_length(::google::protobuf::uint64 value) {
+inline void StoreChangeStreamDeletedV1::set_length(::google::protobuf::uint64 value) {
   set_has_length();
   length_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// StoreChangeStreamAppended
+// StoreChangeStreamAppendedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeStreamAppended::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeStreamAppendedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeStreamAppended::set_has_bucket() {
+inline void StoreChangeStreamAppendedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeStreamAppended::clear_has_bucket() {
+inline void StoreChangeStreamAppendedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeStreamAppended::clear_bucket() {
+inline void StoreChangeStreamAppendedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeStreamAppended::bucket() const {
+inline const ::std::string& StoreChangeStreamAppendedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeStreamAppended::set_bucket(const ::std::string& value) {
+inline void StoreChangeStreamAppendedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_bucket(const char* value) {
+inline void StoreChangeStreamAppendedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_bucket(const char* value, size_t size) {
+inline void StoreChangeStreamAppendedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAppended::mutable_bucket() {
+inline ::std::string* StoreChangeStreamAppendedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeStreamAppended::release_bucket() {
+inline ::std::string* StoreChangeStreamAppendedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1976,54 +1976,54 @@ inline ::std::string* StoreChangeStreamAppended::release_bucket() {
   }
 }
 
-// optional string stream_set = 2;
-inline bool StoreChangeStreamAppended::has_stream_set() const {
+// required string stream_set = 2;
+inline bool StoreChangeStreamAppendedV1::has_stream_set() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StoreChangeStreamAppended::set_has_stream_set() {
+inline void StoreChangeStreamAppendedV1::set_has_stream_set() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StoreChangeStreamAppended::clear_has_stream_set() {
+inline void StoreChangeStreamAppendedV1::clear_has_stream_set() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StoreChangeStreamAppended::clear_stream_set() {
+inline void StoreChangeStreamAppendedV1::clear_stream_set() {
   if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     stream_set_->clear();
   }
   clear_has_stream_set();
 }
-inline const ::std::string& StoreChangeStreamAppended::stream_set() const {
+inline const ::std::string& StoreChangeStreamAppendedV1::stream_set() const {
   return *stream_set_;
 }
-inline void StoreChangeStreamAppended::set_stream_set(const ::std::string& value) {
+inline void StoreChangeStreamAppendedV1::set_stream_set(const ::std::string& value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_stream_set(const char* value) {
+inline void StoreChangeStreamAppendedV1::set_stream_set(const char* value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_stream_set(const char* value, size_t size) {
+inline void StoreChangeStreamAppendedV1::set_stream_set(const char* value, size_t size) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAppended::mutable_stream_set() {
+inline ::std::string* StoreChangeStreamAppendedV1::mutable_stream_set() {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   return stream_set_;
 }
-inline ::std::string* StoreChangeStreamAppended::release_stream_set() {
+inline ::std::string* StoreChangeStreamAppendedV1::release_stream_set() {
   clear_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2034,54 +2034,54 @@ inline ::std::string* StoreChangeStreamAppended::release_stream_set() {
   }
 }
 
-// optional string stream = 3;
-inline bool StoreChangeStreamAppended::has_stream() const {
+// required string stream = 3;
+inline bool StoreChangeStreamAppendedV1::has_stream() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void StoreChangeStreamAppended::set_has_stream() {
+inline void StoreChangeStreamAppendedV1::set_has_stream() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void StoreChangeStreamAppended::clear_has_stream() {
+inline void StoreChangeStreamAppendedV1::clear_has_stream() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void StoreChangeStreamAppended::clear_stream() {
+inline void StoreChangeStreamAppendedV1::clear_stream() {
   if (stream_ != &::google::protobuf::internal::kEmptyString) {
     stream_->clear();
   }
   clear_has_stream();
 }
-inline const ::std::string& StoreChangeStreamAppended::stream() const {
+inline const ::std::string& StoreChangeStreamAppendedV1::stream() const {
   return *stream_;
 }
-inline void StoreChangeStreamAppended::set_stream(const ::std::string& value) {
+inline void StoreChangeStreamAppendedV1::set_stream(const ::std::string& value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_stream(const char* value) {
+inline void StoreChangeStreamAppendedV1::set_stream(const char* value) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(value);
 }
-inline void StoreChangeStreamAppended::set_stream(const char* value, size_t size) {
+inline void StoreChangeStreamAppendedV1::set_stream(const char* value, size_t size) {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   stream_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamAppended::mutable_stream() {
+inline ::std::string* StoreChangeStreamAppendedV1::mutable_stream() {
   set_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     stream_ = new ::std::string;
   }
   return stream_;
 }
-inline ::std::string* StoreChangeStreamAppended::release_stream() {
+inline ::std::string* StoreChangeStreamAppendedV1::release_stream() {
   clear_has_stream();
   if (stream_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2093,79 +2093,79 @@ inline ::std::string* StoreChangeStreamAppended::release_stream() {
 }
 
 // optional uint64 length = 4;
-inline bool StoreChangeStreamAppended::has_length() const {
+inline bool StoreChangeStreamAppendedV1::has_length() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void StoreChangeStreamAppended::set_has_length() {
+inline void StoreChangeStreamAppendedV1::set_has_length() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void StoreChangeStreamAppended::clear_has_length() {
+inline void StoreChangeStreamAppendedV1::clear_has_length() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void StoreChangeStreamAppended::clear_length() {
+inline void StoreChangeStreamAppendedV1::clear_length() {
   length_ = GOOGLE_ULONGLONG(0);
   clear_has_length();
 }
-inline ::google::protobuf::uint64 StoreChangeStreamAppended::length() const {
+inline ::google::protobuf::uint64 StoreChangeStreamAppendedV1::length() const {
   return length_;
 }
-inline void StoreChangeStreamAppended::set_length(::google::protobuf::uint64 value) {
+inline void StoreChangeStreamAppendedV1::set_length(::google::protobuf::uint64 value) {
   set_has_length();
   length_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// StoreChangeBucketAdded
+// StoreChangeBucketAddedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeBucketAdded::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeBucketAddedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeBucketAdded::set_has_bucket() {
+inline void StoreChangeBucketAddedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeBucketAdded::clear_has_bucket() {
+inline void StoreChangeBucketAddedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeBucketAdded::clear_bucket() {
+inline void StoreChangeBucketAddedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeBucketAdded::bucket() const {
+inline const ::std::string& StoreChangeBucketAddedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeBucketAdded::set_bucket(const ::std::string& value) {
+inline void StoreChangeBucketAddedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeBucketAdded::set_bucket(const char* value) {
+inline void StoreChangeBucketAddedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeBucketAdded::set_bucket(const char* value, size_t size) {
+inline void StoreChangeBucketAddedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeBucketAdded::mutable_bucket() {
+inline ::std::string* StoreChangeBucketAddedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeBucketAdded::release_bucket() {
+inline ::std::string* StoreChangeBucketAddedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2178,56 +2178,56 @@ inline ::std::string* StoreChangeBucketAdded::release_bucket() {
 
 // -------------------------------------------------------------------
 
-// StoreChangeBucketDeleted
+// StoreChangeBucketDeletedV1
 
-// optional string bucket = 2;
-inline bool StoreChangeBucketDeleted::has_bucket() const {
+// required string bucket = 2;
+inline bool StoreChangeBucketDeletedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeBucketDeleted::set_has_bucket() {
+inline void StoreChangeBucketDeletedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeBucketDeleted::clear_has_bucket() {
+inline void StoreChangeBucketDeletedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeBucketDeleted::clear_bucket() {
+inline void StoreChangeBucketDeletedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeBucketDeleted::bucket() const {
+inline const ::std::string& StoreChangeBucketDeletedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeBucketDeleted::set_bucket(const ::std::string& value) {
+inline void StoreChangeBucketDeletedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeBucketDeleted::set_bucket(const char* value) {
+inline void StoreChangeBucketDeletedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeBucketDeleted::set_bucket(const char* value, size_t size) {
+inline void StoreChangeBucketDeletedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeBucketDeleted::mutable_bucket() {
+inline ::std::string* StoreChangeBucketDeletedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeBucketDeleted::release_bucket() {
+inline ::std::string* StoreChangeBucketDeletedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2240,56 +2240,56 @@ inline ::std::string* StoreChangeBucketDeleted::release_bucket() {
 
 // -------------------------------------------------------------------
 
-// StoreChangeStreamSetAdded
+// StoreChangeStreamSetAddedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeStreamSetAdded::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeStreamSetAddedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeStreamSetAdded::set_has_bucket() {
+inline void StoreChangeStreamSetAddedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeStreamSetAdded::clear_has_bucket() {
+inline void StoreChangeStreamSetAddedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeStreamSetAdded::clear_bucket() {
+inline void StoreChangeStreamSetAddedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeStreamSetAdded::bucket() const {
+inline const ::std::string& StoreChangeStreamSetAddedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeStreamSetAdded::set_bucket(const ::std::string& value) {
+inline void StoreChangeStreamSetAddedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamSetAdded::set_bucket(const char* value) {
+inline void StoreChangeStreamSetAddedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamSetAdded::set_bucket(const char* value, size_t size) {
+inline void StoreChangeStreamSetAddedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamSetAdded::mutable_bucket() {
+inline ::std::string* StoreChangeStreamSetAddedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeStreamSetAdded::release_bucket() {
+inline ::std::string* StoreChangeStreamSetAddedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2300,54 +2300,54 @@ inline ::std::string* StoreChangeStreamSetAdded::release_bucket() {
   }
 }
 
-// optional string stream_set = 2;
-inline bool StoreChangeStreamSetAdded::has_stream_set() const {
+// required string stream_set = 2;
+inline bool StoreChangeStreamSetAddedV1::has_stream_set() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StoreChangeStreamSetAdded::set_has_stream_set() {
+inline void StoreChangeStreamSetAddedV1::set_has_stream_set() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StoreChangeStreamSetAdded::clear_has_stream_set() {
+inline void StoreChangeStreamSetAddedV1::clear_has_stream_set() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StoreChangeStreamSetAdded::clear_stream_set() {
+inline void StoreChangeStreamSetAddedV1::clear_stream_set() {
   if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     stream_set_->clear();
   }
   clear_has_stream_set();
 }
-inline const ::std::string& StoreChangeStreamSetAdded::stream_set() const {
+inline const ::std::string& StoreChangeStreamSetAddedV1::stream_set() const {
   return *stream_set_;
 }
-inline void StoreChangeStreamSetAdded::set_stream_set(const ::std::string& value) {
+inline void StoreChangeStreamSetAddedV1::set_stream_set(const ::std::string& value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamSetAdded::set_stream_set(const char* value) {
+inline void StoreChangeStreamSetAddedV1::set_stream_set(const char* value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamSetAdded::set_stream_set(const char* value, size_t size) {
+inline void StoreChangeStreamSetAddedV1::set_stream_set(const char* value, size_t size) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamSetAdded::mutable_stream_set() {
+inline ::std::string* StoreChangeStreamSetAddedV1::mutable_stream_set() {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   return stream_set_;
 }
-inline ::std::string* StoreChangeStreamSetAdded::release_stream_set() {
+inline ::std::string* StoreChangeStreamSetAddedV1::release_stream_set() {
   clear_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2360,56 +2360,56 @@ inline ::std::string* StoreChangeStreamSetAdded::release_stream_set() {
 
 // -------------------------------------------------------------------
 
-// StoreChangeStreamSetDeleted
+// StoreChangeStreamSetDeletedV1
 
-// optional string bucket = 1;
-inline bool StoreChangeStreamSetDeleted::has_bucket() const {
+// required string bucket = 1;
+inline bool StoreChangeStreamSetDeletedV1::has_bucket() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void StoreChangeStreamSetDeleted::set_has_bucket() {
+inline void StoreChangeStreamSetDeletedV1::set_has_bucket() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void StoreChangeStreamSetDeleted::clear_has_bucket() {
+inline void StoreChangeStreamSetDeletedV1::clear_has_bucket() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void StoreChangeStreamSetDeleted::clear_bucket() {
+inline void StoreChangeStreamSetDeletedV1::clear_bucket() {
   if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     bucket_->clear();
   }
   clear_has_bucket();
 }
-inline const ::std::string& StoreChangeStreamSetDeleted::bucket() const {
+inline const ::std::string& StoreChangeStreamSetDeletedV1::bucket() const {
   return *bucket_;
 }
-inline void StoreChangeStreamSetDeleted::set_bucket(const ::std::string& value) {
+inline void StoreChangeStreamSetDeletedV1::set_bucket(const ::std::string& value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamSetDeleted::set_bucket(const char* value) {
+inline void StoreChangeStreamSetDeletedV1::set_bucket(const char* value) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(value);
 }
-inline void StoreChangeStreamSetDeleted::set_bucket(const char* value, size_t size) {
+inline void StoreChangeStreamSetDeletedV1::set_bucket(const char* value, size_t size) {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   bucket_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamSetDeleted::mutable_bucket() {
+inline ::std::string* StoreChangeStreamSetDeletedV1::mutable_bucket() {
   set_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     bucket_ = new ::std::string;
   }
   return bucket_;
 }
-inline ::std::string* StoreChangeStreamSetDeleted::release_bucket() {
+inline ::std::string* StoreChangeStreamSetDeletedV1::release_bucket() {
   clear_has_bucket();
   if (bucket_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -2420,54 +2420,54 @@ inline ::std::string* StoreChangeStreamSetDeleted::release_bucket() {
   }
 }
 
-// optional string stream_set = 2;
-inline bool StoreChangeStreamSetDeleted::has_stream_set() const {
+// required string stream_set = 2;
+inline bool StoreChangeStreamSetDeletedV1::has_stream_set() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StoreChangeStreamSetDeleted::set_has_stream_set() {
+inline void StoreChangeStreamSetDeletedV1::set_has_stream_set() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StoreChangeStreamSetDeleted::clear_has_stream_set() {
+inline void StoreChangeStreamSetDeletedV1::clear_has_stream_set() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void StoreChangeStreamSetDeleted::clear_stream_set() {
+inline void StoreChangeStreamSetDeletedV1::clear_stream_set() {
   if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     stream_set_->clear();
   }
   clear_has_stream_set();
 }
-inline const ::std::string& StoreChangeStreamSetDeleted::stream_set() const {
+inline const ::std::string& StoreChangeStreamSetDeletedV1::stream_set() const {
   return *stream_set_;
 }
-inline void StoreChangeStreamSetDeleted::set_stream_set(const ::std::string& value) {
+inline void StoreChangeStreamSetDeletedV1::set_stream_set(const ::std::string& value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamSetDeleted::set_stream_set(const char* value) {
+inline void StoreChangeStreamSetDeletedV1::set_stream_set(const char* value) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(value);
 }
-inline void StoreChangeStreamSetDeleted::set_stream_set(const char* value, size_t size) {
+inline void StoreChangeStreamSetDeletedV1::set_stream_set(const char* value, size_t size) {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   stream_set_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* StoreChangeStreamSetDeleted::mutable_stream_set() {
+inline ::std::string* StoreChangeStreamSetDeletedV1::mutable_stream_set() {
   set_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     stream_set_ = new ::std::string;
   }
   return stream_set_;
 }
-inline ::std::string* StoreChangeStreamSetDeleted::release_stream_set() {
+inline ::std::string* StoreChangeStreamSetDeletedV1::release_stream_set() {
   clear_has_stream_set();
   if (stream_set_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
