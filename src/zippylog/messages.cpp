@@ -72,7 +72,7 @@ namespace zippylog {
         registrar->register_message(1, 67, new ::zippylog::protocol::response::SubscriptionStart());
         registrar->register_message(1, 68, new ::zippylog::protocol::response::WriteAck());
         registrar->register_message(1, 69, new ::zippylog::protocol::response::Error());
-        registrar->register_message(1, 49, new ::zippylog::protocol::request::Ping());
+        registrar->register_message(1, 91, new ::zippylog::protocol::request::PingV1());
         registrar->register_message(1, 72, new ::zippylog::protocol::request::GetFeaturesV1());
         registrar->register_message(1, 73, new ::zippylog::protocol::request::GetStoreInfoV1());
         registrar->register_message(1, 74, new ::zippylog::protocol::request::GetBucketInfoV1());

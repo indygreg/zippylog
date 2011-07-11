@@ -21,7 +21,7 @@
 using ::std::invalid_argument;
 using ::std::string;
 using ::zippylog::Envelope;
-using ::zippylog::protocol::request::GetStream;
+using ::zippylog::protocol::request::GetStreamV1;
 using ::zmq::message_t;
 
 namespace zippylog {
@@ -152,43 +152,40 @@ TEST(EnvelopeTest, UnknownMessageTypes)
 TEST(EnvelopeTest, MessageSemantics)
 {
     Envelope e;
-    GetStream get_stream;
-    get_stream.set_version(1);
+    GetStreamV1 get_stream;
     get_stream.add_to_envelope(e);
 
-    uint32 expected_namespace = GetStream::zippylog_namespace;
-    uint32 expected_type = GetStream::zippylog_enumeration;
+    uint32 expected_namespace = GetStreamV1::zippylog_namespace;
+    uint32 expected_type = GetStreamV1::zippylog_enumeration;
 
     EXPECT_EQ(1, e.MessageCount());
     EXPECT_EQ(expected_namespace, e.MessageNamespace(0));
     EXPECT_EQ(expected_type, e.MessageType(0));
 
-    GetStream *message = (GetStream *)e.GetMessage(0);
+    GetStreamV1 *message = (GetStreamV1 *)e.GetMessage(0);
     ASSERT_TRUE(NULL != message);
 
-    EXPECT_EQ(get_stream.version(), message->version());
-
     // verify the pointer is the same
-    GetStream *message2 = (GetStream *)e.GetMessage(0);
+    GetStreamV1 *message2 = (GetStreamV1 *)e.GetMessage(0);
     EXPECT_EQ(message, message2);
 
     // verify change in original doesn't touch what's in envelope
-    get_stream.set_version(2);
-    EXPECT_EQ(1, message->version());
+	// TODO implement properly
+    //get_stream.set_version(2);
+    //EXPECT_EQ(1, message->version());
 }
 
 TEST(EnvelopeTest, MessagesAndCopying)
 {
     Envelope e1;
-    GetStream gs1;
-    gs1.set_version(1);
+    GetStreamV1 gs1;
     gs1.add_to_envelope(e1);
 
     EXPECT_TRUE(NULL != e1.GetMessage(0));
 
     Envelope e2 = e1;
     EXPECT_EQ(1, e2.MessageCount());
-    GetStream *gs2 = (GetStream *)e2.GetMessage(0);
+    GetStreamV1 *gs2 = (GetStreamV1 *)e2.GetMessage(0);
     ASSERT_TRUE(NULL != gs2);
     EXPECT_TRUE(&gs1 != gs2);
 }

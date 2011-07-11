@@ -235,9 +235,9 @@ bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
 
     uint32 type = e.MessageType(0);
 
-    if (type == protocol::request::SubscribeKeepalive::zippylog_enumeration) {
-        protocol::request::SubscribeKeepalive *m =
-            (protocol::request::SubscribeKeepalive *)e.GetMessage(0);
+    if (type == protocol::request::SubscribeKeepaliveV1::zippylog_enumeration) {
+        protocol::request::SubscribeKeepaliveV1 *m =
+            (protocol::request::SubscribeKeepaliveV1 *)e.GetMessage(0);
         if (!m) return false;
 
         string id = m->id();
@@ -287,11 +287,11 @@ bool Streamer::ProcessSubscription(vector<string> &identities, vector<message_t 
     uint32 message_type = e.MessageType(0);
 
     switch (message_type) {
-        case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
+        case protocol::request::SubscribeStoreChangesV1::zippylog_enumeration:
             this->ProcessSubscribeStoreChanges(e, identities, msgs);
             break;
 
-        case protocol::request::SubscribeEnvelopes::zippylog_enumeration:
+        case protocol::request::SubscribeEnvelopesV1::zippylog_enumeration:
             this->ProcessSubscribeEnvelopes(e, identities, msgs);
             break;
 
@@ -341,8 +341,8 @@ bool Streamer::ProcessStoreChangeMessage(message_t &msg)
 
 void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &)
 {
-    protocol::request::SubscribeStoreChanges *m =
-        (protocol::request::SubscribeStoreChanges *)e.GetMessage(0);
+    protocol::request::SubscribeStoreChangesV1 *m =
+        (protocol::request::SubscribeStoreChangesV1 *)e.GetMessage(0);
 
     SubscriptionInfo * subscription = new SubscriptionInfo(this->subscription_ttl);
     subscription->type = SubscriptionInfo::STORE_CHANGE;
@@ -364,8 +364,8 @@ void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identit
 
 void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &)
 {
-    protocol::request::SubscribeEnvelopes *m =
-        (protocol::request::SubscribeEnvelopes *)e.GetMessage(0);
+    protocol::request::SubscribeEnvelopesV1 *m =
+        (protocol::request::SubscribeEnvelopesV1 *)e.GetMessage(0);
 
     platform::UUID uuid;
     platform::CreateUUID(uuid);

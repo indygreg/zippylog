@@ -64,7 +64,7 @@ bool Client::Ping(PingCallback *callback, void *data)
     }
 
     Envelope e;
-    protocol::request::Ping ping;
+    protocol::request::PingV1 ping;
     ping.add_to_envelope(e);
 
     OutstandingRequest outr;
@@ -77,7 +77,7 @@ bool Client::Ping(PingCallback *callback, void *data)
 bool Client::Ping(int32 timeout)
 {
     Envelope e;
-    protocol::request::Ping ping;
+    protocol::request::PingV1 ping;
     ping.add_to_envelope(e);
 
     OutstandingRequest outr;
@@ -96,8 +96,7 @@ bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
     }
 
     Envelope e = Envelope();
-    protocol::request::GetStoreInfo req = protocol::request::GetStoreInfo();
-    req.set_version(1);
+    protocol::request::GetStoreInfoV1 req = protocol::request::GetStoreInfoV1();
     req.add_to_envelope(&e);
 
     OutstandingRequest info = OutstandingRequest();
@@ -110,8 +109,7 @@ bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
 bool Client::StoreInfo(protocol::StoreInfo &info, int32 timeout)
 {
     Envelope e;
-    protocol::request::GetStoreInfo req;
-    req.set_version(1);
+    protocol::request::GetStoreInfoV1 req;
     req.add_to_envelope(&e);
 
     OutstandingRequest outr;
@@ -131,8 +129,7 @@ void Client::CallbackStoreInfo(protocol::StoreInfo &info, void *data)
 bool Client::StreamInfo(const string &path, protocol::StreamInfo &info, int32 timeout)
 {
     Envelope e;
-    protocol::request::GetStreamInfo req;
-    req.set_version(1);
+    protocol::request::GetStreamInfoV1 req;
     req.set_path(path);
     req.add_to_envelope(e);
 
@@ -156,8 +153,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
     }
 
     Envelope e = Envelope();
-    protocol::request::GetStream req = protocol::request::GetStream();
-    req.set_version(1);
+    protocol::request::GetStreamV1 req = protocol::request::GetStreamV1();
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.add_to_envelope(&e);
@@ -171,8 +167,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
 
 bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
 {
-    protocol ::request::GetStream req;
-    req.set_version(1);
+    protocol ::request::GetStreamV1 req;
     req.set_path(path);
     req.set_start_offset(start_offset);
     Envelope e;
@@ -198,8 +193,7 @@ bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_by
     }
 
     Envelope e = Envelope();
-    protocol::request::GetStream req = protocol::request::GetStream();
-    req.set_version(1);
+    protocol::request::GetStreamV1 req = protocol::request::GetStreamV1();
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.set_max_response_bytes(max_response_bytes);
@@ -302,8 +296,7 @@ bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo 
 {
     // TODO validate path
 
-    protocol::request::SubscribeStoreChanges req = protocol::request::SubscribeStoreChanges();
-    req.set_version(1);
+    protocol::request::SubscribeStoreChangesV1 req = protocol::request::SubscribeStoreChangesV1();
     req.add_path(path);
 
     Envelope e = Envelope();
@@ -320,8 +313,7 @@ bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb
 {
     // TODO validate path
 
-    protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
-    req.set_version(1);
+    protocol::request::SubscribeEnvelopesV1 req = protocol::request::SubscribeEnvelopesV1();
     req.add_path(path);
     Envelope e = Envelope();
     req.add_to_envelope(&e);
@@ -337,8 +329,7 @@ bool Client::SubscribeEnvelopes(const string &path, const string &lua, Subscript
 {
     // TODO validate
 
-    protocol::request::SubscribeEnvelopes req = protocol::request::SubscribeEnvelopes();
-    req.set_version(1);
+    protocol::request::SubscribeEnvelopesV1 req = protocol::request::SubscribeEnvelopesV1();
     req.add_path(path);
     req.set_lua_code(lua);
     Envelope e = Envelope();
@@ -473,7 +464,7 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
             break;
         }
 
-        case protocol::response::Pong::zippylog_enumeration:
+        case protocol::response::PongV1::zippylog_enumeration:
         case protocol::StoreInfo::zippylog_enumeration:
         case protocol::response::StreamSegmentStart::zippylog_enumeration:
         case protocol::response::SubscribeAck::zippylog_enumeration:
@@ -620,7 +611,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     this->outstanding.erase(iter);
 
     switch (e.MessageType(0)) {
-        case protocol::response::Pong::zippylog_enumeration:
+        case protocol::response::PongV1::zippylog_enumeration:
         {
             assert(req.cb_ping);
             req.cb_ping(req.data);
@@ -722,7 +713,7 @@ bool Client::RenewSubscriptions(bool force)
         // reset the timer
         iter->second.expiration_timer.Start();
 
-        protocol::request::SubscribeKeepalive msg = protocol::request::SubscribeKeepalive();
+        protocol::request::SubscribeKeepaliveV1 msg = protocol::request::SubscribeKeepaliveV1();
         msg.set_id(iter->first);
 
         Envelope e = Envelope();

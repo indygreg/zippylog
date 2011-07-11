@@ -35,7 +35,7 @@ void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
 void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
 void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
 
-class Ping;
+class PingV1;
 class GetFeaturesV1;
 class GetStoreInfoV1;
 class GetBucketInfoV1;
@@ -51,14 +51,14 @@ class SubscribeCancelV1;
 
 // ===================================================================
 
-class Ping : public ::google::protobuf::Message {
+class PingV1 : public ::google::protobuf::Message {
  public:
-  Ping();
-  virtual ~Ping();
+  PingV1();
+  virtual ~PingV1();
   
-  Ping(const Ping& from);
+  PingV1(const PingV1& from);
   
-  inline Ping& operator=(const Ping& from) {
+  inline PingV1& operator=(const PingV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -72,17 +72,17 @@ class Ping : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const Ping& default_instance();
+  static const PingV1& default_instance();
   
-  void Swap(Ping* other);
+  void Swap(PingV1* other);
   
   // implements Message ----------------------------------------------
   
-  Ping* New() const;
+  PingV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const Ping& from);
-  void MergeFrom(const Ping& from);
+  void CopyFrom(const PingV1& from);
+  void MergeFrom(const PingV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -106,11 +106,11 @@ class Ping : public ::google::protobuf::Message {
   // accessors -------------------------------------------------------
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 49;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 91;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.Ping)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.PingV1)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -124,7 +124,7 @@ class Ping : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
   void InitAsDefaultInstance();
-  static Ping* default_instance_;
+  static PingV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1327,7 +1327,7 @@ class SubscribeCancelV1 : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// Ping
+// PingV1
 
 // -------------------------------------------------------------------
 

@@ -292,7 +292,7 @@ void run_server_benches(ZippylogbenchParams &)
         ::zmq::socket_t cs(ctx, ZMQ_REQ);
         cs.connect("inproc://server00");
 
-        ::zippylog::protocol::request::Ping ping;
+        ::zippylog::protocol::request::PingV1 ping;
         Envelope e;
         ping.add_to_envelope(e);
 

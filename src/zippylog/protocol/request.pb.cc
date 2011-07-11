@@ -19,9 +19,9 @@ namespace request {
 
 namespace {
 
-const ::google::protobuf::Descriptor* Ping_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* PingV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Ping_reflection_ = NULL;
+  PingV1_reflection_ = NULL;
 const ::google::protobuf::Descriptor* GetFeaturesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   GetFeaturesV1_reflection_ = NULL;
@@ -68,20 +68,20 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "zippylog/protocol/request.proto");
   GOOGLE_CHECK(file != NULL);
-  Ping_descriptor_ = file->message_type(0);
-  static const int Ping_offsets_[1] = {
+  PingV1_descriptor_ = file->message_type(0);
+  static const int PingV1_offsets_[1] = {
   };
-  Ping_reflection_ =
+  PingV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      Ping_descriptor_,
-      Ping::default_instance_,
-      Ping_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Ping, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Ping, _unknown_fields_),
+      PingV1_descriptor_,
+      PingV1::default_instance_,
+      PingV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PingV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PingV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(Ping));
+      sizeof(PingV1));
   GetFeaturesV1_descriptor_ = file->message_type(1);
   static const int GetFeaturesV1_offsets_[1] = {
   };
@@ -283,7 +283,7 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    Ping_descriptor_, &Ping::default_instance());
+    PingV1_descriptor_, &PingV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     GetFeaturesV1_descriptor_, &GetFeaturesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -313,8 +313,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto() {
-  delete Ping::default_instance_;
-  delete Ping_reflection_;
+  delete PingV1::default_instance_;
+  delete PingV1_reflection_;
   delete GetFeaturesV1::default_instance_;
   delete GetFeaturesV1_reflection_;
   delete GetStoreInfoV1::default_instance_;
@@ -349,26 +349,26 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\037zippylog/protocol/request.proto\022\031zippy"
-    "log.protocol.request\"\006\n\004Ping\"\017\n\rGetFeatu"
-    "resV1\"\020\n\016GetStoreInfoV1\"\037\n\017GetBucketInfo"
-    "V1\022\014\n\004path\030\001 \001(\t\"\"\n\022GetStreamSetInfoV1\022\014"
-    "\n\004path\030\001 \001(\t\"\037\n\017GetStreamInfoV1\022\014\n\004path\030"
-    "\001 \001(\t\"m\n\013GetStreamV1\022\014\n\004path\030\001 \001(\t\022\024\n\014st"
-    "art_offset\030\002 \001(\004\022\032\n\022max_response_bytes\030\003"
-    " \001(\r\022\036\n\026max_response_envelopes\030\004 \001(\r\"h\n\017"
-    "WriteEnvelopeV1\022\014\n\004path\030\001 \001(\t\022\020\n\010envelop"
-    "e\030\002 \003(\014\022\031\n\013acknowledge\030\003 \001(\010:\004true\022\032\n\013sy"
-    "nchronous\030\004 \001(\010:\005false\"u\n\033WriteEnvelopeF"
-    "romMessagesV1\022\014\n\004path\030\001 \001(\t\022\017\n\007message\030\002"
-    " \003(\014\022\035\n\021message_namespace\030\003 \003(\rB\002\020\001\022\030\n\014m"
-    "essage_type\030\004 \003(\rB\002\020\001\"\'\n\027SubscribeStoreC"
-    "hangesV1\022\014\n\004path\030\001 \003(\t\"6\n\024SubscribeEnvel"
-    "opesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_code\030\002 \001(\t\"\""
-    "\n\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \001(\014\"\037\n\021Su"
-    "bscribeCancelV1\022\n\n\002id\030\001 \001(\014", 707);
+    "log.protocol.request\"\010\n\006PingV1\"\017\n\rGetFea"
+    "turesV1\"\020\n\016GetStoreInfoV1\"\037\n\017GetBucketIn"
+    "foV1\022\014\n\004path\030\001 \001(\t\"\"\n\022GetStreamSetInfoV1"
+    "\022\014\n\004path\030\001 \001(\t\"\037\n\017GetStreamInfoV1\022\014\n\004pat"
+    "h\030\001 \001(\t\"m\n\013GetStreamV1\022\014\n\004path\030\001 \001(\t\022\024\n\014"
+    "start_offset\030\002 \001(\004\022\032\n\022max_response_bytes"
+    "\030\003 \001(\r\022\036\n\026max_response_envelopes\030\004 \001(\r\"h"
+    "\n\017WriteEnvelopeV1\022\014\n\004path\030\001 \001(\t\022\020\n\010envel"
+    "ope\030\002 \003(\014\022\031\n\013acknowledge\030\003 \001(\010:\004true\022\032\n\013"
+    "synchronous\030\004 \001(\010:\005false\"u\n\033WriteEnvelop"
+    "eFromMessagesV1\022\014\n\004path\030\001 \001(\t\022\017\n\007message"
+    "\030\002 \003(\014\022\035\n\021message_namespace\030\003 \003(\rB\002\020\001\022\030\n"
+    "\014message_type\030\004 \003(\rB\002\020\001\"\'\n\027SubscribeStor"
+    "eChangesV1\022\014\n\004path\030\001 \003(\t\"6\n\024SubscribeEnv"
+    "elopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_code\030\002 \001(\t"
+    "\"\"\n\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \001(\014\"\037\n\021"
+    "SubscribeCancelV1\022\n\n\002id\030\001 \001(\014", 709);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
-  Ping::default_instance_ = new Ping();
+  PingV1::default_instance_ = new PingV1();
   GetFeaturesV1::default_instance_ = new GetFeaturesV1();
   GetStoreInfoV1::default_instance_ = new GetStoreInfoV1();
   GetBucketInfoV1::default_instance_ = new GetBucketInfoV1();
@@ -381,7 +381,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   SubscribeEnvelopesV1::default_instance_ = new SubscribeEnvelopesV1();
   SubscribeKeepaliveV1::default_instance_ = new SubscribeKeepaliveV1();
   SubscribeCancelV1::default_instance_ = new SubscribeCancelV1();
-  Ping::default_instance_->InitAsDefaultInstance();
+  PingV1::default_instance_->InitAsDefaultInstance();
   GetFeaturesV1::default_instance_->InitAsDefaultInstance();
   GetStoreInfoV1::default_instance_->InitAsDefaultInstance();
   GetBucketInfoV1::default_instance_->InitAsDefaultInstance();
@@ -410,60 +410,60 @@ struct StaticDescriptorInitializer_zippylog_2fprotocol_2frequest_2eproto {
 #ifndef _MSC_VER
 #endif  // !_MSC_VER
 
-Ping::Ping()
+PingV1::PingV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void Ping::InitAsDefaultInstance() {
+void PingV1::InitAsDefaultInstance() {
 }
 
-Ping::Ping(const Ping& from)
+PingV1::PingV1(const PingV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void Ping::SharedCtor() {
+void PingV1::SharedCtor() {
   _cached_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-Ping::~Ping() {
+PingV1::~PingV1() {
   SharedDtor();
 }
 
-void Ping::SharedDtor() {
+void PingV1::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void Ping::SetCachedSize(int size) const {
+void PingV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* Ping::descriptor() {
+const ::google::protobuf::Descriptor* PingV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return Ping_descriptor_;
+  return PingV1_descriptor_;
 }
 
-const Ping& Ping::default_instance() {
+const PingV1& PingV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-Ping* Ping::default_instance_ = NULL;
+PingV1* PingV1::default_instance_ = NULL;
 
-Ping* Ping::New() const {
-  return new Ping;
+PingV1* PingV1::New() const {
+  return new PingV1;
 }
 
-void Ping::Clear() {
+void PingV1::Clear() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool Ping::MergePartialFromCodedStream(
+bool PingV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -479,7 +479,7 @@ bool Ping::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void Ping::SerializeWithCachedSizes(
+void PingV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
@@ -487,7 +487,7 @@ void Ping::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* Ping::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PingV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -496,7 +496,7 @@ void Ping::SerializeWithCachedSizes(
   return target;
 }
 
-int Ping::ByteSize() const {
+int PingV1::ByteSize() const {
   int total_size = 0;
   
   if (!unknown_fields().empty()) {
@@ -510,10 +510,10 @@ int Ping::ByteSize() const {
   return total_size;
 }
 
-void Ping::MergeFrom(const ::google::protobuf::Message& from) {
+void PingV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const Ping* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const Ping*>(
+  const PingV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PingV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -522,40 +522,40 @@ void Ping::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void Ping::MergeFrom(const Ping& from) {
+void PingV1::MergeFrom(const PingV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void Ping::CopyFrom(const ::google::protobuf::Message& from) {
+void PingV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Ping::CopyFrom(const Ping& from) {
+void PingV1::CopyFrom(const PingV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Ping::IsInitialized() const {
+bool PingV1::IsInitialized() const {
   
   return true;
 }
 
-void Ping::Swap(Ping* other) {
+void PingV1::Swap(PingV1* other) {
   if (other != this) {
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata Ping::GetMetadata() const {
+::google::protobuf::Metadata PingV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = Ping_descriptor_;
-  metadata.reflection = Ping_reflection_;
+  metadata.descriptor = PingV1_descriptor_;
+  metadata.reflection = PingV1_reflection_;
   return metadata;
 }
 
@@ -3526,11 +3526,11 @@ void SubscribeCancelV1::Swap(SubscribeCancelV1* other) {
 
 
 
-bool Ping::add_to_envelope(::zippylog::Envelope *envelope) {
+bool PingV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool Ping::add_to_envelope(::zippylog::Envelope &envelope) {
+bool PingV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 

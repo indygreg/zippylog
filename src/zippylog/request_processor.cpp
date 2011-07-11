@@ -351,47 +351,47 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
 
     request_type = request_envelope.MessageType(0);
     switch (request_type) {
-        case protocol::request::Ping::zippylog_enumeration:
+        case protocol::request::PingV1::zippylog_enumeration:
             result = this->ProcessPing(request_envelope, output);
             break;
 
-        case protocol::request::GetFeatures::zippylog_enumeration:
+        case protocol::request::GetFeaturesV1::zippylog_enumeration:
             result = this->ProcessFeatures(request_envelope, output);
             break;
 
-        case protocol::request::GetStoreInfo::zippylog_enumeration:
+        case protocol::request::GetStoreInfoV1::zippylog_enumeration:
             result = this->ProcessStoreInfo(request_envelope, output);
             break;
 
-        case protocol::request::GetBucketInfo::zippylog_enumeration:
+        case protocol::request::GetBucketInfoV1::zippylog_enumeration:
             result = this->ProcessBucketInfo(request_envelope, output);
             break;
 
-        case protocol::request::GetStreamSetInfo::zippylog_enumeration:
+        case protocol::request::GetStreamSetInfoV1::zippylog_enumeration:
             result = this->ProcessStreamSetInfo(request_envelope, output);
             break;
 
-        case protocol::request::GetStreamInfo::zippylog_enumeration:
+        case protocol::request::GetStreamInfoV1::zippylog_enumeration:
             result = this->ProcessStreamInfo(request_envelope, output);
             break;
 
-        case protocol::request::GetStream::zippylog_enumeration:
+        case protocol::request::GetStreamV1::zippylog_enumeration:
             result = this->ProcessGetStream(request_envelope, output);
             break;
 
-        case protocol::request::SubscribeStoreChanges::zippylog_enumeration:
+        case protocol::request::SubscribeStoreChangesV1::zippylog_enumeration:
             result = this->ProcessSubscribeStoreChanges(request_envelope, output);
             break;
 
-        case protocol::request::SubscribeEnvelopes::zippylog_enumeration:
+        case protocol::request::SubscribeEnvelopesV1::zippylog_enumeration:
             result = this->ProcessSubscribeEnvelopes(request_envelope, output);
             break;
 
-        case protocol::request::SubscribeKeepalive::zippylog_enumeration:
+        case protocol::request::SubscribeKeepaliveV1::zippylog_enumeration:
             result = this->ProcessSubscribeKeepalive(request_envelope, output);
             break;
 
-        case protocol::request::WriteEnvelope::zippylog_enumeration:
+        case protocol::request::WriteEnvelopeV1::zippylog_enumeration:
             result = this->ProcessWriteEnvelope(request_envelope, output);
             break;
 
@@ -429,7 +429,7 @@ SEND_RESPONSE:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &, vector<Envelope> &output)
 {
-    protocol::response::Pong pong;
+    protocol::response::PongV1 pong;
     Envelope out;
     pong.add_to_envelope(out);
     output.push_back(out);
@@ -439,10 +439,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &, vecto
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, vector<Envelope> &output)
 {
-    protocol::response::FeatureSpecification response;
+    protocol::response::FeatureSpecificationV1 response;
 
     // we currently support version 1 only
-    response.add_supported_message_version(1);
+    // TODO populate all fields properly
 
     Envelope out;
     response.add_to_envelope(out);
@@ -456,9 +456,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e,
     ::zippylog::request_processor::BeginProcessStoreInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
 
-    OBTAIN_MESSAGE(protocol::request::GetStoreInfo, m, e, 0);
-
-    if (!this->CheckMessageVersion(m->version(), 1, output)) return AUTHORITATIVE;
+    OBTAIN_MESSAGE(protocol::request::GetStoreInfoV1, m, e, 0);
 
     {
         protocol::StoreInfo info = protocol::StoreInfo();
@@ -486,9 +484,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e
     protocol::BucketInfo info = protocol::BucketInfo();
     Envelope response;
 
-    OBTAIN_MESSAGE(protocol::request::GetBucketInfo, m, e, 0);
-
-    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
+    OBTAIN_MESSAGE(protocol::request::GetBucketInfoV1, m, e, 0);
 
     if (!m->has_path()) {
         this->PopulateErrorResponse(
@@ -523,9 +519,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope
     protocol::StreamSetInfo info = protocol::StreamSetInfo();
     Envelope response;
 
-    OBTAIN_MESSAGE(protocol::request::GetStreamSetInfo, m, e, 0);
-
-    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
+    OBTAIN_MESSAGE(protocol::request::GetStreamSetInfoV1, m, e, 0);
 
     if (!m->has_path()) {
         this->PopulateErrorResponse(
@@ -559,9 +553,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
     protocol::StreamInfo info = protocol::StreamInfo();
     Envelope response;
 
-    OBTAIN_MESSAGE(protocol::request::GetStreamInfo, m, e, 0);
-
-    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
+    OBTAIN_MESSAGE(protocol::request::GetStreamInfoV1, m, e, 0);
 
     if (!m->has_path()) {
         this->PopulateErrorResponse(
@@ -594,7 +586,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         LOG_MESSAGE(log, this->logger_sock);
     }
 
-    protocol::request::GetStream *get = (protocol::request::GetStream *)request.GetMessage(0);
+    protocol::request::GetStreamV1 *get = (protocol::request::GetStreamV1 *)request.GetMessage(0);
     if (!get) {
         ::zippylog::request_processor::ReceiveInvalidGet log;
         LOG_MESSAGE(log, this->logger_sock);
@@ -606,8 +598,6 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         );
         goto LOG_END;
     }
-
-    if (!this->CheckMessageVersion(get->version(), 1, output)) goto LOG_END;
 
     if (!get->has_path()) {
         ::zippylog::request_processor::ReceiveInvalidGet log;
@@ -755,7 +745,7 @@ LOG_END:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
-    OBTAIN_MESSAGE(protocol::request::SubscribeStoreChanges, m, request, 0);
+    OBTAIN_MESSAGE(protocol::request::SubscribeStoreChangesV1, m, request, 0);
 
     // TODO validation
 
@@ -773,7 +763,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
 {
-    OBTAIN_MESSAGE(protocol::request::SubscribeKeepalive, m, request, 0);
+    OBTAIN_MESSAGE(protocol::request::SubscribeKeepaliveV1, m, request, 0);
 
     {
         ::zippylog::request_processor::ForwardSubscribeKeepalive log;
@@ -794,9 +784,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
         LOG_MESSAGE(log, this->logger_sock);
     }
 
-    OBTAIN_MESSAGE(protocol::request::WriteEnvelope, m, request, 0)
-
-    if (!this->CheckMessageVersion(m->version(), 1, output)) goto LOG_END;
+    OBTAIN_MESSAGE(protocol::request::WriteEnvelopeV1, m, request, 0)
 
     if (!m->has_path()) {
         this->PopulateErrorResponse(

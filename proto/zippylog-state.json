@@ -54,6 +54,7 @@
       "zippylog.protocol.response.PongV1": 70, 
       "zippylog.request_processor.EndProcessStreamSetInfo": 25, 
       "zippylog.request_processor.Create": 1, 
+      "zippylog.protocol.request.PingV1": 91, 
       "zippylog.zippylogd.BrokerFlushOutputStreams": 46, 
       "zippylog.request_processor.EndProcessWriteEnvelope": 29, 
       "zippylog.request_processor.BeginProcessStreamInfo": 26, 

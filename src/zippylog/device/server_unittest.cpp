@@ -143,8 +143,7 @@ TEST_F(ServerTest, SimpleMessageProcessing)
     socket_t *sock = this->GetClientSocket(s);
     ASSERT_TRUE(sock != NULL);
 
-    protocol::request::GetStoreInfo m;
-    m.set_version(1);
+    protocol::request::GetStoreInfoV1 m;
     Envelope e;
     m.add_to_envelope(&e);
 

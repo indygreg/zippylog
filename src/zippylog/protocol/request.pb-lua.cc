@@ -41,7 +41,7 @@ int lua_protobuf_zippylog_protocol_request_open(lua_State *L)
     lua_pop(L, 1);
     luaL_Reg funcs [] = { { NULL, NULL } };
     luaL_register(L, "protobuf.zippylog.protocol.request", funcs);
-    lua_protobuf_zippylog_protocol_request_Ping_open(L);
+    lua_protobuf_zippylog_protocol_request_PingV1_open(L);
     lua_protobuf_zippylog_protocol_request_GetFeaturesV1_open(L);
     lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_open(L);
     lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_open(L);
@@ -58,73 +58,73 @@ int lua_protobuf_zippylog_protocol_request_open(lua_State *L)
 }
 
 
-static const struct luaL_Reg Ping_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_request_Ping_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_request_Ping_parsefromstring},
+static const struct luaL_Reg PingV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_request_PingV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_request_PingV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg Ping_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_request_Ping_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_request_Ping_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_request_Ping_gc},
+static const struct luaL_Reg PingV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_request_PingV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_request_PingV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_request_PingV1_gc},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_request_Ping_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.request.Ping");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.request.PingV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, Ping_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.request.Ping", Ping_functions);
+    luaL_register(L, NULL, PingV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.request.PingV1", PingV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_request_Ping_pushcopy(lua_State *L, const ::zippylog::protocol::request::Ping &from)
+bool lua_protobuf_zippylog_protocol_request_PingV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::PingV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::request::Ping(from);
+    ud->msg = new ::zippylog::protocol::request::PingV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.Ping");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.PingV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_request_Ping_pushreference(lua_State *L, ::zippylog::protocol::request::Ping *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_request_PingV1_pushreference(lua_State *L, ::zippylog::protocol::request::PingV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.Ping");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.PingV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_request_Ping_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::request::Ping();
+    ud->msg = new ::zippylog::protocol::request::PingV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.Ping");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.PingV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_request_Ping_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::request::Ping * msg = new ::zippylog::protocol::request::Ping();
+    ::zippylog::protocol::request::PingV1 * msg = new ::zippylog::protocol::request::PingV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -133,14 +133,14 @@ int lua_protobuf_zippylog_protocol_request_Ping_parsefromstring(lua_State *L)
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.Ping");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.request.PingV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_request_Ping_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.Ping");
-    ::zippylog::protocol::request::Ping *m = (::zippylog::protocol::request::Ping *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.PingV1");
+    ::zippylog::protocol::request::PingV1 *m = (::zippylog::protocol::request::PingV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -153,17 +153,17 @@ int lua_protobuf_zippylog_protocol_request_Ping_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_request_Ping_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.Ping");
-    ::zippylog::protocol::request::Ping *m = (::zippylog::protocol::request::Ping *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.PingV1");
+    ::zippylog::protocol::request::PingV1 *m = (::zippylog::protocol::request::PingV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_request_Ping_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_PingV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.Ping");
-    ::zippylog::protocol::request::Ping *m = (::zippylog::protocol::request::Ping *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.PingV1");
+    ::zippylog::protocol::request::PingV1 *m = (::zippylog::protocol::request::PingV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
