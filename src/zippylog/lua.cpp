@@ -25,7 +25,9 @@ extern "C" {
 using ::std::string;
 using ::zippylog::Envelope;
 
-#define ENVELOPE_FILTER_FUNCTION "zippylog_envelope_filter"
+#define SUBSCRIPTION_FILTER_ENVELOPE "zippylog_subscription_filter_envelope"
+#define SUBSCRIPTION_TIMER_INTERVAL "zippylog_subscription_timer_interval"
+#define SUBSCRIPTION_TIMER_SIGNALED "zippylog_subscription_timer_signaled"
 #define LOAD_STRING_FUNCTION "zippylog_load_string"
 #define LUA_ENVELOPE_METHOD_TABLENAME "zippylog._envelope"
 #define LUA_ENVELOPE_FUNCTION_TABLENAME "zippylog.envelope"
@@ -216,8 +218,9 @@ LuaState::LuaState() :
     memory_current(0),
     memory_max_tried(0),
     memory_max_allowed(0),
-    have_envelope_filter(false),
-    have_load_string(false)
+    have_load_string(false),
+    have_subscription_envelope_filter(false),
+    have_subscription_timer(false)
 {
     this->L = lua_newstate(LuaState::LuaAlloc, (void *)this);
 
@@ -233,16 +236,6 @@ bool LuaState::SetMemoryCeiling(uint32 size)
 {
     this->memory_ceiling = size;
     return true;
-}
-
-bool LuaState::HasEnvelopeFilter()
-{
-    return this->have_envelope_filter;
-}
-
-bool LuaState::HasLoadString()
-{
-    return this->have_load_string;
 }
 
 // TODO verify we can't load binary Lua code (textual only) b/c bytecode
@@ -278,13 +271,24 @@ bool LuaState::LoadStringLibrary()
 
 bool LuaState::DetermineCapabilities()
 {
-    lua_getglobal(this->L, ENVELOPE_FILTER_FUNCTION);
-    this->have_envelope_filter = lua_isfunction(this->L, -1);
-    lua_pop(this->L, 1);
-
     lua_getglobal(this->L, LOAD_STRING_FUNCTION);
     this->have_load_string = lua_isfunction(this->L, -1);
     lua_pop(this->L, 1);
+
+    lua_getglobal(this->L, SUBSCRIPTION_FILTER_ENVELOPE);
+    this->have_subscription_envelope_filter = lua_isfunction(this->L, -1);
+    lua_pop(this->L, 1);
+
+    lua_getglobal(this->L, SUBSCRIPTION_TIMER_INTERVAL);
+    lua_getglobal(this->L, SUBSCRIPTION_TIMER_SIGNALED);
+    this->have_subscription_timer = lua_isnumber(this->L, -2) && lua_isfunction(this->L, -1);
+    if (!this->have_subscription_timer) {
+        if (lua_isnumber(this->L, -2) || lua_isfunction(this->L, -1)) {
+            lua_pop(this->L, 2);
+            return false;
+        }
+    }
+    lua_pop(this->L, 2);
 
     return true;
 }

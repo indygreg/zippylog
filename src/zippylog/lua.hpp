@@ -129,11 +129,14 @@ public:
     /// Obtains the set memory ceiling for the interpreter
     inline uint32 GetMemoryCeiling() const { return this->memory_ceiling; }
 
-    // whether the state has an enveloper filter function
-    bool HasEnvelopeFilter();
-
     /// Whether we have a zippylog_load_string() function
-    bool HasLoadString();
+    inline bool HasLoadString() const { return this->have_load_string; }
+
+    /// Whether the state has a subscription envelope filter function
+    inline bool HasSubscriptionEnvelopeFilter() const { return this->have_subscription_envelope_filter; }
+
+    /// Whether the state has a subscription timer
+    inline bool HasSubscriptionTimer() const { return this->have_subscription_timer; }
 
     // loads user-supplied Lua code into the interpreter
     bool LoadLuaCode(const ::std::string &code);
@@ -158,7 +161,6 @@ public:
     static int LuaPanic(lua_State *L);
 
 protected:
-    bool PushFilterFunction();
     bool DetermineCapabilities();
 
     /// Initializes a state instance
@@ -187,8 +189,9 @@ protected:
     uint32 memory_max_tried;
     uint32 memory_max_allowed;
 
-    bool have_envelope_filter;
     bool have_load_string;
+    bool have_subscription_envelope_filter;
+    bool have_subscription_timer;
 
 private:
     LuaState(const LuaState &);

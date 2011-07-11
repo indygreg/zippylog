@@ -554,7 +554,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
                     // run envelope through Lua
                     if (i->second->l) {
-                        if (!i->second->l->HasEnvelopeFilter()) {
+                        if (!i->second->l->HasSubscriptionEnvelopeFilter()) {
                             zeromq::send_envelope_more(this->client_sock, env);
                             continue;
                         }
