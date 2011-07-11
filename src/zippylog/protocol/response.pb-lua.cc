@@ -243,6 +243,14 @@ static const struct luaL_Reg FeatureSpecificationV1_methods [] = {
     {"get_supported_request_names", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_get_supported_request_names},
     {"set_supported_request_names", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_set_supported_request_names},
     {"size_supported_request_names", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_size_supported_request_names},
+    {"clear_max_stream_segment_bytes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_clear_max_stream_segment_bytes},
+    {"get_max_stream_segment_bytes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_get_max_stream_segment_bytes},
+    {"set_max_stream_segment_bytes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_set_max_stream_segment_bytes},
+    {"has_max_stream_segment_bytes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_has_max_stream_segment_bytes},
+    {"clear_max_stream_segment_envelopes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_clear_max_stream_segment_envelopes},
+    {"get_max_stream_segment_envelopes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_get_max_stream_segment_envelopes},
+    {"set_max_stream_segment_envelopes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_set_max_stream_segment_envelopes},
+    {"has_max_stream_segment_envelopes", lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_has_max_stream_segment_envelopes},
     {NULL, NULL},
 };
 
@@ -516,6 +524,82 @@ int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_size_supporte
     ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
     int size = m->supported_request_names_size();
     lua_pushinteger(L, size);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_clear_max_stream_segment_bytes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    m->clear_max_stream_segment_bytes();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_get_max_stream_segment_bytes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    m->has_max_stream_segment_bytes() ? lua_pushinteger(L, m->max_stream_segment_bytes()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_set_max_stream_segment_bytes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_max_stream_segment_bytes();
+        return 0;
+    }
+    
+    lua_Integer v = luaL_checkinteger(L, 2);
+    m->set_max_stream_segment_bytes(v);
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_has_max_stream_segment_bytes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    lua_pushboolean(L, m->has_max_stream_segment_bytes());
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_clear_max_stream_segment_envelopes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    m->clear_max_stream_segment_envelopes();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_get_max_stream_segment_envelopes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    m->has_max_stream_segment_envelopes() ? lua_pushinteger(L, m->max_stream_segment_envelopes()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_set_max_stream_segment_envelopes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_max_stream_segment_envelopes();
+        return 0;
+    }
+    
+    lua_Integer v = luaL_checkinteger(L, 2);
+    m->set_max_stream_segment_envelopes(v);
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_has_max_stream_segment_envelopes(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.FeatureSpecificationV1");
+    ::zippylog::protocol::response::FeatureSpecificationV1 *m = (::zippylog::protocol::response::FeatureSpecificationV1 *)mud->msg;
+    lua_pushboolean(L, m->has_max_stream_segment_envelopes());
     return 1;
 }
 

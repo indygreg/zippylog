@@ -16,6 +16,12 @@ message FeatureSpecificationV1 {
 
 	// same as above, but string representation of request message names
 	repeated string supported_request_names = 3;
+	
+	// maximum number of bytes server will send in a stream segment
+	optional uint32 max_stream_segment_bytes = 4;
+	
+	// maximum number of envelopes server will send in a stream segment
+	optional uint32 max_stream_segment_envelopes = 5;
 }
 
 // when a stream segment is downloaded, this will be the first message

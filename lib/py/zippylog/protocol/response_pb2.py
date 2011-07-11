@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/response.proto',
   package='zippylog.protocol.response',
-  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"\x08\n\x06PongV1\"}\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\"4\n\x14StreamSegmentStartV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06offset\x18\x02 \x02(\x04\"P\n\x12StreamSegmentEndV1\x12\x0e\n\x06offset\x18\x01 \x02(\x04\x12\x12\n\nbytes_sent\x18\x02 \x02(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x02(\r\")\n\x0eSubscribeAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x0b\n\x03ttl\x18\x02 \x02(\r\"!\n\x13SubscriptionStartV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\'\n\nWriteAckV1\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x02(\r\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
+  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\"\x08\n\x06PongV1\"\xc5\x01\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\x12 \n\x18max_stream_segment_bytes\x18\x04 \x01(\r\x12$\n\x1cmax_stream_segment_envelopes\x18\x05 \x01(\r\"4\n\x14StreamSegmentStartV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06offset\x18\x02 \x02(\x04\"P\n\x12StreamSegmentEndV1\x12\x0e\n\x06offset\x18\x01 \x02(\x04\x12\x12\n\nbytes_sent\x18\x02 \x02(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x02(\r\")\n\x0eSubscribeAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x0b\n\x03ttl\x18\x02 \x02(\r\"!\n\x13SubscriptionStartV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\'\n\nWriteAckV1\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x02(\r\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\xdc\x03\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -95,8 +95,8 @@ _ERRORCODE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=532,
-  serialized_end=1008,
+  serialized_start=605,
+  serialized_end=1081,
 )
 
 
@@ -170,6 +170,20 @@ _FEATURESPECIFICATIONV1 = descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='max_stream_segment_bytes', full_name='zippylog.protocol.response.FeatureSpecificationV1.max_stream_segment_bytes', index=3,
+      number=4, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='max_stream_segment_envelopes', full_name='zippylog.protocol.response.FeatureSpecificationV1.max_stream_segment_envelopes', index=4,
+      number=5, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -179,8 +193,8 @@ _FEATURESPECIFICATIONV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=74,
-  serialized_end=199,
+  serialized_start=75,
+  serialized_end=272,
 )
 
 
@@ -214,8 +228,8 @@ _STREAMSEGMENTSTARTV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=201,
-  serialized_end=253,
+  serialized_start=274,
+  serialized_end=326,
 )
 
 
@@ -256,8 +270,8 @@ _STREAMSEGMENTENDV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=255,
-  serialized_end=335,
+  serialized_start=328,
+  serialized_end=408,
 )
 
 
@@ -291,8 +305,8 @@ _SUBSCRIBEACKV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=337,
-  serialized_end=378,
+  serialized_start=410,
+  serialized_end=451,
 )
 
 
@@ -319,8 +333,8 @@ _SUBSCRIPTIONSTARTV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=380,
-  serialized_end=413,
+  serialized_start=453,
+  serialized_end=486,
 )
 
 
@@ -347,8 +361,8 @@ _WRITEACKV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=415,
-  serialized_end=454,
+  serialized_start=488,
+  serialized_end=527,
 )
 
 
@@ -382,8 +396,8 @@ _ERROR = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=456,
-  serialized_end=529,
+  serialized_start=529,
+  serialized_end=602,
 )
 
 _ERROR.fields_by_name['code'].enum_type = _ERRORCODE

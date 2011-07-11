@@ -252,6 +252,20 @@ class FeatureSpecificationV1 : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& supported_request_names() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_supported_request_names();
   
+  // optional uint32 max_stream_segment_bytes = 4;
+  inline bool has_max_stream_segment_bytes() const;
+  inline void clear_max_stream_segment_bytes();
+  static const int kMaxStreamSegmentBytesFieldNumber = 4;
+  inline ::google::protobuf::uint32 max_stream_segment_bytes() const;
+  inline void set_max_stream_segment_bytes(::google::protobuf::uint32 value);
+  
+  // optional uint32 max_stream_segment_envelopes = 5;
+  inline bool has_max_stream_segment_envelopes() const;
+  inline void clear_max_stream_segment_envelopes();
+  static const int kMaxStreamSegmentEnvelopesFieldNumber = 5;
+  inline ::google::protobuf::uint32 max_stream_segment_envelopes() const;
+  inline void set_max_stream_segment_envelopes(::google::protobuf::uint32 value);
+  
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 71;
   
@@ -259,15 +273,21 @@ class FeatureSpecificationV1 : public ::google::protobuf::Message {
   bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.response.FeatureSpecificationV1)
  private:
+  inline void set_has_max_stream_segment_bytes();
+  inline void clear_has_max_stream_segment_bytes();
+  inline void set_has_max_stream_segment_envelopes();
+  inline void clear_has_max_stream_segment_envelopes();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > supported_message_formats_;
   ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > supported_request_types_;
   ::google::protobuf::RepeatedPtrField< ::std::string> supported_request_names_;
+  ::google::protobuf::uint32 max_stream_segment_bytes_;
+  ::google::protobuf::uint32 max_stream_segment_envelopes_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
@@ -967,6 +987,50 @@ FeatureSpecificationV1::supported_request_names() const {
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 FeatureSpecificationV1::mutable_supported_request_names() {
   return &supported_request_names_;
+}
+
+// optional uint32 max_stream_segment_bytes = 4;
+inline bool FeatureSpecificationV1::has_max_stream_segment_bytes() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void FeatureSpecificationV1::set_has_max_stream_segment_bytes() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void FeatureSpecificationV1::clear_has_max_stream_segment_bytes() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void FeatureSpecificationV1::clear_max_stream_segment_bytes() {
+  max_stream_segment_bytes_ = 0u;
+  clear_has_max_stream_segment_bytes();
+}
+inline ::google::protobuf::uint32 FeatureSpecificationV1::max_stream_segment_bytes() const {
+  return max_stream_segment_bytes_;
+}
+inline void FeatureSpecificationV1::set_max_stream_segment_bytes(::google::protobuf::uint32 value) {
+  set_has_max_stream_segment_bytes();
+  max_stream_segment_bytes_ = value;
+}
+
+// optional uint32 max_stream_segment_envelopes = 5;
+inline bool FeatureSpecificationV1::has_max_stream_segment_envelopes() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void FeatureSpecificationV1::set_has_max_stream_segment_envelopes() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void FeatureSpecificationV1::clear_has_max_stream_segment_envelopes() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void FeatureSpecificationV1::clear_max_stream_segment_envelopes() {
+  max_stream_segment_envelopes_ = 0u;
+  clear_has_max_stream_segment_envelopes();
+}
+inline ::google::protobuf::uint32 FeatureSpecificationV1::max_stream_segment_envelopes() const {
+  return max_stream_segment_envelopes_;
+}
+inline void FeatureSpecificationV1::set_max_stream_segment_envelopes(::google::protobuf::uint32 value) {
+  set_has_max_stream_segment_envelopes();
+  max_stream_segment_envelopes_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -5,7 +5,7 @@
 // being performed.
 //
 // Messages are versioned. Typically, a new version of a message is created if
-// fields are added or the semantics of the request change.
+// fields are added or the semantics of the operation change.
 
 package zippylog.protocol.request;
 
