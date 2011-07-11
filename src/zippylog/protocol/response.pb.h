@@ -62,11 +62,12 @@ enum ErrorCode {
   UNSUPPORTED_OPERATION_MESSAGE_VERSION = 15,
   EMPTY_MESSAGE = 16,
   PROTOCOL_NO_ENVELOPE = 17,
-  GENERAL_ERROR_PROCESSING = 18
+  GENERAL_ERROR_PROCESSING = 18,
+  LUA_ERROR = 19
 };
 bool ErrorCode_IsValid(int value);
 const ErrorCode ErrorCode_MIN = ENVELOPE_PARSE_FAILURE;
-const ErrorCode ErrorCode_MAX = GENERAL_ERROR_PROCESSING;
+const ErrorCode ErrorCode_MAX = LUA_ERROR;
 const int ErrorCode_ARRAYSIZE = ErrorCode_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* ErrorCode_descriptor();
