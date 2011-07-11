@@ -730,7 +730,7 @@ class WriteEnvelopeV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -858,7 +858,7 @@ class WriteEnvelopeFromMessagesV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -1196,7 +1196,7 @@ class SubscribeKeepaliveV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
@@ -1287,7 +1287,7 @@ class SubscribeCancelV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional bytes id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
@@ -1655,7 +1655,7 @@ inline void GetStreamSegmentV1::set_max_response_envelopes(::google::protobuf::u
 
 // WriteEnvelopeV1
 
-// optional string path = 1;
+// required string path = 1;
 inline bool WriteEnvelopeV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1805,7 +1805,7 @@ inline void WriteEnvelopeV1::set_synchronous(bool value) {
 
 // WriteEnvelopeFromMessagesV1
 
-// optional string path = 1;
+// required string path = 1;
 inline bool WriteEnvelopeFromMessagesV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2115,7 +2115,7 @@ inline ::std::string* SubscribeEnvelopesV1::release_lua_code() {
 
 // SubscribeKeepaliveV1
 
-// optional bytes id = 1;
+// required bytes id = 1;
 inline bool SubscribeKeepaliveV1::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -2177,7 +2177,7 @@ inline ::std::string* SubscribeKeepaliveV1::release_id() {
 
 // SubscribeCancelV1
 
-// optional bytes id = 1;
+// required bytes id = 1;
 inline bool SubscribeCancelV1::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }

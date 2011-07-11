@@ -356,16 +356,16 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "h\030\001 \002(\t\"t\n\022GetStreamSegmentV1\022\014\n\004path\030\001 "
     "\002(\t\022\024\n\014start_offset\030\002 \002(\004\022\032\n\022max_respons"
     "e_bytes\030\003 \001(\r\022\036\n\026max_response_envelopes\030"
-    "\004 \001(\r\"h\n\017WriteEnvelopeV1\022\014\n\004path\030\001 \001(\t\022\020"
+    "\004 \001(\r\"h\n\017WriteEnvelopeV1\022\014\n\004path\030\001 \002(\t\022\020"
     "\n\010envelope\030\002 \003(\014\022\031\n\013acknowledge\030\003 \001(\010:\004t"
     "rue\022\032\n\013synchronous\030\004 \001(\010:\005false\"u\n\033Write"
-    "EnvelopeFromMessagesV1\022\014\n\004path\030\001 \001(\t\022\017\n\007"
+    "EnvelopeFromMessagesV1\022\014\n\004path\030\001 \002(\t\022\017\n\007"
     "message\030\002 \003(\014\022\035\n\021message_namespace\030\003 \003(\r"
     "B\002\020\001\022\030\n\014message_type\030\004 \003(\rB\002\020\001\"\'\n\027Subscr"
     "ibeStoreChangesV1\022\014\n\004path\030\001 \003(\t\"6\n\024Subsc"
     "ribeEnvelopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_cod"
     "e\030\002 \001(\t\"\"\n\024SubscribeKeepaliveV1\022\n\n\002id\030\001 "
-    "\001(\014\"\037\n\021SubscribeCancelV1\022\n\n\002id\030\001 \001(\014", 716);
+    "\002(\014\"\037\n\021SubscribeCancelV1\022\n\n\002id\030\001 \002(\014", 716);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   PingV1::default_instance_ = new PingV1();
@@ -1974,7 +1974,7 @@ bool WriteEnvelopeV1::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string path = 1;
+      // required string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -2055,7 +2055,7 @@ bool WriteEnvelopeV1::MergePartialFromCodedStream(
 
 void WriteEnvelopeV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string path = 1;
+  // required string path = 1;
   if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
@@ -2088,7 +2088,7 @@ void WriteEnvelopeV1::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WriteEnvelopeV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string path = 1;
+  // required string path = 1;
   if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
@@ -2125,7 +2125,7 @@ int WriteEnvelopeV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string path = 1;
+    // required string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2203,6 +2203,7 @@ void WriteEnvelopeV1::CopyFrom(const WriteEnvelopeV1& from) {
 }
 
 bool WriteEnvelopeV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
@@ -2310,7 +2311,7 @@ bool WriteEnvelopeFromMessagesV1::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string path = 1;
+      // required string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -2401,7 +2402,7 @@ bool WriteEnvelopeFromMessagesV1::MergePartialFromCodedStream(
 
 void WriteEnvelopeFromMessagesV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string path = 1;
+  // required string path = 1;
   if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
@@ -2444,7 +2445,7 @@ void WriteEnvelopeFromMessagesV1::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* WriteEnvelopeFromMessagesV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string path = 1;
+  // required string path = 1;
   if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
@@ -2499,7 +2500,7 @@ int WriteEnvelopeFromMessagesV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string path = 1;
+    // required string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2593,6 +2594,7 @@ void WriteEnvelopeFromMessagesV1::CopyFrom(const WriteEnvelopeFromMessagesV1& fr
 }
 
 bool WriteEnvelopeFromMessagesV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
@@ -3175,7 +3177,7 @@ bool SubscribeKeepaliveV1::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // required bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -3206,7 +3208,7 @@ bool SubscribeKeepaliveV1::MergePartialFromCodedStream(
 
 void SubscribeKeepaliveV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // required bytes id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
@@ -3220,7 +3222,7 @@ void SubscribeKeepaliveV1::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SubscribeKeepaliveV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // required bytes id = 1;
   if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
@@ -3238,7 +3240,7 @@ int SubscribeKeepaliveV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // required bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3292,6 +3294,7 @@ void SubscribeKeepaliveV1::CopyFrom(const SubscribeKeepaliveV1& from) {
 }
 
 bool SubscribeKeepaliveV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
@@ -3390,7 +3393,7 @@ bool SubscribeCancelV1::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
+      // required bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -3421,7 +3424,7 @@ bool SubscribeCancelV1::MergePartialFromCodedStream(
 
 void SubscribeCancelV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
+  // required bytes id = 1;
   if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
@@ -3435,7 +3438,7 @@ void SubscribeCancelV1::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SubscribeCancelV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
+  // required bytes id = 1;
   if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
@@ -3453,7 +3456,7 @@ int SubscribeCancelV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
+    // required bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3507,6 +3510,7 @@ void SubscribeCancelV1::CopyFrom(const SubscribeCancelV1& from) {
 }
 
 bool SubscribeCancelV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
