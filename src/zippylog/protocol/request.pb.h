@@ -41,7 +41,7 @@ class GetStoreInfoV1;
 class GetBucketInfoV1;
 class GetStreamSetInfoV1;
 class GetStreamInfoV1;
-class GetStreamV1;
+class GetStreamSegmentV1;
 class WriteEnvelopeV1;
 class WriteEnvelopeFromMessagesV1;
 class SubscribeStoreChangesV1;
@@ -336,7 +336,7 @@ class GetBucketInfoV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -427,7 +427,7 @@ class GetStreamSetInfoV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -518,7 +518,7 @@ class GetStreamInfoV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -555,14 +555,14 @@ class GetStreamInfoV1 : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class GetStreamV1 : public ::google::protobuf::Message {
+class GetStreamSegmentV1 : public ::google::protobuf::Message {
  public:
-  GetStreamV1();
-  virtual ~GetStreamV1();
+  GetStreamSegmentV1();
+  virtual ~GetStreamSegmentV1();
   
-  GetStreamV1(const GetStreamV1& from);
+  GetStreamSegmentV1(const GetStreamSegmentV1& from);
   
-  inline GetStreamV1& operator=(const GetStreamV1& from) {
+  inline GetStreamSegmentV1& operator=(const GetStreamSegmentV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -576,17 +576,17 @@ class GetStreamV1 : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const GetStreamV1& default_instance();
+  static const GetStreamSegmentV1& default_instance();
   
-  void Swap(GetStreamV1* other);
+  void Swap(GetStreamSegmentV1* other);
   
   // implements Message ----------------------------------------------
   
-  GetStreamV1* New() const;
+  GetStreamSegmentV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const GetStreamV1& from);
-  void MergeFrom(const GetStreamV1& from);
+  void CopyFrom(const GetStreamSegmentV1& from);
+  void MergeFrom(const GetStreamSegmentV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -609,7 +609,7 @@ class GetStreamV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional string path = 1;
+  // required string path = 1;
   inline bool has_path() const;
   inline void clear_path();
   static const int kPathFieldNumber = 1;
@@ -620,7 +620,7 @@ class GetStreamV1 : public ::google::protobuf::Message {
   inline ::std::string* mutable_path();
   inline ::std::string* release_path();
   
-  // optional uint64 start_offset = 2;
+  // required uint64 start_offset = 2;
   inline bool has_start_offset() const;
   inline void clear_start_offset();
   static const int kStartOffsetFieldNumber = 2;
@@ -642,11 +642,11 @@ class GetStreamV1 : public ::google::protobuf::Message {
   inline void set_max_response_envelopes(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 77;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 92;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamV1)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetStreamSegmentV1)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -672,7 +672,7 @@ class GetStreamV1 : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
   
   void InitAsDefaultInstance();
-  static GetStreamV1* default_instance_;
+  static GetStreamSegmentV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1341,7 +1341,7 @@ class SubscribeCancelV1 : public ::google::protobuf::Message {
 
 // GetBucketInfoV1
 
-// optional string path = 1;
+// required string path = 1;
 inline bool GetBucketInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1403,7 +1403,7 @@ inline ::std::string* GetBucketInfoV1::release_path() {
 
 // GetStreamSetInfoV1
 
-// optional string path = 1;
+// required string path = 1;
 inline bool GetStreamSetInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1465,7 +1465,7 @@ inline ::std::string* GetStreamSetInfoV1::release_path() {
 
 // GetStreamInfoV1
 
-// optional string path = 1;
+// required string path = 1;
 inline bool GetStreamInfoV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1525,56 +1525,56 @@ inline ::std::string* GetStreamInfoV1::release_path() {
 
 // -------------------------------------------------------------------
 
-// GetStreamV1
+// GetStreamSegmentV1
 
-// optional string path = 1;
-inline bool GetStreamV1::has_path() const {
+// required string path = 1;
+inline bool GetStreamSegmentV1::has_path() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void GetStreamV1::set_has_path() {
+inline void GetStreamSegmentV1::set_has_path() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void GetStreamV1::clear_has_path() {
+inline void GetStreamSegmentV1::clear_has_path() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void GetStreamV1::clear_path() {
+inline void GetStreamSegmentV1::clear_path() {
   if (path_ != &::google::protobuf::internal::kEmptyString) {
     path_->clear();
   }
   clear_has_path();
 }
-inline const ::std::string& GetStreamV1::path() const {
+inline const ::std::string& GetStreamSegmentV1::path() const {
   return *path_;
 }
-inline void GetStreamV1::set_path(const ::std::string& value) {
+inline void GetStreamSegmentV1::set_path(const ::std::string& value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void GetStreamV1::set_path(const char* value) {
+inline void GetStreamSegmentV1::set_path(const char* value) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(value);
 }
-inline void GetStreamV1::set_path(const char* value, size_t size) {
+inline void GetStreamSegmentV1::set_path(const char* value, size_t size) {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   path_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* GetStreamV1::mutable_path() {
+inline ::std::string* GetStreamSegmentV1::mutable_path() {
   set_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     path_ = new ::std::string;
   }
   return path_;
 }
-inline ::std::string* GetStreamV1::release_path() {
+inline ::std::string* GetStreamSegmentV1::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1585,68 +1585,68 @@ inline ::std::string* GetStreamV1::release_path() {
   }
 }
 
-// optional uint64 start_offset = 2;
-inline bool GetStreamV1::has_start_offset() const {
+// required uint64 start_offset = 2;
+inline bool GetStreamSegmentV1::has_start_offset() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void GetStreamV1::set_has_start_offset() {
+inline void GetStreamSegmentV1::set_has_start_offset() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void GetStreamV1::clear_has_start_offset() {
+inline void GetStreamSegmentV1::clear_has_start_offset() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void GetStreamV1::clear_start_offset() {
+inline void GetStreamSegmentV1::clear_start_offset() {
   start_offset_ = GOOGLE_ULONGLONG(0);
   clear_has_start_offset();
 }
-inline ::google::protobuf::uint64 GetStreamV1::start_offset() const {
+inline ::google::protobuf::uint64 GetStreamSegmentV1::start_offset() const {
   return start_offset_;
 }
-inline void GetStreamV1::set_start_offset(::google::protobuf::uint64 value) {
+inline void GetStreamSegmentV1::set_start_offset(::google::protobuf::uint64 value) {
   set_has_start_offset();
   start_offset_ = value;
 }
 
 // optional uint32 max_response_bytes = 3;
-inline bool GetStreamV1::has_max_response_bytes() const {
+inline bool GetStreamSegmentV1::has_max_response_bytes() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void GetStreamV1::set_has_max_response_bytes() {
+inline void GetStreamSegmentV1::set_has_max_response_bytes() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void GetStreamV1::clear_has_max_response_bytes() {
+inline void GetStreamSegmentV1::clear_has_max_response_bytes() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void GetStreamV1::clear_max_response_bytes() {
+inline void GetStreamSegmentV1::clear_max_response_bytes() {
   max_response_bytes_ = 0u;
   clear_has_max_response_bytes();
 }
-inline ::google::protobuf::uint32 GetStreamV1::max_response_bytes() const {
+inline ::google::protobuf::uint32 GetStreamSegmentV1::max_response_bytes() const {
   return max_response_bytes_;
 }
-inline void GetStreamV1::set_max_response_bytes(::google::protobuf::uint32 value) {
+inline void GetStreamSegmentV1::set_max_response_bytes(::google::protobuf::uint32 value) {
   set_has_max_response_bytes();
   max_response_bytes_ = value;
 }
 
 // optional uint32 max_response_envelopes = 4;
-inline bool GetStreamV1::has_max_response_envelopes() const {
+inline bool GetStreamSegmentV1::has_max_response_envelopes() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void GetStreamV1::set_has_max_response_envelopes() {
+inline void GetStreamSegmentV1::set_has_max_response_envelopes() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void GetStreamV1::clear_has_max_response_envelopes() {
+inline void GetStreamSegmentV1::clear_has_max_response_envelopes() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void GetStreamV1::clear_max_response_envelopes() {
+inline void GetStreamSegmentV1::clear_max_response_envelopes() {
   max_response_envelopes_ = 0u;
   clear_has_max_response_envelopes();
 }
-inline ::google::protobuf::uint32 GetStreamV1::max_response_envelopes() const {
+inline ::google::protobuf::uint32 GetStreamSegmentV1::max_response_envelopes() const {
   return max_response_envelopes_;
 }
-inline void GetStreamV1::set_max_response_envelopes(::google::protobuf::uint32 value) {
+inline void GetStreamSegmentV1::set_max_response_envelopes(::google::protobuf::uint32 value) {
   set_has_max_response_envelopes();
   max_response_envelopes_ = value;
 }

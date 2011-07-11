@@ -180,7 +180,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_s
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_clear(lua_State *L);
 
-// optional string path = 1
+// required string path = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_clear_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_get_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_set_path(lua_State *L);
@@ -227,7 +227,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_clear(lua_State *L);
 
-// optional string path = 1
+// required string path = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_clear_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_get_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_set_path(lua_State *L);
@@ -274,7 +274,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_s
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_clear(lua_State *L);
 
-// optional string path = 1
+// required string path = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_clear_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_get_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_set_path(lua_State *L);
@@ -282,15 +282,15 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_h
 
 // end of message GetStreamInfoV1
 
-// Message GetStreamV1
+// Message GetStreamSegmentV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamV1 &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamSegmentV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -299,7 +299,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_push
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamV1 *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamSegmentV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -307,45 +307,45 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_push
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_clear(lua_State *L);
 
-// optional string path = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_path(lua_State *L);
+// required string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_has_path(lua_State *L);
 
-// optional uint64 start_offset = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_start_offset(lua_State *L);
+// required uint64 start_offset = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_clear_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_get_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_set_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_has_start_offset(lua_State *L);
 
 // optional uint32 max_response_bytes = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_clear_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_get_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_set_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_has_max_response_bytes(lua_State *L);
 
 // optional uint32 max_response_envelopes = 4
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_clear_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_get_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_set_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSegmentV1_has_max_response_envelopes(lua_State *L);
 
-// end of message GetStreamV1
+// end of message GetStreamSegmentV1
 
 // Message WriteEnvelopeV1
 // registers the message type with Lua

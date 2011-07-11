@@ -3,6 +3,9 @@
 //
 // Messages should have names of actions/verbs which describe the operation
 // being performed.
+//
+// Messages are versioned. Typically, a new version of a message is created if
+// fields are added or the semantics of the request change.
 
 package zippylog.protocol.request;
 
@@ -22,17 +25,17 @@ message GetStoreInfoV1 {}
 // Obtain information about a specific bucket
 message GetBucketInfoV1 {
     // path to bucket whose info to obtain
-    optional string path = 1;
+    required string path = 1;
 }
 
 // Obtain information about a specific stream set
 message GetStreamSetInfoV1 {
-    optional string path = 1;
+    required string path = 1;
 }
 
 // Obtain information about a specific stream
 message GetStreamInfoV1 {
-    optional string path = 1;
+    required string path = 1;
 }
 
 // request to download part of a stream
@@ -41,15 +44,15 @@ message GetStreamInfoV1 {
 // in one request. These limits will override whatever is specified by the
 // client. Therefore, the limits in the request are merely a theoretical
 // maximum.
-message GetStreamV1 {
+message GetStreamSegmentV1 {
     // path of stream to retrieve
-    optional string path = 1;
+    required string path = 1;
 
     // offset from start of stream from which to start sending data
     // you should never "guess" the offset because the offset likely isn't
     // valid and the server may reject your request. instead, use the last
     // offset from a previous fetch
-    optional uint64 start_offset = 2;
+    required uint64 start_offset = 2;
 
     // maximum number of bytes to send in response
     optional uint32 max_response_bytes = 3;

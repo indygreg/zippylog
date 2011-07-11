@@ -488,7 +488,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // missing path
     {
-        protocol::request::GetStreamV1 m = protocol::request::GetStreamV1();
+        protocol::request::GetStreamSegmentV1 m = protocol::request::GetStreamSegmentV1();
         Envelope e;
         m.add_to_envelope(e);
         vector<Envelope> output;
@@ -497,7 +497,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // missing start offset
     {
-        protocol::request::GetStreamV1 m = protocol::request::GetStreamV1();
+        protocol::request::GetStreamSegmentV1 m = protocol::request::GetStreamSegmentV1();
         m.set_path(path);
         Envelope e;
         m.add_to_envelope(e);
@@ -507,7 +507,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // simple fetch of 1 envelope
     {
-        protocol::request::GetStreamV1 m = protocol::request::GetStreamV1();
+        protocol::request::GetStreamSegmentV1 m = protocol::request::GetStreamSegmentV1();
         m.set_path(path);
         m.set_start_offset(0);
         m.set_max_response_envelopes(1);
@@ -543,7 +543,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // fetch of 10 envelopes
     {
-        protocol::request::GetStreamV1 m;
+        protocol::request::GetStreamSegmentV1 m;
         m.set_path(path);
         m.set_start_offset(0);
         m.set_max_response_envelopes(10);
@@ -580,7 +580,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // fetch with valid offset
     {
-        protocol::request::GetStreamV1 m;
+        protocol::request::GetStreamSegmentV1 m;
         m.set_path(path);
 
         InputStream * stream = this->store->GetInputStream(path);
@@ -603,7 +603,7 @@ TEST_F(RequestProcessorTest, GetStream)
 
     // fetch with invalid offset
     {
-        protocol::request::GetStreamV1 m;
+        protocol::request::GetStreamSegmentV1 m;
         m.set_path(path);
         m.set_start_offset(2);
         m.set_max_response_envelopes(2);

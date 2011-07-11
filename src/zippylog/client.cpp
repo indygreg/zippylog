@@ -153,7 +153,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
     }
 
     Envelope e = Envelope();
-    protocol::request::GetStreamV1 req = protocol::request::GetStreamV1();
+    protocol::request::GetStreamSegmentV1 req;
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.add_to_envelope(&e);
@@ -167,7 +167,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
 
 bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
 {
-    protocol ::request::GetStreamV1 req;
+    protocol ::request::GetStreamSegmentV1 req;
     req.set_path(path);
     req.set_start_offset(start_offset);
     Envelope e;
@@ -193,7 +193,7 @@ bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_by
     }
 
     Envelope e = Envelope();
-    protocol::request::GetStreamV1 req = protocol::request::GetStreamV1();
+    protocol::request::GetStreamSegmentV1 req;
     req.set_path(path);
     req.set_start_offset(start_offset);
     req.set_max_response_bytes(max_response_bytes);

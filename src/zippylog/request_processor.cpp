@@ -375,7 +375,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &requ
             result = this->ProcessStreamInfo(request_envelope, output);
             break;
 
-        case protocol::request::GetStreamV1::zippylog_enumeration:
+        case protocol::request::GetStreamSegmentV1::zippylog_enumeration:
             result = this->ProcessGetStream(request_envelope, output);
             break;
 
@@ -455,8 +455,8 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, v
     response.add_supported_request_names("GetStreamSetInfoV1");
     response.add_supported_request_types(protocol::request::GetStreamInfoV1::zippylog_enumeration);
     response.add_supported_request_names("GetStreamInfoV1");
-    response.add_supported_request_types(protocol::request::GetStreamV1::zippylog_enumeration);
-    response.add_supported_request_names("GetStreamV1");
+    response.add_supported_request_types(protocol::request::GetStreamSegmentV1::zippylog_enumeration);
+    response.add_supported_request_names("GetStreamSegmentV1");
     response.add_supported_request_types(protocol::request::WriteEnvelopeV1::zippylog_enumeration);
     response.add_supported_request_names("WriteEnvelopeV1");
     response.add_supported_request_types(protocol::request::WriteEnvelopeFromMessagesV1::zippylog_enumeration);
@@ -612,7 +612,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         LOG_MESSAGE(log, this->logger_sock);
     }
 
-    protocol::request::GetStreamV1 *get = (protocol::request::GetStreamV1 *)request.GetMessage(0);
+    protocol::request::GetStreamSegmentV1 *get = (protocol::request::GetStreamSegmentV1 *)request.GetMessage(0);
     if (!get) {
         ::zippylog::request_processor::ReceiveInvalidGet log;
         LOG_MESSAGE(log, this->logger_sock);

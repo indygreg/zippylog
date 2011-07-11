@@ -4,6 +4,7 @@
     "zippylog": {
       "zippylog.protocol.BucketInfo": 34, 
       "zippylog.protocol.request.GetStream": 55, 
+      "zippylog.protocol.request.GetStreamSegmentV1": 92, 
       "zippylog.device.streamer.Create": 84, 
       "zippylog.zippylogd.BrokerStartup": 43, 
       "zippylog.protocol.StoreChangeStreamSetAdded": 41, 
