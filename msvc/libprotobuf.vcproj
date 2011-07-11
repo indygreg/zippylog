@@ -203,6 +203,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\external\protobuf\src\google\protobuf\compiler\java\java_string_field.h"
+				>
+			</File>
+			<File
 				RelativePath="..\external\protobuf\src\google\protobuf\stubs\map-util.h"
 				>
 			</File>
@@ -343,11 +347,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\external\protobuf\src\google\protobuf\stubs\hash.cc"
+				RelativePath="..\external\protobuf\src\google\protobuf\compiler\importer.cc"
 				>
 			</File>
 			<File
-				RelativePath="..\external\protobuf\src\google\protobuf\compiler\importer.cc"
+				RelativePath="..\external\protobuf\src\google\protobuf\compiler\java\java_string_field.cc"
 				>
 			</File>
 			<File
