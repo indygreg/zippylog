@@ -69,10 +69,12 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PongV1));
   FeatureSpecificationV1_descriptor_ = file->message_type(1);
-  static const int FeatureSpecificationV1_offsets_[3] = {
+  static const int FeatureSpecificationV1_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecificationV1, supported_message_formats_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecificationV1, supported_request_types_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecificationV1, supported_request_names_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecificationV1, max_stream_segment_bytes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(FeatureSpecificationV1, max_stream_segment_envelopes_),
   };
   FeatureSpecificationV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -240,31 +242,33 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n zippylog/protocol/response.proto\022\032zipp"
-    "ylog.protocol.response\"\010\n\006PongV1\"}\n\026Feat"
-    "ureSpecificationV1\022!\n\031supported_message_"
-    "formats\030\001 \003(\r\022\037\n\027supported_request_types"
-    "\030\002 \003(\r\022\037\n\027supported_request_names\030\003 \003(\t\""
-    "4\n\024StreamSegmentStartV1\022\014\n\004path\030\001 \002(\t\022\016\n"
-    "\006offset\030\002 \002(\004\"P\n\022StreamSegmentEndV1\022\016\n\006o"
-    "ffset\030\001 \002(\004\022\022\n\nbytes_sent\030\002 \002(\r\022\026\n\016envel"
-    "opes_sent\030\003 \002(\r\")\n\016SubscribeAckV1\022\n\n\002id\030"
-    "\001 \002(\014\022\013\n\003ttl\030\002 \002(\r\"!\n\023SubscriptionStartV"
-    "1\022\n\n\002id\030\001 \002(\014\"\'\n\nWriteAckV1\022\031\n\021envelopes"
-    "_written\030\001 \002(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%."
-    "zippylog.protocol.response.ErrorCode\022\013\n\003"
-    "msg\030\002 \001(\t*\334\003\n\tErrorCode\022\032\n\026ENVELOPE_PARS"
-    "E_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE"
-    "\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_EN"
-    "VELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027RE"
-    "QUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007"
-    "\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID"
-    "_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016"
-    "PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014\022\"\n\036"
-    "UNKNOWN_MESSAGE_FORMAT_VERSION\020\r\022\020\n\014INVA"
-    "LID_PATH\020\016\022)\n%UNSUPPORTED_OPERATION_MESS"
-    "AGE_VERSION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024PROT"
-    "OCOL_NO_ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_PROC"
-    "ESSING\020\022", 1008);
+    "ylog.protocol.response\"\010\n\006PongV1\"\305\001\n\026Fea"
+    "tureSpecificationV1\022!\n\031supported_message"
+    "_formats\030\001 \003(\r\022\037\n\027supported_request_type"
+    "s\030\002 \003(\r\022\037\n\027supported_request_names\030\003 \003(\t"
+    "\022 \n\030max_stream_segment_bytes\030\004 \001(\r\022$\n\034ma"
+    "x_stream_segment_envelopes\030\005 \001(\r\"4\n\024Stre"
+    "amSegmentStartV1\022\014\n\004path\030\001 \002(\t\022\016\n\006offset"
+    "\030\002 \002(\004\"P\n\022StreamSegmentEndV1\022\016\n\006offset\030\001"
+    " \002(\004\022\022\n\nbytes_sent\030\002 \002(\r\022\026\n\016envelopes_se"
+    "nt\030\003 \002(\r\")\n\016SubscribeAckV1\022\n\n\002id\030\001 \002(\014\022\013"
+    "\n\003ttl\030\002 \002(\r\"!\n\023SubscriptionStartV1\022\n\n\002id"
+    "\030\001 \002(\014\"\'\n\nWriteAckV1\022\031\n\021envelopes_writte"
+    "n\030\001 \002(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%.zippylo"
+    "g.protocol.response.ErrorCode\022\013\n\003msg\030\002 \001"
+    "(\t*\334\003\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAILU"
+    "RE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024U"
+    "NKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020"
+    "\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQUEST_N"
+    "OT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIELD\020\007\022\033\n\027FIE"
+    "LD_LENGTHS_DIFFERENT\020\010\022\031\n\025INVALID_STREAM"
+    "_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n\022\022\n\016PATH_NO"
+    "T_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014\022\"\n\036UNKNOWN"
+    "_MESSAGE_FORMAT_VERSION\020\r\022\020\n\014INVALID_PAT"
+    "H\020\016\022)\n%UNSUPPORTED_OPERATION_MESSAGE_VER"
+    "SION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024PROTOCOL_NO"
+    "_ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_PROCESSING\020"
+    "\022", 1081);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   PongV1::default_instance_ = new PongV1();
@@ -485,6 +489,8 @@ void PongV1::Swap(PongV1* other) {
 const int FeatureSpecificationV1::kSupportedMessageFormatsFieldNumber;
 const int FeatureSpecificationV1::kSupportedRequestTypesFieldNumber;
 const int FeatureSpecificationV1::kSupportedRequestNamesFieldNumber;
+const int FeatureSpecificationV1::kMaxStreamSegmentBytesFieldNumber;
+const int FeatureSpecificationV1::kMaxStreamSegmentEnvelopesFieldNumber;
 #endif  // !_MSC_VER
 
 FeatureSpecificationV1::FeatureSpecificationV1()
@@ -503,6 +509,8 @@ FeatureSpecificationV1::FeatureSpecificationV1(const FeatureSpecificationV1& fro
 
 void FeatureSpecificationV1::SharedCtor() {
   _cached_size_ = 0;
+  max_stream_segment_bytes_ = 0u;
+  max_stream_segment_envelopes_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -536,6 +544,10 @@ FeatureSpecificationV1* FeatureSpecificationV1::New() const {
 }
 
 void FeatureSpecificationV1::Clear() {
+  if (_has_bits_[3 / 32] & (0xffu << (3 % 32))) {
+    max_stream_segment_bytes_ = 0u;
+    max_stream_segment_envelopes_ = 0u;
+  }
   supported_message_formats_.Clear();
   supported_request_types_.Clear();
   supported_request_names_.Clear();
@@ -607,6 +619,38 @@ bool FeatureSpecificationV1::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(26)) goto parse_supported_request_names;
+        if (input->ExpectTag(32)) goto parse_max_stream_segment_bytes;
+        break;
+      }
+      
+      // optional uint32 max_stream_segment_bytes = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_stream_segment_bytes:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &max_stream_segment_bytes_)));
+          set_has_max_stream_segment_bytes();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_max_stream_segment_envelopes;
+        break;
+      }
+      
+      // optional uint32 max_stream_segment_envelopes = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_max_stream_segment_envelopes:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, &max_stream_segment_envelopes_)));
+          set_has_max_stream_segment_envelopes();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -650,6 +694,16 @@ void FeatureSpecificationV1::SerializeWithCachedSizes(
       3, this->supported_request_names(i), output);
   }
   
+  // optional uint32 max_stream_segment_bytes = 4;
+  if (has_max_stream_segment_bytes()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->max_stream_segment_bytes(), output);
+  }
+  
+  // optional uint32 max_stream_segment_envelopes = 5;
+  if (has_max_stream_segment_envelopes()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->max_stream_segment_envelopes(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -679,6 +733,16 @@ void FeatureSpecificationV1::SerializeWithCachedSizes(
       WriteStringToArray(3, this->supported_request_names(i), target);
   }
   
+  // optional uint32 max_stream_segment_bytes = 4;
+  if (has_max_stream_segment_bytes()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->max_stream_segment_bytes(), target);
+  }
+  
+  // optional uint32 max_stream_segment_envelopes = 5;
+  if (has_max_stream_segment_envelopes()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->max_stream_segment_envelopes(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -689,6 +753,22 @@ void FeatureSpecificationV1::SerializeWithCachedSizes(
 int FeatureSpecificationV1::ByteSize() const {
   int total_size = 0;
   
+  if (_has_bits_[3 / 32] & (0xffu << (3 % 32))) {
+    // optional uint32 max_stream_segment_bytes = 4;
+    if (has_max_stream_segment_bytes()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->max_stream_segment_bytes());
+    }
+    
+    // optional uint32 max_stream_segment_envelopes = 5;
+    if (has_max_stream_segment_envelopes()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt32Size(
+          this->max_stream_segment_envelopes());
+    }
+    
+  }
   // repeated uint32 supported_message_formats = 1;
   {
     int data_size = 0;
@@ -744,6 +824,14 @@ void FeatureSpecificationV1::MergeFrom(const FeatureSpecificationV1& from) {
   supported_message_formats_.MergeFrom(from.supported_message_formats_);
   supported_request_types_.MergeFrom(from.supported_request_types_);
   supported_request_names_.MergeFrom(from.supported_request_names_);
+  if (from._has_bits_[3 / 32] & (0xffu << (3 % 32))) {
+    if (from.has_max_stream_segment_bytes()) {
+      set_max_stream_segment_bytes(from.max_stream_segment_bytes());
+    }
+    if (from.has_max_stream_segment_envelopes()) {
+      set_max_stream_segment_envelopes(from.max_stream_segment_envelopes());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -769,6 +857,8 @@ void FeatureSpecificationV1::Swap(FeatureSpecificationV1* other) {
     supported_message_formats_.Swap(&other->supported_message_formats_);
     supported_request_types_.Swap(&other->supported_request_types_);
     supported_request_names_.Swap(&other->supported_request_names_);
+    std::swap(max_stream_segment_bytes_, other->max_stream_segment_bytes_);
+    std::swap(max_stream_segment_envelopes_, other->max_stream_segment_envelopes_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
