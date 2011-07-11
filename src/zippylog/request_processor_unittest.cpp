@@ -234,58 +234,6 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     output.clear();
 }
 
-TEST_F(RequestProcessorTest, SupportedVersions)
-{
-    vector<Envelope> msgs;
-    protocol::response::ErrorCode code = protocol::response::UNSUPPORTED_OPERATION_MESSAGE_VERSION;
-
-    {
-        protocol::request::GetStoreInfoV1 m;
-        Envelope e;
-        m.add_to_envelope(&e);
-
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
-        msgs.clear();
-    }
-
-    {
-        protocol::request::GetBucketInfoV1 m;
-        Envelope e;
-        m.add_to_envelope(&e);
-
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
-        msgs.clear();
-    }
-
-    {
-        protocol::request::GetStreamSetInfoV1 m;
-        Envelope e;
-        m.add_to_envelope(&e);
-
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
-        msgs.clear();
-    }
-
-    {
-        protocol::request::GetStreamInfoV1 m;
-        Envelope e;
-        m.add_to_envelope(&e);
-
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
-        msgs.clear();
-    }
-
-    {
-        protocol::request::GetStreamV1 m;
-        Envelope e;
-        m.add_to_envelope(&e);
-
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, msgs), code, msgs);
-        msgs.clear();
-    }
-
-}
-
 TEST_F(RequestProcessorTest, Ping)
 {
     protocol::request::PingV1 ping;
