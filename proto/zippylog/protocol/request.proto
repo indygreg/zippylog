@@ -51,7 +51,7 @@ message GetStreamSegmentV1 {
     // offset from start of stream from which to start sending data
     // you should never "guess" the offset because the offset likely isn't
     // valid and the server may reject your request. instead, use the last
-    // offset from a previous fetch
+    // offset from a previous fetch. The initial offset of a stream is 0.
     required uint64 start_offset = 2;
 
     // maximum number of bytes to send in response
@@ -69,7 +69,7 @@ message GetStreamSegmentV1 {
 // writer information.
 message WriteEnvelopeV1 {
     // store path to write to. must be stream set or stream
-    optional string path = 1;
+    required string path = 1;
 
     // list of serialized envelopes to write
     repeated bytes envelope = 2;
@@ -80,7 +80,7 @@ message WriteEnvelopeV1 {
     // but it can be disabled for potential performance increases.
     //
     // Even if acknowledgement is disabled, the server will still send an
-    // error response if there was something wrong with the request or the
+    // error response if there was something wrong with the request or if the
     // request could not be fulfilled.
     optional bool acknowledge = 3 [default=true];
     
@@ -99,7 +99,7 @@ message WriteEnvelopeV1 {
 // writes an envelope from messages
 message WriteEnvelopeFromMessagesV1 {
     // store path to write to. must be stream set or stream
-    optional string path = 1;
+    required string path = 1;
 
     // list of serialized protocol buffer messages to write to a single
     // envelope
@@ -139,11 +139,11 @@ message SubscribeKeepaliveV1 {
     // the subscription identifier to send the keepalive for
     // this identifier is issued by the server when it accepts the
     // subscription
-    optional bytes id = 1;
+    required bytes id = 1;
 }
 
 // cancels a subscription
 message SubscribeCancelV1 {
     // subscription identifier to cancel
-    optional bytes id = 1;
+    required bytes id = 1;
 }

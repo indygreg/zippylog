@@ -386,7 +386,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_s
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear(lua_State *L);
 
-// optional string path = 1
+// required string path = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_get_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_set_path(lua_State *L);
@@ -451,7 +451,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFrom
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear(lua_State *L);
 
-// optional string path = 1
+// required string path = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_get_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_set_path(lua_State *L);
@@ -616,7 +616,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliv
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear(lua_State *L);
 
-// optional bytes id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_set_id(lua_State *L);
@@ -663,7 +663,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_clear(lua_State *L);
 
-// optional bytes id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_set_id(lua_State *L);
