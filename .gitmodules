@@ -3,7 +3,7 @@
 	url = https://github.com/zeromq/zeromq2-0.git
 [submodule "external/wiki"]
 	path = external/wiki
-	url = git@github.com:indygreg/zippylog.wiki.git
+	url = git://github.com/indygreg/zippylog.wiki.git
 [submodule "external/lua"]
 	path = external/lua
 	url = http://github.com/ittner/Lua-experimentation.git
@@ -12,4 +12,4 @@
 	url = http://github.com/sfiera/googletest.git
 [submodule "external/lua-protobuf"]
 	path = external/lua-protobuf
-	url = git@github.com:indygreg/lua-protobuf.git
+	url = git://github.com/indygreg/lua-protobuf.git
