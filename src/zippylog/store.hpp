@@ -153,19 +153,20 @@ class ZIPPYLOG_EXPORT Store {
         bool StreamPaths(::std::vector< ::std::string > &paths);
 
         /// Obtain a store info message describing this store
-        bool StoreInfo(protocol::StoreInfo &info);
+        /// TODO should protocol messages be part of the C++ API?
+        bool StoreInfo(protocol::StoreInfoV1 &info);
 
         /// Obtain a bucket info message describing the specified bucket
-        bool BucketInfo(const ::std::string &bucket, protocol::BucketInfo &info);
+        bool BucketInfo(const ::std::string &bucket, protocol::BucketInfoV1 &info);
 
         /// Obtain a stream set info for the stream set specified
-        bool StreamsetInfo(const ::std::string &bucket, const ::std::string &set, protocol::StreamSetInfo &info);
+        bool StreamsetInfo(const ::std::string &bucket, const ::std::string &set, protocol::StreamSetInfoV1 &info);
 
         /// Obtain a stream set info message for the stream set identifier by a path
-        bool StreamsetInfo(const ::std::string &path, protocol::StreamSetInfo &info);
+        bool StreamsetInfo(const ::std::string &path, protocol::StreamSetInfoV1 &info);
 
-        bool StreamInfo(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream, protocol::StreamInfo &info);
-        bool StreamInfo(const ::std::string &path, protocol::StreamInfo &info);
+        bool StreamInfo(const ::std::string &bucket, const ::std::string &set, const ::std::string &stream, protocol::StreamInfoV1 &info);
+        bool StreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info);
 
         /// Obtain an input stream from the store
         ///

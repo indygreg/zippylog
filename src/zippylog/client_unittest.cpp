@@ -101,7 +101,7 @@ TEST_F(ClientTest, SynchronousTimeout)
     this->GetServer("simpledirectory://test/stores/02-multiple", endpoint);
     Client c(this->GetContext(), endpoint);
 
-    protocol::StoreInfo si;
+    protocol::StoreInfoV1 si;
     // it is not reasonable to expect the server to respond in 1 microsecond
     // although, it could be possible
     EXPECT_FALSE(c.StoreInfo(si, 1));
@@ -116,9 +116,9 @@ TEST_F(ClientTest, StoreInfoSynchronous)
 
     Client c(this->GetContext(), endpoint);
 
-    protocol::StoreInfo si;
+    protocol::StoreInfoV1 si;
     ASSERT_TRUE(c.StoreInfo(si));
-    protocol::StoreInfo expected;
+    protocol::StoreInfoV1 expected;
     ASSERT_TRUE(store->StoreInfo(expected));
 
     ASSERT_TRUE(si.SerializeAsString() == expected.SerializeAsString());

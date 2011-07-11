@@ -230,7 +230,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     ASSERT_EQ(1, response.MessageCount());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfo);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfoV1);
     output.clear();
 }
 
@@ -286,12 +286,12 @@ TEST_F(RequestProcessorTest, GetStoreInfo)
     EXPECT_EQ(1, output.size());
     Envelope response = output[0];
     EXPECT_EQ(1, response.MessageCount());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfo);
-    protocol::StoreInfo *r = (protocol::StoreInfo *)response.GetMessage(0);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::StoreInfoV1);
+    protocol::StoreInfoV1 *r = (protocol::StoreInfoV1 *)response.GetMessage(0);
     ASSERT_TRUE(r != NULL);
     EXPECT_EQ(2, r->bucket_size());
 
-    protocol::StoreInfo esi;
+    protocol::StoreInfoV1 esi;
     EXPECT_TRUE(this->store->StoreInfo(esi));
     EXPECT_STREQ(esi.SerializeAsString().c_str(), r->SerializeAsString().c_str());
 }
@@ -316,10 +316,10 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
     ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::BucketInfo);
-    protocol::BucketInfo *m = (protocol::BucketInfo *)response.GetMessage(0);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::BucketInfoV1);
+    protocol::BucketInfoV1 *m = (protocol::BucketInfoV1 *)response.GetMessage(0);
     ASSERT_TRUE(m != NULL);
-    protocol::BucketInfo ebi;
+    protocol::BucketInfoV1 ebi;
     ASSERT_TRUE(this->store->BucketInfo("bucketA", ebi));
     ASSERT_STREQ(ebi.SerializeAsString().c_str(), m->SerializeAsString().c_str());
     output.clear();
@@ -365,8 +365,8 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
         ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
         ASSERT_EQ(1, output.size());
         Envelope response = output[0];
-        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamSetInfo);
-        protocol::StreamSetInfo *m = (protocol::StreamSetInfo *)response.GetMessage(0);
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamSetInfoV1);
+        protocol::StreamSetInfoV1 *m = (protocol::StreamSetInfoV1 *)response.GetMessage(0);
         ASSERT_TRUE(m != NULL);
         ASSERT_TRUE(m->has_path());
         EXPECT_EQ(0, m->stream_size());
@@ -428,14 +428,14 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
         ASSERT_EQ(1, output.size());
         Envelope response = output[0];
-        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamInfo);
-        protocol::StreamInfo *m = (protocol::StreamInfo *)response.GetMessage(0);
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamInfoV1);
+        protocol::StreamInfoV1 *m = (protocol::StreamInfoV1 *)response.GetMessage(0);
         ASSERT_TRUE(m != NULL);
         ASSERT_TRUE(m->has_path());
         EXPECT_STREQ("2010-11-26-07", m->path().c_str());
         EXPECT_TRUE(m->has_length());
 
-        protocol::StreamInfo expected;
+        protocol::StreamInfoV1 expected;
         EXPECT_TRUE(this->store->StreamInfo("/A/B/2010-11-26-07", expected));
         EXPECT_EQ(expected.length(), m->length());
     }
@@ -473,19 +473,19 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
 
         // response should have stream segment start + content envelope + stream segment end
         ASSERT_EQ(3, output.size());
-        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
-        EXPECT_ENVELOPE_MESSAGE(2, protocol::response::StreamSegmentEnd);
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStartV1);
+        EXPECT_ENVELOPE_MESSAGE(2, protocol::response::StreamSegmentEndV1);
 
         ASSERT_EQ(1, output[0].MessageCount());
         ASSERT_EQ(1, output[0].MessageCount());
-        protocol::response::StreamSegmentStart *s1 = (protocol::response::StreamSegmentStart *)output[0].GetMessage(0);
+        protocol::response::StreamSegmentStartV1 *s1 = (protocol::response::StreamSegmentStartV1 *)output[0].GetMessage(0);
         ASSERT_TRUE(s1 != NULL);
         ASSERT_TRUE(s1->has_path());
         ASSERT_TRUE(s1->has_offset());
         ASSERT_TRUE(s1->path() == path);
         ASSERT_EQ(0, s1->offset());
 
-        protocol::response::StreamSegmentEnd *end1 = (protocol::response::StreamSegmentEnd *)output[2].GetMessage(0);
+        protocol::response::StreamSegmentEndV1 *end1 = (protocol::response::StreamSegmentEndV1 *)output[2].GetMessage(0);
         ASSERT_TRUE(end1 != NULL);
         ASSERT_TRUE(end1->has_offset());
         ASSERT_TRUE(end1->has_bytes_sent());
@@ -507,8 +507,8 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
 
         ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
         ASSERT_EQ(12, output.size());
-        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
-        EXPECT_ENVELOPE_MESSAGE(11, protocol::response::StreamSegmentEnd);
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStartV1);
+        EXPECT_ENVELOPE_MESSAGE(11, protocol::response::StreamSegmentEndV1);
 
         // we aren't testing that the store reads properly - we have other
         // tests for that
@@ -522,7 +522,7 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
             EXPECT_STREQ(expected.ToString().c_str(), output[i+1].ToString().c_str());
         }
 
-        protocol::response::StreamSegmentEnd *end = (protocol::response::StreamSegmentEnd *)output[11].GetMessage(0);
+        protocol::response::StreamSegmentEndV1 *end = (protocol::response::StreamSegmentEndV1 *)output[11].GetMessage(0);
         ASSERT_TRUE(end != NULL);
         ASSERT_TRUE(end->has_offset());
         ASSERT_TRUE(end->has_bytes_sent());
@@ -551,8 +551,8 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
 
         ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(req, output));
         ASSERT_EQ(4, output.size());
-        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStart);
-        EXPECT_ENVELOPE_MESSAGE(3, protocol::response::StreamSegmentEnd);
+        EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStartV1);
+        EXPECT_ENVELOPE_MESSAGE(3, protocol::response::StreamSegmentEndV1);
     }
 
     // fetch with invalid offset
@@ -620,8 +620,8 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeAck)
     ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);
     ASSERT_EQ(1, output.size());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::WriteAck);
-    protocol::response::WriteAck *m = (protocol::response::WriteAck *)output[0].GetMessage(0);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::WriteAckV1);
+    protocol::response::WriteAckV1 *m = (protocol::response::WriteAckV1 *)output[0].GetMessage(0);
     EXPECT_TRUE(m->has_envelopes_written());
     EXPECT_EQ(1, m->envelopes_written());
 }

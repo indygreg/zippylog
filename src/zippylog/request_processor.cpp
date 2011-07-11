@@ -485,7 +485,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e,
     OBTAIN_MESSAGE(protocol::request::GetStoreInfoV1, m, e, 0);
 
     {
-        protocol::StoreInfo info = protocol::StoreInfo();
+        protocol::StoreInfoV1 info;
         this->store->StoreInfo(info);
 
         Envelope out;
@@ -507,7 +507,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket;
-    protocol::BucketInfo info = protocol::BucketInfo();
+    protocol::BucketInfoV1 info;
     Envelope response;
 
     OBTAIN_MESSAGE(protocol::request::GetBucketInfoV1, m, e, 0);
@@ -542,7 +542,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket, set;
-    protocol::StreamSetInfo info = protocol::StreamSetInfo();
+    protocol::StreamSetInfoV1 info;
     Envelope response;
 
     OBTAIN_MESSAGE(protocol::request::GetStreamSetInfoV1, m, e, 0);
@@ -576,7 +576,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e
     LOG_MESSAGE(logstart, this->logger_sock);
 
     string bucket, set, stream;
-    protocol::StreamInfo info = protocol::StreamInfo();
+    protocol::StreamInfoV1 info;
     Envelope response;
 
     OBTAIN_MESSAGE(protocol::request::GetStreamInfoV1, m, e, 0);
@@ -708,7 +708,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         // we must have an envelope, so start the send sequence
         {
             Envelope start_envelope;
-            protocol::response::StreamSegmentStart segment_start;
+            protocol::response::StreamSegmentStartV1 segment_start;
             segment_start.set_path(get->path());
             segment_start.set_offset(get->start_offset());
             segment_start.add_to_envelope(start_envelope);
@@ -750,7 +750,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             }
         }
 
-        protocol::response::StreamSegmentEnd segment_end;
+        protocol::response::StreamSegmentEndV1 segment_end;
         segment_end.set_envelopes_sent(envelopes_read);
         segment_end.set_bytes_sent(bytes_read);
         // TODO not all stores might share this concept of offsets
@@ -890,7 +890,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
         }
 
         if (send_ack) {
-            protocol::response::WriteAck ack = protocol::response::WriteAck();
+            protocol::response::WriteAckV1 ack;
             if (written >= 0) {
                 ack.set_envelopes_written(written);
             }

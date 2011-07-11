@@ -85,21 +85,21 @@ protected:
 /// always a void *. Callers can associate the subscription id with their own
 /// metadata independent of the client API. Their callbacks can fetch this data
 /// at callback time.
-typedef void (StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAdded &, void *);
-typedef void (StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeleted &, void *);
-typedef void (StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppended &, void *);
-typedef void (StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAdded &, void *);
-typedef void (StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeleted &, void *);
-typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAdded &, void *);
-typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeleted &, void *);
+typedef void (StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
+typedef void (StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
+typedef void (StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
+typedef void (StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
+typedef void (StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
+typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
+typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
 
 /// Callback executed when a ping response is received
 typedef void (PingCallback)(void *);
 
 /// Callback executed when a store info response is received
-typedef void (StoreInfoCallback)(protocol::StoreInfo &, void *);
+typedef void (StoreInfoCallback)(protocol::StoreInfoV1 &, void *);
 
-typedef void (StreamInfoCallback)(protocol::StreamInfo &, void *);
+typedef void (StreamInfoCallback)(protocol::StreamInfoV1 &, void *);
 
 /// Executed when a stream segment is received
 ///
@@ -240,7 +240,7 @@ class ZIPPYLOG_EXPORT Client {
         /// Will wait up to specified microseconds for store info to be
         /// returned. If we find the store info in the time specified, returns
         /// true. Else, returns false.
-        bool StoreInfo(protocol::StoreInfo &info, int32 timeout_microseconds = -1);
+        bool StoreInfo(protocol::StoreInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain stream info.
         ///
@@ -254,7 +254,7 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// Will wait up to specified microseconds for response.
         /// Returns true if info retrieved or false if error or timeout.
-        bool StreamInfo(const ::std::string &path, protocol::StreamInfo &info, int32 timeout_microseconds = -1);
+        bool StreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Cancels the subscription with specified ID
         bool CancelSubscription(const ::std::string &id);
@@ -381,10 +381,10 @@ class ZIPPYLOG_EXPORT Client {
         // validates that a received SubscriptionStart message is OK
         // returns false if we don't know how to handle message fields or if
         // we don't know about the subscription
-        bool ValidateSubscriptionStart(protocol::response::SubscriptionStart &start);
+        bool ValidateSubscriptionStart(protocol::response::SubscriptionStartV1 &start);
 
         // handles a response to a subscription
-        bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStart &start, ::std::vector< ::zmq::message_t * > &msgs);
+        bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStartV1 &start, ::std::vector< ::zmq::message_t * > &msgs);
 
         // handles a response to a normal/outstanding request
         bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
@@ -396,10 +396,10 @@ class ZIPPYLOG_EXPORT Client {
         static void CallbackPing(void *data);
 
         /// Internal callback used for synchronous store info requests
-        static void CallbackStoreInfo(protocol::StoreInfo &info, void *data);
+        static void CallbackStoreInfo(protocol::StoreInfoV1 &info, void *data);
 
         /// Internal callback used for synchronous stream info requests
-        static void CallbackStreamInfo(protocol::StreamInfo &info, void *data);
+        static void CallbackStreamInfo(protocol::StreamInfoV1 &info, void *data);
 
         static void CallbackStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
 

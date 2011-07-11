@@ -269,7 +269,7 @@ bool Store::PathExists(const string &path)
     }
 }
 
-bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfo &info)
+bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -282,7 +282,7 @@ bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfo &info)
 
 }
 
-bool Store::StreamInfo(const string &bucket, const string &stream_set, const string &stream, protocol::StreamInfo &info)
+bool Store::StreamInfo(const string &bucket, const string &stream_set, const string &stream, protocol::StreamInfoV1 &info)
 {
     info.set_path(stream);
     // TODO verify stream exists and populate other stuff
@@ -298,7 +298,7 @@ bool Store::StreamInfo(const string &bucket, const string &stream_set, const str
     return true;
 }
 
-bool Store::StreamsetInfo(const string &bucket, const string &stream_set, protocol::StreamSetInfo &info)
+bool Store::StreamsetInfo(const string &bucket, const string &stream_set, protocol::StreamSetInfoV1 &info)
 {
     info.set_path(stream_set);
 
@@ -306,13 +306,13 @@ bool Store::StreamsetInfo(const string &bucket, const string &stream_set, protoc
     this->StreamNames(bucket, stream_set, streams);
 
     for (size_t i = 0; i < streams.size(); i++) {
-        protocol::StreamInfo * new_si = info.add_stream();
+        protocol::StreamInfoV1 * new_si = info.add_stream();
         this->StreamInfo(bucket, stream_set, streams[i], *new_si);
     }
     return true;
 }
 
-bool Store::StreamsetInfo(const string &path, zippylog::protocol::StreamSetInfo &info)
+bool Store::StreamsetInfo(const string &path, zippylog::protocol::StreamSetInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -322,7 +322,7 @@ bool Store::StreamsetInfo(const string &path, zippylog::protocol::StreamSetInfo 
     return this->StreamsetInfo(bucket, set, info);
 }
 
-bool Store::BucketInfo(const string &bucket, protocol::BucketInfo &info)
+bool Store::BucketInfo(const string &bucket, protocol::BucketInfoV1 &info)
 {
     info.set_path(bucket);
 
@@ -330,19 +330,19 @@ bool Store::BucketInfo(const string &bucket, protocol::BucketInfo &info)
     this->StreamSetNames(bucket, stream_sets);
 
     for (size_t i = 0; i < stream_sets.size(); i++) {
-        protocol::StreamSetInfo *ss = info.add_stream_set();
+        protocol::StreamSetInfoV1 *ss = info.add_stream_set();
         this->StreamsetInfo(bucket, stream_sets[i], *ss);
     }
 
     return true;
 }
 
-bool Store::StoreInfo(protocol::StoreInfo &info)
+bool Store::StoreInfo(protocol::StoreInfoV1 &info)
 {
     vector<string> buckets;
     this->BucketNames(buckets);
     for (size_t i = 0; i < buckets.size(); i++) {
-        protocol::BucketInfo *bucket = info.add_bucket();
+        protocol::BucketInfoV1 *bucket = info.add_bucket();
         this->BucketInfo(buckets[i], *bucket);
     }
 

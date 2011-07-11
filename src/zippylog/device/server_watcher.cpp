@@ -56,7 +56,7 @@ void Watcher::HandleAdded(string path, platform::FileStat &)
     Envelope e = Envelope();
 
     if (!stream.empty()) {
-        protocol::StoreChangeStreamAdded m = protocol::StoreChangeStreamAdded();
+        protocol::StoreChangeStreamAddedV1 m;
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.set_stream(stream);
@@ -64,14 +64,14 @@ void Watcher::HandleAdded(string path, platform::FileStat &)
         this->SendChangeMessage(e);
     }
     else if (!set.empty()) {
-        protocol::StoreChangeStreamSetAdded m = protocol::StoreChangeStreamSetAdded();
+        protocol::StoreChangeStreamSetAddedV1 m;
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
     }
     else {
-        protocol::StoreChangeBucketAdded m = protocol::StoreChangeBucketAdded();
+        protocol::StoreChangeBucketAddedV1 m;
         m.set_bucket(bucket);
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
@@ -86,7 +86,7 @@ void Watcher::HandleDeleted(string path)
     Envelope e = Envelope();
 
     if (!stream.empty()) {
-        protocol::StoreChangeStreamDeleted m = protocol::StoreChangeStreamDeleted();
+        protocol::StoreChangeStreamDeletedV1 m;
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.set_stream(stream);
@@ -94,14 +94,14 @@ void Watcher::HandleDeleted(string path)
         this->SendChangeMessage(e);
     }
     else if (!set.empty()) {
-        protocol::StoreChangeStreamSetDeleted m = protocol::StoreChangeStreamSetDeleted();
+        protocol::StoreChangeStreamSetDeletedV1 m;
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
     }
     else {
-        protocol::StoreChangeBucketDeleted m = protocol::StoreChangeBucketDeleted();
+        protocol::StoreChangeBucketDeletedV1 m;
         m.set_bucket(bucket);
         m.add_to_envelope(&e);
         this->SendChangeMessage(e);
@@ -116,7 +116,7 @@ void Watcher::HandleModified(string path, platform::FileStat &stat)
     Envelope e = Envelope();
 
     if (!stream.empty()) {
-        protocol::StoreChangeStreamAppended m = protocol::StoreChangeStreamAppended();
+        protocol::StoreChangeStreamAppendedV1 m;
         m.set_bucket(bucket);
         m.set_stream_set(set);
         m.set_stream(stream);

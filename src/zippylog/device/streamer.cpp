@@ -30,7 +30,7 @@ using ::std::map;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
-using ::zippylog::protocol::response::SubscribeAck;
+using ::zippylog::protocol::response::SubscribeAckV1;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -319,13 +319,13 @@ bool Streamer::ProcessStoreChangeMessage(message_t &msg)
 
     uint32 message_type = e.MessageType(0);
     switch (message_type) {
-        case protocol::StoreChangeBucketAdded::zippylog_enumeration:
-        case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
-        case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
-        case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
-        case protocol::StoreChangeStreamAppended::zippylog_enumeration:
-        case protocol::StoreChangeStreamAdded::zippylog_enumeration:
-        case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+        case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
+        case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
+        case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
+        case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
+        case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
             // if no subscriptions to store changes, do nothing
             if (!this->HaveStoreChangeSubscriptions()) return true;
 
@@ -410,27 +410,27 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     string path;
 
     switch (e.MessageType(0)) {
-        case protocol::StoreChangeBucketAdded::zippylog_enumeration:
+        case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeBucketAdded *m = (protocol::StoreChangeBucketAdded *)e.GetMessage(0);
+            protocol::StoreChangeBucketAddedV1 *m = (protocol::StoreChangeBucketAddedV1 *)e.GetMessage(0);
             bucket = m->bucket();
 
             path = Store::BucketPath(bucket);
         }
             break;
 
-        case protocol::StoreChangeBucketDeleted::zippylog_enumeration:
+        case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeBucketDeleted *m = (protocol::StoreChangeBucketDeleted *)e.GetMessage(0);
+            protocol::StoreChangeBucketDeletedV1 *m = (protocol::StoreChangeBucketDeletedV1 *)e.GetMessage(0);
             bucket = m->bucket();
 
             path = Store::BucketPath(bucket);
         }
             break;
 
-        case protocol::StoreChangeStreamSetAdded::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamSetAdded *m = (protocol::StoreChangeStreamSetAdded *)e.GetMessage(0);
+            protocol::StoreChangeStreamSetAddedV1 *m = (protocol::StoreChangeStreamSetAddedV1 *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
 
@@ -438,9 +438,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
         }
             break;
 
-        case protocol::StoreChangeStreamSetDeleted::zippylog_enumeration:
+        case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamSetDeleted *m = (protocol::StoreChangeStreamSetDeleted *)e.GetMessage(0);
+            protocol::StoreChangeStreamSetDeletedV1 *m = (protocol::StoreChangeStreamSetDeletedV1 *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
 
@@ -448,9 +448,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
         }
             break;
 
-        case protocol::StoreChangeStreamAppended::zippylog_enumeration:
+        case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamAppended *m = (protocol::StoreChangeStreamAppended *)e.GetMessage(0);
+            protocol::StoreChangeStreamAppendedV1 *m = (protocol::StoreChangeStreamAppendedV1 *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
@@ -461,9 +461,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
         }
             break;
 
-        case protocol::StoreChangeStreamAdded::zippylog_enumeration:
+        case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamAdded *m = (protocol::StoreChangeStreamAdded *)e.GetMessage(0);
+            protocol::StoreChangeStreamAddedV1 *m = (protocol::StoreChangeStreamAddedV1 *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
@@ -474,9 +474,9 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
         }
             break;
 
-        case protocol::StoreChangeStreamDeleted::zippylog_enumeration:
+        case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
         {
-            protocol::StoreChangeStreamDeleted *m = (protocol::StoreChangeStreamDeleted *)e.GetMessage(0);
+            protocol::StoreChangeStreamDeletedV1 *m = (protocol::StoreChangeStreamDeletedV1 *)e.GetMessage(0);
             bucket = m->bucket();
             stream_set = m->stream_set();
             stream = m->stream();
@@ -513,7 +513,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
             // the case of store changes is simple
             if (i->second->type == i->second->STORE_CHANGE) {
                 Envelope response = Envelope();
-                protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
+                protocol::response::SubscriptionStartV1 start;
                 start.set_id(i->first);
                 start.add_to_envelope(&response);
 
@@ -538,7 +538,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                 }
 
                 Envelope response = Envelope();
-                protocol::response::SubscriptionStart start = protocol::response::SubscriptionStart();
+                protocol::response::SubscriptionStartV1 start;
                 start.set_id(i->first);
                 start.add_to_envelope(&response);
 
@@ -624,7 +624,7 @@ bool Streamer::HaveStoreChangeSubscriptions(const string &path)
 
 void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string> &identities)
 {
-    SubscribeAck ack = SubscribeAck();
+    SubscribeAckV1 ack;
     ack.set_id(id);
     ack.set_ttl(this->subscription_ttl);
     Envelope response = Envelope();
