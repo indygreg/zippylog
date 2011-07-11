@@ -470,6 +470,9 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, v
     response.add_supported_request_types(protocol::request::SubscribeCancelV1::zippylog_enumeration);
     response.add_supported_request_names("SubscribeCancelV1");
 
+    response.set_max_stream_segment_bytes(this->get_stream_max_bytes);
+    response.set_max_stream_segment_envelopes(this->get_stream_max_envelopes);
+
     Envelope out;
     response.add_to_envelope(out);
     output.push_back(out);
