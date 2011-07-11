@@ -441,8 +441,34 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, v
 {
     protocol::response::FeatureSpecificationV1 response;
 
-    // we currently support version 1 only
-    // TODO populate all fields properly
+    response.add_supported_message_formats(1);
+    
+    response.add_supported_request_types(protocol::request::PingV1::zippylog_enumeration);
+    response.add_supported_request_names("PingV1");
+    response.add_supported_request_types(protocol::request::GetFeaturesV1::zippylog_enumeration);
+    response.add_supported_request_names("GetFeaturesV1");
+    response.add_supported_request_types(protocol::request::GetStoreInfoV1::zippylog_enumeration);
+    response.add_supported_request_names("GetStoreInfoV1");
+    response.add_supported_request_types(protocol::request::GetBucketInfoV1::zippylog_enumeration);
+    response.add_supported_request_names("GetBucketInfoV1");
+    response.add_supported_request_types(protocol::request::GetStreamSetInfoV1::zippylog_enumeration);
+    response.add_supported_request_names("GetStreamSetInfoV1");
+    response.add_supported_request_types(protocol::request::GetStreamInfoV1::zippylog_enumeration);
+    response.add_supported_request_names("GetStreamInfoV1");
+    response.add_supported_request_types(protocol::request::GetStreamV1::zippylog_enumeration);
+    response.add_supported_request_names("GetStreamV1");
+    response.add_supported_request_types(protocol::request::WriteEnvelopeV1::zippylog_enumeration);
+    response.add_supported_request_names("WriteEnvelopeV1");
+    response.add_supported_request_types(protocol::request::WriteEnvelopeFromMessagesV1::zippylog_enumeration);
+    response.add_supported_request_names("WriteEnvelopeFromMessagesV1");
+    response.add_supported_request_types(protocol::request::SubscribeStoreChangesV1::zippylog_enumeration);
+    response.add_supported_request_names("SubscribeStoreChangesV1");
+    response.add_supported_request_types(protocol::request::SubscribeEnvelopesV1::zippylog_enumeration);
+    response.add_supported_request_names("SubscribeEnvelopesV1");
+    response.add_supported_request_types(protocol::request::SubscribeKeepaliveV1::zippylog_enumeration);
+    response.add_supported_request_names("SubscribeKeepaliveV1");
+    response.add_supported_request_types(protocol::request::SubscribeCancelV1::zippylog_enumeration);
+    response.add_supported_request_names("SubscribeCancelV1");
 
     Envelope out;
     response.add_to_envelope(out);

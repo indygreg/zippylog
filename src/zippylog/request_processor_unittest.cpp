@@ -266,9 +266,11 @@ TEST_F(RequestProcessorTest, GetFeatures)
     protocol::response::FeatureSpecificationV1 *features = (protocol::response::FeatureSpecificationV1 *)response.GetMessage(0);
     ASSERT_TRUE(features != NULL);
     
-	// TODO complete test
-	//EXPECT_EQ(1, features->supported_message_version_size());
-    //EXPECT_EQ(1, features->supported_message_version(0));
+    EXPECT_EQ(1, features->supported_message_formats_size());
+    EXPECT_EQ(1, features->supported_message_formats(0));
+    
+    EXPECT_EQ(13, features->supported_request_types_size());
+    EXPECT_EQ(13, features->supported_request_names_size());
 }
 
 TEST_F(RequestProcessorTest, GetStoreInfo)
