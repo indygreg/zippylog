@@ -1104,16 +1104,52 @@ class SubscribeEnvelopesV1 : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& path() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_path();
   
-  // optional string lua_code = 2;
+  // optional string lua_code = 5;
   inline bool has_lua_code() const;
   inline void clear_lua_code();
-  static const int kLuaCodeFieldNumber = 2;
+  static const int kLuaCodeFieldNumber = 5;
   inline const ::std::string& lua_code() const;
   inline void set_lua_code(const ::std::string& value);
   inline void set_lua_code(const char* value);
   inline void set_lua_code(const char* value, size_t size);
   inline ::std::string* mutable_lua_code();
   inline ::std::string* release_lua_code();
+  
+  // repeated uint32 filter_namespace = 2 [packed = true];
+  inline int filter_namespace_size() const;
+  inline void clear_filter_namespace();
+  static const int kFilterNamespaceFieldNumber = 2;
+  inline ::google::protobuf::uint32 filter_namespace(int index) const;
+  inline void set_filter_namespace(int index, ::google::protobuf::uint32 value);
+  inline void add_filter_namespace(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      filter_namespace() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_filter_namespace();
+  
+  // repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+  inline int filter_enumeration_namespace_size() const;
+  inline void clear_filter_enumeration_namespace();
+  static const int kFilterEnumerationNamespaceFieldNumber = 3;
+  inline ::google::protobuf::uint32 filter_enumeration_namespace(int index) const;
+  inline void set_filter_enumeration_namespace(int index, ::google::protobuf::uint32 value);
+  inline void add_filter_enumeration_namespace(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      filter_enumeration_namespace() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_filter_enumeration_namespace();
+  
+  // repeated uint32 filter_enumeration_type = 4 [packed = true];
+  inline int filter_enumeration_type_size() const;
+  inline void clear_filter_enumeration_type();
+  static const int kFilterEnumerationTypeFieldNumber = 4;
+  inline ::google::protobuf::uint32 filter_enumeration_type(int index) const;
+  inline void set_filter_enumeration_type(int index, ::google::protobuf::uint32 value);
+  inline void add_filter_enumeration_type(::google::protobuf::uint32 value);
+  inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      filter_enumeration_type() const;
+  inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_filter_enumeration_type();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 81;
@@ -1129,9 +1165,15 @@ class SubscribeEnvelopesV1 : public ::google::protobuf::Message {
   
   ::google::protobuf::RepeatedPtrField< ::std::string> path_;
   ::std::string* lua_code_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > filter_namespace_;
+  mutable int _filter_namespace_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > filter_enumeration_namespace_;
+  mutable int _filter_enumeration_namespace_cached_byte_size_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > filter_enumeration_type_;
+  mutable int _filter_enumeration_type_cached_byte_size_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
   friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
@@ -2053,7 +2095,7 @@ SubscribeEnvelopesV1::mutable_path() {
   return &path_;
 }
 
-// optional string lua_code = 2;
+// optional string lua_code = 5;
 inline bool SubscribeEnvelopesV1::has_lua_code() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -2109,6 +2151,81 @@ inline ::std::string* SubscribeEnvelopesV1::release_lua_code() {
     lua_code_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// repeated uint32 filter_namespace = 2 [packed = true];
+inline int SubscribeEnvelopesV1::filter_namespace_size() const {
+  return filter_namespace_.size();
+}
+inline void SubscribeEnvelopesV1::clear_filter_namespace() {
+  filter_namespace_.Clear();
+}
+inline ::google::protobuf::uint32 SubscribeEnvelopesV1::filter_namespace(int index) const {
+  return filter_namespace_.Get(index);
+}
+inline void SubscribeEnvelopesV1::set_filter_namespace(int index, ::google::protobuf::uint32 value) {
+  filter_namespace_.Set(index, value);
+}
+inline void SubscribeEnvelopesV1::add_filter_namespace(::google::protobuf::uint32 value) {
+  filter_namespace_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+SubscribeEnvelopesV1::filter_namespace() const {
+  return filter_namespace_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+SubscribeEnvelopesV1::mutable_filter_namespace() {
+  return &filter_namespace_;
+}
+
+// repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+inline int SubscribeEnvelopesV1::filter_enumeration_namespace_size() const {
+  return filter_enumeration_namespace_.size();
+}
+inline void SubscribeEnvelopesV1::clear_filter_enumeration_namespace() {
+  filter_enumeration_namespace_.Clear();
+}
+inline ::google::protobuf::uint32 SubscribeEnvelopesV1::filter_enumeration_namespace(int index) const {
+  return filter_enumeration_namespace_.Get(index);
+}
+inline void SubscribeEnvelopesV1::set_filter_enumeration_namespace(int index, ::google::protobuf::uint32 value) {
+  filter_enumeration_namespace_.Set(index, value);
+}
+inline void SubscribeEnvelopesV1::add_filter_enumeration_namespace(::google::protobuf::uint32 value) {
+  filter_enumeration_namespace_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+SubscribeEnvelopesV1::filter_enumeration_namespace() const {
+  return filter_enumeration_namespace_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+SubscribeEnvelopesV1::mutable_filter_enumeration_namespace() {
+  return &filter_enumeration_namespace_;
+}
+
+// repeated uint32 filter_enumeration_type = 4 [packed = true];
+inline int SubscribeEnvelopesV1::filter_enumeration_type_size() const {
+  return filter_enumeration_type_.size();
+}
+inline void SubscribeEnvelopesV1::clear_filter_enumeration_type() {
+  filter_enumeration_type_.Clear();
+}
+inline ::google::protobuf::uint32 SubscribeEnvelopesV1::filter_enumeration_type(int index) const {
+  return filter_enumeration_type_.Get(index);
+}
+inline void SubscribeEnvelopesV1::set_filter_enumeration_type(int index, ::google::protobuf::uint32 value) {
+  filter_enumeration_type_.Set(index, value);
+}
+inline void SubscribeEnvelopesV1::add_filter_enumeration_type(::google::protobuf::uint32 value) {
+  filter_enumeration_type_.Add(value);
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+SubscribeEnvelopesV1::filter_enumeration_type() const {
+  return filter_enumeration_type_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+SubscribeEnvelopesV1::mutable_filter_enumeration_type() {
+  return &filter_enumeration_type_;
 }
 
 // -------------------------------------------------------------------

@@ -73,7 +73,7 @@ message WriteEnvelopeV1 {
 
     // list of serialized envelopes to write
     repeated bytes envelope = 2;
-    
+
     // Whether to acknowledge the write
     //
     // If true, the server will send a WriteAck response. The default is true,
@@ -83,7 +83,7 @@ message WriteEnvelopeV1 {
     // error response if there was something wrong with the request or if the
     // request could not be fulfilled.
     optional bool acknowledge = 3 [default=true];
-    
+
     // Request synchronous writes
     //
     // Oftentimes, a server will deliver envelopes to a queue for writing and
@@ -120,17 +120,59 @@ message SubscribeStoreChangesV1 {
     repeated string path = 1;
 }
 
-// subscribes to newly-written envelopes
+// Subscribes to newly-written envelopes
 message SubscribeEnvelopesV1 {
-    // list of store paths to subscribe to
+    // List of store paths to subscribe to
     // this can be individual streams, stream sets, buckets, or the entire
-    // store ("/")
+    // store ("/"). If no path is defined, the entire store ("/") is assumed.
     repeated string path = 1;
 
-    // TODO add filtering
+	// Upload Lua code that defines a custom subscription. The following
+	// Lua functionality may be used:
+	//
+	//   zippylog_subscription_filter_envelope() - Filters envelopes. This
+	//     function will be called for every envelope in the subscribed
+	//     path(s).
+	//
+	//   zippylog_subscription_timer_signaled() - Function called whenever
+	//     the timer has signaled/expired.
+	//
+	//   zippylog_subscription_timer_interval - Defines how often, in
+	//     milliseconds, a timer should fire.
+	//
+	// The timer variables must either be both undefined or defined. If only
+	// one is defined, the server should reject the request.
+	//
+	// The server makes no guarantee to the semantics of the timer. The timer
+	// may fire approximately every interval or every interval after execution
+	// of the timer callback, for example. There is also no guarantee as to when
+	// the timer callback is executed after the timer signals. It could be a
+	// microsecond. It could be a hundred milliseconds.
+	//
+	// The server does guarantee that only a single callback will execute at a
+	// time.
+    optional string lua_code = 5;
 
-    // Lua code that defines functionality to be executed on the server
-    optional string lua_code = 2;
+	// By default, envelope subscriptions subscribe to all envelopes in the
+	// requested path(s). We can filter envelopes using Lua or via the
+	// mechanisms listed below. To avoid ambiguity, only 1 filter type may be
+	// used at a time. If Lua codes provides filtering and a filter field
+	// is defined, the server should reject the request. Complex filtering
+	// (matching AND with OR or looking at additional envelope properties
+	// will require Lua-based filtering).
+
+	// Limit subscribed envelopes to those containing messages in these
+	// namespaces. Only one message in the envelope needs to match for a hit.
+    repeated uint32 filter_namespace = 2 [packed=true];
+
+	// OR
+
+	// Limit subscribed envelopes to those containing messages in the message
+	// enumerations defined here. As with the above field, only 1 message in
+	// the envelope needs to contain the enumeration. Both fields must have
+	// the same length
+	repeated uint32 filter_enumeration_namespace = 3 [packed=true];
+	repeated uint32 filter_enumeration_type = 4 [packed=true];
 }
 
 // clients need to send keepalive messages every N seconds or the server drops

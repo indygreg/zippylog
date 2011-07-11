@@ -225,9 +225,12 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeStoreChangesV1));
   SubscribeEnvelopesV1_descriptor_ = file->message_type(10);
-  static const int SubscribeEnvelopesV1_offsets_[2] = {
+  static const int SubscribeEnvelopesV1_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, path_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, lua_code_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, filter_namespace_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, filter_enumeration_namespace_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, filter_enumeration_type_),
   };
   SubscribeEnvelopesV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -362,10 +365,13 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "EnvelopeFromMessagesV1\022\014\n\004path\030\001 \002(\t\022\017\n\007"
     "message\030\002 \003(\014\022\035\n\021message_namespace\030\003 \003(\r"
     "B\002\020\001\022\030\n\014message_type\030\004 \003(\rB\002\020\001\"\'\n\027Subscr"
-    "ibeStoreChangesV1\022\014\n\004path\030\001 \003(\t\"6\n\024Subsc"
-    "ribeEnvelopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_cod"
-    "e\030\002 \001(\t\"\"\n\024SubscribeKeepaliveV1\022\n\n\002id\030\001 "
-    "\002(\014\"\037\n\021SubscribeCancelV1\022\n\n\002id\030\001 \002(\014", 716);
+    "ibeStoreChangesV1\022\014\n\004path\030\001 \003(\t\"\243\001\n\024Subs"
+    "cribeEnvelopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_co"
+    "de\030\005 \001(\t\022\034\n\020filter_namespace\030\002 \003(\rB\002\020\001\022("
+    "\n\034filter_enumeration_namespace\030\003 \003(\rB\002\020\001"
+    "\022#\n\027filter_enumeration_type\030\004 \003(\rB\002\020\001\"\"\n"
+    "\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \002(\014\"\037\n\021Sub"
+    "scribeCancelV1\022\n\n\002id\030\001 \002(\014", 826);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   PingV1::default_instance_ = new PingV1();
@@ -2834,6 +2840,9 @@ void SubscribeStoreChangesV1::Swap(SubscribeStoreChangesV1* other) {
 #ifndef _MSC_VER
 const int SubscribeEnvelopesV1::kPathFieldNumber;
 const int SubscribeEnvelopesV1::kLuaCodeFieldNumber;
+const int SubscribeEnvelopesV1::kFilterNamespaceFieldNumber;
+const int SubscribeEnvelopesV1::kFilterEnumerationNamespaceFieldNumber;
+const int SubscribeEnvelopesV1::kFilterEnumerationTypeFieldNumber;
 #endif  // !_MSC_VER
 
 SubscribeEnvelopesV1::SubscribeEnvelopesV1()
@@ -2897,6 +2906,9 @@ void SubscribeEnvelopesV1::Clear() {
     }
   }
   path_.Clear();
+  filter_namespace_.Clear();
+  filter_enumeration_namespace_.Clear();
+  filter_enumeration_type_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -2921,12 +2933,75 @@ bool SubscribeEnvelopesV1::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(10)) goto parse_path;
-        if (input->ExpectTag(18)) goto parse_lua_code;
+        if (input->ExpectTag(18)) goto parse_filter_namespace;
         break;
       }
       
-      // optional string lua_code = 2;
+      // repeated uint32 filter_namespace = 2 [packed = true];
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_filter_namespace:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_filter_namespace())));
+        } else if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag)
+                   == ::google::protobuf::internal::WireFormatLite::
+                      WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 18, input, this->mutable_filter_namespace())));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_filter_enumeration_namespace;
+        break;
+      }
+      
+      // repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_filter_enumeration_namespace:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_filter_enumeration_namespace())));
+        } else if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag)
+                   == ::google::protobuf::internal::WireFormatLite::
+                      WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 26, input, this->mutable_filter_enumeration_namespace())));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_filter_enumeration_type;
+        break;
+      }
+      
+      // repeated uint32 filter_enumeration_type = 4 [packed = true];
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_filter_enumeration_type:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPackedPrimitive<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 input, this->mutable_filter_enumeration_type())));
+        } else if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag)
+                   == ::google::protobuf::internal::WireFormatLite::
+                      WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
+                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
+                 1, 34, input, this->mutable_filter_enumeration_type())));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(42)) goto parse_lua_code;
+        break;
+      }
+      
+      // optional string lua_code = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_lua_code:
@@ -2969,13 +3044,43 @@ void SubscribeEnvelopesV1::SerializeWithCachedSizes(
       1, this->path(i), output);
   }
   
-  // optional string lua_code = 2;
+  // repeated uint32 filter_namespace = 2 [packed = true];
+  if (this->filter_namespace_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(2, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_filter_namespace_cached_byte_size_);
+  }
+  for (int i = 0; i < this->filter_namespace_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->filter_namespace(i), output);
+  }
+  
+  // repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+  if (this->filter_enumeration_namespace_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_filter_enumeration_namespace_cached_byte_size_);
+  }
+  for (int i = 0; i < this->filter_enumeration_namespace_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->filter_enumeration_namespace(i), output);
+  }
+  
+  // repeated uint32 filter_enumeration_type = 4 [packed = true];
+  if (this->filter_enumeration_type_size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    output->WriteVarint32(_filter_enumeration_type_cached_byte_size_);
+  }
+  for (int i = 0; i < this->filter_enumeration_type_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32NoTag(
+      this->filter_enumeration_type(i), output);
+  }
+  
+  // optional string lua_code = 5;
   if (has_lua_code()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->lua_code().data(), this->lua_code().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->lua_code(), output);
+      5, this->lua_code(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2995,14 +3100,56 @@ void SubscribeEnvelopesV1::SerializeWithCachedSizes(
       WriteStringToArray(1, this->path(i), target);
   }
   
-  // optional string lua_code = 2;
+  // repeated uint32 filter_namespace = 2 [packed = true];
+  if (this->filter_namespace_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      2,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _filter_namespace_cached_byte_size_, target);
+  }
+  for (int i = 0; i < this->filter_namespace_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->filter_namespace(i), target);
+  }
+  
+  // repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+  if (this->filter_enumeration_namespace_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      3,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _filter_enumeration_namespace_cached_byte_size_, target);
+  }
+  for (int i = 0; i < this->filter_enumeration_namespace_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->filter_enumeration_namespace(i), target);
+  }
+  
+  // repeated uint32 filter_enumeration_type = 4 [packed = true];
+  if (this->filter_enumeration_type_size() > 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
+      4,
+      ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
+      target);
+    target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
+      _filter_enumeration_type_cached_byte_size_, target);
+  }
+  for (int i = 0; i < this->filter_enumeration_type_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteUInt32NoTagToArray(this->filter_enumeration_type(i), target);
+  }
+  
+  // optional string lua_code = 5;
   if (has_lua_code()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->lua_code().data(), this->lua_code().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->lua_code(), target);
+        5, this->lua_code(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3016,7 +3163,7 @@ int SubscribeEnvelopesV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
-    // optional string lua_code = 2;
+    // optional string lua_code = 5;
     if (has_lua_code()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3029,6 +3176,51 @@ int SubscribeEnvelopesV1::ByteSize() const {
   for (int i = 0; i < this->path_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
       this->path(i));
+  }
+  
+  // repeated uint32 filter_namespace = 2 [packed = true];
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->filter_namespace_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::
+        UInt32Size(this->filter_namespace(i));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    _filter_namespace_cached_byte_size_ = data_size;
+    total_size += data_size;
+  }
+  
+  // repeated uint32 filter_enumeration_namespace = 3 [packed = true];
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->filter_enumeration_namespace_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::
+        UInt32Size(this->filter_enumeration_namespace(i));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    _filter_enumeration_namespace_cached_byte_size_ = data_size;
+    total_size += data_size;
+  }
+  
+  // repeated uint32 filter_enumeration_type = 4 [packed = true];
+  {
+    int data_size = 0;
+    for (int i = 0; i < this->filter_enumeration_type_size(); i++) {
+      data_size += ::google::protobuf::internal::WireFormatLite::
+        UInt32Size(this->filter_enumeration_type(i));
+    }
+    if (data_size > 0) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(data_size);
+    }
+    _filter_enumeration_type_cached_byte_size_ = data_size;
+    total_size += data_size;
   }
   
   if (!unknown_fields().empty()) {
@@ -3057,6 +3249,9 @@ void SubscribeEnvelopesV1::MergeFrom(const ::google::protobuf::Message& from) {
 void SubscribeEnvelopesV1::MergeFrom(const SubscribeEnvelopesV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   path_.MergeFrom(from.path_);
+  filter_namespace_.MergeFrom(from.filter_namespace_);
+  filter_enumeration_namespace_.MergeFrom(from.filter_enumeration_namespace_);
+  filter_enumeration_type_.MergeFrom(from.filter_enumeration_type_);
   if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
     if (from.has_lua_code()) {
       set_lua_code(from.lua_code());
@@ -3086,6 +3281,9 @@ void SubscribeEnvelopesV1::Swap(SubscribeEnvelopesV1* other) {
   if (other != this) {
     path_.Swap(&other->path_);
     std::swap(lua_code_, other->lua_code_);
+    filter_namespace_.Swap(&other->filter_namespace_);
+    filter_enumeration_namespace_.Swap(&other->filter_enumeration_namespace_);
+    filter_enumeration_type_.Swap(&other->filter_enumeration_type_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

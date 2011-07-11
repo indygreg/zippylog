@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x08\n\x06PingV1\"\x0f\n\rGetFeaturesV1\"\x10\n\x0eGetStoreInfoV1\"\x1f\n\x0fGetBucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\"\n\x12GetStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\x1f\n\x0fGetStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"t\n\x12GetStreamSegmentV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x14\n\x0cstart_offset\x18\x02 \x02(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x04 \x01(\r\"h\n\x0fWriteEnvelopeV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x10\n\x08\x65nvelope\x18\x02 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x03 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x04 \x01(\x08:\x05\x66\x61lse\"u\n\x1bWriteEnvelopeFromMessagesV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0f\n\x07message\x18\x02 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x04 \x03(\rB\x02\x10\x01\"\'\n\x17SubscribeStoreChangesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\"6\n\x14SubscribeEnvelopesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08lua_code\x18\x02 \x01(\t\"\"\n\x14SubscribeKeepaliveV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x1f\n\x11SubscribeCancelV1\x12\n\n\x02id\x18\x01 \x02(\x0c')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x08\n\x06PingV1\"\x0f\n\rGetFeaturesV1\"\x10\n\x0eGetStoreInfoV1\"\x1f\n\x0fGetBucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\"\n\x12GetStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\x1f\n\x0fGetStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"t\n\x12GetStreamSegmentV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x14\n\x0cstart_offset\x18\x02 \x02(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x04 \x01(\r\"h\n\x0fWriteEnvelopeV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x10\n\x08\x65nvelope\x18\x02 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x03 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x04 \x01(\x08:\x05\x66\x61lse\"u\n\x1bWriteEnvelopeFromMessagesV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0f\n\x07message\x18\x02 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x04 \x03(\rB\x02\x10\x01\"\'\n\x17SubscribeStoreChangesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\"\xa3\x01\n\x14SubscribeEnvelopesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08lua_code\x18\x05 \x01(\t\x12\x1c\n\x10\x66ilter_namespace\x18\x02 \x03(\rB\x02\x10\x01\x12(\n\x1c\x66ilter_enumeration_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12#\n\x17\x66ilter_enumeration_type\x18\x04 \x03(\rB\x02\x10\x01\"\"\n\x14SubscribeKeepaliveV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x1f\n\x11SubscribeCancelV1\x12\n\n\x02id\x18\x01 \x02(\x0c')
 
 
 
@@ -355,11 +355,32 @@ _SUBSCRIBEENVELOPESV1 = descriptor.Descriptor(
       options=None),
     descriptor.FieldDescriptor(
       name='lua_code', full_name='zippylog.protocol.request.SubscribeEnvelopesV1.lua_code', index=1,
-      number=2, type=9, cpp_type=9, label=1,
+      number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=unicode("", "utf-8"),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    descriptor.FieldDescriptor(
+      name='filter_namespace', full_name='zippylog.protocol.request.SubscribeEnvelopesV1.filter_namespace', index=2,
+      number=2, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
+    descriptor.FieldDescriptor(
+      name='filter_enumeration_namespace', full_name='zippylog.protocol.request.SubscribeEnvelopesV1.filter_enumeration_namespace', index=3,
+      number=3, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
+    descriptor.FieldDescriptor(
+      name='filter_enumeration_type', full_name='zippylog.protocol.request.SubscribeEnvelopesV1.filter_enumeration_type', index=4,
+      number=4, type=13, cpp_type=3, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=descriptor._ParseOptions(descriptor_pb2.FieldOptions(), '\020\001')),
   ],
   extensions=[
   ],
@@ -369,8 +390,8 @@ _SUBSCRIBEENVELOPESV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=593,
-  serialized_end=647,
+  serialized_start=594,
+  serialized_end=757,
 )
 
 
@@ -397,8 +418,8 @@ _SUBSCRIBEKEEPALIVEV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=649,
-  serialized_end=683,
+  serialized_start=759,
+  serialized_end=793,
 )
 
 
@@ -425,8 +446,8 @@ _SUBSCRIBECANCELV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=685,
-  serialized_end=716,
+  serialized_start=795,
+  serialized_end=826,
 )
 
 DESCRIPTOR.message_types_by_name['PingV1'] = _PINGV1

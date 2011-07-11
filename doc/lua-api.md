@@ -73,8 +73,7 @@ In this section, we describe the various Lua functions that can be executed duri
 
 ## zippylog_load_string(string)
 
-Called when string data is being loaded into zippylog. This could be done via
-zippylog_string_loader or a similar process.
+Called when string data is being loaded into zippylog. This could be done via zippylog_string_loader or a similar process.
 
 This function performs a number of roles:
 
@@ -85,8 +84,7 @@ This function performs a number of roles:
 * Converts the string into a set of messages
 * Converts the string into a set of envelopes
 
-The function communicates what it did via its return type pattern. It must
-return one of the following type patterns:
+The function communicates what it did via its return type pattern. It must return one of the following type patterns:
 
 * nil - the function didn't do anything. Calling tool defines the appropriate behavior
 * true - the string should be loaded as-is. If changes were made to the string, they won't be reflected.
@@ -99,12 +97,9 @@ return one of the following type patterns:
 * envelope, envelope, ... - any number of envelopes
 * table, any of above - table controls routing based on the keys *bucket* and *set*
 
-When string data is returned (includes true, false, and possibly nil cases),
-the behavior is for a new envelope to be created that has the string data from
-this function for each string emitted.
+When string data is returned (includes true, false, and possibly nil cases), the behavior is for a new envelope to be created that has the string data from this function for each string emitted.
 
-When a protocol buffer message is emitted, a new envelope is created containing
-that message or list of messages.
+When a protocol buffer message is emitted, a new envelope is created containing that message or list of messages.
 
 When an envelope is emitted, that envelope is used verbatim.
 
@@ -129,12 +124,31 @@ Here are some examples (we assume the string standard library is availble):
        return { ["set"] = string.sub(s, 0, 5) }, true
     end
 
-## zippylog_filter_envelope(envelope)
+## zippylog_subscription_filter_envelope(envelope, bucket, stream_set, path)
 
-This function is called when filtering envelopes. The callback's job is to
-determine whether the envelope is appropriate to pass on.
+This function is called when subscribed to written envelopes in a remote store (e.g. *SubscribeEnvelopesV1* protocol). The function is called for every envelope that matches the subscription.
 
-This function can return one of the following type patterns:
+The purpose of this function is to filter unwanted envelopes from being sent to the client. If the function returns true, the envelope passes the filter and is sent to the client. If any other value, the envelope is ignored and not sent to the subscriber.
 
-* true - the envelope passes the filter
-* false - the envelope does not pass the filter
+## zippylog_subscription_timer_signaled()
+
+This function is called whenever a configured timer (see *zippylog_subscription_timer_interval* below) fires.
+
+The purpose of this function is to perform data processing at specific time intervals. For example, a subscription may wish to periodically emit a rolling average or similar.
+
+This function can have the following return type patterns:
+
+* envelope - a single envelope to be sent to the subscriber
+* envelope, envelope, ... - any number of envelopes to be sent to the subscriber
+* message - a single protocol buffer message. wrapped in an envelope and sent to the subscriber
+* message, message, ... - any number of protocol buffer messages. All are wrapped in a single envelope and sent to the subscriber
+
+If there is no return value, nothing is done. If the return value does not match any of the above, an error is generated.
+
+# Configuration Variables
+
+The following variables can control behavior.
+
+## zippylog_subscription_timer_interval
+
+Defines the integer number of milliseconds at which a timer should be fired for a subscription. *zippylog_subscription_timer_signaled()* must also be defined.

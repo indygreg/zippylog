@@ -2015,6 +2015,18 @@ static const struct luaL_Reg SubscribeEnvelopesV1_methods [] = {
     {"get_lua_code", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_lua_code},
     {"set_lua_code", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_lua_code},
     {"has_lua_code", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_has_lua_code},
+    {"clear_filter_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_namespace},
+    {"get_filter_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_namespace},
+    {"set_filter_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_namespace},
+    {"size_filter_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_namespace},
+    {"clear_filter_enumeration_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_enumeration_namespace},
+    {"get_filter_enumeration_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_enumeration_namespace},
+    {"set_filter_enumeration_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_enumeration_namespace},
+    {"size_filter_enumeration_namespace", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_enumeration_namespace},
+    {"clear_filter_enumeration_type", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_enumeration_type},
+    {"get_filter_enumeration_type", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_enumeration_type},
+    {"set_filter_enumeration_type", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_enumeration_type},
+    {"size_filter_enumeration_type", lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_enumeration_type},
     {NULL, NULL},
 };
 
@@ -2218,6 +2230,177 @@ int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_has_lua_code(lua
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
     ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
     lua_pushboolean(L, m->has_lua_code());
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    m->clear_filter_namespace();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 2) {
+        return luaL_error(L, "missing required numeric argument");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    if (index < 1 || index > m->filter_namespace_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->filter_namespace_size());
+    }
+    lua_pushinteger(L, m->filter_namespace(index-1));
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 3) {
+            return luaL_error(L, "required 2 arguments not passed to function");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    int current_size = m->filter_namespace_size();
+    if (index < 1 || index > current_size + 1) {
+        return luaL_error(L, "index must be between 1 and %d", current_size + 1);
+    }
+    if (lua_isnil(L, 3)) {
+        return luaL_error(L, "cannot assign nil to repeated fields (yet)");
+    }
+    lua_Integer i = lua_tointeger(L, 3);
+    if (index == current_size + 1) {
+        m->add_filter_namespace(i);
+    }
+    else {
+        m->set_filter_namespace(index-1, i);
+    }
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    int size = m->filter_namespace_size();
+    lua_pushinteger(L, size);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_enumeration_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    m->clear_filter_enumeration_namespace();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_enumeration_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 2) {
+        return luaL_error(L, "missing required numeric argument");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    if (index < 1 || index > m->filter_enumeration_namespace_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->filter_enumeration_namespace_size());
+    }
+    lua_pushinteger(L, m->filter_enumeration_namespace(index-1));
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_enumeration_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 3) {
+            return luaL_error(L, "required 2 arguments not passed to function");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    int current_size = m->filter_enumeration_namespace_size();
+    if (index < 1 || index > current_size + 1) {
+        return luaL_error(L, "index must be between 1 and %d", current_size + 1);
+    }
+    if (lua_isnil(L, 3)) {
+        return luaL_error(L, "cannot assign nil to repeated fields (yet)");
+    }
+    lua_Integer i = lua_tointeger(L, 3);
+    if (index == current_size + 1) {
+        m->add_filter_enumeration_namespace(i);
+    }
+    else {
+        m->set_filter_enumeration_namespace(index-1, i);
+    }
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_enumeration_namespace(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    int size = m->filter_enumeration_namespace_size();
+    lua_pushinteger(L, size);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_filter_enumeration_type(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    m->clear_filter_enumeration_type();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_filter_enumeration_type(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 2) {
+        return luaL_error(L, "missing required numeric argument");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    if (index < 1 || index > m->filter_enumeration_type_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->filter_enumeration_type_size());
+    }
+    lua_pushinteger(L, m->filter_enumeration_type(index-1));
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_filter_enumeration_type(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    if (lua_gettop(L) != 3) {
+            return luaL_error(L, "required 2 arguments not passed to function");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    int current_size = m->filter_enumeration_type_size();
+    if (index < 1 || index > current_size + 1) {
+        return luaL_error(L, "index must be between 1 and %d", current_size + 1);
+    }
+    if (lua_isnil(L, 3)) {
+        return luaL_error(L, "cannot assign nil to repeated fields (yet)");
+    }
+    lua_Integer i = lua_tointeger(L, 3);
+    if (index == current_size + 1) {
+        m->add_filter_enumeration_type(i);
+    }
+    else {
+        m->set_filter_enumeration_type(index-1, i);
+    }
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_filter_enumeration_type(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeEnvelopesV1");
+    ::zippylog::protocol::request::SubscribeEnvelopesV1 *m = (::zippylog::protocol::request::SubscribeEnvelopesV1 *)mud->msg;
+    int size = m->filter_enumeration_type_size();
+    lua_pushinteger(L, size);
     return 1;
 }
 
