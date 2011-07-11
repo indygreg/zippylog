@@ -45,7 +45,9 @@ compile_args = [ zippylog_compile, '--cpp-namespace', 'zippylog' ]
 compile_args.append(proto_dir)
 compile_args.append(out_dir)
 p = Popen(compile_args)
-p.wait()
+if p.wait() != 0:
+    print 'zippylog_compile did not execute successfully'
+    exit(1)
 
 copy2(join(out_dir, 'zippylog-state.json'), state_file)
 

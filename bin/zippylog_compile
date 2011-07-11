@@ -27,7 +27,7 @@ parser = OptionParser(
     usage='%prog [options] /path/to/messages /output/path'
 )
 
-parser.add_option('-p', '--protoc', default='/usr/bin/protoc', help='Path to protoc binary')
+parser.add_option('-p', '--protoc', default='/usr/local/bin/protoc', help='Path to protoc binary')
 parser.add_option('--cpp-namespace', help='C++ namespace for generated message registry file')
 
 (options, args) = parser.parse_args()
