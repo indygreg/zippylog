@@ -22,6 +22,7 @@ using ::std::invalid_argument;
 using ::std::string;
 using ::zippylog::Envelope;
 using ::zippylog::protocol::request::GetStreamSegmentV1;
+using ::zippylog::protocol::request::PingV1;
 using ::zmq::message_t;
 
 namespace zippylog {
@@ -153,6 +154,8 @@ TEST(EnvelopeTest, MessageSemantics)
 {
     Envelope e;
     GetStreamSegmentV1 get_stream;
+    get_stream.set_path("/");
+    get_stream.set_start_offset(0);
     get_stream.add_to_envelope(e);
 
     uint32 expected_namespace = GetStreamSegmentV1::zippylog_namespace;
@@ -170,24 +173,23 @@ TEST(EnvelopeTest, MessageSemantics)
     EXPECT_EQ(message, message2);
 
     // verify change in original doesn't touch what's in envelope
-	// TODO implement properly
-    //get_stream.set_version(2);
-    //EXPECT_EQ(1, message->version());
+    get_stream.set_start_offset(100);
+    EXPECT_EQ(0, message->start_offset());
 }
 
 TEST(EnvelopeTest, MessagesAndCopying)
 {
     Envelope e1;
-    GetStreamSegmentV1 gs1;
-    gs1.add_to_envelope(e1);
+    PingV1 p1;
+    p1.add_to_envelope(e1);
 
     EXPECT_TRUE(NULL != e1.GetMessage(0));
 
     Envelope e2 = e1;
     EXPECT_EQ(1, e2.MessageCount());
-    GetStreamSegmentV1 *gs2 = (GetStreamSegmentV1 *)e2.GetMessage(0);
-    ASSERT_TRUE(NULL != gs2);
-    EXPECT_TRUE(&gs1 != gs2);
+    PingV1 *p2 = (PingV1 *)e2.GetMessage(0);
+    ASSERT_TRUE(NULL != p2);
+    EXPECT_TRUE(&p1 != p2);
 }
 
 } // namespace

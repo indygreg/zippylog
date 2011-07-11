@@ -298,14 +298,7 @@ TEST_F(RequestProcessorTest, GetStoreInfo)
 
 TEST_F(RequestProcessorTest, GetBucketInfo)
 {
-    // an empty request should result in missing field
-    protocol::request::GetBucketInfoV1 m1;
-    Envelope e1;
-    m1.add_to_envelope(&e1);
-
     vector<Envelope> output;
-    this->ExpectErrorResponse(this->p->ProcessRequest(e1, output), protocol::response::EMPTY_FIELD, output);
-    output.clear();
 
     // path does not contain bucket
     protocol::request::GetBucketInfoV1 m2;
@@ -342,16 +335,6 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
 
 TEST_F(RequestProcessorTest, GetStreamSetInfo)
 {
-    // missing path argument should result in empty field error
-    {
-        protocol::request::GetStreamSetInfoV1 req;
-        Envelope e;
-        req.add_to_envelope(e);
-
-        vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
-    }
-
     // path does not contain bucket nor stream set
     {
         protocol::request::GetStreamSetInfoV1 req;
@@ -404,16 +387,6 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
 TEST_F(RequestProcessorTest, GetStreamInfo)
 {
     this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
-
-    // missing path argument should result in empty field error
-    {
-        protocol::request::GetStreamInfoV1 req;
-        Envelope e;
-        req.add_to_envelope(e);
-
-        vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
-    }
 
     // path does not contain bucket nor stream set nor stream
     {
@@ -478,32 +451,13 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
     }
 }
 
-TEST_F(RequestProcessorTest, GetStream)
+TEST_F(RequestProcessorTest, GetStreamSegment)
 {
     this->ResetProcessor("simpledirectory://test/stores/01-singlestream");
 
     string path = "/A/B/2010-11-26-07";
 
     ASSERT_TRUE(this->store->PathExists(path));
-
-    // missing path
-    {
-        protocol::request::GetStreamSegmentV1 m = protocol::request::GetStreamSegmentV1();
-        Envelope e;
-        m.add_to_envelope(e);
-        vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
-    }
-
-    // missing start offset
-    {
-        protocol::request::GetStreamSegmentV1 m = protocol::request::GetStreamSegmentV1();
-        m.set_path(path);
-        Envelope e;
-        m.add_to_envelope(e);
-        vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
-    }
 
     // simple fetch of 1 envelope
     {
@@ -619,15 +573,6 @@ TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
 {
     vector<Envelope> output;
     string path = "/bucketA/set0";
-
-    // empty request should complain about missing path field
-    {
-        protocol::request::WriteEnvelopeV1 r;
-        Envelope e;
-        r.add_to_envelope(e);
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
-        output.clear();
-    }
 
     // invalid path (to a bucket)
     {
