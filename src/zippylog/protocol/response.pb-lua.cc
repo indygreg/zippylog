@@ -77,6 +77,8 @@ int lua_protobuf_zippylog_protocol_response_open(lua_State *L)
     lua_setfield(L, -2, "PROTOCOL_NO_ENVELOPE");
     lua_pushnumber(L, 18);
     lua_setfield(L, -2, "GENERAL_ERROR_PROCESSING");
+    lua_pushnumber(L, 19);
+    lua_setfield(L, -2, "LUA_ERROR");
     // define metatable on main table
     lua_newtable(L);
     lua_pushcfunction(L, lua_protobuf_enum_index);
