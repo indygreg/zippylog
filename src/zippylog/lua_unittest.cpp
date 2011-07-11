@@ -475,8 +475,9 @@ TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
     EnvelopeFilterResult result;
 
     EXPECT_TRUE(l.ExecuteSubscriptionEnvelopeFilter(e, "/buck/set/stream", result));
-        EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_EQ(0, l.GetStackSize());
     EXPECT_FALSE(result.execution_success);
+    EXPECT_GT(result.lua_error.size(), 0);
 }
 
 TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
