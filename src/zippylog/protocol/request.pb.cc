@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/protocol/request.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -19,42 +22,42 @@ namespace {
 const ::google::protobuf::Descriptor* Ping_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Ping_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetFeatures_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* GetFeaturesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetFeatures_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetStoreInfo_descriptor_ = NULL;
+  GetFeaturesV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* GetStoreInfoV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetStoreInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetBucketInfo_descriptor_ = NULL;
+  GetStoreInfoV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* GetBucketInfoV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetBucketInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetStreamSetInfo_descriptor_ = NULL;
+  GetBucketInfoV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* GetStreamSetInfoV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetStreamSetInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetStreamInfo_descriptor_ = NULL;
+  GetStreamSetInfoV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* GetStreamInfoV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetStreamInfo_reflection_ = NULL;
-const ::google::protobuf::Descriptor* GetStream_descriptor_ = NULL;
+  GetStreamInfoV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* GetStreamV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  GetStream_reflection_ = NULL;
-const ::google::protobuf::Descriptor* WriteEnvelope_descriptor_ = NULL;
+  GetStreamV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WriteEnvelopeV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  WriteEnvelope_reflection_ = NULL;
-const ::google::protobuf::Descriptor* WriteEnvelopeFromMessages_descriptor_ = NULL;
+  WriteEnvelopeV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WriteEnvelopeFromMessagesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  WriteEnvelopeFromMessages_reflection_ = NULL;
-const ::google::protobuf::Descriptor* SubscribeStoreChanges_descriptor_ = NULL;
+  WriteEnvelopeFromMessagesV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SubscribeStoreChangesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  SubscribeStoreChanges_reflection_ = NULL;
-const ::google::protobuf::Descriptor* SubscribeEnvelopes_descriptor_ = NULL;
+  SubscribeStoreChangesV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SubscribeEnvelopesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  SubscribeEnvelopes_reflection_ = NULL;
-const ::google::protobuf::Descriptor* SubscribeKeepalive_descriptor_ = NULL;
+  SubscribeEnvelopesV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SubscribeKeepaliveV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  SubscribeKeepalive_reflection_ = NULL;
-const ::google::protobuf::Descriptor* SubscribeCancel_descriptor_ = NULL;
+  SubscribeKeepaliveV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SubscribeCancelV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  SubscribeCancel_reflection_ = NULL;
+  SubscribeCancelV1_reflection_ = NULL;
 
 }  // namespace
 
@@ -79,205 +82,194 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Ping));
-  GetFeatures_descriptor_ = file->message_type(1);
-  static const int GetFeatures_offsets_[1] = {
+  GetFeaturesV1_descriptor_ = file->message_type(1);
+  static const int GetFeaturesV1_offsets_[1] = {
   };
-  GetFeatures_reflection_ =
+  GetFeaturesV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetFeatures_descriptor_,
-      GetFeatures::default_instance_,
-      GetFeatures_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetFeatures, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetFeatures, _unknown_fields_),
+      GetFeaturesV1_descriptor_,
+      GetFeaturesV1::default_instance_,
+      GetFeaturesV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetFeaturesV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetFeaturesV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetFeatures));
-  GetStoreInfo_descriptor_ = file->message_type(2);
-  static const int GetStoreInfo_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStoreInfo, version_),
+      sizeof(GetFeaturesV1));
+  GetStoreInfoV1_descriptor_ = file->message_type(2);
+  static const int GetStoreInfoV1_offsets_[1] = {
   };
-  GetStoreInfo_reflection_ =
+  GetStoreInfoV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetStoreInfo_descriptor_,
-      GetStoreInfo::default_instance_,
-      GetStoreInfo_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStoreInfo, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStoreInfo, _unknown_fields_),
+      GetStoreInfoV1_descriptor_,
+      GetStoreInfoV1::default_instance_,
+      GetStoreInfoV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStoreInfoV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStoreInfoV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetStoreInfo));
-  GetBucketInfo_descriptor_ = file->message_type(3);
-  static const int GetBucketInfo_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, path_),
+      sizeof(GetStoreInfoV1));
+  GetBucketInfoV1_descriptor_ = file->message_type(3);
+  static const int GetBucketInfoV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfoV1, path_),
   };
-  GetBucketInfo_reflection_ =
+  GetBucketInfoV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetBucketInfo_descriptor_,
-      GetBucketInfo::default_instance_,
-      GetBucketInfo_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfo, _unknown_fields_),
+      GetBucketInfoV1_descriptor_,
+      GetBucketInfoV1::default_instance_,
+      GetBucketInfoV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfoV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetBucketInfoV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetBucketInfo));
-  GetStreamSetInfo_descriptor_ = file->message_type(4);
-  static const int GetStreamSetInfo_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfo, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfo, path_),
+      sizeof(GetBucketInfoV1));
+  GetStreamSetInfoV1_descriptor_ = file->message_type(4);
+  static const int GetStreamSetInfoV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfoV1, path_),
   };
-  GetStreamSetInfo_reflection_ =
+  GetStreamSetInfoV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetStreamSetInfo_descriptor_,
-      GetStreamSetInfo::default_instance_,
-      GetStreamSetInfo_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfo, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfo, _unknown_fields_),
+      GetStreamSetInfoV1_descriptor_,
+      GetStreamSetInfoV1::default_instance_,
+      GetStreamSetInfoV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfoV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamSetInfoV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetStreamSetInfo));
-  GetStreamInfo_descriptor_ = file->message_type(5);
-  static const int GetStreamInfo_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfo, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfo, path_),
+      sizeof(GetStreamSetInfoV1));
+  GetStreamInfoV1_descriptor_ = file->message_type(5);
+  static const int GetStreamInfoV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfoV1, path_),
   };
-  GetStreamInfo_reflection_ =
+  GetStreamInfoV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetStreamInfo_descriptor_,
-      GetStreamInfo::default_instance_,
-      GetStreamInfo_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfo, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfo, _unknown_fields_),
+      GetStreamInfoV1_descriptor_,
+      GetStreamInfoV1::default_instance_,
+      GetStreamInfoV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfoV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamInfoV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetStreamInfo));
-  GetStream_descriptor_ = file->message_type(6);
-  static const int GetStream_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, start_offset_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, max_response_bytes_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, max_response_envelopes_),
+      sizeof(GetStreamInfoV1));
+  GetStreamV1_descriptor_ = file->message_type(6);
+  static const int GetStreamV1_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, start_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, max_response_bytes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, max_response_envelopes_),
   };
-  GetStream_reflection_ =
+  GetStreamV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      GetStream_descriptor_,
-      GetStream::default_instance_,
-      GetStream_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStream, _unknown_fields_),
+      GetStreamV1_descriptor_,
+      GetStreamV1::default_instance_,
+      GetStreamV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetStreamV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(GetStream));
-  WriteEnvelope_descriptor_ = file->message_type(7);
-  static const int WriteEnvelope_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, envelope_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, acknowledge_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, synchronous_),
+      sizeof(GetStreamV1));
+  WriteEnvelopeV1_descriptor_ = file->message_type(7);
+  static const int WriteEnvelopeV1_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, envelope_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, acknowledge_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, synchronous_),
   };
-  WriteEnvelope_reflection_ =
+  WriteEnvelopeV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      WriteEnvelope_descriptor_,
-      WriteEnvelope::default_instance_,
-      WriteEnvelope_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelope, _unknown_fields_),
+      WriteEnvelopeV1_descriptor_,
+      WriteEnvelopeV1::default_instance_,
+      WriteEnvelopeV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(WriteEnvelope));
-  WriteEnvelopeFromMessages_descriptor_ = file->message_type(8);
-  static const int WriteEnvelopeFromMessages_offsets_[5] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, message_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, message_namespace_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, message_type_),
+      sizeof(WriteEnvelopeV1));
+  WriteEnvelopeFromMessagesV1_descriptor_ = file->message_type(8);
+  static const int WriteEnvelopeFromMessagesV1_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, message_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, message_namespace_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, message_type_),
   };
-  WriteEnvelopeFromMessages_reflection_ =
+  WriteEnvelopeFromMessagesV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      WriteEnvelopeFromMessages_descriptor_,
-      WriteEnvelopeFromMessages::default_instance_,
-      WriteEnvelopeFromMessages_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessages, _unknown_fields_),
+      WriteEnvelopeFromMessagesV1_descriptor_,
+      WriteEnvelopeFromMessagesV1::default_instance_,
+      WriteEnvelopeFromMessagesV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromMessagesV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(WriteEnvelopeFromMessages));
-  SubscribeStoreChanges_descriptor_ = file->message_type(9);
-  static const int SubscribeStoreChanges_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChanges, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChanges, path_),
+      sizeof(WriteEnvelopeFromMessagesV1));
+  SubscribeStoreChangesV1_descriptor_ = file->message_type(9);
+  static const int SubscribeStoreChangesV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChangesV1, path_),
   };
-  SubscribeStoreChanges_reflection_ =
+  SubscribeStoreChangesV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      SubscribeStoreChanges_descriptor_,
-      SubscribeStoreChanges::default_instance_,
-      SubscribeStoreChanges_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChanges, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChanges, _unknown_fields_),
+      SubscribeStoreChangesV1_descriptor_,
+      SubscribeStoreChangesV1::default_instance_,
+      SubscribeStoreChangesV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChangesV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChangesV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(SubscribeStoreChanges));
-  SubscribeEnvelopes_descriptor_ = file->message_type(10);
-  static const int SubscribeEnvelopes_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, lua_code_),
+      sizeof(SubscribeStoreChangesV1));
+  SubscribeEnvelopesV1_descriptor_ = file->message_type(10);
+  static const int SubscribeEnvelopesV1_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, lua_code_),
   };
-  SubscribeEnvelopes_reflection_ =
+  SubscribeEnvelopesV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      SubscribeEnvelopes_descriptor_,
-      SubscribeEnvelopes::default_instance_,
-      SubscribeEnvelopes_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopes, _unknown_fields_),
+      SubscribeEnvelopesV1_descriptor_,
+      SubscribeEnvelopesV1::default_instance_,
+      SubscribeEnvelopesV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(SubscribeEnvelopes));
-  SubscribeKeepalive_descriptor_ = file->message_type(11);
-  static const int SubscribeKeepalive_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepalive, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepalive, id_),
+      sizeof(SubscribeEnvelopesV1));
+  SubscribeKeepaliveV1_descriptor_ = file->message_type(11);
+  static const int SubscribeKeepaliveV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepaliveV1, id_),
   };
-  SubscribeKeepalive_reflection_ =
+  SubscribeKeepaliveV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      SubscribeKeepalive_descriptor_,
-      SubscribeKeepalive::default_instance_,
-      SubscribeKeepalive_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepalive, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepalive, _unknown_fields_),
+      SubscribeKeepaliveV1_descriptor_,
+      SubscribeKeepaliveV1::default_instance_,
+      SubscribeKeepaliveV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepaliveV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepaliveV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(SubscribeKeepalive));
-  SubscribeCancel_descriptor_ = file->message_type(12);
-  static const int SubscribeCancel_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancel, version_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancel, id_),
+      sizeof(SubscribeKeepaliveV1));
+  SubscribeCancelV1_descriptor_ = file->message_type(12);
+  static const int SubscribeCancelV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancelV1, id_),
   };
-  SubscribeCancel_reflection_ =
+  SubscribeCancelV1_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      SubscribeCancel_descriptor_,
-      SubscribeCancel::default_instance_,
-      SubscribeCancel_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancel, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancel, _unknown_fields_),
+      SubscribeCancelV1_descriptor_,
+      SubscribeCancelV1::default_instance_,
+      SubscribeCancelV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancelV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancelV1, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(SubscribeCancel));
+      sizeof(SubscribeCancelV1));
 }
 
 namespace {
@@ -293,29 +285,29 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Ping_descriptor_, &Ping::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetFeatures_descriptor_, &GetFeatures::default_instance());
+    GetFeaturesV1_descriptor_, &GetFeaturesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetStoreInfo_descriptor_, &GetStoreInfo::default_instance());
+    GetStoreInfoV1_descriptor_, &GetStoreInfoV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetBucketInfo_descriptor_, &GetBucketInfo::default_instance());
+    GetBucketInfoV1_descriptor_, &GetBucketInfoV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetStreamSetInfo_descriptor_, &GetStreamSetInfo::default_instance());
+    GetStreamSetInfoV1_descriptor_, &GetStreamSetInfoV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetStreamInfo_descriptor_, &GetStreamInfo::default_instance());
+    GetStreamInfoV1_descriptor_, &GetStreamInfoV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    GetStream_descriptor_, &GetStream::default_instance());
+    GetStreamV1_descriptor_, &GetStreamV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    WriteEnvelope_descriptor_, &WriteEnvelope::default_instance());
+    WriteEnvelopeV1_descriptor_, &WriteEnvelopeV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    WriteEnvelopeFromMessages_descriptor_, &WriteEnvelopeFromMessages::default_instance());
+    WriteEnvelopeFromMessagesV1_descriptor_, &WriteEnvelopeFromMessagesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    SubscribeStoreChanges_descriptor_, &SubscribeStoreChanges::default_instance());
+    SubscribeStoreChangesV1_descriptor_, &SubscribeStoreChangesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    SubscribeEnvelopes_descriptor_, &SubscribeEnvelopes::default_instance());
+    SubscribeEnvelopesV1_descriptor_, &SubscribeEnvelopesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    SubscribeKeepalive_descriptor_, &SubscribeKeepalive::default_instance());
+    SubscribeKeepaliveV1_descriptor_, &SubscribeKeepaliveV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    SubscribeCancel_descriptor_, &SubscribeCancel::default_instance());
+    SubscribeCancelV1_descriptor_, &SubscribeCancelV1::default_instance());
 }
 
 }  // namespace
@@ -323,30 +315,30 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto() {
   delete Ping::default_instance_;
   delete Ping_reflection_;
-  delete GetFeatures::default_instance_;
-  delete GetFeatures_reflection_;
-  delete GetStoreInfo::default_instance_;
-  delete GetStoreInfo_reflection_;
-  delete GetBucketInfo::default_instance_;
-  delete GetBucketInfo_reflection_;
-  delete GetStreamSetInfo::default_instance_;
-  delete GetStreamSetInfo_reflection_;
-  delete GetStreamInfo::default_instance_;
-  delete GetStreamInfo_reflection_;
-  delete GetStream::default_instance_;
-  delete GetStream_reflection_;
-  delete WriteEnvelope::default_instance_;
-  delete WriteEnvelope_reflection_;
-  delete WriteEnvelopeFromMessages::default_instance_;
-  delete WriteEnvelopeFromMessages_reflection_;
-  delete SubscribeStoreChanges::default_instance_;
-  delete SubscribeStoreChanges_reflection_;
-  delete SubscribeEnvelopes::default_instance_;
-  delete SubscribeEnvelopes_reflection_;
-  delete SubscribeKeepalive::default_instance_;
-  delete SubscribeKeepalive_reflection_;
-  delete SubscribeCancel::default_instance_;
-  delete SubscribeCancel_reflection_;
+  delete GetFeaturesV1::default_instance_;
+  delete GetFeaturesV1_reflection_;
+  delete GetStoreInfoV1::default_instance_;
+  delete GetStoreInfoV1_reflection_;
+  delete GetBucketInfoV1::default_instance_;
+  delete GetBucketInfoV1_reflection_;
+  delete GetStreamSetInfoV1::default_instance_;
+  delete GetStreamSetInfoV1_reflection_;
+  delete GetStreamInfoV1::default_instance_;
+  delete GetStreamInfoV1_reflection_;
+  delete GetStreamV1::default_instance_;
+  delete GetStreamV1_reflection_;
+  delete WriteEnvelopeV1::default_instance_;
+  delete WriteEnvelopeV1_reflection_;
+  delete WriteEnvelopeFromMessagesV1::default_instance_;
+  delete WriteEnvelopeFromMessagesV1_reflection_;
+  delete SubscribeStoreChangesV1::default_instance_;
+  delete SubscribeStoreChangesV1_reflection_;
+  delete SubscribeEnvelopesV1::default_instance_;
+  delete SubscribeEnvelopesV1_reflection_;
+  delete SubscribeKeepaliveV1::default_instance_;
+  delete SubscribeKeepaliveV1_reflection_;
+  delete SubscribeCancelV1::default_instance_;
+  delete SubscribeCancelV1_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
@@ -357,55 +349,51 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\037zippylog/protocol/request.proto\022\031zippy"
-    "log.protocol.request\"\006\n\004Ping\"\r\n\013GetFeatu"
-    "res\"\037\n\014GetStoreInfo\022\017\n\007version\030\001 \002(\r\".\n\r"
-    "GetBucketInfo\022\017\n\007version\030\001 \002(\r\022\014\n\004path\030\002"
-    " \001(\t\"1\n\020GetStreamSetInfo\022\017\n\007version\030\001 \002("
-    "\r\022\014\n\004path\030\002 \001(\t\".\n\rGetStreamInfo\022\017\n\007vers"
-    "ion\030\001 \002(\r\022\014\n\004path\030\002 \001(\t\"|\n\tGetStream\022\017\n\007"
-    "version\030\001 \002(\r\022\014\n\004path\030\002 \001(\t\022\024\n\014start_off"
-    "set\030\003 \001(\004\022\032\n\022max_response_bytes\030\004 \001(\r\022\036\n"
-    "\026max_response_envelopes\030\005 \001(\r\"w\n\rWriteEn"
-    "velope\022\017\n\007version\030\001 \002(\r\022\014\n\004path\030\002 \001(\t\022\020\n"
-    "\010envelope\030\003 \003(\014\022\031\n\013acknowledge\030\004 \001(\010:\004tr"
-    "ue\022\032\n\013synchronous\030\005 \001(\010:\005false\"\204\001\n\031Write"
-    "EnvelopeFromMessages\022\017\n\007version\030\001 \002(\r\022\014\n"
-    "\004path\030\002 \001(\t\022\017\n\007message\030\003 \003(\014\022\035\n\021message_"
-    "namespace\030\004 \003(\rB\002\020\001\022\030\n\014message_type\030\005 \003("
-    "\rB\002\020\001\"6\n\025SubscribeStoreChanges\022\017\n\007versio"
-    "n\030\001 \002(\r\022\014\n\004path\030\002 \003(\t\"E\n\022SubscribeEnvelo"
-    "pes\022\017\n\007version\030\001 \002(\r\022\014\n\004path\030\002 \003(\t\022\020\n\010lu"
-    "a_code\030\003 \001(\t\"1\n\022SubscribeKeepalive\022\017\n\007ve"
-    "rsion\030\001 \002(\r\022\n\n\002id\030\002 \001(\014\".\n\017SubscribeCanc"
-    "el\022\017\n\007version\030\001 \002(\r\022\n\n\002id\030\002 \001(\014", 871);
+    "log.protocol.request\"\006\n\004Ping\"\017\n\rGetFeatu"
+    "resV1\"\020\n\016GetStoreInfoV1\"\037\n\017GetBucketInfo"
+    "V1\022\014\n\004path\030\001 \001(\t\"\"\n\022GetStreamSetInfoV1\022\014"
+    "\n\004path\030\001 \001(\t\"\037\n\017GetStreamInfoV1\022\014\n\004path\030"
+    "\001 \001(\t\"m\n\013GetStreamV1\022\014\n\004path\030\001 \001(\t\022\024\n\014st"
+    "art_offset\030\002 \001(\004\022\032\n\022max_response_bytes\030\003"
+    " \001(\r\022\036\n\026max_response_envelopes\030\004 \001(\r\"h\n\017"
+    "WriteEnvelopeV1\022\014\n\004path\030\001 \001(\t\022\020\n\010envelop"
+    "e\030\002 \003(\014\022\031\n\013acknowledge\030\003 \001(\010:\004true\022\032\n\013sy"
+    "nchronous\030\004 \001(\010:\005false\"u\n\033WriteEnvelopeF"
+    "romMessagesV1\022\014\n\004path\030\001 \001(\t\022\017\n\007message\030\002"
+    " \003(\014\022\035\n\021message_namespace\030\003 \003(\rB\002\020\001\022\030\n\014m"
+    "essage_type\030\004 \003(\rB\002\020\001\"\'\n\027SubscribeStoreC"
+    "hangesV1\022\014\n\004path\030\001 \003(\t\"6\n\024SubscribeEnvel"
+    "opesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_code\030\002 \001(\t\"\""
+    "\n\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \001(\014\"\037\n\021Su"
+    "bscribeCancelV1\022\n\n\002id\030\001 \001(\014", 707);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   Ping::default_instance_ = new Ping();
-  GetFeatures::default_instance_ = new GetFeatures();
-  GetStoreInfo::default_instance_ = new GetStoreInfo();
-  GetBucketInfo::default_instance_ = new GetBucketInfo();
-  GetStreamSetInfo::default_instance_ = new GetStreamSetInfo();
-  GetStreamInfo::default_instance_ = new GetStreamInfo();
-  GetStream::default_instance_ = new GetStream();
-  WriteEnvelope::default_instance_ = new WriteEnvelope();
-  WriteEnvelopeFromMessages::default_instance_ = new WriteEnvelopeFromMessages();
-  SubscribeStoreChanges::default_instance_ = new SubscribeStoreChanges();
-  SubscribeEnvelopes::default_instance_ = new SubscribeEnvelopes();
-  SubscribeKeepalive::default_instance_ = new SubscribeKeepalive();
-  SubscribeCancel::default_instance_ = new SubscribeCancel();
+  GetFeaturesV1::default_instance_ = new GetFeaturesV1();
+  GetStoreInfoV1::default_instance_ = new GetStoreInfoV1();
+  GetBucketInfoV1::default_instance_ = new GetBucketInfoV1();
+  GetStreamSetInfoV1::default_instance_ = new GetStreamSetInfoV1();
+  GetStreamInfoV1::default_instance_ = new GetStreamInfoV1();
+  GetStreamV1::default_instance_ = new GetStreamV1();
+  WriteEnvelopeV1::default_instance_ = new WriteEnvelopeV1();
+  WriteEnvelopeFromMessagesV1::default_instance_ = new WriteEnvelopeFromMessagesV1();
+  SubscribeStoreChangesV1::default_instance_ = new SubscribeStoreChangesV1();
+  SubscribeEnvelopesV1::default_instance_ = new SubscribeEnvelopesV1();
+  SubscribeKeepaliveV1::default_instance_ = new SubscribeKeepaliveV1();
+  SubscribeCancelV1::default_instance_ = new SubscribeCancelV1();
   Ping::default_instance_->InitAsDefaultInstance();
-  GetFeatures::default_instance_->InitAsDefaultInstance();
-  GetStoreInfo::default_instance_->InitAsDefaultInstance();
-  GetBucketInfo::default_instance_->InitAsDefaultInstance();
-  GetStreamSetInfo::default_instance_->InitAsDefaultInstance();
-  GetStreamInfo::default_instance_->InitAsDefaultInstance();
-  GetStream::default_instance_->InitAsDefaultInstance();
-  WriteEnvelope::default_instance_->InitAsDefaultInstance();
-  WriteEnvelopeFromMessages::default_instance_->InitAsDefaultInstance();
-  SubscribeStoreChanges::default_instance_->InitAsDefaultInstance();
-  SubscribeEnvelopes::default_instance_->InitAsDefaultInstance();
-  SubscribeKeepalive::default_instance_->InitAsDefaultInstance();
-  SubscribeCancel::default_instance_->InitAsDefaultInstance();
+  GetFeaturesV1::default_instance_->InitAsDefaultInstance();
+  GetStoreInfoV1::default_instance_->InitAsDefaultInstance();
+  GetBucketInfoV1::default_instance_->InitAsDefaultInstance();
+  GetStreamSetInfoV1::default_instance_->InitAsDefaultInstance();
+  GetStreamInfoV1::default_instance_->InitAsDefaultInstance();
+  GetStreamV1::default_instance_->InitAsDefaultInstance();
+  WriteEnvelopeV1::default_instance_->InitAsDefaultInstance();
+  WriteEnvelopeFromMessagesV1::default_instance_->InitAsDefaultInstance();
+  SubscribeStoreChangesV1::default_instance_->InitAsDefaultInstance();
+  SubscribeEnvelopesV1::default_instance_->InitAsDefaultInstance();
+  SubscribeKeepaliveV1::default_instance_->InitAsDefaultInstance();
+  SubscribeCancelV1::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto);
 }
 
@@ -577,60 +565,60 @@ void Ping::Swap(Ping* other) {
 #ifndef _MSC_VER
 #endif  // !_MSC_VER
 
-GetFeatures::GetFeatures()
+GetFeaturesV1::GetFeaturesV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetFeatures::InitAsDefaultInstance() {
+void GetFeaturesV1::InitAsDefaultInstance() {
 }
 
-GetFeatures::GetFeatures(const GetFeatures& from)
+GetFeaturesV1::GetFeaturesV1(const GetFeaturesV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetFeatures::SharedCtor() {
+void GetFeaturesV1::SharedCtor() {
   _cached_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetFeatures::~GetFeatures() {
+GetFeaturesV1::~GetFeaturesV1() {
   SharedDtor();
 }
 
-void GetFeatures::SharedDtor() {
+void GetFeaturesV1::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void GetFeatures::SetCachedSize(int size) const {
+void GetFeaturesV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetFeatures::descriptor() {
+const ::google::protobuf::Descriptor* GetFeaturesV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetFeatures_descriptor_;
+  return GetFeaturesV1_descriptor_;
 }
 
-const GetFeatures& GetFeatures::default_instance() {
+const GetFeaturesV1& GetFeaturesV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetFeatures* GetFeatures::default_instance_ = NULL;
+GetFeaturesV1* GetFeaturesV1::default_instance_ = NULL;
 
-GetFeatures* GetFeatures::New() const {
-  return new GetFeatures;
+GetFeaturesV1* GetFeaturesV1::New() const {
+  return new GetFeaturesV1;
 }
 
-void GetFeatures::Clear() {
+void GetFeaturesV1::Clear() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool GetFeatures::MergePartialFromCodedStream(
+bool GetFeaturesV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -646,7 +634,7 @@ bool GetFeatures::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void GetFeatures::SerializeWithCachedSizes(
+void GetFeaturesV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
@@ -654,7 +642,7 @@ void GetFeatures::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* GetFeatures::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetFeaturesV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
@@ -663,7 +651,7 @@ void GetFeatures::SerializeWithCachedSizes(
   return target;
 }
 
-int GetFeatures::ByteSize() const {
+int GetFeaturesV1::ByteSize() const {
   int total_size = 0;
   
   if (!unknown_fields().empty()) {
@@ -677,10 +665,10 @@ int GetFeatures::ByteSize() const {
   return total_size;
 }
 
-void GetFeatures::MergeFrom(const ::google::protobuf::Message& from) {
+void GetFeaturesV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetFeatures* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetFeatures*>(
+  const GetFeaturesV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetFeaturesV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -689,40 +677,40 @@ void GetFeatures::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetFeatures::MergeFrom(const GetFeatures& from) {
+void GetFeaturesV1::MergeFrom(const GetFeaturesV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetFeatures::CopyFrom(const ::google::protobuf::Message& from) {
+void GetFeaturesV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetFeatures::CopyFrom(const GetFeatures& from) {
+void GetFeaturesV1::CopyFrom(const GetFeaturesV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetFeatures::IsInitialized() const {
+bool GetFeaturesV1::IsInitialized() const {
   
   return true;
 }
 
-void GetFeatures::Swap(GetFeatures* other) {
+void GetFeaturesV1::Swap(GetFeaturesV1* other) {
   if (other != this) {
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata GetFeatures::GetMetadata() const {
+::google::protobuf::Metadata GetFeaturesV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetFeatures_descriptor_;
-  metadata.reflection = GetFeatures_reflection_;
+  metadata.descriptor = GetFeaturesV1_descriptor_;
+  metadata.reflection = GetFeaturesV1_reflection_;
   return metadata;
 }
 
@@ -730,123 +718,87 @@ void GetFeatures::Swap(GetFeatures* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int GetStoreInfo::kVersionFieldNumber;
 #endif  // !_MSC_VER
 
-GetStoreInfo::GetStoreInfo()
+GetStoreInfoV1::GetStoreInfoV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetStoreInfo::InitAsDefaultInstance() {
+void GetStoreInfoV1::InitAsDefaultInstance() {
 }
 
-GetStoreInfo::GetStoreInfo(const GetStoreInfo& from)
+GetStoreInfoV1::GetStoreInfoV1(const GetStoreInfoV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetStoreInfo::SharedCtor() {
+void GetStoreInfoV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetStoreInfo::~GetStoreInfo() {
+GetStoreInfoV1::~GetStoreInfoV1() {
   SharedDtor();
 }
 
-void GetStoreInfo::SharedDtor() {
+void GetStoreInfoV1::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void GetStoreInfo::SetCachedSize(int size) const {
+void GetStoreInfoV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetStoreInfo::descriptor() {
+const ::google::protobuf::Descriptor* GetStoreInfoV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetStoreInfo_descriptor_;
+  return GetStoreInfoV1_descriptor_;
 }
 
-const GetStoreInfo& GetStoreInfo::default_instance() {
+const GetStoreInfoV1& GetStoreInfoV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetStoreInfo* GetStoreInfo::default_instance_ = NULL;
+GetStoreInfoV1* GetStoreInfoV1::default_instance_ = NULL;
 
-GetStoreInfo* GetStoreInfo::New() const {
-  return new GetStoreInfo;
+GetStoreInfoV1* GetStoreInfoV1::New() const {
+  return new GetStoreInfoV1;
 }
 
-void GetStoreInfo::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-  }
+void GetStoreInfoV1::Clear() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool GetStoreInfo::MergePartialFromCodedStream(
+bool GetStoreInfoV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-      
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
+    if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+        ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+      return true;
     }
+    DO_(::google::protobuf::internal::WireFormat::SkipField(
+          input, tag, mutable_unknown_fields()));
   }
   return true;
 #undef DO_
 }
 
-void GetStoreInfo::SerializeWithCachedSizes(
+void GetStoreInfoV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
   }
 }
 
-::google::protobuf::uint8* GetStoreInfo::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetStoreInfoV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -854,18 +806,9 @@ void GetStoreInfo::SerializeWithCachedSizes(
   return target;
 }
 
-int GetStoreInfo::ByteSize() const {
+int GetStoreInfoV1::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-  }
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -877,10 +820,10 @@ int GetStoreInfo::ByteSize() const {
   return total_size;
 }
 
-void GetStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void GetStoreInfoV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetStoreInfo* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetStoreInfo*>(
+  const GetStoreInfoV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetStoreInfoV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -889,118 +832,106 @@ void GetStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetStoreInfo::MergeFrom(const GetStoreInfo& from) {
+void GetStoreInfoV1::MergeFrom(const GetStoreInfoV1& from) {
   GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetStoreInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void GetStoreInfoV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetStoreInfo::CopyFrom(const GetStoreInfo& from) {
+void GetStoreInfoV1::CopyFrom(const GetStoreInfoV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetStoreInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool GetStoreInfoV1::IsInitialized() const {
   
   return true;
 }
 
-void GetStoreInfo::Swap(GetStoreInfo* other) {
+void GetStoreInfoV1::Swap(GetStoreInfoV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
   }
 }
 
-::google::protobuf::Metadata GetStoreInfo::GetMetadata() const {
+::google::protobuf::Metadata GetStoreInfoV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetStoreInfo_descriptor_;
-  metadata.reflection = GetStoreInfo_reflection_;
+  metadata.descriptor = GetStoreInfoV1_descriptor_;
+  metadata.reflection = GetStoreInfoV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string GetBucketInfo::_default_path_;
 #ifndef _MSC_VER
-const int GetBucketInfo::kVersionFieldNumber;
-const int GetBucketInfo::kPathFieldNumber;
+const int GetBucketInfoV1::kPathFieldNumber;
 #endif  // !_MSC_VER
 
-GetBucketInfo::GetBucketInfo()
+GetBucketInfoV1::GetBucketInfoV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetBucketInfo::InitAsDefaultInstance() {
+void GetBucketInfoV1::InitAsDefaultInstance() {
 }
 
-GetBucketInfo::GetBucketInfo(const GetBucketInfo& from)
+GetBucketInfoV1::GetBucketInfoV1(const GetBucketInfoV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetBucketInfo::SharedCtor() {
+void GetBucketInfoV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetBucketInfo::~GetBucketInfo() {
+GetBucketInfoV1::~GetBucketInfoV1() {
   SharedDtor();
 }
 
-void GetBucketInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+void GetBucketInfoV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void GetBucketInfo::SetCachedSize(int size) const {
+void GetBucketInfoV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetBucketInfo::descriptor() {
+const ::google::protobuf::Descriptor* GetBucketInfoV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetBucketInfo_descriptor_;
+  return GetBucketInfoV1_descriptor_;
 }
 
-const GetBucketInfo& GetBucketInfo::default_instance() {
+const GetBucketInfoV1& GetBucketInfoV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetBucketInfo* GetBucketInfo::default_instance_ = NULL;
+GetBucketInfoV1* GetBucketInfoV1::default_instance_ = NULL;
 
-GetBucketInfo* GetBucketInfo::New() const {
-  return new GetBucketInfo;
+GetBucketInfoV1* GetBucketInfoV1::New() const {
+  return new GetBucketInfoV1;
 }
 
-void GetBucketInfo::Clear() {
+void GetBucketInfoV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -1009,32 +940,16 @@ void GetBucketInfo::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool GetBucketInfo::MergePartialFromCodedStream(
+bool GetBucketInfoV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -1063,20 +978,15 @@ bool GetBucketInfo::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void GetBucketInfo::SerializeWithCachedSizes(
+void GetBucketInfoV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1085,21 +995,16 @@ void GetBucketInfo::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* GetBucketInfo::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetBucketInfoV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1109,18 +1014,11 @@ void GetBucketInfo::SerializeWithCachedSizes(
   return target;
 }
 
-int GetBucketInfo::ByteSize() const {
+int GetBucketInfoV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1139,10 +1037,10 @@ int GetBucketInfo::ByteSize() const {
   return total_size;
 }
 
-void GetBucketInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void GetBucketInfoV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetBucketInfo* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetBucketInfo*>(
+  const GetBucketInfoV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetBucketInfoV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1151,40 +1049,35 @@ void GetBucketInfo::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetBucketInfo::MergeFrom(const GetBucketInfo& from) {
+void GetBucketInfoV1::MergeFrom(const GetBucketInfoV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetBucketInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void GetBucketInfoV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetBucketInfo::CopyFrom(const GetBucketInfo& from) {
+void GetBucketInfoV1::CopyFrom(const GetBucketInfoV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetBucketInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool GetBucketInfoV1::IsInitialized() const {
   
   return true;
 }
 
-void GetBucketInfo::Swap(GetBucketInfo* other) {
+void GetBucketInfoV1::Swap(GetBucketInfoV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1192,81 +1085,77 @@ void GetBucketInfo::Swap(GetBucketInfo* other) {
   }
 }
 
-::google::protobuf::Metadata GetBucketInfo::GetMetadata() const {
+::google::protobuf::Metadata GetBucketInfoV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetBucketInfo_descriptor_;
-  metadata.reflection = GetBucketInfo_reflection_;
+  metadata.descriptor = GetBucketInfoV1_descriptor_;
+  metadata.reflection = GetBucketInfoV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string GetStreamSetInfo::_default_path_;
 #ifndef _MSC_VER
-const int GetStreamSetInfo::kVersionFieldNumber;
-const int GetStreamSetInfo::kPathFieldNumber;
+const int GetStreamSetInfoV1::kPathFieldNumber;
 #endif  // !_MSC_VER
 
-GetStreamSetInfo::GetStreamSetInfo()
+GetStreamSetInfoV1::GetStreamSetInfoV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetStreamSetInfo::InitAsDefaultInstance() {
+void GetStreamSetInfoV1::InitAsDefaultInstance() {
 }
 
-GetStreamSetInfo::GetStreamSetInfo(const GetStreamSetInfo& from)
+GetStreamSetInfoV1::GetStreamSetInfoV1(const GetStreamSetInfoV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetStreamSetInfo::SharedCtor() {
+void GetStreamSetInfoV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetStreamSetInfo::~GetStreamSetInfo() {
+GetStreamSetInfoV1::~GetStreamSetInfoV1() {
   SharedDtor();
 }
 
-void GetStreamSetInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+void GetStreamSetInfoV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void GetStreamSetInfo::SetCachedSize(int size) const {
+void GetStreamSetInfoV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetStreamSetInfo::descriptor() {
+const ::google::protobuf::Descriptor* GetStreamSetInfoV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetStreamSetInfo_descriptor_;
+  return GetStreamSetInfoV1_descriptor_;
 }
 
-const GetStreamSetInfo& GetStreamSetInfo::default_instance() {
+const GetStreamSetInfoV1& GetStreamSetInfoV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetStreamSetInfo* GetStreamSetInfo::default_instance_ = NULL;
+GetStreamSetInfoV1* GetStreamSetInfoV1::default_instance_ = NULL;
 
-GetStreamSetInfo* GetStreamSetInfo::New() const {
-  return new GetStreamSetInfo;
+GetStreamSetInfoV1* GetStreamSetInfoV1::New() const {
+  return new GetStreamSetInfoV1;
 }
 
-void GetStreamSetInfo::Clear() {
+void GetStreamSetInfoV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -1275,32 +1164,16 @@ void GetStreamSetInfo::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool GetStreamSetInfo::MergePartialFromCodedStream(
+bool GetStreamSetInfoV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -1329,20 +1202,15 @@ bool GetStreamSetInfo::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void GetStreamSetInfo::SerializeWithCachedSizes(
+void GetStreamSetInfoV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1351,21 +1219,16 @@ void GetStreamSetInfo::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* GetStreamSetInfo::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetStreamSetInfoV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1375,18 +1238,11 @@ void GetStreamSetInfo::SerializeWithCachedSizes(
   return target;
 }
 
-int GetStreamSetInfo::ByteSize() const {
+int GetStreamSetInfoV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1405,10 +1261,10 @@ int GetStreamSetInfo::ByteSize() const {
   return total_size;
 }
 
-void GetStreamSetInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void GetStreamSetInfoV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetStreamSetInfo* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetStreamSetInfo*>(
+  const GetStreamSetInfoV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetStreamSetInfoV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1417,40 +1273,35 @@ void GetStreamSetInfo::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetStreamSetInfo::MergeFrom(const GetStreamSetInfo& from) {
+void GetStreamSetInfoV1::MergeFrom(const GetStreamSetInfoV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetStreamSetInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void GetStreamSetInfoV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetStreamSetInfo::CopyFrom(const GetStreamSetInfo& from) {
+void GetStreamSetInfoV1::CopyFrom(const GetStreamSetInfoV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetStreamSetInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool GetStreamSetInfoV1::IsInitialized() const {
   
   return true;
 }
 
-void GetStreamSetInfo::Swap(GetStreamSetInfo* other) {
+void GetStreamSetInfoV1::Swap(GetStreamSetInfoV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1458,81 +1309,77 @@ void GetStreamSetInfo::Swap(GetStreamSetInfo* other) {
   }
 }
 
-::google::protobuf::Metadata GetStreamSetInfo::GetMetadata() const {
+::google::protobuf::Metadata GetStreamSetInfoV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetStreamSetInfo_descriptor_;
-  metadata.reflection = GetStreamSetInfo_reflection_;
+  metadata.descriptor = GetStreamSetInfoV1_descriptor_;
+  metadata.reflection = GetStreamSetInfoV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string GetStreamInfo::_default_path_;
 #ifndef _MSC_VER
-const int GetStreamInfo::kVersionFieldNumber;
-const int GetStreamInfo::kPathFieldNumber;
+const int GetStreamInfoV1::kPathFieldNumber;
 #endif  // !_MSC_VER
 
-GetStreamInfo::GetStreamInfo()
+GetStreamInfoV1::GetStreamInfoV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetStreamInfo::InitAsDefaultInstance() {
+void GetStreamInfoV1::InitAsDefaultInstance() {
 }
 
-GetStreamInfo::GetStreamInfo(const GetStreamInfo& from)
+GetStreamInfoV1::GetStreamInfoV1(const GetStreamInfoV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetStreamInfo::SharedCtor() {
+void GetStreamInfoV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetStreamInfo::~GetStreamInfo() {
+GetStreamInfoV1::~GetStreamInfoV1() {
   SharedDtor();
 }
 
-void GetStreamInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+void GetStreamInfoV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void GetStreamInfo::SetCachedSize(int size) const {
+void GetStreamInfoV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetStreamInfo::descriptor() {
+const ::google::protobuf::Descriptor* GetStreamInfoV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetStreamInfo_descriptor_;
+  return GetStreamInfoV1_descriptor_;
 }
 
-const GetStreamInfo& GetStreamInfo::default_instance() {
+const GetStreamInfoV1& GetStreamInfoV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetStreamInfo* GetStreamInfo::default_instance_ = NULL;
+GetStreamInfoV1* GetStreamInfoV1::default_instance_ = NULL;
 
-GetStreamInfo* GetStreamInfo::New() const {
-  return new GetStreamInfo;
+GetStreamInfoV1* GetStreamInfoV1::New() const {
+  return new GetStreamInfoV1;
 }
 
-void GetStreamInfo::Clear() {
+void GetStreamInfoV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -1541,32 +1388,16 @@ void GetStreamInfo::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool GetStreamInfo::MergePartialFromCodedStream(
+bool GetStreamInfoV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -1595,20 +1426,15 @@ bool GetStreamInfo::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void GetStreamInfo::SerializeWithCachedSizes(
+void GetStreamInfoV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1617,21 +1443,16 @@ void GetStreamInfo::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* GetStreamInfo::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetStreamInfoV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1641,18 +1462,11 @@ void GetStreamInfo::SerializeWithCachedSizes(
   return target;
 }
 
-int GetStreamInfo::ByteSize() const {
+int GetStreamInfoV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -1671,10 +1485,10 @@ int GetStreamInfo::ByteSize() const {
   return total_size;
 }
 
-void GetStreamInfo::MergeFrom(const ::google::protobuf::Message& from) {
+void GetStreamInfoV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetStreamInfo* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetStreamInfo*>(
+  const GetStreamInfoV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetStreamInfoV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1683,40 +1497,35 @@ void GetStreamInfo::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetStreamInfo::MergeFrom(const GetStreamInfo& from) {
+void GetStreamInfoV1::MergeFrom(const GetStreamInfoV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetStreamInfo::CopyFrom(const ::google::protobuf::Message& from) {
+void GetStreamInfoV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetStreamInfo::CopyFrom(const GetStreamInfo& from) {
+void GetStreamInfoV1::CopyFrom(const GetStreamInfoV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetStreamInfo::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool GetStreamInfoV1::IsInitialized() const {
   
   return true;
 }
 
-void GetStreamInfo::Swap(GetStreamInfo* other) {
+void GetStreamInfoV1::Swap(GetStreamInfoV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -1724,87 +1533,83 @@ void GetStreamInfo::Swap(GetStreamInfo* other) {
   }
 }
 
-::google::protobuf::Metadata GetStreamInfo::GetMetadata() const {
+::google::protobuf::Metadata GetStreamInfoV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetStreamInfo_descriptor_;
-  metadata.reflection = GetStreamInfo_reflection_;
+  metadata.descriptor = GetStreamInfoV1_descriptor_;
+  metadata.reflection = GetStreamInfoV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string GetStream::_default_path_;
 #ifndef _MSC_VER
-const int GetStream::kVersionFieldNumber;
-const int GetStream::kPathFieldNumber;
-const int GetStream::kStartOffsetFieldNumber;
-const int GetStream::kMaxResponseBytesFieldNumber;
-const int GetStream::kMaxResponseEnvelopesFieldNumber;
+const int GetStreamV1::kPathFieldNumber;
+const int GetStreamV1::kStartOffsetFieldNumber;
+const int GetStreamV1::kMaxResponseBytesFieldNumber;
+const int GetStreamV1::kMaxResponseEnvelopesFieldNumber;
 #endif  // !_MSC_VER
 
-GetStream::GetStream()
+GetStreamV1::GetStreamV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void GetStream::InitAsDefaultInstance() {
+void GetStreamV1::InitAsDefaultInstance() {
 }
 
-GetStream::GetStream(const GetStream& from)
+GetStreamV1::GetStreamV1(const GetStreamV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void GetStream::SharedCtor() {
+void GetStreamV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   start_offset_ = GOOGLE_ULONGLONG(0);
   max_response_bytes_ = 0u;
   max_response_envelopes_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-GetStream::~GetStream() {
+GetStreamV1::~GetStreamV1() {
   SharedDtor();
 }
 
-void GetStream::SharedDtor() {
-  if (path_ != &_default_path_) {
+void GetStreamV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void GetStream::SetCachedSize(int size) const {
+void GetStreamV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* GetStream::descriptor() {
+const ::google::protobuf::Descriptor* GetStreamV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return GetStream_descriptor_;
+  return GetStreamV1_descriptor_;
 }
 
-const GetStream& GetStream::default_instance() {
+const GetStreamV1& GetStreamV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-GetStream* GetStream::default_instance_ = NULL;
+GetStreamV1* GetStreamV1::default_instance_ = NULL;
 
-GetStream* GetStream::New() const {
-  return new GetStream;
+GetStreamV1* GetStreamV1::New() const {
+  return new GetStreamV1;
 }
 
-void GetStream::Clear() {
+void GetStreamV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -1816,32 +1621,16 @@ void GetStream::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool GetStream::MergePartialFromCodedStream(
+bool GetStreamV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -1850,51 +1639,51 @@ bool GetStream::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_start_offset;
+        if (input->ExpectTag(16)) goto parse_start_offset;
         break;
       }
       
-      // optional uint64 start_offset = 3;
-      case 3: {
+      // optional uint64 start_offset = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_start_offset:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &start_offset_)));
-          _set_bit(2);
+          set_has_start_offset();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_max_response_bytes;
+        if (input->ExpectTag(24)) goto parse_max_response_bytes;
         break;
       }
       
-      // optional uint32 max_response_bytes = 4;
-      case 4: {
+      // optional uint32 max_response_bytes = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_max_response_bytes:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &max_response_bytes_)));
-          _set_bit(3);
+          set_has_max_response_bytes();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_max_response_envelopes;
+        if (input->ExpectTag(32)) goto parse_max_response_envelopes;
         break;
       }
       
-      // optional uint32 max_response_envelopes = 5;
-      case 5: {
+      // optional uint32 max_response_envelopes = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_max_response_envelopes:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &max_response_envelopes_)));
-          _set_bit(4);
+          set_has_max_response_envelopes();
         } else {
           goto handle_uninterpreted;
         }
@@ -1918,35 +1707,30 @@ bool GetStream::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void GetStream::SerializeWithCachedSizes(
+void GetStreamV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
-  // optional uint64 start_offset = 3;
-  if (_has_bit(2)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt64(3, this->start_offset(), output);
+  // optional uint64 start_offset = 2;
+  if (has_start_offset()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->start_offset(), output);
   }
   
-  // optional uint32 max_response_bytes = 4;
-  if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->max_response_bytes(), output);
+  // optional uint32 max_response_bytes = 3;
+  if (has_max_response_bytes()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(3, this->max_response_bytes(), output);
   }
   
-  // optional uint32 max_response_envelopes = 5;
-  if (_has_bit(4)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(5, this->max_response_envelopes(), output);
+  // optional uint32 max_response_envelopes = 4;
+  if (has_max_response_envelopes()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt32(4, this->max_response_envelopes(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1955,36 +1739,31 @@ void GetStream::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* GetStream::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* GetStreamV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
-  // optional uint64 start_offset = 3;
-  if (_has_bit(2)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(3, this->start_offset(), target);
+  // optional uint64 start_offset = 2;
+  if (has_start_offset()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->start_offset(), target);
   }
   
-  // optional uint32 max_response_bytes = 4;
-  if (_has_bit(3)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->max_response_bytes(), target);
+  // optional uint32 max_response_bytes = 3;
+  if (has_max_response_bytes()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(3, this->max_response_bytes(), target);
   }
   
-  // optional uint32 max_response_envelopes = 5;
-  if (_has_bit(4)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(5, this->max_response_envelopes(), target);
+  // optional uint32 max_response_envelopes = 4;
+  if (has_max_response_envelopes()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(4, this->max_response_envelopes(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1994,39 +1773,32 @@ void GetStream::SerializeWithCachedSizes(
   return target;
 }
 
-int GetStream::ByteSize() const {
+int GetStreamV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->path());
     }
     
-    // optional uint64 start_offset = 3;
+    // optional uint64 start_offset = 2;
     if (has_start_offset()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->start_offset());
     }
     
-    // optional uint32 max_response_bytes = 4;
+    // optional uint32 max_response_bytes = 3;
     if (has_max_response_bytes()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
           this->max_response_bytes());
     }
     
-    // optional uint32 max_response_envelopes = 5;
+    // optional uint32 max_response_envelopes = 4;
     if (has_max_response_envelopes()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt32Size(
@@ -2045,10 +1817,10 @@ int GetStream::ByteSize() const {
   return total_size;
 }
 
-void GetStream::MergeFrom(const ::google::protobuf::Message& from) {
+void GetStreamV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const GetStream* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const GetStream*>(
+  const GetStreamV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const GetStreamV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2057,49 +1829,44 @@ void GetStream::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void GetStream::MergeFrom(const GetStream& from) {
+void GetStreamV1::MergeFrom(const GetStreamV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
-    if (from._has_bit(2)) {
+    if (from.has_start_offset()) {
       set_start_offset(from.start_offset());
     }
-    if (from._has_bit(3)) {
+    if (from.has_max_response_bytes()) {
       set_max_response_bytes(from.max_response_bytes());
     }
-    if (from._has_bit(4)) {
+    if (from.has_max_response_envelopes()) {
       set_max_response_envelopes(from.max_response_envelopes());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void GetStream::CopyFrom(const ::google::protobuf::Message& from) {
+void GetStreamV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void GetStream::CopyFrom(const GetStream& from) {
+void GetStreamV1::CopyFrom(const GetStreamV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool GetStream::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool GetStreamV1::IsInitialized() const {
   
   return true;
 }
 
-void GetStream::Swap(GetStream* other) {
+void GetStreamV1::Swap(GetStreamV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     std::swap(start_offset_, other->start_offset_);
     std::swap(max_response_bytes_, other->max_response_bytes_);
@@ -2110,86 +1877,82 @@ void GetStream::Swap(GetStream* other) {
   }
 }
 
-::google::protobuf::Metadata GetStream::GetMetadata() const {
+::google::protobuf::Metadata GetStreamV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = GetStream_descriptor_;
-  metadata.reflection = GetStream_reflection_;
+  metadata.descriptor = GetStreamV1_descriptor_;
+  metadata.reflection = GetStreamV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string WriteEnvelope::_default_path_;
 #ifndef _MSC_VER
-const int WriteEnvelope::kVersionFieldNumber;
-const int WriteEnvelope::kPathFieldNumber;
-const int WriteEnvelope::kEnvelopeFieldNumber;
-const int WriteEnvelope::kAcknowledgeFieldNumber;
-const int WriteEnvelope::kSynchronousFieldNumber;
+const int WriteEnvelopeV1::kPathFieldNumber;
+const int WriteEnvelopeV1::kEnvelopeFieldNumber;
+const int WriteEnvelopeV1::kAcknowledgeFieldNumber;
+const int WriteEnvelopeV1::kSynchronousFieldNumber;
 #endif  // !_MSC_VER
 
-WriteEnvelope::WriteEnvelope()
+WriteEnvelopeV1::WriteEnvelopeV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void WriteEnvelope::InitAsDefaultInstance() {
+void WriteEnvelopeV1::InitAsDefaultInstance() {
 }
 
-WriteEnvelope::WriteEnvelope(const WriteEnvelope& from)
+WriteEnvelopeV1::WriteEnvelopeV1(const WriteEnvelopeV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void WriteEnvelope::SharedCtor() {
+void WriteEnvelopeV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   acknowledge_ = true;
   synchronous_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-WriteEnvelope::~WriteEnvelope() {
+WriteEnvelopeV1::~WriteEnvelopeV1() {
   SharedDtor();
 }
 
-void WriteEnvelope::SharedDtor() {
-  if (path_ != &_default_path_) {
+void WriteEnvelopeV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void WriteEnvelope::SetCachedSize(int size) const {
+void WriteEnvelopeV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* WriteEnvelope::descriptor() {
+const ::google::protobuf::Descriptor* WriteEnvelopeV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return WriteEnvelope_descriptor_;
+  return WriteEnvelopeV1_descriptor_;
 }
 
-const WriteEnvelope& WriteEnvelope::default_instance() {
+const WriteEnvelopeV1& WriteEnvelopeV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-WriteEnvelope* WriteEnvelope::default_instance_ = NULL;
+WriteEnvelopeV1* WriteEnvelopeV1::default_instance_ = NULL;
 
-WriteEnvelope* WriteEnvelope::New() const {
-  return new WriteEnvelope;
+WriteEnvelopeV1* WriteEnvelopeV1::New() const {
+  return new WriteEnvelopeV1;
 }
 
-void WriteEnvelope::Clear() {
+void WriteEnvelopeV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -2201,32 +1964,16 @@ void WriteEnvelope::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool WriteEnvelope::MergePartialFromCodedStream(
+bool WriteEnvelopeV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -2235,12 +1982,12 @@ bool WriteEnvelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_envelope;
+        if (input->ExpectTag(18)) goto parse_envelope;
         break;
       }
       
-      // repeated bytes envelope = 3;
-      case 3: {
+      // repeated bytes envelope = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_envelope:
@@ -2249,36 +1996,36 @@ bool WriteEnvelope::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_envelope;
-        if (input->ExpectTag(32)) goto parse_acknowledge;
+        if (input->ExpectTag(18)) goto parse_envelope;
+        if (input->ExpectTag(24)) goto parse_acknowledge;
         break;
       }
       
-      // optional bool acknowledge = 4 [default = true];
-      case 4: {
+      // optional bool acknowledge = 3 [default = true];
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_acknowledge:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &acknowledge_)));
-          _set_bit(3);
+          set_has_acknowledge();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_synchronous;
+        if (input->ExpectTag(32)) goto parse_synchronous;
         break;
       }
       
-      // optional bool synchronous = 5 [default = false];
-      case 5: {
+      // optional bool synchronous = 4 [default = false];
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_synchronous:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &synchronous_)));
-          _set_bit(4);
+          set_has_synchronous();
         } else {
           goto handle_uninterpreted;
         }
@@ -2302,36 +2049,31 @@ bool WriteEnvelope::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void WriteEnvelope::SerializeWithCachedSizes(
+void WriteEnvelopeV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
-  // repeated bytes envelope = 3;
+  // repeated bytes envelope = 2;
   for (int i = 0; i < this->envelope_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      3, this->envelope(i), output);
+      2, this->envelope(i), output);
   }
   
-  // optional bool acknowledge = 4 [default = true];
-  if (_has_bit(3)) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->acknowledge(), output);
+  // optional bool acknowledge = 3 [default = true];
+  if (has_acknowledge()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->acknowledge(), output);
   }
   
-  // optional bool synchronous = 5 [default = false];
-  if (_has_bit(4)) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->synchronous(), output);
+  // optional bool synchronous = 4 [default = false];
+  if (has_synchronous()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->synchronous(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2340,37 +2082,32 @@ void WriteEnvelope::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* WriteEnvelope::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* WriteEnvelopeV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
-  // repeated bytes envelope = 3;
+  // repeated bytes envelope = 2;
   for (int i = 0; i < this->envelope_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteBytesToArray(3, this->envelope(i), target);
+      WriteBytesToArray(2, this->envelope(i), target);
   }
   
-  // optional bool acknowledge = 4 [default = true];
-  if (_has_bit(3)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->acknowledge(), target);
+  // optional bool acknowledge = 3 [default = true];
+  if (has_acknowledge()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->acknowledge(), target);
   }
   
-  // optional bool synchronous = 5 [default = false];
-  if (_has_bit(4)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->synchronous(), target);
+  // optional bool synchronous = 4 [default = false];
+  if (has_synchronous()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->synchronous(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2380,36 +2117,29 @@ void WriteEnvelope::SerializeWithCachedSizes(
   return target;
 }
 
-int WriteEnvelope::ByteSize() const {
+int WriteEnvelopeV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->path());
     }
     
-    // optional bool acknowledge = 4 [default = true];
+    // optional bool acknowledge = 3 [default = true];
     if (has_acknowledge()) {
       total_size += 1 + 1;
     }
     
-    // optional bool synchronous = 5 [default = false];
+    // optional bool synchronous = 4 [default = false];
     if (has_synchronous()) {
       total_size += 1 + 1;
     }
     
   }
-  // repeated bytes envelope = 3;
+  // repeated bytes envelope = 2;
   total_size += 1 * this->envelope_size();
   for (int i = 0; i < this->envelope_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -2427,10 +2157,10 @@ int WriteEnvelope::ByteSize() const {
   return total_size;
 }
 
-void WriteEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
+void WriteEnvelopeV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const WriteEnvelope* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const WriteEnvelope*>(
+  const WriteEnvelopeV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WriteEnvelopeV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2439,47 +2169,42 @@ void WriteEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void WriteEnvelope::MergeFrom(const WriteEnvelope& from) {
+void WriteEnvelopeV1::MergeFrom(const WriteEnvelopeV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   envelope_.MergeFrom(from.envelope_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
-    if (from._has_bit(3)) {
+    if (from.has_acknowledge()) {
       set_acknowledge(from.acknowledge());
     }
-    if (from._has_bit(4)) {
+    if (from.has_synchronous()) {
       set_synchronous(from.synchronous());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void WriteEnvelope::CopyFrom(const ::google::protobuf::Message& from) {
+void WriteEnvelopeV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void WriteEnvelope::CopyFrom(const WriteEnvelope& from) {
+void WriteEnvelopeV1::CopyFrom(const WriteEnvelopeV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool WriteEnvelope::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool WriteEnvelopeV1::IsInitialized() const {
   
   return true;
 }
 
-void WriteEnvelope::Swap(WriteEnvelope* other) {
+void WriteEnvelopeV1::Swap(WriteEnvelopeV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     envelope_.Swap(&other->envelope_);
     std::swap(acknowledge_, other->acknowledge_);
@@ -2490,84 +2215,80 @@ void WriteEnvelope::Swap(WriteEnvelope* other) {
   }
 }
 
-::google::protobuf::Metadata WriteEnvelope::GetMetadata() const {
+::google::protobuf::Metadata WriteEnvelopeV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = WriteEnvelope_descriptor_;
-  metadata.reflection = WriteEnvelope_reflection_;
+  metadata.descriptor = WriteEnvelopeV1_descriptor_;
+  metadata.reflection = WriteEnvelopeV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string WriteEnvelopeFromMessages::_default_path_;
 #ifndef _MSC_VER
-const int WriteEnvelopeFromMessages::kVersionFieldNumber;
-const int WriteEnvelopeFromMessages::kPathFieldNumber;
-const int WriteEnvelopeFromMessages::kMessageFieldNumber;
-const int WriteEnvelopeFromMessages::kMessageNamespaceFieldNumber;
-const int WriteEnvelopeFromMessages::kMessageTypeFieldNumber;
+const int WriteEnvelopeFromMessagesV1::kPathFieldNumber;
+const int WriteEnvelopeFromMessagesV1::kMessageFieldNumber;
+const int WriteEnvelopeFromMessagesV1::kMessageNamespaceFieldNumber;
+const int WriteEnvelopeFromMessagesV1::kMessageTypeFieldNumber;
 #endif  // !_MSC_VER
 
-WriteEnvelopeFromMessages::WriteEnvelopeFromMessages()
+WriteEnvelopeFromMessagesV1::WriteEnvelopeFromMessagesV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void WriteEnvelopeFromMessages::InitAsDefaultInstance() {
+void WriteEnvelopeFromMessagesV1::InitAsDefaultInstance() {
 }
 
-WriteEnvelopeFromMessages::WriteEnvelopeFromMessages(const WriteEnvelopeFromMessages& from)
+WriteEnvelopeFromMessagesV1::WriteEnvelopeFromMessagesV1(const WriteEnvelopeFromMessagesV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void WriteEnvelopeFromMessages::SharedCtor() {
+void WriteEnvelopeFromMessagesV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-WriteEnvelopeFromMessages::~WriteEnvelopeFromMessages() {
+WriteEnvelopeFromMessagesV1::~WriteEnvelopeFromMessagesV1() {
   SharedDtor();
 }
 
-void WriteEnvelopeFromMessages::SharedDtor() {
-  if (path_ != &_default_path_) {
+void WriteEnvelopeFromMessagesV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
   }
 }
 
-void WriteEnvelopeFromMessages::SetCachedSize(int size) const {
+void WriteEnvelopeFromMessagesV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* WriteEnvelopeFromMessages::descriptor() {
+const ::google::protobuf::Descriptor* WriteEnvelopeFromMessagesV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return WriteEnvelopeFromMessages_descriptor_;
+  return WriteEnvelopeFromMessagesV1_descriptor_;
 }
 
-const WriteEnvelopeFromMessages& WriteEnvelopeFromMessages::default_instance() {
+const WriteEnvelopeFromMessagesV1& WriteEnvelopeFromMessagesV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-WriteEnvelopeFromMessages* WriteEnvelopeFromMessages::default_instance_ = NULL;
+WriteEnvelopeFromMessagesV1* WriteEnvelopeFromMessagesV1::default_instance_ = NULL;
 
-WriteEnvelopeFromMessages* WriteEnvelopeFromMessages::New() const {
-  return new WriteEnvelopeFromMessages;
+WriteEnvelopeFromMessagesV1* WriteEnvelopeFromMessagesV1::New() const {
+  return new WriteEnvelopeFromMessagesV1;
 }
 
-void WriteEnvelopeFromMessages::Clear() {
+void WriteEnvelopeFromMessagesV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -2579,32 +2300,16 @@ void WriteEnvelopeFromMessages::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
+bool WriteEnvelopeFromMessagesV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional string path = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // optional string path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_path:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->mutable_path()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
@@ -2613,12 +2318,12 @@ bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_message;
+        if (input->ExpectTag(18)) goto parse_message;
         break;
       }
       
-      // repeated bytes message = 3;
-      case 3: {
+      // repeated bytes message = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message:
@@ -2627,13 +2332,13 @@ bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_message;
-        if (input->ExpectTag(34)) goto parse_message_namespace;
+        if (input->ExpectTag(18)) goto parse_message;
+        if (input->ExpectTag(26)) goto parse_message_namespace;
         break;
       }
       
-      // repeated uint32 message_namespace = 4 [packed = true];
-      case 4: {
+      // repeated uint32 message_namespace = 3 [packed = true];
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message_namespace:
@@ -2645,16 +2350,16 @@ bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
                       WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 1, 34, input, this->mutable_message_namespace())));
+                 1, 26, input, this->mutable_message_namespace())));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(42)) goto parse_message_type;
+        if (input->ExpectTag(34)) goto parse_message_type;
         break;
       }
       
-      // repeated uint32 message_type = 5 [packed = true];
-      case 5: {
+      // repeated uint32 message_type = 4 [packed = true];
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_message_type:
@@ -2666,7 +2371,7 @@ bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
                       WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadRepeatedPrimitiveNoInline<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 1, 42, input, this->mutable_message_type())));
+                 1, 34, input, this->mutable_message_type())));
         } else {
           goto handle_uninterpreted;
         }
@@ -2690,31 +2395,26 @@ bool WriteEnvelopeFromMessages::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void WriteEnvelopeFromMessages::SerializeWithCachedSizes(
+void WriteEnvelopeFromMessagesV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(), output);
+      1, this->path(), output);
   }
   
-  // repeated bytes message = 3;
+  // repeated bytes message = 2;
   for (int i = 0; i < this->message_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      3, this->message(i), output);
+      2, this->message(i), output);
   }
   
-  // repeated uint32 message_namespace = 4 [packed = true];
+  // repeated uint32 message_namespace = 3 [packed = true];
   if (this->message_namespace_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(3, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_message_namespace_cached_byte_size_);
   }
   for (int i = 0; i < this->message_namespace_size(); i++) {
@@ -2722,9 +2422,9 @@ void WriteEnvelopeFromMessages::SerializeWithCachedSizes(
       this->message_namespace(i), output);
   }
   
-  // repeated uint32 message_type = 5 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   if (this->message_type_size() > 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteTag(5, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
+    ::google::protobuf::internal::WireFormatLite::WriteTag(4, ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED, output);
     output->WriteVarint32(_message_type_cached_byte_size_);
   }
   for (int i = 0; i < this->message_type_size(); i++) {
@@ -2738,33 +2438,28 @@ void WriteEnvelopeFromMessages::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* WriteEnvelopeFromMessages::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* WriteEnvelopeFromMessagesV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional string path = 2;
-  if (_has_bit(1)) {
+  // optional string path = 1;
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->path(), target);
+        1, this->path(), target);
   }
   
-  // repeated bytes message = 3;
+  // repeated bytes message = 2;
   for (int i = 0; i < this->message_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteBytesToArray(3, this->message(i), target);
+      WriteBytesToArray(2, this->message(i), target);
   }
   
-  // repeated uint32 message_namespace = 4 [packed = true];
+  // repeated uint32 message_namespace = 3 [packed = true];
   if (this->message_namespace_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      4,
+      3,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -2775,10 +2470,10 @@ void WriteEnvelopeFromMessages::SerializeWithCachedSizes(
       WriteUInt32NoTagToArray(this->message_namespace(i), target);
   }
   
-  // repeated uint32 message_type = 5 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   if (this->message_type_size() > 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteTagToArray(
-      5,
+      4,
       ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED,
       target);
     target = ::google::protobuf::io::CodedOutputStream::WriteVarint32ToArray(
@@ -2796,18 +2491,11 @@ void WriteEnvelopeFromMessages::SerializeWithCachedSizes(
   return target;
 }
 
-int WriteEnvelopeFromMessages::ByteSize() const {
+int WriteEnvelopeFromMessagesV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string path = 2;
+    // optional string path = 1;
     if (has_path()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -2815,14 +2503,14 @@ int WriteEnvelopeFromMessages::ByteSize() const {
     }
     
   }
-  // repeated bytes message = 3;
+  // repeated bytes message = 2;
   total_size += 1 * this->message_size();
   for (int i = 0; i < this->message_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::BytesSize(
       this->message(i));
   }
   
-  // repeated uint32 message_namespace = 4 [packed = true];
+  // repeated uint32 message_namespace = 3 [packed = true];
   {
     int data_size = 0;
     for (int i = 0; i < this->message_namespace_size(); i++) {
@@ -2837,7 +2525,7 @@ int WriteEnvelopeFromMessages::ByteSize() const {
     total_size += data_size;
   }
   
-  // repeated uint32 message_type = 5 [packed = true];
+  // repeated uint32 message_type = 4 [packed = true];
   {
     int data_size = 0;
     for (int i = 0; i < this->message_type_size(); i++) {
@@ -2863,10 +2551,10 @@ int WriteEnvelopeFromMessages::ByteSize() const {
   return total_size;
 }
 
-void WriteEnvelopeFromMessages::MergeFrom(const ::google::protobuf::Message& from) {
+void WriteEnvelopeFromMessagesV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const WriteEnvelopeFromMessages* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const WriteEnvelopeFromMessages*>(
+  const WriteEnvelopeFromMessagesV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WriteEnvelopeFromMessagesV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2875,43 +2563,38 @@ void WriteEnvelopeFromMessages::MergeFrom(const ::google::protobuf::Message& fro
   }
 }
 
-void WriteEnvelopeFromMessages::MergeFrom(const WriteEnvelopeFromMessages& from) {
+void WriteEnvelopeFromMessagesV1::MergeFrom(const WriteEnvelopeFromMessagesV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   message_.MergeFrom(from.message_);
   message_namespace_.MergeFrom(from.message_namespace_);
   message_type_.MergeFrom(from.message_type_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void WriteEnvelopeFromMessages::CopyFrom(const ::google::protobuf::Message& from) {
+void WriteEnvelopeFromMessagesV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void WriteEnvelopeFromMessages::CopyFrom(const WriteEnvelopeFromMessages& from) {
+void WriteEnvelopeFromMessagesV1::CopyFrom(const WriteEnvelopeFromMessagesV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool WriteEnvelopeFromMessages::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool WriteEnvelopeFromMessagesV1::IsInitialized() const {
   
   return true;
 }
 
-void WriteEnvelopeFromMessages::Swap(WriteEnvelopeFromMessages* other) {
+void WriteEnvelopeFromMessagesV1::Swap(WriteEnvelopeFromMessagesV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(path_, other->path_);
     message_.Swap(&other->message_);
     message_namespace_.Swap(&other->message_namespace_);
@@ -2922,11 +2605,11 @@ void WriteEnvelopeFromMessages::Swap(WriteEnvelopeFromMessages* other) {
   }
 }
 
-::google::protobuf::Metadata WriteEnvelopeFromMessages::GetMetadata() const {
+::google::protobuf::Metadata WriteEnvelopeFromMessagesV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = WriteEnvelopeFromMessages_descriptor_;
-  metadata.reflection = WriteEnvelopeFromMessages_reflection_;
+  metadata.descriptor = WriteEnvelopeFromMessagesV1_descriptor_;
+  metadata.reflection = WriteEnvelopeFromMessagesV1_reflection_;
   return metadata;
 }
 
@@ -2934,91 +2617,71 @@ void WriteEnvelopeFromMessages::Swap(WriteEnvelopeFromMessages* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int SubscribeStoreChanges::kVersionFieldNumber;
-const int SubscribeStoreChanges::kPathFieldNumber;
+const int SubscribeStoreChangesV1::kPathFieldNumber;
 #endif  // !_MSC_VER
 
-SubscribeStoreChanges::SubscribeStoreChanges()
+SubscribeStoreChangesV1::SubscribeStoreChangesV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void SubscribeStoreChanges::InitAsDefaultInstance() {
+void SubscribeStoreChangesV1::InitAsDefaultInstance() {
 }
 
-SubscribeStoreChanges::SubscribeStoreChanges(const SubscribeStoreChanges& from)
+SubscribeStoreChangesV1::SubscribeStoreChangesV1(const SubscribeStoreChangesV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void SubscribeStoreChanges::SharedCtor() {
+void SubscribeStoreChangesV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-SubscribeStoreChanges::~SubscribeStoreChanges() {
+SubscribeStoreChangesV1::~SubscribeStoreChangesV1() {
   SharedDtor();
 }
 
-void SubscribeStoreChanges::SharedDtor() {
+void SubscribeStoreChangesV1::SharedDtor() {
   if (this != default_instance_) {
   }
 }
 
-void SubscribeStoreChanges::SetCachedSize(int size) const {
+void SubscribeStoreChangesV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* SubscribeStoreChanges::descriptor() {
+const ::google::protobuf::Descriptor* SubscribeStoreChangesV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return SubscribeStoreChanges_descriptor_;
+  return SubscribeStoreChangesV1_descriptor_;
 }
 
-const SubscribeStoreChanges& SubscribeStoreChanges::default_instance() {
+const SubscribeStoreChangesV1& SubscribeStoreChangesV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-SubscribeStoreChanges* SubscribeStoreChanges::default_instance_ = NULL;
+SubscribeStoreChangesV1* SubscribeStoreChangesV1::default_instance_ = NULL;
 
-SubscribeStoreChanges* SubscribeStoreChanges::New() const {
-  return new SubscribeStoreChanges;
+SubscribeStoreChangesV1* SubscribeStoreChangesV1::New() const {
+  return new SubscribeStoreChangesV1;
 }
 
-void SubscribeStoreChanges::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-  }
+void SubscribeStoreChangesV1::Clear() {
   path_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
 
-bool SubscribeStoreChanges::MergePartialFromCodedStream(
+bool SubscribeStoreChangesV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // repeated string path = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // repeated string path = 2;
-      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_path:
@@ -3030,7 +2693,7 @@ bool SubscribeStoreChanges::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_path;
+        if (input->ExpectTag(10)) goto parse_path;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3051,20 +2714,15 @@ bool SubscribeStoreChanges::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void SubscribeStoreChanges::SerializeWithCachedSizes(
+void SubscribeStoreChangesV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // repeated string path = 2;
+  // repeated string path = 1;
   for (int i = 0; i < this->path_size(); i++) {
   ::google::protobuf::internal::WireFormat::VerifyUTF8String(
     this->path(i).data(), this->path(i).length(),
     ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(i), output);
+      1, this->path(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3073,20 +2731,15 @@ void SubscribeStoreChanges::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* SubscribeStoreChanges::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SubscribeStoreChangesV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // repeated string path = 2;
+  // repeated string path = 1;
   for (int i = 0; i < this->path_size(); i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path(i).data(), this->path(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(2, this->path(i), target);
+      WriteStringToArray(1, this->path(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3096,19 +2749,10 @@ void SubscribeStoreChanges::SerializeWithCachedSizes(
   return target;
 }
 
-int SubscribeStoreChanges::ByteSize() const {
+int SubscribeStoreChangesV1::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-  }
-  // repeated string path = 2;
+  // repeated string path = 1;
   total_size += 1 * this->path_size();
   for (int i = 0; i < this->path_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3126,10 +2770,10 @@ int SubscribeStoreChanges::ByteSize() const {
   return total_size;
 }
 
-void SubscribeStoreChanges::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeStoreChangesV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const SubscribeStoreChanges* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeStoreChanges*>(
+  const SubscribeStoreChangesV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeStoreChangesV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -3138,38 +2782,31 @@ void SubscribeStoreChanges::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void SubscribeStoreChanges::MergeFrom(const SubscribeStoreChanges& from) {
+void SubscribeStoreChangesV1::MergeFrom(const SubscribeStoreChangesV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   path_.MergeFrom(from.path_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void SubscribeStoreChanges::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeStoreChangesV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SubscribeStoreChanges::CopyFrom(const SubscribeStoreChanges& from) {
+void SubscribeStoreChangesV1::CopyFrom(const SubscribeStoreChangesV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SubscribeStoreChanges::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool SubscribeStoreChangesV1::IsInitialized() const {
   
   return true;
 }
 
-void SubscribeStoreChanges::Swap(SubscribeStoreChanges* other) {
+void SubscribeStoreChangesV1::Swap(SubscribeStoreChangesV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     path_.Swap(&other->path_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3177,82 +2814,78 @@ void SubscribeStoreChanges::Swap(SubscribeStoreChanges* other) {
   }
 }
 
-::google::protobuf::Metadata SubscribeStoreChanges::GetMetadata() const {
+::google::protobuf::Metadata SubscribeStoreChangesV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = SubscribeStoreChanges_descriptor_;
-  metadata.reflection = SubscribeStoreChanges_reflection_;
+  metadata.descriptor = SubscribeStoreChangesV1_descriptor_;
+  metadata.reflection = SubscribeStoreChangesV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string SubscribeEnvelopes::_default_lua_code_;
 #ifndef _MSC_VER
-const int SubscribeEnvelopes::kVersionFieldNumber;
-const int SubscribeEnvelopes::kPathFieldNumber;
-const int SubscribeEnvelopes::kLuaCodeFieldNumber;
+const int SubscribeEnvelopesV1::kPathFieldNumber;
+const int SubscribeEnvelopesV1::kLuaCodeFieldNumber;
 #endif  // !_MSC_VER
 
-SubscribeEnvelopes::SubscribeEnvelopes()
+SubscribeEnvelopesV1::SubscribeEnvelopesV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void SubscribeEnvelopes::InitAsDefaultInstance() {
+void SubscribeEnvelopesV1::InitAsDefaultInstance() {
 }
 
-SubscribeEnvelopes::SubscribeEnvelopes(const SubscribeEnvelopes& from)
+SubscribeEnvelopesV1::SubscribeEnvelopesV1(const SubscribeEnvelopesV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void SubscribeEnvelopes::SharedCtor() {
+void SubscribeEnvelopesV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  lua_code_ = const_cast< ::std::string*>(&_default_lua_code_);
+  lua_code_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-SubscribeEnvelopes::~SubscribeEnvelopes() {
+SubscribeEnvelopesV1::~SubscribeEnvelopesV1() {
   SharedDtor();
 }
 
-void SubscribeEnvelopes::SharedDtor() {
-  if (lua_code_ != &_default_lua_code_) {
+void SubscribeEnvelopesV1::SharedDtor() {
+  if (lua_code_ != &::google::protobuf::internal::kEmptyString) {
     delete lua_code_;
   }
   if (this != default_instance_) {
   }
 }
 
-void SubscribeEnvelopes::SetCachedSize(int size) const {
+void SubscribeEnvelopesV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* SubscribeEnvelopes::descriptor() {
+const ::google::protobuf::Descriptor* SubscribeEnvelopesV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return SubscribeEnvelopes_descriptor_;
+  return SubscribeEnvelopesV1_descriptor_;
 }
 
-const SubscribeEnvelopes& SubscribeEnvelopes::default_instance() {
+const SubscribeEnvelopesV1& SubscribeEnvelopesV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-SubscribeEnvelopes* SubscribeEnvelopes::default_instance_ = NULL;
+SubscribeEnvelopesV1* SubscribeEnvelopesV1::default_instance_ = NULL;
 
-SubscribeEnvelopes* SubscribeEnvelopes::New() const {
-  return new SubscribeEnvelopes;
+SubscribeEnvelopesV1* SubscribeEnvelopesV1::New() const {
+  return new SubscribeEnvelopesV1;
 }
 
-void SubscribeEnvelopes::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(2)) {
-      if (lua_code_ != &_default_lua_code_) {
+void SubscribeEnvelopesV1::Clear() {
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (has_lua_code()) {
+      if (lua_code_ != &::google::protobuf::internal::kEmptyString) {
         lua_code_->clear();
       }
     }
@@ -3262,29 +2895,14 @@ void SubscribeEnvelopes::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool SubscribeEnvelopes::MergePartialFromCodedStream(
+bool SubscribeEnvelopesV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // repeated string path = 1;
       case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_path;
-        break;
-      }
-      
-      // repeated string path = 2;
-      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_path:
@@ -3296,13 +2914,13 @@ bool SubscribeEnvelopes::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_path;
-        if (input->ExpectTag(26)) goto parse_lua_code;
+        if (input->ExpectTag(10)) goto parse_path;
+        if (input->ExpectTag(18)) goto parse_lua_code;
         break;
       }
       
-      // optional string lua_code = 3;
-      case 3: {
+      // optional string lua_code = 2;
+      case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_lua_code:
@@ -3334,29 +2952,24 @@ bool SubscribeEnvelopes::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void SubscribeEnvelopes::SerializeWithCachedSizes(
+void SubscribeEnvelopesV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // repeated string path = 2;
+  // repeated string path = 1;
   for (int i = 0; i < this->path_size(); i++) {
   ::google::protobuf::internal::WireFormat::VerifyUTF8String(
     this->path(i).data(), this->path(i).length(),
     ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->path(i), output);
+      1, this->path(i), output);
   }
   
-  // optional string lua_code = 3;
-  if (_has_bit(2)) {
+  // optional string lua_code = 2;
+  if (has_lua_code()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->lua_code().data(), this->lua_code().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->lua_code(), output);
+      2, this->lua_code(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3365,30 +2978,25 @@ void SubscribeEnvelopes::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* SubscribeEnvelopes::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SubscribeEnvelopesV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // repeated string path = 2;
+  // repeated string path = 1;
   for (int i = 0; i < this->path_size(); i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path(i).data(), this->path(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(2, this->path(i), target);
+      WriteStringToArray(1, this->path(i), target);
   }
   
-  // optional string lua_code = 3;
-  if (_has_bit(2)) {
+  // optional string lua_code = 2;
+  if (has_lua_code()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->lua_code().data(), this->lua_code().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->lua_code(), target);
+        2, this->lua_code(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3398,18 +3006,11 @@ void SubscribeEnvelopes::SerializeWithCachedSizes(
   return target;
 }
 
-int SubscribeEnvelopes::ByteSize() const {
+int SubscribeEnvelopesV1::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional string lua_code = 3;
+  if (_has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    // optional string lua_code = 2;
     if (has_lua_code()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3417,7 +3018,7 @@ int SubscribeEnvelopes::ByteSize() const {
     }
     
   }
-  // repeated string path = 2;
+  // repeated string path = 1;
   total_size += 1 * this->path_size();
   for (int i = 0; i < this->path_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3435,10 +3036,10 @@ int SubscribeEnvelopes::ByteSize() const {
   return total_size;
 }
 
-void SubscribeEnvelopes::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeEnvelopesV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const SubscribeEnvelopes* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeEnvelopes*>(
+  const SubscribeEnvelopesV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeEnvelopesV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -3447,41 +3048,36 @@ void SubscribeEnvelopes::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void SubscribeEnvelopes::MergeFrom(const SubscribeEnvelopes& from) {
+void SubscribeEnvelopesV1::MergeFrom(const SubscribeEnvelopesV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   path_.MergeFrom(from.path_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(2)) {
+  if (from._has_bits_[1 / 32] & (0xffu << (1 % 32))) {
+    if (from.has_lua_code()) {
       set_lua_code(from.lua_code());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void SubscribeEnvelopes::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeEnvelopesV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SubscribeEnvelopes::CopyFrom(const SubscribeEnvelopes& from) {
+void SubscribeEnvelopesV1::CopyFrom(const SubscribeEnvelopesV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SubscribeEnvelopes::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool SubscribeEnvelopesV1::IsInitialized() const {
   
   return true;
 }
 
-void SubscribeEnvelopes::Swap(SubscribeEnvelopes* other) {
+void SubscribeEnvelopesV1::Swap(SubscribeEnvelopesV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     path_.Swap(&other->path_);
     std::swap(lua_code_, other->lua_code_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
@@ -3490,81 +3086,77 @@ void SubscribeEnvelopes::Swap(SubscribeEnvelopes* other) {
   }
 }
 
-::google::protobuf::Metadata SubscribeEnvelopes::GetMetadata() const {
+::google::protobuf::Metadata SubscribeEnvelopesV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = SubscribeEnvelopes_descriptor_;
-  metadata.reflection = SubscribeEnvelopes_reflection_;
+  metadata.descriptor = SubscribeEnvelopesV1_descriptor_;
+  metadata.reflection = SubscribeEnvelopesV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string SubscribeKeepalive::_default_id_;
 #ifndef _MSC_VER
-const int SubscribeKeepalive::kVersionFieldNumber;
-const int SubscribeKeepalive::kIdFieldNumber;
+const int SubscribeKeepaliveV1::kIdFieldNumber;
 #endif  // !_MSC_VER
 
-SubscribeKeepalive::SubscribeKeepalive()
+SubscribeKeepaliveV1::SubscribeKeepaliveV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void SubscribeKeepalive::InitAsDefaultInstance() {
+void SubscribeKeepaliveV1::InitAsDefaultInstance() {
 }
 
-SubscribeKeepalive::SubscribeKeepalive(const SubscribeKeepalive& from)
+SubscribeKeepaliveV1::SubscribeKeepaliveV1(const SubscribeKeepaliveV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void SubscribeKeepalive::SharedCtor() {
+void SubscribeKeepaliveV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-SubscribeKeepalive::~SubscribeKeepalive() {
+SubscribeKeepaliveV1::~SubscribeKeepaliveV1() {
   SharedDtor();
 }
 
-void SubscribeKeepalive::SharedDtor() {
-  if (id_ != &_default_id_) {
+void SubscribeKeepaliveV1::SharedDtor() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
   }
 }
 
-void SubscribeKeepalive::SetCachedSize(int size) const {
+void SubscribeKeepaliveV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* SubscribeKeepalive::descriptor() {
+const ::google::protobuf::Descriptor* SubscribeKeepaliveV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return SubscribeKeepalive_descriptor_;
+  return SubscribeKeepaliveV1_descriptor_;
 }
 
-const SubscribeKeepalive& SubscribeKeepalive::default_instance() {
+const SubscribeKeepaliveV1& SubscribeKeepaliveV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-SubscribeKeepalive* SubscribeKeepalive::default_instance_ = NULL;
+SubscribeKeepaliveV1* SubscribeKeepaliveV1::default_instance_ = NULL;
 
-SubscribeKeepalive* SubscribeKeepalive::New() const {
-  return new SubscribeKeepalive;
+SubscribeKeepaliveV1* SubscribeKeepaliveV1::New() const {
+  return new SubscribeKeepaliveV1;
 }
 
-void SubscribeKeepalive::Clear() {
+void SubscribeKeepaliveV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3573,32 +3165,16 @@ void SubscribeKeepalive::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool SubscribeKeepalive::MergePartialFromCodedStream(
+bool SubscribeKeepaliveV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_id;
-        break;
-      }
-      
-      // optional bytes id = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3624,17 +3200,12 @@ bool SubscribeKeepalive::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void SubscribeKeepalive::SerializeWithCachedSizes(
+void SubscribeKeepaliveV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional bytes id = 2;
-  if (_has_bit(1)) {
+  // optional bytes id = 1;
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3643,18 +3214,13 @@ void SubscribeKeepalive::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* SubscribeKeepalive::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SubscribeKeepaliveV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional bytes id = 2;
-  if (_has_bit(1)) {
+  // optional bytes id = 1;
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3664,18 +3230,11 @@ void SubscribeKeepalive::SerializeWithCachedSizes(
   return target;
 }
 
-int SubscribeKeepalive::ByteSize() const {
+int SubscribeKeepaliveV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3694,10 +3253,10 @@ int SubscribeKeepalive::ByteSize() const {
   return total_size;
 }
 
-void SubscribeKeepalive::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeKeepaliveV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const SubscribeKeepalive* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeKeepalive*>(
+  const SubscribeKeepaliveV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeKeepaliveV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -3706,40 +3265,35 @@ void SubscribeKeepalive::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void SubscribeKeepalive::MergeFrom(const SubscribeKeepalive& from) {
+void SubscribeKeepaliveV1::MergeFrom(const SubscribeKeepaliveV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void SubscribeKeepalive::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeKeepaliveV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SubscribeKeepalive::CopyFrom(const SubscribeKeepalive& from) {
+void SubscribeKeepaliveV1::CopyFrom(const SubscribeKeepaliveV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SubscribeKeepalive::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool SubscribeKeepaliveV1::IsInitialized() const {
   
   return true;
 }
 
-void SubscribeKeepalive::Swap(SubscribeKeepalive* other) {
+void SubscribeKeepaliveV1::Swap(SubscribeKeepaliveV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -3747,81 +3301,77 @@ void SubscribeKeepalive::Swap(SubscribeKeepalive* other) {
   }
 }
 
-::google::protobuf::Metadata SubscribeKeepalive::GetMetadata() const {
+::google::protobuf::Metadata SubscribeKeepaliveV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = SubscribeKeepalive_descriptor_;
-  metadata.reflection = SubscribeKeepalive_reflection_;
+  metadata.descriptor = SubscribeKeepaliveV1_descriptor_;
+  metadata.reflection = SubscribeKeepaliveV1_reflection_;
   return metadata;
 }
 
 
 // ===================================================================
 
-const ::std::string SubscribeCancel::_default_id_;
 #ifndef _MSC_VER
-const int SubscribeCancel::kVersionFieldNumber;
-const int SubscribeCancel::kIdFieldNumber;
+const int SubscribeCancelV1::kIdFieldNumber;
 #endif  // !_MSC_VER
 
-SubscribeCancel::SubscribeCancel()
+SubscribeCancelV1::SubscribeCancelV1()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void SubscribeCancel::InitAsDefaultInstance() {
+void SubscribeCancelV1::InitAsDefaultInstance() {
 }
 
-SubscribeCancel::SubscribeCancel(const SubscribeCancel& from)
+SubscribeCancelV1::SubscribeCancelV1(const SubscribeCancelV1& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void SubscribeCancel::SharedCtor() {
+void SubscribeCancelV1::SharedCtor() {
   _cached_size_ = 0;
-  version_ = 0u;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-SubscribeCancel::~SubscribeCancel() {
+SubscribeCancelV1::~SubscribeCancelV1() {
   SharedDtor();
 }
 
-void SubscribeCancel::SharedDtor() {
-  if (id_ != &_default_id_) {
+void SubscribeCancelV1::SharedDtor() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
   }
 }
 
-void SubscribeCancel::SetCachedSize(int size) const {
+void SubscribeCancelV1::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* SubscribeCancel::descriptor() {
+const ::google::protobuf::Descriptor* SubscribeCancelV1::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return SubscribeCancel_descriptor_;
+  return SubscribeCancelV1_descriptor_;
 }
 
-const SubscribeCancel& SubscribeCancel::default_instance() {
+const SubscribeCancelV1& SubscribeCancelV1::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
 }
 
-SubscribeCancel* SubscribeCancel::default_instance_ = NULL;
+SubscribeCancelV1* SubscribeCancelV1::default_instance_ = NULL;
 
-SubscribeCancel* SubscribeCancel::New() const {
-  return new SubscribeCancel;
+SubscribeCancelV1* SubscribeCancelV1::New() const {
+  return new SubscribeCancelV1;
 }
 
-void SubscribeCancel::Clear() {
+void SubscribeCancelV1::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    version_ = 0u;
-    if (_has_bit(1)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3830,32 +3380,16 @@ void SubscribeCancel::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool SubscribeCancel::MergePartialFromCodedStream(
+bool SubscribeCancelV1::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required uint32 version = 1;
+      // optional bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
-                 input, &version_)));
-          _set_bit(0);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_id;
-        break;
-      }
-      
-      // optional bytes id = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_id()));
         } else {
@@ -3881,17 +3415,12 @@ bool SubscribeCancel::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void SubscribeCancel::SerializeWithCachedSizes(
+void SubscribeCancelV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
-  }
-  
-  // optional bytes id = 2;
-  if (_has_bit(1)) {
+  // optional bytes id = 1;
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->id(), output);
+      1, this->id(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3900,18 +3429,13 @@ void SubscribeCancel::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* SubscribeCancel::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* SubscribeCancelV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required uint32 version = 1;
-  if (_has_bit(0)) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
-  }
-  
-  // optional bytes id = 2;
-  if (_has_bit(1)) {
+  // optional bytes id = 1;
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->id(), target);
+        1, this->id(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3921,18 +3445,11 @@ void SubscribeCancel::SerializeWithCachedSizes(
   return target;
 }
 
-int SubscribeCancel::ByteSize() const {
+int SubscribeCancelV1::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required uint32 version = 1;
-    if (has_version()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::UInt32Size(
-          this->version());
-    }
-    
-    // optional bytes id = 2;
+    // optional bytes id = 1;
     if (has_id()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
@@ -3951,10 +3468,10 @@ int SubscribeCancel::ByteSize() const {
   return total_size;
 }
 
-void SubscribeCancel::MergeFrom(const ::google::protobuf::Message& from) {
+void SubscribeCancelV1::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const SubscribeCancel* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeCancel*>(
+  const SubscribeCancelV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SubscribeCancelV1*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -3963,40 +3480,35 @@ void SubscribeCancel::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void SubscribeCancel::MergeFrom(const SubscribeCancel& from) {
+void SubscribeCancelV1::MergeFrom(const SubscribeCancelV1& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
-      set_version(from.version());
-    }
-    if (from._has_bit(1)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void SubscribeCancel::CopyFrom(const ::google::protobuf::Message& from) {
+void SubscribeCancelV1::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void SubscribeCancel::CopyFrom(const SubscribeCancel& from) {
+void SubscribeCancelV1::CopyFrom(const SubscribeCancelV1& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool SubscribeCancel::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+bool SubscribeCancelV1::IsInitialized() const {
   
   return true;
 }
 
-void SubscribeCancel::Swap(SubscribeCancel* other) {
+void SubscribeCancelV1::Swap(SubscribeCancelV1* other) {
   if (other != this) {
-    std::swap(version_, other->version_);
     std::swap(id_, other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -4004,11 +3516,11 @@ void SubscribeCancel::Swap(SubscribeCancel* other) {
   }
 }
 
-::google::protobuf::Metadata SubscribeCancel::GetMetadata() const {
+::google::protobuf::Metadata SubscribeCancelV1::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = SubscribeCancel_descriptor_;
-  metadata.reflection = SubscribeCancel_reflection_;
+  metadata.descriptor = SubscribeCancelV1_descriptor_;
+  metadata.reflection = SubscribeCancelV1_reflection_;
   return metadata;
 }
 
@@ -4022,99 +3534,99 @@ bool Ping::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetFeatures::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetFeaturesV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetFeatures::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetFeaturesV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStoreInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetStoreInfoV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStoreInfo::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetStoreInfoV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetBucketInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetBucketInfoV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetBucketInfo::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetBucketInfoV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStreamSetInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetStreamSetInfoV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStreamSetInfo::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetStreamSetInfoV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStreamInfo::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetStreamInfoV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStreamInfo::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetStreamInfoV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStream::add_to_envelope(::zippylog::Envelope *envelope) {
+bool GetStreamV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool GetStream::add_to_envelope(::zippylog::Envelope &envelope) {
+bool GetStreamV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool WriteEnvelope::add_to_envelope(::zippylog::Envelope *envelope) {
+bool WriteEnvelopeV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool WriteEnvelope::add_to_envelope(::zippylog::Envelope &envelope) {
+bool WriteEnvelopeV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool WriteEnvelopeFromMessages::add_to_envelope(::zippylog::Envelope *envelope) {
+bool WriteEnvelopeFromMessagesV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool WriteEnvelopeFromMessages::add_to_envelope(::zippylog::Envelope &envelope) {
+bool WriteEnvelopeFromMessagesV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeStoreChanges::add_to_envelope(::zippylog::Envelope *envelope) {
+bool SubscribeStoreChangesV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeStoreChanges::add_to_envelope(::zippylog::Envelope &envelope) {
+bool SubscribeStoreChangesV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeEnvelopes::add_to_envelope(::zippylog::Envelope *envelope) {
+bool SubscribeEnvelopesV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeEnvelopes::add_to_envelope(::zippylog::Envelope &envelope) {
+bool SubscribeEnvelopesV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeKeepalive::add_to_envelope(::zippylog::Envelope *envelope) {
+bool SubscribeKeepaliveV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeKeepalive::add_to_envelope(::zippylog::Envelope &envelope) {
+bool SubscribeKeepaliveV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeCancel::add_to_envelope(::zippylog::Envelope *envelope) {
+bool SubscribeCancelV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
-bool SubscribeCancel::add_to_envelope(::zippylog::Envelope &envelope) {
+bool SubscribeCancelV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)

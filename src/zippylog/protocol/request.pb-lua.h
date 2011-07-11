@@ -59,15 +59,15 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_Ping_clear(lua_St
 
 // end of message Ping
 
-// Message GetFeatures
+// Message GetFeaturesV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeatures_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetFeatures &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeaturesV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetFeaturesV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -76,7 +76,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeatures_push
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeatures_pushreference(lua_State *L, ::zippylog::protocol::request::GetFeatures *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeaturesV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetFeaturesV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -84,31 +84,31 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetFeatures_push
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeatures_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetFeaturesV1_clear(lua_State *L);
 
-// end of message GetFeatures
+// end of message GetFeaturesV1
 
-// Message GetStoreInfo
+// Message GetStoreInfoV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfo_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStoreInfo &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStoreInfoV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -117,7 +117,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfo_pus
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfo_pushreference(lua_State *L, ::zippylog::protocol::request::GetStoreInfo *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStoreInfoV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -125,37 +125,31 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStoreInfo_pus
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfoV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStoreInfo_has_version(lua_State *L);
+// end of message GetStoreInfoV1
 
-// end of message GetStoreInfo
-
-// Message GetBucketInfo
+// Message GetBucketInfoV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfo_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetBucketInfo &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetBucketInfoV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -164,7 +158,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfo_pu
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfo_pushreference(lua_State *L, ::zippylog::protocol::request::GetBucketInfo *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetBucketInfoV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -172,43 +166,37 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetBucketInfo_pu
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfoV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetBucketInfo_has_path(lua_State *L);
+// end of message GetBucketInfoV1
 
-// end of message GetBucketInfo
-
-// Message GetStreamSetInfo
+// Message GetStreamSetInfoV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamSetInfo &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamSetInfoV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -217,7 +205,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfo
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamSetInfo *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamSetInfoV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -225,43 +213,37 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamSetInfo
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfoV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamSetInfo_has_path(lua_State *L);
+// end of message GetStreamSetInfoV1
 
-// end of message GetStreamSetInfo
-
-// Message GetStreamInfo
+// Message GetStreamInfoV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfo_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamInfo &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamInfoV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -270,7 +252,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfo_pu
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfo_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamInfo *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamInfoV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -278,43 +260,37 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamInfo_pu
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfoV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamInfo_has_path(lua_State *L);
+// end of message GetStreamInfoV1
 
-// end of message GetStreamInfo
-
-// Message GetStream
+// Message GetStreamV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStream_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStream &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::GetStreamV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -323,7 +299,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStream_pushco
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStream_pushreference(lua_State *L, ::zippylog::protocol::request::GetStream *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStreamV1_pushreference(lua_State *L, ::zippylog::protocol::request::GetStreamV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -331,61 +307,55 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_GetStream_pushre
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_has_path(lua_State *L);
+// optional uint64 start_offset = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_start_offset(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_start_offset(lua_State *L);
 
-// optional uint64 start_offset = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_get_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_set_start_offset(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_has_start_offset(lua_State *L);
+// optional uint32 max_response_bytes = 3
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_max_response_bytes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_max_response_bytes(lua_State *L);
 
-// optional uint32 max_response_bytes = 4
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_get_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_set_max_response_bytes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_has_max_response_bytes(lua_State *L);
+// optional uint32 max_response_envelopes = 4
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_clear_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_get_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_set_max_response_envelopes(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStreamV1_has_max_response_envelopes(lua_State *L);
 
-// optional uint32 max_response_envelopes = 5
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_clear_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_get_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_set_max_response_envelopes(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_GetStream_has_max_response_envelopes(lua_State *L);
+// end of message GetStreamV1
 
-// end of message GetStream
-
-// Message WriteEnvelope
+// Message WriteEnvelopeV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelope_pushcopy(lua_State *L, const ::zippylog::protocol::request::WriteEnvelope &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::WriteEnvelopeV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -394,7 +364,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelope_pu
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelope_pushreference(lua_State *L, ::zippylog::protocol::request::WriteEnvelope *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_pushreference(lua_State *L, ::zippylog::protocol::request::WriteEnvelopeV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -402,61 +372,55 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelope_pu
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_has_path(lua_State *L);
+// repeated bytes envelope = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear_envelope(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_get_envelope(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_set_envelope(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_size_envelope(lua_State *L);
 
-// repeated bytes envelope = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear_envelope(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_get_envelope(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_set_envelope(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_size_envelope(lua_State *L);
+// optional bool acknowledge = 3
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_get_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_set_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_has_acknowledge(lua_State *L);
 
-// optional bool acknowledge = 4
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear_acknowledge(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_get_acknowledge(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_set_acknowledge(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_has_acknowledge(lua_State *L);
+// optional bool synchronous = 4
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_clear_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_get_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_set_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeV1_has_synchronous(lua_State *L);
 
-// optional bool synchronous = 5
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_clear_synchronous(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_get_synchronous(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_set_synchronous(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelope_has_synchronous(lua_State *L);
+// end of message WriteEnvelopeV1
 
-// end of message WriteEnvelope
-
-// Message WriteEnvelopeFromMessages
+// Message WriteEnvelopeFromMessagesV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_pushcopy(lua_State *L, const ::zippylog::protocol::request::WriteEnvelopeFromMessages &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::WriteEnvelopeFromMessagesV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -465,7 +429,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFro
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_pushreference(lua_State *L, ::zippylog::protocol::request::WriteEnvelopeFromMessages *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_pushreference(lua_State *L, ::zippylog::protocol::request::WriteEnvelopeFromMessagesV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -473,61 +437,55 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFro
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_has_version(lua_State *L);
+// optional string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_has_path(lua_State *L);
 
-// optional string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_has_path(lua_State *L);
+// repeated bytes message = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear_message(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_get_message(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_set_message(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_size_message(lua_State *L);
 
-// repeated bytes message = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear_message(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_get_message(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_set_message(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_size_message(lua_State *L);
+// repeated uint32 message_namespace = 3
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear_message_namespace(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_get_message_namespace(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_set_message_namespace(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_size_message_namespace(lua_State *L);
 
-// repeated uint32 message_namespace = 4
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear_message_namespace(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_get_message_namespace(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_set_message_namespace(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_size_message_namespace(lua_State *L);
+// repeated uint32 message_type = 4
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_clear_message_type(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_get_message_type(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_set_message_type(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessagesV1_size_message_type(lua_State *L);
 
-// repeated uint32 message_type = 5
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_clear_message_type(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_get_message_type(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_set_message_type(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromMessages_size_message_type(lua_State *L);
+// end of message WriteEnvelopeFromMessagesV1
 
-// end of message WriteEnvelopeFromMessages
-
-// Message SubscribeStoreChanges
+// Message SubscribeStoreChangesV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeStoreChanges &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeStoreChangesV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -536,7 +494,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreCh
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeStoreChanges *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeStoreChangesV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -544,43 +502,37 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeStoreCh
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_has_version(lua_State *L);
+// repeated string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_size_path(lua_State *L);
 
-// repeated string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChanges_size_path(lua_State *L);
+// end of message SubscribeStoreChangesV1
 
-// end of message SubscribeStoreChanges
-
-// Message SubscribeEnvelopes
+// Message SubscribeEnvelopesV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeEnvelopes &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeEnvelopesV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -589,7 +541,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelop
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeEnvelopes *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeEnvelopesV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -597,49 +549,43 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeEnvelop
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_has_version(lua_State *L);
+// repeated string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_size_path(lua_State *L);
 
-// repeated string path = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_clear_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_get_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_set_path(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_size_path(lua_State *L);
+// optional string lua_code = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_clear_lua_code(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_get_lua_code(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_set_lua_code(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopesV1_has_lua_code(lua_State *L);
 
-// optional string lua_code = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_clear_lua_code(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_get_lua_code(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_set_lua_code(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeEnvelopes_has_lua_code(lua_State *L);
+// end of message SubscribeEnvelopesV1
 
-// end of message SubscribeEnvelopes
-
-// Message SubscribeKeepalive
+// Message SubscribeKeepaliveV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeKeepalive &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeKeepaliveV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -648,7 +594,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepali
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeKeepalive *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeKeepaliveV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -656,43 +602,37 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeKeepali
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_has_version(lua_State *L);
+// optional bytes id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_has_id(lua_State *L);
 
-// optional bytes id = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_clear_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_get_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_set_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepalive_has_id(lua_State *L);
+// end of message SubscribeKeepaliveV1
 
-// end of message SubscribeKeepalive
-
-// Message SubscribeCancel
+// Message SubscribeCancelV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancel_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeCancel &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::SubscribeCancelV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -701,7 +641,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancel_
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancel_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeCancel *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_pushreference(lua_State *L, ::zippylog::protocol::request::SubscribeCancelV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -709,33 +649,27 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_SubscribeCancel_
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_clear(lua_State *L);
 
-// required uint32 version = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_clear_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_get_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_set_version(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_has_version(lua_State *L);
+// optional bytes id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancelV1_has_id(lua_State *L);
 
-// optional bytes id = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_clear_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_get_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_set_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeCancel_has_id(lua_State *L);
-
-// end of message SubscribeCancel
+// end of message SubscribeCancelV1
 
 #ifdef __cplusplus
 }

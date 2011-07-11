@@ -7,6 +7,7 @@ from google.protobuf import descriptor_pb2
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/message.proto',
   package='zippylog.message',
@@ -161,8 +162,9 @@ _ACTORINFO = descriptor.Descriptor(
   serialized_end=395,
 )
 
-
 _ENVELOPE.fields_by_name['actor'].message_type = _ACTORINFO
+DESCRIPTOR.message_types_by_name['Envelope'] = _ENVELOPE
+DESCRIPTOR.message_types_by_name['ActorInfo'] = _ACTORINFO
 
 class Envelope(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

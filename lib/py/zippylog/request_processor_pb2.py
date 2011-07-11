@@ -8,6 +8,7 @@ from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/request_processor.proto',
   package='zippylog.request_processor',
@@ -904,7 +905,35 @@ _ENDPROCESSWRITEENVELOPE = descriptor.Descriptor(
   serialized_end=1249,
 )
 
-
+DESCRIPTOR.message_types_by_name['Create'] = _CREATE
+DESCRIPTOR.message_types_by_name['Destroy'] = _DESTROY
+DESCRIPTOR.message_types_by_name['RunStart'] = _RUNSTART
+DESCRIPTOR.message_types_by_name['RunStop'] = _RUNSTOP
+DESCRIPTOR.message_types_by_name['FailReceiveMessage'] = _FAILRECEIVEMESSAGE
+DESCRIPTOR.message_types_by_name['ReceiveEmptyMessage'] = _RECEIVEEMPTYMESSAGE
+DESCRIPTOR.message_types_by_name['UnknownMessageVersion'] = _UNKNOWNMESSAGEVERSION
+DESCRIPTOR.message_types_by_name['UnknownRequestType'] = _UNKNOWNREQUESTTYPE
+DESCRIPTOR.message_types_by_name['EnvelopeParseFailure'] = _ENVELOPEPARSEFAILURE
+DESCRIPTOR.message_types_by_name['EmptyEnvelope'] = _EMPTYENVELOPE
+DESCRIPTOR.message_types_by_name['InvalidMessageEnumeration'] = _INVALIDMESSAGEENUMERATION
+DESCRIPTOR.message_types_by_name['EnvelopeEmbeddedMessageParseFailure'] = _ENVELOPEEMBEDDEDMESSAGEPARSEFAILURE
+DESCRIPTOR.message_types_by_name['BeginProcessStoreInfo'] = _BEGINPROCESSSTOREINFO
+DESCRIPTOR.message_types_by_name['EndProcessStoreInfo'] = _ENDPROCESSSTOREINFO
+DESCRIPTOR.message_types_by_name['ReceiveInvalidGet'] = _RECEIVEINVALIDGET
+DESCRIPTOR.message_types_by_name['GetInvalidStream'] = _GETINVALIDSTREAM
+DESCRIPTOR.message_types_by_name['GetInvalidOffset'] = _GETINVALIDOFFSET
+DESCRIPTOR.message_types_by_name['BeginProcessGetStream'] = _BEGINPROCESSGETSTREAM
+DESCRIPTOR.message_types_by_name['EndProcessGetStream'] = _ENDPROCESSGETSTREAM
+DESCRIPTOR.message_types_by_name['SendErrorResponse'] = _SENDERRORRESPONSE
+DESCRIPTOR.message_types_by_name['ForwardSubscribeKeepalive'] = _FORWARDSUBSCRIBEKEEPALIVE
+DESCRIPTOR.message_types_by_name['BeginProcessBucketInfo'] = _BEGINPROCESSBUCKETINFO
+DESCRIPTOR.message_types_by_name['EndProcessBucketInfo'] = _ENDPROCESSBUCKETINFO
+DESCRIPTOR.message_types_by_name['BeginProcessStreamSetInfo'] = _BEGINPROCESSSTREAMSETINFO
+DESCRIPTOR.message_types_by_name['EndProcessStreamSetInfo'] = _ENDPROCESSSTREAMSETINFO
+DESCRIPTOR.message_types_by_name['BeginProcessStreamInfo'] = _BEGINPROCESSSTREAMINFO
+DESCRIPTOR.message_types_by_name['EndProcessStreamInfo'] = _ENDPROCESSSTREAMINFO
+DESCRIPTOR.message_types_by_name['BeginProcessWriteEnvelope'] = _BEGINPROCESSWRITEENVELOPE
+DESCRIPTOR.message_types_by_name['EndProcessWriteEnvelope'] = _ENDPROCESSWRITEENVELOPE
 
 class Create(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

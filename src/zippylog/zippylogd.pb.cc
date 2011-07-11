@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/zippylogd.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -219,8 +222,6 @@ struct StaticDescriptorInitializer_zippylog_2fzippylogd_2eproto {
 
 // ===================================================================
 
-const ::std::string BrokerStartup::_default_id_;
-const ::std::string BrokerStartup::_default_store_path_;
 #ifndef _MSC_VER
 const int BrokerStartup::kIdFieldNumber;
 const int BrokerStartup::kStorePathFieldNumber;
@@ -243,8 +244,8 @@ BrokerStartup::BrokerStartup(const BrokerStartup& from)
 
 void BrokerStartup::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  store_path_ = const_cast< ::std::string*>(&_default_store_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  store_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -253,10 +254,10 @@ BrokerStartup::~BrokerStartup() {
 }
 
 void BrokerStartup::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (store_path_ != &_default_store_path_) {
+  if (store_path_ != &::google::protobuf::internal::kEmptyString) {
     delete store_path_;
   }
   if (this != default_instance_) {
@@ -285,13 +286,13 @@ BrokerStartup* BrokerStartup::New() const {
 
 void BrokerStartup::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (store_path_ != &_default_store_path_) {
+    if (has_store_path()) {
+      if (store_path_ != &::google::protobuf::internal::kEmptyString) {
         store_path_->clear();
       }
     }
@@ -374,13 +375,13 @@ bool BrokerStartup::MergePartialFromCodedStream(
 void BrokerStartup::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string store_path = 2;
-  if (_has_bit(1)) {
+  if (has_store_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->store_path().data(), this->store_path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -406,14 +407,14 @@ void BrokerStartup::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BrokerStartup::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string store_path = 2;
-  if (_has_bit(1)) {
+  if (has_store_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->store_path().data(), this->store_path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -491,10 +492,10 @@ void BrokerStartup::MergeFrom(const BrokerStartup& from) {
   GOOGLE_CHECK_NE(&from, this);
   listen_endpoints_.MergeFrom(from.listen_endpoints_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_store_path()) {
       set_store_path(from.store_path());
     }
   }
@@ -540,7 +541,6 @@ void BrokerStartup::Swap(BrokerStartup* other) {
 
 // ===================================================================
 
-const ::std::string BrokerShutdown::_default_id_;
 #ifndef _MSC_VER
 const int BrokerShutdown::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -561,7 +561,7 @@ BrokerShutdown::BrokerShutdown(const BrokerShutdown& from)
 
 void BrokerShutdown::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -570,7 +570,7 @@ BrokerShutdown::~BrokerShutdown() {
 }
 
 void BrokerShutdown::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -599,8 +599,8 @@ BrokerShutdown* BrokerShutdown::New() const {
 
 void BrokerShutdown::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -647,7 +647,7 @@ bool BrokerShutdown::MergePartialFromCodedStream(
 void BrokerShutdown::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -661,7 +661,7 @@ void BrokerShutdown::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BrokerShutdown::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -712,7 +712,7 @@ void BrokerShutdown::MergeFrom(const ::google::protobuf::Message& from) {
 void BrokerShutdown::MergeFrom(const BrokerShutdown& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -911,7 +911,6 @@ void BrokerReceiveClientMessage::Swap(BrokerReceiveClientMessage* other) {
 
 // ===================================================================
 
-const ::std::string BrokerFlushOutputStreams::_default_id_;
 #ifndef _MSC_VER
 const int BrokerFlushOutputStreams::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -932,7 +931,7 @@ BrokerFlushOutputStreams::BrokerFlushOutputStreams(const BrokerFlushOutputStream
 
 void BrokerFlushOutputStreams::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -941,7 +940,7 @@ BrokerFlushOutputStreams::~BrokerFlushOutputStreams() {
 }
 
 void BrokerFlushOutputStreams::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -970,8 +969,8 @@ BrokerFlushOutputStreams* BrokerFlushOutputStreams::New() const {
 
 void BrokerFlushOutputStreams::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1018,7 +1017,7 @@ bool BrokerFlushOutputStreams::MergePartialFromCodedStream(
 void BrokerFlushOutputStreams::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1032,7 +1031,7 @@ void BrokerFlushOutputStreams::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BrokerFlushOutputStreams::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1083,7 +1082,7 @@ void BrokerFlushOutputStreams::MergeFrom(const ::google::protobuf::Message& from
 void BrokerFlushOutputStreams::MergeFrom(const BrokerFlushOutputStreams& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1127,7 +1126,6 @@ void BrokerFlushOutputStreams::Swap(BrokerFlushOutputStreams* other) {
 
 // ===================================================================
 
-const ::std::string StoreWatcherStartup::_default_id_;
 #ifndef _MSC_VER
 const int StoreWatcherStartup::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1148,7 +1146,7 @@ StoreWatcherStartup::StoreWatcherStartup(const StoreWatcherStartup& from)
 
 void StoreWatcherStartup::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1157,7 +1155,7 @@ StoreWatcherStartup::~StoreWatcherStartup() {
 }
 
 void StoreWatcherStartup::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1186,8 +1184,8 @@ StoreWatcherStartup* StoreWatcherStartup::New() const {
 
 void StoreWatcherStartup::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1234,7 +1232,7 @@ bool StoreWatcherStartup::MergePartialFromCodedStream(
 void StoreWatcherStartup::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1248,7 +1246,7 @@ void StoreWatcherStartup::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreWatcherStartup::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1299,7 +1297,7 @@ void StoreWatcherStartup::MergeFrom(const ::google::protobuf::Message& from) {
 void StoreWatcherStartup::MergeFrom(const StoreWatcherStartup& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1343,7 +1341,6 @@ void StoreWatcherStartup::Swap(StoreWatcherStartup* other) {
 
 // ===================================================================
 
-const ::std::string StoreWatcherShutdown::_default_id_;
 #ifndef _MSC_VER
 const int StoreWatcherShutdown::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1364,7 +1361,7 @@ StoreWatcherShutdown::StoreWatcherShutdown(const StoreWatcherShutdown& from)
 
 void StoreWatcherShutdown::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1373,7 +1370,7 @@ StoreWatcherShutdown::~StoreWatcherShutdown() {
 }
 
 void StoreWatcherShutdown::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1402,8 +1399,8 @@ StoreWatcherShutdown* StoreWatcherShutdown::New() const {
 
 void StoreWatcherShutdown::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1450,7 +1447,7 @@ bool StoreWatcherShutdown::MergePartialFromCodedStream(
 void StoreWatcherShutdown::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1464,7 +1461,7 @@ void StoreWatcherShutdown::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreWatcherShutdown::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1515,7 +1512,7 @@ void StoreWatcherShutdown::MergeFrom(const ::google::protobuf::Message& from) {
 void StoreWatcherShutdown::MergeFrom(const StoreWatcherShutdown& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }

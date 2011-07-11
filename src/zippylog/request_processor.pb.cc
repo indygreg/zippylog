@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/request_processor.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -805,7 +808,6 @@ struct StaticDescriptorInitializer_zippylog_2frequest_5fprocessor_2eproto {
 
 // ===================================================================
 
-const ::std::string Create::_default_id_;
 #ifndef _MSC_VER
 const int Create::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -826,7 +828,7 @@ Create::Create(const Create& from)
 
 void Create::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -835,7 +837,7 @@ Create::~Create() {
 }
 
 void Create::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -864,8 +866,8 @@ Create* Create::New() const {
 
 void Create::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -912,7 +914,7 @@ bool Create::MergePartialFromCodedStream(
 void Create::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -926,7 +928,7 @@ void Create::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Create::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -977,7 +979,7 @@ void Create::MergeFrom(const ::google::protobuf::Message& from) {
 void Create::MergeFrom(const Create& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1021,7 +1023,6 @@ void Create::Swap(Create* other) {
 
 // ===================================================================
 
-const ::std::string Destroy::_default_id_;
 #ifndef _MSC_VER
 const int Destroy::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1042,7 +1043,7 @@ Destroy::Destroy(const Destroy& from)
 
 void Destroy::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1051,7 +1052,7 @@ Destroy::~Destroy() {
 }
 
 void Destroy::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1080,8 +1081,8 @@ Destroy* Destroy::New() const {
 
 void Destroy::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1128,7 +1129,7 @@ bool Destroy::MergePartialFromCodedStream(
 void Destroy::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1142,7 +1143,7 @@ void Destroy::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Destroy::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1193,7 +1194,7 @@ void Destroy::MergeFrom(const ::google::protobuf::Message& from) {
 void Destroy::MergeFrom(const Destroy& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1237,7 +1238,6 @@ void Destroy::Swap(Destroy* other) {
 
 // ===================================================================
 
-const ::std::string RunStart::_default_id_;
 #ifndef _MSC_VER
 const int RunStart::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1258,7 +1258,7 @@ RunStart::RunStart(const RunStart& from)
 
 void RunStart::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1267,7 +1267,7 @@ RunStart::~RunStart() {
 }
 
 void RunStart::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1296,8 +1296,8 @@ RunStart* RunStart::New() const {
 
 void RunStart::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1344,7 +1344,7 @@ bool RunStart::MergePartialFromCodedStream(
 void RunStart::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1358,7 +1358,7 @@ void RunStart::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RunStart::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1409,7 +1409,7 @@ void RunStart::MergeFrom(const ::google::protobuf::Message& from) {
 void RunStart::MergeFrom(const RunStart& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1453,7 +1453,6 @@ void RunStart::Swap(RunStart* other) {
 
 // ===================================================================
 
-const ::std::string RunStop::_default_id_;
 #ifndef _MSC_VER
 const int RunStop::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1474,7 +1473,7 @@ RunStop::RunStop(const RunStop& from)
 
 void RunStop::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1483,7 +1482,7 @@ RunStop::~RunStop() {
 }
 
 void RunStop::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1512,8 +1511,8 @@ RunStop* RunStop::New() const {
 
 void RunStop::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1560,7 +1559,7 @@ bool RunStop::MergePartialFromCodedStream(
 void RunStop::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 2;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->id(), output);
   }
@@ -1574,7 +1573,7 @@ void RunStop::SerializeWithCachedSizes(
 ::google::protobuf::uint8* RunStop::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 2;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->id(), target);
@@ -1625,7 +1624,7 @@ void RunStop::MergeFrom(const ::google::protobuf::Message& from) {
 void RunStop::MergeFrom(const RunStop& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1669,7 +1668,6 @@ void RunStop::Swap(RunStop* other) {
 
 // ===================================================================
 
-const ::std::string FailReceiveMessage::_default_id_;
 #ifndef _MSC_VER
 const int FailReceiveMessage::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1690,7 +1688,7 @@ FailReceiveMessage::FailReceiveMessage(const FailReceiveMessage& from)
 
 void FailReceiveMessage::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1699,7 +1697,7 @@ FailReceiveMessage::~FailReceiveMessage() {
 }
 
 void FailReceiveMessage::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1728,8 +1726,8 @@ FailReceiveMessage* FailReceiveMessage::New() const {
 
 void FailReceiveMessage::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1776,7 +1774,7 @@ bool FailReceiveMessage::MergePartialFromCodedStream(
 void FailReceiveMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -1790,7 +1788,7 @@ void FailReceiveMessage::SerializeWithCachedSizes(
 ::google::protobuf::uint8* FailReceiveMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -1841,7 +1839,7 @@ void FailReceiveMessage::MergeFrom(const ::google::protobuf::Message& from) {
 void FailReceiveMessage::MergeFrom(const FailReceiveMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -1885,7 +1883,6 @@ void FailReceiveMessage::Swap(FailReceiveMessage* other) {
 
 // ===================================================================
 
-const ::std::string ReceiveEmptyMessage::_default_id_;
 #ifndef _MSC_VER
 const int ReceiveEmptyMessage::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -1906,7 +1903,7 @@ ReceiveEmptyMessage::ReceiveEmptyMessage(const ReceiveEmptyMessage& from)
 
 void ReceiveEmptyMessage::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1915,7 +1912,7 @@ ReceiveEmptyMessage::~ReceiveEmptyMessage() {
 }
 
 void ReceiveEmptyMessage::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -1944,8 +1941,8 @@ ReceiveEmptyMessage* ReceiveEmptyMessage::New() const {
 
 void ReceiveEmptyMessage::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -1992,7 +1989,7 @@ bool ReceiveEmptyMessage::MergePartialFromCodedStream(
 void ReceiveEmptyMessage::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -2006,7 +2003,7 @@ void ReceiveEmptyMessage::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ReceiveEmptyMessage::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -2057,7 +2054,7 @@ void ReceiveEmptyMessage::MergeFrom(const ::google::protobuf::Message& from) {
 void ReceiveEmptyMessage::MergeFrom(const ReceiveEmptyMessage& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -2101,7 +2098,6 @@ void ReceiveEmptyMessage::Swap(ReceiveEmptyMessage* other) {
 
 // ===================================================================
 
-const ::std::string UnknownMessageVersion::_default_id_;
 #ifndef _MSC_VER
 const int UnknownMessageVersion::kIdFieldNumber;
 const int UnknownMessageVersion::kVersionFieldNumber;
@@ -2123,7 +2119,7 @@ UnknownMessageVersion::UnknownMessageVersion(const UnknownMessageVersion& from)
 
 void UnknownMessageVersion::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   version_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -2133,7 +2129,7 @@ UnknownMessageVersion::~UnknownMessageVersion() {
 }
 
 void UnknownMessageVersion::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -2162,8 +2158,8 @@ UnknownMessageVersion* UnknownMessageVersion::New() const {
 
 void UnknownMessageVersion::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -2200,7 +2196,7 @@ bool UnknownMessageVersion::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &version_)));
-          _set_bit(1);
+          set_has_version();
         } else {
           goto handle_uninterpreted;
         }
@@ -2227,13 +2223,13 @@ bool UnknownMessageVersion::MergePartialFromCodedStream(
 void UnknownMessageVersion::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional uint32 version = 2;
-  if (_has_bit(1)) {
+  if (has_version()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->version(), output);
   }
   
@@ -2246,14 +2242,14 @@ void UnknownMessageVersion::SerializeWithCachedSizes(
 ::google::protobuf::uint8* UnknownMessageVersion::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional uint32 version = 2;
-  if (_has_bit(1)) {
+  if (has_version()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->version(), target);
   }
   
@@ -2309,10 +2305,10 @@ void UnknownMessageVersion::MergeFrom(const ::google::protobuf::Message& from) {
 void UnknownMessageVersion::MergeFrom(const UnknownMessageVersion& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_version()) {
       set_version(from.version());
     }
   }
@@ -2357,7 +2353,6 @@ void UnknownMessageVersion::Swap(UnknownMessageVersion* other) {
 
 // ===================================================================
 
-const ::std::string UnknownRequestType::_default_id_;
 #ifndef _MSC_VER
 const int UnknownRequestType::kIdFieldNumber;
 const int UnknownRequestType::kEnumerationFieldNumber;
@@ -2379,7 +2374,7 @@ UnknownRequestType::UnknownRequestType(const UnknownRequestType& from)
 
 void UnknownRequestType::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   enumeration_ = 0u;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -2389,7 +2384,7 @@ UnknownRequestType::~UnknownRequestType() {
 }
 
 void UnknownRequestType::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -2418,8 +2413,8 @@ UnknownRequestType* UnknownRequestType::New() const {
 
 void UnknownRequestType::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -2456,7 +2451,7 @@ bool UnknownRequestType::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &enumeration_)));
-          _set_bit(1);
+          set_has_enumeration();
         } else {
           goto handle_uninterpreted;
         }
@@ -2483,13 +2478,13 @@ bool UnknownRequestType::MergePartialFromCodedStream(
 void UnknownRequestType::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional uint32 enumeration = 2;
-  if (_has_bit(1)) {
+  if (has_enumeration()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(2, this->enumeration(), output);
   }
   
@@ -2502,14 +2497,14 @@ void UnknownRequestType::SerializeWithCachedSizes(
 ::google::protobuf::uint8* UnknownRequestType::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional uint32 enumeration = 2;
-  if (_has_bit(1)) {
+  if (has_enumeration()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(2, this->enumeration(), target);
   }
   
@@ -2565,10 +2560,10 @@ void UnknownRequestType::MergeFrom(const ::google::protobuf::Message& from) {
 void UnknownRequestType::MergeFrom(const UnknownRequestType& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_enumeration()) {
       set_enumeration(from.enumeration());
     }
   }
@@ -2613,8 +2608,6 @@ void UnknownRequestType::Swap(UnknownRequestType* other) {
 
 // ===================================================================
 
-const ::std::string EnvelopeParseFailure::_default_id_;
-const ::std::string EnvelopeParseFailure::_default_data_;
 #ifndef _MSC_VER
 const int EnvelopeParseFailure::kIdFieldNumber;
 const int EnvelopeParseFailure::kDataFieldNumber;
@@ -2636,8 +2629,8 @@ EnvelopeParseFailure::EnvelopeParseFailure(const EnvelopeParseFailure& from)
 
 void EnvelopeParseFailure::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  data_ = const_cast< ::std::string*>(&_default_data_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2646,10 +2639,10 @@ EnvelopeParseFailure::~EnvelopeParseFailure() {
 }
 
 void EnvelopeParseFailure::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (data_ != &_default_data_) {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }
   if (this != default_instance_) {
@@ -2678,13 +2671,13 @@ EnvelopeParseFailure* EnvelopeParseFailure::New() const {
 
 void EnvelopeParseFailure::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (data_ != &_default_data_) {
+    if (has_data()) {
+      if (data_ != &::google::protobuf::internal::kEmptyString) {
         data_->clear();
       }
     }
@@ -2745,13 +2738,13 @@ bool EnvelopeParseFailure::MergePartialFromCodedStream(
 void EnvelopeParseFailure::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes data = 2;
-  if (_has_bit(1)) {
+  if (has_data()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->data(), output);
   }
@@ -2765,14 +2758,14 @@ void EnvelopeParseFailure::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EnvelopeParseFailure::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes data = 2;
-  if (_has_bit(1)) {
+  if (has_data()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->data(), target);
@@ -2830,10 +2823,10 @@ void EnvelopeParseFailure::MergeFrom(const ::google::protobuf::Message& from) {
 void EnvelopeParseFailure::MergeFrom(const EnvelopeParseFailure& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_data()) {
       set_data(from.data());
     }
   }
@@ -2878,7 +2871,6 @@ void EnvelopeParseFailure::Swap(EnvelopeParseFailure* other) {
 
 // ===================================================================
 
-const ::std::string EmptyEnvelope::_default_id_;
 #ifndef _MSC_VER
 const int EmptyEnvelope::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -2899,7 +2891,7 @@ EmptyEnvelope::EmptyEnvelope(const EmptyEnvelope& from)
 
 void EmptyEnvelope::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2908,7 +2900,7 @@ EmptyEnvelope::~EmptyEnvelope() {
 }
 
 void EmptyEnvelope::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -2937,8 +2929,8 @@ EmptyEnvelope* EmptyEnvelope::New() const {
 
 void EmptyEnvelope::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -2985,7 +2977,7 @@ bool EmptyEnvelope::MergePartialFromCodedStream(
 void EmptyEnvelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -2999,7 +2991,7 @@ void EmptyEnvelope::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EmptyEnvelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -3050,7 +3042,7 @@ void EmptyEnvelope::MergeFrom(const ::google::protobuf::Message& from) {
 void EmptyEnvelope::MergeFrom(const EmptyEnvelope& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -3094,7 +3086,6 @@ void EmptyEnvelope::Swap(EmptyEnvelope* other) {
 
 // ===================================================================
 
-const ::std::string InvalidMessageEnumeration::_default_id_;
 #ifndef _MSC_VER
 const int InvalidMessageEnumeration::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -3115,7 +3106,7 @@ InvalidMessageEnumeration::InvalidMessageEnumeration(const InvalidMessageEnumera
 
 void InvalidMessageEnumeration::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3124,7 +3115,7 @@ InvalidMessageEnumeration::~InvalidMessageEnumeration() {
 }
 
 void InvalidMessageEnumeration::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -3153,8 +3144,8 @@ InvalidMessageEnumeration* InvalidMessageEnumeration::New() const {
 
 void InvalidMessageEnumeration::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3201,7 +3192,7 @@ bool InvalidMessageEnumeration::MergePartialFromCodedStream(
 void InvalidMessageEnumeration::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -3215,7 +3206,7 @@ void InvalidMessageEnumeration::SerializeWithCachedSizes(
 ::google::protobuf::uint8* InvalidMessageEnumeration::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -3266,7 +3257,7 @@ void InvalidMessageEnumeration::MergeFrom(const ::google::protobuf::Message& fro
 void InvalidMessageEnumeration::MergeFrom(const InvalidMessageEnumeration& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -3310,7 +3301,6 @@ void InvalidMessageEnumeration::Swap(InvalidMessageEnumeration* other) {
 
 // ===================================================================
 
-const ::std::string EnvelopeEmbeddedMessageParseFailure::_default_id_;
 #ifndef _MSC_VER
 const int EnvelopeEmbeddedMessageParseFailure::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -3331,7 +3321,7 @@ EnvelopeEmbeddedMessageParseFailure::EnvelopeEmbeddedMessageParseFailure(const E
 
 void EnvelopeEmbeddedMessageParseFailure::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3340,7 +3330,7 @@ EnvelopeEmbeddedMessageParseFailure::~EnvelopeEmbeddedMessageParseFailure() {
 }
 
 void EnvelopeEmbeddedMessageParseFailure::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -3369,8 +3359,8 @@ EnvelopeEmbeddedMessageParseFailure* EnvelopeEmbeddedMessageParseFailure::New() 
 
 void EnvelopeEmbeddedMessageParseFailure::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3417,7 +3407,7 @@ bool EnvelopeEmbeddedMessageParseFailure::MergePartialFromCodedStream(
 void EnvelopeEmbeddedMessageParseFailure::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -3431,7 +3421,7 @@ void EnvelopeEmbeddedMessageParseFailure::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EnvelopeEmbeddedMessageParseFailure::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -3482,7 +3472,7 @@ void EnvelopeEmbeddedMessageParseFailure::MergeFrom(const ::google::protobuf::Me
 void EnvelopeEmbeddedMessageParseFailure::MergeFrom(const EnvelopeEmbeddedMessageParseFailure& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -3526,7 +3516,6 @@ void EnvelopeEmbeddedMessageParseFailure::Swap(EnvelopeEmbeddedMessageParseFailu
 
 // ===================================================================
 
-const ::std::string BeginProcessStoreInfo::_default_id_;
 #ifndef _MSC_VER
 const int BeginProcessStoreInfo::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -3547,7 +3536,7 @@ BeginProcessStoreInfo::BeginProcessStoreInfo(const BeginProcessStoreInfo& from)
 
 void BeginProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3556,7 +3545,7 @@ BeginProcessStoreInfo::~BeginProcessStoreInfo() {
 }
 
 void BeginProcessStoreInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -3585,8 +3574,8 @@ BeginProcessStoreInfo* BeginProcessStoreInfo::New() const {
 
 void BeginProcessStoreInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3633,7 +3622,7 @@ bool BeginProcessStoreInfo::MergePartialFromCodedStream(
 void BeginProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -3647,7 +3636,7 @@ void BeginProcessStoreInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -3698,7 +3687,7 @@ void BeginProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void BeginProcessStoreInfo::MergeFrom(const BeginProcessStoreInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -3742,7 +3731,6 @@ void BeginProcessStoreInfo::Swap(BeginProcessStoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessStoreInfo::_default_id_;
 #ifndef _MSC_VER
 const int EndProcessStoreInfo::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -3763,7 +3751,7 @@ EndProcessStoreInfo::EndProcessStoreInfo(const EndProcessStoreInfo& from)
 
 void EndProcessStoreInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3772,7 +3760,7 @@ EndProcessStoreInfo::~EndProcessStoreInfo() {
 }
 
 void EndProcessStoreInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -3801,8 +3789,8 @@ EndProcessStoreInfo* EndProcessStoreInfo::New() const {
 
 void EndProcessStoreInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -3849,7 +3837,7 @@ bool EndProcessStoreInfo::MergePartialFromCodedStream(
 void EndProcessStoreInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -3863,7 +3851,7 @@ void EndProcessStoreInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessStoreInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -3914,7 +3902,7 @@ void EndProcessStoreInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void EndProcessStoreInfo::MergeFrom(const EndProcessStoreInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -3958,7 +3946,6 @@ void EndProcessStoreInfo::Swap(EndProcessStoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string ReceiveInvalidGet::_default_id_;
 #ifndef _MSC_VER
 const int ReceiveInvalidGet::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -3979,7 +3966,7 @@ ReceiveInvalidGet::ReceiveInvalidGet(const ReceiveInvalidGet& from)
 
 void ReceiveInvalidGet::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3988,7 +3975,7 @@ ReceiveInvalidGet::~ReceiveInvalidGet() {
 }
 
 void ReceiveInvalidGet::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -4017,8 +4004,8 @@ ReceiveInvalidGet* ReceiveInvalidGet::New() const {
 
 void ReceiveInvalidGet::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -4065,7 +4052,7 @@ bool ReceiveInvalidGet::MergePartialFromCodedStream(
 void ReceiveInvalidGet::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -4079,7 +4066,7 @@ void ReceiveInvalidGet::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ReceiveInvalidGet::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -4130,7 +4117,7 @@ void ReceiveInvalidGet::MergeFrom(const ::google::protobuf::Message& from) {
 void ReceiveInvalidGet::MergeFrom(const ReceiveInvalidGet& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -4174,7 +4161,6 @@ void ReceiveInvalidGet::Swap(ReceiveInvalidGet* other) {
 
 // ===================================================================
 
-const ::std::string GetInvalidStream::_default_id_;
 #ifndef _MSC_VER
 const int GetInvalidStream::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -4195,7 +4181,7 @@ GetInvalidStream::GetInvalidStream(const GetInvalidStream& from)
 
 void GetInvalidStream::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4204,7 +4190,7 @@ GetInvalidStream::~GetInvalidStream() {
 }
 
 void GetInvalidStream::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -4233,8 +4219,8 @@ GetInvalidStream* GetInvalidStream::New() const {
 
 void GetInvalidStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -4281,7 +4267,7 @@ bool GetInvalidStream::MergePartialFromCodedStream(
 void GetInvalidStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -4295,7 +4281,7 @@ void GetInvalidStream::SerializeWithCachedSizes(
 ::google::protobuf::uint8* GetInvalidStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -4346,7 +4332,7 @@ void GetInvalidStream::MergeFrom(const ::google::protobuf::Message& from) {
 void GetInvalidStream::MergeFrom(const GetInvalidStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -4390,7 +4376,6 @@ void GetInvalidStream::Swap(GetInvalidStream* other) {
 
 // ===================================================================
 
-const ::std::string GetInvalidOffset::_default_id_;
 #ifndef _MSC_VER
 const int GetInvalidOffset::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -4411,7 +4396,7 @@ GetInvalidOffset::GetInvalidOffset(const GetInvalidOffset& from)
 
 void GetInvalidOffset::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4420,7 +4405,7 @@ GetInvalidOffset::~GetInvalidOffset() {
 }
 
 void GetInvalidOffset::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -4449,8 +4434,8 @@ GetInvalidOffset* GetInvalidOffset::New() const {
 
 void GetInvalidOffset::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -4497,7 +4482,7 @@ bool GetInvalidOffset::MergePartialFromCodedStream(
 void GetInvalidOffset::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -4511,7 +4496,7 @@ void GetInvalidOffset::SerializeWithCachedSizes(
 ::google::protobuf::uint8* GetInvalidOffset::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -4562,7 +4547,7 @@ void GetInvalidOffset::MergeFrom(const ::google::protobuf::Message& from) {
 void GetInvalidOffset::MergeFrom(const GetInvalidOffset& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -4606,7 +4591,6 @@ void GetInvalidOffset::Swap(GetInvalidOffset* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessGetStream::_default_id_;
 #ifndef _MSC_VER
 const int BeginProcessGetStream::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -4627,7 +4611,7 @@ BeginProcessGetStream::BeginProcessGetStream(const BeginProcessGetStream& from)
 
 void BeginProcessGetStream::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4636,7 +4620,7 @@ BeginProcessGetStream::~BeginProcessGetStream() {
 }
 
 void BeginProcessGetStream::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -4665,8 +4649,8 @@ BeginProcessGetStream* BeginProcessGetStream::New() const {
 
 void BeginProcessGetStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -4713,7 +4697,7 @@ bool BeginProcessGetStream::MergePartialFromCodedStream(
 void BeginProcessGetStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -4727,7 +4711,7 @@ void BeginProcessGetStream::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessGetStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -4778,7 +4762,7 @@ void BeginProcessGetStream::MergeFrom(const ::google::protobuf::Message& from) {
 void BeginProcessGetStream::MergeFrom(const BeginProcessGetStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -4822,7 +4806,6 @@ void BeginProcessGetStream::Swap(BeginProcessGetStream* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessGetStream::_default_id_;
 #ifndef _MSC_VER
 const int EndProcessGetStream::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -4843,7 +4826,7 @@ EndProcessGetStream::EndProcessGetStream(const EndProcessGetStream& from)
 
 void EndProcessGetStream::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4852,7 +4835,7 @@ EndProcessGetStream::~EndProcessGetStream() {
 }
 
 void EndProcessGetStream::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -4881,8 +4864,8 @@ EndProcessGetStream* EndProcessGetStream::New() const {
 
 void EndProcessGetStream::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -4929,7 +4912,7 @@ bool EndProcessGetStream::MergePartialFromCodedStream(
 void EndProcessGetStream::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -4943,7 +4926,7 @@ void EndProcessGetStream::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessGetStream::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -4994,7 +4977,7 @@ void EndProcessGetStream::MergeFrom(const ::google::protobuf::Message& from) {
 void EndProcessGetStream::MergeFrom(const EndProcessGetStream& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -5038,8 +5021,6 @@ void EndProcessGetStream::Swap(EndProcessGetStream* other) {
 
 // ===================================================================
 
-const ::std::string SendErrorResponse::_default_id_;
-const ::std::string SendErrorResponse::_default_message_;
 #ifndef _MSC_VER
 const int SendErrorResponse::kIdFieldNumber;
 const int SendErrorResponse::kMessageFieldNumber;
@@ -5061,8 +5042,8 @@ SendErrorResponse::SendErrorResponse(const SendErrorResponse& from)
 
 void SendErrorResponse::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  message_ = const_cast< ::std::string*>(&_default_message_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5071,10 +5052,10 @@ SendErrorResponse::~SendErrorResponse() {
 }
 
 void SendErrorResponse::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (message_ != &_default_message_) {
+  if (message_ != &::google::protobuf::internal::kEmptyString) {
     delete message_;
   }
   if (this != default_instance_) {
@@ -5103,13 +5084,13 @@ SendErrorResponse* SendErrorResponse::New() const {
 
 void SendErrorResponse::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (message_ != &_default_message_) {
+    if (has_message()) {
+      if (message_ != &::google::protobuf::internal::kEmptyString) {
         message_->clear();
       }
     }
@@ -5173,13 +5154,13 @@ bool SendErrorResponse::MergePartialFromCodedStream(
 void SendErrorResponse::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string message = 2;
-  if (_has_bit(1)) {
+  if (has_message()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->message().data(), this->message().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -5196,14 +5177,14 @@ void SendErrorResponse::SerializeWithCachedSizes(
 ::google::protobuf::uint8* SendErrorResponse::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string message = 2;
-  if (_has_bit(1)) {
+  if (has_message()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->message().data(), this->message().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -5264,10 +5245,10 @@ void SendErrorResponse::MergeFrom(const ::google::protobuf::Message& from) {
 void SendErrorResponse::MergeFrom(const SendErrorResponse& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_message()) {
       set_message(from.message());
     }
   }
@@ -5312,8 +5293,6 @@ void SendErrorResponse::Swap(SendErrorResponse* other) {
 
 // ===================================================================
 
-const ::std::string ForwardSubscribeKeepalive::_default_id_;
-const ::std::string ForwardSubscribeKeepalive::_default_subscription_;
 #ifndef _MSC_VER
 const int ForwardSubscribeKeepalive::kIdFieldNumber;
 const int ForwardSubscribeKeepalive::kSubscriptionFieldNumber;
@@ -5335,8 +5314,8 @@ ForwardSubscribeKeepalive::ForwardSubscribeKeepalive(const ForwardSubscribeKeepa
 
 void ForwardSubscribeKeepalive::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  subscription_ = const_cast< ::std::string*>(&_default_subscription_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  subscription_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5345,10 +5324,10 @@ ForwardSubscribeKeepalive::~ForwardSubscribeKeepalive() {
 }
 
 void ForwardSubscribeKeepalive::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (subscription_ != &_default_subscription_) {
+  if (subscription_ != &::google::protobuf::internal::kEmptyString) {
     delete subscription_;
   }
   if (this != default_instance_) {
@@ -5377,13 +5356,13 @@ ForwardSubscribeKeepalive* ForwardSubscribeKeepalive::New() const {
 
 void ForwardSubscribeKeepalive::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (subscription_ != &_default_subscription_) {
+    if (has_subscription()) {
+      if (subscription_ != &::google::protobuf::internal::kEmptyString) {
         subscription_->clear();
       }
     }
@@ -5444,13 +5423,13 @@ bool ForwardSubscribeKeepalive::MergePartialFromCodedStream(
 void ForwardSubscribeKeepalive::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       2, this->subscription(), output);
   }
@@ -5464,14 +5443,14 @@ void ForwardSubscribeKeepalive::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ForwardSubscribeKeepalive::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional bytes subscription = 2;
-  if (_has_bit(1)) {
+  if (has_subscription()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         2, this->subscription(), target);
@@ -5529,10 +5508,10 @@ void ForwardSubscribeKeepalive::MergeFrom(const ::google::protobuf::Message& fro
 void ForwardSubscribeKeepalive::MergeFrom(const ForwardSubscribeKeepalive& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_subscription()) {
       set_subscription(from.subscription());
     }
   }
@@ -5577,8 +5556,6 @@ void ForwardSubscribeKeepalive::Swap(ForwardSubscribeKeepalive* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessBucketInfo::_default_id_;
-const ::std::string BeginProcessBucketInfo::_default_path_;
 #ifndef _MSC_VER
 const int BeginProcessBucketInfo::kIdFieldNumber;
 const int BeginProcessBucketInfo::kPathFieldNumber;
@@ -5600,8 +5577,8 @@ BeginProcessBucketInfo::BeginProcessBucketInfo(const BeginProcessBucketInfo& fro
 
 void BeginProcessBucketInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5610,10 +5587,10 @@ BeginProcessBucketInfo::~BeginProcessBucketInfo() {
 }
 
 void BeginProcessBucketInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -5642,13 +5619,13 @@ BeginProcessBucketInfo* BeginProcessBucketInfo::New() const {
 
 void BeginProcessBucketInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -5712,13 +5689,13 @@ bool BeginProcessBucketInfo::MergePartialFromCodedStream(
 void BeginProcessBucketInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -5735,14 +5712,14 @@ void BeginProcessBucketInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessBucketInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -5803,10 +5780,10 @@ void BeginProcessBucketInfo::MergeFrom(const ::google::protobuf::Message& from) 
 void BeginProcessBucketInfo::MergeFrom(const BeginProcessBucketInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -5851,8 +5828,6 @@ void BeginProcessBucketInfo::Swap(BeginProcessBucketInfo* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessBucketInfo::_default_id_;
-const ::std::string EndProcessBucketInfo::_default_path_;
 #ifndef _MSC_VER
 const int EndProcessBucketInfo::kIdFieldNumber;
 const int EndProcessBucketInfo::kPathFieldNumber;
@@ -5874,8 +5849,8 @@ EndProcessBucketInfo::EndProcessBucketInfo(const EndProcessBucketInfo& from)
 
 void EndProcessBucketInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5884,10 +5859,10 @@ EndProcessBucketInfo::~EndProcessBucketInfo() {
 }
 
 void EndProcessBucketInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -5916,13 +5891,13 @@ EndProcessBucketInfo* EndProcessBucketInfo::New() const {
 
 void EndProcessBucketInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -5986,13 +5961,13 @@ bool EndProcessBucketInfo::MergePartialFromCodedStream(
 void EndProcessBucketInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6009,14 +5984,14 @@ void EndProcessBucketInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessBucketInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6077,10 +6052,10 @@ void EndProcessBucketInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void EndProcessBucketInfo::MergeFrom(const EndProcessBucketInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -6125,8 +6100,6 @@ void EndProcessBucketInfo::Swap(EndProcessBucketInfo* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessStreamSetInfo::_default_id_;
-const ::std::string BeginProcessStreamSetInfo::_default_path_;
 #ifndef _MSC_VER
 const int BeginProcessStreamSetInfo::kIdFieldNumber;
 const int BeginProcessStreamSetInfo::kPathFieldNumber;
@@ -6148,8 +6121,8 @@ BeginProcessStreamSetInfo::BeginProcessStreamSetInfo(const BeginProcessStreamSet
 
 void BeginProcessStreamSetInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6158,10 +6131,10 @@ BeginProcessStreamSetInfo::~BeginProcessStreamSetInfo() {
 }
 
 void BeginProcessStreamSetInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -6190,13 +6163,13 @@ BeginProcessStreamSetInfo* BeginProcessStreamSetInfo::New() const {
 
 void BeginProcessStreamSetInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -6260,13 +6233,13 @@ bool BeginProcessStreamSetInfo::MergePartialFromCodedStream(
 void BeginProcessStreamSetInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6283,14 +6256,14 @@ void BeginProcessStreamSetInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessStreamSetInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6351,10 +6324,10 @@ void BeginProcessStreamSetInfo::MergeFrom(const ::google::protobuf::Message& fro
 void BeginProcessStreamSetInfo::MergeFrom(const BeginProcessStreamSetInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -6399,8 +6372,6 @@ void BeginProcessStreamSetInfo::Swap(BeginProcessStreamSetInfo* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessStreamSetInfo::_default_id_;
-const ::std::string EndProcessStreamSetInfo::_default_path_;
 #ifndef _MSC_VER
 const int EndProcessStreamSetInfo::kIdFieldNumber;
 const int EndProcessStreamSetInfo::kPathFieldNumber;
@@ -6422,8 +6393,8 @@ EndProcessStreamSetInfo::EndProcessStreamSetInfo(const EndProcessStreamSetInfo& 
 
 void EndProcessStreamSetInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6432,10 +6403,10 @@ EndProcessStreamSetInfo::~EndProcessStreamSetInfo() {
 }
 
 void EndProcessStreamSetInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -6464,13 +6435,13 @@ EndProcessStreamSetInfo* EndProcessStreamSetInfo::New() const {
 
 void EndProcessStreamSetInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -6534,13 +6505,13 @@ bool EndProcessStreamSetInfo::MergePartialFromCodedStream(
 void EndProcessStreamSetInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6557,14 +6528,14 @@ void EndProcessStreamSetInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessStreamSetInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6625,10 +6596,10 @@ void EndProcessStreamSetInfo::MergeFrom(const ::google::protobuf::Message& from)
 void EndProcessStreamSetInfo::MergeFrom(const EndProcessStreamSetInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -6673,8 +6644,6 @@ void EndProcessStreamSetInfo::Swap(EndProcessStreamSetInfo* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessStreamInfo::_default_id_;
-const ::std::string BeginProcessStreamInfo::_default_path_;
 #ifndef _MSC_VER
 const int BeginProcessStreamInfo::kIdFieldNumber;
 const int BeginProcessStreamInfo::kPathFieldNumber;
@@ -6696,8 +6665,8 @@ BeginProcessStreamInfo::BeginProcessStreamInfo(const BeginProcessStreamInfo& fro
 
 void BeginProcessStreamInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6706,10 +6675,10 @@ BeginProcessStreamInfo::~BeginProcessStreamInfo() {
 }
 
 void BeginProcessStreamInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -6738,13 +6707,13 @@ BeginProcessStreamInfo* BeginProcessStreamInfo::New() const {
 
 void BeginProcessStreamInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -6808,13 +6777,13 @@ bool BeginProcessStreamInfo::MergePartialFromCodedStream(
 void BeginProcessStreamInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6831,14 +6800,14 @@ void BeginProcessStreamInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessStreamInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -6899,10 +6868,10 @@ void BeginProcessStreamInfo::MergeFrom(const ::google::protobuf::Message& from) 
 void BeginProcessStreamInfo::MergeFrom(const BeginProcessStreamInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -6947,8 +6916,6 @@ void BeginProcessStreamInfo::Swap(BeginProcessStreamInfo* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessStreamInfo::_default_id_;
-const ::std::string EndProcessStreamInfo::_default_path_;
 #ifndef _MSC_VER
 const int EndProcessStreamInfo::kIdFieldNumber;
 const int EndProcessStreamInfo::kPathFieldNumber;
@@ -6970,8 +6937,8 @@ EndProcessStreamInfo::EndProcessStreamInfo(const EndProcessStreamInfo& from)
 
 void EndProcessStreamInfo::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6980,10 +6947,10 @@ EndProcessStreamInfo::~EndProcessStreamInfo() {
 }
 
 void EndProcessStreamInfo::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -7012,13 +6979,13 @@ EndProcessStreamInfo* EndProcessStreamInfo::New() const {
 
 void EndProcessStreamInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -7082,13 +7049,13 @@ bool EndProcessStreamInfo::MergePartialFromCodedStream(
 void EndProcessStreamInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -7105,14 +7072,14 @@ void EndProcessStreamInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessStreamInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
   }
   
   // optional string path = 2;
-  if (_has_bit(1)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -7173,10 +7140,10 @@ void EndProcessStreamInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void EndProcessStreamInfo::MergeFrom(const EndProcessStreamInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
-    if (from._has_bit(1)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -7221,7 +7188,6 @@ void EndProcessStreamInfo::Swap(EndProcessStreamInfo* other) {
 
 // ===================================================================
 
-const ::std::string BeginProcessWriteEnvelope::_default_id_;
 #ifndef _MSC_VER
 const int BeginProcessWriteEnvelope::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -7242,7 +7208,7 @@ BeginProcessWriteEnvelope::BeginProcessWriteEnvelope(const BeginProcessWriteEnve
 
 void BeginProcessWriteEnvelope::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -7251,7 +7217,7 @@ BeginProcessWriteEnvelope::~BeginProcessWriteEnvelope() {
 }
 
 void BeginProcessWriteEnvelope::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -7280,8 +7246,8 @@ BeginProcessWriteEnvelope* BeginProcessWriteEnvelope::New() const {
 
 void BeginProcessWriteEnvelope::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -7328,7 +7294,7 @@ bool BeginProcessWriteEnvelope::MergePartialFromCodedStream(
 void BeginProcessWriteEnvelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -7342,7 +7308,7 @@ void BeginProcessWriteEnvelope::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BeginProcessWriteEnvelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -7393,7 +7359,7 @@ void BeginProcessWriteEnvelope::MergeFrom(const ::google::protobuf::Message& fro
 void BeginProcessWriteEnvelope::MergeFrom(const BeginProcessWriteEnvelope& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }
@@ -7437,7 +7403,6 @@ void BeginProcessWriteEnvelope::Swap(BeginProcessWriteEnvelope* other) {
 
 // ===================================================================
 
-const ::std::string EndProcessWriteEnvelope::_default_id_;
 #ifndef _MSC_VER
 const int EndProcessWriteEnvelope::kIdFieldNumber;
 #endif  // !_MSC_VER
@@ -7458,7 +7423,7 @@ EndProcessWriteEnvelope::EndProcessWriteEnvelope(const EndProcessWriteEnvelope& 
 
 void EndProcessWriteEnvelope::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&_default_id_);
+  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -7467,7 +7432,7 @@ EndProcessWriteEnvelope::~EndProcessWriteEnvelope() {
 }
 
 void EndProcessWriteEnvelope::SharedDtor() {
-  if (id_ != &_default_id_) {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
   }
   if (this != default_instance_) {
@@ -7496,8 +7461,8 @@ EndProcessWriteEnvelope* EndProcessWriteEnvelope::New() const {
 
 void EndProcessWriteEnvelope::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (id_ != &_default_id_) {
+    if (has_id()) {
+      if (id_ != &::google::protobuf::internal::kEmptyString) {
         id_->clear();
       }
     }
@@ -7544,7 +7509,7 @@ bool EndProcessWriteEnvelope::MergePartialFromCodedStream(
 void EndProcessWriteEnvelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       1, this->id(), output);
   }
@@ -7558,7 +7523,7 @@ void EndProcessWriteEnvelope::SerializeWithCachedSizes(
 ::google::protobuf::uint8* EndProcessWriteEnvelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional bytes id = 1;
-  if (_has_bit(0)) {
+  if (has_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         1, this->id(), target);
@@ -7609,7 +7574,7 @@ void EndProcessWriteEnvelope::MergeFrom(const ::google::protobuf::Message& from)
 void EndProcessWriteEnvelope::MergeFrom(const EndProcessWriteEnvelope& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_id()) {
       set_id(from.id());
     }
   }

@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/protocol.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -324,7 +327,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2eproto() {
     "\001(\t\022\016\n\006stream\030\003 \001(\t\022\016\n\006length\030\004 \001(\004\"(\n\026S"
     "toreChangeBucketAdded\022\016\n\006bucket\030\001 \001(\t\"*\n"
     "\030StoreChangeBucketDeleted\022\016\n\006bucket\030\002 \001("
-    "\t\"?\n\031StoreChangeStreamSetAdded\022\016\n\006bucket"
+    "\t\"\?\n\031StoreChangeStreamSetAdded\022\016\n\006bucket"
     "\030\001 \001(\t\022\022\n\nstream_set\030\002 \001(\t\"A\n\033StoreChang"
     "eStreamSetDeleted\022\016\n\006bucket\030\001 \001(\t\022\022\n\nstr"
     "eam_set\030\002 \001(\t", 813);
@@ -365,7 +368,6 @@ struct StaticDescriptorInitializer_zippylog_2fprotocol_2eproto {
 
 // ===================================================================
 
-const ::std::string StreamInfo::_default_path_;
 #ifndef _MSC_VER
 const int StreamInfo::kPathFieldNumber;
 const int StreamInfo::kLengthFieldNumber;
@@ -387,7 +389,7 @@ StreamInfo::StreamInfo(const StreamInfo& from)
 
 void StreamInfo::SharedCtor() {
   _cached_size_ = 0;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   length_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -397,7 +399,7 @@ StreamInfo::~StreamInfo() {
 }
 
 void StreamInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -426,8 +428,8 @@ StreamInfo* StreamInfo::New() const {
 
 void StreamInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -467,7 +469,7 @@ bool StreamInfo::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &length_)));
-          _set_bit(1);
+          set_has_length();
         } else {
           goto handle_uninterpreted;
         }
@@ -494,7 +496,7 @@ bool StreamInfo::MergePartialFromCodedStream(
 void StreamInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -503,7 +505,7 @@ void StreamInfo::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 2;
-  if (_has_bit(1)) {
+  if (has_length()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->length(), output);
   }
   
@@ -516,7 +518,7 @@ void StreamInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StreamInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -526,7 +528,7 @@ void StreamInfo::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 2;
-  if (_has_bit(1)) {
+  if (has_length()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->length(), target);
   }
   
@@ -582,10 +584,10 @@ void StreamInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void StreamInfo::MergeFrom(const StreamInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
-    if (from._has_bit(1)) {
+    if (from.has_length()) {
       set_length(from.length());
     }
   }
@@ -630,7 +632,6 @@ void StreamInfo::Swap(StreamInfo* other) {
 
 // ===================================================================
 
-const ::std::string StreamSetInfo::_default_path_;
 #ifndef _MSC_VER
 const int StreamSetInfo::kPathFieldNumber;
 const int StreamSetInfo::kStreamFieldNumber;
@@ -652,7 +653,7 @@ StreamSetInfo::StreamSetInfo(const StreamSetInfo& from)
 
 void StreamSetInfo::SharedCtor() {
   _cached_size_ = 0;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -661,7 +662,7 @@ StreamSetInfo::~StreamSetInfo() {
 }
 
 void StreamSetInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -690,8 +691,8 @@ StreamSetInfo* StreamSetInfo::New() const {
 
 void StreamSetInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -757,7 +758,7 @@ bool StreamSetInfo::MergePartialFromCodedStream(
 void StreamSetInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -780,7 +781,7 @@ void StreamSetInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StreamSetInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -850,7 +851,7 @@ void StreamSetInfo::MergeFrom(const StreamSetInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   stream_.MergeFrom(from.stream_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -895,7 +896,6 @@ void StreamSetInfo::Swap(StreamSetInfo* other) {
 
 // ===================================================================
 
-const ::std::string BucketInfo::_default_path_;
 #ifndef _MSC_VER
 const int BucketInfo::kPathFieldNumber;
 const int BucketInfo::kStreamSetFieldNumber;
@@ -917,7 +917,7 @@ BucketInfo::BucketInfo(const BucketInfo& from)
 
 void BucketInfo::SharedCtor() {
   _cached_size_ = 0;
-  path_ = const_cast< ::std::string*>(&_default_path_);
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -926,7 +926,7 @@ BucketInfo::~BucketInfo() {
 }
 
 void BucketInfo::SharedDtor() {
-  if (path_ != &_default_path_) {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
     delete path_;
   }
   if (this != default_instance_) {
@@ -955,8 +955,8 @@ BucketInfo* BucketInfo::New() const {
 
 void BucketInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (path_ != &_default_path_) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
         path_->clear();
       }
     }
@@ -1022,7 +1022,7 @@ bool BucketInfo::MergePartialFromCodedStream(
 void BucketInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1045,7 +1045,7 @@ void BucketInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* BucketInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string path = 1;
-  if (_has_bit(0)) {
+  if (has_path()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->path().data(), this->path().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1115,7 +1115,7 @@ void BucketInfo::MergeFrom(const BucketInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   stream_set_.MergeFrom(from.stream_set_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_path()) {
       set_path(from.path());
     }
   }
@@ -1362,9 +1362,6 @@ void StoreInfo::Swap(StoreInfo* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeStreamAdded::_default_bucket_;
-const ::std::string StoreChangeStreamAdded::_default_stream_set_;
-const ::std::string StoreChangeStreamAdded::_default_stream_;
 #ifndef _MSC_VER
 const int StoreChangeStreamAdded::kBucketFieldNumber;
 const int StoreChangeStreamAdded::kStreamSetFieldNumber;
@@ -1388,9 +1385,9 @@ StoreChangeStreamAdded::StoreChangeStreamAdded(const StoreChangeStreamAdded& fro
 
 void StoreChangeStreamAdded::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
-  stream_set_ = const_cast< ::std::string*>(&_default_stream_set_);
-  stream_ = const_cast< ::std::string*>(&_default_stream_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_set_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   length_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1400,13 +1397,13 @@ StoreChangeStreamAdded::~StoreChangeStreamAdded() {
 }
 
 void StoreChangeStreamAdded::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
-  if (stream_set_ != &_default_stream_set_) {
+  if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_set_;
   }
-  if (stream_ != &_default_stream_) {
+  if (stream_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_;
   }
   if (this != default_instance_) {
@@ -1435,18 +1432,18 @@ StoreChangeStreamAdded* StoreChangeStreamAdded::New() const {
 
 void StoreChangeStreamAdded::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (stream_set_ != &_default_stream_set_) {
+    if (has_stream_set()) {
+      if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
         stream_set_->clear();
       }
     }
-    if (_has_bit(2)) {
-      if (stream_ != &_default_stream_) {
+    if (has_stream()) {
+      if (stream_ != &::google::protobuf::internal::kEmptyString) {
         stream_->clear();
       }
     }
@@ -1520,7 +1517,7 @@ bool StoreChangeStreamAdded::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &length_)));
-          _set_bit(3);
+          set_has_length();
         } else {
           goto handle_uninterpreted;
         }
@@ -1547,7 +1544,7 @@ bool StoreChangeStreamAdded::MergePartialFromCodedStream(
 void StoreChangeStreamAdded::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1556,7 +1553,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1565,7 +1562,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1574,7 +1571,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->length(), output);
   }
   
@@ -1587,7 +1584,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeStreamAdded::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1597,7 +1594,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1607,7 +1604,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1617,7 +1614,7 @@ void StoreChangeStreamAdded::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->length(), target);
   }
   
@@ -1687,16 +1684,16 @@ void StoreChangeStreamAdded::MergeFrom(const ::google::protobuf::Message& from) 
 void StoreChangeStreamAdded::MergeFrom(const StoreChangeStreamAdded& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
-    if (from._has_bit(1)) {
+    if (from.has_stream_set()) {
       set_stream_set(from.stream_set());
     }
-    if (from._has_bit(2)) {
+    if (from.has_stream()) {
       set_stream(from.stream());
     }
-    if (from._has_bit(3)) {
+    if (from.has_length()) {
       set_length(from.length());
     }
   }
@@ -1743,9 +1740,6 @@ void StoreChangeStreamAdded::Swap(StoreChangeStreamAdded* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeStreamDeleted::_default_bucket_;
-const ::std::string StoreChangeStreamDeleted::_default_stream_set_;
-const ::std::string StoreChangeStreamDeleted::_default_stream_;
 #ifndef _MSC_VER
 const int StoreChangeStreamDeleted::kBucketFieldNumber;
 const int StoreChangeStreamDeleted::kStreamSetFieldNumber;
@@ -1769,9 +1763,9 @@ StoreChangeStreamDeleted::StoreChangeStreamDeleted(const StoreChangeStreamDelete
 
 void StoreChangeStreamDeleted::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
-  stream_set_ = const_cast< ::std::string*>(&_default_stream_set_);
-  stream_ = const_cast< ::std::string*>(&_default_stream_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_set_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   length_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1781,13 +1775,13 @@ StoreChangeStreamDeleted::~StoreChangeStreamDeleted() {
 }
 
 void StoreChangeStreamDeleted::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
-  if (stream_set_ != &_default_stream_set_) {
+  if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_set_;
   }
-  if (stream_ != &_default_stream_) {
+  if (stream_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_;
   }
   if (this != default_instance_) {
@@ -1816,18 +1810,18 @@ StoreChangeStreamDeleted* StoreChangeStreamDeleted::New() const {
 
 void StoreChangeStreamDeleted::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (stream_set_ != &_default_stream_set_) {
+    if (has_stream_set()) {
+      if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
         stream_set_->clear();
       }
     }
-    if (_has_bit(2)) {
-      if (stream_ != &_default_stream_) {
+    if (has_stream()) {
+      if (stream_ != &::google::protobuf::internal::kEmptyString) {
         stream_->clear();
       }
     }
@@ -1901,7 +1895,7 @@ bool StoreChangeStreamDeleted::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &length_)));
-          _set_bit(3);
+          set_has_length();
         } else {
           goto handle_uninterpreted;
         }
@@ -1928,7 +1922,7 @@ bool StoreChangeStreamDeleted::MergePartialFromCodedStream(
 void StoreChangeStreamDeleted::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1937,7 +1931,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1946,7 +1940,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1955,7 +1949,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->length(), output);
   }
   
@@ -1968,7 +1962,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeStreamDeleted::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1978,7 +1972,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1988,7 +1982,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1998,7 +1992,7 @@ void StoreChangeStreamDeleted::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->length(), target);
   }
   
@@ -2068,16 +2062,16 @@ void StoreChangeStreamDeleted::MergeFrom(const ::google::protobuf::Message& from
 void StoreChangeStreamDeleted::MergeFrom(const StoreChangeStreamDeleted& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
-    if (from._has_bit(1)) {
+    if (from.has_stream_set()) {
       set_stream_set(from.stream_set());
     }
-    if (from._has_bit(2)) {
+    if (from.has_stream()) {
       set_stream(from.stream());
     }
-    if (from._has_bit(3)) {
+    if (from.has_length()) {
       set_length(from.length());
     }
   }
@@ -2124,9 +2118,6 @@ void StoreChangeStreamDeleted::Swap(StoreChangeStreamDeleted* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeStreamAppended::_default_bucket_;
-const ::std::string StoreChangeStreamAppended::_default_stream_set_;
-const ::std::string StoreChangeStreamAppended::_default_stream_;
 #ifndef _MSC_VER
 const int StoreChangeStreamAppended::kBucketFieldNumber;
 const int StoreChangeStreamAppended::kStreamSetFieldNumber;
@@ -2150,9 +2141,9 @@ StoreChangeStreamAppended::StoreChangeStreamAppended(const StoreChangeStreamAppe
 
 void StoreChangeStreamAppended::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
-  stream_set_ = const_cast< ::std::string*>(&_default_stream_set_);
-  stream_ = const_cast< ::std::string*>(&_default_stream_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_set_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   length_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -2162,13 +2153,13 @@ StoreChangeStreamAppended::~StoreChangeStreamAppended() {
 }
 
 void StoreChangeStreamAppended::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
-  if (stream_set_ != &_default_stream_set_) {
+  if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_set_;
   }
-  if (stream_ != &_default_stream_) {
+  if (stream_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_;
   }
   if (this != default_instance_) {
@@ -2197,18 +2188,18 @@ StoreChangeStreamAppended* StoreChangeStreamAppended::New() const {
 
 void StoreChangeStreamAppended::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (stream_set_ != &_default_stream_set_) {
+    if (has_stream_set()) {
+      if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
         stream_set_->clear();
       }
     }
-    if (_has_bit(2)) {
-      if (stream_ != &_default_stream_) {
+    if (has_stream()) {
+      if (stream_ != &::google::protobuf::internal::kEmptyString) {
         stream_->clear();
       }
     }
@@ -2282,7 +2273,7 @@ bool StoreChangeStreamAppended::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &length_)));
-          _set_bit(3);
+          set_has_length();
         } else {
           goto handle_uninterpreted;
         }
@@ -2309,7 +2300,7 @@ bool StoreChangeStreamAppended::MergePartialFromCodedStream(
 void StoreChangeStreamAppended::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2318,7 +2309,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2327,7 +2318,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2336,7 +2327,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(4, this->length(), output);
   }
   
@@ -2349,7 +2340,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeStreamAppended::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2359,7 +2350,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2369,7 +2360,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional string stream = 3;
-  if (_has_bit(2)) {
+  if (has_stream()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream().data(), this->stream().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2379,7 +2370,7 @@ void StoreChangeStreamAppended::SerializeWithCachedSizes(
   }
   
   // optional uint64 length = 4;
-  if (_has_bit(3)) {
+  if (has_length()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(4, this->length(), target);
   }
   
@@ -2449,16 +2440,16 @@ void StoreChangeStreamAppended::MergeFrom(const ::google::protobuf::Message& fro
 void StoreChangeStreamAppended::MergeFrom(const StoreChangeStreamAppended& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
-    if (from._has_bit(1)) {
+    if (from.has_stream_set()) {
       set_stream_set(from.stream_set());
     }
-    if (from._has_bit(2)) {
+    if (from.has_stream()) {
       set_stream(from.stream());
     }
-    if (from._has_bit(3)) {
+    if (from.has_length()) {
       set_length(from.length());
     }
   }
@@ -2505,7 +2496,6 @@ void StoreChangeStreamAppended::Swap(StoreChangeStreamAppended* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeBucketAdded::_default_bucket_;
 #ifndef _MSC_VER
 const int StoreChangeBucketAdded::kBucketFieldNumber;
 #endif  // !_MSC_VER
@@ -2526,7 +2516,7 @@ StoreChangeBucketAdded::StoreChangeBucketAdded(const StoreChangeBucketAdded& fro
 
 void StoreChangeBucketAdded::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2535,7 +2525,7 @@ StoreChangeBucketAdded::~StoreChangeBucketAdded() {
 }
 
 void StoreChangeBucketAdded::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
   if (this != default_instance_) {
@@ -2564,8 +2554,8 @@ StoreChangeBucketAdded* StoreChangeBucketAdded::New() const {
 
 void StoreChangeBucketAdded::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
@@ -2615,7 +2605,7 @@ bool StoreChangeBucketAdded::MergePartialFromCodedStream(
 void StoreChangeBucketAdded::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2632,7 +2622,7 @@ void StoreChangeBucketAdded::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeBucketAdded::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2686,7 +2676,7 @@ void StoreChangeBucketAdded::MergeFrom(const ::google::protobuf::Message& from) 
 void StoreChangeBucketAdded::MergeFrom(const StoreChangeBucketAdded& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
   }
@@ -2730,7 +2720,6 @@ void StoreChangeBucketAdded::Swap(StoreChangeBucketAdded* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeBucketDeleted::_default_bucket_;
 #ifndef _MSC_VER
 const int StoreChangeBucketDeleted::kBucketFieldNumber;
 #endif  // !_MSC_VER
@@ -2751,7 +2740,7 @@ StoreChangeBucketDeleted::StoreChangeBucketDeleted(const StoreChangeBucketDelete
 
 void StoreChangeBucketDeleted::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2760,7 +2749,7 @@ StoreChangeBucketDeleted::~StoreChangeBucketDeleted() {
 }
 
 void StoreChangeBucketDeleted::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
   if (this != default_instance_) {
@@ -2789,8 +2778,8 @@ StoreChangeBucketDeleted* StoreChangeBucketDeleted::New() const {
 
 void StoreChangeBucketDeleted::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
@@ -2840,7 +2829,7 @@ bool StoreChangeBucketDeleted::MergePartialFromCodedStream(
 void StoreChangeBucketDeleted::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 2;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2857,7 +2846,7 @@ void StoreChangeBucketDeleted::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeBucketDeleted::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 2;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -2911,7 +2900,7 @@ void StoreChangeBucketDeleted::MergeFrom(const ::google::protobuf::Message& from
 void StoreChangeBucketDeleted::MergeFrom(const StoreChangeBucketDeleted& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
   }
@@ -2955,8 +2944,6 @@ void StoreChangeBucketDeleted::Swap(StoreChangeBucketDeleted* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeStreamSetAdded::_default_bucket_;
-const ::std::string StoreChangeStreamSetAdded::_default_stream_set_;
 #ifndef _MSC_VER
 const int StoreChangeStreamSetAdded::kBucketFieldNumber;
 const int StoreChangeStreamSetAdded::kStreamSetFieldNumber;
@@ -2978,8 +2965,8 @@ StoreChangeStreamSetAdded::StoreChangeStreamSetAdded(const StoreChangeStreamSetA
 
 void StoreChangeStreamSetAdded::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
-  stream_set_ = const_cast< ::std::string*>(&_default_stream_set_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_set_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2988,10 +2975,10 @@ StoreChangeStreamSetAdded::~StoreChangeStreamSetAdded() {
 }
 
 void StoreChangeStreamSetAdded::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
-  if (stream_set_ != &_default_stream_set_) {
+  if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_set_;
   }
   if (this != default_instance_) {
@@ -3020,13 +3007,13 @@ StoreChangeStreamSetAdded* StoreChangeStreamSetAdded::New() const {
 
 void StoreChangeStreamSetAdded::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (stream_set_ != &_default_stream_set_) {
+    if (has_stream_set()) {
+      if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
         stream_set_->clear();
       }
     }
@@ -3093,7 +3080,7 @@ bool StoreChangeStreamSetAdded::MergePartialFromCodedStream(
 void StoreChangeStreamSetAdded::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3102,7 +3089,7 @@ void StoreChangeStreamSetAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3119,7 +3106,7 @@ void StoreChangeStreamSetAdded::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeStreamSetAdded::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3129,7 +3116,7 @@ void StoreChangeStreamSetAdded::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3190,10 +3177,10 @@ void StoreChangeStreamSetAdded::MergeFrom(const ::google::protobuf::Message& fro
 void StoreChangeStreamSetAdded::MergeFrom(const StoreChangeStreamSetAdded& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
-    if (from._has_bit(1)) {
+    if (from.has_stream_set()) {
       set_stream_set(from.stream_set());
     }
   }
@@ -3238,8 +3225,6 @@ void StoreChangeStreamSetAdded::Swap(StoreChangeStreamSetAdded* other) {
 
 // ===================================================================
 
-const ::std::string StoreChangeStreamSetDeleted::_default_bucket_;
-const ::std::string StoreChangeStreamSetDeleted::_default_stream_set_;
 #ifndef _MSC_VER
 const int StoreChangeStreamSetDeleted::kBucketFieldNumber;
 const int StoreChangeStreamSetDeleted::kStreamSetFieldNumber;
@@ -3261,8 +3246,8 @@ StoreChangeStreamSetDeleted::StoreChangeStreamSetDeleted(const StoreChangeStream
 
 void StoreChangeStreamSetDeleted::SharedCtor() {
   _cached_size_ = 0;
-  bucket_ = const_cast< ::std::string*>(&_default_bucket_);
-  stream_set_ = const_cast< ::std::string*>(&_default_stream_set_);
+  bucket_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  stream_set_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3271,10 +3256,10 @@ StoreChangeStreamSetDeleted::~StoreChangeStreamSetDeleted() {
 }
 
 void StoreChangeStreamSetDeleted::SharedDtor() {
-  if (bucket_ != &_default_bucket_) {
+  if (bucket_ != &::google::protobuf::internal::kEmptyString) {
     delete bucket_;
   }
-  if (stream_set_ != &_default_stream_set_) {
+  if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
     delete stream_set_;
   }
   if (this != default_instance_) {
@@ -3303,13 +3288,13 @@ StoreChangeStreamSetDeleted* StoreChangeStreamSetDeleted::New() const {
 
 void StoreChangeStreamSetDeleted::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (_has_bit(0)) {
-      if (bucket_ != &_default_bucket_) {
+    if (has_bucket()) {
+      if (bucket_ != &::google::protobuf::internal::kEmptyString) {
         bucket_->clear();
       }
     }
-    if (_has_bit(1)) {
-      if (stream_set_ != &_default_stream_set_) {
+    if (has_stream_set()) {
+      if (stream_set_ != &::google::protobuf::internal::kEmptyString) {
         stream_set_->clear();
       }
     }
@@ -3376,7 +3361,7 @@ bool StoreChangeStreamSetDeleted::MergePartialFromCodedStream(
 void StoreChangeStreamSetDeleted::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3385,7 +3370,7 @@ void StoreChangeStreamSetDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3402,7 +3387,7 @@ void StoreChangeStreamSetDeleted::SerializeWithCachedSizes(
 ::google::protobuf::uint8* StoreChangeStreamSetDeleted::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional string bucket = 1;
-  if (_has_bit(0)) {
+  if (has_bucket()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->bucket().data(), this->bucket().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3412,7 +3397,7 @@ void StoreChangeStreamSetDeleted::SerializeWithCachedSizes(
   }
   
   // optional string stream_set = 2;
-  if (_has_bit(1)) {
+  if (has_stream_set()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stream_set().data(), this->stream_set().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -3473,10 +3458,10 @@ void StoreChangeStreamSetDeleted::MergeFrom(const ::google::protobuf::Message& f
 void StoreChangeStreamSetDeleted::MergeFrom(const StoreChangeStreamSetDeleted& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_bucket()) {
       set_bucket(from.bucket());
     }
-    if (from._has_bit(1)) {
+    if (from.has_stream_set()) {
       set_stream_set(from.stream_set());
     }
   }

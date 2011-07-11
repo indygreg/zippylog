@@ -2,6 +2,9 @@
 
 #define INTERNAL_SUPPRESS_PROTOBUF_FIELD_DEPRECATION
 #include "zippylog/message.pb.h"
+
+#include <algorithm>
+
 #include <google/protobuf/stubs/once.h>
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/wire_format_lite_inl.h>
@@ -137,7 +140,6 @@ struct StaticDescriptorInitializer_zippylog_2fmessage_2eproto {
 
 // ===================================================================
 
-const ::std::string Envelope::_default_string_value_;
 #ifndef _MSC_VER
 const int Envelope::kVersionFieldNumber;
 const int Envelope::kMessageFieldNumber;
@@ -169,7 +171,7 @@ void Envelope::SharedCtor() {
   version_ = 1u;
   create_time_ = GOOGLE_ULONGLONG(0);
   numeric_value_ = GOOGLE_ULONGLONG(0);
-  string_value_ = const_cast< ::std::string*>(&_default_string_value_);
+  string_value_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -178,7 +180,7 @@ Envelope::~Envelope() {
 }
 
 void Envelope::SharedDtor() {
-  if (string_value_ != &_default_string_value_) {
+  if (string_value_ != &::google::protobuf::internal::kEmptyString) {
     delete string_value_;
   }
   if (this != default_instance_) {
@@ -212,8 +214,8 @@ void Envelope::Clear() {
     numeric_value_ = GOOGLE_ULONGLONG(0);
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (_has_bit(8)) {
-      if (string_value_ != &_default_string_value_) {
+    if (has_string_value()) {
+      if (string_value_ != &::google::protobuf::internal::kEmptyString) {
         string_value_->clear();
       }
     }
@@ -240,7 +242,7 @@ bool Envelope::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint32, ::google::protobuf::internal::WireFormatLite::TYPE_UINT32>(
                  input, &version_)));
-          _set_bit(0);
+          set_has_version();
         } else {
           goto handle_uninterpreted;
         }
@@ -313,7 +315,7 @@ bool Envelope::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &create_time_)));
-          _set_bit(4);
+          set_has_create_time();
         } else {
           goto handle_uninterpreted;
         }
@@ -359,7 +361,7 @@ bool Envelope::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &numeric_value_)));
-          _set_bit(7);
+          set_has_numeric_value();
         } else {
           goto handle_uninterpreted;
         }
@@ -403,7 +405,7 @@ bool Envelope::MergePartialFromCodedStream(
 void Envelope::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional uint32 version = 1 [default = 1];
-  if (_has_bit(0)) {
+  if (has_version()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt32(1, this->version(), output);
   }
   
@@ -434,7 +436,7 @@ void Envelope::SerializeWithCachedSizes(
   }
   
   // optional uint64 create_time = 5;
-  if (_has_bit(4)) {
+  if (has_create_time()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(5, this->create_time(), output);
   }
   
@@ -451,12 +453,12 @@ void Envelope::SerializeWithCachedSizes(
   }
   
   // optional uint64 numeric_value = 8;
-  if (_has_bit(7)) {
+  if (has_numeric_value()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(8, this->numeric_value(), output);
   }
   
   // optional string string_value = 9;
-  if (_has_bit(8)) {
+  if (has_string_value()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->string_value().data(), this->string_value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -473,7 +475,7 @@ void Envelope::SerializeWithCachedSizes(
 ::google::protobuf::uint8* Envelope::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional uint32 version = 1 [default = 1];
-  if (_has_bit(0)) {
+  if (has_version()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt32ToArray(1, this->version(), target);
   }
   
@@ -512,7 +514,7 @@ void Envelope::SerializeWithCachedSizes(
   }
   
   // optional uint64 create_time = 5;
-  if (_has_bit(4)) {
+  if (has_create_time()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(5, this->create_time(), target);
   }
   
@@ -530,12 +532,12 @@ void Envelope::SerializeWithCachedSizes(
   }
   
   // optional uint64 numeric_value = 8;
-  if (_has_bit(7)) {
+  if (has_numeric_value()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(8, this->numeric_value(), target);
   }
   
   // optional string string_value = 9;
-  if (_has_bit(8)) {
+  if (has_string_value()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->string_value().data(), this->string_value().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -669,18 +671,18 @@ void Envelope::MergeFrom(const Envelope& from) {
   tag_.MergeFrom(from.tag_);
   actor_.MergeFrom(from.actor_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_version()) {
       set_version(from.version());
     }
-    if (from._has_bit(4)) {
+    if (from.has_create_time()) {
       set_create_time(from.create_time());
     }
-    if (from._has_bit(7)) {
+    if (from.has_numeric_value()) {
       set_numeric_value(from.numeric_value());
     }
   }
   if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
-    if (from._has_bit(8)) {
+    if (from.has_string_value()) {
       set_string_value(from.string_value());
     }
   }
@@ -732,10 +734,6 @@ void Envelope::Swap(Envelope* other) {
 
 // ===================================================================
 
-const ::std::string ActorInfo::_default_hostname_;
-const ::std::string ActorInfo::_default_host_id_;
-const ::std::string ActorInfo::_default_actor_id_;
-const ::std::string ActorInfo::_default_app_id_;
 #ifndef _MSC_VER
 const int ActorInfo::kTouchTimeFieldNumber;
 const int ActorInfo::kSequenceIdFieldNumber;
@@ -763,10 +761,10 @@ void ActorInfo::SharedCtor() {
   _cached_size_ = 0;
   touch_time_ = GOOGLE_ULONGLONG(0);
   sequence_id_ = GOOGLE_ULONGLONG(0);
-  hostname_ = const_cast< ::std::string*>(&_default_hostname_);
-  host_id_ = const_cast< ::std::string*>(&_default_host_id_);
-  actor_id_ = const_cast< ::std::string*>(&_default_actor_id_);
-  app_id_ = const_cast< ::std::string*>(&_default_app_id_);
+  hostname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  host_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  actor_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  app_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -775,16 +773,16 @@ ActorInfo::~ActorInfo() {
 }
 
 void ActorInfo::SharedDtor() {
-  if (hostname_ != &_default_hostname_) {
+  if (hostname_ != &::google::protobuf::internal::kEmptyString) {
     delete hostname_;
   }
-  if (host_id_ != &_default_host_id_) {
+  if (host_id_ != &::google::protobuf::internal::kEmptyString) {
     delete host_id_;
   }
-  if (actor_id_ != &_default_actor_id_) {
+  if (actor_id_ != &::google::protobuf::internal::kEmptyString) {
     delete actor_id_;
   }
-  if (app_id_ != &_default_app_id_) {
+  if (app_id_ != &::google::protobuf::internal::kEmptyString) {
     delete app_id_;
   }
   if (this != default_instance_) {
@@ -815,23 +813,23 @@ void ActorInfo::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     touch_time_ = GOOGLE_ULONGLONG(0);
     sequence_id_ = GOOGLE_ULONGLONG(0);
-    if (_has_bit(2)) {
-      if (hostname_ != &_default_hostname_) {
+    if (has_hostname()) {
+      if (hostname_ != &::google::protobuf::internal::kEmptyString) {
         hostname_->clear();
       }
     }
-    if (_has_bit(3)) {
-      if (host_id_ != &_default_host_id_) {
+    if (has_host_id()) {
+      if (host_id_ != &::google::protobuf::internal::kEmptyString) {
         host_id_->clear();
       }
     }
-    if (_has_bit(4)) {
-      if (actor_id_ != &_default_actor_id_) {
+    if (has_actor_id()) {
+      if (actor_id_ != &::google::protobuf::internal::kEmptyString) {
         actor_id_->clear();
       }
     }
-    if (_has_bit(5)) {
-      if (app_id_ != &_default_app_id_) {
+    if (has_app_id()) {
+      if (app_id_ != &::google::protobuf::internal::kEmptyString) {
         app_id_->clear();
       }
     }
@@ -853,7 +851,7 @@ bool ActorInfo::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &touch_time_)));
-          _set_bit(0);
+          set_has_touch_time();
         } else {
           goto handle_uninterpreted;
         }
@@ -869,7 +867,7 @@ bool ActorInfo::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &sequence_id_)));
-          _set_bit(1);
+          set_has_sequence_id();
         } else {
           goto handle_uninterpreted;
         }
@@ -955,17 +953,17 @@ bool ActorInfo::MergePartialFromCodedStream(
 void ActorInfo::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // optional uint64 touch_time = 1;
-  if (_has_bit(0)) {
+  if (has_touch_time()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->touch_time(), output);
   }
   
   // optional uint64 sequence_id = 2;
-  if (_has_bit(1)) {
+  if (has_sequence_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->sequence_id(), output);
   }
   
   // optional string hostname = 3;
-  if (_has_bit(2)) {
+  if (has_hostname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->hostname().data(), this->hostname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -974,19 +972,19 @@ void ActorInfo::SerializeWithCachedSizes(
   }
   
   // optional bytes host_id = 4;
-  if (_has_bit(3)) {
+  if (has_host_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       4, this->host_id(), output);
   }
   
   // optional bytes actor_id = 5;
-  if (_has_bit(4)) {
+  if (has_actor_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       5, this->actor_id(), output);
   }
   
   // optional bytes app_id = 6;
-  if (_has_bit(5)) {
+  if (has_app_id()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
       6, this->app_id(), output);
   }
@@ -1000,17 +998,17 @@ void ActorInfo::SerializeWithCachedSizes(
 ::google::protobuf::uint8* ActorInfo::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // optional uint64 touch_time = 1;
-  if (_has_bit(0)) {
+  if (has_touch_time()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->touch_time(), target);
   }
   
   // optional uint64 sequence_id = 2;
-  if (_has_bit(1)) {
+  if (has_sequence_id()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->sequence_id(), target);
   }
   
   // optional string hostname = 3;
-  if (_has_bit(2)) {
+  if (has_hostname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->hostname().data(), this->hostname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
@@ -1020,21 +1018,21 @@ void ActorInfo::SerializeWithCachedSizes(
   }
   
   // optional bytes host_id = 4;
-  if (_has_bit(3)) {
+  if (has_host_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         4, this->host_id(), target);
   }
   
   // optional bytes actor_id = 5;
-  if (_has_bit(4)) {
+  if (has_actor_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         5, this->actor_id(), target);
   }
   
   // optional bytes app_id = 6;
-  if (_has_bit(5)) {
+  if (has_app_id()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
         6, this->app_id(), target);
@@ -1120,22 +1118,22 @@ void ActorInfo::MergeFrom(const ::google::protobuf::Message& from) {
 void ActorInfo::MergeFrom(const ActorInfo& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from._has_bit(0)) {
+    if (from.has_touch_time()) {
       set_touch_time(from.touch_time());
     }
-    if (from._has_bit(1)) {
+    if (from.has_sequence_id()) {
       set_sequence_id(from.sequence_id());
     }
-    if (from._has_bit(2)) {
+    if (from.has_hostname()) {
       set_hostname(from.hostname());
     }
-    if (from._has_bit(3)) {
+    if (from.has_host_id()) {
       set_host_id(from.host_id());
     }
-    if (from._has_bit(4)) {
+    if (from.has_actor_id()) {
       set_actor_id(from.actor_id());
     }
-    if (from._has_bit(5)) {
+    if (from.has_app_id()) {
       set_app_id(from.app_id());
     }
   }

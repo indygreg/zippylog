@@ -8,6 +8,7 @@ from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol.proto',
   package='zippylog.protocol',
@@ -421,10 +422,20 @@ _STORECHANGESTREAMSETDELETED = descriptor.Descriptor(
   serialized_end=813,
 )
 
-
 _STREAMSETINFO.fields_by_name['stream'].message_type = _STREAMINFO
 _BUCKETINFO.fields_by_name['stream_set'].message_type = _STREAMSETINFO
 _STOREINFO.fields_by_name['bucket'].message_type = _BUCKETINFO
+DESCRIPTOR.message_types_by_name['StreamInfo'] = _STREAMINFO
+DESCRIPTOR.message_types_by_name['StreamSetInfo'] = _STREAMSETINFO
+DESCRIPTOR.message_types_by_name['BucketInfo'] = _BUCKETINFO
+DESCRIPTOR.message_types_by_name['StoreInfo'] = _STOREINFO
+DESCRIPTOR.message_types_by_name['StoreChangeStreamAdded'] = _STORECHANGESTREAMADDED
+DESCRIPTOR.message_types_by_name['StoreChangeStreamDeleted'] = _STORECHANGESTREAMDELETED
+DESCRIPTOR.message_types_by_name['StoreChangeStreamAppended'] = _STORECHANGESTREAMAPPENDED
+DESCRIPTOR.message_types_by_name['StoreChangeBucketAdded'] = _STORECHANGEBUCKETADDED
+DESCRIPTOR.message_types_by_name['StoreChangeBucketDeleted'] = _STORECHANGEBUCKETDELETED
+DESCRIPTOR.message_types_by_name['StoreChangeStreamSetAdded'] = _STORECHANGESTREAMSETADDED
+DESCRIPTOR.message_types_by_name['StoreChangeStreamSetDeleted'] = _STORECHANGESTREAMSETDELETED
 
 class StreamInfo(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType

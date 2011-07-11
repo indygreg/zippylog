@@ -8,6 +8,7 @@ from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
+
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
@@ -190,7 +191,12 @@ _STOREWATCHERSHUTDOWN = descriptor.Descriptor(
   serialized_end=292,
 )
 
-
+DESCRIPTOR.message_types_by_name['BrokerStartup'] = _BROKERSTARTUP
+DESCRIPTOR.message_types_by_name['BrokerShutdown'] = _BROKERSHUTDOWN
+DESCRIPTOR.message_types_by_name['BrokerReceiveClientMessage'] = _BROKERRECEIVECLIENTMESSAGE
+DESCRIPTOR.message_types_by_name['BrokerFlushOutputStreams'] = _BROKERFLUSHOUTPUTSTREAMS
+DESCRIPTOR.message_types_by_name['StoreWatcherStartup'] = _STOREWATCHERSTARTUP
+DESCRIPTOR.message_types_by_name['StoreWatcherShutdown'] = _STOREWATCHERSHUTDOWN
 
 class BrokerStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
