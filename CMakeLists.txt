@@ -25,7 +25,6 @@ endif()
 
 set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
-ENABLE_TESTING()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
@@ -147,7 +146,6 @@ set(libzippylog-test_sources
 
 add_executable(libzippylog-test ${libzippylog-test_sources})
 target_link_libraries(libzippylog-test ${libzippylog_link_libraries} libzippylog ${GTEST_LIBRARIES})
-add_test(TestLibzippylog libzippylog-test)
 
 #####################
 # zippylogd program #
