@@ -25,13 +25,12 @@ endif()
 
 set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
+ENABLE_TESTING()
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
-    endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 --coverage")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 
@@ -183,3 +182,4 @@ target_link_libraries(zippylog_string_loader libzippylog)
 #########################
 add_executable(zippylogbench src/zippylogbench.cpp)
 target_link_libraries(zippylogbench libzippylog)
+
