@@ -126,8 +126,7 @@ public:
     };
 
     EnvelopeFilterResult() :
-        execution_success(false),
-        return_type(ReturnType::OTHER)
+        execution_success(false)
     { }
 
     /// Whether the filter function executed successfully, without error
