@@ -30,7 +30,7 @@ using ::std::vector;
 using ::zippylog::client::Client;
 using ::zippylog::client::StoreMirrorState;
 using ::zippylog::client::StreamSegment;
-using ::zippylog::protocol::StoreInfo;
+using ::zippylog::protocol::StoreInfoV1;
 using ::zippylog::Exception;
 using ::zippylog::util::GetArgumentValueAndPop;
 
@@ -146,7 +146,7 @@ static bool ParseCommandArguments(
 int ShowStoreInfo(vector<Client *> &clients)
 {
     for (vector<Client *>::iterator itor = clients.begin(); itor != clients.end(); itor++) {
-        StoreInfo si;
+        StoreInfoV1 si;
 
         if ((*itor)->StoreInfo(si, 10000000)) {
             cout << si.DebugString() << endl;
