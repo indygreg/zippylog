@@ -258,6 +258,26 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     output.clear();
 }
 
+TEST_F(RequestProcessorTest, EmptyEnvelope)
+{
+    Envelope e;
+
+    vector<Envelope> output;
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    this->ExpectErrorResponse(result, protocol::response::EMPTY_ENVELOPE, output);
+}
+
+TEST_F(RequestProcessorTest, InvalidMessageNamespace)
+{
+    Envelope e;
+    zippylog::message::Envelope m;
+    EXPECT_TRUE(e.AddMessage(m, 23523, 32145));
+
+    vector<Envelope> output;
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    this->ExpectErrorResponse(result, protocol::response::INVALID_MESSAGE_NAMESPACE, output);
+}
+
 TEST_F(RequestProcessorTest, Ping)
 {
     protocol::request::PingV1 ping;
