@@ -101,7 +101,8 @@ public:
         active(NULL),
         get_stream_max_bytes(256000),
         get_stream_max_envelopes(10000),
-        lua_memory_max(65535)
+        lua_memory_max(65535),
+        subscription_ttl(60000)
     { }
 
     /// The path to the store we should operate against
@@ -132,8 +133,11 @@ public:
     /// Maximum number of envelopes that can be returned from a GetStream request
     uint32 get_stream_max_envelopes;
 
-    /// Mamimum amount of memory (in bytes) a Lua state can allocate
+    /// Mamimum amount of memory (in kilobytes) a Lua state can allocate
     uint32 lua_memory_max;
+
+    /// Subscription time-to-live in seconds
+    uint32 subscription_ttl;
 };
 
 /// Processes zippylog protocol requests
@@ -324,7 +328,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Maximum number of enevelopes we can return per GetStreamSegment request
         uint32 get_stream_max_envelopes;
 
-        /// Maximum size (in bytes) a Lua state can allocate
+        /// Maximum size (in kilobytes) a Lua state can allocate
         uint32 lua_memory_max;
 
         /// Subscription time-to-live in milliseconds

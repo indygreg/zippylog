@@ -95,7 +95,7 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     get_stream_max_bytes(params.get_stream_max_bytes),
     get_stream_max_envelopes(params.get_stream_max_envelopes),
     lua_memory_max(params.lua_memory_max),
-    subscription_ttl(60000)
+    subscription_ttl(params.subscription_ttl)
 {
     if (!this->active) {
         throw invalid_argument("active parameter cannot be NULL");
