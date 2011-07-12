@@ -283,6 +283,8 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Process a WriteEnvelope request
         ResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
 
+        void CallHandleSubscriptionRequest(SubscriptionInfo **subscription, ::std::vector<Envelope> &output);
+
         /// Checks that a path supplied by the client is valid
         ///
         /// Returns false if:

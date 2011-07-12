@@ -270,10 +270,10 @@ TEST_F(RequestProcessorTest, GetFeatures)
     EXPECT_ENVELOPE_MESSAGE(0, protocol::response::FeatureSpecificationV1);
     protocol::response::FeatureSpecificationV1 *features = (protocol::response::FeatureSpecificationV1 *)response.GetMessage(0);
     ASSERT_TRUE(features != NULL);
-    
+
     EXPECT_EQ(1, features->supported_message_formats_size());
     EXPECT_EQ(1, features->supported_message_formats(0));
-    
+
     EXPECT_EQ(13, features->supported_request_types_size());
     EXPECT_EQ(13, features->supported_request_names_size());
 }
@@ -647,4 +647,34 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeNoAck)
     ASSERT_TRUE(RequestProcessor::DEFERRED == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);
     ASSERT_EQ(0, output.size());
+}
+
+TEST_F(RequestProcessorTest, SubscribeStoreChangesBasic)
+{
+    vector<Envelope> output;
+
+    protocol::request::SubscribeStoreChangesV1 r;
+    r.add_path("/");
+    Envelope e;
+    r.add_to_envelope(e);
+
+    EXPECT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+    EXPECT_EQ(1, output.size());
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscribeAckV1);
+    protocol::response::SubscribeAckV1 *m = (protocol::response::SubscribeAckV1 *)output[0].GetMessage(0);
+    EXPECT_TRUE(m->has_id());
+    EXPECT_TRUE(m->has_ttl());
+}
+
+TEST_F(RequestProcessorTest, SubscribeStoreChangesInvalidPath)
+{
+    vector<Envelope> output;
+
+    protocol::request::SubscribeStoreChangesV1 r;
+    r.add_path("foo");
+    Envelope e;
+    r.add_to_envelope(e);
+
+    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    this->ExpectErrorResponse(result, protocol::response::INVALID_PATH, output);
 }

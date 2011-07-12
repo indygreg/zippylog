@@ -814,7 +814,14 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
     subscription->type = SubscriptionInfo::STORE_CHANGE;
 
     for (int i = 0; i < m->path_size(); i++) {
-        subscription->paths.push_back(m->path(i));
+        string path = m->path(i);
+
+        if (!Store::ValidatePath(path)) {
+            this->PopulateErrorResponse(protocol::response::INVALID_PATH, "path not valid", output);
+            goto LOG_END;
+        }
+
+        subscription->paths.push_back(path);
     }
 
     // empty path is complete store, as defined by protocol
@@ -822,9 +829,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
         subscription->paths.push_back("/");
     }
 
-    result = this->HandleSubscriptionRequest(subscription);
-
-    // TODO process result
+    this->CallHandleSubscriptionRequest(&subscription, output);
 
 LOG_END:
     if (subscription) {
@@ -877,6 +882,13 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
     }
 
     for (int i = 0; i < m->path_size(); i++) {
+        string path = m->path(i);
+
+        if (!Store::ValidatePath(path)) {
+            this->PopulateErrorResponse(protocol::response::INVALID_PATH, "path not valid", output);
+            goto LOG_END;
+        }
+
         subscription->paths.push_back(m->path(i));
     }
 
@@ -887,40 +899,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
 
     subscription->socket_identifiers = this->current_request_identities;
 
-    result = this->HandleSubscriptionRequest(subscription);
-
-    // API contract is called function owns memory of subscription
-    subscription = NULL;
-
-    switch (result.result) {
-        case HandleSubscriptionResult::ACCEPTED:
-        {
-            protocol::response::SubscribeAckV1 ack;
-            ack.set_id(result.id);
-            ack.set_ttl(this->subscription_ttl);
-
-            Envelope response;
-            ack.add_to_envelope(response);
-
-            output.push_back(response);
-
-            break;
-        }
-
-        case HandleSubscriptionResult::REJECTED:
-            this->PopulateErrorResponse(
-                protocol::response::SUBSCRIPTION_REJECTED,
-                result.reject_reason,
-                output
-            );
-            break;
-
-        case HandleSubscriptionResult::UNKNOWN:
-            throw Exception("Unknown result enumeration from HandleSubscriptionRequest() implementation");
-
-        default:
-            throw Exception("Unhandled result enumeration for HandleSubscriptionResult.result");
-    }
+    this->CallHandleSubscriptionRequest(&subscription, output);
 
 LOG_END:
     if (subscription) {
@@ -1060,6 +1039,44 @@ LOG_END:
         return AUTHORITATIVE;
     }
     return DEFERRED;
+}
+
+void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscription, vector<Envelope> &output)
+{
+    HandleSubscriptionResult result = this->HandleSubscriptionRequest(*subscription);
+
+    // API contract is called function owns memory of subscription
+    *subscription = NULL;
+
+    switch (result.result) {
+        case HandleSubscriptionResult::ACCEPTED:
+        {
+            protocol::response::SubscribeAckV1 ack;
+            ack.set_id(result.id);
+            ack.set_ttl(this->subscription_ttl);
+
+            Envelope response;
+            ack.add_to_envelope(response);
+
+            output.push_back(response);
+
+            break;
+        }
+
+        case HandleSubscriptionResult::REJECTED:
+            this->PopulateErrorResponse(
+                protocol::response::SUBSCRIPTION_REJECTED,
+                result.reject_reason,
+                output
+            );
+            break;
+
+        case HandleSubscriptionResult::UNKNOWN:
+            throw Exception("Unknown result enumeration from HandleSubscriptionRequest() implementation");
+
+        default:
+            throw Exception("Unhandled result enumeration for HandleSubscriptionResult.result");
+    }
 }
 
 bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code, string message, vector<Envelope> &msgs)
