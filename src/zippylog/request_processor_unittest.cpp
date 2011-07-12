@@ -20,6 +20,7 @@
 
 using namespace ::zippylog;
 
+using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
 using ::zmq::message_t;
@@ -43,8 +44,7 @@ public:
       handle_subscribe_envelopes_count(0),
       handle_subscribe_keepalive_count(0),
       write_envelopes_count(0)
-    {
-    }
+    { }
 
     int subscribe_store_changes_count;
     int handle_subscribe_envelopes_count;
@@ -170,6 +170,25 @@ protected:
         this->ResetProcessor();
     }
 };
+
+TEST_F(RequestProcessorTest, ConstructorParameterValidation)
+{
+    RequestProcessorStartParams params;
+    bool active;
+    ::zmq::context_t ctx(1);
+
+    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+
+    params.active = &active;
+    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+
+    params.active = NULL;
+    params.ctx = &ctx;
+    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+
+    params.active = &active;
+    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+}
 
 // this test verifies our core message processing routine is robust and functional
 TEST_F(RequestProcessorTest, ProcessMessages)
