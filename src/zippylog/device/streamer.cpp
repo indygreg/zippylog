@@ -570,7 +570,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
                         if (!filter_result.execution_success) {
                             Error error;
-                            error.set_code(ErrorCode::LUA_ERROR);
+                            error.set_code(protocol::response::LUA_ERROR);
                             error.set_msg(filter_result.lua_error);
 
                             Envelope error_e;
