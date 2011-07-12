@@ -75,6 +75,25 @@ TEST(LuaTest, GetGlobalString)
     EXPECT_FALSE(l.GetGlobal("bar", value));
 }
 
+TEST(LuaTest, MemoryExhaustion)
+{
+    LuaState l;
+    l.SetMemoryCeiling(16384);
+    EXPECT_EQ(16384, l.GetMemoryCeiling());
+    EXPECT_TRUE(l.LoadStringLibrary());
+
+    EXPECT_TRUE(l.LoadLuaCode("s1 = \"1234567890\"\n"
+                              "s2 = s1\n"
+                              "function test()\n"
+                              "  while true do\n"
+                              "    s2 = s2 .. s1\n"
+                              "  end\n"
+                              "end"));
+
+    EXPECT_FALSE(l.LoadLuaCode("test()"));
+
+}
+
 TEST(LuaTest, EnvelopeConstruction)
 {
     LuaState l;
