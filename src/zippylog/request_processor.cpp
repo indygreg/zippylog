@@ -847,6 +847,8 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
 
     OBTAIN_MESSAGE(protocol::request::SubscribeEnvelopesV1, m, request, 0);
 
+    subscription->type = SubscriptionInfo::ENVELOPE;
+
     if (m->filter_enumeration_namespace_size() != m->filter_enumeration_type_size()) {
         this->PopulateErrorResponse(
             protocol::response::FIELD_LENGTHS_DIFFERENT,
