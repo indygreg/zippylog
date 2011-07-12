@@ -256,7 +256,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "\030\001 \002(\014\"\'\n\nWriteAckV1\022\031\n\021envelopes_writte"
     "n\030\001 \002(\r\"I\n\005Error\0223\n\004code\030\001 \001(\0162%.zippylo"
     "g.protocol.response.ErrorCode\022\013\n\003msg\030\002 \001"
-    "(\t*\353\003\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAILU"
+    "(\t*\206\004\n\tErrorCode\022\032\n\026ENVELOPE_PARSE_FAILU"
     "RE\020\001\022\035\n\031INVALID_MESSAGE_NAMESPACE\020\002\022\030\n\024U"
     "NKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPTY_ENVELOPE\020"
     "\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033\n\027REQUEST_N"
@@ -268,7 +268,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
     "H\020\016\022)\n%UNSUPPORTED_OPERATION_MESSAGE_VER"
     "SION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024PROTOCOL_NO"
     "_ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_PROCESSING\020"
-    "\022\022\r\n\tLUA_ERROR\020\023", 1096);
+    "\022\022\r\n\tLUA_ERROR\020\023\022\031\n\025SUBSCRIPTION_REJECTE"
+    "D\020\024", 1123);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   PongV1::default_instance_ = new PongV1();
@@ -322,6 +323,7 @@ bool ErrorCode_IsValid(int value) {
     case 17:
     case 18:
     case 19:
+    case 20:
       return true;
     default:
       return false;

@@ -47,7 +47,7 @@ message StreamSegmentEndV1 {
     // TODO record offset ranges that were skipped, possibly why
 }
 
-// acknowledges a subscription request
+// acknowledges acceptance of a subscription request
 message SubscribeAckV1 {
     // unique identifier for this subscription
     // client needs to record this identifier to send in SubscribeKeepalive
@@ -138,4 +138,7 @@ enum ErrorCode {
 
 	// Lua code threw an error
 	LUA_ERROR = 19;
+
+	// requested subscription is a valid request, but has been rejected
+	SUBSCRIPTION_REJECTED = 20;
 }

@@ -155,17 +155,15 @@ message SubscribeEnvelopesV1 {
 
 	// By default, envelope subscriptions subscribe to all envelopes in the
 	// requested path(s). We can filter envelopes using Lua or via the
-	// mechanisms listed below. To avoid ambiguity, only 1 filter type may be
-	// used at a time. If Lua codes provides filtering and a filter field
-	// is defined, the server should reject the request. Complex filtering
-	// (matching AND with OR or looking at additional envelope properties
-	// will require Lua-based filtering).
+	// mechanisms listed below. Multiple filter types may be registered
+	// simultaneously. If multiple filters are defined, they are combined with
+	// an OR. In other words, only one filter needs to match for the envelope
+	// to pass the filter. Complex filtering (matching AND with OR or looking
+	// at additional envelope properties will require Lua-based filtering).
 
 	// Limit subscribed envelopes to those containing messages in these
 	// namespaces. Only one message in the envelope needs to match for a hit.
     repeated uint32 filter_namespace = 2 [packed=true];
-
-	// OR
 
 	// Limit subscribed envelopes to those containing messages in the message
 	// enumerations defined here. As with the above field, only 1 message in
