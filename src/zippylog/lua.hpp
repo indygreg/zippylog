@@ -241,6 +241,8 @@ private:
     LuaState & operator=(const LuaState &);
 
     FRIEND_TEST(LuaTest, EnvelopeApi);
+    FRIEND_TEST(LuaTest, GetGlobalInteger);
+    FRIEND_TEST(LuaTest, GetGlobalString);
 };
 
 }} // end namespaces

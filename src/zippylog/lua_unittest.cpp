@@ -51,6 +51,30 @@ TEST(LuaTest, DetectBadCode)
     EXPECT_EQ(0, l.GetStackSize());
 }
 
+TEST(LuaTest, GetGlobalInteger)
+{
+    LuaState l;
+    EXPECT_TRUE(l.LoadLuaCode("foo = 12"));
+    int64 value;
+    EXPECT_TRUE(l.GetGlobal("foo", value));
+    EXPECT_EQ(12, value);
+
+    EXPECT_TRUE(l.LoadLuaCode("bar = true"));
+    EXPECT_FALSE(l.GetGlobal("bar", value));
+}
+
+TEST(LuaTest, GetGlobalString)
+{
+    LuaState l;
+    EXPECT_TRUE(l.LoadLuaCode("foo = \"bar\""));
+    string value;
+    EXPECT_TRUE(l.GetGlobal("foo", value));
+    EXPECT_EQ("bar", value);
+
+    EXPECT_TRUE(l.LoadLuaCode("bar = false"));
+    EXPECT_FALSE(l.GetGlobal("bar", value));
+}
+
 TEST(LuaTest, EnvelopeConstruction)
 {
     LuaState l;
