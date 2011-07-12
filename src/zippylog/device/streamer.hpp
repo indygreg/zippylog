@@ -19,6 +19,7 @@
 
 #include <zippylog/lua.hpp>
 #include <zippylog/platform.hpp>
+#include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/stream.hpp>
 
@@ -30,42 +31,6 @@
 
 namespace zippylog {
 namespace device {
-
-/// records a subscription to an envelope
-class EnvelopeSubscription {
-public:
-    EnvelopeSubscription();
-
-    ::std::string id;
-    ::std::vector< ::std::string > paths;
-    ::std::vector< ::std::string > socket_identifiers;
-};
-
-/// records details about an individual subscription
-class SubscriptionInfo {
-public:
-    SubscriptionInfo();
-    SubscriptionInfo(uint32 expiration_ttl);
-    ~SubscriptionInfo();
-
-    ::zippylog::platform::Timer expiration_timer;
-
-    enum SubscriptionType {
-        ENVELOPE = 1,
-        STORE_CHANGE = 2,
-    } type;
-
-    ::std::vector< ::std::string > paths;
-    ::std::vector< ::std::string > socket_identifiers;
-
-    EnvelopeSubscription envelope_subscription;
-
-    ::zippylog::lua::LuaState *l;
-
-private:
-    SubscriptionInfo(const SubscriptionInfo &orig);
-    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
-};
 
 /// Used to construct a streamer device
 class ZIPPYLOG_EXPORT StreamerStartParams {
@@ -154,17 +119,9 @@ class ZIPPYLOG_EXPORT Streamer {
         /// Returns the number of subscriptions removed
         int RemoveExpiredSubscriptions();
 
-        /// Process a subscription request received on the subscription sock
-        bool ProcessSubscription(::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
-
         bool ProcessStoreChangeMessage(::zmq::message_t &m);
 
         void ProcessStoreChangeEnvelope(Envelope &e);
-
-        void ProcessSubscribeStoreChanges(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
-        void ProcessSubscribeEnvelopes(Envelope &e, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &msgs);
-
-        void SendSubscriptionAck(const ::std::string &id, Envelope &req, ::std::vector< ::std::string > &identities);
 
         // returns whether we have a subscription for envelopes in the given stream path
         bool HaveEnvelopeSubscription(const ::std::string &path);
@@ -206,7 +163,7 @@ class ZIPPYLOG_EXPORT Streamer {
         ::zmq::socket_t * logging_sock;
 
         /// Maps subscription id to details about the subscription
-        ::std::map< ::std::string, SubscriptionInfo * > subscriptions;
+        ::std::map< ::std::string, ::zippylog::SubscriptionInfo * > subscriptions;
 
         // maps read offsets in streams, for envelope streaming
         ::std::map< ::std::string, uint64 > stream_read_offsets;

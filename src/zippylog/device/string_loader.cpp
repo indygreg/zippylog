@@ -51,8 +51,8 @@ StringLoader::StringLoader(StringLoaderStartParams &params) :
 
     if (params.lua_code.length() > 0) {
         string error;
-        if (!this->L.LoadLuaCode(params.lua_code)) {
-            throw Exception("error loading Lua code");
+        if (!this->L.LoadLuaCode(params.lua_code, error)) {
+            throw Exception("error loading Lua code: " + error);
         }
     }
 

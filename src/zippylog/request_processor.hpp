@@ -16,6 +16,8 @@
 #define ZIPPYLOG_REQUEST_PROCESSOR_HPP_
 
 #include <zippylog/zippylog.hpp>
+
+#include <zippylog/lua.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
@@ -24,6 +26,73 @@
 
 namespace zippylog {
 
+/// Records information unique to an envelope subscription
+class EnvelopeSubscription {
+public:
+    EnvelopeSubscription();
+
+    ::std::string id;
+    ::std::vector< ::std::string > paths;
+    ::std::vector< ::std::string > socket_identifiers;
+
+    ::std::vector<uint32> filter_namespaces;
+    ::std::vector< ::std::pair<uint32, uint32> > filter_enumerations;
+};
+
+/// Records information about a single subscription
+class SubscriptionInfo {
+public:
+    SubscriptionInfo();
+    SubscriptionInfo(uint32 expiration_ttl);
+    ~SubscriptionInfo();
+
+    void InitializeLua();
+
+    /// Timer that keeps track of subscription expiration
+    ::zippylog::platform::Timer expiration_timer;
+
+    /// The type of subscription
+    enum SubscriptionType {
+        ENVELOPE = 1,
+        STORE_CHANGE = 2,
+    } type;
+
+    /// Subscription id
+    ::std::string id;
+
+    /// Store paths subscribed to
+    ::std::vector< ::std::string > paths;
+
+    /// 0MQ socket identifiers to route messages
+    ::std::vector< ::std::string > socket_identifiers;
+
+    /// Details about envelope subscription
+    EnvelopeSubscription envelope_subscription;
+
+    /// Lua state attached to subscription
+    ::zippylog::lua::LuaState *l;
+
+private:
+    SubscriptionInfo(const SubscriptionInfo &orig);
+    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
+};
+
+/// Encapsulates the result of a request to handle a subscription
+class ZIPPYLOG_EXPORT HandleSubscriptionResult {
+public:
+    HandleSubscriptionResult() : result(UNKNOWN) { }
+
+    enum SubscriptionResult {
+        ACCEPTED,
+        REJECTED,
+        UNKNOWN
+    } result;
+
+    ::std::string id;
+
+    ::std::string reject_reason;
+};
+
 /// Used to construct a request processor
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
@@ -31,7 +100,8 @@ public:
         ctx(NULL),
         active(NULL),
         get_stream_max_bytes(256000),
-        get_stream_max_envelopes(10000)
+        get_stream_max_envelopes(10000),
+        lua_memory_max(65535)
     { }
 
     /// The path to the store we should operate against
@@ -61,6 +131,9 @@ public:
 
     /// Maximum number of envelopes that can be returned from a GetStream request
     uint32 get_stream_max_envelopes;
+
+    /// Mamimum amount of memory (in bytes) a Lua state can allocate
+    uint32 lua_memory_max;
 };
 
 /// Processes zippylog protocol requests
@@ -153,12 +226,16 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
     protected:
-
-        /// callback to handle a validated request to subscribe to store changes
-        virtual ResponseStatus HandleSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output) = 0;
-
-        /// callback to handle a subscription to envelopes
-        virtual ResponseStatus HandleSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output) = 0;
+        /// Callback to handle a validated request for a subscription
+        ///
+        /// This function is called after a subscription request has been
+        /// received and validated. The function receives a pointer to a
+        /// subscription record. Ownership of this object is transferred to
+        /// the called function, which is expected to delete it when it is
+        /// no longer used.
+        ///
+        /// @param subscription metadata
+        virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo *subscription) = 0;
 
         /// callback to handle a subscription keepalive
         virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
@@ -239,11 +316,17 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ::std::vector< ::std::string > current_request_identities;
         bool *active;
 
-        /// maximum number of bytes we're allowed to return per GetStream request
+        /// Maximum number of bytes we're allowed to return per GetStreamSegment request
         uint32 get_stream_max_bytes;
 
-        /// maximum number of enevelopes we can return per GetStream request
+        /// Maximum number of enevelopes we can return per GetStreamSegment request
         uint32 get_stream_max_envelopes;
+
+        /// Maximum size (in bytes) a Lua state can allocate
+        uint32 lua_memory_max;
+
+        /// Subscription time-to-live in milliseconds
+        uint32 subscription_ttl;
 
 private:
         RequestProcessor(const RequestProcessor &orig);

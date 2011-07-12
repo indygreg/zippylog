@@ -30,7 +30,9 @@ namespace server {
 using ::std::string;
 using ::std::vector;
 using ::zippylog::RequestProcessor;
+using ::zippylog::SubscriptionInfo;
 using ::zmq::socket_t;
+using ::zmq::message_t;
 
 Worker::Worker(WorkerStartParams &params) :
     RequestProcessor(params.request_processor_params),
@@ -61,35 +63,30 @@ Worker::~Worker()
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
 
-RequestProcessor::ResponseStatus Worker::HandleSubscribeStoreChanges(Envelope &request, vector<Envelope> &)
-{
-    // we pass the identities and the original message to the streamer
-    // we don't pass the first identity, b/c it belongs to the local socket
-    // TODO should probably create a special message type with identities embed
-    vector<string> subscription_identities = this->current_request_identities;
-    subscription_identities.erase(subscription_identities.begin());
-
-    ::zippylog::zeromq::send_envelope(this->subscriptions_sock, subscription_identities, request);
-
-    return DEFERRED;
-}
-
-RequestProcessor::ResponseStatus Worker::HandleSubscribeEnvelopes(Envelope &request, vector<Envelope> &)
-{
-    // proxy the message w/ identities (minus first one)
-    vector<string> subscription_identities = this->current_request_identities;
-    subscription_identities.erase(subscription_identities.begin());
-
-    ::zippylog::zeromq::send_envelope(this->subscriptions_sock, subscription_identities, request);
-
-    return DEFERRED;
-}
-
 RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
 {
     ::zippylog::zeromq::send_envelope(this->subscription_updates_sock, request);
 
     return DEFERRED;
+}
+
+HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::SubscriptionInfo *subscription)
+{
+    platform::UUID uuid;
+    platform::CreateUUID(uuid);
+
+    HandleSubscriptionResult result;
+    result.id = string((const char *)&uuid, sizeof(uuid));
+    result.result = HandleSubscriptionResult::ACCEPTED;
+    subscription->id = result.id;
+
+    // we send the pointer to the subscription record through the socket
+    // if it gets lost, we have a memory leak. but, it shouldn't get lost
+    message_t m(sizeof(SubscriptionInfo *));
+    memcpy(m.data(), subscription, sizeof(SubscriptionInfo *));
+    this->subscriptions_sock->send(m, 0);
+
+    return result;
 }
 
 int Worker::HandleWriteEnvelopes(const ::std::string &, ::std::vector<Envelope> &, bool)

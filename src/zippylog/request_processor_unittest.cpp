@@ -60,16 +60,21 @@ protected:
         this->write_envelopes_count = 0;
     }
 
-    ResponseStatus HandleSubscribeStoreChanges(Envelope &, vector<Envelope> &)
-    {
-        this->subscribe_store_changes_count++;
-        return AUTHORITATIVE;
-    }
+    HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo *subscription) {
+        if (subscription->type == SubscriptionInfo::ENVELOPE) {
+            this->handle_subscribe_envelopes_count++;
+        }
+        else if (subscription->type == SubscriptionInfo::STORE_CHANGE) {
+            this->subscribe_store_changes_count++;
+        }
 
-    ResponseStatus HandleSubscribeEnvelopes(Envelope &, vector<Envelope> &)
-    {
-        this->handle_subscribe_envelopes_count++;
-        return AUTHORITATIVE;
+        HandleSubscriptionResult result;
+        result.result = HandleSubscriptionResult::ACCEPTED;
+        result.id = "XX";
+
+        delete subscription;
+
+        return result;
     }
 
     ResponseStatus HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)

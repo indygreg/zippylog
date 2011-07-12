@@ -29,9 +29,11 @@ namespace lua {
 TEST(LuaTest, SimpleExecution)
 {
     LuaState l;
+    string error;
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_TRUE(l.LoadLuaCode("function test()\nreturn true\nend"));
+    EXPECT_TRUE(l.LoadLuaCode("function test()\nreturn true\nend", error));
     EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_EQ(0, error.length());
     EXPECT_FALSE(l.HasLoadString());
     EXPECT_FALSE(l.HasSubscriptionEnvelopeFilter());
     EXPECT_FALSE(l.HasSubscriptionTimer());
@@ -47,37 +49,42 @@ TEST(LuaTest, LoadStringLibrary)
 TEST(LuaTest, DetectBadCode)
 {
     LuaState l;
-    EXPECT_FALSE(l.LoadLuaCode("function foo(32r"));
+    string error;
+    EXPECT_FALSE(l.LoadLuaCode("function foo(32r", error));
     EXPECT_EQ(0, l.GetStackSize());
+    EXPECT_GT(error.length(), 0);
 }
 
 TEST(LuaTest, GetGlobalInteger)
 {
     LuaState l;
-    EXPECT_TRUE(l.LoadLuaCode("foo = 12"));
+    string error;
+    EXPECT_TRUE(l.LoadLuaCode("foo = 12", error));
     int64 value;
     EXPECT_TRUE(l.GetGlobal("foo", value));
     EXPECT_EQ(12, value);
 
-    EXPECT_TRUE(l.LoadLuaCode("bar = true"));
+    EXPECT_TRUE(l.LoadLuaCode("bar = true", error));
     EXPECT_FALSE(l.GetGlobal("bar", value));
 }
 
 TEST(LuaTest, GetGlobalString)
 {
     LuaState l;
-    EXPECT_TRUE(l.LoadLuaCode("foo = \"bar\""));
+    string error;
+    EXPECT_TRUE(l.LoadLuaCode("foo = \"bar\"", error));
     string value;
     EXPECT_TRUE(l.GetGlobal("foo", value));
     EXPECT_EQ("bar", value);
 
-    EXPECT_TRUE(l.LoadLuaCode("bar = false"));
+    EXPECT_TRUE(l.LoadLuaCode("bar = false", error));
     EXPECT_FALSE(l.GetGlobal("bar", value));
 }
 
 TEST(LuaTest, MemoryExhaustion)
 {
     LuaState l;
+    string error;
     l.SetMemoryCeiling(16384);
     EXPECT_EQ(16384, l.GetMemoryCeiling());
     EXPECT_TRUE(l.LoadStringLibrary());
@@ -88,76 +95,78 @@ TEST(LuaTest, MemoryExhaustion)
                               "  while true do\n"
                               "    s2 = s2 .. s1\n"
                               "  end\n"
-                              "end"));
+                              "end", error));
 
-    EXPECT_FALSE(l.LoadLuaCode("test()"));
+    EXPECT_FALSE(l.LoadLuaCode("test()", error));
 
 }
 
 TEST(LuaTest, EnvelopeConstruction)
 {
     LuaState l;
-    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()"));
+    string error;
+    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()", error));
     EXPECT_EQ(0, l.GetStackSize());
 }
 
 TEST(LuaTest, EnvelopeApi)
 {
     LuaState l;
+    string error;
 
-    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()"));
-    EXPECT_TRUE(l.LoadLuaCode("count = e:message_count()"));
+    EXPECT_TRUE(l.LoadLuaCode("e = zippylog.envelope.new()", error));
+    EXPECT_TRUE(l.LoadLuaCode("count = e:message_count()", error));
     int64 ivalue = -100;
     EXPECT_TRUE(l.GetGlobal("count", ivalue));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_EQ(0, ivalue);
 
-    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
+    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()", error));
     EXPECT_TRUE(l.GetGlobal("count", ivalue));
     EXPECT_EQ(0, ivalue);
 
-    EXPECT_FALSE(l.LoadLuaCode("e:get_tag()"));
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag()", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(0)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(0)", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(1)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:get_tag(1)", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_TRUE(l.LoadLuaCode("e:add_tag(\"foo\")"));
+    EXPECT_TRUE(l.LoadLuaCode("e:add_tag(\"foo\")", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()"));
+    EXPECT_TRUE(l.LoadLuaCode("count = e:tag_count()", error));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("count", ivalue));
     EXPECT_EQ(1, ivalue);
 
     string svalue;
-    EXPECT_TRUE(l.LoadLuaCode("tag = e:get_tag(1)"));
+    EXPECT_TRUE(l.LoadLuaCode("tag = e:get_tag(1)", error));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("tag", svalue));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_EQ("foo", svalue);
 
-    EXPECT_FALSE(l.LoadLuaCode("tag = e:get_tag(2)"));
+    EXPECT_FALSE(l.LoadLuaCode("tag = e:get_tag(2)", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_FALSE(l.LoadLuaCode("e:add_tag()"));
+    EXPECT_FALSE(l.LoadLuaCode("e:add_tag()", error));
     EXPECT_EQ(0, l.GetStackSize());
 
-    EXPECT_TRUE(l.LoadLuaCode("size = e:serialized_byte_size()"));
+    EXPECT_TRUE(l.LoadLuaCode("size = e:serialized_byte_size()", error));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("size", ivalue));
     EXPECT_EQ(14, ivalue);
 
-    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration()"));
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration()", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(0)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(0)", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(1)"));
+    EXPECT_FALSE(l.LoadLuaCode("e:message_enumeration(1)", error));
     EXPECT_EQ(0, l.GetStackSize());
 
-    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_TRUE(l.LoadLuaCode("e:set_string_value(\"bar\")"));
+    EXPECT_TRUE(l.LoadLuaCode("e:set_string_value(\"bar\")", error));
     EXPECT_EQ(0, l.GetStackSize());
-    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()"));
+    EXPECT_TRUE(l.LoadLuaCode("s = e:get_string_value()", error));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.GetGlobal("s", svalue));
     EXPECT_EQ("bar", svalue);
@@ -166,11 +175,12 @@ TEST(LuaTest, EnvelopeApi)
 TEST(LuaTest, DetectLoadString)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return true\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_EQ(0, l.GetStackSize());
     EXPECT_TRUE(l.HasLoadString());
 }
@@ -178,11 +188,12 @@ TEST(LuaTest, DetectLoadString)
 TEST(LuaTest, LoadStringLuaError)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return foo.bar()\n"
                   "end";
 
-    ASSERT_TRUE(l.LoadLuaCode(code));
+    ASSERT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     EXPECT_TRUE(l.ExecuteLoadString("foo", result));
@@ -195,10 +206,11 @@ TEST(LuaTest, LoadStringLuaError)
 TEST(LuaTest, LoadStringSingleNil)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return nil\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_EQ(0, l.GetStackSize());
 
     LoadStringResult result;
@@ -214,10 +226,11 @@ TEST(LuaTest, LoadStringSingleNil)
 TEST(LuaTest, LoadStringMultipleNil)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return nil, nil\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -232,10 +245,11 @@ TEST(LuaTest, LoadStringMultipleNil)
 TEST(LuaTest, LoadStringTrue)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return true\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -250,10 +264,11 @@ TEST(LuaTest, LoadStringTrue)
 TEST(LuaTest, LoadStringMultipleTrue)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return true, true\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -268,10 +283,11 @@ TEST(LuaTest, LoadStringMultipleTrue)
 TEST(LuaTest, LoadStringFalse)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return false\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -286,10 +302,11 @@ TEST(LuaTest, LoadStringFalse)
 TEST(LuaTest, LoadStringMultipleFalse)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return false,false\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -304,10 +321,11 @@ TEST(LuaTest, LoadStringMultipleFalse)
 TEST(LuaTest, LoadStringSingleString)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return \"bar\"\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -325,10 +343,11 @@ TEST(LuaTest, LoadStringSingleString)
 TEST(LuaTest, LoadStringMultipleStrings)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return \"bar\", \"baz\"\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -346,10 +365,11 @@ TEST(LuaTest, LoadStringMultipleStrings)
 TEST(LuaTest, LoadStringTableBucketThenString)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return { [\"bucket\"] = \"b\" }, \"bar\"\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -367,10 +387,11 @@ TEST(LuaTest, LoadStringTableBucketThenString)
 TEST(LuaTest, LoadStringTableBucketAndSetThenString)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return { [\"bucket\"] = \"b\", [\"set\"] = \"s\" }, \"bar\"\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -389,10 +410,11 @@ TEST(LuaTest, LoadStringTableBucketAndSetThenString)
 TEST(LuaTest, LoadStringTableThenStrings)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  return { [\"bucket\"] = \"buck\", [\"set\"] = \"se\" }, \"foo\", \"bar\"\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -412,6 +434,7 @@ TEST(LuaTest, LoadStringTableThenStrings)
 TEST(LuaTest, LoadStringSingleEnvelope)
 {
     LuaState l;
+    string error;
     ASSERT_TRUE(l.LoadStringLibrary());
     string code = "function zippylog_load_string(s)\n"
                   "  e = zippylog.envelope.new()\n"
@@ -419,7 +442,7 @@ TEST(LuaTest, LoadStringSingleEnvelope)
                   "  return e\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -437,6 +460,7 @@ TEST(LuaTest, LoadStringSingleEnvelope)
 TEST(LuaTest, LoadStringMultipleEnvelopes)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  e1 = zippylog.envelope.new()\n"
                   "  e2 = zippylog.envelope.new()\n"
@@ -446,7 +470,7 @@ TEST(LuaTest, LoadStringMultipleEnvelopes)
                   "  e3:set_string_value(\"baz\")\n"
                   "  return e1, e2, e3\n"
                   "end";
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -464,6 +488,7 @@ TEST(LuaTest, LoadStringMultipleEnvelopes)
 TEST(LuaTest, LoadStringTableThenEnvelopes)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_load_string(s)\n"
                   "  e1 = zippylog.envelope.new()\n"
                   "  e2 = zippylog.envelope.new()\n"
@@ -473,7 +498,7 @@ TEST(LuaTest, LoadStringTableThenEnvelopes)
                   "  return t, e1, e2\n"
                   "end";
 
-    ASSERT_TRUE(l.LoadLuaCode(code));
+    ASSERT_TRUE(l.LoadLuaCode(code, error));
 
     LoadStringResult result;
     ASSERT_TRUE(l.ExecuteLoadString("foo", result));
@@ -495,11 +520,12 @@ TEST(LuaTest, LoadStringTableThenEnvelopes)
 TEST(LuaTest, DetectSubscriptionEnvelopeFilter)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
                   "  return true\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
     EXPECT_EQ(0, l.GetStackSize());
 }
@@ -507,11 +533,12 @@ TEST(LuaTest, DetectSubscriptionEnvelopeFilter)
 TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
                   "  return foo.bar()\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
 
     Envelope e;
@@ -526,11 +553,12 @@ TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
 TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
                   "  return true\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
 
     Envelope e;
@@ -545,11 +573,12 @@ TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
 TEST(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
                   "  return false\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
 
     Envelope e;
@@ -564,11 +593,12 @@ TEST(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
 TEST(LuaTest, SubscriptionEnvelopeFilterFilterOther)
 {
     LuaState l;
+    string error;
     string code = "function zippylog_subscription_filter_envelope(e, bucket, stream_set, stream)\n"
                   "  return 5\n"
                   "end";
 
-    EXPECT_TRUE(l.LoadLuaCode(code));
+    EXPECT_TRUE(l.LoadLuaCode(code, error));
     EXPECT_TRUE(l.HasSubscriptionEnvelopeFilter());
 
     Envelope e;

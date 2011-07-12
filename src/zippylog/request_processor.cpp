@@ -48,10 +48,40 @@ namespace zippylog {
     }
 
 using ::std::invalid_argument;
+using ::std::pair;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::lua::LuaState;
 using ::zmq::message_t;
 using ::zmq::socket_t;
+
+EnvelopeSubscription::EnvelopeSubscription() {}
+
+SubscriptionInfo::SubscriptionInfo() : l(NULL) {}
+
+SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
+    : l(NULL)
+{
+    // milliseconds to microseconds
+    if (!this->expiration_timer.Start(expiration_ttl * 1000)) {
+        throw Exception("could not start expiration timer");
+    }
+}
+
+SubscriptionInfo::~SubscriptionInfo()
+{
+    if (this->l) delete this->l;
+}
+
+void SubscriptionInfo::InitializeLua()
+{
+    if (this->l) {
+        delete this->l;
+        this->l = NULL;
+    }
+
+    this->l = new LuaState();
+}
 
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     ctx(params.ctx),
@@ -63,7 +93,9 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     store(NULL),
     active(params.active),
     get_stream_max_bytes(params.get_stream_max_bytes),
-    get_stream_max_envelopes(params.get_stream_max_envelopes)
+    get_stream_max_envelopes(params.get_stream_max_envelopes),
+    lua_memory_max(params.lua_memory_max),
+    subscription_ttl(60000)
 {
     if (!this->active) {
         throw invalid_argument("active parameter cannot be NULL");
@@ -442,7 +474,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, v
     protocol::response::FeatureSpecificationV1 response;
 
     response.add_supported_message_formats(1);
-    
+
     response.add_supported_request_types(protocol::request::PingV1::zippylog_enumeration);
     response.add_supported_request_names("PingV1");
     response.add_supported_request_types(protocol::request::GetFeaturesV1::zippylog_enumeration);
@@ -774,20 +806,129 @@ LOG_END:
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
+    HandleSubscriptionResult result;
+    SubscriptionInfo *subscription = new SubscriptionInfo();
+
     OBTAIN_MESSAGE(protocol::request::SubscribeStoreChangesV1, m, request, 0);
 
-    // TODO validation
+    subscription->type = SubscriptionInfo::STORE_CHANGE;
+
+    for (int i = 0; i < m->path_size(); i++) {
+        subscription->paths.push_back(m->path(i));
+    }
+
+    // empty path is complete store, as defined by protocol
+    if (subscription->paths.size() == 0) {
+        subscription->paths.push_back("/");
+    }
+
+    result = this->HandleSubscriptionRequest(subscription);
+
+    // TODO process result
 
 LOG_END:
+    if (subscription) {
+        delete subscription;
+        subscription = NULL;
+    }
 
-    return this->HandleSubscribeStoreChanges(request, output);
+    return AUTHORITATIVE;
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
 {
-    // TODO validation
+    SubscriptionInfo * subscription = new SubscriptionInfo();
+    HandleSubscriptionResult result;
 
-    return this->HandleSubscribeEnvelopes(request, output);
+    OBTAIN_MESSAGE(protocol::request::SubscribeEnvelopesV1, m, request, 0);
+
+    if (m->filter_enumeration_namespace_size() != m->filter_enumeration_type_size()) {
+        this->PopulateErrorResponse(
+            protocol::response::FIELD_LENGTHS_DIFFERENT,
+            "lengths of filter_enumeration_namespace and filter_enumeration_type are not identical",
+            output
+        );
+        goto LOG_END;
+    }
+
+    for (int i = 0; i < m->filter_enumeration_namespace_size(); i++) {
+        subscription->envelope_subscription.filter_enumerations.push_back(
+            pair<uint32, uint32>(m->filter_enumeration_namespace(i), m->filter_enumeration_type(i))
+        );
+    }
+
+    for (int i = 0; i < m->filter_namespace_size(); i++) {
+        subscription->envelope_subscription.filter_namespaces.push_back(m->filter_namespace(i));
+    }
+
+    if (m->has_lua_code()) {
+        subscription->InitializeLua();
+        subscription->l->SetMemoryCeiling(this->lua_memory_max);
+
+        string error;
+        if (!subscription->l->LoadLuaCode(m->lua_code(), error)) {
+            this->PopulateErrorResponse(
+                protocol::response::LUA_ERROR,
+                "XXX",
+                output
+            );
+        }
+        goto LOG_END;
+    }
+
+    for (int i = 0; i < m->path_size(); i++) {
+        subscription->paths.push_back(m->path(i));
+    }
+
+    // path is whole store if none given, per protocol
+    if (subscription->paths.size() == 0) {
+        subscription->paths.push_back("/");
+    }
+
+    subscription->socket_identifiers = this->current_request_identities;
+
+    result = this->HandleSubscriptionRequest(subscription);
+
+    // API contract is called function owns memory of subscription
+    subscription = NULL;
+
+    switch (result.result) {
+        case HandleSubscriptionResult::ACCEPTED:
+        {
+            protocol::response::SubscribeAckV1 ack;
+            ack.set_id(result.id);
+            ack.set_ttl(this->subscription_ttl);
+
+            Envelope response;
+            ack.add_to_envelope(response);
+
+            output.push_back(response);
+
+            break;
+        }
+
+        case HandleSubscriptionResult::REJECTED:
+            this->PopulateErrorResponse(
+                protocol::response::SUBSCRIPTION_REJECTED,
+                result.reject_reason,
+                output
+            );
+            break;
+
+        case HandleSubscriptionResult::UNKNOWN:
+            throw Exception("Unknown result enumeration from HandleSubscriptionRequest() implementation");
+
+        default:
+            throw Exception("Unhandled result enumeration for HandleSubscriptionResult.result");
+    }
+
+LOG_END:
+    if (subscription) {
+        delete subscription;
+        subscription = NULL;
+    }
+
+    return AUTHORITATIVE;
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)

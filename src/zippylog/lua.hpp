@@ -117,6 +117,7 @@ public:
     ::std::vector< ::zippylog::Envelope > envelopes;
 };
 
+/// Represents the result of an envelope filter invocation
 class ZIPPYLOG_EXPORT EnvelopeFilterResult {
 public:
     enum ReturnType {
@@ -145,13 +146,21 @@ public:
     ::std::string lua_error;
 };
 
-// class that handles common Lua functionality
+/// Represents an individual Lua interpreter
+///
+/// Provides zippylog-specific APIs for invoking functionality on interpreter
 class ZIPPYLOG_EXPORT LuaState {
 public:
+    /// Initialize a new Lua state
+    ///
+    /// The state has the zippylog APIs defined in it. Also, a custom memory
+    /// allocator is used to limit allocation size.
     LuaState();
     ~LuaState();
 
-    // sets the limit for memory consumption of the interpreter
+    /// Sets the limit for memory consumption of the interpreter, in bytes
+    ///
+    /// @param size Maximum state allocation usage, in bytes
     bool SetMemoryCeiling(uint32 size);
 
     /// Obtains the set memory ceiling for the interpreter
@@ -169,13 +178,19 @@ public:
     /// Returns the current Lua stack size
     inline int GetStackSize() const { return lua_gettop(this->L); }
 
-    // loads user-supplied Lua code into the interpreter
-    bool LoadLuaCode(const ::std::string &code);
+    /// Loads user-supplied Lua code into the interpreter
+    ///
+    /// @return Whether code loaded without error
+    bool LoadLuaCode(const ::std::string &code, ::std::string &error);
 
-    // loads Lua code from a file into the interpret
+    /// Loads Lua code from a file into the interpret
+    ///
+    /// @return Whether code loaded without error
     bool LoadFile(const ::std::string &filename, ::std::string &error);
 
-    // loads the string standard library into the Lua interpreter
+    /// Loads the string standard library into the Lua interpreter
+    ///
+    /// @return Whether the library loaded without error
     bool LoadStringLibrary();
 
     /// Executes the load string callback
@@ -196,6 +211,7 @@ public:
     /// @return whether we executed any Lua code
     bool ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const ::std::string &path, EnvelopeFilterResult &result);
 
+    /// Custom memory allocatio function for Lua states
     static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
     static int LuaPanic(lua_State *L);
 

@@ -41,23 +41,6 @@ using namespace ::zippylog::device::streamer;
 namespace zippylog {
 namespace device {
 
-EnvelopeSubscription::EnvelopeSubscription() {}
-SubscriptionInfo::SubscriptionInfo() : l(NULL) {}
-
-SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
-    : l(NULL)
-{
-    // milliseconds to microseconds
-    if (!this->expiration_timer.Start(expiration_ttl * 1000)) {
-        throw Exception("could not start expiration timer");
-    }
-}
-
-SubscriptionInfo::~SubscriptionInfo()
-{
-    if (this->l) delete this->l;
-}
-
 Streamer::Streamer(StreamerStartParams params) :
     store(NULL),
     zctx(params.ctx),
@@ -185,18 +168,14 @@ void Streamer::Run()
 
         // process new subscriptions
         if (pollitems[1].revents & ZMQ_POLLIN) {
-            vector<string> identities;
-            vector<message_t *> msgs;
 
-            if (!zeromq::receive_multipart_message(this->subscriptions_sock, identities, msgs)) {
-                throw Exception("TODO log error receiving multipart message on subscriptions sock");
+            if (!this->subscriptions_sock->recv(&msg, 0)) {
+                throw Exception("error receiving 0MQ message on subscriptions sock");
             }
 
-            this->ProcessSubscription(identities, msgs);
+            SubscriptionInfo *subscription = (SubscriptionInfo *)msg.data();
 
-            for(vector<message_t *>::iterator msg = msgs.begin(); msg != msgs.end(); msg++) {
-                delete *msg;
-            }
+            this->subscriptions[subscription->id] = subscription;
         }
 
         // process store changes and send to subscribers
@@ -270,41 +249,6 @@ bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
     return true;
 }
 
-bool Streamer::ProcessSubscription(vector<string> &identities, vector<message_t *> &msgs)
-{
-    if (msgs.size() < 1) return false;
-
-    Envelope e;
-
-    try {
-     e = Envelope(msgs[0]->data(), msgs[0]->size());
-    }
-    catch (DeserializeException e) {
-        throw Exception("TODO log deserialize exception");
-    }
-
-    if (e.MessageCount() != 1) return false;
-    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
-
-    uint32 message_type = e.MessageType(0);
-
-    switch (message_type) {
-        case protocol::request::SubscribeStoreChangesV1::zippylog_enumeration:
-            this->ProcessSubscribeStoreChanges(e, identities, msgs);
-            break;
-
-        case protocol::request::SubscribeEnvelopesV1::zippylog_enumeration:
-            this->ProcessSubscribeEnvelopes(e, identities, msgs);
-            break;
-
-        default:
-            throw Exception("TODO log unknown subscription message");
-            break;
-    }
-
-    return true;
-}
-
 bool Streamer::ProcessStoreChangeMessage(message_t &msg)
 {
     // if we don't have any subscriptions, do nothing
@@ -339,65 +283,6 @@ bool Streamer::ProcessStoreChangeMessage(message_t &msg)
     }
 
     return true;
-}
-
-void Streamer::ProcessSubscribeStoreChanges(Envelope &e, vector<string> &identities, vector<message_t *> &)
-{
-    protocol::request::SubscribeStoreChangesV1 *m =
-        (protocol::request::SubscribeStoreChangesV1 *)e.GetMessage(0);
-
-    SubscriptionInfo * subscription = new SubscriptionInfo(this->subscription_ttl);
-    subscription->type = SubscriptionInfo::STORE_CHANGE;
-
-    for (int i = 0; i < m->path_size(); i++) {
-        subscription->paths.push_back(m->path(i));
-    }
-
-    subscription->socket_identifiers = identities;
-
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-    string id = string((const char *)&uuid, sizeof(uuid));
-
-    this->subscriptions[id] = subscription;
-
-    this->SendSubscriptionAck(id, e, identities);
-}
-
-void Streamer::ProcessSubscribeEnvelopes(Envelope &e, vector<string> &identities, vector<message_t *> &)
-{
-    protocol::request::SubscribeEnvelopesV1 *m =
-        (protocol::request::SubscribeEnvelopesV1 *)e.GetMessage(0);
-
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-    string id = string((const char *)&uuid, sizeof(uuid));
-
-    SubscriptionInfo *subscription = new SubscriptionInfo(this->subscription_ttl);
-    subscription->type = subscription->ENVELOPE;
-
-    for (int i = 0; i < m->path_size(); i++) {
-        subscription->paths.push_back(m->path(i));
-    }
-
-    subscription->socket_identifiers = identities;
-
-    if (m->has_lua_code()) {
-        subscription->l = new LuaState();
-        subscription->l->SetMemoryCeiling(this->lua_max_memory);
-
-        if (!subscription->l->LoadLuaCode(m->lua_code())) {
-            delete subscription;
-
-            // TODO send error response instead
-            throw Exception("error loading user-supplied code");
-        }
-    }
-
-    subscription->envelope_subscription = EnvelopeSubscription();
-    this->subscriptions[id] = subscription;
-
-    this->SendSubscriptionAck(id, e, identities);
 }
 
 void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
@@ -641,26 +526,6 @@ bool Streamer::HaveStoreChangeSubscriptions(const string &path)
     }
 
     return false;
-}
-
-void Streamer::SendSubscriptionAck(const string &id, Envelope &e, vector<string> &identities)
-{
-    SubscribeAckV1 ack;
-    ack.set_id(id);
-    ack.set_ttl(this->subscription_ttl);
-    Envelope response = Envelope();
-
-    // copy tags to response because that's what the protocol does
-    for (int i = 0; i < e.TagSize(); i++) {
-        response.AddTag(e.GetTag(i));
-    }
-
-    ack.add_to_envelope(&response);
-
-    if (!zeromq::send_envelope(this->client_sock, identities, response)) {
-        // TODO log error here
-        assert(0);
-    }
 }
 
 bool Streamer::HasSubscription(const string &id)
