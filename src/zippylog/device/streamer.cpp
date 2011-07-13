@@ -32,7 +32,7 @@ using ::std::vector;
 using ::zippylog::lua::LuaState;
 using ::zippylog::protocol::response::Error;
 using ::zippylog::protocol::response::ErrorCode;
-using ::zippylog::protocol::response::SubscribeAckV1;
+using ::zippylog::protocol::response::SubscriptionAcceptAckV1;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -221,28 +221,30 @@ bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
             (protocol::request::SubscribeKeepaliveV1 *)e.GetMessage(0);
         if (!m) return false;
 
-        string id = m->id();
+        for (int i = 0; i < m->id_size(); i++) {
+            string id = m->id(i);
 
-        ReceiveKeepalive log;
-        log.set_subscription(id);
-        LOG_MESSAGE(log, this->logging_sock);
-
-        if (this->HasSubscription(id)) {
-            if (this->RenewSubscription(id)) {
-                SubscriptionRenewedFromKeepalive log;
-                log.set_subscription(id);
-                LOG_MESSAGE(log, this->logging_sock);
-            }
-            else {
-                ErrorRenewingSubscription log;
-                log.set_subscription(id);
-                LOG_MESSAGE(log, this->logging_sock);
-            }
-        }
-        else {
-            RejectKeepaliveUnknownSubscription log;
+            ReceiveKeepalive log;
             log.set_subscription(id);
             LOG_MESSAGE(log, this->logging_sock);
+
+            if (this->HasSubscription(id)) {
+                if (this->RenewSubscription(id)) {
+                    SubscriptionRenewedFromKeepalive log;
+                    log.set_subscription(id);
+                    LOG_MESSAGE(log, this->logging_sock);
+                }
+                else {
+                    ErrorRenewingSubscription log;
+                    log.set_subscription(id);
+                    LOG_MESSAGE(log, this->logging_sock);
+                }
+            }
+            else {
+                RejectKeepaliveUnknownSubscription log;
+                log.set_subscription(id);
+                LOG_MESSAGE(log, this->logging_sock);
+            }
         }
     }
 

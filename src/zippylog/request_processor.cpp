@@ -918,7 +918,8 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
 
     {
         ::zippylog::request_processor::ForwardSubscribeKeepalive log;
-        log.set_subscription(m->id());
+        /// @todo support multiple ids
+        log.set_subscription(m->id(0));
         LOG_MESSAGE(log, this->logger_sock);
     }
     // TODO validation
@@ -1053,7 +1054,7 @@ void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscrip
     switch (result.result) {
         case HandleSubscriptionResult::ACCEPTED:
         {
-            protocol::response::SubscribeAckV1 ack;
+            protocol::response::SubscriptionAcceptAckV1 ack;
             ack.set_id(result.id);
             ack.set_ttl(this->subscription_ttl);
 

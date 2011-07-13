@@ -699,8 +699,8 @@ TEST_F(RequestProcessorTest, SubscribeStoreChangesBasic)
 
     EXPECT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, output.size());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscribeAckV1);
-    protocol::response::SubscribeAckV1 *m = (protocol::response::SubscribeAckV1 *)output[0].GetMessage(0);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscriptionAcceptAckV1);
+    protocol::response::SubscriptionAcceptAckV1 *m = (protocol::response::SubscriptionAcceptAckV1 *)output[0].GetMessage(0);
     EXPECT_TRUE(m->has_id());
     EXPECT_TRUE(m->has_ttl());
     EXPECT_EQ(1, this->p->subscribe_store_changes_count);
@@ -730,8 +730,8 @@ TEST_F(RequestProcessorTest, SubscribeEnvelopesBasic)
 
     EXPECT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
     EXPECT_EQ(1, output.size());
-    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscribeAckV1);
-    protocol::response::SubscribeAckV1 *m = (protocol::response::SubscribeAckV1 *)output[0].GetMessage(0);
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscriptionAcceptAckV1);
+    protocol::response::SubscriptionAcceptAckV1 *m = (protocol::response::SubscriptionAcceptAckV1 *)output[0].GetMessage(0);
     EXPECT_TRUE(m->has_id());
     EXPECT_TRUE(m->has_ttl());
     EXPECT_EQ(1, this->p->handle_subscribe_envelopes_count);

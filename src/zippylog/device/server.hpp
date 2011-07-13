@@ -198,17 +198,13 @@ public:
 ///     worker_streaming_notify_sock. The broker receives messages
 ///     from all workers and then rebroadcasts the messages to all
 ///     streamers connected via streaming_streaming_notify_sock.
-///   - If a subscription request, will forward the message to
+///   - If a subscription request, will forward a subscription record to
 ///     worker_subscriptions_sock. The broker receives these messages
 ///     and sends to one streamer via streaming_subscriptions_sock.
-///     The streamer that receives it will likely send a response via
-///     streaming_sock and the broker will forward it to the
-///     clients_sock.
 ///
-/// In the streaming cases, the request response (if there is one) does not
-/// come back through the workers_sock. This is perfectly fine, as that
-/// socket is a XREQ socket. This preserves the event-driver architecture
-/// of the server.
+/// It is possible for messages to flow back to clients not via the
+/// workers_sock. This is the case for subscriptions and other asynchronous
+/// notifications.
 class ZIPPYLOG_EXPORT Server {
     public:
         /// Construct a server from a server config object
@@ -244,6 +240,9 @@ class ZIPPYLOG_EXPORT Server {
         ///
         /// Returns 1 if work is performed, 0 if no work is performed, or -1 if
         /// there was an error performing work.
+        ///
+        /// @param wait_microseconds up to how long to wait for work to become
+        /// available before returning. In microseconds.
         int Pump(uint32 wait_microseconds = 250000);
 
         /// Run the server synchronously

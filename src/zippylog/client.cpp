@@ -467,7 +467,7 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
         case protocol::response::PongV1::zippylog_enumeration:
         case protocol::StoreInfoV1::zippylog_enumeration:
         case protocol::response::StreamSegmentStartV1::zippylog_enumeration:
-        case protocol::response::SubscribeAckV1::zippylog_enumeration:
+        case protocol::response::SubscriptionAcceptAckV1::zippylog_enumeration:
             return this->HandleRequestResponse(e, messages);
             break;
 
@@ -673,10 +673,10 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             return true;
         }
 
-        case protocol::response::SubscribeAckV1::zippylog_enumeration:
+        case protocol::response::SubscriptionAcceptAckV1::zippylog_enumeration:
         {
-            protocol::response::SubscribeAckV1 *ack =
-                (protocol::response::SubscribeAckV1 *)e.GetMessage(0);
+            protocol::response::SubscriptionAcceptAckV1 *ack =
+                (protocol::response::SubscriptionAcceptAckV1 *)e.GetMessage(0);
 
             string id = ack->id();
 
@@ -707,24 +707,21 @@ bool Client::RenewSubscriptions(bool force)
 
     bool result = true;
 
+    protocol::request::SubscribeKeepaliveV1 msg;
+
     for (; iter != this->subscriptions.end(); iter++) {
         if (!force && !iter->second.expiration_timer.Signaled()) continue;
 
         // reset the timer
         iter->second.expiration_timer.Start();
 
-        protocol::request::SubscribeKeepaliveV1 msg;
-        msg.set_id(iter->first);
-
-        Envelope e = Envelope();
-        msg.add_to_envelope(&e);
-
-        if (!zeromq::send_envelope_xreq(this->client_sock, e)) {
-            result = false;
-        }
+        msg.add_id(iter->first);
     }
 
-    return result;
+    Envelope e = Envelope();
+    msg.add_to_envelope(&e);
+
+    return zeromq::send_envelope_xreq(this->client_sock, e);
 }
 
 bool Client::HaveOutstandingRequest(string &id)
