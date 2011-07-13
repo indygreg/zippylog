@@ -13,12 +13,15 @@
 //  limitations under the License.
 
 #include <zippylog/device/server.hpp>
+#include <zippylog/client.hpp>
 
 #include <gtest/gtest.h>
 
 using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::client::Client;
+using ::zippylog::client::SubscriptionCallbackInfo;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -27,15 +30,22 @@ namespace zippylog {
 namespace device {
 namespace server {
 
+string SANDBOX_PATH = "test/stores/sandbox";
+
 class ServerTest : public ::testing::Test
 {
     protected:
         Server * test00_server;
+        Server * sandbox_server;
+        Store * sandbox_store;
         vector<socket_t *> sockets;
+        vector<Client *> clients;
         context_t ctx;
 
         ServerTest() :
             test00_server(NULL),
+            sandbox_server(NULL),
+            sandbox_store(NULL),
             ctx(3)
         { }
 
@@ -43,9 +53,22 @@ class ServerTest : public ::testing::Test
         {
             if (this->test00_server) delete test00_server;
 
+            if (this->sandbox_server) {
+                delete this->sandbox_server;
+
+                // and clean up all touched files
+                platform::RemoveDirectory(SANDBOX_PATH);
+            }
+
             for (size_t i = 0; i < this->sockets.size(); i++) {
                 if (this->sockets[i]) delete this->sockets[i];
             }
+
+            for (size_t i = 0; i < this->clients.size(); i++) {
+                if (this->clients[i]) delete this->clients[i];
+            }
+
+            if (this->sandbox_store) delete this->sandbox_store;
         }
 
         Server * GetTest00Server()
@@ -68,6 +91,30 @@ class ServerTest : public ::testing::Test
             return test00_server;
         }
 
+        Server * GetSandboxServer()
+        {
+            if (this->sandbox_server) {
+                delete this->sandbox_server;
+                this->sandbox_server = NULL;
+            }
+
+            if (!platform::PathIsDirectory(SANDBOX_PATH)) {
+                EXPECT_TRUE(platform::MakeDirectory(SANDBOX_PATH));
+            }
+
+            ServerStartParams p;
+            p.listen_endpoints.push_back("inproc://sandbox");
+            p.store_path = "simpledirectory://" + SANDBOX_PATH;
+            p.ctx = &this->ctx;
+            p.streaming_threads = 1;
+
+            p.log_bucket.clear();
+            p.log_stream_set.clear();
+
+            this->sandbox_server = new Server(p);
+            return this->sandbox_server;
+        }
+
         socket_t * GetClientSocket(Server *s, int type = ZMQ_REQ)
         {
             EXPECT_TRUE(s->ClientEndpoints().size() > 0);
@@ -78,6 +125,27 @@ class ServerTest : public ::testing::Test
             result->connect(endpoint.c_str());
 
             return result;
+        }
+
+        Client * GetClient(Server *s)
+        {
+            EXPECT_TRUE(s->ClientEndpoints().size() > 0);
+            string endpoint = s->ClientEndpoints().at(0);
+
+            Client *c = new Client(&this->ctx, endpoint);
+
+            this->clients.push_back(c);
+
+            return c;
+        }
+
+        Store * GetSandboxStore()
+        {
+            if (!this->sandbox_store) {
+                this->sandbox_store = Store::CreateStore("simpledirectory://" + SANDBOX_PATH);
+            }
+
+            return this->sandbox_store;
         }
 };
 
@@ -167,6 +235,59 @@ TEST_F(ServerTest, SimpleMessageProcessing)
     Envelope response;
     ASSERT_NO_THROW(response = Envelope(msg, 1));
     EXPECT_EQ(1, response.MessageCount());
+
+    s->Shutdown();
+}
+
+TEST_F(ServerTest, ClientPing)
+{
+    Server *s = this->GetTest00Server();
+    s->RunAsync();
+
+    Client *c = this->GetClient(s);
+
+    EXPECT_TRUE(c->Ping(100000));
+
+    s->Shutdown();
+}
+
+void stream_added(string id, protocol::StoreChangeStreamAddedV1 &r, void *d)
+{
+
+}
+
+void bucket_added(string id, protocol::StoreChangeBucketAddedV1 &r, void *d)
+{
+    uint32 *b = (uint32 *)d;
+    (*b)++;
+}
+
+TEST_F(ServerTest, ClientSubscribeStoreChanges)
+{
+    Server *s = this->GetSandboxServer();
+    s->RunAsync();
+
+    Client *c = this->GetClient(s);
+
+    int32 buckets_added = 0;
+
+    SubscriptionCallbackInfo cb;
+    cb.BucketAdded = bucket_added;
+
+    c->SubscribeStoreChanges("/", cb, (void *)&buckets_added);
+
+    /// @todo fix the sleep hackiness
+
+    platform::sleep(1000);
+
+    Store *st = this->GetSandboxStore();
+    st->CreateBucket("foo");
+
+    for (size_t i = 0; i < 3; i++) {
+        c->Pump(100000);
+    }
+
+    EXPECT_EQ(1, buckets_added);
 
     s->Shutdown();
 }
