@@ -1042,6 +1042,18 @@ LOG_END:
     return DEFERRED;
 }
 
+bool RequestProcessor::SendSubscriptionStoreChangeResponse(socket_t &sock, const SubscriptionInfo &subscription, const Envelope &e)
+{
+    Envelope response;
+    protocol::response::SubscriptionStartV1 start;
+    start.set_id(subscription.id);
+    start.add_to_envelope(response);
+
+    e.CopyMessage(0, response);
+
+    return zeromq::SendEnvelope(sock, subscription.socket_identifiers, response, true, 0);
+}
+
 void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscription, vector<Envelope> &output)
 {
     (*subscription)->socket_identifiers = this->current_request_identities;

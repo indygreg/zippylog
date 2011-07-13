@@ -152,8 +152,10 @@ public:
 /// zippylog protocol processing. The library can be utilized to provide
 /// server capabilities.
 ///
-/// If you are implementing core protocol parsing somewhere not in this class,
-/// you are likely doing something wrong.
+/// Ideally, all code interacting with the zippylog protocol messages is
+/// limited to this class. If done this way, all protocol debugging can occur
+/// within one file. If you find yourself touching protocol messages
+/// elsewhere, you are likely doing it wrong.
 ///
 /// Currently, we make the assumption that protocol requests arrive via
 /// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
@@ -228,6 +230,16 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Most people typically have no need to call this function. However,
         /// it is provided public just in case.
         ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
+
+        /// Sends a subscription store change response through a socket
+        ///
+        /// @param sock Socket to send response through
+        /// @param subscription Subscription record used to populate metadata
+        /// @param e Envelope containing store change message
+        static bool SendSubscriptionStoreChangeResponse(::zmq::socket_t &sock,
+                                                        const SubscriptionInfo &subscription,
+                                                        const Envelope &e);
+
 
     protected:
         /// Callback to handle a validated request for a subscription

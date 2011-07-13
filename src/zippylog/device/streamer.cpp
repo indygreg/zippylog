@@ -14,8 +14,6 @@
 
 #include <zippylog/device/streamer.hpp>
 #include <zippylog/device/streamer.pb.h>
-#include <zippylog/protocol/request.pb.h>
-#include <zippylog/protocol/response.pb.h>
 #include <zippylog/zeromq.hpp>
 
 #define LOG_MESSAGE(msgvar, socketvar) { \
@@ -31,8 +29,6 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
 using ::zippylog::protocol::response::Error;
-using ::zippylog::protocol::response::ErrorCode;
-using ::zippylog::protocol::response::SubscriptionAcceptAckV1;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -406,16 +402,11 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 
             // the case of store changes is simple
             if (i->second->type == i->second->STORE_CHANGE) {
-                Envelope response = Envelope();
-                protocol::response::SubscriptionStartV1 start;
-                start.set_id(i->first);
-                start.add_to_envelope(&response);
-
-                if (!e.CopyMessage(0, response)) {
-                    throw Exception("could not copy message to response envelope. weird");
-                }
-
-                zeromq::SendEnvelope(*this->client_sock, i->second->socket_identifiers, response, true, 0);
+                RequestProcessor::SendSubscriptionStoreChangeResponse(
+                    *this->client_sock,
+                    *i->second,
+                    e
+                );
 
                 // don't process this path any more for this subscriber
                 break;
