@@ -12,8 +12,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+/// This file contains unit tests for
+
 #include <zippylog/client.hpp>
 #include <zippylog/device/server.hpp>
+#include <zippylog/platform.hpp>
+#include <zippylog/zeromq.hpp>
 
 #include <gtest/gtest.h>
 
@@ -23,7 +27,10 @@ using ::std::vector;
 using ::zippylog::device::Server;
 using ::zippylog::device::ServerStartParams;
 using ::zippylog::Store;
+using ::zippylog::platform::UUID;
 using ::zmq::context_t;
+using ::zmq::message_t;
+using ::zmq::socket_t;
 
 namespace zippylog {
 namespace client {
@@ -41,7 +48,7 @@ class ClientTest : public ::testing::Test
             ctx(2)
         { }
 
-        ~ClientTest() {
+        virtual ~ClientTest() {
             if (this->server) {
                 this->server->Shutdown();
                 delete this->server;
@@ -88,6 +95,116 @@ class ClientTest : public ::testing::Test
         context_t * GetContext() {
             return &this->ctx;
         }
+
+        static void PingCallback(Client *c, void *d)
+        {
+            EXPECT_TRUE(c != NULL);
+        }
+};
+
+class ClientSendingTest : public ClientTest
+{
+public:
+    ClientSendingTest() :
+        client(NULL),
+        socket(NULL)
+    { }
+
+    ~ClientSendingTest()
+    {
+        if (this->client != NULL) {
+            delete this->client;
+            this->client = NULL;
+        }
+
+        if (this->socket != NULL) {
+            delete this->socket;
+            this->socket = NULL;
+        }
+
+        for (int i = 0; i < messages.size(); i++) {
+            delete this->messages[i];
+            this->messages[i] = NULL;
+        }
+    }
+
+    Client * GetClient() {
+        if (!this->client) {
+            UUID id;
+            EXPECT_TRUE(::zippylog::platform::CreateUUID(id));
+
+            string s;
+            EXPECT_TRUE(true, ::zippylog::platform::FormatUUID(id, s));
+
+            string address = "inproc://" + s;
+
+            this->socket = new socket_t(this->ctx, ZMQ_XREP);
+            this->socket->bind(address.c_str());
+
+            this->client = new Client(&this->ctx, address);
+        }
+
+        return this->client;
+    }
+
+    /// Validates that a protocol request message has been sent
+    ///
+    /// Expects the request message to have a single protocol envelope with a
+    /// single embedded message of the enumeration specified and serialized to
+    /// exactly what we specify
+    void ExpectRequestMessage(uint32 type, ::google::protobuf::Message &expected)
+    {
+        ASSERT_TRUE(this->socket != NULL);
+
+        ::zmq::pollitem_t pollitem;
+        pollitem.events = ZMQ_POLLIN;
+        pollitem.socket = *this->socket;
+        pollitem.fd = 0;
+        pollitem.revents = 0;
+
+        ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000000))
+            << "Request message sent in orderly manner";
+
+        vector<string> identities;
+
+        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
+
+        ASSERT_EQ(1, identities.size()) << "client sent identities as part of request";
+        ASSERT_EQ(1, this->messages.size()) << "client sent 1 message with content";
+
+        message_t msg;
+        msg.copy(this->messages[0]);
+
+        ASSERT_GT(msg.size(), 1) << "sent message has content";
+
+        char msg_version = 0;
+        memcpy(&msg_version, msg.data(), 1);
+        EXPECT_EQ(0x01, msg_version) << "sent message has protocol header";
+
+        Envelope e;
+
+        EXPECT_NO_THROW(e = Envelope(msg, 1)) << "envelope could be deserialized";
+
+        EXPECT_EQ(1, e.MessageCount()) << "envelope contains one message";
+        EXPECT_EQ(::zippylog::message_namespace, e.MessageNamespace(0)) << "message of proper namespace";
+        EXPECT_EQ(type, e.MessageType(0)) << "message of proper type";
+
+        EXPECT_EQ(1, e.TagSize()) << "envelope has tag";
+
+        ::google::protobuf::Message *sent = (::google::protobuf::Message *)e.GetMessage(0);
+        ASSERT_TRUE(sent != NULL) << "able to deserialize embedded message";
+
+        string serialized_expected, serialized_actual;
+        EXPECT_TRUE(expected.SerializeToString(&serialized_expected));
+        EXPECT_TRUE(sent->SerializeToString(&serialized_actual));
+
+        EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
+    }
+
+protected:
+    Client *client;
+    socket_t *socket;
+    vector<message_t *> messages;
 };
 
 TEST_F(ClientTest, StartParamValidation)
@@ -149,6 +266,16 @@ TEST_F(ClientTest, PingSynchronous)
     Client c(this->GetContext(), endpoint);
 
     EXPECT_TRUE(c.Ping());
+}
+
+TEST_F(ClientSendingTest, Ping)
+{
+    Client *c = this->GetClient();
+    c->Ping(ClientSendingTest::PingCallback, NULL);
+
+    protocol::request::PingV1 m;
+
+    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
 }
 
 }} // namespaces

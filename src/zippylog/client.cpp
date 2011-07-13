@@ -89,7 +89,7 @@ bool Client::Ping(int32 timeout)
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackPing(void *)
+void Client::CallbackPing(Client *, void *)
 {}
 
 bool Client::GetFeatures(GetFeaturesCallback *callback, void *data)
@@ -656,7 +656,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
         case protocol::response::PongV1::zippylog_enumeration:
         {
             assert(req.cb_ping);
-            req.cb_ping(req.data);
+            req.cb_ping(this, req.data);
 
             return true;
         }

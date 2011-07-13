@@ -94,7 +94,7 @@ typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreC
 typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
 
 /// Callback executed when a ping response is received
-typedef void (PingCallback)(void *);
+typedef void (PingCallback)(Client *, void *);
 
 /// Callback for feature specification responses
 ///
@@ -451,7 +451,7 @@ class ZIPPYLOG_EXPORT Client {
         bool HaveOutstandingRequest(::std::string &id);
 
         /// Internal callback used for synchronous ping requests
-        static void CallbackPing(void *data);
+        static void CallbackPing(Client *client, void *data);
 
         /// Internal callback used for synchronous features requests
         static void CallbackFeatures(Client *client, protocol::response::FeatureSpecificationV1 &features, void *data);
