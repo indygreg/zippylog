@@ -196,13 +196,11 @@ protected:
     void *data;
 };
 
-/// zippylog protocol client
+/// Client that talks to a server
 ///
-/// An individual client instance connects to a single zippylog server, which
-/// is defined by a 0MQ socket endpoint.
-///
-/// The client formulates zippylog protocol request messages, sends them to
-/// a server, and processes server responses.
+/// An individual client instance connects to a single 0MQ socket. The client
+/// issues zippylog protocol request messages, sends them through the socket,
+/// and processes the responses.
 ///
 /// For many methods, the client has both a synchronous and asynchronous mode
 /// of operation. In asynchronous mode, the caller supplies a function callback
@@ -218,6 +216,10 @@ protected:
 /// In asynchronous mode, it is the caller's responsibility to periodically
 /// trigger response processing. This is typically accomplished by calling
 /// Pump() repeatedly.
+///
+/// The asynchronous callbacks should be able to make function calls on the
+/// issuing client. In other words, your callback can invoke another function
+/// in an event-driven pattern.
 ///
 /// Streaming operations are by definition asynchronous, so no synchronous
 /// API is available for these.
