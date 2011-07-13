@@ -97,7 +97,10 @@ typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::Stor
 typedef void (PingCallback)(void *);
 
 /// Callback for feature specification responses
-typedef void (GetFeaturesCallback)(protocol::response::FeatureSpecificationV1 &, void *);
+///
+/// Receives a pointer to the client instance firing the callback, the
+/// response, and a pointer to arbitrary data supplied at request time.
+typedef void (GetFeaturesCallback)(Client *, protocol::response::FeatureSpecificationV1 &, void *);
 
 /// Callback executed when a store info response is received
 typedef void (StoreInfoCallback)(protocol::StoreInfoV1 &, void *);
@@ -175,6 +178,8 @@ protected:
 class OutstandingRequest {
 public:
     OutstandingRequest() :
+        cb_ping(NULL),
+        cb_features(NULL),
         cb_store_info(NULL),
         cb_stream_info(NULL),
         cb_stream_segment(NULL),
@@ -187,6 +192,7 @@ protected:
     ::std::string id;
 
     PingCallback *          cb_ping;
+    GetFeaturesCallback *   cb_features;
     StoreInfoCallback *     cb_store_info;
     StreamInfoCallback *    cb_stream_info;
     StreamSegmentCallback * cb_stream_segment;
@@ -446,6 +452,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Internal callback used for synchronous ping requests
         static void CallbackPing(void *data);
+
+        /// Internal callback used for synchronous features requests
+        static void CallbackFeatures(Client *client, protocol::response::FeatureSpecificationV1 &features, void *data);
 
         /// Internal callback used for synchronous store info requests
         static void CallbackStoreInfo(protocol::StoreInfoV1 &info, void *data);

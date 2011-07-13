@@ -92,6 +92,43 @@ bool Client::Ping(int32 timeout)
 void Client::CallbackPing(void *)
 {}
 
+bool Client::GetFeatures(GetFeaturesCallback *callback, void *data)
+{
+    if (!callback) {
+        throw invalid_argument("callback parameter not defined");
+    }
+
+    Envelope e;
+    protocol::request::GetFeaturesV1 m;
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.cb_features = callback;
+    r.data = data;
+
+    return this->SendRequest(e, r);
+}
+
+bool Client::GetFeatures(protocol::response::FeatureSpecificationV1 &features, int32 timeout)
+{
+    Envelope e;
+    protocol::request::GetFeaturesV1 m;
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.cb_features = CallbackFeatures;
+    r.data = (void *)&features;
+
+    return this->SendAndProcessSynchronousRequest(e, r, timeout);
+}
+
+void Client::CallbackFeatures(Client *client, protocol::response::FeatureSpecificationV1 &response, void *data)
+{
+    protocol::response::FeatureSpecificationV1 *features = (protocol::response::FeatureSpecificationV1 *)data;
+
+    features->CopyFrom(response);
+}
+
 bool Client::GetStoreInfo(StoreInfoCallback * callback, void *data)
 {
     if (!callback) {
