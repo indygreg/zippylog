@@ -705,8 +705,6 @@ bool Client::RenewSubscriptions(bool force)
 {
     map<string, Subscription>::iterator iter = this->subscriptions.begin();
 
-    bool result = true;
-
     protocol::request::SubscribeKeepaliveV1 msg;
 
     for (; iter != this->subscriptions.end(); iter++) {
