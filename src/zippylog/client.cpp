@@ -353,7 +353,9 @@ bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
     e.AddTag(id);
     req.id = id;
 
-    if (!zeromq::send_envelope_xreq(this->client_sock, e)) {
+    vector<string> identities;
+
+    if (!zeromq::SendEnvelope(*this->client_sock, identities, e, true, 0)) {
         return false;
     }
 
