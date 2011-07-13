@@ -176,10 +176,10 @@ message SubscribeEnvelopesV1 {
 // clients need to send keepalive messages every N seconds or the server drops
 // the subscription. this is that keepalive message
 message SubscribeKeepaliveV1 {
-    // the subscription identifier to send the keepalive for
-    // this identifier is issued by the server when it accepts the
-    // subscription
-    required bytes id = 1;
+    // The subscription identifier(s) to send the keepalive for.
+    // The id(s) are issued by the server and are communicated as part of the
+	// SubscriptionAcceptAckV1 response.
+    repeated bytes id = 1;
 }
 
 // cancels a subscription

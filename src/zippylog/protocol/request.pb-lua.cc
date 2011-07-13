@@ -2417,7 +2417,7 @@ static const struct luaL_Reg SubscribeKeepaliveV1_methods [] = {
     {"clear_id", lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear_id},
     {"get_id", lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_get_id},
     {"set_id", lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_set_id},
-    {"has_id", lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_has_id},
+    {"size_id", lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_size_id},
     {NULL, NULL},
 };
 
@@ -2533,8 +2533,15 @@ int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_get_id(lua_State
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeKeepaliveV1");
     ::zippylog::protocol::request::SubscribeKeepaliveV1 *m = (::zippylog::protocol::request::SubscribeKeepaliveV1 *)mud->msg;
-    string s = m->id();
-    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    if (lua_gettop(L) != 2) {
+        return luaL_error(L, "missing required numeric argument");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    if (index < 1 || index > m->id_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->id_size());
+    }
+    string s = m->id(index - 1);
+    lua_pushlstring(L, s.c_str(), s.size());
     return 1;
 }
 
@@ -2542,26 +2549,34 @@ int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_set_id(lua_State
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeKeepaliveV1");
     ::zippylog::protocol::request::SubscribeKeepaliveV1 *m = (::zippylog::protocol::request::SubscribeKeepaliveV1 *)mud->msg;
-    if (lua_isnil(L, 2)) {
-        m->clear_id();
-        return 0;
+    if (lua_gettop(L) != 3) {
+            return luaL_error(L, "required 2 arguments not passed to function");
     }
-    
-    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
-    size_t len;
-    const char *s = lua_tolstring(L, 2, &len);
-    if (!s) {
-        luaL_error(L, "could not obtain string on stack. weird");
+    lua_Integer index = luaL_checkinteger(L, 2);
+    int current_size = m->id_size();
+    if (index < 1 || index > current_size + 1) {
+        return luaL_error(L, "index must be between 1 and %d", current_size + 1);
     }
-    m->set_id(s, len);
+    if (lua_isnil(L, 3)) {
+        return luaL_error(L, "cannot assign nil to repeated fields (yet)");
+    }
+    size_t length = 0;
+    const char *s = luaL_checklstring(L, 3, &length);
+    if (index == current_size + 1) {
+        m->add_id(s, length);
+    }
+    else {
+        m->set_id(index-1, s, length);
+    }
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_has_id(lua_State *L)
+int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_size_id(lua_State *L)
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.request.SubscribeKeepaliveV1");
     ::zippylog::protocol::request::SubscribeKeepaliveV1 *m = (::zippylog::protocol::request::SubscribeKeepaliveV1 *)mud->msg;
-    lua_pushboolean(L, m->has_id());
+    int size = m->id_size();
+    lua_pushinteger(L, size);
     return 1;
 }
 

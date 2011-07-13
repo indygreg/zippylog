@@ -242,15 +242,15 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_StreamSegmentEnd
 
 // end of message StreamSegmentEndV1
 
-// Message SubscribeAckV1
+// Message SubscriptionAcceptAckV1
 // registers the message type with Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_open(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_open(lua_State *L);
 
 
 // push a copy of the message to the Lua stack
 // caller is free to use original message however she wants, but changes will not
 // be reflected in Lua and vice-verse
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscribeAckV1 &msg);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscriptionAcceptAckV1 &msg);
 
 // push a reference of the message to the Lua stack
 // the 3rd and 4th arguments define a callback that can be invoked just before Lua
@@ -259,7 +259,7 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_
 // Lua garbage collects the object. The function is sent a pointer to the message being
 // collected and the 4th argument to this function. If the function returns true,
 // Lua will free the memory. If false (0), Lua will not free the memory.
-LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscribeAckV1 *msg, lua_protobuf_gc_callback callback, void *data);
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscriptionAcceptAckV1 *msg, lua_protobuf_gc_callback callback, void *data);
 
 
 // The following functions are called by Lua. Many people will not need them,
@@ -267,33 +267,80 @@ LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_
 
 
 // constructor called from Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_new(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_new(lua_State *L);
 
 // obtain instance from a serialized string
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_parsefromstring(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_parsefromstring(lua_State *L);
 
 // garbage collects message instance in Lua
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_gc(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_gc(lua_State *L);
 
 // obtain serialized representation of instance
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_serialized(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_serialized(lua_State *L);
 
 // clear all fields in the message
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear(lua_State *L);
 
 // required bytes id = 1
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_id(lua_State *L);
 
 // required uint32 ttl = 2
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_ttl(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_ttl(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_ttl(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_ttl(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_ttl(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_ttl(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_ttl(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_ttl(lua_State *L);
 
-// end of message SubscribeAckV1
+// end of message SubscriptionAcceptAckV1
+
+// Message SubscriptionKeepaliveAckV1
+// registers the message type with Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_open(lua_State *L);
+
+
+// push a copy of the message to the Lua stack
+// caller is free to use original message however she wants, but changes will not
+// be reflected in Lua and vice-verse
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 &msg);
+
+// push a reference of the message to the Lua stack
+// the 3rd and 4th arguments define a callback that can be invoked just before Lua
+// garbage collects the message. If the 3rd argument is NULL, Lua will *NOT* free
+// memory. If the second argument points to a function, that function is called when
+// Lua garbage collects the object. The function is sent a pointer to the message being
+// collected and the 4th argument to this function. If the function returns true,
+// Lua will free the memory. If false (0), Lua will not free the memory.
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *msg, lua_protobuf_gc_callback callback, void *data);
+
+
+// The following functions are called by Lua. Many people will not need them,
+// but they are exported for those that do.
+
+
+// constructor called from Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_new(lua_State *L);
+
+// obtain instance from a serialized string
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_parsefromstring(lua_State *L);
+
+// garbage collects message instance in Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_gc(lua_State *L);
+
+// obtain serialized representation of instance
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_serialized(lua_State *L);
+
+// clear all fields in the message
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear(lua_State *L);
+
+// required bytes id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_has_id(lua_State *L);
+
+// end of message SubscriptionKeepaliveAckV1
 
 // Message SubscriptionStartV1
 // registers the message type with Lua

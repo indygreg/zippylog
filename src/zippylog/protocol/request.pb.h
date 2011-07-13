@@ -1238,16 +1238,21 @@ class SubscribeKeepaliveV1 : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required bytes id = 1;
-  inline bool has_id() const;
+  // repeated bytes id = 1;
+  inline int id_size() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
-  inline const ::std::string& id() const;
-  inline void set_id(const ::std::string& value);
-  inline void set_id(const char* value);
-  inline void set_id(const void* value, size_t size);
-  inline ::std::string* mutable_id();
-  inline ::std::string* release_id();
+  inline const ::std::string& id(int index) const;
+  inline ::std::string* mutable_id(int index);
+  inline void set_id(int index, const ::std::string& value);
+  inline void set_id(int index, const char* value);
+  inline void set_id(int index, const void* value, size_t size);
+  inline ::std::string* add_id();
+  inline void add_id(const ::std::string& value);
+  inline void add_id(const char* value);
+  inline void add_id(const void* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& id() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_id();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 82;
@@ -1256,12 +1261,10 @@ class SubscribeKeepaliveV1 : public ::google::protobuf::Message {
   bool add_to_envelope(::zippylog::Envelope &envelope);
   // @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeKeepaliveV1)
  private:
-  inline void set_has_id();
-  inline void clear_has_id();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::std::string* id_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> id_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -2232,62 +2235,48 @@ SubscribeEnvelopesV1::mutable_filter_enumeration_type() {
 
 // SubscribeKeepaliveV1
 
-// required bytes id = 1;
-inline bool SubscribeKeepaliveV1::has_id() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void SubscribeKeepaliveV1::set_has_id() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void SubscribeKeepaliveV1::clear_has_id() {
-  _has_bits_[0] &= ~0x00000001u;
+// repeated bytes id = 1;
+inline int SubscribeKeepaliveV1::id_size() const {
+  return id_.size();
 }
 inline void SubscribeKeepaliveV1::clear_id() {
-  if (id_ != &::google::protobuf::internal::kEmptyString) {
-    id_->clear();
-  }
-  clear_has_id();
+  id_.Clear();
 }
-inline const ::std::string& SubscribeKeepaliveV1::id() const {
-  return *id_;
+inline const ::std::string& SubscribeKeepaliveV1::id(int index) const {
+  return id_.Get(index);
 }
-inline void SubscribeKeepaliveV1::set_id(const ::std::string& value) {
-  set_has_id();
-  if (id_ == &::google::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(value);
+inline ::std::string* SubscribeKeepaliveV1::mutable_id(int index) {
+  return id_.Mutable(index);
 }
-inline void SubscribeKeepaliveV1::set_id(const char* value) {
-  set_has_id();
-  if (id_ == &::google::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(value);
+inline void SubscribeKeepaliveV1::set_id(int index, const ::std::string& value) {
+  id_.Mutable(index)->assign(value);
 }
-inline void SubscribeKeepaliveV1::set_id(const void* value, size_t size) {
-  set_has_id();
-  if (id_ == &::google::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
-  id_->assign(reinterpret_cast<const char*>(value), size);
+inline void SubscribeKeepaliveV1::set_id(int index, const char* value) {
+  id_.Mutable(index)->assign(value);
 }
-inline ::std::string* SubscribeKeepaliveV1::mutable_id() {
-  set_has_id();
-  if (id_ == &::google::protobuf::internal::kEmptyString) {
-    id_ = new ::std::string;
-  }
+inline void SubscribeKeepaliveV1::set_id(int index, const void* value, size_t size) {
+  id_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscribeKeepaliveV1::add_id() {
+  return id_.Add();
+}
+inline void SubscribeKeepaliveV1::add_id(const ::std::string& value) {
+  id_.Add()->assign(value);
+}
+inline void SubscribeKeepaliveV1::add_id(const char* value) {
+  id_.Add()->assign(value);
+}
+inline void SubscribeKeepaliveV1::add_id(const void* value, size_t size) {
+  id_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+SubscribeKeepaliveV1::id() const {
   return id_;
 }
-inline ::std::string* SubscribeKeepaliveV1::release_id() {
-  clear_has_id();
-  if (id_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = id_;
-    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+SubscribeKeepaliveV1::mutable_id() {
+  return &id_;
 }
 
 // -------------------------------------------------------------------

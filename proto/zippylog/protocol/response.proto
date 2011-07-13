@@ -47,8 +47,8 @@ message StreamSegmentEndV1 {
     // TODO record offset ranges that were skipped, possibly why
 }
 
-// acknowledges acceptance of a subscription request
-message SubscribeAckV1 {
+// Acknowledges acceptance of a request for a new subscription
+message SubscriptionAcceptAckV1 {
     // unique identifier for this subscription
     // client needs to record this identifier to send in SubscribeKeepalive
     // messages to keep the subscription active
@@ -60,6 +60,11 @@ message SubscribeAckV1 {
     // so, clients should probably send an ack a few seconds before this TTL is
     // expired (5s would be reasonable)
     required uint32 ttl = 2;
+}
+
+// Acknowledges receipt of a subscription keepalive
+message SubscriptionKeepaliveAckV1 {
+	required bytes id = 1;
 }
 
 // first message in sequence of a subscription response

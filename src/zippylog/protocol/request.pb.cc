@@ -370,7 +370,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "de\030\005 \001(\t\022\034\n\020filter_namespace\030\002 \003(\rB\002\020\001\022("
     "\n\034filter_enumeration_namespace\030\003 \003(\rB\002\020\001"
     "\022#\n\027filter_enumeration_type\030\004 \003(\rB\002\020\001\"\"\n"
-    "\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \002(\014\"\037\n\021Sub"
+    "\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \003(\014\"\037\n\021Sub"
     "scribeCancelV1\022\n\n\002id\030\001 \002(\014", 826);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
@@ -3321,7 +3321,6 @@ SubscribeKeepaliveV1::SubscribeKeepaliveV1(const SubscribeKeepaliveV1& from)
 
 void SubscribeKeepaliveV1::SharedCtor() {
   _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3330,9 +3329,6 @@ SubscribeKeepaliveV1::~SubscribeKeepaliveV1() {
 }
 
 void SubscribeKeepaliveV1::SharedDtor() {
-  if (id_ != &::google::protobuf::internal::kEmptyString) {
-    delete id_;
-  }
   if (this != default_instance_) {
   }
 }
@@ -3358,13 +3354,7 @@ SubscribeKeepaliveV1* SubscribeKeepaliveV1::New() const {
 }
 
 void SubscribeKeepaliveV1::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_id()) {
-      if (id_ != &::google::protobuf::internal::kEmptyString) {
-        id_->clear();
-      }
-    }
-  }
+  id_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -3375,15 +3365,17 @@ bool SubscribeKeepaliveV1::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required bytes id = 1;
+      // repeated bytes id = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_id:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
+                input, this->add_id()));
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(10)) goto parse_id;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3406,10 +3398,10 @@ bool SubscribeKeepaliveV1::MergePartialFromCodedStream(
 
 void SubscribeKeepaliveV1::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required bytes id = 1;
-  if (has_id()) {
+  // repeated bytes id = 1;
+  for (int i = 0; i < this->id_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
+      1, this->id(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3420,11 +3412,10 @@ void SubscribeKeepaliveV1::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* SubscribeKeepaliveV1::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required bytes id = 1;
-  if (has_id()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
+  // repeated bytes id = 1;
+  for (int i = 0; i < this->id_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteBytesToArray(1, this->id(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3437,15 +3428,13 @@ void SubscribeKeepaliveV1::SerializeWithCachedSizes(
 int SubscribeKeepaliveV1::ByteSize() const {
   int total_size = 0;
   
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required bytes id = 1;
-    if (has_id()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->id());
-    }
-    
+  // repeated bytes id = 1;
+  total_size += 1 * this->id_size();
+  for (int i = 0; i < this->id_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::BytesSize(
+      this->id(i));
   }
+  
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -3471,11 +3460,7 @@ void SubscribeKeepaliveV1::MergeFrom(const ::google::protobuf::Message& from) {
 
 void SubscribeKeepaliveV1::MergeFrom(const SubscribeKeepaliveV1& from) {
   GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
-    }
-  }
+  id_.MergeFrom(from.id_);
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -3492,14 +3477,13 @@ void SubscribeKeepaliveV1::CopyFrom(const SubscribeKeepaliveV1& from) {
 }
 
 bool SubscribeKeepaliveV1::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
 
 void SubscribeKeepaliveV1::Swap(SubscribeKeepaliveV1* other) {
   if (other != this) {
-    std::swap(id_, other->id_);
+    id_.Swap(&other->id_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
