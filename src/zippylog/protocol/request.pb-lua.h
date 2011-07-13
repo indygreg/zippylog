@@ -634,11 +634,11 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliv
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear(lua_State *L);
 
-// required bytes id = 1
+// repeated bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_set_id(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_has_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeKeepaliveV1_size_id(lua_State *L);
 
 // end of message SubscribeKeepaliveV1
 

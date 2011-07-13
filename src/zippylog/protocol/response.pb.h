@@ -39,7 +39,8 @@ class PongV1;
 class FeatureSpecificationV1;
 class StreamSegmentStartV1;
 class StreamSegmentEndV1;
-class SubscribeAckV1;
+class SubscriptionAcceptAckV1;
+class SubscriptionKeepaliveAckV1;
 class SubscriptionStartV1;
 class WriteAckV1;
 class Error;
@@ -508,14 +509,14 @@ class StreamSegmentEndV1 : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class SubscribeAckV1 : public ::google::protobuf::Message {
+class SubscriptionAcceptAckV1 : public ::google::protobuf::Message {
  public:
-  SubscribeAckV1();
-  virtual ~SubscribeAckV1();
+  SubscriptionAcceptAckV1();
+  virtual ~SubscriptionAcceptAckV1();
   
-  SubscribeAckV1(const SubscribeAckV1& from);
+  SubscriptionAcceptAckV1(const SubscriptionAcceptAckV1& from);
   
-  inline SubscribeAckV1& operator=(const SubscribeAckV1& from) {
+  inline SubscriptionAcceptAckV1& operator=(const SubscriptionAcceptAckV1& from) {
     CopyFrom(from);
     return *this;
   }
@@ -529,17 +530,17 @@ class SubscribeAckV1 : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const SubscribeAckV1& default_instance();
+  static const SubscriptionAcceptAckV1& default_instance();
   
-  void Swap(SubscribeAckV1* other);
+  void Swap(SubscriptionAcceptAckV1* other);
   
   // implements Message ----------------------------------------------
   
-  SubscribeAckV1* New() const;
+  SubscriptionAcceptAckV1* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const SubscribeAckV1& from);
-  void MergeFrom(const SubscribeAckV1& from);
+  void CopyFrom(const SubscriptionAcceptAckV1& from);
+  void MergeFrom(const SubscriptionAcceptAckV1& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -581,11 +582,11 @@ class SubscribeAckV1 : public ::google::protobuf::Message {
   inline void set_ttl(::google::protobuf::uint32 value);
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
-  static const ::google::protobuf::uint32 zippylog_enumeration = 106;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 109;
   
   bool add_to_envelope(::zippylog::Envelope *envelope);
   bool add_to_envelope(::zippylog::Envelope &envelope);
-  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscribeAckV1)
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionAcceptAckV1)
  private:
   inline void set_has_id();
   inline void clear_has_id();
@@ -605,7 +606,98 @@ class SubscribeAckV1 : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
   
   void InitAsDefaultInstance();
-  static SubscribeAckV1* default_instance_;
+  static SubscriptionAcceptAckV1* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SubscriptionKeepaliveAckV1 : public ::google::protobuf::Message {
+ public:
+  SubscriptionKeepaliveAckV1();
+  virtual ~SubscriptionKeepaliveAckV1();
+  
+  SubscriptionKeepaliveAckV1(const SubscriptionKeepaliveAckV1& from);
+  
+  inline SubscriptionKeepaliveAckV1& operator=(const SubscriptionKeepaliveAckV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SubscriptionKeepaliveAckV1& default_instance();
+  
+  void Swap(SubscriptionKeepaliveAckV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SubscriptionKeepaliveAckV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SubscriptionKeepaliveAckV1& from);
+  void MergeFrom(const SubscriptionKeepaliveAckV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required bytes id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const void* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 110;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.SubscriptionKeepaliveAckV1)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  void InitAsDefaultInstance();
+  static SubscriptionKeepaliveAckV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1191,56 +1283,56 @@ inline void StreamSegmentEndV1::set_envelopes_sent(::google::protobuf::uint32 va
 
 // -------------------------------------------------------------------
 
-// SubscribeAckV1
+// SubscriptionAcceptAckV1
 
 // required bytes id = 1;
-inline bool SubscribeAckV1::has_id() const {
+inline bool SubscriptionAcceptAckV1::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SubscribeAckV1::set_has_id() {
+inline void SubscriptionAcceptAckV1::set_has_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SubscribeAckV1::clear_has_id() {
+inline void SubscriptionAcceptAckV1::clear_has_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void SubscribeAckV1::clear_id() {
+inline void SubscriptionAcceptAckV1::clear_id() {
   if (id_ != &::google::protobuf::internal::kEmptyString) {
     id_->clear();
   }
   clear_has_id();
 }
-inline const ::std::string& SubscribeAckV1::id() const {
+inline const ::std::string& SubscriptionAcceptAckV1::id() const {
   return *id_;
 }
-inline void SubscribeAckV1::set_id(const ::std::string& value) {
+inline void SubscriptionAcceptAckV1::set_id(const ::std::string& value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscribeAckV1::set_id(const char* value) {
+inline void SubscriptionAcceptAckV1::set_id(const char* value) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(value);
 }
-inline void SubscribeAckV1::set_id(const void* value, size_t size) {
+inline void SubscriptionAcceptAckV1::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* SubscribeAckV1::mutable_id() {
+inline ::std::string* SubscriptionAcceptAckV1::mutable_id() {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
   }
   return id_;
 }
-inline ::std::string* SubscribeAckV1::release_id() {
+inline ::std::string* SubscriptionAcceptAckV1::release_id() {
   clear_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1252,25 +1344,87 @@ inline ::std::string* SubscribeAckV1::release_id() {
 }
 
 // required uint32 ttl = 2;
-inline bool SubscribeAckV1::has_ttl() const {
+inline bool SubscriptionAcceptAckV1::has_ttl() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void SubscribeAckV1::set_has_ttl() {
+inline void SubscriptionAcceptAckV1::set_has_ttl() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void SubscribeAckV1::clear_has_ttl() {
+inline void SubscriptionAcceptAckV1::clear_has_ttl() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void SubscribeAckV1::clear_ttl() {
+inline void SubscriptionAcceptAckV1::clear_ttl() {
   ttl_ = 0u;
   clear_has_ttl();
 }
-inline ::google::protobuf::uint32 SubscribeAckV1::ttl() const {
+inline ::google::protobuf::uint32 SubscriptionAcceptAckV1::ttl() const {
   return ttl_;
 }
-inline void SubscribeAckV1::set_ttl(::google::protobuf::uint32 value) {
+inline void SubscriptionAcceptAckV1::set_ttl(::google::protobuf::uint32 value) {
   set_has_ttl();
   ttl_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SubscriptionKeepaliveAckV1
+
+// required bytes id = 1;
+inline bool SubscriptionKeepaliveAckV1::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SubscriptionKeepaliveAckV1::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SubscriptionKeepaliveAckV1::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SubscriptionKeepaliveAckV1::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& SubscriptionKeepaliveAckV1::id() const {
+  return *id_;
+}
+inline void SubscriptionKeepaliveAckV1::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SubscriptionKeepaliveAckV1::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SubscriptionKeepaliveAckV1::set_id(const void* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SubscriptionKeepaliveAckV1::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* SubscriptionKeepaliveAckV1::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 // -------------------------------------------------------------------

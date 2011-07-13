@@ -104,7 +104,8 @@ int lua_protobuf_zippylog_protocol_response_open(lua_State *L)
     lua_protobuf_zippylog_protocol_response_FeatureSpecificationV1_open(L);
     lua_protobuf_zippylog_protocol_response_StreamSegmentStartV1_open(L);
     lua_protobuf_zippylog_protocol_response_StreamSegmentEndV1_open(L);
-    lua_protobuf_zippylog_protocol_response_SubscribeAckV1_open(L);
+    lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_open(L);
+    lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_open(L);
     lua_protobuf_zippylog_protocol_response_SubscriptionStartV1_open(L);
     lua_protobuf_zippylog_protocol_response_WriteAckV1_open(L);
     lua_protobuf_zippylog_protocol_response_Error_open(L);
@@ -1049,81 +1050,81 @@ int lua_protobuf_zippylog_protocol_response_StreamSegmentEndV1_has_envelopes_sen
     return 1;
 }
 
-static const struct luaL_Reg SubscribeAckV1_functions [] = {
-    {"new", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_new},
-    {"parsefromstring", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_parsefromstring},
+static const struct luaL_Reg SubscriptionAcceptAckV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_parsefromstring},
     {NULL, NULL}
 };
 
-static const struct luaL_Reg SubscribeAckV1_methods [] = {
-    {"serialized", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_serialized},
-    {"clear", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear},
-    {"__gc", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_gc},
-    {"clear_id", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_id},
-    {"get_id", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_id},
-    {"set_id", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_id},
-    {"has_id", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_id},
-    {"clear_ttl", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_ttl},
-    {"get_ttl", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_ttl},
-    {"set_ttl", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_ttl},
-    {"has_ttl", lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_ttl},
+static const struct luaL_Reg SubscriptionAcceptAckV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_gc},
+    {"clear_id", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_id},
+    {"get_id", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_id},
+    {"set_id", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_id},
+    {"has_id", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_id},
+    {"clear_ttl", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_ttl},
+    {"get_ttl", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_ttl},
+    {"set_ttl", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_ttl},
+    {"has_ttl", lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_ttl},
     {NULL, NULL},
 };
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_open(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_open(lua_State *L)
 {
-    luaL_newmetatable(L, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, SubscribeAckV1_methods);
-    luaL_register(L, "protobuf.zippylog.protocol.response.SubscribeAckV1", SubscribeAckV1_functions);
+    luaL_register(L, NULL, SubscriptionAcceptAckV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.response.SubscriptionAcceptAckV1", SubscriptionAcceptAckV1_functions);
     lua_pop(L, 1);
     return 1;
 }
 
 
-bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscribeAckV1 &from)
+bool lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscriptionAcceptAckV1 &from)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::response::SubscribeAckV1(from);
+    ud->msg = new ::zippylog::protocol::response::SubscriptionAcceptAckV1(from);
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
     lua_setmetatable(L, -2);
     return true;
 }
-bool lua_protobuf_zippylog_protocol_response_SubscribeAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscribeAckV1 *msg, lua_protobuf_gc_callback f, void *data)
+bool lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscriptionAcceptAckV1 *msg, lua_protobuf_gc_callback f, void *data)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = false;
     ud->msg = msg;
     ud->gc_callback = f;
     ud->callback_data = data;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
     lua_setmetatable(L, -2);
     return true;
 }
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_new(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_new(lua_State *L)
 {
     msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
     ud->lua_owns = true;
-    ud->msg = new ::zippylog::protocol::response::SubscribeAckV1();
+    ud->msg = new ::zippylog::protocol::response::SubscriptionAcceptAckV1();
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
     lua_setmetatable(L, -2);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_parsefromstring(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_parsefromstring(lua_State *L)
 {
     if (lua_gettop(L) != 1) {
         return luaL_error(L, "parsefromstring() requires a string argument. none given");
     }
     size_t len;
     const char *s = luaL_checklstring(L, -1, &len);
-    ::zippylog::protocol::response::SubscribeAckV1 * msg = new ::zippylog::protocol::response::SubscribeAckV1();
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 * msg = new ::zippylog::protocol::response::SubscriptionAcceptAckV1();
     if (!msg->ParseFromArray((const void *)s, len)) {
         return luaL_error(L, "error deserializing message");
     }
@@ -1132,14 +1133,14 @@ int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_parsefromstring(lua_S
     ud->msg = msg;
     ud->gc_callback = NULL;
     ud->callback_data = NULL;
-    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
     lua_setmetatable(L, -2);
     return 1;
 }
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_gc(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_gc(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     if (mud->lua_owns) {
         delete mud->msg;
         mud->msg = NULL;
@@ -1152,17 +1153,17 @@ int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_gc(lua_State *L)
     }
     return 0;
 }
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     m->Clear();
     return 0;
 }
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_serialized(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_serialized(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     string s;
     if (!m->SerializeToString(&s)) {
         return luaL_error(L, "error serializing message");
@@ -1170,27 +1171,27 @@ int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_serialized(lua_State 
     lua_pushlstring(L, s.c_str(), s.length());
     return 1;
 }
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_id(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     m->clear_id();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_id(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     string s = m->id();
     m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_id(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_id();
         return 0;
@@ -1206,34 +1207,34 @@ int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_id(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_id(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_id(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     lua_pushboolean(L, m->has_id());
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_clear_ttl(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_clear_ttl(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     m->clear_ttl();
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_get_ttl(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_get_ttl(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     m->has_ttl() ? lua_pushinteger(L, m->ttl()) : lua_pushnil(L);
     return 1;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_ttl(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_set_ttl(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     if (lua_isnil(L, 2)) {
         m->clear_ttl();
         return 0;
@@ -1244,11 +1245,172 @@ int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_set_ttl(lua_State *L)
     return 0;
 }
 
-int lua_protobuf_zippylog_protocol_response_SubscribeAckV1_has_ttl(lua_State *L)
+int lua_protobuf_zippylog_protocol_response_SubscriptionAcceptAckV1_has_ttl(lua_State *L)
 {
-    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscribeAckV1");
-    ::zippylog::protocol::response::SubscribeAckV1 *m = (::zippylog::protocol::response::SubscribeAckV1 *)mud->msg;
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionAcceptAckV1");
+    ::zippylog::protocol::response::SubscriptionAcceptAckV1 *m = (::zippylog::protocol::response::SubscriptionAcceptAckV1 *)mud->msg;
     lua_pushboolean(L, m->has_ttl());
+    return 1;
+}
+
+static const struct luaL_Reg SubscriptionKeepaliveAckV1_functions [] = {
+    {"new", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_new},
+    {"parsefromstring", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_parsefromstring},
+    {NULL, NULL}
+};
+
+static const struct luaL_Reg SubscriptionKeepaliveAckV1_methods [] = {
+    {"serialized", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_serialized},
+    {"clear", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear},
+    {"__gc", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_gc},
+    {"clear_id", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear_id},
+    {"get_id", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_get_id},
+    {"set_id", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_set_id},
+    {"has_id", lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_has_id},
+    {NULL, NULL},
+};
+
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_open(lua_State *L)
+{
+    luaL_newmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    luaL_register(L, NULL, SubscriptionKeepaliveAckV1_methods);
+    luaL_register(L, "protobuf.zippylog.protocol.response.SubscriptionKeepaliveAckV1", SubscriptionKeepaliveAckV1_functions);
+    lua_pop(L, 1);
+    return 1;
+}
+
+
+bool lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_pushcopy(lua_State *L, const ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 &from)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::protocol::response::SubscriptionKeepaliveAckV1(from);
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    lua_setmetatable(L, -2);
+    return true;
+}
+bool lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_pushreference(lua_State *L, ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *msg, lua_protobuf_gc_callback f, void *data)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = false;
+    ud->msg = msg;
+    ud->gc_callback = f;
+    ud->callback_data = data;
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    lua_setmetatable(L, -2);
+    return true;
+}
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_new(lua_State *L)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::protocol::response::SubscriptionKeepaliveAckV1();
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_parsefromstring(lua_State *L)
+{
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 * msg = new ::zippylog::protocol::response::SubscriptionKeepaliveAckV1();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_gc(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    if (mud->lua_owns) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    return 0;
+}
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    m->Clear();
+    return 0;
+}
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_serialized(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    string s;
+    if (!m->SerializeToString(&s)) {
+        return luaL_error(L, "error serializing message");
+    }
+    lua_pushlstring(L, s.c_str(), s.length());
+    return 1;
+}
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_clear_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    m->clear_id();
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_get_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    string s = m->id();
+    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_set_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_id();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_id(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_protocol_response_SubscriptionKeepaliveAckV1_has_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.protocol.response.SubscriptionKeepaliveAckV1");
+    ::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *m = (::zippylog::protocol::response::SubscriptionKeepaliveAckV1 *)mud->msg;
+    lua_pushboolean(L, m->has_id());
     return 1;
 }
 
