@@ -128,14 +128,14 @@ class ZIPPYLOG_EXPORT ServerStartParams {
 public:
     ServerStartParams() :
         ctx(NULL),
-        worker_threads(3),
-        streaming_threads(3),
-        subscription_ttl(60000),
-        log_bucket("zippylog"),
-        log_stream_set("server"),
-        stream_flush_interval(5000),
-        lua_execute_client_code(false),
-        lua_streaming_max_memory(524288)
+        worker_threads(::zippylog::server_default_worker_threads),
+        streaming_threads(::zippylog::server_default_streaming_threads),
+        subscription_ttl(::zippylog::server_default_subscription_ttl),
+        log_bucket(::zippylog::server_default_log_bucket),
+        log_stream_set(::zippylog::server_default_log_stream_set),
+        stream_flush_interval(::zippylog::server_default_stream_flush_interval),
+        lua_execute_client_code(::zippylog::server_default_lua_allow),
+        lua_streaming_max_memory(::zippylog::server_default_lua_streaming_max_memory)
     { }
 
     /// 0MQ context to use
@@ -170,7 +170,7 @@ public:
     /// whether client-supplied Lua code can be executed
     bool lua_execute_client_code;
 
-    /// max memory size of Lua interpreters attached to streaming
+    /// max memory size of Lua interpreters attached to streaming in bytes
     uint32 lua_streaming_max_memory;
 };
 

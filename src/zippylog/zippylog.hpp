@@ -84,6 +84,30 @@ ZIPPYLOG_EXPORT void shutdown_library();
 
 static const uint32 message_namespace = 1;
 
+/// Default number of streaming threads for the server device
+static const uint32 server_default_streaming_threads = 1;
+
+/// Default number of worker threads for the server device
+static const uint32 server_default_worker_threads = 2;
+
+/// Default subscription TTL for server device (in milliseconds)
+static const uint32 server_default_subscription_ttl = 60000;
+
+/// Default stream flush interval for server device (in milliseconds)
+static const uint32 server_default_stream_flush_interval = 5000;
+
+/// Default bucket to log internal events to in server device
+static const ::std::string server_default_log_bucket = "zippylog";
+
+/// Default stream set to log internal events to in server device
+static const ::std::string server_default_log_stream_set = "server";
+
+/// Default value for whether to allow remote-supplied Lua code in server device
+static const uint32 server_default_lua_allow = false;
+
+/// Default maximum Lua allocation limit for streaming states, in bytes
+static const uint32 server_default_lua_streaming_max_memory = 524288;
+
 } // namespace
 
 #endif

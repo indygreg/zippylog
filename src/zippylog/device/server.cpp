@@ -704,31 +704,31 @@ bool Server::ParseConfig(const string path, ServerStartParams &params, string &e
 
     // number of worker threads to run
     lua_getglobal(L, "worker_threads");
-    params.worker_threads = luaL_optinteger(L, -1, 3);
+    params.worker_threads = luaL_optinteger(L, -1, ::zippylog::server_default_worker_threads);
     lua_pop(L, 1);
 
     // number of streaming threads to run
     lua_getglobal(L, "streaming_threads");
-    params.streaming_threads = luaL_optinteger(L, -1, 1);
+    params.streaming_threads = luaL_optinteger(L, -1, ::zippylog::server_default_streaming_threads);
     lua_pop(L, 1);
 
     // time to live of streaming subscriptions in milliseconds
     lua_getglobal(L, "streaming_subscription_ttl");
-    params.subscription_ttl = luaL_optinteger(L, -1, 60000);
+    params.subscription_ttl = luaL_optinteger(L, -1, ::zippylog::server_default_subscription_ttl);
     lua_pop(L, 1);
 
     // logging settings
     lua_getglobal(L, "log_bucket");
-    params.log_bucket = luaL_optstring(L, -1, "zippylog");
+    params.log_bucket = luaL_optstring(L, -1, ::zippylog::server_default_log_bucket.c_str());
     lua_pop(L, 1);
 
     lua_getglobal(L, "log_stream_set");
-    params.log_stream_set = luaL_optstring(L, -1, "zippylogd");
+    params.log_stream_set = luaL_optstring(L, -1, ::zippylog::server_default_log_bucket.c_str());
     lua_pop(L, 1);
 
     // interval at which to flush streams in milliseconds
     lua_getglobal(L, "stream_flush_interval");
-    params.stream_flush_interval = luaL_optinteger(L, -1, 5000);
+    params.stream_flush_interval = luaL_optinteger(L, -1, ::zippylog::server_default_stream_flush_interval);
     lua_pop(L, 1);
     if (params.stream_flush_interval < 0) {
         os << "stream_flush_interval must be positive";
@@ -745,7 +745,7 @@ bool Server::ParseConfig(const string path, ServerStartParams &params, string &e
     lua_pop(L, 1);
 
     lua_getglobal(L, "lua_streaming_max_memory");
-    params.lua_streaming_max_memory = luaL_optinteger(L, -1, 524288);
+    params.lua_streaming_max_memory = luaL_optinteger(L, -1, ::zippylog::server_default_lua_streaming_max_memory);
     lua_pop(L, 1);
 
 
