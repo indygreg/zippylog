@@ -433,6 +433,38 @@ bool DirectoriesInTree(const string &path, vector<string> &paths)
 
 }
 
+bool RemoveDirectory(const string &path)
+{
+    if (!PathIsDirectory(path)) {
+        return false;
+    }
+
+    vector<DirectoryEntry> entries;
+    if (!DirectoryEntries(path, entries)) {
+        return false;
+    }
+
+    vector<DirectoryEntry>::iterator i = entries.begin();
+    for(; i != entries.end(); i++) {
+        if (i->name[0] == '.') continue;
+
+        string full_path = PathJoin(path, i->name);
+
+        if (i->type == DIRECTORY) {
+            if (!RemoveDirectory(full_path)) {
+                return true;
+            }
+        }
+        else if (i->type == REGULAR) {
+            unlink(full_path.c_str());
+        }
+    }
+
+    rmdir(path.c_str());
+
+    return true;
+}
+
 File::File()
 {
     this->open = false;

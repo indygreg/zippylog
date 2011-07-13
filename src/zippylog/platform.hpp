@@ -117,6 +117,9 @@ namespace platform {
     // recursively descends the path and finds all child directories
     ZIPPYLOG_EXPORT bool DirectoriesInTree(const ::std::string &path, ::std::vector< ::std::string > &paths);
 
+    /// Recursively remove a specified directory
+    ZIPPYLOG_EXPORT bool RemoveDirectory(const ::std::string &path);
+
     // joins two filesystem paths and returns the result
     ZIPPYLOG_EXPORT ::std::string PathJoin(const ::std::string &a, const ::std::string &b);
 
