@@ -257,7 +257,7 @@ class ZIPPYLOG_EXPORT Store {
         /// output stream from here. If we can't find one, we create an output
         /// stream and put it here.
         ///
-        /// TODO prune this data structure as needed or consider a ceiling
+        /// @todo prune this data structure as needed or consider a ceiling
         /// limit of open streams
         ::std::map< ::std::string, OpenOutputStream> out_streams;
     private:
