@@ -19,9 +19,9 @@ BUILTIN_STL_SUPPORT    = YES
 
 INPUT                  = src
 RECURSIVE              = YES
-EXCLUDE                =
+EXCLUDE                = src/lua-protobuf.h
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       =
+EXCLUDE_PATTERNS       = *.pb-lua.h *.pb-lua.cc *.pb.h *.pb.h *_unittest.cpp
 EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       =
