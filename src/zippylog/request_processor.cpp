@@ -876,7 +876,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
         if (!subscription->l->LoadLuaCode(m->lua_code(), error)) {
             this->PopulateErrorResponse(
                 protocol::response::LUA_ERROR,
-                "XXX",
+                error,
                 output
             );
         }
@@ -898,8 +898,6 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
     if (subscription->paths.size() == 0) {
         subscription->paths.push_back("/");
     }
-
-    subscription->socket_identifiers = this->current_request_identities;
 
     this->CallHandleSubscriptionRequest(&subscription, output);
 
@@ -1046,6 +1044,12 @@ LOG_END:
 
 void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscription, vector<Envelope> &output)
 {
+    (*subscription)->socket_identifiers = this->current_request_identities;
+
+    if ((*subscription)->socket_identifiers.size() > 0) {
+        (*subscription)->socket_identifiers.erase((*subscription)->socket_identifiers.begin());
+    }
+
     HandleSubscriptionResult result = this->HandleSubscriptionRequest(*subscription);
 
     // API contract is called function owns memory of subscription
