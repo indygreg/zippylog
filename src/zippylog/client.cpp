@@ -43,6 +43,9 @@ Client::Client(context_t *ctx, const string &endpoint) :
     }
 
     this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
+
+    // do we need to set socket identity since we are using XREQ?
+
     this->client_sock->connect(endpoint.c_str());
 
     this->pollitem[0].events = ZMQ_POLLIN;
