@@ -93,6 +93,51 @@ public:
     ::std::string reject_reason;
 };
 
+/// Maintains state for a subscription response stream
+///
+/// See also RequestProcessor::SendSubscriptionEnvelopeResponse()
+class ZIPPYLOG_EXPORT EnvelopeSubscriptionResponseState {
+public:
+    /// Construct a state for sending an envelope subscription response
+    ///
+    /// @param sock Socket to send responses to
+    /// @param subscription Subscription record
+    EnvelopeSubscriptionResponseState(::zmq::socket_t *socket, const SubscriptionInfo &subscription) :
+        finalized(false),
+        sock(socket),
+        id(subscription.id),
+        identities(subscription.socket_identifiers),
+        current_size(0)
+    { }
+
+    ~EnvelopeSubscriptionResponseState();
+
+    /// Adds an envelope to the state
+    ///
+    /// This effectively marks the envelope as ready to send to the client
+    void AddEnvelope(const Envelope &e);
+
+    /// State that the final envelope has been seen
+    inline void Finalize() { this->finalized = true; }
+
+    /// Registers an error
+    void RegisterError(protocol::response::ErrorCode code, const ::std::string &message);
+
+protected:
+    bool finalized;
+    ::zmq::socket_t *sock;
+    ::std::string id;
+    ::std::vector< ::std::string > identities;
+    uint32 current_size;
+
+    ::std::vector< ::zmq::message_t * > messages;
+
+    static const uint32 max_size = 1048576;
+    static const uint32 max_envelopes = 1024;
+
+    friend class RequestProcessor;
+};
+
 /// Used to construct a request processor
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
@@ -240,6 +285,25 @@ class ZIPPYLOG_EXPORT RequestProcessor {
                                                         const SubscriptionInfo &subscription,
                                                         const Envelope &e);
 
+        /// Sends a subscription envelope response
+        ///
+        /// To optimize envelope sending and prevent excessive buffering, a
+        /// helper class is used to control output. The pattern is as follows:
+        ///
+        ///  -# Create an EnvelopeSubscriptionResponseState instance
+        ///  -# Mark an envelope to be sent by calling AddEnvelope() on this state
+        ///  -# Call RequestProcessor::SendSubscriptionEnvelopeResponse()
+        ///  -# Repeat above two steps
+        ///  -# When you've reached the final envelope, call Finalize() on the state
+        ///  -#  Call SendSubscriptionEnvelopeResponse() one last time
+        ///
+        /// Internally, this function buffers envelopes until a capacity has
+        /// been reached and flushes them as necessary. This allows streaming
+        /// code to send many envelopes without having to worry about all the
+        /// details.
+        ///
+        /// @param state State keeping track of what to send
+        static bool SendSubscriptionEnvelopeResponse(EnvelopeSubscriptionResponseState &state);
 
     protected:
         /// Callback to handle a validated request for a subscription

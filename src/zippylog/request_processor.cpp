@@ -83,6 +83,32 @@ void SubscriptionInfo::InitializeLua()
     this->l = new LuaState();
 }
 
+EnvelopeSubscriptionResponseState::~EnvelopeSubscriptionResponseState()
+{
+    vector<message_t *>::iterator i = this->messages.begin();
+    for (; i != this->messages.end(); i++) {
+        if (*i != NULL) delete *i;
+    }
+}
+
+void EnvelopeSubscriptionResponseState::AddEnvelope(const Envelope &e)
+{
+    message_t *msg = new message_t();
+    if (!e.ToProtocolZmqMessage(*msg)) {
+        delete msg;
+        return;
+    }
+
+    this->messages.push_back(msg);
+    this->current_size += msg->size();
+}
+
+void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::response::ErrorCode code, const std::string &message)
+{
+    throw new Exception("not yet implemented");
+}
+
+
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     ctx(params.ctx),
     store_path(params.store_path),
@@ -1052,6 +1078,34 @@ bool RequestProcessor::SendSubscriptionStoreChangeResponse(socket_t &sock, const
     e.CopyMessage(0, response);
 
     return zeromq::SendEnvelope(sock, subscription.socket_identifiers, response, true, 0);
+}
+
+bool RequestProcessor::SendSubscriptionEnvelopeResponse(EnvelopeSubscriptionResponseState &state)
+{
+    if (!state.finalized && !(state.current_size > state.max_size || state.messages.size() > state.max_envelopes))
+        return true;
+
+    if (state.messages.size() == 0)
+        return true;
+
+    Envelope response;
+    protocol::response::SubscriptionStartV1 start;
+    start.set_id(state.id);
+    start.add_to_envelope(response);
+
+    if (!zeromq::SendEnvelope(*state.sock, state.identities, response, true, ZMQ_SNDMORE)) {
+        return false;
+    }
+
+    vector<message_t *>::iterator i = state.messages.begin();
+    for (; i != state.messages.end(); i++) {
+        state.sock->send(**i, i != state.messages.end() ? ZMQ_SNDMORE : 0);
+        delete *i;
+        *i = NULL;
+    }
+
+    state.messages.clear();
+    state.current_size = 0;
 }
 
 void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscription, vector<Envelope> &output)

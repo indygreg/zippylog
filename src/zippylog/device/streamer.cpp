@@ -422,12 +422,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                     throw Exception("could not set stream offset");
                 }
 
-                Envelope response = Envelope();
-                protocol::response::SubscriptionStartV1 start;
-                start.set_id(i->first);
-                start.add_to_envelope(&response);
-
-                zeromq::send_envelope_more(this->client_sock, i->second->socket_identifiers, response);
+                EnvelopeSubscriptionResponseState state(this->client_sock, *i->second);
 
                 while (offset < stream_length) {
                     Envelope env;
@@ -438,40 +433,25 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                     offset += read;
 
                     // run envelope through Lua
-                    if (i->second->l) {
-                        if (!i->second->l->HasSubscriptionEnvelopeFilter()) {
-                            zeromq::send_envelope_more(this->client_sock, env);
-                            continue;
-                        }
-
-                        // else
+                    if (i->second->l && i->second->l->HasSubscriptionEnvelopeFilter()) {
                         lua::EnvelopeFilterResult filter_result;
                         if (!i->second->l->ExecuteSubscriptionEnvelopeFilter(env, path, filter_result)) {
                             throw Exception("envelope filter not executed. very weird");
                         }
 
                         if (!filter_result.execution_success) {
-                            Error error;
-                            error.set_code(protocol::response::LUA_ERROR);
-                            error.set_msg(filter_result.lua_error);
-
-                            Envelope error_e;
-                            error.add_to_envelope(error_e);
-                            zeromq::send_envelope(this->changes_sock, error_e);
+                            state.RegisterError(protocol::response::LUA_ERROR, filter_result.lua_error);
+                            RequestProcessor::SendSubscriptionEnvelopeResponse(state);
                             break;
                         }
 
                         if (filter_result.return_type != lua::EnvelopeFilterResult::BOOLTRUE)
                             continue;
+                    }
 
-                    }
-                    else {
-                        zeromq::send_envelope_more(this->client_sock, env);
-                    }
+                    state.AddEnvelope(e);
+                    RequestProcessor::SendSubscriptionEnvelopeResponse(state);
                 }
-
-                message_t empty(0);
-                this->client_sock->send(empty);
 
                 // stop processing this subscription since the stream has been addressed
                 break;
