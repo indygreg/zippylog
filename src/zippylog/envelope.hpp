@@ -149,7 +149,7 @@ class ZIPPYLOG_EXPORT Envelope {
         ///
         /// This adds the appropriate header to the message to identify it as
         /// an envelope.
-        bool ToProtocolZmqMessage(::zmq::message_t &msg);
+        bool ToProtocolZmqMessage(::zmq::message_t &msg) const;
 
         /// The number of messages contained within this envelope
         ///

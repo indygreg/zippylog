@@ -229,7 +229,7 @@ bool Envelope::ToZmqMessage(message_t &msg)
     return true;
 }
 
-bool Envelope::ToProtocolZmqMessage(message_t &msg)
+bool Envelope::ToProtocolZmqMessage(message_t &msg) const
 {
     string buffer(1, 0x01);
     if (!this->envelope.AppendToString(&buffer)) return false;
