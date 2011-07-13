@@ -209,7 +209,7 @@ int SendEnvelope(socket_t &socket, Envelope &e, bool is_protocol, int flags)
     return socket.send(msg, flags) ? 1 : 0;
 }
 
-int SendEnvelope(socket_t &socket, vector<string> &identities, Envelope &e, bool is_protocol, int flags)
+int SendEnvelope(socket_t &socket, const vector<string> &identities, Envelope &e, bool is_protocol, int flags)
 {
     message_t msg;
     int initial_flags = ZMQ_SNDMORE | (ZMQ_NOBLOCK & flags);
@@ -222,9 +222,10 @@ int SendEnvelope(socket_t &socket, vector<string> &identities, Envelope &e, bool
         if (!e.ToZmqMessage(e_msg)) return -1;
     }
 
-    for (vector<string>::iterator i = identities.begin(); i != identities.end(); i++) {
-        msg.rebuild(i->size());
-        memcpy(msg.data(), i->data(), msg.size());
+    for (size_t i = 0; i < identities.size(); i++) {
+        string identity = identities.at(i);
+        msg.rebuild(identity.size());
+        memcpy(msg.data(), identity.data(), msg.size());
         if (!socket.send(msg, initial_flags)) return 0;
     }
 

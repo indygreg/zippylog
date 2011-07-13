@@ -86,7 +86,7 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 /// message always include ZMQ_SNDMORE. The flags for the envelope message
 /// are always from the parameter flags. If the ZMQ_NOBLOCK flag is set, it
 /// is set on all message parts.
-int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string > &identities, Envelope &e, bool is_protocol, int flags);
+int SendEnvelope(::zmq::socket_t &socket, const ::std::vector< ::std::string > &identities, Envelope &e, bool is_protocol, int flags);
 
 }} // end namespaces
 
