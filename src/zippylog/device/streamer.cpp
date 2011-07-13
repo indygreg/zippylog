@@ -415,7 +415,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
                     throw Exception("could not copy message to response envelope. weird");
                 }
 
-                zeromq::send_envelope(this->client_sock, i->second->socket_identifiers, response);
+                zeromq::SendEnvelope(*this->client_sock, i->second->socket_identifiers, response, true, 0);
 
                 // don't process this path any more for this subscriber
                 break;
