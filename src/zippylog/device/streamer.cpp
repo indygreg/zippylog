@@ -173,9 +173,13 @@ void Streamer::Run()
                 throw Exception("error receiving 0MQ message on subscriptions sock");
             }
 
-            SubscriptionInfo *subscription = (SubscriptionInfo *)msg.data();
+            if (msg.size() != sizeof(SubscriptionInfo *)) {
+                throw Exception("SubscriptionInfo message not a pointer!");
+            }
 
-            this->subscriptions[subscription->id] = subscription;
+            SubscriptionInfo **subscription = (SubscriptionInfo **)msg.data();
+
+            this->subscriptions[(*subscription)->id] = *subscription;
         }
 
         // process store changes and send to subscribers

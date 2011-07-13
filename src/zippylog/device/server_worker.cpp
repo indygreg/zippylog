@@ -82,8 +82,9 @@ HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::Subscriptio
 
     // we send the pointer to the subscription record through the socket
     // if it gets lost, we have a memory leak. but, it shouldn't get lost
-    message_t m(sizeof(SubscriptionInfo *));
-    memcpy(m.data(), subscription, sizeof(SubscriptionInfo *));
+    message_t m(sizeof(subscription));
+    memcpy(m.data(), &subscription, sizeof(subscription));
+
     this->subscriptions_sock->send(m, 0);
 
     return result;
