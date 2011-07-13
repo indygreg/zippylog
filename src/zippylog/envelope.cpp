@@ -276,7 +276,7 @@ Message * Envelope::GetMessage(int index)
     return this->messages[index];
 }
 
-bool Envelope::CopyMessage(int index, Envelope &dest)
+bool Envelope::CopyMessage(int index, Envelope &dest) const
 {
     if (this->envelope.message_size() < index + 1) return false;
 

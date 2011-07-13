@@ -255,7 +255,7 @@ class ZIPPYLOG_EXPORT Envelope {
         ::google::protobuf::Message * GetMessage(int index);
 
         /// Copy an individual message into another envelope
-        bool CopyMessage(int index, Envelope &dest);
+        bool CopyMessage(int index, Envelope &dest) const;
 
         /// Returns a human-readable string that describes the envelope
         ///
