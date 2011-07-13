@@ -285,7 +285,7 @@ bool Store::StreamInfo(const string &path, zippylog::protocol::StreamInfoV1 &inf
 bool Store::StreamInfo(const string &bucket, const string &stream_set, const string &stream, protocol::StreamInfoV1 &info)
 {
     info.set_path(stream);
-    // TODO verify stream exists and populate other stuff
+    // @todo verify stream exists and populate other stuff
 
     int64 length = -1;
     if (this->StreamLength(this->StreamPath(bucket, stream_set, stream), length)) {

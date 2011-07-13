@@ -240,7 +240,7 @@ bool LuaState::SetMemoryCeiling(uint32 size)
     return true;
 }
 
-// TODO verify we can't load binary Lua code (textual only) b/c bytecode
+// @todo verify we can't load binary Lua code (textual only) b/c bytecode
 // verification is gone in Lua 5.2 and 5.1 was apparently buggy anyway
 
 bool LuaState::LoadLuaCode(const string &code, string &error)
@@ -352,7 +352,7 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
             goto LOAD_STRING_POP_AND_RETURN;
         }
 
-        // TODO should we error if type is not a string?
+        // @todo should we error if type is not a string?
 
         lua_getfield(this->L, stpos, "bucket");
         if (lua_isstring(this->L, -1)) {
@@ -442,7 +442,7 @@ bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
         // remove metatables
         lua_pop(this->L, 2);
 
-        // TODO handle message case
+        // @todo handle message case
 
         result.return_type = result.INVALID;
         break;
@@ -460,7 +460,7 @@ bool LuaState::ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const string
 
     string bucket, stream_set, stream;
     if (!Store::ParsePath(path, bucket, stream_set, stream)) {
-        // TODO is this right?
+        // @todo is this right?
         throw new Exception("unable to parse path. this should never happen");
     }
 

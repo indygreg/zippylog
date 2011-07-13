@@ -297,7 +297,7 @@ bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, v
 
 bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
-    // TODO validate path
+    // @todo validate path
 
     protocol::request::SubscribeStoreChangesV1 req;
     req.add_path(path);
@@ -314,7 +314,7 @@ bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo 
 
 bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
-    // TODO validate path
+    // @todo validate path
 
     protocol::request::SubscribeEnvelopesV1 req;
     req.add_path(path);
@@ -330,7 +330,7 @@ bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb
 
 bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallbackInfo &cb, void *data)
 {
-    // TODO validate
+    // @todo validate
 
     protocol::request::SubscribeEnvelopesV1 req;
     req.add_path(path);
@@ -390,7 +390,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
     bool result = false;
     bool have_timer = timeout > 0;
 
-    // TODO this can be done with fewer system calls
+    // @todo this can be done with fewer system calls
     do {
         // we wait up to 25 in each iteration
         this->Pump(25000);
@@ -477,7 +477,7 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
             break;
 
         default:
-            // TODO log here or something
+            // @todo log here or something
             break;
     }
 
@@ -603,7 +603,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
     map<string, OutstandingRequest>::iterator iter = this->outstanding.find(id);
 
     // this is most weird
-    // TODO is an exception always correct? what about a client that restarts
+    // @todo is an exception always correct? what about a client that restarts
     // with same identity?
     if (iter == this->outstanding.end()) {
         throw Exception("received a response to an unknown outstanding request");
@@ -648,7 +648,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
         {
             assert(req.cb_stream_segment);
 
-            // TODO more robust parsing
+            // @todo more robust parsing
             protocol::response::StreamSegmentStartV1 *start =
                 (protocol::response::StreamSegmentStartV1 *)e.GetMessage(0);
 

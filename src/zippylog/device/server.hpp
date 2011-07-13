@@ -262,7 +262,7 @@ class ZIPPYLOG_EXPORT Server {
         /// until all threads have been joined.
         ///
         /// On second call, is a no-op.
-        /// TODO need an API to force shutdown
+        /// @todo need an API to force shutdown
         void Shutdown();
 
         /// Obtain a list of client 0MQ endpoints
@@ -416,7 +416,7 @@ class ZIPPYLOG_EXPORT Server {
         /// Timer that signals when we should check on thread status
         ///
         /// This is a giant hack until a better solution can be implemented.
-        /// TODO unhackify
+        /// @todo unhackify
         ::zippylog::platform::Timer thread_check_timer;
 
         /// server id

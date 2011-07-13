@@ -21,7 +21,7 @@
 // If ZIPPYLOG_IMPORT is defined, we tell the compiler we're looking for
 // external symbols.
 // Else, we're not on Windows and the keyword does nothing.
-// TODO utilize GCC's visibility attribute (http://gcc.gnu.org/wiki/Visibility)
+// @todo utilize GCC's visibility attribute (http://gcc.gnu.org/wiki/Visibility)
 #ifdef WINDOWS
 #if defined(ZIPPYLOG_IMPORT)
 #define ZIPPYLOG_EXPORT __declspec(dllimport)
@@ -33,7 +33,7 @@
 #endif
 
 /* define 32 and 64 bit integer types */
-// TODO these should be namespaced
+// @todo these should be namespaced
 #ifdef WINDOWS
 typedef __int32 int32;
 typedef __int64 int64;

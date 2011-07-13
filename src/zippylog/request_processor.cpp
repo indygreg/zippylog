@@ -193,13 +193,13 @@ int RequestProcessor::Pump(long wait)
         ::zippylog::request_processor::FailReceiveMessage log;
         LOG_MESSAGE(log, this->logger_sock);
 
-        // TODO shouldn't this be part of the receive_multipart_message API?
+        // @todo shouldn't this be part of the receive_multipart_message API?
         vector<message_t *>::iterator iter = msgs.begin();
         for (; iter != msgs.end(); iter++) {
             delete *iter;
         }
 
-        // TODO we used to rebuild socket here. is this a good recovery strategy?
+        // @todo we used to rebuild socket here. is this a good recovery strategy?
         // this exception is here so we can see if this actually happens
         // I suspect it doesn't
         throw Exception("error receiving multipart message from worker sock");
@@ -256,7 +256,7 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
     ResponseStatus result;
     bool successful_process = false;
 
-    // TODO should we log?
+    // @todo should we log?
     if (!input.size()) return;
 
     // we expect the first message to have an envelope of some kind
@@ -324,7 +324,7 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
     have_request_envelope = true;
     try {
         result = this->ProcessRequest(request_envelope, output);
-    // TODO catch various types of exceptions
+    // @todo catch various types of exceptions
     } catch ( ... ) {
         this->PopulateErrorResponse(
             protocol::response::GENERAL_ERROR_PROCESSING,
@@ -718,7 +718,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             // we've already verified the stream exists, so there are one of two possibilities:
             //   1) it was deleted between then and now
             //   2) error fetching stream
-            // TODO react accordingly
+            // @todo react accordingly
             ::zippylog::request_processor::GetInvalidStream log;
             LOG_MESSAGE(log, this->logger_sock);
 
@@ -757,7 +757,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
             ::zippylog::request_processor::GetInvalidOffset log;
             LOG_MESSAGE(log, this->logger_sock);
 
-            // TODO need better error code
+            // @todo need better error code
             this->PopulateErrorResponse(
                 protocol::response::INVALID_STREAM_OFFSET,
                 "no envelopes found at requested stream offset",
@@ -797,7 +797,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
                 envelope_size = stream->NextEnvelopeSize();
                 if (!envelope_size) break;
 
-                // TODO we should be resilient and handle stream errors somehow
+                // @todo we should be resilient and handle stream errors somehow
                 if (!stream->ReadEnvelope(env, envelope_size)) break;
 
                 output.push_back(env);
@@ -814,7 +814,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &re
         protocol::response::StreamSegmentEndV1 segment_end;
         segment_end.set_envelopes_sent(envelopes_read);
         segment_end.set_bytes_sent(bytes_read);
-        // TODO not all stores might share this concept of offsets
+        // @todo not all stores might share this concept of offsets
         segment_end.set_offset(stream->CurrentEnvelopeOffset());
 
         env = ::zippylog::Envelope();
@@ -946,7 +946,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
         log.set_subscription(m->id(0));
         LOG_MESSAGE(log, this->logger_sock);
     }
-    // TODO validation
+    // @todo validation
 
 LOG_END:
 
@@ -1045,7 +1045,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
                 ack.set_envelopes_written(written);
             }
             else {
-                // TODO should have error field in ack
+                // @todo should have error field in ack
                 throw Exception("TODO implement error reporting on failed write");
             }
 

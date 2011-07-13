@@ -94,7 +94,7 @@ void StringLoader::ReadLineAndProcess(StringLoaderProcessingResult &result)
         return;
     }
 
-    // TODO we should poll the istream to see if data is available
+    // @todo we should poll the istream to see if data is available
     // otherwise, we could wait a long, long time
     string line;
     getline(*this->instream, line);

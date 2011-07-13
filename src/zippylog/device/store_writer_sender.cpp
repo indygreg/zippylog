@@ -33,7 +33,7 @@ StoreWriterSender::StoreWriterSender(StoreWriterSenderStartParams &params) :
     envelope_pull_sock(NULL),
     envelope_rep_sock(NULL)
 {
-    // TODO perform validation
+    // @todo perform validation
 
     if (!this->ctx) {
         this->ctx = new ::zmq::context_t(1);
@@ -63,7 +63,7 @@ StoreWriterSender::~StoreWriterSender()
 
 bool StoreWriterSender::DeliverEnvelope(const string &bucket, const string &set, ::zippylog::Envelope &e)
 {
-    // TODO is this appropriate? I think it signifies a coding error (no param to constructor) and thus is
+    // @todo is this appropriate? I think it signifies a coding error (no param to constructor) and thus is
     if (!this->envelope_pull_sock)
         throw Exception("can not deliver envelopes since the pull socket is not configured");
 
@@ -84,14 +84,14 @@ bool StoreWriterSender::WriteEnvelope(const string &bucket, const string &set, :
     preceding.push_back(path);
 
     if (!::zippylog::zeromq::send_envelope_with_preceding(this->envelope_rep_sock, preceding, e)) {
-        // TODO we might want to reconnect the socket in case the FSM is messed up
+        // @todo we might want to reconnect the socket in case the FSM is messed up
         return false;
     }
 
     // now wait for the reply
     vector<message_t *> msgs;
     if (!::zippylog::zeromq::receive_multipart_message(this->envelope_rep_sock, msgs)) {
-        // TODO recover socket
+        // @todo recover socket
         return false;
     }
 

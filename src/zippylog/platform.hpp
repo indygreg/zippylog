@@ -28,7 +28,7 @@
 #include <Windows.h>
 
 #elif LINUX
-// TODO should be pulled from build tools
+// @todo should be pulled from build tools
 #define HAVE_OPENDIR 1
 
 #include <signal.h>
@@ -41,7 +41,7 @@
 
 namespace zippylog {
 
-// TODO move these last remaining APIs to platform namespace
+// @todo move these last remaining APIs to platform namespace
 typedef void * (* thread_start_func)(void *);
 
 void windows_error(char *buffer, size_t buffer_size);
@@ -206,7 +206,7 @@ namespace platform {
     // in the ideal world, timers would be represented as file descriptors and
     // we could include them in the zmq poll() event loop. this is easily done
     // on Linux. unfortunately, Windows requires a little bit more effort.
-    // TODO expose timers as file descriptors someday
+    // @todo expose timers as file descriptors someday
     class ZIPPYLOG_EXPORT Timer {
     public:
         // create a null timer. this does nothing and is present so some structs have

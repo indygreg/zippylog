@@ -50,7 +50,7 @@ bool send_multipart_more(::zmq::socket_t *socket, ::std::vector< ::std::string >
 ///
 /// This should really be called send_envelope() and those should have "with_identities_
 /// but that would break backwards compatibility.
-/// TODO break backwards compatibility someday
+/// @todo break backwards compatibility someday
 bool send_envelope_with_preceding(::zmq::socket_t *, ::std::vector< ::std::string > &preceding, Envelope &envelope, int flags=0);
 
 bool send_envelope(::zmq::socket_t *socket, Envelope &envelope, int flags=0);

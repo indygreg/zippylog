@@ -180,7 +180,7 @@ void Streamer::Run()
 
         // process store changes and send to subscribers
         if (pollitems[0].revents & ZMQ_POLLIN) {
-            // TODO error checking
+            // @todo error checking
             this->changes_sock->recv(&msg, 0);
 
             this->ProcessStoreChangeMessage(msg);
@@ -386,7 +386,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     }
 
     // iterate over all the subscribers
-    // TODO address runaway resource consumption when many subscriptions
+    // @todo address runaway resource consumption when many subscriptions
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
         // for each path they are subscribed to

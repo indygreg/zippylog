@@ -48,7 +48,7 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
         void Cleanup();
 
     protected:
-        // TODO lookup time can be improved since map is nlogn
+        // @todo lookup time can be improved since map is nlogn
         ::std::map< ::std::pair<uint32, uint32>, ::google::protobuf::Message * > _types;
 
     private:

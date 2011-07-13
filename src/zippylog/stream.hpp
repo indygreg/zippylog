@@ -150,7 +150,7 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
 /// could write out a full envelope shortly thereafter, corrupting the stream.
 ///
 /// In a nutshell, only allow one OutputStream per output file globally
-/// TODO establish better sanity around output stream usage
+/// @todo establish better sanity around output stream usage
 class ZIPPYLOG_EXPORT OutputStream {
     public:
         /// Create an empty output stream object

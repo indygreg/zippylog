@@ -186,7 +186,7 @@ StoreWriter::ReceiveResult StoreWriter::ReceiveAndWrite(::zmq::socket_t *sock)
         goto cleanup;
     }
 
-    // TODO write to specific stream if instructed?
+    // @todo write to specific stream if instructed?
 
     for (vector<message_t *>::size_type i = 1; i < msgs.size(); i++) {
         if (!this->store->WriteEnvelope(bucket, set, msgs[i]->data(), msgs[i]->size())) {

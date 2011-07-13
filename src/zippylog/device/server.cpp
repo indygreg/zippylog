@@ -185,7 +185,7 @@ int Server::Pump(uint32 wait_time)
     // check on background activities
 
     // we flush output streams if we need to
-    // TODO move this to writer thread once we isolate all writing to there
+    // @todo move this to writer thread once we isolate all writing to there
     if (this->stream_flush_timer.Signaled()) {
         work_done = true;
         BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
@@ -239,12 +239,12 @@ int Server::Pump(uint32 wait_time)
 
             work_done = true;
 
-            // TODO this should arguably be performed by the dedicated store writer
+            // @todo this should arguably be performed by the dedicated store writer
             if (this->write_logs) {
                 this->store->WriteEnvelope(this->log_bucket, this->log_stream_set, msg.data(), msg.size());
             }
 
-            // TODO this is mostly for debugging purposes and should be implemented another way
+            // @todo this is mostly for debugging purposes and should be implemented another way
             // once the project has matured
 
 #ifdef _DEBUG
@@ -389,7 +389,7 @@ void Server::RunAsync()
 {
     this->exec_thread = new Thread(Server::AsyncExecStart, this);
 
-    // TODO better ways to do this
+    // @todo better ways to do this
     while (!this->initialized);
 }
 
@@ -414,7 +414,7 @@ bool Server::SynchronizeStartParams()
     swparams.active = &this->active;
     swparams.logging_endpoint = this->logger_endpoint;
 
-    // TODO this assumes we're using a file-based store, which is a no-no
+    // @todo this assumes we're using a file-based store, which is a no-no
     swparams.store_path = ((SimpleDirectoryStore *)(this->store))->RootDirectoryPath();
     swparams.zctx = this->zctx;
 
@@ -506,7 +506,7 @@ bool Server::Start()
 
     this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
 
-    // TODO on threads properly
+    // @todo on threads properly
     platform::sleep(100);
 
     // bind sockets to listen for client requests
@@ -608,7 +608,7 @@ void Server::CheckThreads()
     }
 }
 
-// TODO consider flushing log socket on shutdown
+// @todo consider flushing log socket on shutdown
 void Server::Shutdown()
 {
     if (!this->active) return;

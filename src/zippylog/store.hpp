@@ -153,7 +153,7 @@ class ZIPPYLOG_EXPORT Store {
         bool StreamPaths(::std::vector< ::std::string > &paths);
 
         /// Obtain a store info message describing this store
-        /// TODO should protocol messages be part of the C++ API?
+        /// @todo should protocol messages be part of the C++ API?
         bool StoreInfo(protocol::StoreInfoV1 &info);
 
         /// Obtain a bucket info message describing the specified bucket

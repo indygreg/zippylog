@@ -51,7 +51,7 @@ void Watcher::HandleAdded(string path, platform::FileStat &)
     string bucket, set, stream;
     if (!Store::ParsePath(path, bucket, set, stream)) return;
 
-    // TODO need to validate streams are files, buckets/sets are directories
+    // @todo need to validate streams are files, buckets/sets are directories
 
     Envelope e = Envelope();
 

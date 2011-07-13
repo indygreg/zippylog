@@ -99,7 +99,7 @@ bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
 {
     //complicated case first
 #ifdef WINDOWS
-    // TODO fix potential buffer overrun
+    // @todo fix potential buffer overrun
     char path[8192];
     strcpy_s(path, sizeof(path), dir.c_str());
 
@@ -244,7 +244,7 @@ bool TimeNow(Time &t)
     // the internets indicate that synchronizing the time to
     // QueryPerformanceCounters() is a popular approach to increase the
     // resolution.
-    // TODO make windows time resolution better
+    // @todo make windows time resolution better
     FILETIME time;
     GetSystemTimeAsFileTime(&time);
     ULARGE_INTEGER wintime;
@@ -255,7 +255,7 @@ bool TimeNow(Time &t)
     // convert to microseconds and subtract offset
     t.epoch_micro = wintime.QuadPart / 10 - 11644473600000000;
 
-    // TODO is this compiler hack acceptable?
+    // @todo is this compiler hack acceptable?
     t.epoch_sec = (int32)(t.epoch_micro / 1000000);
     t.usec = t.epoch_micro % 1000000;
 #elif LINUX
@@ -307,9 +307,9 @@ bool UnixMicroTimeToZippyTime(int64 from, Time &to)
 
 bool MakeDirectory(const string path)
 {
-    // TODO permissions should be passed as argument
+    // @todo permissions should be passed as argument
 #ifdef WINDOWS
-    // TODO use native Windows API
+    // @todo use native Windows API
     int result = mkdir(path.c_str());
 #elif LINUX
     int result = mkdir(path.c_str(), 0775);
@@ -511,7 +511,7 @@ bool File::Open(const string &path, int flags)
         creation = CREATE_ALWAYS;
     }
 
-    // TODO probably an issue w/ ANSI vs Unicode functions for file name
+    // @todo probably an issue w/ ANSI vs Unicode functions for file name
     HANDLE h = CreateFile(path.c_str(), access, share, NULL, creation, attributes, NULL);
 
     if (h == INVALID_HANDLE_VALUE) return false;
@@ -595,9 +595,9 @@ bool File::Close()
 bool File::Seek(int64 offset)
 {
 #ifdef WINDOWS
-    // TODO bug with negative numbers
+    // @todo bug with negative numbers
 
-    // TODO fix this limitation
+    // @todo fix this limitation
     if (offset < 0) {
         throw invalid_argument("cannot support seeking back");
     }
@@ -894,7 +894,7 @@ bool Timer::Signaled()
     int result = timer_gettime(this->timer, &v);
     if (result == -1) {
         set_system_error();
-        // TODO this API breaks convention
+        // @todo this API breaks convention
         throw Exception("could not obtain timer result");
     }
 
@@ -913,7 +913,7 @@ DirectoryChange::DirectoryChange() {}
 
 DirectoryWatcher::~DirectoryWatcher()
 {
-    // TODO implement
+    // @todo implement
 }
 
 DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
@@ -1010,7 +1010,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     if (!GetQueuedCompletionStatus(this->completion_port,
         &bytes_transferred, &key, &ol, milliseconds))
     {
-        // TODO we might want to check some error conditions here
+        // @todo we might want to check some error conditions here
         // otherwise, the function could abort immediately and cause a runaway
         // thread
         return false;
@@ -1225,7 +1225,7 @@ bool Thread::Alive()
 
     return code == STILL_ACTIVE;
 #elif LINUX
-    // TODO not reliable since thread could be recycled
+    // @todo not reliable since thread could be recycled
     int result = pthread_kill(this->thread, 0);
     if (result == 0) return true;
     if (result == ESRCH) return false;
@@ -1243,7 +1243,7 @@ ConditionalWait::ConditionalWait() : signaled(false)
 #endif
 {
 #ifdef POSIX
-    // TODO verify POSIX says no error codes for this (Linux says none)
+    // @todo verify POSIX says no error codes for this (Linux says none)
     assert(!pthread_cond_init(&this->cond, NULL));
     assert(!pthread_mutex_init(&this->mutex, NULL));
 #elif WINDOWS
