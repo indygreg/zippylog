@@ -96,9 +96,19 @@ typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::Stor
 /// Callback executed when a ping response is received
 typedef void (PingCallback)(void *);
 
+/// Callback for feature specification responses
+typedef void (GetFeaturesCallback)(protocol::response::FeatureSpecificationV1 &, void *);
+
 /// Callback executed when a store info response is received
 typedef void (StoreInfoCallback)(protocol::StoreInfoV1 &, void *);
 
+/// Callback for bucket info responses
+typedef void (BucketInfoCallback)(protocol::BucketInfoV1 &, void *);
+
+/// Callback for stream set info responses
+typedef void (StreamSetInfoCallback)(protocol::StreamSetInfoV1 &, void *);
+
+/// Callback for stream info responses
 typedef void (StreamInfoCallback)(protocol::StreamInfoV1 &, void *);
 
 /// Executed when a stream segment is received
@@ -223,24 +233,61 @@ class ZIPPYLOG_EXPORT Client {
         ~Client();
 
         /// Asynchronously send a ping request
-        bool Ping(PingCallback * callback, void *data = NULL);
+        ///
+        /// @param callback Function to be called when response received
+        /// @param data Arbitrary data to be supplied to callback function
+        /// @return Whether request was sent without error
+        bool Ping(PingCallback *callback, void *data = NULL);
 
         /// Synchronously send a ping request
         bool Ping(int32 timeout_microseconds = -1);
+
+        /// Asynchronously obtain the server's features
+        ///
+        /// @param callback Function to be called when response received
+        /// @param data Arbitrary data to be supplied to callback function
+        /// @return Whether request was sent without error
+        bool GetFeatures(GetFeaturesCallback *callback, void *data = NULL);
+
+        /// Synchronously obtain the server's features
+        ///
+        /// @param features Populated with server's features on success
+        /// @param timeout_microseconds How long to wait for response
+        bool GetFeatures(protocol::response::FeatureSpecificationV1 &features, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain the store info.
         ///
         /// Executes supplied callback when store info response received.
         ///
         /// Returns true if request was sent without error.
-        bool StoreInfo(StoreInfoCallback * callback, void *data = NULL);
+        bool GetStoreInfo(StoreInfoCallback * callback, void *data = NULL);
 
         /// Synchronously obtain store info
         ///
         /// Will wait up to specified microseconds for store info to be
         /// returned. If we find the store info in the time specified, returns
         /// true. Else, returns false.
-        bool StoreInfo(protocol::StoreInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout_microseconds = -1);
+
+        /// Asynchronously obtain info about a single bucket
+        ///
+        /// @param path Path to bucket of which info should be obtained
+        /// @param callback Function to be called when response is received
+        /// @param data Arbitrary data to be supplied to callback function
+        /// @return Whether request was sent without error
+        bool GetBucketInfo(const ::std::string &path, BucketInfoCallback *callback, void *data = NULL);
+
+        /// Synchronously obtain info about a single bucket
+        ///
+        /// @param path Path to obtain info about
+        /// @param info Populated with result on successful response
+        /// @param timeout_microseconds How long to wait for response
+        /// @return Whether we received a successful response
+        bool GetBucketInfo(const ::std::string &path, protocol::BucketInfoV1 &info, int32 timeout_microseconds = -1);
+
+        bool GetStreamSetInfo(const ::std::string &path, StreamSetInfoCallback *callback, void *data = NULL);
+
+        bool GetStreamSetInfo(const ::std::string &path, protocol::StreamSetInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain stream info.
         ///
@@ -248,43 +295,20 @@ class ZIPPYLOG_EXPORT Client {
         /// received.
         ///
         /// Returns true if request sent without error.
-        bool StreamInfo(const ::std::string &path, StreamInfoCallback * callback, void * data = NULL);
+        bool GetStreamInfo(const ::std::string &path, StreamInfoCallback * callback, void * data = NULL);
 
         /// Synchronously obtain stream info
         ///
         /// Will wait up to specified microseconds for response.
         /// Returns true if info retrieved or false if error or timeout.
-        bool StreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
-        /// Cancels the subscription with specified ID
-        bool CancelSubscription(const ::std::string &id);
+        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
-        /// Cancels all subscriptions registered with the client
-        bool CancelAllSubscriptions();
-
-        /// Whether the client has a subscription with the specified subscription ID
-        bool HasSubscription(const ::std::string &id);
-
-        /// Perform pending operations
-        ///
-        /// This effectively processes responses from the server.
-        ///
-        /// Function will wait up to specified microseconds for messages to
-        /// become available. -1 is infinite.
-        ///
-        /// Returns 1 if messages processed, 0 if no messages processed, or -1
-        /// on error.
-        int Pump(int32 timeout_microseconds);
-
-        // renew all subscriptions
-        // unless the bool parameter is true, only the subscriptions that are
-        // near to expiration will be renewed. It is generally OK to let this
-        // be
-        bool RenewSubscriptions(bool force=false);
-
-        bool Get(const ::std::string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
-        bool Get(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
-        bool Get(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
+        /// Synchronously obtain a stream segment starting from an offset
+        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
 
         /// Synchronously fetch all unfetched parts of a stream
         ///
@@ -311,8 +335,53 @@ class ZIPPYLOG_EXPORT Client {
                        void *data = NULL,
                        uint64 end_offset = 0);
 
-        /// Synchronously obtain a stream segment starting from an offset
-        bool Get(const ::std::string &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
+        /// Subscribe to store change events
+        ///
+        /// This subscribes to events that describe the store, not envelopes in
+        /// streams. For that, use one of the other Subscribe* functions.
+        ///
+        /// The first argument is the path in the store to subscribe to. To
+        /// subscribe to all paths, set this path to "/".
+        ///
+        /// The subscription will receive notifications for numerous store
+        /// change events. However, unless your SubscriptionCallbackInfo defines
+        /// functions for all of them, some events will be dropped by the client.
+        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
+
+        /// Subscribes to new envelopes written on the server
+        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
+
+        /// Subscribes to new envelopes w/ Lua code specifying additional features
+        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
+
+        /// Cancels the subscription with specified ID
+        bool CancelSubscription(const ::std::string &id);
+
+        /// Cancels all subscriptions registered with the client
+        bool CancelAllSubscriptions();
+
+        /// Whether the client has a subscription with the specified subscription ID
+        bool HasSubscription(const ::std::string &id);
+
+        /// Perform pending operations
+        ///
+        /// This effectively processes responses from the server.
+        ///
+        /// Function will wait up to specified microseconds for messages to
+        /// become available. -1 is infinite.
+        ///
+        /// Returns 1 if messages processed, 0 if no messages processed, or -1
+        /// on error.
+        int Pump(int32 timeout_microseconds);
+
+        /// Renews all subscriptions near expiration
+        ///
+        /// This sends a subscription keepalive to the server for all
+        /// subscriptions about to expire.
+        ///
+        /// @param force If true, send keepalive to all subscriptions, not
+        /// just those about to expire
+        bool RenewSubscriptions(bool force=false);
 
         /// Synchronously mirror the remote server
         ///
@@ -332,25 +401,6 @@ class ZIPPYLOG_EXPORT Client {
         /// Under the hood, this function invokes GetStream() for all remote
         /// streams. This function is provided as a convenience API.
         bool Mirror(StoreMirrorState &state, StreamSegmentCallback *callback, void *data = NULL);
-
-        /// Subscribe to store change events
-        ///
-        /// This subscribes to events that describe the store, not envelopes in
-        /// streams. For that, use one of the other Subscribe* functions.
-        ///
-        /// The first argument is the path in the store to subscribe to. To
-        /// subscribe to all paths, set this path to "/".
-        ///
-        /// The subscription will receive notifications for numerous store
-        /// change events. However, unless your SubscriptionCallbackInfo defines
-        /// functions for all of them, some events will be dropped by the client.
-        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
-
-        /// Subscribes to new envelopes written on the server
-        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
-
-        /// subscribes to new envelopes w/ Lua code specifying additional features
-        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
     protected:
         // socket connect to server

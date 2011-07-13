@@ -92,7 +92,7 @@ bool Client::Ping(int32 timeout)
 void Client::CallbackPing(void *)
 {}
 
-bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
+bool Client::GetStoreInfo(StoreInfoCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -109,7 +109,7 @@ bool Client::StoreInfo(StoreInfoCallback * callback, void *data)
     return this->SendRequest(e, info);
 }
 
-bool Client::StoreInfo(protocol::StoreInfoV1 &info, int32 timeout)
+bool Client::GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout)
 {
     Envelope e;
     protocol::request::GetStoreInfoV1 req;
@@ -129,7 +129,7 @@ void Client::CallbackStoreInfo(protocol::StoreInfoV1 &info, void *data)
     si->CopyFrom(info);
 }
 
-bool Client::StreamInfo(const string &path, protocol::StreamInfoV1 &info, int32 timeout)
+bool Client::GetStreamInfo(const string &path, protocol::StreamInfoV1 &info, int32 timeout)
 {
     Envelope e;
     protocol::request::GetStreamInfoV1 req;
@@ -149,7 +149,7 @@ void Client::CallbackStreamInfo(protocol::StreamInfoV1 &info, void *data)
     si->CopyFrom(info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -168,7 +168,7 @@ bool Client::Get(const string &path, uint64 start_offset, StreamSegmentCallback 
     return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
+bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
 {
     protocol ::request::GetStreamSegmentV1 req;
     req.set_path(path);
@@ -189,7 +189,7 @@ void Client::CallbackStreamSegment(const string &, uint64, StreamSegment &segmen
     s->CopyFrom(segment);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -209,9 +209,9 @@ bool Client::Get(const string &path, uint64 start_offset, uint32 max_response_by
     return this->SendRequest(e, info);
 }
 
-bool Client::Get(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data)
 {
-    return this->Get(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
+    return this->GetStreamSegment(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
 }
 
 bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmentCallback * callback, void * data, uint64 end_offset)
@@ -222,7 +222,7 @@ bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmen
 
     if (!end_offset) {
         protocol::StreamInfoV1 si;
-        if (!this->StreamInfo(path, si, -1)) {
+        if (!this->GetStreamInfo(path, si, -1)) {
             return false;
         }
 
@@ -236,7 +236,7 @@ bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmen
 
     while (true) {
         StreamSegment segment;
-        if (!this->Get(path, start_offset, segment, -1)) {
+        if (!this->GetStreamSegment(path, start_offset, segment, -1)) {
             return false;
         }
 
@@ -261,7 +261,7 @@ bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, v
     }
 
     protocol::StoreInfoV1 info;
-    if (!this->StoreInfo(info, -1)) {
+    if (!this->GetStoreInfo(info, -1)) {
         return false;
     }
 

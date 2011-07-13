@@ -148,7 +148,7 @@ int ShowStoreInfo(vector<Client *> &clients)
     for (vector<Client *>::iterator itor = clients.begin(); itor != clients.end(); itor++) {
         StoreInfoV1 si;
 
-        if ((*itor)->StoreInfo(si, 10000000)) {
+        if ((*itor)->GetStoreInfo(si, 10000000)) {
             cout << si.DebugString() << endl;
         }
     }

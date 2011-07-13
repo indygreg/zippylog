@@ -104,7 +104,7 @@ TEST_F(ClientTest, SynchronousTimeout)
     protocol::StoreInfoV1 si;
     // it is not reasonable to expect the server to respond in 1 microsecond
     // although, it could be possible
-    EXPECT_FALSE(c.StoreInfo(si, 1));
+    EXPECT_FALSE(c.GetStoreInfo(si, 1));
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)
@@ -117,7 +117,7 @@ TEST_F(ClientTest, StoreInfoSynchronous)
     Client c(this->GetContext(), endpoint);
 
     protocol::StoreInfoV1 si;
-    ASSERT_TRUE(c.StoreInfo(si));
+    ASSERT_TRUE(c.GetStoreInfo(si));
     protocol::StoreInfoV1 expected;
     ASSERT_TRUE(store->StoreInfo(expected));
 
@@ -134,7 +134,7 @@ TEST_F(ClientTest, GetSynchronous)
     Client c(this->GetContext(), endpoint);
 
     StreamSegment segment;
-    ASSERT_TRUE(c.Get("/A/B/2010-11-26-07", 0, segment, 5000000));
+    ASSERT_TRUE(c.GetStreamSegment("/A/B/2010-11-26-07", 0, segment, 5000000));
 
     EXPECT_EQ(segment.EnvelopesSent, segment.Envelopes.size());
     EXPECT_EQ(160, segment.EnvelopesSent);
