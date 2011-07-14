@@ -253,6 +253,8 @@ public:
 /// API is available for these.
 ///
 /// The class is not thread safe.
+///
+/// @todo Don't swallow protocol errors behind API
 class ZIPPYLOG_EXPORT Client {
     public:
         /// Create a client that connects to the specified 0MQ endpoint
@@ -491,6 +493,23 @@ class ZIPPYLOG_EXPORT Client {
         /// streams. This function is provided as a convenience API.
         bool Mirror(StoreMirrorState &state, StreamSegmentCallback *callback, void *data = NULL);
 
+        /// Runs the client continuously
+        ///
+        /// The client will run, processing received messages until the
+        /// flag pointed to by the passed parameter goes to false.
+        ///
+        /// This function won't return until the flag goes to false.
+        void Run(bool *active);
+
+        /// Runs the client in the background
+        ///
+        /// This is a non-blocking version of Run(). A new thread is started
+        /// and the client runs on that.
+        ///
+        /// Keep in mind that the class is not thread safe, so other methods
+        /// should not be called when the client is running in the background.
+        void RunAsync(bool *active);
+
     protected:
         // socket connect to server
         ::zmq::socket_t *client_sock;
@@ -501,6 +520,10 @@ class ZIPPYLOG_EXPORT Client {
         ::zmq::pollitem_t pollitem[1];
 
         uint32 subscription_renewal_offset;
+
+        ::zippylog::platform::Thread * exec_thread;
+
+        bool *run_flag;
 
         bool SendRequest(Envelope &e, OutstandingRequest &req);
 
@@ -554,6 +577,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Internal callback used for synchronous subscription requests
         static void CallbackSubscription(Client *client, protocol::response::SubscriptionAcceptAckV1 &result, void *data);
+
+        /// Thread start function for RunAsync()
+        static void * AsyncStart(void *data);
 
     private:
         // disable copy constructor and assignment operator

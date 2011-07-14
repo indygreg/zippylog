@@ -85,7 +85,9 @@ protected:
 
 Client::Client(context_t *ctx, const string &endpoint) :
     client_sock(NULL),
-    subscription_renewal_offset(5000000) // 5 seconds
+    subscription_renewal_offset(5000000), // 5 seconds
+    exec_thread(NULL),
+    run_flag(NULL)
 {
     if (!ctx) {
         throw invalid_argument("ctx parameter cannot be NULL");
@@ -104,6 +106,11 @@ Client::Client(context_t *ctx, const string &endpoint) :
 
 Client::~Client()
 {
+    if (this->exec_thread) {
+        this->exec_thread->Abort();
+        delete this->exec_thread;
+    }
+
     this->CancelAllSubscriptions();
 
     if (this->client_sock) delete this->client_sock;
@@ -977,6 +984,41 @@ bool Client::HaveOutstandingRequest(string &id)
     return iter != this->outstanding.end();
 }
 
+void Client::Run(bool *active)
+{
+    if (!active) {
+        throw invalid_argument("parameter cannot be NULL");
+    }
+
+    while (*active) {
+        this->Pump(100000);
+    }
+}
+
+void Client::RunAsync(bool *active)
+{
+    if (this->exec_thread) {
+        throw Exception("client thread already running");
+    }
+
+    this->run_flag = active;
+
+    this->exec_thread = new platform::Thread(Client::AsyncStart, this);
+}
+
+void * Client::AsyncStart(void *data)
+{
+    try {
+        Client *c = (Client *)data;
+        c->Run(c->run_flag);
+    }
+    catch (::std::exception e) {
+        string error = e.what();
+        return (void *)1;
+    }
+
+    return (void *)0;
+}
 
 StreamSegment::StreamSegment()
 {
