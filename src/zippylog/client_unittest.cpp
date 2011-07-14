@@ -238,6 +238,33 @@ public:
         EXPECT_TRUE(sent->SerializeToString(&serialized_actual));
 
         EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
+
+        this->messages.clear();
+    }
+
+    /// Helper to respond to a subscription request message
+    void RespondToSubscriptionRequest(const string &test)
+    {
+        vector<string> identities;
+        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
+
+        message_t msg;
+        msg.copy(this->messages[0]);
+
+        Envelope request(msg, 1);
+
+        Envelope response;
+        for (int i = 0; i < request.TagSize(); i++) {
+            response.AddTag(request.GetTag(i));
+        }
+
+        protocol::response::SubscriptionAcceptAckV1 ack;
+        ack.set_id("foobar");
+        ack.set_ttl(10000);
+
+        ack.add_to_envelope(response);
+
+        zeromq::SendEnvelope(*this->socket, identities, response, true, 0);
     }
 
 protected:
