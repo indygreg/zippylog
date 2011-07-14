@@ -12,7 +12,14 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-/// This file contains unit tests for
+/// This file contains unit tests for the client classes.
+///
+/// It is preferred to test the client using mock servers whenever possible.
+/// This way, we validate the client-specific code and not the server code by
+/// extension. This does mean we do a little extra work writing tests when
+/// there are changes to the protocol. But, we have extra checks to verify
+/// both the client and server each work as expected and we have the ability
+/// to pin blame on the client or server.
 
 #include <zippylog/client.hpp>
 #include <zippylog/device/server.hpp>
@@ -263,10 +270,10 @@ TEST_F(ClientSendingTest, Ping)
 
     protocol::request::PingV1 m;
 
-    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     EXPECT_FALSE(this->client->Ping(10000));
-    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetFeatures)
@@ -275,11 +282,11 @@ TEST_F(ClientSendingTest, GetFeatures)
 
     protocol::request::GetFeaturesV1 m;
 
-    this->ExpectRequestMessage(protocol::request::GetFeaturesV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::response::FeatureSpecificationV1 f;
     EXPECT_FALSE(this->client->GetFeatures(f, 10000));
-    this->ExpectRequestMessage(protocol::request::GetFeaturesV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStoreInfo)
@@ -288,11 +295,11 @@ TEST_F(ClientSendingTest, GetStoreInfo)
 
     protocol::request::GetStoreInfoV1 m;
 
-    this->ExpectRequestMessage(protocol::request::GetStoreInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StoreInfoV1 si;
     EXPECT_FALSE(this->client->GetStoreInfo(si, 10000));
-    this->ExpectRequestMessage(protocol::request::GetStoreInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetBucketInfo)
@@ -304,11 +311,11 @@ TEST_F(ClientSendingTest, GetBucketInfo)
     protocol::request::GetBucketInfoV1 m;
     m.set_path(path);
 
-    this->ExpectRequestMessage(protocol::request::GetBucketInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::BucketInfoV1 bi;
     EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10000));
-    this->ExpectRequestMessage(protocol::request::GetBucketInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStreamSetInfo)
@@ -320,11 +327,11 @@ TEST_F(ClientSendingTest, GetStreamSetInfo)
     protocol::request::GetStreamSetInfoV1 m;
     m.set_path(path);
 
-    this->ExpectRequestMessage(protocol::request::GetStreamSetInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StreamSetInfoV1 si;
     EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10000));
-    this->ExpectRequestMessage(protocol::request::GetStreamSetInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStreamInfo)
@@ -340,7 +347,7 @@ TEST_F(ClientSendingTest, GetStreamInfo)
 
     protocol::StreamInfoV1 si;
     EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10000));
-    this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStreamSegmentSimple)
@@ -353,7 +360,7 @@ TEST_F(ClientSendingTest, GetStreamSegmentSimple)
     m.set_path(path);
     m.set_start_offset(0);
 
-    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStreamSegmentEndOffset)
@@ -367,12 +374,31 @@ TEST_F(ClientSendingTest, GetStreamSegmentEndOffset)
     m.set_start_offset(0);
     m.set_max_response_bytes(500);
 
-    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     this->client->GetStreamSegment(path, 100, (uint64)500, ClientSendingTest::StreamSegmentCallback);
     m.set_start_offset(100);
     m.set_max_response_bytes(400);
-    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, SubscribeStoreChanges)
+{
+    const string path = "/foo";
+
+    protocol::request::SubscribeStoreChangesV1 m;
+
+    SubscriptionCallbackInfo cbi;
+    SubscriptionRequestResult result;
+
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(cbi, result, 10000));
+
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
+
+    m.add_path(path);
+
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(path, cbi, result, 10000));
+    this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, SynchronousTimeout)

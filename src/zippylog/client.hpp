@@ -46,21 +46,6 @@ class Subscription;
 /// @internal
 class OutstandingRequest;
 
-/// Function types for callbacks when the client has received a subscription
-/// response
-///
-/// The first string parameter is the subscription id. The final parameter is
-/// always a void *. Callers can associate the subscription id with their own
-/// metadata independent of the client API. Their callbacks can fetch this data
-/// at callback time.
-typedef void (StoreChangeStreamAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
-typedef void (StoreChangeStreamDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
-typedef void (StoreChangeStreamAppendedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
-typedef void (StoreChangeBucketAddedCallback)(Client *, ::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
-typedef void (StoreChangeBucketDeletedCallback)(Client *, ::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
-typedef void (StoreChangeStreamSetAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
-typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
-
 /// Callback executed when a ping response is received
 typedef void (PingCallback)(Client *, void *);
 
@@ -82,10 +67,28 @@ typedef void (StreamSetInfoCallback)(Client *, protocol::StreamSetInfoV1 &, void
 /// Callback for stream info responses
 typedef void (StreamInfoCallback)(Client *, protocol::StreamInfoV1 &, void *);
 
+/// Callback for subscription acknowledgement
+typedef void (SubscriptionRequestCallback)(Client *, protocol::response::SubscriptionAcceptAckV1 &, void *);
+
 /// Executed when a stream segment is received
 ///
 /// Invoked with the path, start offset, and the data in that segment
 typedef void (StreamSegmentCallback)(Client *, const ::std::string &, uint64, StreamSegment &, void *);
+
+/// Function types for callbacks when the client has received a subscription
+/// response
+///
+/// The first string parameter is the subscription id. The final parameter is
+/// always a void *. Callers can associate the subscription id with their own
+/// metadata independent of the client API. Their callbacks can fetch this data
+/// at callback time.
+typedef void (StoreChangeStreamAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
+typedef void (StoreChangeStreamDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
+typedef void (StoreChangeStreamAppendedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
+typedef void (StoreChangeBucketAddedCallback)(Client *, ::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
+typedef void (StoreChangeBucketDeletedCallback)(Client *, ::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
+typedef void (StoreChangeStreamSetAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
+typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
 
 /// Executed when an envelope is received
 ///
@@ -150,6 +153,7 @@ protected:
 class ZIPPYLOG_EXPORT SubscriptionCallbackInfo {
 public:
     SubscriptionCallbackInfo() :
+        data(NULL),
         StreamAdded(NULL),
         StreamDeleted(NULL),
         StreamAppended(NULL),
@@ -157,8 +161,11 @@ public:
         BucketDeleted(NULL),
         StreamSetAdded(NULL),
         StreamSetDeleted(NULL),
-        Envelope(NULL)
+        EnvelopeReceived(NULL)
     { }
+
+    /// Arbitrary data to be passed to callbacks
+    void * data;
 
     /// Callback for when a stream is added
     StoreChangeStreamAddedCallback *      StreamAdded;
@@ -182,7 +189,39 @@ public:
     StoreChangeStreamSetDeletedCallback * StreamSetDeleted;
 
     /// Callback for when an envelope is received
-    EnvelopeCallback *                    Envelope;
+    EnvelopeCallback *                    EnvelopeReceived;
+};
+
+/// Represents the result of a subscription request
+class ZIPPYLOG_EXPORT SubscriptionRequestResult {
+public:
+    SubscriptionRequestResult() :
+        result(UNKNOWN),
+        ttl(0)
+    { }
+
+    /// Result of the subscription request
+    enum Result {
+        ACCEPTED = 1,
+        REJECTED = 2,
+        UNKNOWN  = 3,
+    } result;
+
+    /// Subscription id
+    ::std::string id;
+
+    /// Time-to-live of subscription
+    uint32 ttl;
+
+    /// Error code
+    ///
+    /// Only populated if the subscription was rejected
+    ::zippylog::protocol::response::ErrorCode error_code;
+
+    /// Error message
+    ///
+    /// Only populated if the subscription was rejected
+    ::std::string error_message;
 };
 
 /// Client that talks to a server
@@ -345,21 +384,56 @@ class ZIPPYLOG_EXPORT Client {
         /// as the creation and deletion of buckets, stream sets, and streams
         /// as well as when a stream is modified.
         ///
+        /// The first argument is the set of paths in the store to subscribe
+        /// to. If no paths are defined, the entire store is subscribed to.
+        /// (See also the version of this function that doesn't take a path
+        /// parameter.). Paths can be to streams, stream sets, buckets, or
+        /// the entire store ("/").
+        ///
+        /// The function receives a class instance that configures the
+        /// callbacks executed when an event of interest is received.
+        ///
+        /// The function blocks until the server responds to the subscription
+        /// request. At that time, the result of the subscription will be
+        /// populated in the SubscriptionRequestResult parameter.
+        ///
+        /// @param paths Paths to subscribe to
+        /// @param callbacks Configures which callbacks are in effect
+        /// @param result Holds the result of the subscription request
+        /// @param timeout_microseconds How long to wait for server to respond
+        /// @return Whether a response from the server was received in time
+        bool SubscribeStoreChanges(const ::std::vector< ::std::string > &paths,
+                                   SubscriptionCallbackInfo &callbacks,
+                                   SubscriptionRequestResult &result,
+                                   int32 timeout_microseconds = -1);
+
+        /// Synchronously subscribe to store changes
+        ///
+        ///
         /// The first argument is the path in the store to subscribe to. To
         /// subscribe to all paths, set this path to "/".
         ///
         /// The subscription will receive notifications for numerous store
         /// change events. However, unless your SubscriptionCallbackInfo defines
         /// functions for all of them, some events will be dropped by the client.
+        ///
+        /// @param path Store path to subscribe to
+        /// @param callbacks Defines callbacks to handle subscribed events
+        /// @param result Stores the result of the subscription
+        /// @param data Arbitrary data to be passed to callback functions
         bool SubscribeStoreChanges(const ::std::string &path,
-                                   SubscriptionCallbackInfo &callback,
-                                   void *data = NULL);
+                                   SubscriptionCallbackInfo &callbacks,
+                                   SubscriptionRequestResult &result,
+                                   int32 timeout_microseconds = -1);
 
-        /// Subscribes to store changes for the entire store
+        /// Synchronously subscribes to store changes for the entire store
         ///
         /// @param callback Callback configuration
+        /// @param result Stores result of the subscription
         /// @param data Data to be passed to callback functions
-        bool SubscribeStoreChanges(SubscriptionCallbackInfo &callback, void *data = NULL);
+        bool SubscribeStoreChanges(SubscriptionCallbackInfo &callbacks,
+                                   SubscriptionRequestResult &result,
+                                   int32 timeout_microseconds);
 
         /// Subscribes to new envelopes written on the server
         bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
@@ -477,6 +551,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Internal callback used for synchronous stream segment requests
         static void CallbackStreamSegment(Client *client, const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
+
+        /// Internal callback used for synchronous subscription requests
+        static void CallbackSubscription(Client *client, protocol::response::SubscriptionAcceptAckV1 &result, void *data);
 
     private:
         // disable copy constructor and assignment operator

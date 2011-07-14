@@ -44,6 +44,7 @@ public:
         cb_stream_set_info(NULL),
         cb_stream_info(NULL),
         cb_stream_segment(NULL),
+        cb_subscription(NULL),
         data(NULL)
     { }
 
@@ -52,13 +53,14 @@ public:
 protected:
     ::std::string id;
 
-    PingCallback *          cb_ping;
-    GetFeaturesCallback *   cb_features;
-    StoreInfoCallback *     cb_store_info;
-    BucketInfoCallback *    cb_bucket_info;
-    StreamSetInfoCallback * cb_stream_set_info;
-    StreamInfoCallback *    cb_stream_info;
-    StreamSegmentCallback * cb_stream_segment;
+    PingCallback *                cb_ping;
+    GetFeaturesCallback *         cb_features;
+    StoreInfoCallback *           cb_store_info;
+    BucketInfoCallback *          cb_bucket_info;
+    StreamSetInfoCallback *       cb_stream_set_info;
+    StreamInfoCallback *          cb_stream_info;
+    StreamSegmentCallback *       cb_stream_segment;
+    SubscriptionRequestCallback * cb_subscription;
 
     SubscriptionCallbackInfo callbacks;
 
@@ -493,37 +495,53 @@ bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, v
     return true;
 }
 
-bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &cb, void *data)
+bool Client::SubscribeStoreChanges(const vector<string> &paths, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
 {
-    // @todo validate path
+    protocol::request::SubscribeStoreChangesV1 m;
 
-    protocol::request::SubscribeStoreChangesV1 req;
-    req.add_path(path);
+    for (size_t i = 0; i < paths.size(); i++) {
+        if (!Store::ValidatePath(paths[i])) {
+            throw invalid_argument("path is not valid");
+        }
 
-    Envelope e = Envelope();
-    req.add_to_envelope(&e);
+        m.add_path(paths[i]);
+    }
 
-    OutstandingRequest info = OutstandingRequest();
-    info.data = data;
-    info.callbacks = cb;
+    Envelope e;
+    m.add_to_envelope(e);
 
-    return this->SendRequest(e, info);
+    OutstandingRequest r;
+    r.callbacks = callbacks;
+    r.data = &result;
+    r.cb_subscription = CallbackSubscription;
+
+    return this->SendAndProcessSynchronousRequest(e, r, timeout);
+}
+
+bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
+{
+    vector<string> paths;
+    paths.push_back(path);
+    return this->SubscribeStoreChanges(paths, callbacks, result, timeout);
+}
+
+bool Client::SubscribeStoreChanges(SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
+{
+    vector<string> paths;
+    return this->SubscribeStoreChanges(paths, callbacks, result, timeout);
+}
+
+void Client::CallbackSubscription(Client *, protocol::response::SubscriptionAcceptAckV1 &ack, void *data)
+{
+    SubscriptionRequestResult *result = (SubscriptionRequestResult *)data;
+    result->id = ack.id();
+    result->ttl = ack.ttl();
+    result->result = SubscriptionRequestResult::ACCEPTED;
 }
 
 bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb, void *data)
 {
-    // @todo validate path
-
-    protocol::request::SubscribeEnvelopesV1 req;
-    req.add_path(path);
-    Envelope e = Envelope();
-    req.add_to_envelope(&e);
-
-    OutstandingRequest info = OutstandingRequest();
-    info.data = data;
-    info.callbacks = cb;
-
-    return this->SendRequest(e, info);
+    return this->SubscribeEnvelopes(path, "", cb, data);
 }
 
 bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallbackInfo &cb, void *data)
@@ -532,7 +550,11 @@ bool Client::SubscribeEnvelopes(const string &path, const string &lua, Subscript
 
     protocol::request::SubscribeEnvelopesV1 req;
     req.add_path(path);
-    req.set_lua_code(lua);
+
+    if (!lua.empty()) {
+        req.set_lua_code(lua);
+    }
+
     Envelope e = Envelope();
     req.add_to_envelope(&e);
 
@@ -590,7 +612,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
 
     // @todo this can be done with fewer system calls
     do {
-        // we wait up to 25 in each iteration
+        // we wait up to 25ms in each iteration
         this->Pump(25000);
 
         // this must mean we processed it
@@ -774,13 +796,13 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStartV1 &start,
         }
     }
 
-    if (!cb.Envelope) return true;
+    if (!cb.EnvelopeReceived) return true;
 
     // for now, assume additional messages envelopes that were streamed
     for (size_t i = 0; i < messages.size(); i++) {
         Envelope env = Envelope(messages[i]->data(), messages[i]->size());
 
-        cb.Envelope(this, start.id(), env, iter->second.data);
+        cb.EnvelopeReceived(this, start.id(), env, iter->second.data);
     }
 
     return true;
@@ -916,6 +938,9 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             sub.expiration_timer.Start(ttl - this->subscription_renewal_offset);
 
             this->subscriptions[id] = sub;
+
+            assert(req.cb_subscription);
+            req.cb_subscription(this, *ack, req.data);
 
             return true;
         }
