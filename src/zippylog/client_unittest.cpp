@@ -305,8 +305,17 @@ TEST_F(ClientSendingTest, GetStreamInfo)
 
 TEST_F(ClientSendingTest, SynchronousTimeout)
 {
+    platform::Time start, end;
+    EXPECT_TRUE(platform::TimeNow(start));
+
+    int32 timeout = 50000;
+
     // it doesn't matter what the timeout is since we have nothing responding
-    EXPECT_FALSE(this->client->Ping(100)) << "synchronous requests time out";
+    EXPECT_FALSE(this->client->Ping(timeout)) << "synchronous requests time out";
+
+    EXPECT_TRUE(platform::TimeNow(end));
+
+    EXPECT_NEAR(end.epoch_micro, start.epoch_micro, timeout * 2);
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)
