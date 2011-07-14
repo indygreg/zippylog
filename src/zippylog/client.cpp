@@ -34,6 +34,37 @@ using ::zmq::socket_t;
 namespace zippylog {
 namespace client {
 
+class OutstandingRequest {
+public:
+    OutstandingRequest() :
+        cb_ping(NULL),
+        cb_features(NULL),
+        cb_store_info(NULL),
+        cb_bucket_info(NULL),
+        cb_stream_set_info(NULL),
+        cb_stream_info(NULL),
+        cb_stream_segment(NULL),
+        data(NULL)
+    { }
+
+    friend class Client;
+
+protected:
+    ::std::string id;
+
+    PingCallback *          cb_ping;
+    GetFeaturesCallback *   cb_features;
+    StoreInfoCallback *     cb_store_info;
+    BucketInfoCallback *    cb_bucket_info;
+    StreamSetInfoCallback * cb_stream_set_info;
+    StreamInfoCallback *    cb_stream_info;
+    StreamSegmentCallback * cb_stream_segment;
+
+    SubscriptionCallbackInfo callbacks;
+
+    void *data;
+};
+
 Client::Client(context_t *ctx, const string &endpoint) :
     client_sock(NULL),
     subscription_renewal_offset(5000000) // 5 seconds

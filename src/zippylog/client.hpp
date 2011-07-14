@@ -142,18 +142,31 @@ public:
         BucketDeleted(NULL),
         StreamSetAdded(NULL),
         StreamSetDeleted(NULL),
-        StoreInfo(NULL),
         Envelope(NULL)
     { }
 
+    /// Callback for when a stream is added
     StoreChangeStreamAddedCallback *      StreamAdded;
+
+    /// Callback for when a stream is deleted
     StoreChangeStreamDeletedCallback *    StreamDeleted;
+
+    /// Callback for when a stream is appended
     StoreChangeStreamAppendedCallback *   StreamAppended;
+
+    /// Callback for when a bucket is added
     StoreChangeBucketAddedCallback *      BucketAdded;
+
+    /// Callback for when a bucket is deleted
     StoreChangeBucketDeletedCallback *    BucketDeleted;
+
+    /// Callback for when a stream set is added
     StoreChangeStreamSetAddedCallback *   StreamSetAdded;
+
+    /// Callback for when a stream set is deleted
     StoreChangeStreamSetDeletedCallback * StreamSetDeleted;
-    StoreInfoCallback *                   StoreInfo;
+
+    /// Callback for when an envelope is received
     EnvelopeCallback *                    Envelope;
 };
 
@@ -178,36 +191,7 @@ protected:
 /// Keeps track of requests sent whose replies have not yet been seen
 ///
 /// Used internally by the client.
-class OutstandingRequest {
-public:
-    OutstandingRequest() :
-        cb_ping(NULL),
-        cb_features(NULL),
-        cb_store_info(NULL),
-        cb_bucket_info(NULL),
-        cb_stream_set_info(NULL),
-        cb_stream_info(NULL),
-        cb_stream_segment(NULL),
-        data(NULL)
-    { }
-
-    friend class Client;
-
-protected:
-    ::std::string id;
-
-    PingCallback *          cb_ping;
-    GetFeaturesCallback *   cb_features;
-    StoreInfoCallback *     cb_store_info;
-    BucketInfoCallback *    cb_bucket_info;
-    StreamSetInfoCallback * cb_stream_set_info;
-    StreamInfoCallback *    cb_stream_info;
-    StreamSegmentCallback * cb_stream_segment;
-
-    SubscriptionCallbackInfo callbacks;
-
-    void *data;
-};
+class OutstandingRequest;
 
 /// Client that talks to a server
 ///
@@ -363,10 +347,11 @@ class ZIPPYLOG_EXPORT Client {
                        void *data = NULL,
                        uint64 end_offset = 0);
 
-        /// Subscribe to store change events
+        /// Synchronously subscribe to store changes
         ///
-        /// This subscribes to events that describe the store, not envelopes in
-        /// streams. For that, use one of the other Subscribe* functions.
+        /// This subscribes to events that describe changes to the store, such
+        /// as the creation and deletion of buckets, stream sets, and streams
+        /// as well as when a stream is modified.
         ///
         /// The first argument is the path in the store to subscribe to. To
         /// subscribe to all paths, set this path to "/".
@@ -374,7 +359,15 @@ class ZIPPYLOG_EXPORT Client {
         /// The subscription will receive notifications for numerous store
         /// change events. However, unless your SubscriptionCallbackInfo defines
         /// functions for all of them, some events will be dropped by the client.
-        bool SubscribeStoreChanges(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
+        bool SubscribeStoreChanges(const ::std::string &path,
+                                   SubscriptionCallbackInfo &callback,
+                                   void *data = NULL);
+
+        /// Subscribes to store changes for the entire store
+        ///
+        /// @param callback Callback configuration
+        /// @param data Data to be passed to callback functions
+        bool SubscribeStoreChanges(SubscriptionCallbackInfo &callback, void *data = NULL);
 
         /// Subscribes to new envelopes written on the server
         bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
@@ -382,7 +375,9 @@ class ZIPPYLOG_EXPORT Client {
         /// Subscribes to new envelopes w/ Lua code specifying additional features
         bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
-        /// Cancels the subscription with specified ID
+        /// Cancels the subscription with the specified ID
+        ///
+        /// @param id Subscription id to cancel
         bool CancelSubscription(const ::std::string &id);
 
         /// Cancels all subscriptions registered with the client
