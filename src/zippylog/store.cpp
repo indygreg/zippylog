@@ -176,6 +176,30 @@ bool Store::ParseStreamSetPath(const string &path, string &bucket, string &set)
     return bucket.length() > 0 && set.length() > 0;
 }
 
+bool Store::IsBucketPath(const string &path)
+{
+    string bucket, set, stream;
+    if (!Store::ParsePath(path, bucket, set, stream)) return false;
+
+    return !bucket.empty() && set.empty() && stream.empty();
+}
+
+bool Store::IsStreamSetPath(const string &path)
+{
+    string bucket, set, stream;
+    if (!Store::ParsePath(path, bucket, set, stream)) return false;
+
+    return !bucket.empty() && !set.empty() && stream.empty();
+}
+
+bool Store::IsStreamPath(const string &path)
+{
+    string bucket, set, stream;
+    if (!Store::ParsePath(path, bucket, set, stream)) return false;
+
+    return !bucket.empty() && !set.empty() && !stream.empty();
+}
+
 string Store::BucketPath(const string &bucket)
 {
     string s = "/" + bucket;

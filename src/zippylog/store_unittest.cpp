@@ -102,6 +102,27 @@ TEST(StorePathTest, PathParsing) {
     EXPECT_STREQ("streamA", s.c_str());
 }
 
+TEST(StorePathTest, PathTesting)
+{
+    EXPECT_TRUE(Store::IsBucketPath("/foo"));
+    EXPECT_FALSE(Store::IsBucketPath("/"));
+    EXPECT_FALSE(Store::IsBucketPath("/foo/bar"));
+    EXPECT_FALSE(Store::IsBucketPath("/foo/bar/stream"));
+    EXPECT_FALSE(Store::IsBucketPath("asf"));
+
+    EXPECT_FALSE(Store::IsStreamSetPath("/foo"));
+    EXPECT_FALSE(Store::IsStreamSetPath("/"));
+    EXPECT_TRUE(Store::IsStreamSetPath("/foo/bar"));
+    EXPECT_FALSE(Store::IsStreamSetPath("/foo/bar/stream"));
+    EXPECT_FALSE(Store::IsStreamSetPath("asf"));
+
+    EXPECT_FALSE(Store::IsStreamPath("/foo"));
+    EXPECT_FALSE(Store::IsStreamPath("/"));
+    EXPECT_FALSE(Store::IsStreamPath("/foo/bar"));
+    EXPECT_TRUE(Store::IsStreamPath("/foo/bar/stream"));
+    EXPECT_FALSE(Store::IsStreamPath("asf"));
+}
+
 TEST(StorePathTest, StreamNaming)
 {
     EXPECT_STREQ("2010-07-27", Store::StreamNameForTime(1280210699000000, 86400).c_str());
