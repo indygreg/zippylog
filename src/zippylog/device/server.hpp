@@ -21,9 +21,9 @@
 #include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
+#include <zippylog/device/persisted_state_reactor.hpp>
 #include <zippylog/device/store_writer.hpp>
 #include <zippylog/device/store_writer_sender.hpp>
-#include <zippylog/device/streamer.hpp>
 
 #include <vector>
 #include <zmq.hpp>
@@ -129,7 +129,7 @@ public:
     ServerStartParams() :
         ctx(NULL),
         worker_threads(::zippylog::server_default_worker_threads),
-        streaming_threads(::zippylog::server_default_streaming_threads),
+        persisted_state_reactor_threads(::zippylog::server_default_persisted_state_reactor_threads),
         subscription_ttl(::zippylog::server_default_subscription_ttl),
         log_bucket(::zippylog::server_default_log_bucket),
         log_stream_set(::zippylog::server_default_log_stream_set),
@@ -152,8 +152,8 @@ public:
     /// The number of worker threads to run
     uint32 worker_threads;
 
-    /// The number of streaming threads to run
-    uint32 streaming_threads;
+    /// The number of persisted state reactor threads to run
+    uint32 persisted_state_reactor_threads;
 
     /// The default subscription expiration TTL, in milliseconds
     uint32 subscription_ttl;
@@ -284,7 +284,7 @@ class ZIPPYLOG_EXPORT Server {
 
         /// Thread start functions
         static void * StoreWatcherStart(void *data);
-        static void * StreamingStart(void *data);
+        static void * PersistedStateReactorStart(void *data);
         static void * AsyncExecStart(void *data);
         static void * RequestProcessorStart(void *data);
         static void * StoreWriterStart(void *data);
@@ -296,7 +296,7 @@ class ZIPPYLOG_EXPORT Server {
         bool CreateWorkerThread();
 
         /// Spins up a new thread to process streaming
-        bool CreateStreamingThread();
+        bool CreatePersistedStateReactorThread();
 
         /// Checks that all the threads are still kicking
         ///
@@ -313,7 +313,7 @@ class ZIPPYLOG_EXPORT Server {
         uint32 number_worker_threads;
 
         /// The number of streaming threads to run
-        uint32 number_streaming_threads;
+        uint32 number_persisted_reactor_threads;
 
         /// The default subscription expiration TTL, in milliseconds
         uint32 subscription_ttl;
@@ -438,15 +438,15 @@ class ZIPPYLOG_EXPORT Server {
         /// Threads running workers/request processors
         ::std::vector< ::zippylog::platform::Thread * > worker_threads;
 
-        /// Threads running streamers
-        ::std::vector< ::zippylog::platform::Thread * > streaming_threads;
+        /// Threads running persisted state reactors
+        ::std::vector< ::zippylog::platform::Thread * > persisted_state_reactor_threads;
 
         /// used to construct child objects
         ///
         /// The addresses of these variables are passed when starting the
         /// threads for these objects.
         ::zippylog::device::server::WorkerStartParams request_processor_params;
-        ::zippylog::device::StreamerStartParams streamer_params;
+        ::zippylog::device::PersistedStateReactorStartParams persisted_state_reactor_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
         ::zippylog::device::StoreWriterStartParams store_writer_params;
 

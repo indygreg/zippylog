@@ -84,8 +84,8 @@ ZIPPYLOG_EXPORT void shutdown_library();
 
 static const uint32 message_namespace = 1;
 
-/// Default number of streaming threads for the server device
-static const uint32 server_default_streaming_threads = 1;
+/// Default number of persisted state reactor threads for the server device
+static const uint32 server_default_persisted_state_reactor_threads = 1;
 
 /// Default number of worker threads for the server device
 static const uint32 server_default_worker_threads = 2;
@@ -107,6 +107,10 @@ static const uint32 server_default_lua_allow = false;
 
 /// Default maximum Lua allocation limit for streaming states, in bytes
 static const uint32 server_default_lua_streaming_max_memory = 524288;
+
+static const uint32 lua_default_subscription_memory_ceiling = 524288;
+
+static const uint32 lua_default_plugin_memory_ceiling = 524288;
 
 } // namespace
 

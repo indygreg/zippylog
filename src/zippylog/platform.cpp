@@ -735,6 +735,16 @@ bool CreateUUID(UUID &u)
 #endif
 }
 
+string CreateUUID()
+{
+    UUID u;
+    if (!CreateUUID(u)) {
+        throw Exception("could not create UUID");
+    }
+
+    return string((const char *)&u, sizeof(u));
+}
+
 bool FormatUUID(UUID &u, ::std::string &s)
 {
     // formatted UUIDs are 36 characters and we have a NULL

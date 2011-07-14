@@ -12,59 +12,27 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/device/streamer.hpp>
-#include <zippylog/device/streamer.pb.h>
-#include <zippylog/zeromq.hpp>
+#include <zippylog/persisted_state_manager.hpp>
 
-#define LOG_MESSAGE(msgvar, socketvar) { \
-    msgvar.set_id(this->id); \
-    Envelope logenvelope = Envelope(); \
-    msgvar.add_to_envelope(&logenvelope); \
-    zeromq::send_envelope(socketvar, logenvelope); \
-}
+#include <vector>
 
 using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
-using ::zippylog::lua::LuaState;
-using ::zippylog::protocol::response::Error;
-using ::zmq::message_t;
-using ::zmq::socket_t;
-
-using namespace ::zippylog::device::streamer;
 
 namespace zippylog {
-namespace device {
 
-Streamer::Streamer(StreamerStartParams params) :
-    store(NULL),
-    zctx(params.ctx),
-    changes_sock(NULL),
-    client_sock(NULL),
-    subscriptions_sock(NULL),
-    subscription_updates_sock(NULL),
-    logging_sock(NULL)
+PersistedStateManager::PersistedStateManager(const PersistedStateManagerStartParams &params) :
+    store_uri(params.store_uri),
+    subscription_ttl(params.subscription_ttl),
+    subscription_lua_allow(params.subscription_lua_allow),
+    subscription_lua_memory_ceiling(params.subscription_lua_memory_ceiling),
+    store(NULL)
 {
-    this->store_changes_endpoint = params.store_changes_endpoint;
-    this->client_endpoint = params.client_endpoint;
-    this->subscriptions_endpoint = params.subscriptions_endpoint;
-    this->subscription_updates_endpoint = params.subscription_updates_endpoint;
-    this->logging_endpoint = params.logging_endpoint;
-    this->subscription_ttl = params.subscription_ttl;
-    this->lua_allow = params.lua_allow;
-    this->lua_max_memory = params.lua_max_memory;
+    if (this->store_uri.empty()) throw invalid_argument("store URI must be defined");
 
-    if (!params.active) throw invalid_argument("active parameter cannot be NULL");
-
-    this->active = params.active;
-
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-
-    this->id = string((const char *)&uuid, sizeof(uuid));
-
-    this->store = Store::CreateStore(params.store_path);
+    this->store = Store::CreateStore(this->store_uri);
 
     // populate stream offsets with current values
     vector<string> streams;
@@ -78,7 +46,7 @@ Streamer::Streamer(StreamerStartParams params) :
     }
 }
 
-Streamer::~Streamer()
+PersistedStateManager::~PersistedStateManager()
 {
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
@@ -86,121 +54,16 @@ Streamer::~Streamer()
     }
     this->subscriptions.clear();
 
-    if (this->changes_sock) delete this->changes_sock;
-    if (this->client_sock) delete this->client_sock;
-    if (this->subscriptions_sock) delete this->subscriptions_sock;
-    if (this->subscription_updates_sock) delete this->subscription_updates_sock;
-    if (this->logging_sock) delete this->logging_sock;
     if (this->store) delete this->store;
 }
 
-void Streamer::Run()
+int32 PersistedStateManager::RemoveExpiredSubscriptions()
 {
-    this->logging_sock = new socket_t(*this->zctx, ZMQ_PUSH);
-    this->logging_sock->connect(this->logging_endpoint.c_str());
-
-    {
-        Create log;
-        LOG_MESSAGE(log, this->logging_sock);
-    }
-
-    // subscribe to store change notifications
-    this->changes_sock = new socket_t(*this->zctx, ZMQ_SUB);
-    this->changes_sock->setsockopt(ZMQ_SUBSCRIBE, NULL, 0);
-    this->changes_sock->connect(this->store_changes_endpoint.c_str());
-
-    // establish sending socket
-    this->client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
-    this->client_sock->connect(this->client_endpoint.c_str());
-
-    // receive client subscriptions
-    this->subscriptions_sock = new socket_t(*this->zctx, ZMQ_PULL);
-    this->subscriptions_sock->connect(this->subscriptions_endpoint.c_str());
-
-    // receive client updates
-    this->subscription_updates_sock = new socket_t(*this->zctx, ZMQ_SUB);
-    this->subscription_updates_sock->connect(this->subscription_updates_endpoint.c_str());
-    this->subscription_updates_sock->setsockopt(ZMQ_SUBSCRIBE, "", 0);
-
-    zmq::pollitem_t pollitems[3];
-    pollitems[0].events = ZMQ_POLLIN;
-    pollitems[0].socket = *this->changes_sock;
-    pollitems[0].fd = 0;
-    pollitems[0].revents = 0;
-
-    pollitems[1].events = ZMQ_POLLIN;
-    pollitems[1].socket = *this->subscriptions_sock;
-    pollitems[1].fd = 0;
-    pollitems[1].revents = 0;
-
-    pollitems[2].events = ZMQ_POLLIN;
-    pollitems[2].socket = *this->subscription_updates_sock;
-    pollitems[2].fd = 0;
-    pollitems[2].revents = 0;
-
-    while (*this->active) {
-        zmq::message_t msg;
-
-        // wait for a message to process
-        int result = zmq::poll(&pollitems[0], 3, 100000);
-
-        // if we don't have data, perform house keeping and try again
-        if (!result) {
-            this->RemoveExpiredSubscriptions();
-            continue;
-        }
-
-        // process subscription updates first
-        if (pollitems[2].revents & ZMQ_POLLIN) {
-            if (!this->subscription_updates_sock->recv(&msg, 0)) {
-                throw Exception("error receiving 0MQ messages");
-            }
-
-            Envelope e = Envelope(msg.data(), msg.size());
-            this->ProcessSubscriptionUpdate(e);
-        }
-
-        this->RemoveExpiredSubscriptions();
-
-        // process new subscriptions
-        if (pollitems[1].revents & ZMQ_POLLIN) {
-
-            if (!this->subscriptions_sock->recv(&msg, 0)) {
-                throw Exception("error receiving 0MQ message on subscriptions sock");
-            }
-
-            if (msg.size() != sizeof(SubscriptionInfo *)) {
-                throw Exception("SubscriptionInfo message not a pointer!");
-            }
-
-            SubscriptionInfo **subscription = (SubscriptionInfo **)msg.data();
-
-            this->subscriptions[(*subscription)->id] = *subscription;
-        }
-
-        // process store changes and send to subscribers
-        if (pollitems[0].revents & ZMQ_POLLIN) {
-            // @todo error checking
-            this->changes_sock->recv(&msg, 0);
-
-            this->ProcessStoreChangeMessage(msg);
-        }
-    }
-
-    Destroy log;
-    LOG_MESSAGE(log, this->logging_sock);
-}
-
-int Streamer::RemoveExpiredSubscriptions()
-{
-    int removed = 0;
+    int32 removed = 0;
 
     map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.begin();
     for (; iter != this->subscriptions.end(); iter++) {
         if (iter->second->expiration_timer.Signaled()) {
-            SubscriptionExpired log;
-            log.set_subscription(iter->first);
-            LOG_MESSAGE(log, this->logging_sock);
             this->subscriptions.erase(iter->first);
             removed++;
         }
@@ -209,6 +72,77 @@ int Streamer::RemoveExpiredSubscriptions()
     return removed;
 }
 
+bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path)
+{
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second->type != i->second->STORE_CHANGE) continue;
+
+        vector<string>::iterator prefix = i->second->paths.begin();
+        for (; prefix != i->second->paths.end(); prefix++) {
+            if (prefix->length() > path.length()) continue;
+            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool PersistedStateManager::HaveStoreChangeSubscriptions()
+{
+    return this->HaveStoreChangeSubscriptions("/");
+}
+
+bool PersistedStateManager::HaveEnvelopeSubscription(const string &path)
+{
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second->type != i->second->ENVELOPE) continue;
+
+        vector<string>::iterator prefix = i->second->paths.begin();
+        for (; prefix != i->second->paths.end(); prefix++) {
+            if (prefix->length() > path.length()) continue;
+            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool PersistedStateManager::HasSubscription(const string &id)
+{
+    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
+
+    return iter != this->subscriptions.end();
+}
+
+bool PersistedStateManager::RenewSubscription(const string &id)
+{
+    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
+
+    if (iter == this->subscriptions.end()) {
+        return false;
+    }
+
+    return iter->second->expiration_timer.Start();
+}
+
+void PersistedStateManager::RegisterSubscription(zippylog::SubscriptionInfo *subscription)
+{
+    if (!subscription) throw invalid_argument("subscription must be defined");
+
+    if (this->HasSubscription(subscription->id)) {
+        throw Exception("subscription with that ID is already registered");
+    }
+
+    this->subscriptions[subscription->id] = subscription;
+}
+
+/*
 bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
 {
     if (e.MessageCount() != 1) return false;
@@ -464,63 +398,7 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
     }
 }
 
-bool Streamer::HaveEnvelopeSubscription(const string &path)
-{
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
-    for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->ENVELOPE) continue;
+*/
 
-        vector<string>::iterator prefix = i->second->paths.begin();
-        for (; prefix != i->second->paths.end(); prefix++) {
-            if (prefix->length() > path.length()) continue;
-            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
 
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool Streamer::HaveStoreChangeSubscriptions()
-{
-    return this->HaveStoreChangeSubscriptions("/");
-}
-
-bool Streamer::HaveStoreChangeSubscriptions(const string &path)
-{
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
-    for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->STORE_CHANGE) continue;
-
-        vector<string>::iterator prefix = i->second->paths.begin();
-        for (; prefix != i->second->paths.end(); prefix++) {
-            if (prefix->length() > path.length()) continue;
-            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
-
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool Streamer::HasSubscription(const string &id)
-{
-    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
-
-    return iter != this->subscriptions.end();
-}
-
-bool Streamer::RenewSubscription(const string &id)
-{
-    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
-
-    if (iter == this->subscriptions.end()) {
-        return false;
-    }
-
-    return iter->second->expiration_timer.Start();
-}
-
-}} // namespaces
+} // namespace

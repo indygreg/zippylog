@@ -76,13 +76,12 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     src/zippylog/client.cpp
+	src/zippylog/device/persisted_state_reactor.cpp
     src/zippylog/device/server.cpp
     src/zippylog/device/server_watcher.cpp
     src/zippylog/device/server_worker.cpp
     src/zippylog/device/store_writer.cpp
     src/zippylog/device/store_writer_sender.cpp
-    src/zippylog/device/streamer.cpp
-    src/zippylog/device/streamer.pb.cc
     src/zippylog/device/string_loader.cpp
     src/zippylog/envelope.cpp
     src/zippylog/lua.cpp
@@ -90,6 +89,7 @@ set(libzippylog_sources
     src/zippylog/message.pb-lua.cc
     src/zippylog/message_registrar.cpp
     src/zippylog/messages.cpp
+	src/zippylog/persisted_state_manager.cpp
     src/zippylog/platform.cpp
     src/zippylog/protocol.pb.cc
     src/zippylog/protocol.pb-lua.cc

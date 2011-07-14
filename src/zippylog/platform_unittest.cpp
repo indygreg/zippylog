@@ -105,6 +105,9 @@ TEST(UUIDTest, CreateUUID)
         }
     }
     ASSERT_TRUE(have_data);
+
+    string s = CreateUUID();
+    EXPECT_EQ(16, s.length());
 }
 
 TEST(UUIDTest, FormatUUID)
