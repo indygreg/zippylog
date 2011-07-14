@@ -239,6 +239,18 @@ TEST_F(ClientTest, StartParamValidation)
     ASSERT_TRUE(true);
 }
 
+TEST_F(ClientSendingTest, GetBucketInfoParameterValidation)
+{
+    EXPECT_THROW(this->client->GetBucketInfo("", NULL), invalid_argument);
+    EXPECT_THROW(this->client->GetBucketInfo("/foo", NULL), invalid_argument);
+    EXPECT_THROW(this->client->GetBucketInfo("/foo/bar", ClientSendingTest::BucketInfoCallback), invalid_argument);
+
+    protocol::BucketInfoV1 m;
+
+    EXPECT_THROW(this->client->GetBucketInfo("", m), invalid_argument);
+    EXPECT_THROW(this->client->GetBucketInfo("/foo/bar", m), invalid_argument);
+}
+
 // the next tests verify that all the functions send the appropriate request messages
 TEST_F(ClientSendingTest, Ping)
 {
