@@ -330,6 +330,7 @@ class ZIPPYLOG_EXPORT Client {
         /// Returns true if info retrieved or false if error or timeout.
         bool GetStreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
+        /// @todo varying by uint32 and uint64 is pretty stupid
         bool GetStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
         bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
         bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
@@ -478,9 +479,16 @@ class ZIPPYLOG_EXPORT Client {
         /// Internal callback used for synchronous store info requests
         static void CallbackStoreInfo(Client *client, protocol::StoreInfoV1 &info, void *data);
 
+        /// Internal callback used for synchronous bucket info requests
+        static void CallbackBucketInfo(Client *client, protocol::BucketInfoV1 &info, void *data);
+
+        /// Internal callback used for synchronous stream set info requests
+        static void CallbackStreamSetInfo(Client *client, protocol::StreamSetInfoV1 &info, void *data);
+
         /// Internal callback used for synchronous stream info requests
         static void CallbackStreamInfo(Client *client, protocol::StreamInfoV1 &info, void *data);
 
+        /// Internal callback used for synchronous stream segment requests
         static void CallbackStreamSegment(Client *client, const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
 
     private:

@@ -125,6 +125,11 @@ class ClientTest : public ::testing::Test
         {
             EXPECT_TRUE(c != NULL) << "client instance is not NULL";
         }
+
+        static void StreamSegmentCallback(Client *c, const string &, uint64, StreamSegment &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
 };
 
 class ClientSendingTest : public ClientTest
@@ -254,28 +259,39 @@ TEST_F(ClientSendingTest, GetBucketInfoParameterValidation)
 // the next tests verify that all the functions send the appropriate request messages
 TEST_F(ClientSendingTest, Ping)
 {
-    this->client->Ping(ClientSendingTest::PingCallback, NULL);
+    EXPECT_TRUE(this->client->Ping(ClientSendingTest::PingCallback, NULL));
 
     protocol::request::PingV1 m;
 
+    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
+
+    EXPECT_FALSE(this->client->Ping(10000));
     this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetFeatures)
 {
-    this->client->GetFeatures(ClientSendingTest::FeaturesCallback, NULL);
+    EXPECT_TRUE(this->client->GetFeatures(ClientSendingTest::FeaturesCallback, NULL));
 
     protocol::request::GetFeaturesV1 m;
 
+    this->ExpectRequestMessage(protocol::request::GetFeaturesV1::zippylog_enumeration, m);
+
+    protocol::response::FeatureSpecificationV1 f;
+    EXPECT_FALSE(this->client->GetFeatures(f, 10000));
     this->ExpectRequestMessage(protocol::request::GetFeaturesV1::zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, GetStoreInfo)
 {
-    this->client->GetStoreInfo(ClientSendingTest::StoreInfoCallback, NULL);
+    EXPECT_TRUE(this->client->GetStoreInfo(ClientSendingTest::StoreInfoCallback, NULL));
 
     protocol::request::GetStoreInfoV1 m;
 
+    this->ExpectRequestMessage(protocol::request::GetStoreInfoV1::zippylog_enumeration, m);
+
+    protocol::StoreInfoV1 si;
+    EXPECT_FALSE(this->client->GetStoreInfo(si, 10000));
     this->ExpectRequestMessage(protocol::request::GetStoreInfoV1::zippylog_enumeration, m);
 }
 
@@ -283,11 +299,15 @@ TEST_F(ClientSendingTest, GetBucketInfo)
 {
     const string path = "/foo";
 
-    this->client->GetBucketInfo(path, ClientSendingTest::BucketInfoCallback, NULL);
+    EXPECT_TRUE(this->client->GetBucketInfo(path, ClientSendingTest::BucketInfoCallback, NULL));
 
     protocol::request::GetBucketInfoV1 m;
     m.set_path(path);
 
+    this->ExpectRequestMessage(protocol::request::GetBucketInfoV1::zippylog_enumeration, m);
+
+    protocol::BucketInfoV1 bi;
+    EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10000));
     this->ExpectRequestMessage(protocol::request::GetBucketInfoV1::zippylog_enumeration, m);
 }
 
@@ -295,11 +315,15 @@ TEST_F(ClientSendingTest, GetStreamSetInfo)
 {
     const string path = "/foo/bar";
 
-    this->client->GetStreamSetInfo(path, ClientSendingTest::StreamSetInfoCallback, NULL);
+    EXPECT_TRUE(this->client->GetStreamSetInfo(path, ClientSendingTest::StreamSetInfoCallback, NULL));
 
     protocol::request::GetStreamSetInfoV1 m;
     m.set_path(path);
 
+    this->ExpectRequestMessage(protocol::request::GetStreamSetInfoV1::zippylog_enumeration, m);
+
+    protocol::StreamSetInfoV1 si;
+    EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10000));
     this->ExpectRequestMessage(protocol::request::GetStreamSetInfoV1::zippylog_enumeration, m);
 }
 
@@ -307,12 +331,48 @@ TEST_F(ClientSendingTest, GetStreamInfo)
 {
     const string path = "/foo/bar/stream";
 
-    this->client->GetStreamInfo(path, ClientSendingTest::StreamInfoCallback, NULL);
+    EXPECT_TRUE(this->client->GetStreamInfo(path, ClientSendingTest::StreamInfoCallback, NULL));
 
     protocol::request::GetStreamInfoV1 m;
     m.set_path(path);
 
     this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
+
+    protocol::StreamInfoV1 si;
+    EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10000));
+    this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetStreamSegmentSimple)
+{
+    const string path = "/foo/bar/stream";
+
+    EXPECT_TRUE(this->client->GetStreamSegment(path, 0, ClientSendingTest::StreamSegmentCallback));
+
+    protocol::request::GetStreamSegmentV1 m;
+    m.set_path(path);
+    m.set_start_offset(0);
+
+    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetStreamSegmentEndOffset)
+{
+    const string path = "/foo/bar/stream";
+
+    EXPECT_TRUE(this->client->GetStreamSegment(path, 0, (uint64)500, ClientSendingTest::StreamSegmentCallback));
+
+    protocol::request::GetStreamSegmentV1 m;
+    m.set_path(path);
+    m.set_start_offset(0);
+    m.set_max_response_bytes(500);
+
+    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
+
+    this->client->GetStreamSegment(path, 100, (uint64)500, ClientSendingTest::StreamSegmentCallback);
+    m.set_start_offset(100);
+    m.set_max_response_bytes(400);
+    this->ExpectRequestMessage(protocol::request::GetStreamSegmentV1::zippylog_enumeration, m);
 }
 
 TEST_F(ClientSendingTest, SynchronousTimeout)

@@ -199,10 +199,17 @@ bool Client::GetBucketInfo(const string &path, protocol::BucketInfoV1 &info, int
     m.set_path(path);
     m.add_to_envelope(e);
 
-    /// @todo implement
-    throw Exception("not yet implemented");
+    OutstandingRequest r;
+    r.data = &info;
+    r.cb_bucket_info = CallbackBucketInfo;
 
-    return false;
+    return this->SendAndProcessSynchronousRequest(e, r, timeout);
+}
+
+void Client::CallbackBucketInfo(Client *, protocol::BucketInfoV1 &info, void *data)
+{
+    protocol::BucketInfoV1 *bi = (protocol::BucketInfoV1 *)data;
+    bi->CopyFrom(info);
 }
 
 bool Client::GetStreamSetInfo(const string &path, StreamSetInfoCallback *callback, void *data)
@@ -225,6 +232,30 @@ bool Client::GetStreamSetInfo(const string &path, StreamSetInfoCallback *callbac
     r.data = data;
 
     return this->SendRequest(e, r);
+}
+
+bool Client::GetStreamSetInfo(const string &path, protocol::StreamSetInfoV1 &info, int32 timeout)
+{
+    if (!Store::IsStreamSetPath(path)) {
+        throw invalid_argument("path is not a valid path to stream set");
+    }
+
+    Envelope e;
+    protocol::request::GetStreamSetInfoV1 m;
+    m.set_path(path);
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.data = &info;
+    r.cb_stream_set_info = CallbackStreamSetInfo;
+
+    return this->SendAndProcessSynchronousRequest(e, r, timeout);
+}
+
+void Client::CallbackStreamSetInfo(Client *, protocol::StreamSetInfoV1 &info, void *data)
+{
+    protocol::StreamSetInfoV1 *si = (protocol::StreamSetInfoV1 *)data;
+    si->CopyFrom(info);
 }
 
 bool Client::GetStreamInfo(const string &path, StreamInfoCallback *callback, void *data)
@@ -750,6 +781,26 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             protocol::StoreInfoV1 *info = (protocol::StoreInfoV1 *)e.GetMessage(0);
 
             req.cb_store_info(this, *info, req.data);
+
+            return true;
+        }
+
+        case protocol::BucketInfoV1::zippylog_enumeration:
+        {
+            assert(req.cb_bucket_info);
+            protocol::BucketInfoV1 *info = (protocol::BucketInfoV1 *)e.GetMessage(0);
+
+            req.cb_bucket_info(this, *info, req.data);
+
+            return true;
+        }
+
+        case protocol::StreamSetInfoV1::zippylog_enumeration:
+        {
+            assert(req.cb_stream_set_info);
+            protocol::StreamSetInfoV1 *info = (protocol::StreamSetInfoV1 *)e.GetMessage(0);
+
+            req.cb_stream_set_info(this, *info, req.data);
 
             return true;
         }
