@@ -161,7 +161,7 @@ public:
             EXPECT_TRUE(::zippylog::platform::CreateUUID(id));
 
             string s;
-            EXPECT_TRUE(true, ::zippylog::platform::FormatUUID(id, s));
+            EXPECT_TRUE(::zippylog::platform::FormatUUID(id, s));
 
             string address = "inproc://" + s;
 

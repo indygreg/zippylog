@@ -29,6 +29,9 @@
 namespace zippylog {
 namespace client {
 
+// forward declarations for later
+class Client;
+
 /// Represents a segment of a stream
 ///
 /// Stream segments have begin and end offsets and contain envelopes.

@@ -157,7 +157,7 @@ int ShowStoreInfo(vector<Client *> &clients)
 }
 
 // TODO actually do something
-void MirrorCallback(const string & path, uint64 start_offset, StreamSegment & segment, void *)
+void MirrorCallback(Client *, const string & path, uint64 start_offset, StreamSegment & segment, void *)
 {
     cout << path << ": " << start_offset << "-" << segment.EndOffset << endl;
 }
