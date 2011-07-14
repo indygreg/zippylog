@@ -269,7 +269,7 @@ void run_envelope_benches(ZippylogbenchParams &)
     TIMER_END("zippylog.envelope.create_and_add_message");
 }
 
-void client_ping_callback(void *data) {
+void client_ping_callback(Client *, void *data) {
     uint32 *i = (uint32 *)data;
     (*i)++;
 }

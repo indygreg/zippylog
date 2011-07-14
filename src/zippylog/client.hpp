@@ -85,13 +85,13 @@ protected:
 /// always a void *. Callers can associate the subscription id with their own
 /// metadata independent of the client API. Their callbacks can fetch this data
 /// at callback time.
-typedef void (StoreChangeStreamAddedCallback)(::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
-typedef void (StoreChangeStreamDeletedCallback)(::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
-typedef void (StoreChangeStreamAppendedCallback)(::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
-typedef void (StoreChangeBucketAddedCallback)(::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
-typedef void (StoreChangeBucketDeletedCallback)(::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
-typedef void (StoreChangeStreamSetAddedCallback)(::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
-typedef void (StoreChangeStreamSetDeletedCallback)(::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
+typedef void (StoreChangeStreamAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
+typedef void (StoreChangeStreamDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
+typedef void (StoreChangeStreamAppendedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
+typedef void (StoreChangeBucketAddedCallback)(Client *, ::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
+typedef void (StoreChangeBucketDeletedCallback)(Client *, ::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
+typedef void (StoreChangeStreamSetAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
+typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
 
 /// Callback executed when a ping response is received
 typedef void (PingCallback)(Client *, void *);
@@ -103,26 +103,26 @@ typedef void (PingCallback)(Client *, void *);
 typedef void (GetFeaturesCallback)(Client *, protocol::response::FeatureSpecificationV1 &, void *);
 
 /// Callback executed when a store info response is received
-typedef void (StoreInfoCallback)(protocol::StoreInfoV1 &, void *);
+typedef void (StoreInfoCallback)(Client *, protocol::StoreInfoV1 &, void *);
 
 /// Callback for bucket info responses
-typedef void (BucketInfoCallback)(protocol::BucketInfoV1 &, void *);
+typedef void (BucketInfoCallback)(Client *, protocol::BucketInfoV1 &, void *);
 
 /// Callback for stream set info responses
-typedef void (StreamSetInfoCallback)(protocol::StreamSetInfoV1 &, void *);
+typedef void (StreamSetInfoCallback)(Client *, protocol::StreamSetInfoV1 &, void *);
 
 /// Callback for stream info responses
-typedef void (StreamInfoCallback)(protocol::StreamInfoV1 &, void *);
+typedef void (StreamInfoCallback)(Client *, protocol::StreamInfoV1 &, void *);
 
 /// Executed when a stream segment is received
 ///
 /// Invoked with the path, start offset, and the data in that segment
-typedef void (StreamSegmentCallback)(const ::std::string &, uint64, StreamSegment &, void *);
+typedef void (StreamSegmentCallback)(Client *, const ::std::string &, uint64, StreamSegment &, void *);
 
 /// Executed when an envelope is received
 ///
 /// Invoked with subscription id, the envelope, and supplied user data to subscription
-typedef void (EnvelopeCallback)(const ::std::string &, Envelope &, void *);
+typedef void (EnvelopeCallback)(Client *, const ::std::string &, Envelope &, void *);
 
 /// Defines the set of function callbacks for a subscription.
 ///
@@ -181,6 +181,8 @@ public:
         cb_ping(NULL),
         cb_features(NULL),
         cb_store_info(NULL),
+        cb_bucket_info(NULL),
+        cb_stream_set_info(NULL),
         cb_stream_info(NULL),
         cb_stream_segment(NULL),
         data(NULL)
@@ -194,6 +196,8 @@ protected:
     PingCallback *          cb_ping;
     GetFeaturesCallback *   cb_features;
     StoreInfoCallback *     cb_store_info;
+    BucketInfoCallback *    cb_bucket_info;
+    StreamSetInfoCallback * cb_stream_set_info;
     StreamInfoCallback *    cb_stream_info;
     StreamSegmentCallback * cb_stream_segment;
 
@@ -293,8 +297,20 @@ class ZIPPYLOG_EXPORT Client {
         /// @return Whether we received a successful response
         bool GetBucketInfo(const ::std::string &path, protocol::BucketInfoV1 &info, int32 timeout_microseconds = -1);
 
+        /// Asynchronously obtain info about a single stream set at a path
+        ///
+        /// @param path Path to stream set we want to obtain info about
+        /// @param callback Function to be called when response is received
+        /// @param data Arbitrary data to be passed to callback function
+        /// @return Whether request was sent without error
         bool GetStreamSetInfo(const ::std::string &path, StreamSetInfoCallback *callback, void *data = NULL);
 
+        /// Synchronously obtain info about a single stream set at a path
+        ///
+        /// @param path Path to stream set we want to obtain info about
+        /// @param info Populated with result on successful response
+        /// @param timeout_microseconds How long to wait for a response
+        /// @return Whether we received a successful response
         bool GetStreamSetInfo(const ::std::string &path, protocol::StreamSetInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain stream info.
@@ -457,12 +473,12 @@ class ZIPPYLOG_EXPORT Client {
         static void CallbackFeatures(Client *client, protocol::response::FeatureSpecificationV1 &features, void *data);
 
         /// Internal callback used for synchronous store info requests
-        static void CallbackStoreInfo(protocol::StoreInfoV1 &info, void *data);
+        static void CallbackStoreInfo(Client *client, protocol::StoreInfoV1 &info, void *data);
 
         /// Internal callback used for synchronous stream info requests
-        static void CallbackStreamInfo(protocol::StreamInfoV1 &info, void *data);
+        static void CallbackStreamInfo(Client *client, protocol::StreamInfoV1 &info, void *data);
 
-        static void CallbackStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
+        static void CallbackStreamSegment(Client *client, const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
 
     private:
         // disable copy constructor and assignment operator

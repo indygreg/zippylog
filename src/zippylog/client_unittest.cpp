@@ -98,7 +98,32 @@ class ClientTest : public ::testing::Test
 
         static void PingCallback(Client *c, void *d)
         {
-            EXPECT_TRUE(c != NULL);
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
+
+        static void FeaturesCallback(Client *c, protocol::response::FeatureSpecificationV1 &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
+
+        static void StoreInfoCallback(Client *c, protocol::StoreInfoV1 &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
+
+        static void BucketInfoCallback(Client *c, protocol::BucketInfoV1 &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
+
+        static void StreamSetInfoCallback(Client *c, protocol::StreamSetInfoV1 &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
+        }
+
+        static void StreamInfoCallback(Client *c, protocol::StreamInfoV1 &, void *)
+        {
+            EXPECT_TRUE(c != NULL) << "client instance is not NULL";
         }
 };
 
@@ -108,7 +133,9 @@ public:
     ClientSendingTest() :
         client(NULL),
         socket(NULL)
-    { }
+    {
+        this->GetClient();
+    }
 
     ~ClientSendingTest()
     {
@@ -212,6 +239,70 @@ TEST_F(ClientTest, StartParamValidation)
     ASSERT_TRUE(true);
 }
 
+// the next tests verify that all the functions send the appropriate request messages
+TEST_F(ClientSendingTest, Ping)
+{
+    this->client->Ping(ClientSendingTest::PingCallback, NULL);
+
+    protocol::request::PingV1 m;
+
+    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetFeatures)
+{
+    this->client->GetFeatures(ClientSendingTest::FeaturesCallback, NULL);
+
+    protocol::request::GetFeaturesV1 m;
+
+    this->ExpectRequestMessage(protocol::request::GetFeaturesV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetStoreInfo)
+{
+    this->client->GetStoreInfo(ClientSendingTest::StoreInfoCallback, NULL);
+
+    protocol::request::GetStoreInfoV1 m;
+
+    this->ExpectRequestMessage(protocol::request::GetStoreInfoV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetBucketInfo)
+{
+    const string path = "/foo";
+
+    this->client->GetBucketInfo(path, ClientSendingTest::BucketInfoCallback, NULL);
+
+    protocol::request::GetBucketInfoV1 m;
+    m.set_path(path);
+
+    this->ExpectRequestMessage(protocol::request::GetBucketInfoV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetStreamSetInfo)
+{
+    const string path = "/foo/bar";
+
+    this->client->GetStreamSetInfo(path, ClientSendingTest::StreamSetInfoCallback, NULL);
+
+    protocol::request::GetStreamSetInfoV1 m;
+    m.set_path(path);
+
+    this->ExpectRequestMessage(protocol::request::GetStreamSetInfoV1::zippylog_enumeration, m);
+}
+
+TEST_F(ClientSendingTest, GetStreamInfo)
+{
+    const string path = "/foo/bar/stream";
+
+    this->client->GetStreamInfo(path, ClientSendingTest::StreamInfoCallback, NULL);
+
+    protocol::request::GetStreamInfoV1 m;
+    m.set_path(path);
+
+    this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
+}
+
 TEST_F(ClientTest, SynchronousTimeout)
 {
     string endpoint;
@@ -266,16 +357,6 @@ TEST_F(ClientTest, PingSynchronous)
     Client c(this->GetContext(), endpoint);
 
     EXPECT_TRUE(c.Ping());
-}
-
-TEST_F(ClientSendingTest, Ping)
-{
-    Client *c = this->GetClient();
-    c->Ping(ClientSendingTest::PingCallback, NULL);
-
-    protocol::request::PingV1 m;
-
-    this->ExpectRequestMessage(protocol::request::PingV1::zippylog_enumeration, m);
 }
 
 }} // namespaces

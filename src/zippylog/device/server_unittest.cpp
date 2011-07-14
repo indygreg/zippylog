@@ -256,7 +256,7 @@ void stream_added(string id, protocol::StoreChangeStreamAddedV1 &r, void *d)
 
 }
 
-void bucket_added(string id, protocol::StoreChangeBucketAddedV1 &r, void *d)
+void bucket_added(Client *, string id, protocol::StoreChangeBucketAddedV1 &r, void *d)
 {
     uint32 *b = (uint32 *)d;
     (*b)++;

@@ -159,11 +159,94 @@ bool Client::GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout)
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackStoreInfo(protocol::StoreInfoV1 &info, void *data)
+void Client::CallbackStoreInfo(Client *, protocol::StoreInfoV1 &info, void *data)
 {
     protocol::StoreInfoV1 *si = (protocol::StoreInfoV1 *)data;
 
     si->CopyFrom(info);
+}
+
+bool Client::GetBucketInfo(const string &path, BucketInfoCallback *callback, void*data)
+{
+    if (!callback) {
+        throw invalid_argument("callback parameter not defined");
+    }
+
+    if (!Store::IsBucketPath(path)) {
+        throw invalid_argument("path is not a valid bucket path");
+    }
+
+    Envelope e;
+    protocol::request::GetBucketInfoV1 m;
+    m.set_path(path);
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.cb_bucket_info = callback;
+    r.data = data;
+
+    return this->SendRequest(e, r);
+}
+
+bool Client::GetBucketInfo(const string &path, protocol::BucketInfoV1 &info, int32 timeout)
+{
+    if (!Store::IsBucketPath(path)) {
+        throw invalid_argument("path is not a valid bucket path");
+    }
+
+    Envelope e;
+    protocol::request::GetBucketInfoV1 m;
+    m.set_path(path);
+    m.add_to_envelope(e);
+
+    /// @todo implement
+    throw Exception("not yet implemented");
+
+    return false;
+}
+
+bool Client::GetStreamSetInfo(const string &path, StreamSetInfoCallback *callback, void *data)
+{
+    if (!callback) {
+        throw invalid_argument("callback is not defined");
+    }
+
+    if (!Store::IsStreamSetPath(path)) {
+        throw invalid_argument("path is not a path to a stream set");
+    }
+
+    Envelope e;
+    protocol::request::GetStreamSetInfoV1 m;
+    m.set_path(path);
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.cb_stream_set_info = callback;
+    r.data = data;
+
+    return this->SendRequest(e, r);
+}
+
+bool Client::GetStreamInfo(const string &path, StreamInfoCallback *callback, void *data)
+{
+    if (!callback) {
+        throw invalid_argument("callback is not defined");
+    }
+
+    if (!Store::IsStreamPath(path)) {
+        throw invalid_argument("path is not a path to a stream");
+    }
+
+    Envelope e;
+    protocol::request::GetStreamInfoV1 m;
+    m.set_path(path);
+    m.add_to_envelope(e);
+
+    OutstandingRequest r;
+    r.cb_stream_info = callback;
+    r.data = data;
+
+    return this->SendRequest(e, r);
 }
 
 bool Client::GetStreamInfo(const string &path, protocol::StreamInfoV1 &info, int32 timeout)
@@ -180,7 +263,7 @@ bool Client::GetStreamInfo(const string &path, protocol::StreamInfoV1 &info, int
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackStreamInfo(protocol::StreamInfoV1 &info, void *data)
+void Client::CallbackStreamInfo(Client *, protocol::StreamInfoV1 &info, void *data)
 {
     protocol::StreamInfoV1 *si = (protocol::StreamInfoV1 *)data;
     si->CopyFrom(info);
@@ -220,7 +303,7 @@ bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSeg
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackStreamSegment(const string &, uint64, StreamSegment &segment, void *data)
+void Client::CallbackStreamSegment(Client *, const string &, uint64, StreamSegment &segment, void *data)
 {
     StreamSegment *s = (StreamSegment *)data;
     s->CopyFrom(segment);
@@ -279,7 +362,7 @@ bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmen
 
         if (!segment.BytesSent) break;
 
-        callback(path, start_offset, segment, data);
+        callback(this, path, start_offset, segment, data);
 
         start_offset = segment.EndOffset;
 
@@ -563,48 +646,48 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStartV1 &start,
             case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
                 if (cb.BucketAdded) {
                     protocol::StoreChangeBucketAddedV1 *added = (protocol::StoreChangeBucketAddedV1 *)e.GetMessage(i);
-                    cb.BucketAdded(start.id(), *added, iter->second.data);
+                    cb.BucketAdded(this, start.id(), *added, iter->second.data);
                 }
                 break;
             case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
                 if (cb.BucketDeleted) {
                     protocol::StoreChangeBucketDeletedV1 *deleted = (protocol::StoreChangeBucketDeletedV1 *)e.GetMessage(i);
-                    cb.BucketDeleted(start.id(), *deleted, iter->second.data);
+                    cb.BucketDeleted(this, start.id(), *deleted, iter->second.data);
                 }
                 break;
 
             case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
                 if (cb.StreamSetAdded) {
                     protocol::StoreChangeStreamSetAddedV1 *added = (protocol::StoreChangeStreamSetAddedV1 *)e.GetMessage(i);
-                    cb.StreamSetAdded(start.id(), *added, iter->second.data);
+                    cb.StreamSetAdded(this, start.id(), *added, iter->second.data);
                 }
                 break;
 
             case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
                 if (cb.StreamSetDeleted) {
                     protocol::StoreChangeStreamSetDeletedV1 *deleted = (protocol::StoreChangeStreamSetDeletedV1 *)e.GetMessage(i);
-                    cb.StreamSetDeleted(start.id(), *deleted, iter->second.data);
+                    cb.StreamSetDeleted(this, start.id(), *deleted, iter->second.data);
                 }
                 break;
 
             case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
                 if (cb.StreamAdded) {
                     protocol::StoreChangeStreamAddedV1 *added = (protocol::StoreChangeStreamAddedV1 *)e.GetMessage(i);
-                    cb.StreamAdded(start.id(), *added, iter->second.data);
+                    cb.StreamAdded(this, start.id(), *added, iter->second.data);
                 }
                 break;
 
             case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
                 if (cb.StreamDeleted) {
                     protocol::StoreChangeStreamDeletedV1 *deleted = (protocol::StoreChangeStreamDeletedV1 *)e.GetMessage(i);
-                    cb.StreamDeleted(start.id(), *deleted, iter->second.data);
+                    cb.StreamDeleted(this, start.id(), *deleted, iter->second.data);
                 }
                 break;
 
             case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
                 if (cb.StreamAppended) {
                     protocol::StoreChangeStreamAppendedV1 *appended = (protocol::StoreChangeStreamAppendedV1 *)e.GetMessage(i);
-                    cb.StreamAppended(start.id(), *appended, iter->second.data);
+                    cb.StreamAppended(this, start.id(), *appended, iter->second.data);
                 }
                 break;
 
@@ -619,7 +702,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStartV1 &start,
     for (size_t i = 0; i < messages.size(); i++) {
         Envelope env = Envelope(messages[i]->data(), messages[i]->size());
 
-        cb.Envelope(start.id(), env, iter->second.data);
+        cb.Envelope(this, start.id(), env, iter->second.data);
     }
 
     return true;
@@ -666,7 +749,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             assert(req.cb_store_info);
             protocol::StoreInfoV1 *info = (protocol::StoreInfoV1 *)e.GetMessage(0);
 
-            req.cb_store_info(*info, req.data);
+            req.cb_store_info(this, *info, req.data);
 
             return true;
         }
@@ -676,7 +759,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             assert(req.cb_stream_info);
             protocol::StreamInfoV1 *info = (protocol::StreamInfoV1 *)e.GetMessage(0);
 
-            req.cb_stream_info(*info, req.data);
+            req.cb_stream_info(this, *info, req.data);
 
             return true;
         }
@@ -710,7 +793,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
                 segment.AddEnvelope(payload);
             }
 
-            req.cb_stream_segment(start->path(), start->offset(), segment, req.data);
+            req.cb_stream_segment(this, start->path(), start->offset(), segment, req.data);
 
             return true;
         }
