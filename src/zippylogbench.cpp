@@ -15,6 +15,7 @@
 #include <zippylog/zippylog.hpp>
 #include <zippylog/client.hpp>
 #include <zippylog/envelope.hpp>
+#include <zippylog/lua.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/request_processor.pb.h>
 #include <zippylog/device/server.hpp>
@@ -40,6 +41,7 @@ using ::std::vector;
 using ::zippylog::client::Client;
 using ::zippylog::Envelope;
 using ::zippylog::device::ServerStartParams;
+using ::zippylog::lua::LuaState;
 
 #define TIMER_START(iterations) { \
     int TIMER_ITERATIONS = iterations; \
@@ -318,10 +320,30 @@ void run_server_benches(ZippylogbenchParams &)
 
 }
 
+void run_lua_zippylog(ZippylogbenchParams &params)
+{
+    {
+        LuaState l;
+        string error;
+        l.LoadLuaCode("function zippylog_load_string(s)\n"
+                      "  e = zippylog.envelope.new()\n"
+                      "  e:set_string_value(s)\n"
+                      "  return e\n"
+                      "end", error);
+
+        ::zippylog::lua::LoadStringResult result;
+        const string input = "foo bar 2k";
+        TIMER_START(10000);
+        l.ExecuteLoadString(input, result);
+        TIMER_END("zippylog.lua.load_string_return_simple_envelope");
+    }
+}
+
 void run_benchmarks(ZippylogbenchParams &params)
 {
     if (params.do_lua_function_calls || params.do_all) {
         run_lua_function_calls(params);
+        run_lua_zippylog(params);
     }
 
     run_zmq_benches(params);
