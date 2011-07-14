@@ -389,6 +389,7 @@ void Server::RunAsync()
 {
     this->exec_thread = new Thread(Server::AsyncExecStart, this);
 
+    // don't return until we are running
     // @todo better ways to do this
     while (!this->initialized);
 }
