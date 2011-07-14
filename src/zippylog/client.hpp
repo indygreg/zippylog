@@ -31,6 +31,66 @@ namespace client {
 
 // forward declarations for later
 class Client;
+class StreamSegment;
+class StreamFetchState;
+
+/// Represents a client subscription
+///
+/// Used internally by the client to keep track of state.
+///
+/// @internal
+class Subscription;
+
+/// Keeps track of requests sent whose replies have not yet been seen
+///
+/// @internal
+class OutstandingRequest;
+
+/// Function types for callbacks when the client has received a subscription
+/// response
+///
+/// The first string parameter is the subscription id. The final parameter is
+/// always a void *. Callers can associate the subscription id with their own
+/// metadata independent of the client API. Their callbacks can fetch this data
+/// at callback time.
+typedef void (StoreChangeStreamAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
+typedef void (StoreChangeStreamDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
+typedef void (StoreChangeStreamAppendedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
+typedef void (StoreChangeBucketAddedCallback)(Client *, ::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
+typedef void (StoreChangeBucketDeletedCallback)(Client *, ::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
+typedef void (StoreChangeStreamSetAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
+typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
+
+/// Callback executed when a ping response is received
+typedef void (PingCallback)(Client *, void *);
+
+/// Callback for feature specification responses
+///
+/// Receives a pointer to the client instance firing the callback, the
+/// response, and a pointer to arbitrary data supplied at request time.
+typedef void (GetFeaturesCallback)(Client *, protocol::response::FeatureSpecificationV1 &, void *);
+
+/// Callback executed when a store info response is received
+typedef void (StoreInfoCallback)(Client *, protocol::StoreInfoV1 &, void *);
+
+/// Callback for bucket info responses
+typedef void (BucketInfoCallback)(Client *, protocol::BucketInfoV1 &, void *);
+
+/// Callback for stream set info responses
+typedef void (StreamSetInfoCallback)(Client *, protocol::StreamSetInfoV1 &, void *);
+
+/// Callback for stream info responses
+typedef void (StreamInfoCallback)(Client *, protocol::StreamInfoV1 &, void *);
+
+/// Executed when a stream segment is received
+///
+/// Invoked with the path, start offset, and the data in that segment
+typedef void (StreamSegmentCallback)(Client *, const ::std::string &, uint64, StreamSegment &, void *);
+
+/// Executed when an envelope is received
+///
+/// Invoked with subscription id, the envelope, and supplied user data to subscription
+typedef void (EnvelopeCallback)(Client *, const ::std::string &, Envelope &, void *);
 
 /// Represents a segment of a stream
 ///
@@ -82,51 +142,6 @@ protected:
     ::std::map< ::std::string, StreamFetchState > states;
 };
 
-/// Function types for callbacks when the client has received a subscribed event
-///
-/// The first string parameter is the subscription id. The final parameter is
-/// always a void *. Callers can associate the subscription id with their own
-/// metadata independent of the client API. Their callbacks can fetch this data
-/// at callback time.
-typedef void (StoreChangeStreamAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAddedV1 &, void *);
-typedef void (StoreChangeStreamDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamDeletedV1 &, void *);
-typedef void (StoreChangeStreamAppendedCallback)(Client *, ::std::string, protocol::StoreChangeStreamAppendedV1 &, void *);
-typedef void (StoreChangeBucketAddedCallback)(Client *, ::std::string, protocol::StoreChangeBucketAddedV1 &, void *);
-typedef void (StoreChangeBucketDeletedCallback)(Client *, ::std::string, protocol::StoreChangeBucketDeletedV1 &, void *);
-typedef void (StoreChangeStreamSetAddedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetAddedV1 &, void *);
-typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, protocol::StoreChangeStreamSetDeletedV1 &, void *);
-
-/// Callback executed when a ping response is received
-typedef void (PingCallback)(Client *, void *);
-
-/// Callback for feature specification responses
-///
-/// Receives a pointer to the client instance firing the callback, the
-/// response, and a pointer to arbitrary data supplied at request time.
-typedef void (GetFeaturesCallback)(Client *, protocol::response::FeatureSpecificationV1 &, void *);
-
-/// Callback executed when a store info response is received
-typedef void (StoreInfoCallback)(Client *, protocol::StoreInfoV1 &, void *);
-
-/// Callback for bucket info responses
-typedef void (BucketInfoCallback)(Client *, protocol::BucketInfoV1 &, void *);
-
-/// Callback for stream set info responses
-typedef void (StreamSetInfoCallback)(Client *, protocol::StreamSetInfoV1 &, void *);
-
-/// Callback for stream info responses
-typedef void (StreamInfoCallback)(Client *, protocol::StreamInfoV1 &, void *);
-
-/// Executed when a stream segment is received
-///
-/// Invoked with the path, start offset, and the data in that segment
-typedef void (StreamSegmentCallback)(Client *, const ::std::string &, uint64, StreamSegment &, void *);
-
-/// Executed when an envelope is received
-///
-/// Invoked with subscription id, the envelope, and supplied user data to subscription
-typedef void (EnvelopeCallback)(Client *, const ::std::string &, Envelope &, void *);
-
 /// Defines the set of function callbacks for a subscription.
 ///
 /// Not all callback types are valid for every subscription type. If a
@@ -169,29 +184,6 @@ public:
     /// Callback for when an envelope is received
     EnvelopeCallback *                    Envelope;
 };
-
-/// Represents a client subscription
-///
-/// Used internally by the client to keep track of state.
-class Subscription {
-public:
-    Subscription();
-
-    friend class Client;
-protected:
-    ::std::string id;
-
-    platform::Timer expiration_timer;
-
-    SubscriptionCallbackInfo cb;
-
-    void *data;
-};
-
-/// Keeps track of requests sent whose replies have not yet been seen
-///
-/// Used internally by the client.
-class OutstandingRequest;
 
 /// Client that talks to a server
 ///

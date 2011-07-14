@@ -65,6 +65,22 @@ protected:
     void *data;
 };
 
+class Subscription {
+public:
+    Subscription();
+
+    friend class Client;
+protected:
+    ::std::string id;
+
+    platform::Timer expiration_timer;
+
+    SubscriptionCallbackInfo cb;
+
+    void *data;
+};
+
+
 Client::Client(context_t *ctx, const string &endpoint) :
     client_sock(NULL),
     subscription_renewal_offset(5000000) // 5 seconds
