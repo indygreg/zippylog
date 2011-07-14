@@ -73,15 +73,16 @@ public:
     bool *active;
 };
 
-/// Holds stream subscriptions and notifies interested clients
+/// Manages streaming of data to interested parties
 ///
-/// The streamer handles the streaming aspect of zippylog. It processes
-/// new subscriptions. When it receives details about events in a store, it
-/// looks at the registered subscriptions and if any are interested, performs
-/// optional data processing and sends messages to interested subscribers.
+/// A streamer performs the following actions:
 ///
-/// The streamer interfaces with a handful of 0MQ sockets. The endpoints are
-/// controlled by StreamerStartParams.
+///   - Receives client subscriptions for interested events
+///   - Receives notifications of changes to a store
+///   - Notifies subscribers to subscribed events
+///
+/// The streamer currently operates by receiving and sending data over a set
+/// of 0MQ sockets. The endpoints are controlled by StreamerStartParams.
 ///
 ///  - store_changes - SUB socket connected to a store watcher's PUB socket
 ///  - client        - PUSH socket that sends messages to clients
