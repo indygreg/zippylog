@@ -303,16 +303,10 @@ TEST_F(ClientSendingTest, GetStreamInfo)
     this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
 }
 
-TEST_F(ClientTest, SynchronousTimeout)
+TEST_F(ClientSendingTest, SynchronousTimeout)
 {
-    string endpoint;
-    this->GetServer("simpledirectory://test/stores/02-multiple", endpoint);
-    Client c(this->GetContext(), endpoint);
-
-    protocol::StoreInfoV1 si;
-    // it is not reasonable to expect the server to respond in 1 microsecond
-    // although, it could be possible
-    EXPECT_FALSE(c.GetStoreInfo(si, 1));
+    // it doesn't matter what the timeout is since we have nothing responding
+    EXPECT_FALSE(this->client->Ping(100)) << "synchronous requests time out";
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)
