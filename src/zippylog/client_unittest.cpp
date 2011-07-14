@@ -239,6 +239,11 @@ public:
 
         EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
 
+		for (size_t i = 0; i < this->messages.size(); i++) {
+			delete this->messages[i];
+			this->messages[i] = NULL;
+		}
+
         this->messages.clear();
     }
 
