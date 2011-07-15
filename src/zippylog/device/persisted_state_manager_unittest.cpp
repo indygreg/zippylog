@@ -110,15 +110,21 @@ TEST_F(PersistedStateManagerTest, HasSubscription)
 
     EXPECT_FALSE(m->HasSubscription("foo"));
     EXPECT_FALSE(m->HasSubscription(""));
+    EXPECT_FALSE(m->HaveStoreChangeSubscriptions());
+    EXPECT_FALSE(m->HaveStoreChangeSubscriptions("/"));
 
     SubscriptionInfo s;
-    s.paths.push_back("/");
+    s.paths.push_back("/bucket");
     s.type = STORE_CHANGE;
     s.id = "foo";
 
     m->RegisterSubscription(s);
 
     EXPECT_TRUE(m->HasSubscription("foo"));
+    EXPECT_TRUE(m->HaveStoreChangeSubscriptions());
+    EXPECT_FALSE(m->HaveStoreChangeSubscriptions("/"));
+    EXPECT_TRUE(m->HaveStoreChangeSubscriptions("/bucket"));
+    EXPECT_FALSE(m->HaveStoreChangeSubscriptions("/foo"));
 }
 
 } // namespaces

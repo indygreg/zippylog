@@ -81,6 +81,10 @@ public:
 ///
 /// The class API will evolve as the zippylog protocol evolves, as there is
 /// a strong cohesion between the two.
+///
+/// Instances of this class are not thread safe.
+///
+/// @todo Add API(s) to retrieve state metadata
 class ZIPPYLOG_EXPORT PersistedStateManager {
 public:
     PersistedStateManager(const PersistedStateManagerStartParams &params);
@@ -89,6 +93,15 @@ public:
 
     /// Whether we have a subscription with the specified id
     bool HasSubscription(const ::std::string &id) const;
+
+    /// Whether we have any store change subscriptions
+    bool HaveStoreChangeSubscriptions() const;
+
+    /// Whether we have store change subscriptions for the given path
+    bool HaveStoreChangeSubscriptions(const ::std::string &path) const;
+
+    /// Whether we have a subscription for envelopes in the given stream path
+    bool HaveEnvelopeSubscription(const ::std::string &path) const;
 
     /// Renews a subscription for the specified id
     ///
@@ -105,7 +118,9 @@ public:
     /// of the object is undefined, so callers should not attempt to access it
     /// after it is transferred to the manager.
     ///
-    /// This function will start the subscription TTL timer immediately
+    /// This function will start the subscription TTL timer immediately.
+    ///
+    /// @todo formalize behavior for duplicate subscriptions
     void RegisterSubscription(const SubscriptionInfo &subscription);
 
     /// Unregister a subscription with the id specified
@@ -156,16 +171,6 @@ public:
                                           void *data = NULL);
 
 protected:
-
-    /// Whether we have any store change subscriptions
-    bool HaveStoreChangeSubscriptions() const;
-
-    /// Whether we have store change subscriptions for the given path
-    bool HaveStoreChangeSubscriptions(const ::std::string &path) const;
-
-    /// Whether we have a subscription for envelopes in the given stream path
-    bool HaveEnvelopeSubscription(const ::std::string &path) const;
-
     /// Returns whether a path is subscribed to by a subscription
     static bool IsPathSubscribed(const ::std::string &path, const PersistedStateManagerSubscriptionRecord &subscription);
 

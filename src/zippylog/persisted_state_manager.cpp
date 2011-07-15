@@ -102,7 +102,14 @@ bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path
 
 bool PersistedStateManager::HaveStoreChangeSubscriptions() const
 {
-    return this->HaveStoreChangeSubscriptions("/");
+    map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator end = this->subscriptions.end();
+    for (; i != end; ++i) {
+        if (i->second->si.type == STORE_CHANGE)
+            return true;
+    }
+
+    return false;
 }
 
 bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
