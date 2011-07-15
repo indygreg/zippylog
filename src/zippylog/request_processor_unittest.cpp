@@ -14,6 +14,7 @@
 
 #include <zippylog/request_processor.hpp>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/zeromq.hpp>
 
 #include <gtest/gtest.h>
 #include <zmq.hpp>
@@ -193,53 +194,60 @@ TEST_F(RequestProcessorTest, ProcessMessages)
 {
     protocol::response::ErrorCode code;
 
-    vector<string> identities;
-    identities.push_back("identityA");
-    identities.push_back("identityB");
+    const string ident1 = "identityA";
+    const string ident2 = "identityB";
 
-    vector<message_t *> input;
+    message_t * ident_msg1 = new message_t(ident1.length());
+    memcpy(ident_msg1->data(), ident1.data(), ident_msg1->size());
+
+    message_t * ident_msg2 = new message_t(ident2.length());
+    memcpy(ident_msg2->data(), ident2.data(), ident_msg2->size());
+
+    zeromq::MessageContainer messages;
+    messages.AddIdentity(ident_msg1);
+    messages.AddIdentity(ident_msg2);
+
     vector<Envelope> output;
 
     // no input == no output
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     ASSERT_EQ(0, output.size());
 
     // empty initial message
-    message_t m(0);
-    input.push_back(&m);
+    message_t * m = new message_t();
+    messages.AddMessage(m);
     code = protocol::response::EMPTY_MESSAGE;
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
-    output.clear();
 
     // bad version
-    m.rebuild(1);
-    *(char *)(m.data()) = 0;
+    m->rebuild(1);
+    *(char *)(m->data()) = 0;
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
-    m.rebuild(1);
-    *(char *)(m.data()) = 0x02;
+    m->rebuild(1);
+    *(char *)(m->data()) = 0x02;
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
     // no data after version
-    m.rebuild(1);
-    *(char *)(m.data()) = 0x01;
+    m->rebuild(1);
+    *(char *)(m->data()) = 0x01;
     code = protocol::response::PROTOCOL_NO_ENVELOPE;
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
     // bad envelope after version
-    m.rebuild(10);
-    *(char *)(m.data()) = 0x01;
+    m->rebuild(10);
+    *(char *)(m->data()) = 0x01;
     code = protocol::response::ENVELOPE_PARSE_FAILURE;
-    this->p->ProcessMessages(identities, input, output);
+    this->p->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
@@ -247,8 +255,8 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     protocol::request::GetStoreInfoV1 gsi;
     Envelope request;
     gsi.add_to_envelope(request);
-    ASSERT_TRUE(request.ToProtocolZmqMessage(m));
-    this->p->ProcessMessages(identities, input, output);
+    ASSERT_TRUE(request.ToProtocolZmqMessage(*m));
+    this->p->ProcessMessages(messages, output);
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     ASSERT_EQ(1, response.MessageCount());

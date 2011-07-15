@@ -21,6 +21,7 @@
 #include <zippylog/store.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/zeromq.hpp>
 
 #include <zmq.hpp>
 
@@ -258,7 +259,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// for processing. The preferred way to pass messages to the request
         /// processor is by sending them over the socket. However, this
         /// function is public just in case.
-        void ProcessMessages(::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &input, ::std::vector<Envelope> &output);
+        void ProcessMessages(::zippylog::zeromq::MessageContainer &messages, ::std::vector<Envelope> &output);
 
         /// Processes a request envelope
         ///

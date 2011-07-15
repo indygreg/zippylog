@@ -160,18 +160,13 @@ int RequestProcessor::Pump(long wait)
         return 0;
     }
 
-    // we have a message available, so we receive it
-    vector<message_t *> msgs;
     this->current_request_identities.clear();
-    if (!zeromq::receive_multipart_message(this->socket, this->current_request_identities, msgs)) {
+
+    // we have a message available, so we receive it
+    zeromq::MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*this->socket, messages, 0)) {
         ::zippylog::request_processor::FailReceiveMessage log;
         LOG_MESSAGE(log, this->logger_sock);
-
-        // @todo shouldn't this be part of the receive_multipart_message API?
-        vector<message_t *>::iterator iter = msgs.begin();
-        for (; iter != msgs.end(); iter++) {
-            delete *iter;
-        }
 
         // @todo we used to rebuild socket here. is this a good recovery strategy?
         // this exception is here so we can see if this actually happens
@@ -180,18 +175,14 @@ int RequestProcessor::Pump(long wait)
     }
 
     vector<Envelope> response_envelopes;
-    this->ProcessMessages(this->current_request_identities, msgs, response_envelopes);
+    this->current_request_identities = messages.GetIdentities();
 
-    // input messages aren't needed any more, so we destroy them immediately
-    vector<message_t *>::iterator iter = msgs.begin();
-    for (; iter != msgs.end(); iter++) {
-        delete *iter;
-    }
+    this->ProcessMessages(messages, response_envelopes);
 
     if (response_envelopes.size()) {
         int flags = response_envelopes.size() > 1 ? ZMQ_SNDMORE : 0;
 
-        int result = zeromq::SendEnvelope(*this->socket, this->current_request_identities, response_envelopes[0], true, flags);
+        int result = zeromq::SendEnvelope(*this->socket, messages.GetIdentities(), response_envelopes[0], true, flags);
         if (result == -1) {
             throw Exception("Serialization error in response envelope");
         }
@@ -218,7 +209,7 @@ int RequestProcessor::Pump(long wait)
     return 1;
 }
 
-void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &input, vector<Envelope> &output)
+void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vector<Envelope> &output)
 {
     // always clear the output list so we don't accidentally send leftovers
     output.clear();
@@ -231,10 +222,10 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
     bool successful_process = false;
 
     // @todo should we log?
-    if (!input.size()) return;
+    if (!container.MessagesSize()) return;
 
     // we expect the first message to have an envelope of some kind
-    if (!input[0]->size()) {
+    if (!container.GetMessage(0)->size()) {
         ::zippylog::request_processor::ReceiveEmptyMessage log;
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -248,7 +239,7 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
 
     // the first byte of the message is the message format version
     // we currently only support 1, as it is the only defined version
-    memcpy(&msg_version, input[0]->data(), sizeof(msg_version));
+    memcpy(&msg_version, container.GetMessage(0)->data(), sizeof(msg_version));
 
     if (msg_version != 0x01) {
         ::zippylog::request_processor::UnknownMessageVersion log;
@@ -267,7 +258,7 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
 
     // we expect to see data after the version byte. if we don't, something
     // is wrong
-    if (input[0]->size() < 2) {
+    if (container.GetMessage(0)->size() < 2) {
         this->PopulateErrorResponse(
             protocol::response::PROTOCOL_NO_ENVELOPE,
             "protocol version 1 0MQ message received without an envelope",
@@ -279,8 +270,8 @@ void RequestProcessor::ProcessMessages(vector<string> &, vector<message_t *> &in
     try {
         request_envelope = Envelope(
             // we can't do math on sizeless void
-            (void *)((char *)input[0]->data() + 1),
-            input[0]->size() - 1
+            (void *)((char *)container.GetMessage(0)->data() + 1),
+            container.GetMessage(0)->size() - 1
         );
     } catch ( ... ) {
         // we should only get an exception on parse error
