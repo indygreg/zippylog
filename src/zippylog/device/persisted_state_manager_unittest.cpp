@@ -45,7 +45,7 @@ protected:
     void TearDown()
     {
         if (platform::PathIsDirectory(this->path)) {
-            EXPECT_TRUE(platform::RemoveDirectoryA(this->path));
+            EXPECT_TRUE(platform::RemoveDirectory(this->path));
         }
     }
 };
