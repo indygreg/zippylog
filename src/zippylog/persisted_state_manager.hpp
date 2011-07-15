@@ -83,7 +83,9 @@ public:
 
     /// Registers a new subscription from a subscription record
     ///
-    /// Ownership of the memory is transferred to the manager
+    /// Ownership of the memory is transferred to the manager. The lifetime
+    /// of the object is undefined, so callers should not attempt to access it
+    /// after it is transferred to the manager.
     void RegisterSubscription(SubscriptionInfo *subscription);
 
     /// Unregister a subscription with the id specified
@@ -112,6 +114,20 @@ public:
                                        PersistedStateManagerPathDeletedCallback *cb,
                                        void *data = NULL);
 
+    /// Processes a stream append event
+    ///
+    /// This should be called when a stream has been appended to.
+    ///
+    /// The function examines all subscriptions to envelopes. For those
+    /// subscribed to this path, the stream is read from the last read point
+    /// up to the new stream length. Read envelopes are fed into Lua for
+    /// filtering (if configured).
+    ///
+    /// For each envelope to be sent to the client, the supplied callback is
+    /// invoked. The callback receives a EnvelopeSubscriptionResponseState
+    /// instance. This will likely be immediately passed to
+    /// RequestProcessor::SendSubscriptionEnvelopeResponse(), which will
+    /// handle response formulation.
     void ProcessStoreChangeStreamAppended(const ::std::string &path,
                                           const uint64 stream_length,
                                           PersistedStateManagerStreamAppendedCallback *cb,
