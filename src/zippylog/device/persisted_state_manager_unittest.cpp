@@ -12,13 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/device/streamer.hpp>
+#include <zippylog/persisted_state_manager.hpp>
 
 #include <gtest/gtest.h>
 
 namespace zippylog {
-namespace device {
 
-
-
-}} // namespaces
+} // namespaces
