@@ -1,4 +1,4 @@
-// this file describes protocol buffer messages sent by the client when
+// This file describes protocol buffer messages sent by the client when
 // communicating with a remote server agent
 //
 // Messages should have names of actions/verbs which describe the operation
@@ -9,10 +9,10 @@
 
 package zippylog.protocol.request;
 
-// pings the server to see if it is responding
+// Pings the server to see if it is responding
 message PingV1 {}
 
-// requests the server to return a message that describes features (versions,
+// Requests the server to return a message that describes features (versions,
 // operations, capabilities, etc) it supports
 message GetFeaturesV1 {}
 
@@ -38,7 +38,7 @@ message GetStreamInfoV1 {
     required string path = 1;
 }
 
-// request to download part of a stream
+// Request to download part of a stream
 //
 // The server likely imposes limits of how much of a stream can be downloaded
 // in one request. These limits will override whatever is specified by the
@@ -110,13 +110,16 @@ message WriteEnvelopeFromMessagesV1 {
     repeated uint32 message_type = 4 [packed=true];
 }
 
-// subscribes the client to store changes
-// store changes describe changes to the store. this covers creating, deletion,
-// and modification of buckets, stream sets, and streams. it does not include
-// actual envelopes in streams
+// Subscribes the client to store changes
+//
+// Store changes describe changes to the store. This covers creation, deletion,
+// and modification of buckets, stream sets, and streams. It does not include
+// actual envelopes in streams. For that, see SubscribeEnvelopesV1.
 message SubscribeStoreChangesV1 {
-    // list of store paths to subscribe to
-    // if you want to subscribe to the entire store, add the value "/"
+    // List of store paths to subscribe to
+    //
+    // If you want to subscribe to the entire store, add the value "/". The
+    // server interprets an empty list as "/".
     repeated string path = 1;
 }
 
@@ -127,50 +130,50 @@ message SubscribeEnvelopesV1 {
     // store ("/"). If no path is defined, the entire store ("/") is assumed.
     repeated string path = 1;
 
-	// Upload Lua code that defines a custom subscription. The following
-	// Lua functionality may be used:
-	//
-	//   zippylog_subscription_filter_envelope() - Filters envelopes. This
-	//     function will be called for every envelope in the subscribed
-	//     path(s).
-	//
-	//   zippylog_subscription_timer_signaled() - Function called whenever
-	//     the timer has signaled/expired.
-	//
-	//   zippylog_subscription_timer_interval - Defines how often, in
-	//     milliseconds, a timer should fire.
-	//
-	// The timer variables must either be both undefined or defined. If only
-	// one is defined, the server should reject the request.
-	//
-	// The server makes no guarantee to the semantics of the timer. The timer
-	// may fire approximately every interval or every interval after execution
-	// of the timer callback, for example. There is also no guarantee as to when
-	// the timer callback is executed after the timer signals. It could be a
-	// microsecond. It could be a hundred milliseconds.
-	//
-	// The server does guarantee that only a single callback will execute at a
-	// time.
+    // Upload Lua code that defines a custom subscription. The following
+    // Lua functionality may be used:
+    //
+    //   zippylog_subscription_filter_envelope() - Filters envelopes. This
+    //     function will be called for every envelope in the subscribed
+    //     path(s).
+    //
+    //   zippylog_subscription_timer_signaled() - Function called whenever
+    //     the timer has signaled/expired.
+    //
+    //   zippylog_subscription_timer_interval - Defines how often, in
+    //     milliseconds, a timer should fire.
+    //
+    // The timer variables must either be both undefined or defined. If only
+    // one is defined, the server should reject the request.
+    //
+    // The server makes no guarantee to the semantics of the timer. The timer
+    // may fire approximately every interval or every interval after execution
+    // of the timer callback, for example. There is also no guarantee as to when
+    // the timer callback is executed after the timer signals. It could be a
+    // microsecond. It could be a hundred milliseconds.
+    //
+    // The server does guarantee that only a single callback will execute at a
+    // time.
     optional string lua_code = 5;
 
-	// By default, envelope subscriptions subscribe to all envelopes in the
-	// requested path(s). We can filter envelopes using Lua or via the
-	// mechanisms listed below. Multiple filter types may be registered
-	// simultaneously. If multiple filters are defined, they are combined with
-	// an OR. In other words, only one filter needs to match for the envelope
-	// to pass the filter. Complex filtering (matching AND with OR or looking
-	// at additional envelope properties will require Lua-based filtering).
+    // By default, envelope subscriptions subscribe to all envelopes in the
+    // requested path(s). We can filter envelopes using Lua or via the
+    // mechanisms listed below. Multiple filter types may be registered
+    // simultaneously. If multiple filters are defined, they are combined with
+    // an OR. In other words, only one filter needs to match for the envelope
+    // to pass the filter. Complex filtering (matching AND with OR or looking
+    // at additional envelope properties will require Lua-based filtering).
 
-	// Limit subscribed envelopes to those containing messages in these
-	// namespaces. Only one message in the envelope needs to match for a hit.
+    // Limit subscribed envelopes to those containing messages in these
+    // namespaces. Only one message in the envelope needs to match for a hit.
     repeated uint32 filter_namespace = 2 [packed=true];
 
-	// Limit subscribed envelopes to those containing messages in the message
-	// enumerations defined here. As with the above field, only 1 message in
-	// the envelope needs to contain the enumeration. Both fields must have
-	// the same length
-	repeated uint32 filter_enumeration_namespace = 3 [packed=true];
-	repeated uint32 filter_enumeration_type = 4 [packed=true];
+    // Limit subscribed envelopes to those containing messages in the message
+    // enumerations defined here. As with the above field, only 1 message in
+    // the envelope needs to contain the enumeration. Both fields must have
+    // the same length
+    repeated uint32 filter_enumeration_namespace = 3 [packed=true];
+    repeated uint32 filter_enumeration_type = 4 [packed=true];
 }
 
 // clients need to send keepalive messages every N seconds or the server drops
@@ -178,7 +181,7 @@ message SubscribeEnvelopesV1 {
 message SubscribeKeepaliveV1 {
     // The subscription identifier(s) to send the keepalive for.
     // The id(s) are issued by the server and are communicated as part of the
-	// SubscriptionAcceptAckV1 response.
+    // SubscriptionAcceptAckV1 response.
     repeated bytes id = 1;
 }
 
@@ -187,3 +190,19 @@ message SubscribeCancelV1 {
     // subscription identifier to cancel
     required bytes id = 1;
 }
+
+// Registers a plugin with the server
+message RegisterPluginV1 {
+    // Name of the plugin. Must be unique per server instance
+    required string name = 1;
+
+    // Lua code providing plugin capabilities
+    required string lua_code = 2;
+}
+
+// Unregister a plugin with the server
+message UnregisterPluginV1 {
+    // Name of the plugin to unregister/unload
+    required string name = 1;
+}
+

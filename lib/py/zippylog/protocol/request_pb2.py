@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/request.proto',
   package='zippylog.protocol.request',
-  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x08\n\x06PingV1\"\x0f\n\rGetFeaturesV1\"\x10\n\x0eGetStoreInfoV1\"\x1f\n\x0fGetBucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\"\n\x12GetStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\x1f\n\x0fGetStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"t\n\x12GetStreamSegmentV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x14\n\x0cstart_offset\x18\x02 \x02(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x04 \x01(\r\"h\n\x0fWriteEnvelopeV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x10\n\x08\x65nvelope\x18\x02 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x03 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x04 \x01(\x08:\x05\x66\x61lse\"u\n\x1bWriteEnvelopeFromMessagesV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0f\n\x07message\x18\x02 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x04 \x03(\rB\x02\x10\x01\"\'\n\x17SubscribeStoreChangesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\"\xa3\x01\n\x14SubscribeEnvelopesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08lua_code\x18\x05 \x01(\t\x12\x1c\n\x10\x66ilter_namespace\x18\x02 \x03(\rB\x02\x10\x01\x12(\n\x1c\x66ilter_enumeration_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12#\n\x17\x66ilter_enumeration_type\x18\x04 \x03(\rB\x02\x10\x01\"\"\n\x14SubscribeKeepaliveV1\x12\n\n\x02id\x18\x01 \x03(\x0c\"\x1f\n\x11SubscribeCancelV1\x12\n\n\x02id\x18\x01 \x02(\x0c')
+  serialized_pb='\n\x1fzippylog/protocol/request.proto\x12\x19zippylog.protocol.request\"\x08\n\x06PingV1\"\x0f\n\rGetFeaturesV1\"\x10\n\x0eGetStoreInfoV1\"\x1f\n\x0fGetBucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\"\n\x12GetStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"\x1f\n\x0fGetStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\"t\n\x12GetStreamSegmentV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x14\n\x0cstart_offset\x18\x02 \x02(\x04\x12\x1a\n\x12max_response_bytes\x18\x03 \x01(\r\x12\x1e\n\x16max_response_envelopes\x18\x04 \x01(\r\"h\n\x0fWriteEnvelopeV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x10\n\x08\x65nvelope\x18\x02 \x03(\x0c\x12\x19\n\x0b\x61\x63knowledge\x18\x03 \x01(\x08:\x04true\x12\x1a\n\x0bsynchronous\x18\x04 \x01(\x08:\x05\x66\x61lse\"u\n\x1bWriteEnvelopeFromMessagesV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0f\n\x07message\x18\x02 \x03(\x0c\x12\x1d\n\x11message_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12\x18\n\x0cmessage_type\x18\x04 \x03(\rB\x02\x10\x01\"\'\n\x17SubscribeStoreChangesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\"\xa3\x01\n\x14SubscribeEnvelopesV1\x12\x0c\n\x04path\x18\x01 \x03(\t\x12\x10\n\x08lua_code\x18\x05 \x01(\t\x12\x1c\n\x10\x66ilter_namespace\x18\x02 \x03(\rB\x02\x10\x01\x12(\n\x1c\x66ilter_enumeration_namespace\x18\x03 \x03(\rB\x02\x10\x01\x12#\n\x17\x66ilter_enumeration_type\x18\x04 \x03(\rB\x02\x10\x01\"\"\n\x14SubscribeKeepaliveV1\x12\n\n\x02id\x18\x01 \x03(\x0c\"\x1f\n\x11SubscribeCancelV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"2\n\x10RegisterPluginV1\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x10\n\x08lua_code\x18\x02 \x02(\t\"\"\n\x12UnregisterPluginV1\x12\x0c\n\x04name\x18\x01 \x02(\t')
 
 
 
@@ -450,6 +450,69 @@ _SUBSCRIBECANCELV1 = descriptor.Descriptor(
   serialized_end=826,
 )
 
+
+_REGISTERPLUGINV1 = descriptor.Descriptor(
+  name='RegisterPluginV1',
+  full_name='zippylog.protocol.request.RegisterPluginV1',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='name', full_name='zippylog.protocol.request.RegisterPluginV1.name', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='lua_code', full_name='zippylog.protocol.request.RegisterPluginV1.lua_code', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=828,
+  serialized_end=878,
+)
+
+
+_UNREGISTERPLUGINV1 = descriptor.Descriptor(
+  name='UnregisterPluginV1',
+  full_name='zippylog.protocol.request.UnregisterPluginV1',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='name', full_name='zippylog.protocol.request.UnregisterPluginV1.name', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=880,
+  serialized_end=914,
+)
+
 DESCRIPTOR.message_types_by_name['PingV1'] = _PINGV1
 DESCRIPTOR.message_types_by_name['GetFeaturesV1'] = _GETFEATURESV1
 DESCRIPTOR.message_types_by_name['GetStoreInfoV1'] = _GETSTOREINFOV1
@@ -463,6 +526,8 @@ DESCRIPTOR.message_types_by_name['SubscribeStoreChangesV1'] = _SUBSCRIBESTORECHA
 DESCRIPTOR.message_types_by_name['SubscribeEnvelopesV1'] = _SUBSCRIBEENVELOPESV1
 DESCRIPTOR.message_types_by_name['SubscribeKeepaliveV1'] = _SUBSCRIBEKEEPALIVEV1
 DESCRIPTOR.message_types_by_name['SubscribeCancelV1'] = _SUBSCRIBECANCELV1
+DESCRIPTOR.message_types_by_name['RegisterPluginV1'] = _REGISTERPLUGINV1
+DESCRIPTOR.message_types_by_name['UnregisterPluginV1'] = _UNREGISTERPLUGINV1
 
 class PingV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -568,6 +633,22 @@ class SubscribeCancelV1(message.Message):
   ZIPPYLOG_ENUMERATION = 83
   # @@protoc_insertion_point(class_scope:zippylog.protocol.request.SubscribeCancelV1)
 
+class RegisterPluginV1(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _REGISTERPLUGINV1
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 111
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.request.RegisterPluginV1)
+
+class UnregisterPluginV1(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _UNREGISTERPLUGINV1
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 112
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.request.UnregisterPluginV1)
+
 register_message(1, 91, 'zippylog.protocol.request_pb2', 'PingV1')
 register_message(1, 72, 'zippylog.protocol.request_pb2', 'GetFeaturesV1')
 register_message(1, 73, 'zippylog.protocol.request_pb2', 'GetStoreInfoV1')
@@ -581,4 +662,6 @@ register_message(1, 80, 'zippylog.protocol.request_pb2', 'SubscribeStoreChangesV
 register_message(1, 81, 'zippylog.protocol.request_pb2', 'SubscribeEnvelopesV1')
 register_message(1, 82, 'zippylog.protocol.request_pb2', 'SubscribeKeepaliveV1')
 register_message(1, 83, 'zippylog.protocol.request_pb2', 'SubscribeCancelV1')
+register_message(1, 111, 'zippylog.protocol.request_pb2', 'RegisterPluginV1')
+register_message(1, 112, 'zippylog.protocol.request_pb2', 'UnregisterPluginV1')
 # @@protoc_insertion_point(module_scope)

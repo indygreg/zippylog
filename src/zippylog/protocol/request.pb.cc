@@ -58,6 +58,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* SubscribeCancelV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SubscribeCancelV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RegisterPluginV1_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RegisterPluginV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* UnregisterPluginV1_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  UnregisterPluginV1_reflection_ = NULL;
 
 }  // namespace
 
@@ -273,6 +279,37 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeCancelV1));
+  RegisterPluginV1_descriptor_ = file->message_type(13);
+  static const int RegisterPluginV1_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, lua_code_),
+  };
+  RegisterPluginV1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RegisterPluginV1_descriptor_,
+      RegisterPluginV1::default_instance_,
+      RegisterPluginV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RegisterPluginV1));
+  UnregisterPluginV1_descriptor_ = file->message_type(14);
+  static const int UnregisterPluginV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnregisterPluginV1, name_),
+  };
+  UnregisterPluginV1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      UnregisterPluginV1_descriptor_,
+      UnregisterPluginV1::default_instance_,
+      UnregisterPluginV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnregisterPluginV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnregisterPluginV1, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(UnregisterPluginV1));
 }
 
 namespace {
@@ -311,6 +348,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     SubscribeKeepaliveV1_descriptor_, &SubscribeKeepaliveV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeCancelV1_descriptor_, &SubscribeCancelV1::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RegisterPluginV1_descriptor_, &RegisterPluginV1::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    UnregisterPluginV1_descriptor_, &UnregisterPluginV1::default_instance());
 }
 
 }  // namespace
@@ -342,6 +383,10 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto() {
   delete SubscribeKeepaliveV1_reflection_;
   delete SubscribeCancelV1::default_instance_;
   delete SubscribeCancelV1_reflection_;
+  delete RegisterPluginV1::default_instance_;
+  delete RegisterPluginV1_reflection_;
+  delete UnregisterPluginV1::default_instance_;
+  delete UnregisterPluginV1_reflection_;
 }
 
 void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
@@ -371,7 +416,9 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "\n\034filter_enumeration_namespace\030\003 \003(\rB\002\020\001"
     "\022#\n\027filter_enumeration_type\030\004 \003(\rB\002\020\001\"\"\n"
     "\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \003(\014\"\037\n\021Sub"
-    "scribeCancelV1\022\n\n\002id\030\001 \002(\014", 826);
+    "scribeCancelV1\022\n\n\002id\030\001 \002(\014\"2\n\020RegisterPl"
+    "uginV1\022\014\n\004name\030\001 \002(\t\022\020\n\010lua_code\030\002 \002(\t\"\""
+    "\n\022UnregisterPluginV1\022\014\n\004name\030\001 \002(\t", 914);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   PingV1::default_instance_ = new PingV1();
@@ -387,6 +434,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   SubscribeEnvelopesV1::default_instance_ = new SubscribeEnvelopesV1();
   SubscribeKeepaliveV1::default_instance_ = new SubscribeKeepaliveV1();
   SubscribeCancelV1::default_instance_ = new SubscribeCancelV1();
+  RegisterPluginV1::default_instance_ = new RegisterPluginV1();
+  UnregisterPluginV1::default_instance_ = new UnregisterPluginV1();
   PingV1::default_instance_->InitAsDefaultInstance();
   GetFeaturesV1::default_instance_->InitAsDefaultInstance();
   GetStoreInfoV1::default_instance_->InitAsDefaultInstance();
@@ -400,6 +449,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   SubscribeEnvelopesV1::default_instance_->InitAsDefaultInstance();
   SubscribeKeepaliveV1::default_instance_->InitAsDefaultInstance();
   SubscribeCancelV1::default_instance_->InitAsDefaultInstance();
+  RegisterPluginV1::default_instance_->InitAsDefaultInstance();
+  UnregisterPluginV1::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto);
 }
 
@@ -3715,6 +3766,513 @@ void SubscribeCancelV1::Swap(SubscribeCancelV1* other) {
 }
 
 
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RegisterPluginV1::kNameFieldNumber;
+const int RegisterPluginV1::kLuaCodeFieldNumber;
+#endif  // !_MSC_VER
+
+RegisterPluginV1::RegisterPluginV1()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void RegisterPluginV1::InitAsDefaultInstance() {
+}
+
+RegisterPluginV1::RegisterPluginV1(const RegisterPluginV1& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void RegisterPluginV1::SharedCtor() {
+  _cached_size_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  lua_code_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RegisterPluginV1::~RegisterPluginV1() {
+  SharedDtor();
+}
+
+void RegisterPluginV1::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (lua_code_ != &::google::protobuf::internal::kEmptyString) {
+    delete lua_code_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void RegisterPluginV1::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RegisterPluginV1::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RegisterPluginV1_descriptor_;
+}
+
+const RegisterPluginV1& RegisterPluginV1::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
+}
+
+RegisterPluginV1* RegisterPluginV1::default_instance_ = NULL;
+
+RegisterPluginV1* RegisterPluginV1::New() const {
+  return new RegisterPluginV1;
+}
+
+void RegisterPluginV1::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+    if (has_lua_code()) {
+      if (lua_code_ != &::google::protobuf::internal::kEmptyString) {
+        lua_code_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RegisterPluginV1::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string name = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_lua_code;
+        break;
+      }
+      
+      // required string lua_code = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_lua_code:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_lua_code()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->lua_code().data(), this->lua_code().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void RegisterPluginV1::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->name(), output);
+  }
+  
+  // required string lua_code = 2;
+  if (has_lua_code()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->lua_code().data(), this->lua_code().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->lua_code(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* RegisterPluginV1::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+  
+  // required string lua_code = 2;
+  if (has_lua_code()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->lua_code().data(), this->lua_code().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->lua_code(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int RegisterPluginV1::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string name = 1;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+    
+    // required string lua_code = 2;
+    if (has_lua_code()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->lua_code());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RegisterPluginV1::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RegisterPluginV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RegisterPluginV1*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RegisterPluginV1::MergeFrom(const RegisterPluginV1& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_lua_code()) {
+      set_lua_code(from.lua_code());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RegisterPluginV1::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RegisterPluginV1::CopyFrom(const RegisterPluginV1& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RegisterPluginV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void RegisterPluginV1::Swap(RegisterPluginV1* other) {
+  if (other != this) {
+    std::swap(name_, other->name_);
+    std::swap(lua_code_, other->lua_code_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RegisterPluginV1::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RegisterPluginV1_descriptor_;
+  metadata.reflection = RegisterPluginV1_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int UnregisterPluginV1::kNameFieldNumber;
+#endif  // !_MSC_VER
+
+UnregisterPluginV1::UnregisterPluginV1()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void UnregisterPluginV1::InitAsDefaultInstance() {
+}
+
+UnregisterPluginV1::UnregisterPluginV1(const UnregisterPluginV1& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void UnregisterPluginV1::SharedCtor() {
+  _cached_size_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+UnregisterPluginV1::~UnregisterPluginV1() {
+  SharedDtor();
+}
+
+void UnregisterPluginV1::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void UnregisterPluginV1::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* UnregisterPluginV1::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return UnregisterPluginV1_descriptor_;
+}
+
+const UnregisterPluginV1& UnregisterPluginV1::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
+}
+
+UnregisterPluginV1* UnregisterPluginV1::default_instance_ = NULL;
+
+UnregisterPluginV1* UnregisterPluginV1::New() const {
+  return new UnregisterPluginV1;
+}
+
+void UnregisterPluginV1::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool UnregisterPluginV1::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string name = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void UnregisterPluginV1::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->name(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* UnregisterPluginV1::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int UnregisterPluginV1::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string name = 1;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void UnregisterPluginV1::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const UnregisterPluginV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const UnregisterPluginV1*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void UnregisterPluginV1::MergeFrom(const UnregisterPluginV1& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void UnregisterPluginV1::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void UnregisterPluginV1::CopyFrom(const UnregisterPluginV1& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool UnregisterPluginV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void UnregisterPluginV1::Swap(UnregisterPluginV1* other) {
+  if (other != this) {
+    std::swap(name_, other->name_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata UnregisterPluginV1::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = UnregisterPluginV1_descriptor_;
+  metadata.reflection = UnregisterPluginV1_reflection_;
+  return metadata;
+}
+
+
 
 bool PingV1::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
@@ -3817,6 +4375,22 @@ bool SubscribeCancelV1::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool SubscribeCancelV1::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool RegisterPluginV1::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool RegisterPluginV1::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool UnregisterPluginV1::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool UnregisterPluginV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 // @@protoc_insertion_point(namespace_scope)
