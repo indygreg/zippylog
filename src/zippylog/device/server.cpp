@@ -42,8 +42,8 @@ using ::zippylog::platform::Thread;
 using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
-using ::zippylog::device::Streamer;
-using ::zippylog::device::StreamerStartParams;
+using ::zippylog::device::PersistedStateReactor;
+using ::zippylog::device::PersistedStateReactorStartParams;
 using ::zippylog::device::server::WatcherStartParams;
 using ::zippylog::device::server::Watcher;
 using ::zippylog::device::server::Worker;
@@ -62,7 +62,7 @@ Server::Server(ServerStartParams &params) :
     store_path(params.store_path),
     listen_endpoints(params.listen_endpoints),
     number_worker_threads(params.worker_threads),
-    number_streaming_threads(params.streaming_threads),
+    number_persisted_reactor_threads(params.persisted_state_reactor_threads),
     subscription_ttl(params.subscription_ttl),
     log_bucket(params.log_bucket),
     log_stream_set(params.log_stream_set),
@@ -422,19 +422,20 @@ bool Server::SynchronizeStartParams()
     this->store_watcher_params.params = swparams;
     this->store_watcher_params.socket_endpoint = this->store_changes_input_endpoint;
 
-    // streamer
-    this->streamer_params.client_endpoint = this->streaming_endpoint;
-    this->streamer_params.store_changes_endpoint = this->store_changes_output_endpoint;
-    this->streamer_params.logging_endpoint = this->logger_endpoint;
-    this->streamer_params.subscriptions_endpoint = this->streaming_subscriptions_endpoint;
-    this->streamer_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
+    // persisted state reactor
+    this->persisted_state_reactor_params.client_endpoint = this->streaming_endpoint;
+    this->persisted_state_reactor_params.store_change_endpoint = this->store_changes_output_endpoint;
+    this->persisted_state_reactor_params.logger_endpoint = this->logger_endpoint;
+    this->persisted_state_reactor_params.subscription_endpoint = this->streaming_subscriptions_endpoint;
+    this->persisted_state_reactor_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
 
-    this->streamer_params.ctx = this->zctx;
-    this->streamer_params.store_path = this->store_path;
-    this->streamer_params.subscription_ttl = this->subscription_ttl;
-    this->streamer_params.lua_allow = this->lua_execute_client_code;
-    this->streamer_params.lua_max_memory = this->lua_streaming_max_memory;
-    this->streamer_params.active = &this->active;
+    this->persisted_state_reactor_params.ctx = this->zctx;
+    this->persisted_state_reactor_params.active = &this->active;
+
+    this->persisted_state_reactor_params.manager_params.store_uri = this->store_path;
+    this->persisted_state_reactor_params.manager_params.subscription_ttl = this->subscription_ttl;
+    this->persisted_state_reactor_params.manager_params.subscription_lua_allow = this->lua_execute_client_code;
+    this->persisted_state_reactor_params.manager_params.subscription_lua_memory_ceiling = this->lua_streaming_max_memory;
 
     // store writer
     this->store_writer_params.ctx = this->zctx;
@@ -501,13 +502,13 @@ bool Server::Start()
     }
 
     // and the streamers
-    for (int i = this->number_streaming_threads; i; --i) {
-        if (!this->CreateStreamingThread()) return false;
+    for (int i = this->number_persisted_reactor_threads; i; --i) {
+        if (!this->CreatePersistedStateReactorThread()) return false;
     }
 
     this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
 
-    // @todo on threads properly
+    // @todo wait on threads properly
     platform::sleep(100);
 
     // bind sockets to listen for client requests
@@ -575,9 +576,11 @@ bool Server::CreateWorkerThread()
     return true;
 }
 
-bool Server::CreateStreamingThread()
+bool Server::CreatePersistedStateReactorThread()
 {
-    this->streaming_threads.push_back(new Thread(Server::StreamingStart, &this->streamer_params));
+    this->persisted_state_reactor_threads.push_back(
+        new Thread(Server::PersistedStateReactorStart, &this->persisted_state_reactor_params)
+    );
 
     return true;
 }
@@ -601,8 +604,8 @@ void Server::CheckThreads()
         }
     }
 
-    for (size_t i = 0; i < this->streaming_threads.size(); i++) {
-        if (!this->streaming_threads[i]->Alive()) {
+    for (size_t i = 0; i < this->persisted_state_reactor_threads.size(); i++) {
+        if (!this->persisted_state_reactor_threads[i]->Alive()) {
             this->Shutdown();
             return;
         }
@@ -625,11 +628,11 @@ void Server::Shutdown()
     this->worker_threads.clear();
 
     // wait for streaming threads to terminate
-    for (i = this->streaming_threads.begin(); i < this->streaming_threads.end(); i++) {
+    for (i = this->persisted_state_reactor_threads.begin(); i < this->persisted_state_reactor_threads.end(); i++) {
         (*i)->Join();
         delete *i;
     }
-    this->streaming_threads.clear();
+    this->persisted_state_reactor_threads.clear();
 
     if (this->store_watcher_thread) {
         this->store_watcher_thread->Join();
@@ -709,8 +712,8 @@ bool Server::ParseConfig(const string path, ServerStartParams &params, string &e
     lua_pop(L, 1);
 
     // number of streaming threads to run
-    lua_getglobal(L, "streaming_threads");
-    params.streaming_threads = luaL_optinteger(L, -1, ::zippylog::server_default_streaming_threads);
+    lua_getglobal(L, "persisted_state_reactor_threads");
+    params.persisted_state_reactor_threads = luaL_optinteger(L, -1, ::zippylog::server_default_persisted_state_reactor_threads);
     lua_pop(L, 1);
 
     // time to live of streaming subscriptions in milliseconds
@@ -776,12 +779,12 @@ void * Server::StoreWatcherStart(void *d)
     return (void *)0;
 }
 
-void * Server::StreamingStart(void *d)
+void * Server::PersistedStateReactorStart(void *d)
 {
-    StreamerStartParams *params = (StreamerStartParams *)d;
+    PersistedStateReactorStartParams *params = (PersistedStateReactorStartParams *)d;
     try {
-        Streamer streamer(*params);
-        streamer.Run();
+        PersistedStateReactor reactor(*params);
+        reactor.Run();
     }
     catch (::std::exception e) {
         string error = e.what();

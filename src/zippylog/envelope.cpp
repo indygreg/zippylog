@@ -47,7 +47,7 @@ Envelope::Envelope(message_t &msg, uint32 offset)
     this->InitializeFromBuffer((const void *)((char *)msg.data() + offset), msg.size() - offset);
 }
 
-Envelope::Envelope( const void * data, int size) : messages(NULL), messages_size(0)
+Envelope::Envelope(const void * data, int size) : messages(NULL), messages_size(0)
 {
     if (!data) throw invalid_argument("NULL data pointer");
     if (!size) throw invalid_argument("0 size data buffer");

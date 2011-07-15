@@ -100,11 +100,9 @@ class ZIPPYLOG_EXPORT EnvelopeSubscriptionResponseState {
 public:
     /// Construct a state for sending an envelope subscription response
     ///
-    /// @param sock Socket to send responses to
     /// @param subscription Subscription record
-    EnvelopeSubscriptionResponseState(::zmq::socket_t *socket, const SubscriptionInfo &subscription) :
+    EnvelopeSubscriptionResponseState(const SubscriptionInfo &subscription) :
         finalized(false),
-        sock(socket),
         id(subscription.id),
         identities(subscription.socket_identifiers),
         current_size(0)
@@ -125,7 +123,6 @@ public:
 
 protected:
     bool finalized;
-    ::zmq::socket_t *sock;
     ::std::string id;
     ::std::vector< ::std::string > identities;
     uint32 current_size;
@@ -276,14 +273,23 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// it is provided public just in case.
         ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
-        /// Sends a subscription store change response through a socket
+        /// Sends a subscription store change response for an added path
         ///
         /// @param sock Socket to send response through
-        /// @param subscription Subscription record used to populate metadata
-        /// @param e Envelope containing store change message
-        static bool SendSubscriptionStoreChangeResponse(::zmq::socket_t &sock,
-                                                        const SubscriptionInfo &subscription,
-                                                        const Envelope &e);
+        /// @param subscription Subscription record
+        /// @param path Path that was added
+        static bool SendSubscriptionStoreChangePathAddedResponse(::zmq::socket_t &sock,
+                                                                 const SubscriptionInfo &subscription,
+                                                                 const ::std::string &path);
+
+        /// Sends a subscription store change response for a deleted path
+        ///
+        /// @param sock Socket to send response through
+        /// @param subscription Subscription record
+        /// @param path Path that was deleted
+        static bool SendSubscriptionStoreChangePathDeletedResponse(::zmq::socket_t &sock,
+                                                                   const SubscriptionInfo &subscription,
+                                                                   const ::std::string &path);
 
         /// Sends a subscription envelope response
         ///
@@ -302,8 +308,10 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// code to send many envelopes without having to worry about all the
         /// details.
         ///
+        /// @param sock Socket to send response through
         /// @param state State keeping track of what to send
-        static bool SendSubscriptionEnvelopeResponse(EnvelopeSubscriptionResponseState &state);
+        static bool SendSubscriptionEnvelopeResponse(::zmq::socket_t &sock,
+                                                     EnvelopeSubscriptionResponseState &state);
 
     protected:
         /// Callback to handle a validated request for a subscription

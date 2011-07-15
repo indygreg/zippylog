@@ -251,6 +251,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\persisted_state_manager_unittest.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform_unittest.cpp"
 				>
 			</File>
@@ -268,10 +272,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\stream_unittest.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\streamer_unittest.cpp"
 				>
 			</File>
 			<File

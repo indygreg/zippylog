@@ -106,7 +106,7 @@ class ServerTest : public ::testing::Test
             p.listen_endpoints.push_back("inproc://sandbox");
             p.store_path = "simpledirectory://" + SANDBOX_PATH;
             p.ctx = &this->ctx;
-            p.streaming_threads = 1;
+            p.persisted_state_reactor_threads = 1;
 
             p.log_bucket.clear();
             p.log_stream_set.clear();

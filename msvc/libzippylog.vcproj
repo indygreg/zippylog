@@ -314,6 +314,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\persisted_state_manager.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\persisted_state_reactor.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform.cpp"
 				>
 			</File>
@@ -367,10 +375,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\stream.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\streamer.cpp"
 				>
 			</File>
 			<File
@@ -428,6 +432,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\persisted_state_manager.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\persisted_state_reactor.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\platform.hpp"
 				>
 			</File>
@@ -473,10 +485,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\stream.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\streamer.hpp"
 				>
 			</File>
 			<File

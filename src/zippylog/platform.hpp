@@ -128,8 +128,15 @@ namespace platform {
     } UUID;
 
     // creates a new UUID
-    // UUID type is not defined yet
     ZIPPYLOG_EXPORT bool CreateUUID(UUID &u);
+
+    /// Creates a new UUID and returns the result in a string
+    ///
+    /// Throws an exception if a UUID could not be created.
+    ///
+    /// @param format If true, string is a formatted UUID, else it is the raw
+    /// 16 bytes
+    ZIPPYLOG_EXPORT ::std::string CreateUUID(bool format = false);
 
     /// Formats the passed UUID data into a string
     ///
