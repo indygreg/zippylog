@@ -181,12 +181,12 @@ public:
     /// Loads user-supplied Lua code into the interpreter
     ///
     /// @return Whether code loaded without error
-    bool LoadLuaCode(const ::std::string &code, ::std::string &error);
+    bool LoadLuaCode(::std::string const &code, ::std::string &error);
 
     /// Loads Lua code from a file into the interpret
     ///
     /// @return Whether code loaded without error
-    bool LoadFile(const ::std::string &filename, ::std::string &error);
+    bool LoadFile(::std::string const &filename, ::std::string &error);
 
     /// Loads the string standard library into the Lua interpreter
     ///
@@ -201,7 +201,7 @@ public:
     /// If there is no load string function registered, will return false.
     ///
     /// @return whether we executed any Lua code
-    bool ExecuteLoadString(const ::std::string &s, LoadStringResult &result);
+    bool ExecuteLoadString(::std::string const &s, LoadStringResult &result);
 
     /// Executes the subscription envelope filter callback
     ///
@@ -209,7 +209,7 @@ public:
     /// details of the execution.
     ///
     /// @return whether we executed any Lua code
-    bool ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const ::std::string &path, EnvelopeFilterResult &result);
+    bool ExecuteSubscriptionEnvelopeFilter(Envelope const &e, ::std::string const &path, EnvelopeFilterResult &result);
 
     /// Custom memory allocatio function for Lua states
     static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
@@ -229,15 +229,15 @@ protected:
     /// Obtain the integer value of a global variable
     ///
     /// This is a convenience method. It likely has no use outside of testing
-    bool GetGlobal(const ::std::string &s, int64 &value);
+    bool GetGlobal(::std::string const &s, int64 &value);
 
     /// Obtain the string value of a global variable
     ///
     /// This is a convenience method and likely has no use outside of testing
-    bool GetGlobal(const ::std::string &s, ::std::string &value);
+    bool GetGlobal(::std::string const &s, ::std::string &value);
 
     /// Pushes an envelope onto the Lua stack
-    bool PushEnvelope(const Envelope &e);
+    bool PushEnvelope(Envelope const &e);
 
     /// Member variables
     lua_State *L;
@@ -252,8 +252,8 @@ protected:
     bool have_subscription_timer;
 
 private:
-    LuaState(const LuaState &);
-    LuaState & operator=(const LuaState &);
+    LuaState(LuaState const &);
+    LuaState & operator=(LuaState const &);
 
     FRIEND_TEST(LuaTest, EnvelopeApi);
     FRIEND_TEST(LuaTest, GetGlobalInteger);

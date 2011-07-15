@@ -107,7 +107,7 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
 }
 
 
-FileInputStream::FileInputStream(const string &path, int64 offset) :
+FileInputStream::FileInputStream(string const &path, int64 offset) :
     InputStream(), fis(NULL)
 {
     if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
@@ -213,7 +213,7 @@ bool OutputStream::WriteData(const void *data, int length)
     return true;
 }
 
-FileOutputStream::FileOutputStream(const string &path, bool write_lock) : OutputStream(), os(NULL)
+FileOutputStream::FileOutputStream(string const &path, bool write_lock) : OutputStream(), os(NULL)
 {
     int flags = platform::File::CREATE | platform::File::APPEND | platform::File::WRITE | platform::File::BINARY;
 

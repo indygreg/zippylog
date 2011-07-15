@@ -60,7 +60,7 @@ namespace zippylog {
 class ZIPPYLOG_EXPORT Exception : public ::std::runtime_error
 {
     public:
-        Exception(const ::std::string &msg) : ::std::runtime_error(msg) { }
+        Exception(::std::string const &msg) : ::std::runtime_error(msg) { }
 };
 
 /// An error when deserializing a message

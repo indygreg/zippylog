@@ -74,11 +74,11 @@ namespace platform {
         enum FileType type;
     } DirectoryEntry;
 
-    ZIPPYLOG_EXPORT bool DirectoryEntries(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(const ::std::string &dir, ::std::vector< ::std::string > &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const ::std::string &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(const ::std::string &dir, ::std::vector< ::std::string > &v);
+    ZIPPYLOG_EXPORT bool DirectoryEntries(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir, ::std::vector< ::std::string > &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir, ::std::vector< ::std::string > &v);
 
     typedef struct FileStat {
         FileType type;
@@ -111,17 +111,17 @@ namespace platform {
 
     ZIPPYLOG_EXPORT bool PathIsDirectory(const ::std::string path);
 
-    ZIPPYLOG_EXPORT bool PathIsRegularFile(const ::std::string &path);
+    ZIPPYLOG_EXPORT bool PathIsRegularFile(::std::string const &path);
 
     // obtains a list of directories in a directory
     // recursively descends the path and finds all child directories
-    ZIPPYLOG_EXPORT bool DirectoriesInTree(const ::std::string &path, ::std::vector< ::std::string > &paths);
+    ZIPPYLOG_EXPORT bool DirectoriesInTree(::std::string const &path, ::std::vector< ::std::string > &paths);
 
     /// Recursively remove a specified directory
-    ZIPPYLOG_EXPORT bool RemoveDirectory(const ::std::string &path);
+    ZIPPYLOG_EXPORT bool RemoveDirectory(::std::string const &path);
 
     // joins two filesystem paths and returns the result
-    ZIPPYLOG_EXPORT ::std::string PathJoin(const ::std::string &a, const ::std::string &b);
+    ZIPPYLOG_EXPORT ::std::string PathJoin(::std::string const &a, ::std::string const &b);
 
     typedef struct UUID {
         unsigned char data[16];
@@ -149,7 +149,7 @@ namespace platform {
 
         // open a file at path with the FileFlags specified
         // returns whether file opened successfully
-        bool Open(const ::std::string &path, int flags);
+        bool Open(::std::string const &path, int flags);
 
         // close the file
         bool Close();
@@ -281,7 +281,7 @@ namespace platform {
         ~DirectoryWatcher();
 
         // create a construct that watches the specified directory
-        DirectoryWatcher(const ::std::string &directory, bool recurse=true);
+        DirectoryWatcher(::std::string const &directory, bool recurse=true);
 
         // Wait up to N microseconds for changes to the directory or forever,
         // if -1 is given as the timeout value
@@ -304,8 +304,8 @@ namespace platform {
 
     private:
         DirectoryWatcher();
-        DirectoryWatcher(const DirectoryWatcher &orig);
-        DirectoryWatcher & operator=(const DirectoryWatcher &orig);
+        DirectoryWatcher(DirectoryWatcher const &orig);
+        DirectoryWatcher & operator=(DirectoryWatcher const &orig);
 
 #ifdef WINDOWS
         HANDLE directory;
@@ -344,8 +344,8 @@ namespace platform {
 #endif
 
     private:
-        Thread(const Thread &orig);
-        Thread & operator=(const Thread &orig);
+        Thread(Thread const &orig);
+        Thread & operator=(Thread const &orig);
     };
 
     /// A conditional variable that can be waited upon for completion

@@ -68,7 +68,7 @@ class ZIPPYLOG_EXPORT Envelope {
         /// stored in the passed string.
         ///
         /// It also sets the created time to the current time.
-        Envelope(const ::std::string &s);
+        Envelope(::std::string const &s);
 
         ~Envelope();
 
@@ -76,25 +76,25 @@ class ZIPPYLOG_EXPORT Envelope {
         ///
         /// The produced envelope is a deep copy. Modifications to one should
         /// not affect the other.
-        Envelope & operator=(const Envelope &orig);
+        Envelope & operator=(Envelope const &orig);
 
         /// Construct an envelope from another one
         ///
         /// This behaves similarly to the assignment operator. A deep
         /// copy is performed.
-        Envelope(const Envelope &e);
+        Envelope(Envelope const &e);
 
         /// Whether this envelope is equivalent to another one
         ///
         /// Will perform a deep compare of all envelope elements, including
         /// embedded messages. Will return true if two separate envelope
         /// instances contain the same data.
-        bool operator==(const Envelope &other) const;
+        bool operator==(Envelope const &other) const;
 
         /// Whether two envelopes are not equal
         ///
         /// This returns the opposite of the == operator
-        bool operator!=(const Envelope &other) const;
+        bool operator!=(Envelope const &other) const;
 
         /// Serialize the envelope to the passed string
         ///
@@ -179,13 +179,13 @@ class ZIPPYLOG_EXPORT Envelope {
         }
 
         /// Adds a tag to the envelope
-        inline void AddTag(const ::std::string &s)
+        inline void AddTag(::std::string const &s)
         {
             this->envelope.add_tag(s);
         }
 
         /// Obtains a tag at the specified offset
-        inline const ::std::string & GetTag(int index) const
+        inline ::std::string const & GetTag(int index) const
         {
             return this->envelope.tag(index);
         }
@@ -215,13 +215,13 @@ class ZIPPYLOG_EXPORT Envelope {
         }
 
         /// Obtains the string value field on the envelope
-        inline const ::std::string & GetStringValueField() const
+        inline ::std::string const & GetStringValueField() const
         {
             return this->envelope.string_value();
         }
 
         /// Sets the string value field for the envelope
-        inline void SetStringValueField(const ::std::string &s)
+        inline void SetStringValueField(::std::string const &s)
         {
             this->envelope.set_string_value(s);
         }

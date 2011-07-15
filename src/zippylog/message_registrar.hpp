@@ -53,8 +53,8 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
 
     private:
         MessageRegistrar();
-        MessageRegistrar(const MessageRegistrar & orig);
-        MessageRegistrar & operator=(const MessageRegistrar & orig);
+        MessageRegistrar(MessageRegistrar const & orig);
+        MessageRegistrar & operator=(MessageRegistrar const & orig);
 
         static MessageRegistrar * _instance;
 };

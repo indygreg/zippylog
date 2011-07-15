@@ -28,19 +28,19 @@
 namespace zippylog {
 
 /// Callback used for individual subscription notification of a path added
-typedef void (PersistedStateManagerPathAddedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
+typedef void (PersistedStateManagerPathAddedCallback)(SubscriptionInfo const &, ::std::string const &, void *);
 
 /// Callback for individual subscription notification of a path deleted
-typedef void (PersistedStateManagerPathDeletedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
+typedef void (PersistedStateManagerPathDeletedCallback)(SubscriptionInfo const &, ::std::string const &, void *);
 
-typedef void (PersistedStateManagerStreamAppendedCallback)(const SubscriptionInfo &, EnvelopeSubscriptionResponseState &, void *);
+typedef void (PersistedStateManagerStreamAppendedCallback)(SubscriptionInfo const &, EnvelopeSubscriptionResponseState &, void *);
 
 class PersistedStateManagerSubscriptionRecord
 {
 public:
     PersistedStateManagerSubscriptionRecord();
 
-    PersistedStateManagerSubscriptionRecord(const SubscriptionInfo &subscription, uint32 ttl);
+    PersistedStateManagerSubscriptionRecord(SubscriptionInfo const &subscription, uint32 ttl);
     ~PersistedStateManagerSubscriptionRecord();
 
 protected:
@@ -87,27 +87,27 @@ public:
 /// @todo Add API to retrieve state metadata
 class ZIPPYLOG_EXPORT PersistedStateManager {
 public:
-    PersistedStateManager(const PersistedStateManagerStartParams &params);
+    PersistedStateManager(PersistedStateManagerStartParams const &params);
 
     ~PersistedStateManager();
 
     /// Whether we have a subscription with the specified id
-    bool HasSubscription(const ::std::string &id) const;
+    bool HasSubscription(::std::string const &id) const;
 
     /// Whether we have any store change subscriptions
     bool HaveStoreChangeSubscriptions() const;
 
     /// Whether we have store change subscriptions for the given path
-    bool HaveStoreChangeSubscriptions(const ::std::string &path) const;
+    bool HaveStoreChangeSubscriptions(::std::string const &path) const;
 
     /// Whether we have a subscription for envelopes in the given stream path
-    bool HaveEnvelopeSubscription(const ::std::string &path) const;
+    bool HaveEnvelopeSubscription(::std::string const &path) const;
 
     /// Renews a subscription for the specified id
     ///
     /// This is typically called when a server receives a subscription
     /// keepalive request.
-    bool RenewSubscription(const ::std::string &id);
+    bool RenewSubscription(::std::string const &id);
 
     /// Renews multiple subscriptions from ids
     bool RenewSubscriptions(const ::std::vector < ::std::string > & ids);
@@ -121,10 +121,10 @@ public:
     /// This function will start the subscription TTL timer immediately.
     ///
     /// @todo formalize behavior for duplicate subscriptions
-    void RegisterSubscription(const SubscriptionInfo &subscription);
+    void RegisterSubscription(SubscriptionInfo const &subscription);
 
     /// Unregister a subscription with the id specified
-    void UnregisterSubscription(const ::std::string &id);
+    void UnregisterSubscription(::std::string const &id);
 
     /// Removes expired subscriptions from the manager
     int32 RemoveExpiredSubscriptions();
@@ -137,7 +137,7 @@ public:
     /// The function examines existing subscriptions. If anyone is subscribed,
     /// the passed callback will be invoked, receiving details of the
     /// subscription.
-    void ProcessStoreChangePathAdded(const ::std::string &path,
+    void ProcessStoreChangePathAdded(::std::string const &path,
                                      PersistedStateManagerPathAddedCallback *cb,
                                      void *data = NULL);
 
@@ -145,7 +145,7 @@ public:
     ///
     /// This is very similar to ProcessStoreChangePathAdded(). All the
     /// documentation for that method applies.
-    void ProcessStoreChangePathDeleted(const ::std::string &path,
+    void ProcessStoreChangePathDeleted(::std::string const &path,
                                        PersistedStateManagerPathDeletedCallback *cb,
                                        void *data = NULL);
 
@@ -165,14 +165,14 @@ public:
     /// handle response formulation.
     ///
     /// @todo reduce number of times callback is called (tons of call overhead)
-    void ProcessStoreChangeStreamAppended(const ::std::string &path,
+    void ProcessStoreChangeStreamAppended(::std::string const &path,
                                           const uint64 stream_length,
                                           PersistedStateManagerStreamAppendedCallback *cb,
                                           void *data = NULL);
 
 protected:
     /// Returns whether a path is subscribed to by a subscription
-    static bool IsPathSubscribed(const ::std::string &path, const PersistedStateManagerSubscriptionRecord &subscription);
+    static bool IsPathSubscribed(::std::string const &path, PersistedStateManagerSubscriptionRecord const &subscription);
 
     // params coming from constructor
     ::std::string store_uri;

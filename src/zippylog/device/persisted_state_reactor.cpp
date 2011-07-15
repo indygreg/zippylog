@@ -26,7 +26,7 @@ using ::zmq::socket_t;
 namespace zippylog {
 namespace device {
 
-PersistedStateReactor::PersistedStateReactor(const PersistedStateReactorStartParams &params) :
+PersistedStateReactor::PersistedStateReactor(PersistedStateReactorStartParams const &params) :
     ctx(params.ctx),
     store_changes_endpoint(params.store_change_endpoint),
     client_endpoint(params.client_endpoint),
@@ -306,7 +306,7 @@ void PersistedStateReactor::ProcessSubscriptionUpdate(zmq::message_t &msg)
     }
 }
 
-void PersistedStateReactor::PathAddedCallback(const SubscriptionInfo &subscription, const string &path, void *data)
+void PersistedStateReactor::PathAddedCallback(SubscriptionInfo const &subscription, string const &path, void *data)
 {
     assert(data);
 
@@ -315,7 +315,7 @@ void PersistedStateReactor::PathAddedCallback(const SubscriptionInfo &subscripti
     RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(*reactor->client_sock, subscription, path);
 }
 
-void PersistedStateReactor::PathDeletedCallback(const zippylog::SubscriptionInfo &subscription, const std::string &path, void *data)
+void PersistedStateReactor::PathDeletedCallback(zippylog::SubscriptionInfo const &subscription, std::string const &path, void *data)
 {
     assert(data);
 
@@ -324,7 +324,7 @@ void PersistedStateReactor::PathDeletedCallback(const zippylog::SubscriptionInfo
     RequestProcessor::SendSubscriptionStoreChangePathDeletedResponse(*reactor->client_sock, subscription, path);
 }
 
-void PersistedStateReactor::StreamAppendedCallback(const zippylog::SubscriptionInfo &, zippylog::EnvelopeSubscriptionResponseState &state, void *data)
+void PersistedStateReactor::StreamAppendedCallback(zippylog::SubscriptionInfo const &, zippylog::EnvelopeSubscriptionResponseState &state, void *data)
 {
     assert(data);
 

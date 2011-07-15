@@ -87,7 +87,7 @@ HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::Subscriptio
     return result;
 }
 
-int Worker::HandleWriteEnvelopes(const ::std::string &, ::std::vector<Envelope> &, bool)
+int Worker::HandleWriteEnvelopes(::std::string const &, ::std::vector<Envelope> &, bool)
 {
     /// @todo implement
     throw Exception("TODO implement Worker::HandleWriteEnvelopes");

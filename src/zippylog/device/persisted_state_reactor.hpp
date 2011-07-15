@@ -68,7 +68,7 @@ public:
 /// Run(), which will block until the device is shut down.
 class ZIPPYLOG_EXPORT PersistedStateReactor {
 public:
-    PersistedStateReactor(const PersistedStateReactorStartParams &params);
+    PersistedStateReactor(PersistedStateReactorStartParams const &params);
 
     ~PersistedStateReactor();
 
@@ -84,9 +84,9 @@ public:
     void Pump(int32 timeout_microseconds);
 protected:
 
-    static void PathAddedCallback(const SubscriptionInfo &subscription, const ::std::string &path, void *data);
-    static void PathDeletedCallback(const SubscriptionInfo &subscription, const ::std::string &path, void *data);
-    static void StreamAppendedCallback(const SubscriptionInfo &subscription, EnvelopeSubscriptionResponseState &state, void *data);
+    static void PathAddedCallback(SubscriptionInfo const &subscription, ::std::string const &path, void *data);
+    static void PathDeletedCallback(SubscriptionInfo const &subscription, ::std::string const &path, void *data);
+    static void StreamAppendedCallback(SubscriptionInfo const &subscription, EnvelopeSubscriptionResponseState &state, void *data);
 
     /// Initializes the object
     ///
@@ -126,8 +126,8 @@ protected:
 
 private:
     // disallow copy constructor and assignment operator
-    PersistedStateReactor(const PersistedStateReactor &);
-    PersistedStateReactor & operator=(const PersistedStateReactor &);
+    PersistedStateReactor(PersistedStateReactor const &);
+    PersistedStateReactor & operator=(PersistedStateReactor const &);
 };
 
 }} // namespace

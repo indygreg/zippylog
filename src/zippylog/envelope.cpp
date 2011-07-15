@@ -56,7 +56,7 @@ Envelope::Envelope(const void * data, int size) : messages(NULL), messages_size(
     this->InitializeFromBuffer(data, size);
 }
 
-Envelope::Envelope(const string &s) :
+Envelope::Envelope(string const &s) :
     messages(NULL),
     messages_size(0)
 {
@@ -82,7 +82,7 @@ Envelope::~Envelope()
     this->messages = NULL;
 }
 
-Envelope::Envelope(const Envelope &e)
+Envelope::Envelope(Envelope const &e)
 {
     if (e.messages_size > 0) {
         this->messages_size = e.messages_size;
@@ -99,7 +99,7 @@ Envelope::Envelope(const Envelope &e)
     this->envelope = e.envelope;
 }
 
-Envelope & Envelope::operator=(const Envelope &orig)
+Envelope & Envelope::operator=(Envelope const &orig)
 {
     if (this == &orig) return *this;
 
@@ -120,7 +120,7 @@ Envelope & Envelope::operator=(const Envelope &orig)
     return *this;
 }
 
-bool Envelope::operator==(const Envelope &other) const
+bool Envelope::operator==(Envelope const &other) const
 {
     if (this == &other) return true;
 
@@ -131,7 +131,7 @@ bool Envelope::operator==(const Envelope &other) const
     return s1.compare(s2) == 0;
 }
 
-bool Envelope::operator!=(const Envelope &other) const
+bool Envelope::operator!=(Envelope const &other) const
 {
     return !(*this == other);
 }

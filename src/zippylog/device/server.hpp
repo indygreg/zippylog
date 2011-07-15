@@ -71,7 +71,7 @@ class Worker : public ::zippylog::RequestProcessor {
         HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription);
 
         ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
-        int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous);
+        int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous);
 
         ::std::string streaming_subscriptions_endpoint;
         ::std::string streaming_updates_endpoint;
@@ -114,8 +114,8 @@ protected:
     ::zmq::socket_t * socket;
 
 private:
-    Watcher(const Watcher &orig);
-    Watcher & operator=(const Watcher &orig);
+    Watcher(Watcher const &orig);
+    Watcher & operator=(Watcher const &orig);
 };
 
 } // end of server namespace
@@ -452,8 +452,8 @@ class ZIPPYLOG_EXPORT Server {
 
     private:
         // copy constructor and assignment operator are not available
-        Server(const Server &orig);
-        Server & operator=(const Server &orig);
+        Server(Server const &orig);
+        Server & operator=(Server const &orig);
 };
 
 }} // namespaces

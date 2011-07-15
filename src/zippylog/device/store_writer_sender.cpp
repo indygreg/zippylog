@@ -61,7 +61,7 @@ StoreWriterSender::~StoreWriterSender()
     if (this->envelope_rep_sock) delete this->envelope_rep_sock;
 }
 
-bool StoreWriterSender::DeliverEnvelope(const string &bucket, const string &set, ::zippylog::Envelope &e)
+bool StoreWriterSender::DeliverEnvelope(string const &bucket, string const &set, ::zippylog::Envelope &e)
 {
     // @todo is this appropriate? I think it signifies a coding error (no param to constructor) and thus is
     if (!this->envelope_pull_sock)
@@ -74,7 +74,7 @@ bool StoreWriterSender::DeliverEnvelope(const string &bucket, const string &set,
     return ::zippylog::zeromq::send_envelope_with_preceding(this->envelope_pull_sock, preceding, e);
 }
 
-bool StoreWriterSender::WriteEnvelope(const string &bucket, const string &set, ::zippylog::Envelope &e)
+bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, ::zippylog::Envelope &e)
 {
     if (!this->envelope_rep_sock)
         throw Exception("can not deliver envelopes since the rep sock is not configured");

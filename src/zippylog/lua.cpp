@@ -243,7 +243,7 @@ bool LuaState::SetMemoryCeiling(uint32 size)
 // @todo verify we can't load binary Lua code (textual only) b/c bytecode
 // verification is gone in Lua 5.2 and 5.1 was apparently buggy anyway
 
-bool LuaState::LoadLuaCode(const string &code, string &error)
+bool LuaState::LoadLuaCode(string const &code, string &error)
 {
     if (luaL_dostring(this->L, code.c_str())) {
         error = lua_tostring(this->L, -1);
@@ -256,7 +256,7 @@ bool LuaState::LoadLuaCode(const string &code, string &error)
     return true;
 }
 
-bool LuaState::LoadFile(const string &filename, string &error)
+bool LuaState::LoadFile(string const &filename, string &error)
 {
     if (luaL_dofile(this->L, filename.c_str())) {
         error = lua_tostring(L, -1);
@@ -298,7 +298,7 @@ bool LuaState::DetermineCapabilities()
     return true;
 }
 
-bool LuaState::ExecuteLoadString(const string &s, LoadStringResult &result)
+bool LuaState::ExecuteLoadString(string const &s, LoadStringResult &result)
 {
     if (!this->have_load_string) return false;
 
@@ -454,7 +454,7 @@ LOAD_STRING_POP_AND_RETURN:
     return true;
 }
 
-bool LuaState::ExecuteSubscriptionEnvelopeFilter(const Envelope &e, const string &path, EnvelopeFilterResult &result)
+bool LuaState::ExecuteSubscriptionEnvelopeFilter(Envelope const &e, string const &path, EnvelopeFilterResult &result)
 {
     if (!this->have_subscription_envelope_filter) return false;
 
@@ -499,7 +499,7 @@ void LuaState::InitializeState()
     this->RegisterEnvelopeType();
 }
 
-bool LuaState::GetGlobal(const string &s, int64 &value)
+bool LuaState::GetGlobal(string const &s, int64 &value)
 {
     lua_getglobal(this->L, s.c_str());
     bool result = false;
@@ -513,7 +513,7 @@ bool LuaState::GetGlobal(const string &s, int64 &value)
     return result;
 }
 
-bool LuaState::GetGlobal(const string &s, string &value)
+bool LuaState::GetGlobal(string const &s, string &value)
 {
     lua_getglobal(this->L, s.c_str());
     bool result = false;
@@ -561,7 +561,7 @@ int LuaState::RegisterEnvelopeType()
     return 1;
 }
 
-bool LuaState::PushEnvelope(const Envelope &e)
+bool LuaState::PushEnvelope(Envelope const &e)
 {
     envelope_udata *ud = (envelope_udata *)lua_newuserdata(L, sizeof(envelope_udata));
     ud->e = new Envelope(e);

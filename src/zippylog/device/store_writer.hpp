@@ -140,8 +140,8 @@ protected:
     ReceiveResult ReceiveAndWrite(::zmq::socket_t *sock);
 
 private:
-    StoreWriter(const StoreWriter &orig);
-    StoreWriter & operator=(const StoreWriter &orig);
+    StoreWriter(StoreWriter const &orig);
+    StoreWriter & operator=(StoreWriter const &orig);
 };
 
 }} // namespaces

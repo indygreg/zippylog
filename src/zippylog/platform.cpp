@@ -95,7 +95,7 @@ bool get_system_error(string &s)
 
 // congratulations, this is the 4,234,532,657 time in programming history this
 // function has been written!
-bool DirectoryEntries(const string &dir, vector<DirectoryEntry> &v)
+bool DirectoryEntries(string const &dir, vector<DirectoryEntry> &v)
 {
     //complicated case first
 #ifdef WINDOWS
@@ -336,7 +336,7 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
-bool PathIsRegularFile(const string &path)
+bool PathIsRegularFile(string const &path)
 {
     FileStat st;
     int result = stat(path, st);
@@ -348,7 +348,7 @@ bool PathIsRegularFile(const string &path)
     return st.type == REGULAR;
 }
 
-bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v)
+bool DirectoriesInDirectory(string const &dir, vector<DirectoryEntry> &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -364,7 +364,7 @@ bool DirectoriesInDirectory(const string &dir, vector<DirectoryEntry> &v)
     return true;
 }
 
-bool DirectoriesInDirectory(const string &dir, vector<string> &v)
+bool DirectoriesInDirectory(string const &dir, vector<string> &v)
 {
     vector<DirectoryEntry> entries;
     if (!platform::DirectoriesInDirectory(dir, entries)) return false;
@@ -378,7 +378,7 @@ bool DirectoriesInDirectory(const string &dir, vector<string> &v)
     return true;
 }
 
-bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v)
+bool FilesInDirectory(string const &dir, vector<DirectoryEntry> &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -394,7 +394,7 @@ bool FilesInDirectory(const string &dir, vector<DirectoryEntry> &v)
     return true;
 }
 
-bool FilesInDirectory(const string &dir, vector<string> &v)
+bool FilesInDirectory(string const &dir, vector<string> &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -408,7 +408,7 @@ bool FilesInDirectory(const string &dir, vector<string> &v)
     return true;
 }
 
-bool DirectoriesInTree(const string &path, vector<string> &paths)
+bool DirectoriesInTree(string const &path, vector<string> &paths)
 {
     vector<DirectoryEntry> entries;
 
@@ -433,7 +433,7 @@ bool DirectoriesInTree(const string &path, vector<string> &paths)
 
 }
 
-bool RemoveDirectory(const string &path)
+bool RemoveDirectory(string const &path)
 {
     if (!PathIsDirectory(path)) {
         return false;
@@ -475,7 +475,7 @@ File::File()
     this->fd = 0;
 }
 
-bool File::Open(const string &path, int flags)
+bool File::Open(string const &path, int flags)
 {
 #ifdef WINDOWS
     DWORD access = 0;
@@ -702,7 +702,7 @@ bool File::WriteLockEntire()
 #endif
 }
 
-string PathJoin(const string &a, const string &b)
+string PathJoin(string const &a, string const &b)
 {
     string s = a;
 #ifdef WINDOWS
@@ -935,7 +935,7 @@ DirectoryWatcher::~DirectoryWatcher()
     // @todo implement
 }
 
-DirectoryWatcher::DirectoryWatcher(const string &directory, bool recurse)
+DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
 #ifdef WINDOWS
     : directory(NULL), started_waiting(false), completion_port(NULL)
 #endif

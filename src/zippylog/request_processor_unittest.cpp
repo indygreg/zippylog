@@ -81,7 +81,7 @@ protected:
         return AUTHORITATIVE;
     }
 
-    int HandleWriteEnvelopes(const string &, vector<Envelope> &to_write, bool)
+    int HandleWriteEnvelopes(string const &, vector<Envelope> &to_write, bool)
     {
         this->write_envelopes_count += to_write.size();
         return to_write.size();

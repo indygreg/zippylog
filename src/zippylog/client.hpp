@@ -73,7 +73,7 @@ typedef void (SubscriptionRequestCallback)(Client *, protocol::response::Subscri
 /// Executed when a stream segment is received
 ///
 /// Invoked with the path, start offset, and the data in that segment
-typedef void (StreamSegmentCallback)(Client *, const ::std::string &, uint64, StreamSegment &, void *);
+typedef void (StreamSegmentCallback)(Client *, ::std::string const &, uint64, StreamSegment &, void *);
 
 /// Function types for callbacks when the client has received a subscription
 /// response
@@ -93,7 +93,7 @@ typedef void (StoreChangeStreamSetDeletedCallback)(Client *, ::std::string, prot
 /// Executed when an envelope is received
 ///
 /// Invoked with subscription id, the envelope, and supplied user data to subscription
-typedef void (EnvelopeCallback)(Client *, const ::std::string &, Envelope &, void *);
+typedef void (EnvelopeCallback)(Client *, ::std::string const &, Envelope &, void *);
 
 /// Represents a segment of a stream
 ///
@@ -112,7 +112,7 @@ class ZIPPYLOG_EXPORT StreamSegment {
         bool AddEnvelope(Envelope e);
 
         /// Set fields in the stream segment from values in another instance
-        bool CopyFrom(const StreamSegment &orig);
+        bool CopyFrom(StreamSegment const &orig);
 
         ::std::string Path;
         uint64 StartOffset;
@@ -134,9 +134,9 @@ class ZIPPYLOG_EXPORT StoreMirrorState {
 public:
     StoreMirrorState() { }
 
-    void SetStreamState(const ::std::string &path, StreamFetchState state);
+    void SetStreamState(::std::string const &path, StreamFetchState state);
 
-    void SetStreamEndOffset(const ::std::string &path, uint64 offset);
+    void SetStreamEndOffset(::std::string const &path, uint64 offset);
 
     friend class Client;
 protected:
@@ -261,7 +261,7 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// The 0MQ context is required. If not set, an exception will be
         /// thrown.
-        Client(::zmq::context_t *ctx, const ::std::string &endpoint);
+        Client(::zmq::context_t *ctx, ::std::string const &endpoint);
         ~Client();
 
         /// Asynchronously send a ping request
@@ -307,7 +307,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param callback Function to be called when response is received
         /// @param data Arbitrary data to be supplied to callback function
         /// @return Whether request was sent without error
-        bool GetBucketInfo(const ::std::string &path, BucketInfoCallback *callback, void *data = NULL);
+        bool GetBucketInfo(::std::string const &path, BucketInfoCallback *callback, void *data = NULL);
 
         /// Synchronously obtain info about a single bucket
         ///
@@ -315,7 +315,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param info Populated with result on successful response
         /// @param timeout_microseconds How long to wait for response
         /// @return Whether we received a successful response
-        bool GetBucketInfo(const ::std::string &path, protocol::BucketInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetBucketInfo(::std::string const &path, protocol::BucketInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain info about a single stream set at a path
         ///
@@ -323,7 +323,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param callback Function to be called when response is received
         /// @param data Arbitrary data to be passed to callback function
         /// @return Whether request was sent without error
-        bool GetStreamSetInfo(const ::std::string &path, StreamSetInfoCallback *callback, void *data = NULL);
+        bool GetStreamSetInfo(::std::string const &path, StreamSetInfoCallback *callback, void *data = NULL);
 
         /// Synchronously obtain info about a single stream set at a path
         ///
@@ -331,7 +331,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param info Populated with result on successful response
         /// @param timeout_microseconds How long to wait for a response
         /// @return Whether we received a successful response
-        bool GetStreamSetInfo(const ::std::string &path, protocol::StreamSetInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStreamSetInfo(::std::string const &path, protocol::StreamSetInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain stream info.
         ///
@@ -339,21 +339,21 @@ class ZIPPYLOG_EXPORT Client {
         /// received.
         ///
         /// Returns true if request sent without error.
-        bool GetStreamInfo(const ::std::string &path, StreamInfoCallback * callback, void * data = NULL);
+        bool GetStreamInfo(::std::string const &path, StreamInfoCallback * callback, void * data = NULL);
 
         /// Synchronously obtain stream info
         ///
         /// Will wait up to specified microseconds for response.
         /// Returns true if info retrieved or false if error or timeout.
-        bool GetStreamInfo(const ::std::string &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStreamInfo(::std::string const &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// @todo varying by uint32 and uint64 is pretty stupid
-        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
-        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
-        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
+        bool GetStreamSegment(::std::string const &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool GetStreamSegment(::std::string const &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
+        bool GetStreamSegment(::std::string const &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
         /// Synchronously obtain a stream segment starting from an offset
-        bool GetStreamSegment(const ::std::string &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
+        bool GetStreamSegment(::std::string const &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
 
         /// Synchronously fetch all unfetched parts of a stream
         ///
@@ -374,7 +374,7 @@ class ZIPPYLOG_EXPORT Client {
         /// to handle received stream segments. If we were to pass in a
         /// store writer, for example, we'd be limiting ourselves to what
         /// callers could do with stream segments.
-        bool GetStream(const ::std::string &path,
+        bool GetStream(::std::string const &path,
                        StreamFetchState &state,
                        StreamSegmentCallback *callback,
                        void *data = NULL,
@@ -423,7 +423,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param callbacks Defines callbacks to handle subscribed events
         /// @param result Stores the result of the subscription
         /// @param data Arbitrary data to be passed to callback functions
-        bool SubscribeStoreChanges(const ::std::string &path,
+        bool SubscribeStoreChanges(::std::string const &path,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
                                    int32 timeout_microseconds = -1);
@@ -438,21 +438,21 @@ class ZIPPYLOG_EXPORT Client {
                                    int32 timeout_microseconds);
 
         /// Subscribes to new envelopes written on the server
-        bool SubscribeEnvelopes(const ::std::string &path, SubscriptionCallbackInfo &callback, void *data = NULL);
+        bool SubscribeEnvelopes(::std::string const &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         /// Subscribes to new envelopes w/ Lua code specifying additional features
-        bool SubscribeEnvelopes(const ::std::string &path, const ::std::string &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
+        bool SubscribeEnvelopes(::std::string const &path, ::std::string const &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         /// Cancels the subscription with the specified ID
         ///
         /// @param id Subscription id to cancel
-        bool CancelSubscription(const ::std::string &id);
+        bool CancelSubscription(::std::string const &id);
 
         /// Cancels all subscriptions registered with the client
         bool CancelAllSubscriptions();
 
         /// Whether the client has a subscription with the specified subscription ID
-        bool HasSubscription(const ::std::string &id);
+        bool HasSubscription(::std::string const &id);
 
         /// Perform pending operations
         ///
@@ -573,7 +573,7 @@ class ZIPPYLOG_EXPORT Client {
         static void CallbackStreamInfo(Client *client, protocol::StreamInfoV1 &info, void *data);
 
         /// Internal callback used for synchronous stream segment requests
-        static void CallbackStreamSegment(Client *client, const ::std::string &path, uint64 start_offset, StreamSegment &segment, void *data);
+        static void CallbackStreamSegment(Client *client, ::std::string const &path, uint64 start_offset, StreamSegment &segment, void *data);
 
         /// Internal callback used for synchronous subscription requests
         static void CallbackSubscription(Client *client, protocol::response::SubscriptionAcceptAckV1 &result, void *data);
@@ -583,8 +583,8 @@ class ZIPPYLOG_EXPORT Client {
 
     private:
         // disable copy constructor and assignment operator
-        Client(const Client &orig);
-        Client & operator=(const Client &orig);
+        Client(Client const &orig);
+        Client & operator=(Client const &orig);
 };
 
 }} // namespaces

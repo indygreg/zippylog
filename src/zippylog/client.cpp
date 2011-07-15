@@ -83,7 +83,7 @@ protected:
 };
 
 
-Client::Client(context_t *ctx, const string &endpoint) :
+Client::Client(context_t *ctx, string const &endpoint) :
     client_sock(NULL),
     subscription_renewal_offset(5000000), // 5 seconds
     exec_thread(NULL),
@@ -222,7 +222,7 @@ void Client::CallbackStoreInfo(Client *, protocol::StoreInfoV1 &info, void *data
     si->CopyFrom(info);
 }
 
-bool Client::GetBucketInfo(const string &path, BucketInfoCallback *callback, void*data)
+bool Client::GetBucketInfo(string const &path, BucketInfoCallback *callback, void*data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -244,7 +244,7 @@ bool Client::GetBucketInfo(const string &path, BucketInfoCallback *callback, voi
     return this->SendRequest(e, r);
 }
 
-bool Client::GetBucketInfo(const string &path, protocol::BucketInfoV1 &info, int32 timeout)
+bool Client::GetBucketInfo(string const &path, protocol::BucketInfoV1 &info, int32 timeout)
 {
     if (!Store::IsBucketPath(path)) {
         throw invalid_argument("path is not a valid bucket path");
@@ -268,7 +268,7 @@ void Client::CallbackBucketInfo(Client *, protocol::BucketInfoV1 &info, void *da
     bi->CopyFrom(info);
 }
 
-bool Client::GetStreamSetInfo(const string &path, StreamSetInfoCallback *callback, void *data)
+bool Client::GetStreamSetInfo(string const &path, StreamSetInfoCallback *callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback is not defined");
@@ -290,7 +290,7 @@ bool Client::GetStreamSetInfo(const string &path, StreamSetInfoCallback *callbac
     return this->SendRequest(e, r);
 }
 
-bool Client::GetStreamSetInfo(const string &path, protocol::StreamSetInfoV1 &info, int32 timeout)
+bool Client::GetStreamSetInfo(string const &path, protocol::StreamSetInfoV1 &info, int32 timeout)
 {
     if (!Store::IsStreamSetPath(path)) {
         throw invalid_argument("path is not a valid path to stream set");
@@ -314,7 +314,7 @@ void Client::CallbackStreamSetInfo(Client *, protocol::StreamSetInfoV1 &info, vo
     si->CopyFrom(info);
 }
 
-bool Client::GetStreamInfo(const string &path, StreamInfoCallback *callback, void *data)
+bool Client::GetStreamInfo(string const &path, StreamInfoCallback *callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback is not defined");
@@ -336,7 +336,7 @@ bool Client::GetStreamInfo(const string &path, StreamInfoCallback *callback, voi
     return this->SendRequest(e, r);
 }
 
-bool Client::GetStreamInfo(const string &path, protocol::StreamInfoV1 &info, int32 timeout)
+bool Client::GetStreamInfo(string const &path, protocol::StreamInfoV1 &info, int32 timeout)
 {
     Envelope e;
     protocol::request::GetStreamInfoV1 req;
@@ -356,7 +356,7 @@ void Client::CallbackStreamInfo(Client *, protocol::StreamInfoV1 &info, void *da
     si->CopyFrom(info);
 }
 
-bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(string const &path, uint64 start_offset, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -375,7 +375,7 @@ bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSeg
     return this->SendRequest(e, info);
 }
 
-bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
+bool Client::GetStreamSegment(string const &path, uint64 start_offset, StreamSegment &segment, int32 timeout)
 {
     protocol ::request::GetStreamSegmentV1 req;
     req.set_path(path);
@@ -390,13 +390,13 @@ bool Client::GetStreamSegment(const string &path, uint64 start_offset, StreamSeg
     return this->SendAndProcessSynchronousRequest(e, outr, timeout);
 }
 
-void Client::CallbackStreamSegment(Client *, const string &, uint64, StreamSegment &segment, void *data)
+void Client::CallbackStreamSegment(Client *, string const &, uint64, StreamSegment &segment, void *data)
 {
     StreamSegment *s = (StreamSegment *)data;
     s->CopyFrom(segment);
 }
 
-bool Client::GetStreamSegment(const string &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(string const &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -416,12 +416,12 @@ bool Client::GetStreamSegment(const string &path, uint64 start_offset, uint32 ma
     return this->SendRequest(e, info);
 }
 
-bool Client::GetStreamSegment(const string &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data)
+bool Client::GetStreamSegment(string const &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data)
 {
     return this->GetStreamSegment(path, start_offset, (uint32)(stop_offset - start_offset), callback, data);
 }
 
-bool Client::GetStream(const string &path, StreamFetchState &state, StreamSegmentCallback * callback, void * data, uint64 end_offset)
+bool Client::GetStream(string const &path, StreamFetchState &state, StreamSegmentCallback * callback, void * data, uint64 end_offset)
 {
     if (!callback) {
         throw invalid_argument("callback parameter not defined");
@@ -525,7 +525,7 @@ bool Client::SubscribeStoreChanges(const vector<string> &paths, SubscriptionCall
     return this->SendAndProcessSynchronousRequest(e, r, timeout);
 }
 
-bool Client::SubscribeStoreChanges(const string &path, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
+bool Client::SubscribeStoreChanges(string const &path, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
 {
     vector<string> paths;
     paths.push_back(path);
@@ -546,12 +546,12 @@ void Client::CallbackSubscription(Client *, protocol::response::SubscriptionAcce
     result->result = SubscriptionRequestResult::ACCEPTED;
 }
 
-bool Client::SubscribeEnvelopes(const string &path, SubscriptionCallbackInfo &cb, void *data)
+bool Client::SubscribeEnvelopes(string const &path, SubscriptionCallbackInfo &cb, void *data)
 {
     return this->SubscribeEnvelopes(path, "", cb, data);
 }
 
-bool Client::SubscribeEnvelopes(const string &path, const string &lua, SubscriptionCallbackInfo &cb, void *data)
+bool Client::SubscribeEnvelopes(string const &path, string const &lua, SubscriptionCallbackInfo &cb, void *data)
 {
     // @todo validate
 
@@ -718,7 +718,7 @@ bool Client::ValidateSubscriptionStart(SubscriptionStartV1 &start)
     return this->HasSubscription(start.id());
 }
 
-bool Client::HasSubscription(const string &id)
+bool Client::HasSubscription(string const &id)
 {
     map<string, Subscription>::iterator iter = this->subscriptions.find(id);
 
@@ -735,7 +735,7 @@ bool Client::CancelAllSubscriptions()
     return true;
 }
 
-bool Client::CancelSubscription(const string &)
+bool Client::CancelSubscription(string const &)
 {
     return false;
 }
@@ -1030,7 +1030,7 @@ StreamSegment::~StreamSegment()
 
 }
 
-bool StreamSegment::CopyFrom(const StreamSegment &orig)
+bool StreamSegment::CopyFrom(StreamSegment const &orig)
 {
     this->BytesSent = orig.BytesSent;
     this->EndOffset = orig.EndOffset;

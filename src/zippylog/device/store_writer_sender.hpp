@@ -68,7 +68,7 @@ public:
     /// No part of the envelope is modified as part of the function.
     ///
     /// Returns whether the envelope was successfully delivered.
-    bool DeliverEnvelope(const ::std::string &bucket, const ::std::string &set, ::zippylog::Envelope &e);
+    bool DeliverEnvelope(::std::string const &bucket, ::std::string const &set, ::zippylog::Envelope &e);
 
     /// Writes an envelope using the store writer
     ///
@@ -77,7 +77,7 @@ public:
     ///
     /// Returns true if writer says it has written the envelope.
     /// False otherwise.
-    bool WriteEnvelope(const ::std::string &bucket, const ::std::string &set, ::zippylog::Envelope &e);
+    bool WriteEnvelope(::std::string const &bucket, ::std::string const &set, ::zippylog::Envelope &e);
 
 protected:
     ::zmq::context_t *ctx;
@@ -91,8 +91,8 @@ protected:
     ::zmq::socket_t * envelope_rep_sock;
 
 private:
-    StoreWriterSender(const StoreWriterSender &orig);
-    StoreWriterSender & operator=(const StoreWriterSender &orig);
+    StoreWriterSender(StoreWriterSender const &orig);
+    StoreWriterSender & operator=(StoreWriterSender const &orig);
 };
 
 }} // namespaces

@@ -65,7 +65,7 @@ EnvelopeSubscriptionResponseState::~EnvelopeSubscriptionResponseState()
     }
 }
 
-void EnvelopeSubscriptionResponseState::AddEnvelope(const Envelope &e)
+void EnvelopeSubscriptionResponseState::AddEnvelope(Envelope const &e)
 {
     message_t *msg = new message_t();
     if (!e.ToProtocolZmqMessage(*msg)) {
@@ -77,7 +77,7 @@ void EnvelopeSubscriptionResponseState::AddEnvelope(const Envelope &e)
     this->current_size += msg->size();
 }
 
-void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::response::ErrorCode code, const std::string &message)
+void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::response::ErrorCode code, std::string const &message)
 {
     throw new Exception("not yet implemented");
 }
@@ -1041,7 +1041,7 @@ LOG_END:
     return DEFERRED;
 }
 
-bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(socket_t &sock, const SubscriptionInfo &subscription, const string &path)
+bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(socket_t &sock, SubscriptionInfo const &subscription, string const &path)
 {
     Envelope response;
     protocol::response::SubscriptionStartV1 start;
@@ -1079,7 +1079,7 @@ bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(socket_t &so
 }
 
 
-bool RequestProcessor::SendSubscriptionStoreChangePathDeletedResponse(socket_t &sock, const SubscriptionInfo &subscription, const string &path)
+bool RequestProcessor::SendSubscriptionStoreChangePathDeletedResponse(socket_t &sock, SubscriptionInfo const &subscription, string const &path)
 {
     Envelope response;
     protocol::response::SubscriptionStartV1 start;
@@ -1203,7 +1203,7 @@ bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code,
     return true;
 }
 
-bool RequestProcessor::CheckPath(const string &path, vector<Envelope> &output, bool require_bucket, bool require_set, bool require_stream)
+bool RequestProcessor::CheckPath(string const &path, vector<Envelope> &output, bool require_bucket, bool require_set, bool require_stream)
 {
     string bucket, set, stream;
 

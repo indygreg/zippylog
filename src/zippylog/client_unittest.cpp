@@ -133,7 +133,7 @@ class ClientTest : public ::testing::Test
             EXPECT_TRUE(c != NULL) << "client instance is not NULL";
         }
 
-        static void StreamSegmentCallback(Client *c, const string &, uint64, StreamSegment &, void *)
+        static void StreamSegmentCallback(Client *c, string const &, uint64, StreamSegment &, void *)
         {
             EXPECT_TRUE(c != NULL) << "client instance is not NULL";
         }
@@ -239,16 +239,16 @@ public:
 
         EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
 
-		for (size_t i = 0; i < this->messages.size(); i++) {
-			delete this->messages[i];
-			this->messages[i] = NULL;
-		}
+        for (size_t i = 0; i < this->messages.size(); i++) {
+            delete this->messages[i];
+            this->messages[i] = NULL;
+        }
 
         this->messages.clear();
     }
 
     /// Helper to respond to a subscription request message
-    void RespondToSubscriptionRequest(const string &test)
+    void RespondToSubscriptionRequest(string const &test)
     {
         vector<string> identities;
         ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));

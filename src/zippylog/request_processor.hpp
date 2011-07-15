@@ -101,7 +101,7 @@ public:
     /// Construct a state for sending an envelope subscription response
     ///
     /// @param subscription Subscription record
-    EnvelopeSubscriptionResponseState(const SubscriptionInfo &subscription) :
+    EnvelopeSubscriptionResponseState(SubscriptionInfo const &subscription) :
         finalized(false),
         id(subscription.id),
         identities(subscription.socket_identifiers),
@@ -113,13 +113,13 @@ public:
     /// Adds an envelope to the state
     ///
     /// This effectively marks the envelope as ready to send to the client
-    void AddEnvelope(const Envelope &e);
+    void AddEnvelope(Envelope const &e);
 
     /// State that the final envelope has been seen
     inline void Finalize() { this->finalized = true; }
 
     /// Registers an error
-    void RegisterError(protocol::response::ErrorCode code, const ::std::string &message);
+    void RegisterError(protocol::response::ErrorCode code, ::std::string const &message);
 
 protected:
     bool finalized;
@@ -279,8 +279,8 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// @param subscription Subscription record
         /// @param path Path that was added
         static bool SendSubscriptionStoreChangePathAddedResponse(::zmq::socket_t &sock,
-                                                                 const SubscriptionInfo &subscription,
-                                                                 const ::std::string &path);
+                                                                 SubscriptionInfo const &subscription,
+                                                                 ::std::string const &path);
 
         /// Sends a subscription store change response for a deleted path
         ///
@@ -288,8 +288,8 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// @param subscription Subscription record
         /// @param path Path that was deleted
         static bool SendSubscriptionStoreChangePathDeletedResponse(::zmq::socket_t &sock,
-                                                                   const SubscriptionInfo &subscription,
-                                                                   const ::std::string &path);
+                                                                   SubscriptionInfo const &subscription,
+                                                                   ::std::string const &path);
 
         /// Sends a subscription envelope response
         ///
@@ -339,7 +339,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// performing synchronous writes the caller will log an unexpected
         /// condition if the number of envelopes written is not equal to the
         /// number requested.
-        virtual int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
+        virtual int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
 
         /// Process a ping request
         ResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
@@ -380,7 +380,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ///
         /// If the path does not validate, an error response is added to the
         /// output messages with an appropriate description of the failure.
-        bool CheckPath(const ::std::string &path, ::std::vector<Envelope> &output, bool require_bucket = false, bool require_set = false, bool require_stream = false);
+        bool CheckPath(::std::string const &path, ::std::vector<Envelope> &output, bool require_bucket = false, bool require_set = false, bool require_stream = false);
 
         /// Checks that the version in a message is THE version we support
         ///
@@ -416,8 +416,8 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         uint32 subscription_ttl;
 
 private:
-        RequestProcessor(const RequestProcessor &orig);
-        RequestProcessor & operator=(const RequestProcessor &orig);
+        RequestProcessor(RequestProcessor const &orig);
+        RequestProcessor & operator=(RequestProcessor const &orig);
 
 };
 

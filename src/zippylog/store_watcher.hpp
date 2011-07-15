@@ -87,8 +87,8 @@ protected:
 
 private:
     // we don't provide these
-    StoreWatcher(const StoreWatcher &orig);
-    StoreWatcher & operator=(const StoreWatcher &orig);
+    StoreWatcher(StoreWatcher const &orig);
+    StoreWatcher & operator=(StoreWatcher const &orig);
 
 };
 

@@ -102,8 +102,8 @@ class ZIPPYLOG_EXPORT InputStream {
 
     private:
         // disable copy constructor and assignment operator
-        InputStream(const InputStream &orig);
-        InputStream & operator=(const InputStream &orig);
+        InputStream(InputStream const &orig);
+        InputStream & operator=(InputStream const &orig);
 };
 
 /// An input stream backed by a file
@@ -112,7 +112,7 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
         /// Construct a stream from an existing file
         ///
         /// Optionally seek to specified offset in stream (in bytes)
-        FileInputStream(const ::std::string &path, int64 start_offset = 0);
+        FileInputStream(::std::string const &path, int64 start_offset = 0);
 
         /// Construct a new stream from a file descriptor
         ///
@@ -132,8 +132,8 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
         ::google::protobuf::io::FileInputStream *fis;
 
     private:
-        FileInputStream(const FileInputStream &orig);
-        FileInputStream & operator=(const FileInputStream &orig);
+        FileInputStream(FileInputStream const &orig);
+        FileInputStream & operator=(FileInputStream const &orig);
 };
 
 /// A stream used for writing data
@@ -185,7 +185,7 @@ protected:
         /// Writes data inside a string to stream
         ///
         /// Equivalent to WriteData(), but for data within a string
-        bool WriteString(const ::std::string &s) { return this->WriteData(s.data(), s.length()); }
+        bool WriteString(::std::string const &s) { return this->WriteData(s.data(), s.length()); }
 
         /// Writes the stream header
         ///
@@ -206,7 +206,7 @@ class ZIPPYLOG_EXPORT FileOutputStream : public OutputStream {
         /// the file. The write lock will be exclusive across the entire
         /// operating system and will apply to the whole file. If the write
         /// lock cannot be obtained, the constructor will throw an exception.
-        FileOutputStream(const ::std::string &path, bool write_lock = false);
+        FileOutputStream(::std::string const &path, bool write_lock = false);
 
         ~FileOutputStream();
 

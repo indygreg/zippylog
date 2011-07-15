@@ -176,8 +176,8 @@ protected:
     bool * const active;
 
 private:
-    StringLoader(const StringLoader &orig);
-    StringLoader & operator=(const StringLoader &orig);
+    StringLoader(StringLoader const &orig);
+    StringLoader & operator=(StringLoader const &orig);
 
     FRIEND_TEST(StringLoaderTest, ConstructorTest);
 };

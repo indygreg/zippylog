@@ -26,7 +26,7 @@ namespace zippylog {
 
 PersistedStateManagerSubscriptionRecord::PersistedStateManagerSubscriptionRecord() { }
 
-PersistedStateManagerSubscriptionRecord::PersistedStateManagerSubscriptionRecord(const SubscriptionInfo &subscription, uint32 ttl) :
+PersistedStateManagerSubscriptionRecord::PersistedStateManagerSubscriptionRecord(SubscriptionInfo const &subscription, uint32 ttl) :
     si(subscription),
     expiration_timer(ttl),
     l(NULL)
@@ -37,7 +37,7 @@ PersistedStateManagerSubscriptionRecord::~PersistedStateManagerSubscriptionRecor
     if (this->l) delete this->l;
 }
 
-PersistedStateManager::PersistedStateManager(const PersistedStateManagerStartParams &params) :
+PersistedStateManager::PersistedStateManager(PersistedStateManagerStartParams const &params) :
     store_uri(params.store_uri),
     subscription_ttl(params.subscription_ttl),
     subscription_lua_allow(params.subscription_lua_allow),
@@ -86,7 +86,7 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
     return removed;
 }
 
-bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path) const
+bool PersistedStateManager::HaveStoreChangeSubscriptions(std::string const &path) const
 {
     map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
@@ -112,7 +112,7 @@ bool PersistedStateManager::HaveStoreChangeSubscriptions() const
     return false;
 }
 
-bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
+bool PersistedStateManager::HaveEnvelopeSubscription(string const &path) const
 {
     map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
@@ -126,14 +126,14 @@ bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
     return false;
 }
 
-bool PersistedStateManager::HasSubscription(const string &id) const
+bool PersistedStateManager::HasSubscription(string const &id) const
 {
     map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator iter = this->subscriptions.find(id);
 
     return iter != this->subscriptions.end();
 }
 
-void PersistedStateManager::RegisterSubscription(const SubscriptionInfo &subscription)
+void PersistedStateManager::RegisterSubscription(SubscriptionInfo const &subscription)
 {
     if (subscription.id.empty())
         throw invalid_argument("subscription must have id defined");
@@ -149,7 +149,7 @@ void PersistedStateManager::RegisterSubscription(const SubscriptionInfo &subscri
     record->expiration_timer.Start(this->subscription_ttl);
 }
 
-bool PersistedStateManager::RenewSubscription(const string &id)
+bool PersistedStateManager::RenewSubscription(string const &id)
 {
     vector<string> ids;
     ids.push_back(id);
@@ -174,7 +174,7 @@ bool PersistedStateManager::RenewSubscriptions(const vector<string> &ids)
     return true;
 }
 
-void PersistedStateManager::ProcessStoreChangePathAdded(const std::string &path, PersistedStateManagerPathAddedCallback *cb, void *data)
+void PersistedStateManager::ProcessStoreChangePathAdded(std::string const &path, PersistedStateManagerPathAddedCallback *cb, void *data)
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 
@@ -197,7 +197,7 @@ void PersistedStateManager::ProcessStoreChangePathAdded(const std::string &path,
     }
 }
 
-void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &path, PersistedStateManagerPathDeletedCallback *cb, void *data)
+void PersistedStateManager::ProcessStoreChangePathDeleted(std::string const &path, PersistedStateManagerPathDeletedCallback *cb, void *data)
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 
@@ -217,7 +217,7 @@ void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &pat
     }
 }
 
-void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path, uint64 stream_length, PersistedStateManagerStreamAppendedCallback *cb, void *data)
+void PersistedStateManager::ProcessStoreChangeStreamAppended(string const &path, uint64 stream_length, PersistedStateManagerStreamAppendedCallback *cb, void *data)
 {
     if (!cb) throw invalid_argument("callback not defined");
 
@@ -283,7 +283,7 @@ void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path,
     }
 }
 
-bool PersistedStateManager::IsPathSubscribed(const std::string &path, const PersistedStateManagerSubscriptionRecord &subscription)
+bool PersistedStateManager::IsPathSubscribed(std::string const &path, PersistedStateManagerSubscriptionRecord const &subscription)
 {
     vector<string>::const_iterator prefix = subscription.si.paths.begin();
     for (; prefix != subscription.si.paths.end(); prefix++) {
