@@ -76,7 +76,7 @@ include_directories(BEFORE src)
 #############################
 set(libzippylog_sources
     src/zippylog/client.cpp
-	src/zippylog/device/persisted_state_reactor.cpp
+    src/zippylog/device/persisted_state_reactor.cpp
     src/zippylog/device/server.cpp
     src/zippylog/device/server_watcher.cpp
     src/zippylog/device/server_worker.cpp
@@ -89,7 +89,7 @@ set(libzippylog_sources
     src/zippylog/message.pb-lua.cc
     src/zippylog/message_registrar.cpp
     src/zippylog/messages.cpp
-	src/zippylog/persisted_state_manager.cpp
+    src/zippylog/persisted_state_manager.cpp
     src/zippylog/platform.cpp
     src/zippylog/protocol.pb.cc
     src/zippylog/protocol.pb-lua.cc
@@ -134,11 +134,10 @@ set(libzippylog-test_sources
     src/zippylog/libzippylog-test.cc
     src/zippylog/client_unittest.cpp
     src/zippylog/device/server_unittest.cpp
-    src/zippylog/device/streamer_unittest.cpp
+    src/zippylog/device/persisted_state_manager_unittest.cpp
     src/zippylog/device/string_loader_unittest.cpp
     src/zippylog/envelope_unittest.cpp
     src/zippylog/lua_unittest.cpp
-    src/zippylog/persisted_state_manager_unittest.cpp
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
