@@ -378,10 +378,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\zippylog\device\streamer.pb.cc"
-				>
-			</File>
-			<File
 				RelativePath="..\src\zippylog\device\string_loader.cpp"
 				>
 			</File>
@@ -485,10 +481,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\stream.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\streamer.pb.h"
 				>
 			</File>
 			<File
