@@ -224,8 +224,10 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     // @todo should we log?
     if (!container.MessagesSize()) return;
 
+    message_t *initial = container.GetMessage(0);
+
     // we expect the first message to have an envelope of some kind
-    if (!container.GetMessage(0)->size()) {
+    if (!initial->size()) {
         ::zippylog::request_processor::ReceiveEmptyMessage log;
         LOG_MESSAGE(log, this->logger_sock);
 
@@ -239,7 +241,7 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
 
     // the first byte of the message is the message format version
     // we currently only support 1, as it is the only defined version
-    memcpy(&msg_version, container.GetMessage(0)->data(), sizeof(msg_version));
+    memcpy(&msg_version, initial->data(), sizeof(msg_version));
 
     if (msg_version != 0x01) {
         ::zippylog::request_processor::UnknownMessageVersion log;
@@ -258,7 +260,7 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
 
     // we expect to see data after the version byte. if we don't, something
     // is wrong
-    if (container.GetMessage(0)->size() < 2) {
+    if (initial->size() < 2) {
         this->PopulateErrorResponse(
             protocol::response::PROTOCOL_NO_ENVELOPE,
             "protocol version 1 0MQ message received without an envelope",
@@ -270,8 +272,8 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     try {
         request_envelope = Envelope(
             // we can't do math on sizeless void
-            (void *)((char *)container.GetMessage(0)->data() + 1),
-            container.GetMessage(0)->size() - 1
+            (void *)((char *)initial->data() + 1),
+            initial->size() - 1
         );
     } catch ( ... ) {
         // we should only get an exception on parse error
