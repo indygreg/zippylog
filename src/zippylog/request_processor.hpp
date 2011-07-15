@@ -273,14 +273,23 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// it is provided public just in case.
         ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
-        /// Sends a subscription store change response through a socket
+        /// Sends a subscription store change response for an added path
         ///
         /// @param sock Socket to send response through
-        /// @param subscription Subscription record used to populate metadata
-        /// @param e Envelope containing store change message
-        static bool SendSubscriptionStoreChangeResponse(::zmq::socket_t &sock,
-                                                        const SubscriptionInfo &subscription,
-                                                        const Envelope &e);
+        /// @param subscription Subscription record
+        /// @param path Path that was added
+        static bool SendSubscriptionStoreChangePathAddedResponse(::zmq::socket_t &sock,
+                                                                 const SubscriptionInfo &subscription,
+                                                                 const ::std::string &path);
+
+        /// Sends a subscription store change response for a deleted path
+        ///
+        /// @param sock Socket to send response through
+        /// @param subscription Subscription record
+        /// @param path Path that was deleted
+        static bool SendSubscriptionStoreChangePathDeletedResponse(::zmq::socket_t &sock,
+                                                                   const SubscriptionInfo &subscription,
+                                                                   const ::std::string &path);
 
         /// Sends a subscription envelope response
         ///

@@ -1068,14 +1068,77 @@ LOG_END:
     return DEFERRED;
 }
 
-bool RequestProcessor::SendSubscriptionStoreChangeResponse(socket_t &sock, const SubscriptionInfo &subscription, const Envelope &e)
+bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(socket_t &sock, const SubscriptionInfo &subscription, const string &path)
 {
     Envelope response;
     protocol::response::SubscriptionStartV1 start;
     start.set_id(subscription.id);
     start.add_to_envelope(response);
 
-    e.CopyMessage(0, response);
+    string bucket, stream_set, stream;
+    if (!Store::ParsePath(path, bucket, stream_set, stream)) {
+        throw Exception("invalid store path supplied");
+    }
+
+    if (!stream.empty()) {
+        protocol::StoreChangeStreamAddedV1 m;
+        m.set_bucket(bucket);
+        m.set_stream_set(stream_set);
+        m.set_stream(stream);
+
+        m.add_to_envelope(response);
+    }
+    else if (!stream_set.empty()) {
+        protocol::StoreChangeStreamSetAddedV1 m;
+        m.set_bucket(bucket);
+        m.set_stream_set(stream_set);
+
+        m.add_to_envelope(response);
+    }
+    else {
+        protocol::StoreChangeBucketAddedV1 m;
+        m.set_bucket(bucket);
+
+        m.add_to_envelope(response);
+    }
+
+    return zeromq::SendEnvelope(sock, subscription.socket_identifiers, response, true, 0);
+}
+
+
+bool RequestProcessor::SendSubscriptionStoreChangePathDeletedResponse(socket_t &sock, const SubscriptionInfo &subscription, const string &path)
+{
+    Envelope response;
+    protocol::response::SubscriptionStartV1 start;
+    start.set_id(subscription.id);
+    start.add_to_envelope(response);
+
+    string bucket, stream_set, stream;
+    if (!Store::ParsePath(path, bucket, stream_set, stream)) {
+        throw Exception("invalid store path supplied");
+    }
+
+    if (!stream.empty()) {
+        protocol::StoreChangeStreamDeletedV1 m;
+        m.set_bucket(bucket);
+        m.set_stream_set(stream_set);
+        m.set_stream(stream);
+
+        m.add_to_envelope(response);
+    }
+    else if (!stream_set.empty()) {
+        protocol::StoreChangeStreamSetDeletedV1 m;
+        m.set_bucket(bucket);
+        m.set_stream_set(stream_set);
+
+        m.add_to_envelope(response);
+    }
+    else {
+        protocol::StoreChangeBucketDeletedV1 m;
+        m.set_bucket(bucket);
+
+        m.add_to_envelope(response);
+    }
 
     return zeromq::SendEnvelope(sock, subscription.socket_identifiers, response, true, 0);
 }

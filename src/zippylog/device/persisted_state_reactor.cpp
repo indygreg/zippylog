@@ -188,7 +188,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::BucketPath(bucket);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
+            this->manager->ProcessStoreChangePathAdded(path, PathAddedCallback, this);
         }
             break;
 
@@ -199,7 +199,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::BucketPath(bucket);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
+            this->manager->ProcessStoreChangePathDeleted(path, PathDeletedCallback, this);
         }
             break;
 
@@ -211,7 +211,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamsetPath(bucket, stream_set);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
+            this->manager->ProcessStoreChangePathAdded(path, PathAddedCallback, this);
         }
             break;
 
@@ -223,7 +223,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamsetPath(bucket, stream_set);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
+            this->manager->ProcessStoreChangePathDeleted(path, PathDeletedCallback, this);
         }
             break;
 
@@ -236,7 +236,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
+            this->manager->ProcessStoreChangePathAdded(path, PathAddedCallback, this);
         }
             break;
 
@@ -249,7 +249,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
+            this->manager->ProcessStoreChangePathDeleted(path, PathDeletedCallback, this);
         }
             break;
 
@@ -303,6 +303,33 @@ void PersistedStateReactor::ProcessSubscriptionUpdate(zmq::message_t &msg)
     else {
         throw Exception("unknown type of subscription update message");
     }
+}
+
+void PersistedStateReactor::PathAddedCallback(const SubscriptionInfo &subscription, const string &path, void *data)
+{
+    assert(data);
+
+    PersistedStateReactor *reactor = (PersistedStateReactor *)data;
+
+    RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(*reactor->client_sock, subscription, path);
+}
+
+void PersistedStateReactor::PathDeletedCallback(const zippylog::SubscriptionInfo &subscription, const std::string &path, void *data)
+{
+    assert(data);
+
+    PersistedStateReactor *reactor = (PersistedStateReactor *)data;
+
+    RequestProcessor::SendSubscriptionStoreChangePathDeletedResponse(*reactor->client_sock, subscription, path);
+}
+
+void PersistedStateReactor::StreamAppendedCallback(const zippylog::SubscriptionInfo &, zippylog::EnvelopeSubscriptionResponseState &state, void *data)
+{
+    assert(data);
+
+    PersistedStateReactor *reactor = (PersistedStateReactor *)data;
+
+    RequestProcessor::SendSubscriptionEnvelopeResponse(*reactor->client_sock, state);
 }
 
 }} // namespaces

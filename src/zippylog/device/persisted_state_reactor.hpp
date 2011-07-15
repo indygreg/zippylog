@@ -84,6 +84,10 @@ public:
     void Pump(int32 timeout_microseconds);
 protected:
 
+    static void PathAddedCallback(const SubscriptionInfo &subscription, const ::std::string &path, void *data);
+    static void PathDeletedCallback(const SubscriptionInfo &subscription, const ::std::string &path, void *data);
+    static void StreamAppendedCallback(const SubscriptionInfo &subscription, EnvelopeSubscriptionResponseState &state, void *data);
+
     /// Initializes the object
     ///
     /// Called by the constructor. Throws an exception on error.

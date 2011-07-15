@@ -31,7 +31,7 @@ typedef void (PersistedStateManagerPathAddedCallback)(const SubscriptionInfo &, 
 /// Callback for individual subscription notification of a path deleted
 typedef void (PersistedStateManagerPathDeletedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
 
-typedef void (PersistedStateManagerStreamAppendedCallback)(const SubscriptionInfo &, EnvelopeSubscriptionResponseState &state, void *);
+typedef void (PersistedStateManagerStreamAppendedCallback)(const SubscriptionInfo &, EnvelopeSubscriptionResponseState &, void *);
 
 /// Constructor arguments for PersistedStateManager
 class ZIPPYLOG_EXPORT PersistedStateManagerStartParams {
