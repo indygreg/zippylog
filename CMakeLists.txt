@@ -131,6 +131,7 @@ set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 #####################
 
 set(libzippylog-test_sources
+    src/zippylog/testing.cpp
     src/zippylog/libzippylog-test.cc
     src/zippylog/client_unittest.cpp
     src/zippylog/device/server_unittest.cpp

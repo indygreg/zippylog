@@ -12,28 +12,33 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/persisted_state_manager.hpp>
-#include <zippylog/platform.hpp>
-#include <zippylog/testing.hpp>
+#ifndef ZIPPYLOG_TESTING_HPP
+#define ZIPPYLOG_TESTING_HPP_
+
+#include <gtest/gtest.h>
 
 #include <string>
-
-using ::std::invalid_argument;
-using ::std::string;
+#include <vector>
 
 namespace zippylog {
+namespace testing {
 
-class PersistedStateManagerTest : public ::zippylog::testing::TestBase
-{ };
+/// Base test class that provides numerous helpful routines
+class TestBase : public ::testing::Test {
+public:
+    /// Obtains a URI to a temporary store
+    ///
+    /// Every time this is called, a new store is generated. The store is
+    /// cleaned up automatically at the end of the test
+    ::std::string GetTemporaryStoreUri();
 
-TEST_F(PersistedStateManagerTest, Constructor)
-{
-    PersistedStateManagerStartParams p;
+protected:
+    void TearDown();
 
-    EXPECT_THROW(PersistedStateManager m(p), invalid_argument);
+private:
+    ::std::vector< ::std::string > created_store_paths;
+};
 
-    p.store_uri = this->GetTemporaryStoreUri();
-    EXPECT_NO_THROW(PersistedStateManager m(p));
-}
+}} // namespaces
 
-} // namespaces
+#endif // file define

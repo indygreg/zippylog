@@ -278,12 +278,20 @@
 				RelativePath="..\src\zippylog\device\string_loader_unittest.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\src\zippylog\testing.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\src\zippylog\testing.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"
