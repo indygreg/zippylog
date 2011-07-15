@@ -188,7 +188,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::BucketPath(bucket);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
         }
             break;
 
@@ -199,7 +199,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::BucketPath(bucket);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
         }
             break;
 
@@ -211,7 +211,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamsetPath(bucket, stream_set);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
         }
             break;
 
@@ -223,7 +223,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamsetPath(bucket, stream_set);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
         }
             break;
 
@@ -236,7 +236,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
-            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathAdded(path, NULL, this);
         }
             break;
 
@@ -249,7 +249,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
-            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, this);
         }
             break;
 
@@ -263,7 +263,7 @@ void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
 
             path = Store::StreamPath(bucket, stream_set, stream);
 
-            this->manager->ProcessStoreChangeStreamAppended(path, stream_length);
+            this->manager->ProcessStoreChangeStreamAppended(path, stream_length, NULL, this);
         }
             break;
 

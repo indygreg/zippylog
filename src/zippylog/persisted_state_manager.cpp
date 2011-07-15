@@ -152,6 +152,11 @@ void PersistedStateManager::ProcessStoreChangePathAdded(const std::string &path,
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 
+    // remember we have this path
+    if (Store::IsStreamPath(path)) {
+        this->stream_read_offsets[path] = 0;
+    }
+
     if (this->subscriptions.empty()) return;
 
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
@@ -170,6 +175,8 @@ void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &pat
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 
+    /// @todo should we remove traces of this path from internal state?
+
     if (this->subscriptions.empty()) return;
 
     map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
@@ -184,9 +191,70 @@ void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &pat
     }
 }
 
-void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path, uint64 stream_length)
+void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path, uint64 stream_length, PersistedStateManagerStreamAppendedCallback *cb, void *data)
 {
+    if (!cb) throw invalid_argument("callback not defined");
 
+    this->stream_read_offsets[path] = stream_length;
+
+    if (this->subscriptions.empty()) return;
+
+    InputStream *is = this->store->GetInputStream(path);
+    if (!is) {
+        /// @todo log error somehow
+        return;
+    }
+
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second->type != i->second->ENVELOPE)
+            continue;
+
+        if (!IsPathSubscribed(path, *i->second))
+            continue;
+
+        map<string, uint64>::iterator iter = this->stream_read_offsets.find(path);
+        if (iter == this->stream_read_offsets.end()) {
+            throw Exception("unknown stream encountered");
+        }
+
+        uint64 offset = iter->second;
+
+        if (!is->SetAbsoluteOffset(offset)) {
+            throw Exception("could not set stream offset");
+        }
+
+        EnvelopeSubscriptionResponseState state(*i->second);
+
+        while (offset < stream_length) {
+            Envelope env;
+            uint32 read;
+            if (!is->ReadEnvelope(env, read)) {
+                break;
+            }
+            offset += read;
+
+            // run envelope through Lua
+            if (i->second->l && i->second->l->HasSubscriptionEnvelopeFilter()) {
+                lua::EnvelopeFilterResult filter_result;
+                if (!i->second->l->ExecuteSubscriptionEnvelopeFilter(env, path, filter_result)) {
+                    throw Exception("envelope filter not executed. very weird");
+                }
+
+                if (!filter_result.execution_success) {
+                    state.RegisterError(protocol::response::LUA_ERROR, filter_result.lua_error);
+                    cb(*i->second, state, data);
+                    break;
+                }
+
+                if (filter_result.return_type != lua::EnvelopeFilterResult::BOOLTRUE)
+                    continue;
+            }
+
+            state.AddEnvelope(env);
+            cb(*i->second, state, data);
+        }
+    }
 }
 
 bool PersistedStateManager::IsPathSubscribed(const std::string &path, const zippylog::SubscriptionInfo &subscription)
@@ -205,81 +273,5 @@ bool PersistedStateManager::IsPathSubscribed(const std::string &path, const zipp
 
     return false;
 }
-
-/*
-void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
-{
-    // pre-load an input stream if we need to
-    InputStream *is = NULL;
-    if (process_envelopes && this->HaveEnvelopeSubscription(path)) {
-        is = this->store->GetInputStream(path);
-        if (!is) {
-            throw Exception("could not obtain input stream");
-            return;
-        }
-    }
-
-    // iterate over all the subscribers
-    // @todo address runaway resource consumption when many subscriptions
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
-    for (; i != this->subscriptions.end(); i++) {
-        // for each path they are subscribed to
-        vector<string>::iterator prefix = i->second->paths.begin();
-        for (; prefix != i->second->paths.end(); prefix++) {
-            // envelopes are a little more challenging
-            else if (process_envelopes && i->second->type == i->second->ENVELOPE) {
-                map<string, uint64>::iterator iter = this->stream_read_offsets.find(path);
-                assert(iter != this->stream_read_offsets.end());
-
-                uint64 offset = iter->second;
-
-                if (!is->SetAbsoluteOffset(offset)) {
-                    throw Exception("could not set stream offset");
-                }
-
-                EnvelopeSubscriptionResponseState state(this->client_sock, *i->second);
-
-                while (offset < stream_length) {
-                    Envelope env;
-                    uint32 read;
-                    if (!is->ReadEnvelope(env, read)) {
-                        break;
-                    }
-                    offset += read;
-
-                    // run envelope through Lua
-                    if (i->second->l && i->second->l->HasSubscriptionEnvelopeFilter()) {
-                        lua::EnvelopeFilterResult filter_result;
-                        if (!i->second->l->ExecuteSubscriptionEnvelopeFilter(env, path, filter_result)) {
-                            throw Exception("envelope filter not executed. very weird");
-                        }
-
-                        if (!filter_result.execution_success) {
-                            state.RegisterError(protocol::response::LUA_ERROR, filter_result.lua_error);
-                            RequestProcessor::SendSubscriptionEnvelopeResponse(state);
-                            break;
-                        }
-
-                        if (filter_result.return_type != lua::EnvelopeFilterResult::BOOLTRUE)
-                            continue;
-                    }
-
-                    state.AddEnvelope(e);
-                    RequestProcessor::SendSubscriptionEnvelopeResponse(state);
-                }
-
-                // stop processing this subscription since the stream has been addressed
-                break;
-            }
-        }
-    }
-
-    if (process_envelopes) {
-        this->stream_read_offsets[path] = stream_length;
-    }
-}
-
-*/
-
 
 } // namespace

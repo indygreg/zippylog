@@ -100,11 +100,9 @@ class ZIPPYLOG_EXPORT EnvelopeSubscriptionResponseState {
 public:
     /// Construct a state for sending an envelope subscription response
     ///
-    /// @param sock Socket to send responses to
     /// @param subscription Subscription record
-    EnvelopeSubscriptionResponseState(::zmq::socket_t *socket, const SubscriptionInfo &subscription) :
+    EnvelopeSubscriptionResponseState(const SubscriptionInfo &subscription) :
         finalized(false),
-        sock(socket),
         id(subscription.id),
         identities(subscription.socket_identifiers),
         current_size(0)
@@ -125,7 +123,6 @@ public:
 
 protected:
     bool finalized;
-    ::zmq::socket_t *sock;
     ::std::string id;
     ::std::vector< ::std::string > identities;
     uint32 current_size;
@@ -302,8 +299,10 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// code to send many envelopes without having to worry about all the
         /// details.
         ///
+        /// @param sock Socket to send response through
         /// @param state State keeping track of what to send
-        static bool SendSubscriptionEnvelopeResponse(EnvelopeSubscriptionResponseState &state);
+        static bool SendSubscriptionEnvelopeResponse(::zmq::socket_t &sock,
+                                                     EnvelopeSubscriptionResponseState &state);
 
     protected:
         /// Callback to handle a validated request for a subscription

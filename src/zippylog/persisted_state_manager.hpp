@@ -31,6 +31,8 @@ typedef void (PersistedStateManagerPathAddedCallback)(const SubscriptionInfo &, 
 /// Callback for individual subscription notification of a path deleted
 typedef void (PersistedStateManagerPathDeletedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
 
+typedef void (PersistedStateManagerStreamAppendedCallback)(const SubscriptionInfo &, EnvelopeSubscriptionResponseState &state, void *);
+
 /// Constructor arguments for PersistedStateManager
 class ZIPPYLOG_EXPORT PersistedStateManagerStartParams {
 public:
@@ -98,15 +100,22 @@ public:
     /// The function examines existing subscriptions. If anyone is subscribed,
     /// the passed callback will be invoked, receiving details of the
     /// subscription.
-    void ProcessStoreChangePathAdded(const ::std::string &path, PersistedStateManagerPathAddedCallback *cb, void *data = NULL);
+    void ProcessStoreChangePathAdded(const ::std::string &path,
+                                     PersistedStateManagerPathAddedCallback *cb,
+                                     void *data = NULL);
 
     /// Processes a path deleted event
     ///
     /// This is very similar to ProcessStoreChangePathAdded(). All the
     /// documentation for that method applies.
-    void ProcessStoreChangePathDeleted(const ::std::string &path, PersistedStateManagerPathDeletedCallback *cb, void *data = NULL);
+    void ProcessStoreChangePathDeleted(const ::std::string &path,
+                                       PersistedStateManagerPathDeletedCallback *cb,
+                                       void *data = NULL);
 
-    void ProcessStoreChangeStreamAppended(const ::std::string &path, const uint64 stream_length);
+    void ProcessStoreChangeStreamAppended(const ::std::string &path,
+                                          const uint64 stream_length,
+                                          PersistedStateManagerStreamAppendedCallback *cb,
+                                          void *data = NULL);
 
 protected:
 
