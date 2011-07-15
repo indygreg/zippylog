@@ -84,7 +84,7 @@ public:
 ///
 /// Instances of this class are not thread safe.
 ///
-/// @todo Add API(s) to retrieve state metadata
+/// @todo Add API to retrieve state metadata
 class ZIPPYLOG_EXPORT PersistedStateManager {
 public:
     PersistedStateManager(const PersistedStateManagerStartParams &params);
