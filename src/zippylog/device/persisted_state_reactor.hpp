@@ -89,6 +89,11 @@ protected:
     /// Called by the constructor. Throws an exception on error.
     void Initialize();
 
+    /// Processes a received store change message
+    void ProcessStoreChangeMessage(::zmq::message_t &msg);
+
+    void ProcessSubscriptionUpdate(::zmq::message_t &msg);
+
     // variables passed in to constructor
     ::zmq::context_t *ctx;
 

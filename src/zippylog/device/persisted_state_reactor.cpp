@@ -17,6 +17,8 @@
 #include <zippylog/platform.hpp>
 
 using ::std::invalid_argument;
+using ::std::string;
+using ::std::vector;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -142,10 +144,11 @@ void PersistedStateReactor::Pump(int32 timeout)
 
     // process store changes and send to subscribers
     if (pollitems[0].revents & ZMQ_POLLIN) {
-        // @todo error checking
-        this->subscription_updates_sock->recv(&msg, 0);
+        if (!this->store_changes_sock->recv(&msg, 0)) {
+            throw Exception("error receiving 0MQ message on store changes socket");
+        }
 
-        /// @todo Send to manager
+        this->ProcessStoreChangeMessage(msg);
     }
 }
 
@@ -153,6 +156,152 @@ void PersistedStateReactor::Run()
 {
     while(*this->active) {
         this->Pump(100000);
+    }
+}
+
+void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)
+{
+    // since the socket for store changes is part of the device API and not
+    // the protocol, it is OK that we are doing low-level processing here
+
+    /// @todo return early if manager has nothing to manage
+
+    Envelope e;
+    try { e = Envelope(msg, 0); }
+    catch (DeserializeException ex) {
+        throw Exception("deserialization error on receives store change envelope");
+    }
+
+    if (!e.MessageCount() || e.MessageNamespace(0) != ::zippylog::message_namespace) {
+        throw Exception("received store change envelope contains no messages");
+    }
+
+    string path, bucket, stream_set, stream;
+
+    uint32 message_type = e.MessageType(0);
+
+    switch (message_type) {
+        case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeBucketAddedV1 *m = (protocol::StoreChangeBucketAddedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+
+            path = Store::BucketPath(bucket);
+
+            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeBucketDeletedV1 *m = (protocol::StoreChangeBucketDeletedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+
+            path = Store::BucketPath(bucket);
+
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeStreamSetAddedV1 *m = (protocol::StoreChangeStreamSetAddedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+            stream_set = m->stream_set();
+
+            path = Store::StreamsetPath(bucket, stream_set);
+
+            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeStreamSetDeletedV1 *m = (protocol::StoreChangeStreamSetDeletedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+            stream_set = m->stream_set();
+
+            path = Store::StreamsetPath(bucket, stream_set);
+
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeStreamAddedV1 *m = (protocol::StoreChangeStreamAddedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+            stream_set = m->stream_set();
+            stream = m->stream();
+
+            path = Store::StreamPath(bucket, stream_set, stream);
+
+            this->manager->ProcessStoreChangePathAdded(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeStreamDeletedV1 *m = (protocol::StoreChangeStreamDeletedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+            stream_set = m->stream_set();
+            stream = m->stream();
+
+            path = Store::StreamPath(bucket, stream_set, stream);
+
+            this->manager->ProcessStoreChangePathDeleted(path, NULL, NULL);
+        }
+            break;
+
+        case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
+        {
+            protocol::StoreChangeStreamAppendedV1 *m = (protocol::StoreChangeStreamAppendedV1 *)e.GetMessage(0);
+            bucket = m->bucket();
+            stream_set = m->stream_set();
+            stream = m->stream();
+            uint64 stream_length = m->length();
+
+            path = Store::StreamPath(bucket, stream_set, stream);
+
+            this->manager->ProcessStoreChangeStreamAppended(path, stream_length);
+        }
+            break;
+
+        default:
+            throw Exception("unhandled message type in store change envelope");
+    }
+}
+
+void PersistedStateReactor::ProcessSubscriptionUpdate(zmq::message_t &msg)
+{
+    Envelope e;
+    try { e = Envelope(msg, 0); }
+    catch (DeserializeException ex) {
+        throw Exception("deserialization error on subscription update message");
+    }
+
+    if (e.MessageCount() != 1 || e.MessageNamespace(0) != ::zippylog::message_namespace) {
+        throw Exception("subscription update Envelope does not conform to expected");
+    }
+
+    uint32 type = e.MessageType(0);
+
+    if (type == protocol::request::SubscribeKeepaliveV1::zippylog_enumeration) {
+        protocol::request::SubscribeKeepaliveV1 *m =
+            (protocol::request::SubscribeKeepaliveV1 *)e.GetMessage(0);
+        if (!m) {
+            throw Exception("could not obtain keepalive message");
+        }
+
+        vector<string> ids;
+        for (size_t i = 0; i < m->id_size(); i++) {
+            ids.push_back(m->id(i));
+        }
+
+        this->manager->RenewSubscriptions(ids);
+    }
+    else {
+        throw Exception("unknown type of subscription update message");
     }
 }
 

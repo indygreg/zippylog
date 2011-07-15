@@ -21,8 +21,15 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 namespace zippylog {
+
+/// Callback used for individual subscription notification of a path added
+typedef void (PersistedStateManagerPathAddedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
+
+/// Callback for individual subscription notification of a path deleted
+typedef void (PersistedStateManagerPathDeletedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
 
 /// Constructor arguments for PersistedStateManager
 class ZIPPYLOG_EXPORT PersistedStateManagerStartParams {
@@ -45,10 +52,15 @@ public:
     uint32 subscription_lua_memory_ceiling;
 };
 
-/// Handles events relevant to persisted state
+/// Manages persisted state in a server
 ///
 /// Logic for maintaining subscriptions and plugins and running observed
-/// events through these is contained within this class.
+/// events through these is contained within this class. No other class in
+/// the code base should be directly involved in managing subscriptions or
+/// plugins.
+///
+/// The class API will evolve as the zippylog protocol evolves, as there is
+/// a strong cohesion between the two.
 class ZIPPYLOG_EXPORT PersistedStateManager {
 public:
     PersistedStateManager(const PersistedStateManagerStartParams &params);
@@ -56,29 +68,59 @@ public:
     ~PersistedStateManager();
 
     /// Whether we have a subscription with the specified id
-    bool HasSubscription(const ::std::string &id);
+    bool HasSubscription(const ::std::string &id) const;
 
     /// Renews a subscription for the specified id
+    ///
+    /// This is typically called when a server receives a subscription
+    /// keepalive request.
     bool RenewSubscription(const ::std::string &id);
+
+    /// Renews multiple subscriptions from ids
+    bool RenewSubscriptions(const ::std::vector < ::std::string > & ids);
 
     /// Registers a new subscription from a subscription record
     ///
     /// Ownership of the memory is transferred to the manager
     void RegisterSubscription(SubscriptionInfo *subscription);
 
+    /// Unregister a subscription with the id specified
+    void UnregisterSubscription(const ::std::string &id);
+
     /// Removes expired subscriptions from the manager
     int32 RemoveExpiredSubscriptions();
+
+    /// Processes a path added event
+    ///
+    /// This is called when a bucket, stream set, or path has been added to
+    /// the store.
+    ///
+    /// The function examines existing subscriptions. If anyone is subscribed,
+    /// the passed callback will be invoked, receiving details of the
+    /// subscription.
+    void ProcessStoreChangePathAdded(const ::std::string &path, PersistedStateManagerPathAddedCallback *cb, void *data = NULL);
+
+    /// Processes a path deleted event
+    ///
+    /// This is very similar to ProcessStoreChangePathAdded(). All the
+    /// documentation for that method applies.
+    void ProcessStoreChangePathDeleted(const ::std::string &path, PersistedStateManagerPathDeletedCallback *cb, void *data = NULL);
+
+    void ProcessStoreChangeStreamAppended(const ::std::string &path, const uint64 stream_length);
 
 protected:
 
     /// Whether we have any store change subscriptions
-    bool HaveStoreChangeSubscriptions();
+    bool HaveStoreChangeSubscriptions() const;
 
     /// Whether we have store change subscriptions for the given path
-    bool HaveStoreChangeSubscriptions(const ::std::string &path);
+    bool HaveStoreChangeSubscriptions(const ::std::string &path) const;
 
     /// Whether we have a subscription for envelopes in the given stream path
-    bool HaveEnvelopeSubscription(const ::std::string &path);
+    bool HaveEnvelopeSubscription(const ::std::string &path) const;
+
+    /// Returns whether a path is subscribed to by a subscription
+    static bool IsPathSubscribed(const ::std::string &path, const SubscriptionInfo &subscription);
 
     // params coming from constructor
     ::std::string store_uri;

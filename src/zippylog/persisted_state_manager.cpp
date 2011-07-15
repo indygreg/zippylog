@@ -72,63 +72,44 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
     return removed;
 }
 
-bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path)
+bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path) const
 {
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    map<string, SubscriptionInfo *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
         if (i->second->type != i->second->STORE_CHANGE) continue;
 
-        vector<string>::iterator prefix = i->second->paths.begin();
-        for (; prefix != i->second->paths.end(); prefix++) {
-            if (prefix->length() > path.length()) continue;
-            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+        if (!IsPathSubscribed(path, *i->second)) continue;
 
-            return true;
-        }
+        return true;
     }
 
     return false;
 }
 
-bool PersistedStateManager::HaveStoreChangeSubscriptions()
+bool PersistedStateManager::HaveStoreChangeSubscriptions() const
 {
     return this->HaveStoreChangeSubscriptions("/");
 }
 
-bool PersistedStateManager::HaveEnvelopeSubscription(const string &path)
+bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
 {
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    map<string, SubscriptionInfo *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
         if (i->second->type != i->second->ENVELOPE) continue;
 
-        vector<string>::iterator prefix = i->second->paths.begin();
-        for (; prefix != i->second->paths.end(); prefix++) {
-            if (prefix->length() > path.length()) continue;
-            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
+        if (!IsPathSubscribed(path, *i->second)) continue;
 
-            return true;
-        }
+        return true;
     }
 
     return false;
 }
 
-bool PersistedStateManager::HasSubscription(const string &id)
+bool PersistedStateManager::HasSubscription(const string &id) const
 {
-    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
+    map<string, SubscriptionInfo *>::const_iterator iter = this->subscriptions.find(id);
 
     return iter != this->subscriptions.end();
-}
-
-bool PersistedStateManager::RenewSubscription(const string &id)
-{
-    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
-
-    if (iter == this->subscriptions.end()) {
-        return false;
-    }
-
-    return iter->second->expiration_timer.Start();
 }
 
 void PersistedStateManager::RegisterSubscription(zippylog::SubscriptionInfo *subscription)
@@ -142,173 +123,92 @@ void PersistedStateManager::RegisterSubscription(zippylog::SubscriptionInfo *sub
     this->subscriptions[subscription->id] = subscription;
 }
 
-/*
-bool Streamer::ProcessSubscriptionUpdate(Envelope &e)
+bool PersistedStateManager::RenewSubscription(const string &id)
 {
-    if (e.MessageCount() != 1) return false;
-    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
+    vector<string> ids;
+    ids.push_back(id);
 
-    uint32 type = e.MessageType(0);
+    return this->RenewSubscriptions(ids);
+}
 
-    if (type == protocol::request::SubscribeKeepaliveV1::zippylog_enumeration) {
-        protocol::request::SubscribeKeepaliveV1 *m =
-            (protocol::request::SubscribeKeepaliveV1 *)e.GetMessage(0);
-        if (!m) return false;
+bool PersistedStateManager::RenewSubscriptions(const vector<string> &ids)
+{
+    for (size_t i = 0; i < ids.size(); i++) {
+        string id = ids[i];
 
-        for (int i = 0; i < m->id_size(); i++) {
-            string id = m->id(i);
+        map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
 
-            ReceiveKeepalive log;
-            log.set_subscription(id);
-            LOG_MESSAGE(log, this->logging_sock);
-
-            if (this->HasSubscription(id)) {
-                if (this->RenewSubscription(id)) {
-                    SubscriptionRenewedFromKeepalive log;
-                    log.set_subscription(id);
-                    LOG_MESSAGE(log, this->logging_sock);
-                }
-                else {
-                    ErrorRenewingSubscription log;
-                    log.set_subscription(id);
-                    LOG_MESSAGE(log, this->logging_sock);
-                }
-            }
-            else {
-                RejectKeepaliveUnknownSubscription log;
-                log.set_subscription(id);
-                LOG_MESSAGE(log, this->logging_sock);
-            }
+        if (iter == this->subscriptions.end()) {
+            continue;
         }
+
+        iter->second->expiration_timer.Start();
     }
 
     return true;
 }
 
-bool Streamer::ProcessStoreChangeMessage(message_t &msg)
+void PersistedStateManager::ProcessStoreChangePathAdded(const std::string &path, PersistedStateManagerPathAddedCallback *cb, void *data)
 {
-    // if we don't have any subscriptions, do nothing
-    if (!this->subscriptions.size()) return true;
+    if (!cb) throw invalid_argument("callback parameter not defined");
 
-    Envelope e;
-    try { e = Envelope(msg.data(), msg.size()); }
-    catch (DeserializeException ex) {
-        throw Exception("TODO log deserialize error and continue");
+    if (this->subscriptions.empty()) return;
+
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second->type != i->second->STORE_CHANGE)
+            continue;
+
+        if (!IsPathSubscribed(path, *i->second))
+            continue;
+
+        /// @todo call callback
     }
-
-    if (!e.MessageCount()) return false;
-    if (e.MessageNamespace(0) != ::zippylog::message_namespace) return false;
-
-    uint32 message_type = e.MessageType(0);
-    switch (message_type) {
-        case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
-        case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
-        case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
-        case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
-        case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
-        case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
-        case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
-            // if no subscriptions to store changes, do nothing
-            if (!this->HaveStoreChangeSubscriptions()) return true;
-
-            this->ProcessStoreChangeEnvelope(e);
-            break;
-        default:
-            throw Exception("TODO log unknown store change message in streamer");
-            break;
-    }
-
-    return true;
 }
 
+void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &path, PersistedStateManagerPathDeletedCallback *cb, void *data)
+{
+    if (!cb) throw invalid_argument("callback parameter not defined");
+
+    if (this->subscriptions.empty()) return;
+
+    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); i++) {
+        if (i->second->type != i->second->STORE_CHANGE)
+            continue;
+
+        if (!IsPathSubscribed(path, *i->second))
+            continue;
+
+        /// @todo call callback
+    }
+}
+
+void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path, uint64 stream_length)
+{
+
+}
+
+bool PersistedStateManager::IsPathSubscribed(const std::string &path, const zippylog::SubscriptionInfo &subscription)
+{
+    vector<string>::const_iterator prefix = subscription.paths.begin();
+    for (; prefix != subscription.paths.end(); prefix++) {
+        if (prefix->length() > path.length())
+                continue;
+
+        // subscribed path doesn't match actual
+        if (path.substr(0, prefix->length()).compare(*prefix))
+            continue;
+
+        return true;
+    }
+
+    return false;
+}
+
+/*
 void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
 {
-    // we obtain the full path and build a path from it
-    // we then compare path prefixes of subscribers to see who gets it
-    string bucket, stream_set, stream;
-
-    bool process_envelopes = false;
-    uint64 stream_length = 0;
-
-    string path;
-
-    switch (e.MessageType(0)) {
-        case protocol::StoreChangeBucketAddedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeBucketAddedV1 *m = (protocol::StoreChangeBucketAddedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-
-            path = Store::BucketPath(bucket);
-        }
-            break;
-
-        case protocol::StoreChangeBucketDeletedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeBucketDeletedV1 *m = (protocol::StoreChangeBucketDeletedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-
-            path = Store::BucketPath(bucket);
-        }
-            break;
-
-        case protocol::StoreChangeStreamSetAddedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeStreamSetAddedV1 *m = (protocol::StoreChangeStreamSetAddedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-            stream_set = m->stream_set();
-
-            path = Store::StreamsetPath(bucket, stream_set);
-        }
-            break;
-
-        case protocol::StoreChangeStreamSetDeletedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeStreamSetDeletedV1 *m = (protocol::StoreChangeStreamSetDeletedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-            stream_set = m->stream_set();
-
-            path = Store::StreamsetPath(bucket, stream_set);
-        }
-            break;
-
-        case protocol::StoreChangeStreamAppendedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeStreamAppendedV1 *m = (protocol::StoreChangeStreamAppendedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-            stream_set = m->stream_set();
-            stream = m->stream();
-            stream_length = m->length();
-
-            process_envelopes = true;
-            path = Store::StreamPath(bucket, stream_set, stream);
-        }
-            break;
-
-        case protocol::StoreChangeStreamAddedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeStreamAddedV1 *m = (protocol::StoreChangeStreamAddedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-            stream_set = m->stream_set();
-            stream = m->stream();
-
-            path = Store::StreamPath(bucket, stream_set, stream);
-
-            this->stream_read_offsets[path] = 0;
-        }
-            break;
-
-        case protocol::StoreChangeStreamDeletedV1::zippylog_enumeration:
-        {
-            protocol::StoreChangeStreamDeletedV1 *m = (protocol::StoreChangeStreamDeletedV1 *)e.GetMessage(0);
-            bucket = m->bucket();
-            stream_set = m->stream_set();
-            stream = m->stream();
-
-            path = Store::StreamPath(bucket, stream_set, stream);
-        }
-            break;
-    }
-
     // pre-load an input stream if we need to
     InputStream *is = NULL;
     if (process_envelopes && this->HaveEnvelopeSubscription(path)) {
@@ -326,25 +226,6 @@ void Streamer::ProcessStoreChangeEnvelope(Envelope &e)
         // for each path they are subscribed to
         vector<string>::iterator prefix = i->second->paths.begin();
         for (; prefix != i->second->paths.end(); prefix++) {
-            // no way it will match
-            if (prefix->length() > path.length()) continue;
-
-            // if prefix doesn't match, move on
-            if (path.substr(0, prefix->length()).compare(*prefix)) continue;
-
-            // at this point, the subscription matches
-
-            // the case of store changes is simple
-            if (i->second->type == i->second->STORE_CHANGE) {
-                RequestProcessor::SendSubscriptionStoreChangeResponse(
-                    *this->client_sock,
-                    *i->second,
-                    e
-                );
-
-                // don't process this path any more for this subscriber
-                break;
-            }
             // envelopes are a little more challenging
             else if (process_envelopes && i->second->type == i->second->ENVELOPE) {
                 map<string, uint64>::iterator iter = this->stream_read_offsets.find(path);
