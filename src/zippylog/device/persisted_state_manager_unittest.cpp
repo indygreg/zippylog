@@ -36,4 +36,30 @@ TEST_F(PersistedStateManagerTest, Constructor)
     EXPECT_NO_THROW(PersistedStateManager m(p));
 }
 
+TEST_F(PersistedStateManagerTest, IsPathSubscribed)
+{
+    SubscriptionInfo s(1000);
+    s.paths.push_back("/");
+    s.type = SubscriptionInfo::STORE_CHANGE;
+
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar/stream", s));
+
+    s.paths.clear();
+    s.paths.push_back("/foo");
+    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar/stream", s));
+
+    s.paths.push_back("/bar");
+    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar", s));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar/foo", s));
+}
+
 } // namespaces

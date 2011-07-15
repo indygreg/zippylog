@@ -121,6 +121,8 @@ void PersistedStateManager::RegisterSubscription(zippylog::SubscriptionInfo *sub
     }
 
     this->subscriptions[subscription->id] = subscription;
+
+    subscription->expiration_timer.Start(this->subscription_ttl);
 }
 
 bool PersistedStateManager::RenewSubscription(const string &id)

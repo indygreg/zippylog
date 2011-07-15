@@ -86,6 +86,8 @@ public:
     /// Ownership of the memory is transferred to the manager. The lifetime
     /// of the object is undefined, so callers should not attempt to access it
     /// after it is transferred to the manager.
+    ///
+    /// This function will start the subscription TTL timer immediately
     void RegisterSubscription(SubscriptionInfo *subscription);
 
     /// Unregister a subscription with the id specified
@@ -169,6 +171,7 @@ protected:
     // maps read offsets in streams. for envelope streaming
     ::std::map< ::std::string, uint64 > stream_read_offsets;
 
+    FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
 private:
 };
 
