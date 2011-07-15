@@ -136,10 +136,11 @@ void PersistedStateReactor::Pump(int32 timeout)
             throw Exception("SubscriptionInfo message not a pointer!");
         }
 
-        SubscriptionInfo **subscription = (SubscriptionInfo **)msg.data();
+        SubscriptionInfo subscription;
+        memcpy(&subscription, msg.data(), sizeof(subscription));
 
         /// @todo handle errors?
-        this->manager->RegisterSubscription(*subscription);
+        this->manager->RegisterSubscription(subscription);
     }
 
     // process store changes and send to subscribers

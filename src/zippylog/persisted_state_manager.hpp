@@ -16,6 +16,8 @@
 #define ZIPPYLOG_PERSISTED_STATE_MANAGER_HPP_
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/lua.hpp>
+#include <zippylog/platform.hpp>
 #include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 
@@ -32,6 +34,22 @@ typedef void (PersistedStateManagerPathAddedCallback)(const SubscriptionInfo &, 
 typedef void (PersistedStateManagerPathDeletedCallback)(const SubscriptionInfo &, const ::std::string &, void *);
 
 typedef void (PersistedStateManagerStreamAppendedCallback)(const SubscriptionInfo &, EnvelopeSubscriptionResponseState &, void *);
+
+class PersistedStateManagerSubscriptionRecord
+{
+public:
+    PersistedStateManagerSubscriptionRecord();
+
+    PersistedStateManagerSubscriptionRecord(const SubscriptionInfo &subscription, uint32 ttl);
+    ~PersistedStateManagerSubscriptionRecord();
+
+protected:
+    SubscriptionInfo si;
+    platform::Timer expiration_timer;
+    lua::LuaState *l;
+
+    friend class PersistedStateManager;
+};
 
 /// Constructor arguments for PersistedStateManager
 class ZIPPYLOG_EXPORT PersistedStateManagerStartParams {
@@ -88,7 +106,7 @@ public:
     /// after it is transferred to the manager.
     ///
     /// This function will start the subscription TTL timer immediately
-    void RegisterSubscription(SubscriptionInfo *subscription);
+    void RegisterSubscription(const SubscriptionInfo &subscription);
 
     /// Unregister a subscription with the id specified
     void UnregisterSubscription(const ::std::string &id);
@@ -149,7 +167,7 @@ protected:
     bool HaveEnvelopeSubscription(const ::std::string &path) const;
 
     /// Returns whether a path is subscribed to by a subscription
-    static bool IsPathSubscribed(const ::std::string &path, const SubscriptionInfo &subscription);
+    static bool IsPathSubscribed(const ::std::string &path, const PersistedStateManagerSubscriptionRecord &subscription);
 
     // params coming from constructor
     ::std::string store_uri;
@@ -166,7 +184,7 @@ protected:
     Store * store;
 
     /// Maps subscription id to details about the subscription
-    ::std::map< ::std::string, SubscriptionInfo * > subscriptions;
+    ::std::map< ::std::string, PersistedStateManagerSubscriptionRecord * > subscriptions;
 
     // maps read offsets in streams. for envelope streaming
     ::std::map< ::std::string, uint64 > stream_read_offsets;

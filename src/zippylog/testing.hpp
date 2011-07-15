@@ -33,7 +33,7 @@ public:
     ::std::string GetTemporaryStoreUri();
 
 protected:
-    void TearDown();
+    virtual void TearDown();
 
 private:
     ::std::vector< ::std::string > created_store_paths;

@@ -60,19 +60,17 @@ protected:
         this->write_envelopes_count = 0;
     }
 
-    HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo *subscription) {
-        if (subscription->type == SubscriptionInfo::ENVELOPE) {
+    HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) {
+        if (subscription.type == ENVELOPE) {
             this->handle_subscribe_envelopes_count++;
         }
-        else if (subscription->type == SubscriptionInfo::STORE_CHANGE) {
+        else if (subscription.type == STORE_CHANGE) {
             this->subscribe_store_changes_count++;
         }
 
         HandleSubscriptionResult result;
         result.result = HandleSubscriptionResult::ACCEPTED;
         result.id = "XX";
-
-        delete subscription;
 
         return result;
     }

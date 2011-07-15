@@ -70,18 +70,15 @@ RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &requ
     return DEFERRED;
 }
 
-HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::SubscriptionInfo *subscription)
+HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::SubscriptionInfo subscription)
 {
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-
     HandleSubscriptionResult result;
-    result.id = string((const char *)&uuid, sizeof(uuid));
+    result.id = platform::CreateUUID(false);
     result.result = HandleSubscriptionResult::ACCEPTED;
-    subscription->id = result.id;
+    subscription.id = result.id;
 
-    // we send the pointer to the subscription record through the socket
-    // if it gets lost, we have a memory leak. but, it shouldn't get lost
+    // we send the raw class through the socket
+    /// @todo serialize to protocol buffer message
     message_t m(sizeof(subscription));
     memcpy(m.data(), &subscription, sizeof(subscription));
 

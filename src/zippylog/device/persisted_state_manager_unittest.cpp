@@ -17,14 +17,44 @@
 #include <zippylog/testing.hpp>
 
 #include <string>
+#include <vector>
 
 using ::std::invalid_argument;
 using ::std::string;
+using ::std::vector;
 
 namespace zippylog {
 
 class PersistedStateManagerTest : public ::zippylog::testing::TestBase
-{ };
+{
+public:
+    PersistedStateManager * GetManagerForTemporary()
+    {
+        PersistedStateManagerStartParams p;
+        p.store_uri = this->GetTemporaryStoreUri();
+
+        PersistedStateManager *m = new PersistedStateManager(p);
+
+        this->managers.push_back(m);
+
+        return m;
+    }
+
+protected:
+    virtual void TearDown()
+    {
+        vector<PersistedStateManager *>::iterator i = this->managers.begin();
+        for (; i != this->managers.end(); ++i) {
+            delete *i;
+        }
+
+        this->managers.clear();
+
+        TestBase::TearDown();
+    }
+
+    vector<PersistedStateManager *> managers;
+};
 
 TEST_F(PersistedStateManagerTest, Constructor)
 {
@@ -38,28 +68,57 @@ TEST_F(PersistedStateManagerTest, Constructor)
 
 TEST_F(PersistedStateManagerTest, IsPathSubscribed)
 {
-    SubscriptionInfo s(1000);
-    s.paths.push_back("/");
-    s.type = SubscriptionInfo::STORE_CHANGE;
+    SubscriptionInfo si;
+    si.paths.push_back("/");
+    si.type = STORE_CHANGE;
+    PersistedStateManagerSubscriptionRecord s(si, 1000);
 
     EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/", s));
     EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
     EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
     EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar/stream", s));
 
-    s.paths.clear();
-    s.paths.push_back("/foo");
-    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar/stream", s));
+    si.paths.clear();
+    si.paths.push_back("/foo");
+    PersistedStateManagerSubscriptionRecord s2(si, 1000);
+    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s2));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s2));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s2));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar/stream", s2));
 
-    s.paths.push_back("/bar");
-    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar", s));
-    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar/foo", s));
+    si.paths.push_back("/bar");
+    PersistedStateManagerSubscriptionRecord s3(si, 1000);
+    EXPECT_FALSE(PersistedStateManager::IsPathSubscribed("/", s3));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo", s3));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/foo/bar", s3));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar", s3));
+    EXPECT_TRUE(PersistedStateManager::IsPathSubscribed("/bar/foo", s3));
+}
+
+TEST_F(PersistedStateManagerTest, RegisterSubscription)
+{
+    PersistedStateManager *m = this->GetManagerForTemporary();
+
+    SubscriptionInfo s;
+
+    EXPECT_THROW(m->RegisterSubscription(s), invalid_argument) << "subscription with no data should be rejected";
+}
+
+TEST_F(PersistedStateManagerTest, HasSubscription)
+{
+    PersistedStateManager *m = this->GetManagerForTemporary();
+
+    EXPECT_FALSE(m->HasSubscription("foo"));
+    EXPECT_FALSE(m->HasSubscription(""));
+
+    SubscriptionInfo s;
+    s.paths.push_back("/");
+    s.type = STORE_CHANGE;
+    s.id = "foo";
+
+    m->RegisterSubscription(s);
+
+    EXPECT_TRUE(m->HasSubscription("foo"));
 }
 
 } // namespaces

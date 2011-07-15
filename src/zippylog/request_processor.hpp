@@ -39,23 +39,25 @@ public:
     ::std::vector< ::std::pair<uint32, uint32> > filter_enumerations;
 };
 
+typedef enum {
+    ENVELOPE = 1,
+    STORE_CHANGE = 2,
+    UNKNOWN = 3,
+} SubscriptionType;
+
 /// Records information about a single subscription
-class SubscriptionInfo {
+///
+/// These records are populated by the request processor. They are typically
+/// passed along to a persisted state manager.
+///
+/// @todo consider formalizing API
+class ZIPPYLOG_EXPORT SubscriptionInfo {
 public:
-    SubscriptionInfo();
-    SubscriptionInfo(uint32 expiration_ttl);
-    ~SubscriptionInfo();
-
-    void InitializeLua();
-
-    /// Timer that keeps track of subscription expiration
-    ::zippylog::platform::Timer expiration_timer;
+    SubscriptionInfo() : type(UNKNOWN)
+    { };
 
     /// The type of subscription
-    enum SubscriptionType {
-        ENVELOPE = 1,
-        STORE_CHANGE = 2,
-    } type;
+    SubscriptionType type;
 
     /// Subscription id
     ::std::string id;
@@ -63,18 +65,16 @@ public:
     /// Store paths subscribed to
     ::std::vector< ::std::string > paths;
 
-    /// 0MQ socket identifiers to route messages
+    /// Lua code
+    ::std::string lua_code;
+
+    /// 0MQ socket identifiers that original subscription arrived on
+    ///
+    /// Used for return path routing
     ::std::vector< ::std::string > socket_identifiers;
 
     /// Details about envelope subscription
     EnvelopeSubscription envelope_subscription;
-
-    /// Lua state attached to subscription
-    ::zippylog::lua::LuaState *l;
-
-private:
-    SubscriptionInfo(const SubscriptionInfo &orig);
-    SubscriptionInfo & operator=(const SubscriptionInfo &orig);
 };
 
 /// Encapsulates the result of a request to handle a subscription
@@ -317,13 +317,10 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Callback to handle a validated request for a subscription
         ///
         /// This function is called after a subscription request has been
-        /// received and validated. The function receives a pointer to a
-        /// subscription record. Ownership of this object is transferred to
-        /// the called function, which is expected to delete it when it is
-        /// no longer used.
+        /// received and validated.
         ///
         /// @param subscription metadata
-        virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo *subscription) = 0;
+        virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) = 0;
 
         /// callback to handle a subscription keepalive
         virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
@@ -371,7 +368,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// Process a WriteEnvelope request
         ResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
 
-        void CallHandleSubscriptionRequest(SubscriptionInfo **subscription, ::std::vector<Envelope> &output);
+        void CallHandleSubscriptionRequest(SubscriptionInfo &subscription, ::std::vector<Envelope> &output);
 
         /// Checks that a path supplied by the client is valid
         ///

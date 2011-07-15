@@ -68,7 +68,7 @@ class Worker : public ::zippylog::RequestProcessor {
 
     protected:
         // implement virtual functions
-        HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo *subscription);
+        HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription);
 
         ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
         int HandleWriteEnvelopes(const ::std::string &path, ::std::vector<Envelope> &to_write, bool synchronous);

@@ -20,8 +20,22 @@ using ::std::invalid_argument;
 using ::std::map;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::lua::LuaState;
 
 namespace zippylog {
+
+PersistedStateManagerSubscriptionRecord::PersistedStateManagerSubscriptionRecord() { }
+
+PersistedStateManagerSubscriptionRecord::PersistedStateManagerSubscriptionRecord(const SubscriptionInfo &subscription, uint32 ttl) :
+    si(subscription),
+    expiration_timer(ttl),
+    l(NULL)
+{ }
+
+PersistedStateManagerSubscriptionRecord::~PersistedStateManagerSubscriptionRecord()
+{
+    if (this->l) delete this->l;
+}
 
 PersistedStateManager::PersistedStateManager(const PersistedStateManagerStartParams &params) :
     store_uri(params.store_uri),
@@ -48,11 +62,11 @@ PersistedStateManager::PersistedStateManager(const PersistedStateManagerStartPar
 
 PersistedStateManager::~PersistedStateManager()
 {
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
-    for (; i != this->subscriptions.end(); i++) {
-        delete i->second;
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator i = this->subscriptions.begin();
+    for (; i != this->subscriptions.end(); ++i) {
+        if (i->second) delete i->second;
+        i->second = NULL;
     }
-    this->subscriptions.clear();
 
     if (this->store) delete this->store;
 }
@@ -61,7 +75,7 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
 {
     int32 removed = 0;
 
-    map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator iter = this->subscriptions.begin();
     for (; iter != this->subscriptions.end(); iter++) {
         if (iter->second->expiration_timer.Signaled()) {
             this->subscriptions.erase(iter->first);
@@ -74,9 +88,9 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
 
 bool PersistedStateManager::HaveStoreChangeSubscriptions(const std::string &path) const
 {
-    map<string, SubscriptionInfo *>::const_iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->STORE_CHANGE) continue;
+        if (i->second->si.type != STORE_CHANGE) continue;
 
         if (!IsPathSubscribed(path, *i->second)) continue;
 
@@ -93,9 +107,9 @@ bool PersistedStateManager::HaveStoreChangeSubscriptions() const
 
 bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
 {
-    map<string, SubscriptionInfo *>::const_iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->ENVELOPE) continue;
+        if (i->second->si.type != ENVELOPE) continue;
 
         if (!IsPathSubscribed(path, *i->second)) continue;
 
@@ -107,22 +121,25 @@ bool PersistedStateManager::HaveEnvelopeSubscription(const string &path) const
 
 bool PersistedStateManager::HasSubscription(const string &id) const
 {
-    map<string, SubscriptionInfo *>::const_iterator iter = this->subscriptions.find(id);
+    map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator iter = this->subscriptions.find(id);
 
     return iter != this->subscriptions.end();
 }
 
-void PersistedStateManager::RegisterSubscription(zippylog::SubscriptionInfo *subscription)
+void PersistedStateManager::RegisterSubscription(const SubscriptionInfo &subscription)
 {
-    if (!subscription) throw invalid_argument("subscription must be defined");
+    if (subscription.id.empty())
+        throw invalid_argument("subscription must have id defined");
 
-    if (this->HasSubscription(subscription->id)) {
+    if (this->HasSubscription(subscription.id)) {
         throw Exception("subscription with that ID is already registered");
     }
 
-    this->subscriptions[subscription->id] = subscription;
+    PersistedStateManagerSubscriptionRecord *record = new PersistedStateManagerSubscriptionRecord(subscription, this->subscription_ttl);
 
-    subscription->expiration_timer.Start(this->subscription_ttl);
+    this->subscriptions[subscription.id] = record;
+
+    record->expiration_timer.Start(this->subscription_ttl);
 }
 
 bool PersistedStateManager::RenewSubscription(const string &id)
@@ -138,7 +155,7 @@ bool PersistedStateManager::RenewSubscriptions(const vector<string> &ids)
     for (size_t i = 0; i < ids.size(); i++) {
         string id = ids[i];
 
-        map<string, SubscriptionInfo *>::iterator iter = this->subscriptions.find(id);
+        map<string, PersistedStateManagerSubscriptionRecord *>::iterator iter = this->subscriptions.find(id);
 
         if (iter == this->subscriptions.end()) {
             continue;
@@ -161,9 +178,9 @@ void PersistedStateManager::ProcessStoreChangePathAdded(const std::string &path,
 
     if (this->subscriptions.empty()) return;
 
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->STORE_CHANGE)
+        if (i->second->si.type != STORE_CHANGE)
             continue;
 
         if (!IsPathSubscribed(path, *i->second))
@@ -181,9 +198,9 @@ void PersistedStateManager::ProcessStoreChangePathDeleted(const std::string &pat
 
     if (this->subscriptions.empty()) return;
 
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->STORE_CHANGE)
+        if (i->second->si.type != STORE_CHANGE)
             continue;
 
         if (!IsPathSubscribed(path, *i->second))
@@ -207,9 +224,9 @@ void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path,
         return;
     }
 
-    map<string, SubscriptionInfo *>::iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
-        if (i->second->type != i->second->ENVELOPE)
+        if (i->second->si.type != ENVELOPE)
             continue;
 
         if (!IsPathSubscribed(path, *i->second))
@@ -226,7 +243,7 @@ void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path,
             throw Exception("could not set stream offset");
         }
 
-        EnvelopeSubscriptionResponseState state(*i->second);
+        EnvelopeSubscriptionResponseState state(i->second->si);
 
         while (offset < stream_length) {
             Envelope env;
@@ -245,7 +262,7 @@ void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path,
 
                 if (!filter_result.execution_success) {
                     state.RegisterError(protocol::response::LUA_ERROR, filter_result.lua_error);
-                    cb(*i->second, state, data);
+                    cb(i->second->si, state, data);
                     break;
                 }
 
@@ -254,15 +271,15 @@ void PersistedStateManager::ProcessStoreChangeStreamAppended(const string &path,
             }
 
             state.AddEnvelope(env);
-            cb(*i->second, state, data);
+            cb(i->second->si, state, data);
         }
     }
 }
 
-bool PersistedStateManager::IsPathSubscribed(const std::string &path, const zippylog::SubscriptionInfo &subscription)
+bool PersistedStateManager::IsPathSubscribed(const std::string &path, const PersistedStateManagerSubscriptionRecord &subscription)
 {
-    vector<string>::const_iterator prefix = subscription.paths.begin();
-    for (; prefix != subscription.paths.end(); prefix++) {
+    vector<string>::const_iterator prefix = subscription.si.paths.begin();
+    for (; prefix != subscription.si.paths.end(); prefix++) {
         if (prefix->length() > path.length())
                 continue;
 

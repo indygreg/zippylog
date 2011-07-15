@@ -57,32 +57,6 @@ using ::zmq::socket_t;
 
 EnvelopeSubscription::EnvelopeSubscription() {}
 
-SubscriptionInfo::SubscriptionInfo() : l(NULL) {}
-
-SubscriptionInfo::SubscriptionInfo(uint32 expiration_ttl)
-    : l(NULL)
-{
-    // milliseconds to microseconds
-    if (!this->expiration_timer.Start(expiration_ttl * 1000)) {
-        throw Exception("could not start expiration timer");
-    }
-}
-
-SubscriptionInfo::~SubscriptionInfo()
-{
-    if (this->l) delete this->l;
-}
-
-void SubscriptionInfo::InitializeLua()
-{
-    if (this->l) {
-        delete this->l;
-        this->l = NULL;
-    }
-
-    this->l = new LuaState();
-}
-
 EnvelopeSubscriptionResponseState::~EnvelopeSubscriptionResponseState()
 {
     vector<message_t *>::iterator i = this->messages.begin();
@@ -833,11 +807,11 @@ LOG_END:
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
     HandleSubscriptionResult result;
-    SubscriptionInfo *subscription = new SubscriptionInfo();
+    SubscriptionInfo subscription;
 
     OBTAIN_MESSAGE(protocol::request::SubscribeStoreChangesV1, m, request, 0);
 
-    subscription->type = SubscriptionInfo::STORE_CHANGE;
+    subscription.type = STORE_CHANGE;
 
     for (int i = 0; i < m->path_size(); i++) {
         string path = m->path(i);
@@ -847,33 +821,29 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(
             goto LOG_END;
         }
 
-        subscription->paths.push_back(path);
+        subscription.paths.push_back(path);
     }
 
     // empty path is complete store, as defined by protocol
-    if (subscription->paths.size() == 0) {
-        subscription->paths.push_back("/");
+    if (subscription.paths.size() == 0) {
+        subscription.paths.push_back("/");
     }
 
-    this->CallHandleSubscriptionRequest(&subscription, output);
+    this->CallHandleSubscriptionRequest(subscription, output);
 
 LOG_END:
-    if (subscription) {
-        delete subscription;
-        subscription = NULL;
-    }
 
     return AUTHORITATIVE;
 }
 
 RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
 {
-    SubscriptionInfo * subscription = new SubscriptionInfo();
+    SubscriptionInfo subscription;
     HandleSubscriptionResult result;
 
     OBTAIN_MESSAGE(protocol::request::SubscribeEnvelopesV1, m, request, 0);
 
-    subscription->type = SubscriptionInfo::ENVELOPE;
+    subscription.type = ENVELOPE;
 
     if (m->filter_enumeration_namespace_size() != m->filter_enumeration_type_size()) {
         this->PopulateErrorResponse(
@@ -885,21 +855,28 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
     }
 
     for (int i = 0; i < m->filter_enumeration_namespace_size(); i++) {
-        subscription->envelope_subscription.filter_enumerations.push_back(
+        subscription.envelope_subscription.filter_enumerations.push_back(
             pair<uint32, uint32>(m->filter_enumeration_namespace(i), m->filter_enumeration_type(i))
         );
     }
 
     for (int i = 0; i < m->filter_namespace_size(); i++) {
-        subscription->envelope_subscription.filter_namespaces.push_back(m->filter_namespace(i));
+        subscription.envelope_subscription.filter_namespaces.push_back(m->filter_namespace(i));
     }
 
     if (m->has_lua_code()) {
-        subscription->InitializeLua();
-        subscription->l->SetMemoryCeiling(this->lua_memory_max);
+        // we currently create the state twice. here and the subscription
+        // manager. since Lua is fast and the lifetime of the subscription
+        // long, we live with this overhead. the underlying reason is there
+        // is typically thread separation between the request processor and
+        // the subscription manager and the API for passing pointers around
+        // would be much uglier than simply passing copies.
+
+        lua::LuaState l;
+        l.SetMemoryCeiling(this->lua_memory_max);
 
         string error;
-        if (!subscription->l->LoadLuaCode(m->lua_code(), error)) {
+        if (!l.LoadLuaCode(m->lua_code(), error)) {
             this->PopulateErrorResponse(
                 protocol::response::LUA_ERROR,
                 error,
@@ -917,21 +894,17 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Env
             goto LOG_END;
         }
 
-        subscription->paths.push_back(m->path(i));
+        subscription.paths.push_back(m->path(i));
     }
 
     // path is whole store if none given, per protocol
-    if (subscription->paths.size() == 0) {
-        subscription->paths.push_back("/");
+    if (subscription.paths.size() == 0) {
+        subscription.paths.push_back("/");
     }
 
-    this->CallHandleSubscriptionRequest(&subscription, output);
+    this->CallHandleSubscriptionRequest(subscription, output);
 
 LOG_END:
-    if (subscription) {
-        delete subscription;
-        subscription = NULL;
-    }
 
     return AUTHORITATIVE;
 }
@@ -1171,18 +1144,17 @@ bool RequestProcessor::SendSubscriptionEnvelopeResponse(socket_t &sock, Envelope
     state.current_size = 0;
 }
 
-void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo **subscription, vector<Envelope> &output)
+void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo &subscription, vector<Envelope> &output)
 {
-    (*subscription)->socket_identifiers = this->current_request_identities;
+    /// @todo we should be able to customize how identity works in case the
+    /// request handler is behind multiple socket layers
+    subscription.socket_identifiers = this->current_request_identities;
 
-    if ((*subscription)->socket_identifiers.size() > 0) {
-        (*subscription)->socket_identifiers.erase((*subscription)->socket_identifiers.begin());
+    if (subscription.socket_identifiers.size() > 0) {
+        subscription.socket_identifiers.erase(subscription.socket_identifiers.begin());
     }
 
-    HandleSubscriptionResult result = this->HandleSubscriptionRequest(*subscription);
-
-    // API contract is called function owns memory of subscription
-    *subscription = NULL;
+    HandleSubscriptionResult result = this->HandleSubscriptionRequest(subscription);
 
     switch (result.result) {
         case HandleSubscriptionResult::ACCEPTED:
