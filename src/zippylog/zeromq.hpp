@@ -25,9 +25,54 @@
 namespace zippylog {
 namespace zeromq {
 
+/// Represents a container for 0MQ messages
+///
+/// This container is used as part of the Tx and Rx APIs. 0MQ messages will
+/// automatically be garbage collected as part of the container's lifetime.
+/// This is much easier than passing around a vector<message_t *> which must
+/// be managed by the caller.
+class ZIPPYLOG_EXPORT MessageContainer {
+public:
+    MessageContainer();
+    ~MessageContainer();
+
+    void Clear();
+
+    /// Adds an identity message to the container
+    ///
+    /// Ownership of the memory address of the message is transferred to the container
+    void AddIdentity(::zmq::message_t *msg);
+
+    /// Adds a message to the container
+    ///
+    /// Ownership of the memory address of the message is transferred to the container
+    void AddMessage(::zmq::message_t *msg);
+
+    inline ::std::vector< ::std::string >::size_type IdentitiesSize() const { return this->identities.size(); }
+
+    inline ::std::string GetIdentity(int i) const { return this->identities[i]; }
+
+    inline ::std::vector< ::std::string > const & GetIdentities() const { return this->identities; }
+
+    inline ::std::vector< ::zmq::message_t *>::size_type MessagesSize() const { return this->messages.size(); }
+
+    inline ::zmq::message_t * GetMessage(int i) const { return this->messages[i]; }
+
+protected:
+    ::std::vector< ::std::string > identities;
+    ::std::vector< ::zmq::message_t *> messages;
+
+
+private:
+    // forbid copy constructor and assignment operator
+    // we could support these if we wanted to. we are currently lazy
+    MessageContainer(MessageContainer const &orig);
+    MessageContainer & operator=(MessageContainer const &orig);
+};
+
 // receives a multipart message from a socket, with identities
 // this is likely used by XREQ/XREP sockets
-    bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
+bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
 
 /// Receives a multipart message into a vector
 ///
@@ -87,6 +132,12 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 /// are always from the parameter flags. If the ZMQ_NOBLOCK flag is set, it
 /// is set on all message parts.
 int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string >  const &identities, Envelope &e, bool is_protocol, int flags);
+
+/// Receives a message on a 0MQ socket
+///
+/// On success, the message container will be populated with the received
+/// message. The message can be a multipart 0MQ message.
+bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int flags=0);
 
 }} // end namespaces
 

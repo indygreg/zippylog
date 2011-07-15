@@ -235,4 +235,71 @@ int SendEnvelope(socket_t &socket, vector<string> const &identities, Envelope &e
     return socket.send(e_msg, flags) ? 1 : 0;
 }
 
+bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int flags)
+{
+    container.Clear();
+
+    bool in_identity = true;
+
+    while (true) {
+        message_t *msg = new message_t();
+        if (!socket.recv(msg, flags)) {
+            delete msg;
+            return false;
+        }
+
+        if (msg->size() == 0) {
+            in_identity = false;
+            delete msg;
+            continue;
+        }
+
+        if (in_identity) {
+            container.AddIdentity(msg);
+        }
+        else {
+            container.AddMessage(msg);
+        }
+
+        int64 more;
+        size_t moresz = sizeof(more);
+        socket.getsockopt(ZMQ_RCVMORE, &more, &moresz);
+        if (!more) break;
+    }
+
+    return true;
+}
+
+MessageContainer::MessageContainer() { }
+
+MessageContainer::~MessageContainer()
+{
+    this->Clear();
+}
+
+void MessageContainer::Clear()
+{
+    this->identities.clear();
+
+    vector<message_t *>::iterator i = this->messages.begin();
+    vector<message_t *>::iterator end = this->messages.end();
+
+    for (; i != end; ++i) {
+        if (*i) delete *i;
+    }
+
+    this->messages.clear();
+}
+
+void MessageContainer::AddIdentity(message_t *msg)
+{
+    this->identities.push_back(string((const char *)msg->data(), msg->size()));
+    delete msg;
+}
+
+void MessageContainer::AddMessage(message_t *msg)
+{
+    this->messages.push_back(msg);
+}
+
 }} // namespaces
