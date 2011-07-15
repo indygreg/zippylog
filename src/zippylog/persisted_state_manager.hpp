@@ -110,7 +110,7 @@ public:
     bool RenewSubscription(::std::string const &id);
 
     /// Renews multiple subscriptions from ids
-    bool RenewSubscriptions(const ::std::vector < ::std::string > & ids);
+    bool RenewSubscriptions(::std::vector < ::std::string >  const & ids);
 
     /// Registers a new subscription from a subscription record
     ///
@@ -195,6 +195,7 @@ protected:
     ::std::map< ::std::string, uint64 > stream_read_offsets;
 
     FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
+    FRIEND_TEST(PersistedStateManagerTest, SubscriptionExpiration);
 private:
 };
 

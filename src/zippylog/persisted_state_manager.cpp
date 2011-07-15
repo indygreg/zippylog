@@ -76,11 +76,14 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
     int32 removed = 0;
 
     map<string, PersistedStateManagerSubscriptionRecord *>::iterator iter = this->subscriptions.begin();
-    for (; iter != this->subscriptions.end(); iter++) {
+    while (iter != this->subscriptions.end()) {
         if (iter->second->expiration_timer.Signaled()) {
-            this->subscriptions.erase(iter->first);
+            this->subscriptions.erase(iter++);
             removed++;
+            continue;
         }
+
+        ++iter;
     }
 
     return removed;
@@ -142,11 +145,12 @@ void PersistedStateManager::RegisterSubscription(SubscriptionInfo const &subscri
         throw Exception("subscription with that ID is already registered");
     }
 
-    PersistedStateManagerSubscriptionRecord *record = new PersistedStateManagerSubscriptionRecord(subscription, this->subscription_ttl);
+    PersistedStateManagerSubscriptionRecord *record =
+        new PersistedStateManagerSubscriptionRecord(subscription, this->subscription_ttl * 1000);
 
     this->subscriptions[subscription.id] = record;
 
-    record->expiration_timer.Start(this->subscription_ttl);
+    record->expiration_timer.Start(this->subscription_ttl * 1000);
 }
 
 bool PersistedStateManager::RenewSubscription(string const &id)
@@ -170,7 +174,7 @@ bool PersistedStateManager::RenewSubscriptions(vector<string> const &ids)
 
         for (; id != id_end; ++id) {
             if (i->first == *id) {
-                i->second->expiration_timer.Start(this->subscription_ttl);
+                i->second->expiration_timer.Start(this->subscription_ttl * 1000);
                 break;
             }
         }

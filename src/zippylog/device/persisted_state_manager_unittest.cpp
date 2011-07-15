@@ -127,4 +127,28 @@ TEST_F(PersistedStateManagerTest, HasSubscription)
     EXPECT_FALSE(m->HaveStoreChangeSubscriptions("/foo"));
 }
 
+TEST_F(PersistedStateManagerTest, SubscriptionExpiration)
+{
+    PersistedStateManager *m = this->GetManagerForTemporary();
+    m->subscription_ttl = 100; // milliseconds
+
+    string id = "foo";
+
+    SubscriptionInfo s;
+    s.paths.push_back("/");
+    s.type = STORE_CHANGE;
+    s.id = id;
+
+    m->RegisterSubscription(s);
+    EXPECT_TRUE(m->HasSubscription(id));
+    EXPECT_EQ(0, m->RemoveExpiredSubscriptions()) << "0 subscriptions removed";
+
+    platform::sleep(110);
+    EXPECT_TRUE(m->HasSubscription(id));
+    EXPECT_EQ(1, m->RemoveExpiredSubscriptions()) << "subscription removed after expiration";
+    EXPECT_FALSE(m->HasSubscription(id));
+
+
+}
+
 } // namespaces
