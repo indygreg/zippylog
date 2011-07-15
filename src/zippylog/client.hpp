@@ -404,7 +404,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param result Holds the result of the subscription request
         /// @param timeout_microseconds How long to wait for server to respond
         /// @return Whether a response from the server was received in time
-        bool SubscribeStoreChanges(const ::std::vector< ::std::string > &paths,
+        bool SubscribeStoreChanges(::std::vector< ::std::string >  const &paths,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
                                    int32 timeout_microseconds = -1);

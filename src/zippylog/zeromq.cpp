@@ -209,7 +209,7 @@ int SendEnvelope(socket_t &socket, Envelope &e, bool is_protocol, int flags)
     return socket.send(msg, flags) ? 1 : 0;
 }
 
-int SendEnvelope(socket_t &socket, const vector<string> &identities, Envelope &e, bool is_protocol, int flags)
+int SendEnvelope(socket_t &socket, vector<string> const &identities, Envelope &e, bool is_protocol, int flags)
 {
     message_t msg;
     int initial_flags = ZMQ_SNDMORE | (ZMQ_NOBLOCK & flags);

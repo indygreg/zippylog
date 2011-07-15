@@ -502,7 +502,7 @@ bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, v
     return true;
 }
 
-bool Client::SubscribeStoreChanges(const vector<string> &paths, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
+bool Client::SubscribeStoreChanges(vector<string> const &paths, SubscriptionCallbackInfo &callbacks, SubscriptionRequestResult &result, int32 timeout)
 {
     protocol::request::SubscribeStoreChangesV1 m;
 

@@ -157,7 +157,7 @@ bool PersistedStateManager::RenewSubscription(string const &id)
     return this->RenewSubscriptions(ids);
 }
 
-bool PersistedStateManager::RenewSubscriptions(const vector<string> &ids)
+bool PersistedStateManager::RenewSubscriptions(vector<string> const &ids)
 {
     // we optimize for the case where the managed subscriptions set is larger
     // than the input list
