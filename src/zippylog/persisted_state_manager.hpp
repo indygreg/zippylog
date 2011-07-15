@@ -128,6 +128,8 @@ public:
     /// instance. This will likely be immediately passed to
     /// RequestProcessor::SendSubscriptionEnvelopeResponse(), which will
     /// handle response formulation.
+    ///
+    /// @todo reduce number of times callback is called (tons of call overhead)
     void ProcessStoreChangeStreamAppended(const ::std::string &path,
                                           const uint64 stream_length,
                                           PersistedStateManagerStreamAppendedCallback *cb,
