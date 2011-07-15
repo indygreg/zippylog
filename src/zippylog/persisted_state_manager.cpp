@@ -159,16 +159,21 @@ bool PersistedStateManager::RenewSubscription(string const &id)
 
 bool PersistedStateManager::RenewSubscriptions(const vector<string> &ids)
 {
-    for (size_t i = 0; i < ids.size(); i++) {
-        string id = ids[i];
+    // we optimize for the case where the managed subscriptions set is larger
+    // than the input list
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator i = this->subscriptions.begin();
+    map<string, PersistedStateManagerSubscriptionRecord *>::iterator end = this->subscriptions.end();
 
-        map<string, PersistedStateManagerSubscriptionRecord *>::iterator iter = this->subscriptions.find(id);
+    for (; i != end; ++i) {
+        vector<string>::const_iterator id = ids.begin();
+        vector<string>::const_iterator id_end = ids.end();
 
-        if (iter == this->subscriptions.end()) {
-            continue;
+        for (; id != id_end; ++id) {
+            if (i->first == *id) {
+                i->second->expiration_timer.Start(this->subscription_ttl);
+                break;
+            }
         }
-
-        iter->second->expiration_timer.Start();
     }
 
     return true;
