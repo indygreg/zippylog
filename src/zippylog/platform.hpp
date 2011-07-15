@@ -132,11 +132,11 @@ namespace platform {
 
     /// Creates a new UUID and returns the result in a string
     ///
-    /// The string contains the raw 16 byte data, not the common printed
-    /// format.
-    ///
     /// Throws an exception if a UUID could not be created.
-    ZIPPYLOG_EXPORT ::std::string CreateUUID();
+    ///
+    /// @param format If true, string is a formatted UUID, else it is the raw
+    /// 16 bytes
+    ZIPPYLOG_EXPORT ::std::string CreateUUID(bool format = false);
 
     /// Formats the passed UUID data into a string
     ///

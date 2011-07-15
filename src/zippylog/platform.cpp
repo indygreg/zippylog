@@ -735,11 +735,20 @@ bool CreateUUID(UUID &u)
 #endif
 }
 
-string CreateUUID()
+string CreateUUID(bool format)
 {
     UUID u;
     if (!CreateUUID(u)) {
         throw Exception("could not create UUID");
+    }
+
+    if (format) {
+        string formatted;
+        if (!FormatUUID(u, formatted)) {
+            throw Exception("could not format UUID");
+        }
+
+        return formatted;
     }
 
     return string((const char *)&u, sizeof(u));

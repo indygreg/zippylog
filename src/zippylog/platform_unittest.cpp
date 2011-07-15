@@ -108,6 +108,9 @@ TEST(UUIDTest, CreateUUID)
 
     string s = CreateUUID();
     EXPECT_EQ(16, s.length());
+
+    s = CreateUUID(true);
+    EXPECT_EQ(36, s.length());
 }
 
 TEST(UUIDTest, FormatUUID)
