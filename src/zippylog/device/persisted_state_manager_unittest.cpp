@@ -13,9 +13,51 @@
 //  limitations under the License.
 
 #include <zippylog/persisted_state_manager.hpp>
+#include <zippylog/platform.hpp>
 
 #include <gtest/gtest.h>
 
+#include <string>
+
+using ::std::invalid_argument;
+using ::std::string;
+
 namespace zippylog {
+
+class PersistedStateManagerTest : public ::testing::Test
+{
+protected:
+
+    string id;
+    string path;
+    string store_uri;
+
+    void SetUp()
+    {
+        this->id = platform::CreateUUID(true);
+        this->path = "test/stores/" + id;
+        this->store_uri = "simpledirectory://" + this->path;
+
+        ASSERT_FALSE(platform::PathIsDirectory(this->path));
+        ASSERT_TRUE(platform::MakeDirectory(this->path));
+    }
+
+    void TearDown()
+    {
+        if (platform::PathIsDirectory(this->path)) {
+            EXPECT_TRUE(platform::RemoveDirectoryA(this->path));
+        }
+    }
+};
+
+TEST_F(PersistedStateManagerTest, Constructor)
+{
+    PersistedStateManagerStartParams p;
+
+    EXPECT_THROW(PersistedStateManager m(p), invalid_argument);
+
+    p.store_uri = this->store_uri;
+    EXPECT_NO_THROW(PersistedStateManager m(p));
+}
 
 } // namespaces
