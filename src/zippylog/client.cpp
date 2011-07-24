@@ -575,10 +575,7 @@ bool Client::SubscribeEnvelopes(string const &path, string const &lua, Subscript
 
 bool Client::SendRequest(Envelope &e, OutstandingRequest &req)
 {
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-
-    string id = string((const char *)&uuid, sizeof(uuid));
+    string id = platform::CreateUUID(false);
 
     e.AddTag(id);
     req.id = id;

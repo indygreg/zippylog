@@ -116,6 +116,7 @@ Server::Server(ServerStartParams &params) :
     // since I'm pretty sure everything gets converted to a descriptor by 0MQ,
     // but it might be worth investigating. We preserve human-friendly names
     // until proven otherwise.
+    /// @todo investigate whether length of descriptor impacts running speed
     string uuid_s;
     platform::FormatUUID(uuid, uuid_s);
 

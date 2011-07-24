@@ -106,10 +106,7 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     }
 
     this->store = Store::CreateStore(params.store_path);
-
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-    this->id = string((const char *)&uuid, sizeof(uuid));
+    this->id = platform::CreateUUID(false);
 
     this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
     this->logger_sock->connect(this->logger_endpoint.c_str());

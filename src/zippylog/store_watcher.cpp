@@ -45,10 +45,7 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
 
     this->_store = new SimpleDirectoryStore(params.store_path);
 
-    platform::UUID uuid;
-    platform::CreateUUID(uuid);
-
-    this->id = string((const char *)&uuid, sizeof(uuid));
+    this->id = platform::CreateUUID(false);
 
     this->logging_sock = new socket_t(*this->_ctx, ZMQ_PUSH);
     this->logging_sock->connect(this->logging_endpoint.c_str());
