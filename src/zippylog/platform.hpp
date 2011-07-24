@@ -27,10 +27,7 @@
 #include <winsock2.h>
 #include <Windows.h>
 
-#elif LINUX
-// @todo should be pulled from build tools
-#define HAVE_OPENDIR 1
-
+#elif POSIX
 #include <signal.h>
 #include <time.h>
 #endif
@@ -313,7 +310,7 @@ namespace platform {
         BYTE results[32768];
         OVERLAPPED overlapped;
         bool started_waiting;
-#elif LINUX
+#elif HAVE_INOTIFY
         // inotify descriptor
         int fd;
 
@@ -339,7 +336,7 @@ namespace platform {
     protected:
 #ifdef WINDOWS
         HANDLE thread;
-#elif LINUX
+#elif HAVE_PTHREAD
         pthread_t thread;
 #endif
 

@@ -66,6 +66,18 @@ find_package(Threads REQUIRED)
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 add_definitions(-DLINUX)
 add_definitions(-DPOSIX)
+add_definitions(-DHAVE_STDINT)
+add_definitions(-DHAVE_PTHREAD)
+add_definitions(-DHAVE_OPENDIR)
+add_definitions(-DHAVE_INOTIFY)
+endif()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+add_definitions(-DMACOS)
+add_definitions(-DPOSIX)
+add_definitions(-DHAVE_STDINT)
+add_definitions(-DHAVE_PTHREAD)
+add_definitions(-DHAVE_OPENDIR)
 endif()
 
 # add our source directory
