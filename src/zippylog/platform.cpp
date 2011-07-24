@@ -65,7 +65,7 @@ static __thread int system_error = 0;
 #elif WINDOWS
 // nothing to do on Windows
 #else
-#error "system_error declaration not thread safe on this platform"
+#warning "system_error declaration not thread safe on this platform"
 static int system_error = 0;
 #endif
 
@@ -689,10 +689,8 @@ bool File::WriteLockEntire()
 
 #ifdef WINDOWS
     throw Exception("WriteLockEntire() is not meant to be called on Windows at this time");
-#elif MACOS
-#error "File::WriteLockEntire() is not supported on MacOS yet"
 #elif POSIX
-    flock fl;
+    struct flock fl;
     fl.l_type = F_WRLCK;
     fl.l_start = 0;
     fl.l_whence = SEEK_SET;
