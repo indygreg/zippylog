@@ -65,7 +65,7 @@ static __thread int system_error = 0;
 #elif WINDOWS
 // nothing to do on Windows
 #else
-#warning "system_error declaration not thread safe on this platform"
+#error "system_error declaration not thread safe on this platform"
 static int system_error = 0;
 #endif
 
@@ -690,7 +690,7 @@ bool File::WriteLockEntire()
 #ifdef WINDOWS
     throw Exception("WriteLockEntire() is not meant to be called on Windows at this time");
 #elif MACOS
-#warning "File::WriteLockEntire() is not supported on MacOS yet"
+#error "File::WriteLockEntire() is not supported on MacOS yet"
 #elif POSIX
     flock fl;
     fl.l_type = F_WRLCK;
@@ -747,7 +747,7 @@ bool CreateUUID(UUID &u)
     memcpy(&u, &uuid, 16);
     return true;
 #else
-#warning "functionality not implemented on this platform"
+#error "platform::CreateUUID() not implemented on this platform"
 #endif
 }
 
@@ -825,7 +825,7 @@ void Timer::Initialize()
         throw Exception("could not create timer");
     }
 #elif MACOS
-#warning "Timer::Initialize() is not supported on MacOS yet"
+#error "Timer::Initialize() is not supported on MacOS yet"
 #else
 #error "Timer::Initialize() is not implemented on this platform"
 #endif
@@ -1017,7 +1017,7 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     }
 
 #elif MACOS
-#warning "DirectoryWatcher constructor not implemented on MacOS"
+#error "DirectoryWatcher constructor not implemented on MacOS"
 #else
 #error "DirectoryWatcher constructor not available on this platform yet"
 #endif
@@ -1182,7 +1182,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-#warning "DirectoryWatcher::WatchForChanges() not implemented on MacOS"
+#error "DirectoryWatcher::WatchForChanges() not implemented on MacOS"
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif
