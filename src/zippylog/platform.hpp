@@ -248,6 +248,8 @@ namespace platform {
         void * handle;
 #elif LINUX
         timer_t timer;
+#elif MACOS
+        clock_t initial_clock;
 #endif
 
     };

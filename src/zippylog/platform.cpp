@@ -823,7 +823,7 @@ void Timer::Initialize()
         throw Exception("could not create timer");
     }
 #elif MACOS
-#error "Timer::Initialize() is not supported on MacOS yet"
+    // nothing special to do here
 #else
 #error "Timer::Initialize() is not implemented on this platform"
 #endif
@@ -857,6 +857,11 @@ bool Timer::Reset()
         this->running = false;
         return true;
 
+#elif MACOS
+        this->running = false;
+        return true;
+#else
+#error "Timer::Reset() is not implemented on this platform."
 #endif
     }
 
@@ -906,9 +911,14 @@ bool Timer::Start(uint32 microseconds)
 
     this->running = true;
     return true;
-#endif
 
-    return false;
+#elif MACOS
+    this->initial_clock = clock();
+    this->running = true;
+    return true;
+#else
+#error "Timer::Start() is not implemented on this platform."
+#endif
 }
 
 bool Timer::Signaled()
@@ -939,9 +949,16 @@ bool Timer::Signaled()
     }
 
     return false;
-#endif
 
-    return false;
+#elif MACOS
+    clock_t now = clock();
+    clock_t elapsed = now - this->initial_clock;
+
+    double seconds = (double)elapsed/(double)CLOCKS_PER_SEC;
+    return seconds * 1000000 > this->microseconds;
+#else
+#error "Timer::Signaled() is not implemented on this platform"
+#endif
 }
 
 DirectoryChange::DirectoryChange() {}
