@@ -24,6 +24,10 @@
 #include <sys/io.h>
 #endif
 
+#ifdef MACOS
+#include <mach/mach_time.h>
+#endif
+
 #ifdef POSIX
 #include <assert.h>
 #include <stdlib.h>
@@ -913,7 +917,7 @@ bool Timer::Start(uint32 microseconds)
     return true;
 
 #elif MACOS
-    this->initial_clock = clock();
+    this->time_start = mach_absolute_time();
     this->running = true;
     return true;
 #else
@@ -951,11 +955,14 @@ bool Timer::Signaled()
     return false;
 
 #elif MACOS
-    clock_t now = clock();
-    clock_t elapsed = now - this->initial_clock;
+    uint64 elapsed = mach_absolute_time() - this->time_start;
 
-    double seconds = (double)elapsed/(double)CLOCKS_PER_SEC;
-    return seconds * 1000000 > this->microseconds;
+    static mach_timebase_info_data_t time_info;
+    if (time_info.denom == 0) mach_timebase_info(&time_info);
+
+    uint64 ns = elapsed * time_info.numer / time_info.denom;
+
+    return ns > 1000 * this->microseconds; 
 #else
 #error "Timer::Signaled() is not implemented on this platform"
 #endif
@@ -1032,7 +1039,7 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     }
 
 #elif MACOS
-#error "DirectoryWatcher constructor not implemented on MacOS"
+#warning "DirectoryWatcher constructor not implemented on MacOS"
 #else
 #error "DirectoryWatcher constructor not available on this platform yet"
 #endif
@@ -1197,7 +1204,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-#error "DirectoryWatcher::WatchForChanges() not implemented on MacOS"
+#warning "DirectoryWatcher::WatchForChanges() not implemented on MacOS"
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif

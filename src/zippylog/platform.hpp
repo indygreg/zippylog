@@ -249,7 +249,7 @@ namespace platform {
 #elif LINUX
         timer_t timer;
 #elif MACOS
-        clock_t initial_clock;
+        uint64 time_start;
 #endif
 
     };
