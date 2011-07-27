@@ -32,6 +32,12 @@ public:
     /// cleaned up automatically at the end of the test
     ::std::string GetTemporaryStoreUri();
 
+    /// Obtains a path to a temporary directory
+    ///
+    /// The directory will exist for the duration of the test and will be
+    /// deleted after test execution.
+    ::std::string GetTemporaryDirectory();
+
 protected:
     virtual void TearDown();
 
