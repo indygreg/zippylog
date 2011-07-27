@@ -26,6 +26,7 @@
 
 #ifdef MACOS
 #include <mach/mach_time.h>
+#include <CoreServices/CoreServices.h>
 #endif
 
 #ifdef POSIX
@@ -63,6 +64,11 @@ using ::std::vector;
 namespace zippylog {
 
 namespace platform {
+
+#ifdef MACOS
+  /// Delay between FSEvent actual change and notification, in seconds
+  const CFAbsoluteTime FSEVENT_COALESCE_INTERVAL = 0.1;
+#endif
 
 #ifdef LINUX
 static __thread int system_error = 0;
@@ -964,7 +970,7 @@ bool Timer::Signaled()
 
     uint64 ns = elapsed * time_info.numer / time_info.denom;
 
-    return ns > 1000 * this->microseconds; 
+    return ns > 1000 * this->microseconds;
 #else
 #error "Timer::Signaled() is not implemented on this platform"
 #endif
@@ -974,12 +980,22 @@ DirectoryChange::DirectoryChange() {}
 
 DirectoryWatcher::~DirectoryWatcher()
 {
-    // @todo implemen
+    /// @todo implement on Windows and inotify
+#ifdef MACOS
+    if (this->stream) {
+        FSEventStreamStop(this->stream);
+        FSEventStreamUnscheduleFromRunLoop(this->stream, this->loop, kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(this->stream);
+        FSEventStreamRelease(this->stream);
+    }
+#endif
 }
 
 DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
 #ifdef WINDOWS
     : directory(NULL), started_waiting(false), completion_port(NULL)
+#elif MACOS
+    : stream(NULL), loop(NULL)
 #endif
 {
     this->path = directory;
@@ -1041,7 +1057,27 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     }
 
 #elif MACOS
-#warning "DirectoryWatcher constructor not implemented on MacOS"
+    this->context.version = 0;
+    this->context.info = this;
+    this->context.retain = NULL;
+    this->context.release = NULL;
+    this->context.copyDescription = NULL;
+
+    CFStringRef path = CFStringCreateWithCString(NULL, directory.c_str(), kCFStringEncodingUTF8);
+    CFArrayRef watch_paths = CFArrayCreate(NULL, (const void **)&path, 1, NULL);
+
+    this->stream = FSEventStreamCreate(NULL, &DirectoryWatcher::EventStreamCallback,
+                                       &this->context, watch_paths,
+                                       kFSEventStreamEventIdSinceNow,
+                                       FSEVENT_COALESCE_INTERVAL,
+                                       kFSEventStreamCreateFlagNoDefer);
+
+    this->loop = CFRunLoopGetCurrent();
+    FSEventStreamScheduleWithRunLoop(this->stream, this->loop, kCFRunLoopDefaultMode);
+
+    if (!FSEventStreamStart(this->stream)) {
+      throw Exception("could not start event stream.");
+    }
 #else
 #error "DirectoryWatcher constructor not available on this platform yet"
 #endif
@@ -1206,7 +1242,17 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-#warning "DirectoryWatcher::WatchForChanges() not implemented on MacOS"
+    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, (double)timeout/1000000.0, false);
+
+    if (result == kCFRunLoopRunTimedOut) {
+        FSEventStreamFlushSync(this->stream);
+        return this->changes.size() > 0;
+    }
+    if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished) return false;
+
+    // the callback does all the work, so nothing for us to do here
+    return true;
+
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif
@@ -1225,6 +1271,44 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
     this->changes.clear();
 
     return true;
+}
+
+void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
+                                        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    char **paths = (char **)eventPaths;
+
+    DirectoryWatcher *watcher = (DirectoryWatcher *)data;
+
+    for (size_t i = 0; i < numEvents; i++) {
+        const FSEventStreamEventFlags flags = eventFlags[i];
+        const char *path = paths[i];
+
+        DirectoryChange change;
+        change.Path = path;
+
+        /*
+        if (flags & kFSEventStreamEventFlagMustScanSubDirs) {
+
+        }
+
+        if (flags & kFSEventStreamEventFlagItemCreated) {
+            change.Action = change.ADDED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemRemoved) {
+            change.Action = change.DELETED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemModified) {
+            change.Action = change.MODIFIED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemRenamed) {
+            /// TODO handle case
+        }
+        */
+
+        watcher->changes.push_back(change);
+
+    }
 }
 
 Thread::Thread(thread_start_func func, void *data)

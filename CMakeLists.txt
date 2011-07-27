@@ -70,14 +70,14 @@ add_definitions(-DHAVE_STDINT)
 add_definitions(-DHAVE_PTHREAD)
 add_definitions(-DHAVE_OPENDIR)
 add_definitions(-DHAVE_INOTIFY)
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 add_definitions(-DMACOS)
 add_definitions(-DPOSIX)
 add_definitions(-DHAVE_STDINT)
 add_definitions(-DHAVE_PTHREAD)
 add_definitions(-DHAVE_OPENDIR)
+else()
+    message(FATAL_ERROR "Your system type is not supported at this time.")
 endif()
 
 # add our source directory
@@ -87,6 +87,7 @@ include_directories(BEFORE src)
 # libzippylog configuration #
 #############################
 set(libzippylog_sources
+    src/zippylog/platform.cpp # first b/c most likely to blow up compiler
     src/zippylog/client.cpp
     src/zippylog/device/persisted_state_reactor.cpp
     src/zippylog/device/server.cpp
@@ -102,7 +103,6 @@ set(libzippylog_sources
     src/zippylog/message_registrar.cpp
     src/zippylog/messages.cpp
     src/zippylog/persisted_state_manager.cpp
-    src/zippylog/platform.cpp
     src/zippylog/protocol.pb.cc
     src/zippylog/protocol.pb-lua.cc
     src/zippylog/protocol/request.pb.cc
@@ -129,14 +129,18 @@ set(libzippylog_link_libraries
     ${ZEROMQ_LIBRARY}
 )
 
-IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(libzippylog_link_libraries ${libzippylog_link_libraries} rt)
-ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+endif()
 
 # produce libzippylog shared library
 add_library(libzippylog SHARED ${libzippylog_sources})
 target_link_libraries(libzippylog ${libzippylog_link_libraries})
 set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set_target_properties(libzippylog PROPERTIES LINK_FLAGS "-framework CoreServices")
+endif()
 
 #####################
 # libzippylog Tests #
