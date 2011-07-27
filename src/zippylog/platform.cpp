@@ -1242,16 +1242,25 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, (double)timeout/1000000.0, false);
+    // RunLoopRunInMode doesn't appear to end after an event is received.
+    // Since we want this function to return as soon as data is received, we
+    // call this function with a small timeout until the timeout passed to
+    // this function elapses or events are received.
+    static const double run_timeout = 0.005; // 5 ms
+    Timer t(timeout);
+    t.Start();
 
-    if (result == kCFRunLoopRunTimedOut) {
-        FSEventStreamFlushSync(this->stream);
-        return this->changes.size() > 0;
-    }
-    if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished) return false;
+    do {
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, run_timeout, false);
+
+        if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
+            return false;
+
+        if (this->changes.size() > 0) break;
+    } while (!t.Signaled());
 
     // the callback does all the work, so nothing for us to do here
-    return true;
+    return this->changes.size() > 0;
 
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"

@@ -254,3 +254,21 @@ TEST_F(PlatformTest, DirectoryWatcherWaitForChanges)
 
     EXPECT_FALSE(w.WaitForChanges(1000));
 }
+
+TEST_F(PlatformTest, DirectoryWatcherWaitImmediateTimeout)
+{
+    string path = this->GetTemporaryDirectory();
+    DirectoryWatcher w(path, false);
+    vector<DirectoryChange> changes;
+
+    Timer t(25000);
+    t.Start();
+
+    EXPECT_FALSE(w.WaitForChanges(25000));
+    EXPECT_TRUE(t.Signaled());
+
+    ASSERT_TRUE(MakeDirectory(PathJoin(path, "foo")));
+    t.Start();
+    EXPECT_TRUE(w.WaitForChanges(100000));
+    EXPECT_FALSE(t.Signaled());
+}
