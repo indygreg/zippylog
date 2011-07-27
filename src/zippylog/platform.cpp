@@ -725,8 +725,10 @@ string PathJoin(string const &a, string const &b)
     string s = a;
 #ifdef WINDOWS
     s += "\\";
-#elif LINUX
+#elif POSIX
     s += "/";
+#else
+#error "platform::PathJoin() not implemented on this platform"
 #endif
 
     s += b;
