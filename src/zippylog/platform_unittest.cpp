@@ -255,6 +255,25 @@ TEST_F(PlatformTest, DirectoryWatcherWaitForChanges)
     EXPECT_FALSE(w.WaitForChanges(1000));
 }
 
+TEST_F(PlatformTest, DirectoryWatcherRecursionFiltering)
+{
+    string path = this->GetTemporaryDirectory();
+
+    DirectoryWatcher w(path, false);
+    string s1, s2;
+    s1 = PathJoin(path, "foo");
+    s2 = PathJoin(s1, "bar");
+    ASSERT_TRUE(MakeDirectory(s1));
+    EXPECT_TRUE(w.WaitForChanges(10000));
+
+    vector<DirectoryChange> changes;
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
+
+    ASSERT_TRUE(MakeDirectory(s2));
+    EXPECT_FALSE(w.WaitForChanges(10000)) << "grandchild path is not detected";
+}
+
 TEST_F(PlatformTest, DirectoryWatcherWaitImmediateTimeout)
 {
     string path = this->GetTemporaryDirectory();
