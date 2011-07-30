@@ -139,6 +139,10 @@ target_link_libraries(libzippylog ${libzippylog_link_libraries})
 set_target_properties(libzippylog PROPERTIES OUTPUT_NAME zippylog)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    if (CMAKE_SYSTEM_VERSION VERSION_LESS 11.0.0)
+        message(FATAL_ERROR "zippylog requires OS X 10.7 (Lion) or higher")
+    endif()
+
     set_target_properties(libzippylog PROPERTIES LINK_FLAGS "-framework CoreServices")
 endif()
 
