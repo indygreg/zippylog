@@ -1117,6 +1117,9 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
                                             &ol,
                                             milliseconds);
 
+    // It wasn't obvious from the MSDN docs, but it is necessary to call
+    // ReadDirectoryChangesW() after every GetQueuedCompletionStatus(). If
+    // you fail to do this, subsequent changes don't get reported.
     this->StartWatching();
 
     if (!result) {
