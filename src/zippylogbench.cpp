@@ -20,6 +20,7 @@
 #include <zippylog/lua.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/request_processor.pb.h>
+#include <zippylog/store.hpp>
 #include <zippylog/device/server.hpp>
 
 extern "C" {
@@ -44,6 +45,7 @@ using ::zippylog::client::Client;
 using ::zippylog::Envelope;
 using ::zippylog::device::ServerStartParams;
 using ::zippylog::lua::LuaState;
+using ::zippylog::Store;
 
 #define TIMER_START(iterations) { \
     int TIMER_ITERATIONS = iterations; \
@@ -51,11 +53,22 @@ using ::zippylog::lua::LuaState;
     ::zippylog::platform::TimeNow(__tstart); \
     for (int TIMER_LOOP_VALUE = TIMER_ITERATIONS; TIMER_LOOP_VALUE; TIMER_LOOP_VALUE--) { \
 
+#define TIMER_START_SINGLE() { \
+    ::zippylog::platform::Time __tstart; \
+    ::zippylog::platform::TimeNow(__tstart); { \
+
 #define TIMER_END(description) } \
     ::zippylog::platform::Time __tend; \
     ::zippylog::platform::TimeNow(__tend); \
     uint64 elapsed = __tend.epoch_micro - __tstart.epoch_micro; \
     print_result(description, elapsed, TIMER_ITERATIONS); \
+    }
+
+#define TIMER_END_COUNT(description, count) } \
+    ::zippylog::platform::Time __tend; \
+    ::zippylog::platform::TimeNow(__tend); \
+    uint64 elapsed = __tend.epoch_micro - __tstart.epoch_micro; \
+    print_result(description, elapsed, count); \
     }
 
 // this is like the one above except we take an int whose value
@@ -284,6 +297,28 @@ TEST_F(Benchmark, LuaLoadString)
     TIMER_START(10000);
     l.ExecuteLoadString(input, result);
     TIMER_END("zippylog.lua.load_string_return_simple_envelope");
+}
+
+TEST_F(Benchmark, StoreWriting)
+{
+    const int32 n = 1000000;
+
+    Envelope *envelopes = new Envelope[n];
+    for (int32 i = 0; i < n; i++) {
+        envelopes[i] = this->GetRandomEnvelope();
+    }
+
+    Store * s = this->GetTemporaryStore();
+    ASSERT_TRUE(s->CreateBucket("foo"));
+    ASSERT_TRUE(s->CreateStreamset("foo", "bar"));
+
+    TIMER_START_SINGLE();
+    for (int32 i = 0; i < n; i++) {
+        s->WriteEnvelope("foo", "bar", envelopes[i]);
+    }
+    TIMER_END_COUNT("zippylog.store.write_1M_envelopes", n);
+
+    delete [] envelopes;
 }
 
 int main(int argc, char **argv)
