@@ -18,6 +18,7 @@
 using ::google::protobuf::Message;
 using ::std::map;
 using ::std::pair;
+using ::std::vector;
 
 namespace zippylog {
 
@@ -83,7 +84,7 @@ void MessageRegistrar::Cleanup()
     this->_types.clear();
 }
 
-void MessageRegistrar::GetAllEnumerations(std::vector<::std::pair<uint32,uint32> > &list)
+void MessageRegistrar::GetAllEnumerations(vector< pair<uint32,uint32> > &list)
 {
     list.clear();
 
