@@ -264,14 +264,41 @@ TEST_F(PlatformTest, DirectoryWatcherRecursionFiltering)
     s1 = PathJoin(path, "foo");
     s2 = PathJoin(s1, "bar");
     ASSERT_TRUE(MakeDirectory(s1));
-    EXPECT_TRUE(w.WaitForChanges(10000));
+    EXPECT_TRUE(w.WaitForChanges(25000));
 
     vector<DirectoryChange> changes;
     EXPECT_TRUE(w.GetChanges(changes));
     EXPECT_EQ(1, changes.size());
 
     ASSERT_TRUE(MakeDirectory(s2));
-    EXPECT_FALSE(w.WaitForChanges(10000)) << "grandchild path is not detected";
+    EXPECT_FALSE(w.WaitForChanges(25000)) << "grandchild path is not detected";
+}
+
+TEST_F(PlatformTest, DirectoryWatcherRecursionSeen)
+{
+    string path = this->GetTemporaryDirectory();
+
+    DirectoryWatcher w(path, true);
+    string s1 = PathJoin(path, "foo");
+    string s2 = PathJoin(s1, "bar");
+    string s3 = PathJoin(s2, "baz");
+
+    ASSERT_TRUE(MakeDirectory(s1));
+    EXPECT_TRUE(w.WaitForChanges(25000));
+
+    vector<DirectoryChange> changes;
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
+
+    ASSERT_TRUE(MakeDirectory(s2));
+    EXPECT_TRUE(w.WaitForChanges(25000)) << "grandchild path is detected";
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size()) << "one change detected";
+
+    ASSERT_TRUE(MakeDirectory(s3));
+    EXPECT_TRUE(w.WaitForChanges(25000)) << "great grandchild path detected";
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
 }
 
 TEST_F(PlatformTest, DirectoryWatcherWaitImmediateTimeout)
