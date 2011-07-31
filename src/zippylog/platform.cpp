@@ -1282,6 +1282,7 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
     return true;
 }
 
+#ifdef MACOS
 void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
                                         const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
 {
@@ -1319,6 +1320,7 @@ void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *d
 
     }
 }
+#endif
 
 Thread::Thread(thread_start_func func, void *data)
 {
