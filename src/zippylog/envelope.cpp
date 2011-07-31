@@ -82,7 +82,7 @@ Envelope::~Envelope()
 }
 
 Envelope::Envelope(Envelope const &e)
-    : messages_size(0), messages(NULL)
+    : messages(NULL), messages_size(0)
 {
     if (e.messages_size > 0) {
         this->messages_size = e.messages_size;
