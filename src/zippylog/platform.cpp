@@ -946,6 +946,8 @@ bool Timer::Signaled()
         return true;
     }
 
+    return false;
+
 #elif LINUX
     struct itimerspec v;
     int result = timer_gettime(this->timer, &v);
