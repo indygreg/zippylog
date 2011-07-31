@@ -76,13 +76,13 @@ Envelope::~Envelope()
             }
             this->messages[i] = NULL;
         }
-    }
 
-    delete [] this->messages;
-    this->messages = NULL;
+        delete [] this->messages;
+    }
 }
 
 Envelope::Envelope(Envelope const &e)
+    : messages_size(0), messages(NULL)
 {
     if (e.messages_size > 0) {
         this->messages_size = e.messages_size;
@@ -91,12 +91,8 @@ Envelope::Envelope(Envelope const &e)
             this->messages[i] = NULL;
         }
     }
-    else {
-        this->messages_size = 0;
-        this->messages = NULL;
-    }
 
-    this->envelope = e.envelope;
+    this->envelope.CopyFrom(e.envelope);
 }
 
 Envelope & Envelope::operator=(Envelope const &orig)
@@ -171,11 +167,13 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
         Message **old = this->messages;
 
         this->messages = new Message *[this->messages_size + 1];
-        this->messages[this->messages_size+1] = NULL;
+        this->messages[this->messages_size] = NULL;
 
         for (int i = 0; i < this->messages_size; i++) {
             this->messages[i] = old[i];
         }
+
+        this->messages_size++;
 
         delete [] old;
     }
