@@ -17,7 +17,12 @@
 
 #include <gtest/gtest.h>
 
+#include <zippylog/envelope.hpp>
+#include <zippylog/message_registrar.hpp>
+#include <zippylog/store.hpp>
+
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace zippylog {
@@ -26,6 +31,8 @@ namespace testing {
 /// Base test class that provides numerous helpful routines
 class TestBase : public ::testing::Test {
 public:
+    virtual void SetUp();
+
     /// Obtains a URI to a temporary store
     ///
     /// Every time this is called, a new store is generated. The store is
@@ -38,11 +45,29 @@ public:
     /// deleted after test execution.
     ::std::string GetTemporaryDirectory();
 
+    /// Obtains a temporary store.
+    ///
+    /// The store is cleaned up automatically when the test is torn down.
+    ::zippylog::Store * GetTemporaryStore();
+
+    /// Obtains an envelope containing random messages
+    ::zippylog::Envelope GetRandomEnvelope(uint32 max_messages = 10);
+
+    /// Obtains a random message of the specified namespace and enumeration
+    ///
+    /// The memory backing the message is owned by the caller. This is unlike
+    /// many other test APIs, which clean up after themselves.
+    ::google::protobuf::Message * GetRandomMessage(uint32 ns, uint32 enumeration);
 protected:
     virtual void TearDown();
 
 private:
     ::std::vector< ::std::string > created_store_paths;
+    ::std::vector< ::zippylog::Store * > stores;
+
+    ::std::vector< ::std::pair<uint32, uint32> > enumerations;
+
+    ::zippylog::MessageRegistrar * registrar;
 };
 
 }} // namespaces
