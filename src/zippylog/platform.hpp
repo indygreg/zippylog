@@ -324,7 +324,6 @@ namespace platform {
         HANDLE completion_port;
         BYTE results[32768];
         OVERLAPPED overlapped;
-        bool started_waiting;
 #elif HAVE_INOTIFY
         // inotify descriptor
         int fd;

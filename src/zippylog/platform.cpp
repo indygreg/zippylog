@@ -995,7 +995,7 @@ DirectoryWatcher::~DirectoryWatcher()
 
 DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
 #ifdef WINDOWS
-    : directory(NULL), started_waiting(false), completion_port(NULL)
+    : directory(NULL), completion_port(NULL)
 #elif MACOS
     : stream(NULL), loop(NULL)
 #endif
@@ -1023,6 +1023,14 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     this->completion_port = CreateIoCompletionPort(this->directory, NULL, NULL, 0);
     if (!this->completion_port) {
         throw Exception("could not create I/O Completion Port");
+    }
+
+    BOOL watch_result = ReadDirectoryChangesW(this->directory,
+    &this->results[0], sizeof(this->results), this->recurse,
+    FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
+    NULL, &this->overlapped, NULL);
+    if (!watch_result) {
+        throw Exception("could not start waiting for directory changes");
     }
 
 #elif HAVE_INOTIFY
@@ -1091,18 +1099,6 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     if (this->changes.size() > 0) return true;
 
 #ifdef WINDOWS
-    if (!this->started_waiting) {
-        BOOL watch_result = ReadDirectoryChangesW(this->directory,
-            &this->results[0], sizeof(this->results), this->recurse,
-            FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
-            NULL, &this->overlapped, NULL);
-        if (!watch_result) {
-            throw Exception("could not start waiting for directory changes");
-        }
-
-        this->started_waiting = true;
-    }
-
     DWORD milliseconds = time < 0 ? INFINITE : timeout / 1000;
     DWORD bytes_transferred = 0;
     ULONG_PTR key = 0;
@@ -1118,8 +1114,6 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     }
 
     // else, we have results!
-    this->started_waiting = false;
-
     size_t results_offset = 0;
     FILE_NOTIFY_INFORMATION *info = NULL;
     char filename[8192];
