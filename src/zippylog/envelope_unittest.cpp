@@ -12,14 +12,20 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <zippylog/testing.hpp>
+
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol/request.pb.h>
 
 #include <gtest/gtest.h>
-#include <string.h>
+#include <string>
+#include <utility>
+#include <vector>
 
 using ::std::invalid_argument;
+using ::std::pair;
 using ::std::string;
+using ::std::vector;
 using ::zippylog::Envelope;
 using ::zippylog::protocol::request::GetStreamSegmentV1;
 using ::zippylog::protocol::request::PingV1;
@@ -27,7 +33,10 @@ using ::zmq::message_t;
 
 namespace zippylog {
 
-TEST(EnvelopeTest, ConstructorEmptyEnvelope)
+class EnvelopeTest : public ::zippylog::testing::TestBase
+{ };
+
+TEST_F(EnvelopeTest, ConstructorEmptyEnvelope)
 {
     ASSERT_NO_THROW(Envelope e());
 
@@ -37,7 +46,7 @@ TEST(EnvelopeTest, ConstructorEmptyEnvelope)
     EXPECT_TRUE(e.Serialize(s));
 }
 
-TEST(EnvelopeTest, ConstructorInvalidData)
+TEST_F(EnvelopeTest, ConstructorInvalidData)
 {
     ASSERT_THROW(Envelope e(NULL, 0), invalid_argument);
     ASSERT_THROW(Envelope e(NULL, 10), invalid_argument);
@@ -45,7 +54,7 @@ TEST(EnvelopeTest, ConstructorInvalidData)
     ASSERT_THROW(Envelope e((void *)352537, -10), invalid_argument);
 }
 
-TEST(EnvelopeTest, ConstructorZmqMessage)
+TEST_F(EnvelopeTest, ConstructorZmqMessage)
 {
     message_t m;
 
@@ -66,7 +75,7 @@ TEST(EnvelopeTest, ConstructorZmqMessage)
     EXPECT_NO_THROW(Envelope e2(m2, 1));
 }
 
-TEST(EnvelopeTest, ConstructorString)
+TEST_F(EnvelopeTest, ConstructorString)
 {
     EXPECT_NO_THROW(Envelope e("hello, world"));
 
@@ -74,7 +83,7 @@ TEST(EnvelopeTest, ConstructorString)
     EXPECT_EQ("hello, world", e.GetStringValueField());
 }
 
-TEST(EnvelopeTest, EquivalenceAndCopying)
+TEST_F(EnvelopeTest, EquivalenceAndCopying)
 {
     Envelope e1("hello, world");
 
@@ -89,7 +98,7 @@ TEST(EnvelopeTest, EquivalenceAndCopying)
     EXPECT_TRUE(e1 != e4);
 }
 
-TEST(EnvelopeTest, Serialize)
+TEST_F(EnvelopeTest, Serialize)
 {
     Envelope e;
     string s;
@@ -100,7 +109,7 @@ TEST(EnvelopeTest, Serialize)
     ASSERT_EQ(3 + s.length(), s2.length());
 }
 
-TEST(EnvelopeTest, ZMQSerialization)
+TEST_F(EnvelopeTest, ZMQSerialization)
 {
     Envelope e;
 
@@ -113,7 +122,7 @@ TEST(EnvelopeTest, ZMQSerialization)
     EXPECT_TRUE(0 == memcmp(m.data(), expected.data(), m.size()));
 }
 
-TEST(EnvelopeTest, ZMQProtocolSerialization)
+TEST_F(EnvelopeTest, ZMQProtocolSerialization)
 {
     Envelope e;
 
@@ -126,7 +135,7 @@ TEST(EnvelopeTest, ZMQProtocolSerialization)
     EXPECT_TRUE(0 == memcmp(m.data(), expected.data(), m.size()));
 }
 
-TEST(EnvelopeTest, GetMessageErrors)
+TEST_F(EnvelopeTest, GetMessageErrors)
 {
     Envelope e;
 
@@ -135,7 +144,7 @@ TEST(EnvelopeTest, GetMessageErrors)
     EXPECT_TRUE(NULL == e.GetMessage(10));
 }
 
-TEST(EnvelopeTest, UnknownMessageTypes)
+TEST_F(EnvelopeTest, UnknownMessageTypes)
 {
     Envelope e;
     e.envelope.add_message("foo bar");
@@ -150,7 +159,7 @@ TEST(EnvelopeTest, UnknownMessageTypes)
     EXPECT_TRUE(NULL == e2.GetMessage(0));
 }
 
-TEST(EnvelopeTest, MessageSemantics)
+TEST_F(EnvelopeTest, MessageSemantics)
 {
     Envelope e;
     GetStreamSegmentV1 get_stream;
@@ -177,7 +186,7 @@ TEST(EnvelopeTest, MessageSemantics)
     EXPECT_EQ(0, message->start_offset());
 }
 
-TEST(EnvelopeTest, MessagesAndCopying)
+TEST_F(EnvelopeTest, MessagesAndCopying)
 {
     Envelope e1;
     PingV1 p1;
@@ -190,6 +199,24 @@ TEST(EnvelopeTest, MessagesAndCopying)
     PingV1 *p2 = (PingV1 *)e2.GetMessage(0);
     ASSERT_TRUE(NULL != p2);
     EXPECT_TRUE(&p1 != p2);
+}
+
+TEST_F(EnvelopeTest, RandomGeneration)
+{
+    vector< pair<uint32, uint32> > enumerations;
+    MessageRegistrar::instance()->GetAllEnumerations(enumerations);
+
+    vector < pair<uint32, uint32> >::iterator i = enumerations.begin();
+    for (; i != enumerations.end(); i++) {
+        for (int32 j = 10; j; j--) {
+            ::google::protobuf::Message *m = this->GetRandomMessage(i->first, i->second);
+            delete m;
+        }
+    }
+
+    for (int32 j = 1000; j; j--) {
+        this->GetRandomEnvelope();
+    }
 }
 
 } // namespace
