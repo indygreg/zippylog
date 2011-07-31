@@ -299,7 +299,7 @@ TEST_F(Benchmark, LuaLoadString)
     TIMER_END("zippylog.lua.load_string_return_simple_envelope");
 }
 
-TEST_F(Benchmark, StoreWriting)
+TEST_F(Benchmark, SimpleStoreIO)
 {
     const int32 n = 1000000;
 
@@ -316,9 +316,21 @@ TEST_F(Benchmark, StoreWriting)
     for (int32 i = 0; i < n; i++) {
         s->WriteEnvelope("foo", "bar", envelopes[i]);
     }
-    TIMER_END_COUNT("zippylog.store.write_1M_envelopes", n);
+    TIMER_END_COUNT("zippylog.store.write_1M_random_envelopes", n);
 
     delete [] envelopes;
+
+    vector<string> paths;
+    ASSERT_TRUE(s->StreamPaths(paths));
+    ASSERT_EQ(1, paths.size());
+
+    ::zippylog::InputStream *is = s->GetInputStream(paths[0]);
+    Envelope e;
+    uint32 read;
+
+    TIMER_START(n);
+    is->ReadEnvelope(e, read);
+    TIMER_END("zippylog.store.read_1M_random_envelopes");
 }
 
 int main(int argc, char **argv)
