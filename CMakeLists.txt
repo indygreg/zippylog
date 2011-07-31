@@ -198,6 +198,6 @@ target_link_libraries(zippylog_string_loader libzippylog)
 #########################
 # zippylogbench program #
 #########################
-add_executable(zippylogbench src/zippylogbench.cpp)
-target_link_libraries(zippylogbench libzippylog)
+add_executable(zippylogbench src/zippylogbench.cpp src/zippylog/testing.cpp)
+target_link_libraries(zippylogbench libzippylog ${GTEST_LIBRARIES})
 
