@@ -253,6 +253,11 @@ TEST_F(PlatformTest, DirectoryWatcherWaitForChanges)
     EXPECT_EQ(1, changes.size()) << "one directory change recorded";
 
     EXPECT_FALSE(w.WaitForChanges(1000));
+
+    ASSERT_TRUE(MakeDirectory(PathJoin(path, "bar")));
+    EXPECT_TRUE(w.WaitForChanges(100000)) << "second directory creation is observed";
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
 }
 
 TEST_F(PlatformTest, DirectoryWatcherRecursionFiltering)
