@@ -313,6 +313,9 @@ namespace platform {
         ::std::string path;
         bool recurse;
         ::std::vector<DirectoryChange> changes;
+#ifdef WINDOWS
+        void StartWatching();
+#endif
 
     private:
         DirectoryWatcher();

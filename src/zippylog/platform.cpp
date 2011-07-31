@@ -1025,13 +1025,7 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
         throw Exception("could not create I/O Completion Port");
     }
 
-    BOOL watch_result = ReadDirectoryChangesW(this->directory,
-    &this->results[0], sizeof(this->results), this->recurse,
-    FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
-    NULL, &this->overlapped, NULL);
-    if (!watch_result) {
-        throw Exception("could not start waiting for directory changes");
-    }
+    this->StartWatching();
 
 #elif HAVE_INOTIFY
     // we use inotify
@@ -1093,6 +1087,19 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
 #endif
 }
 
+#ifdef WINDOWS
+void DirectoryWatcher::StartWatching()
+{
+    BOOL watch_result = ReadDirectoryChangesW(this->directory,
+        &this->results[0], sizeof(this->results), this->recurse,
+        FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_SIZE,
+        NULL, &this->overlapped, NULL);
+    if (!watch_result) {
+        throw Exception("could not start waiting for directory changes");
+    }
+}
+#endif
+
 bool DirectoryWatcher::WaitForChanges(int32 timeout)
 {
     // return immediately if we have already collected changes
@@ -1104,9 +1111,15 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     ULONG_PTR key = 0;
     OVERLAPPED * ol = NULL;
 
-    if (!GetQueuedCompletionStatus(this->completion_port,
-        &bytes_transferred, &key, &ol, milliseconds))
-    {
+    BOOL result = GetQueuedCompletionStatus(this->completion_port,
+                                            &bytes_transferred,
+                                            &key,
+                                            &ol,
+                                            milliseconds);
+
+    this->StartWatching();
+
+    if (!result) {
         // @todo we might want to check some error conditions here
         // otherwise, the function could abort immediately and cause a runaway
         // thread
