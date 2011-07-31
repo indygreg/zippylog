@@ -24,16 +24,23 @@ using namespace zippylog;
 namespace zippylog {
 namespace testing {
 
+string TestBase::GetTemporaryDirectory()
+{
+  string id = ::zippylog::platform::CreateUUID(true);
+  string path = "test/stores/" + id;
+
+  EXPECT_FALSE(platform::PathIsDirectory(path));
+  EXPECT_TRUE(platform::MakeDirectory(path));
+
+  this->created_store_paths.push_back(path);
+
+  return path;
+}
+
 string TestBase::GetTemporaryStoreUri()
 {
-    string id = ::zippylog::platform::CreateUUID(true);
-    string path = "test/stores/" + id;
+    string path = this->GetTemporaryDirectory();
     string uri = "simpledirectory://" + path;
-
-    EXPECT_FALSE(platform::PathIsDirectory(path));
-    EXPECT_TRUE(::zippylog::platform::MakeDirectory(path));
-
-    this->created_store_paths.push_back(path);
 
     return uri;
 }

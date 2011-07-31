@@ -2,7 +2,7 @@
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
+//  You may obtain a copy of the License a
 //
 //      http://www.apache.org/licenses/LICENSE-2.0
 //
@@ -21,18 +21,32 @@
 #endif
 
 #ifdef LINUX
+#include <sys/io.h>
+#endif
+
+#ifdef MACOS
+#include <mach/mach_time.h>
+#include <CoreServices/CoreServices.h>
+#endif
+
+#ifdef POSIX
 #include <assert.h>
-#include <pthread.h>
 #include <stdlib.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <poll.h>
 #include <string.h>
-#include <sys/io.h>
-#include <sys/inotify.h>
 #include <sys/time.h>
 #include <uuid/uuid.h>
+#endif
+
+#ifdef HAVE_INOTIFY
+#include <sys/inotify.h>
+#endif
+
+#ifdef HAVE_PTHREAD
+#include <pthread.h>
 #endif
 
 #include <fcntl.h>
@@ -51,13 +65,23 @@ namespace zippylog {
 
 namespace platform {
 
+#ifdef MACOS
+  /// Delay between FSEvent actual change and notification, in seconds
+  const CFAbsoluteTime FSEVENT_COALESCE_INTERVAL = 0.1;
+#endif
+
 #ifdef LINUX
 static __thread int system_error = 0;
+#elif WINDOWS
+// nothing to do on Windows
+#else
+#warning "system_error declaration not thread safe on this platform"
+static int system_error = 0;
 #endif
 
 void set_system_error()
 {
-#ifdef LINUX
+#ifdef POSIX
     system_error = errno;
 #elif WINDOWS
 
@@ -68,7 +92,7 @@ void set_system_error()
 
 bool get_system_error(string &s)
 {
-#ifdef LINUX
+#ifdef POSIX
     if (!system_error) return false;
 
     char * error = strerror(system_error);
@@ -97,7 +121,7 @@ bool get_system_error(string &s)
 // function has been written!
 bool DirectoryEntries(string const &dir, vector<DirectoryEntry> &v)
 {
-    //complicated case first
+    //complicated case firs
 #ifdef WINDOWS
     // @todo fix potential buffer overrun
     char path[8192];
@@ -176,7 +200,7 @@ void sleep(uint32 milliseconds)
 {
 #ifdef WINDOWS
     Sleep(milliseconds);
-#elif LINUX
+#elif POSIX
     struct timespec tv;
     tv.tv_sec = milliseconds / 1000;
     tv.tv_nsec = (milliseconds * 1000000) % 1000000000;
@@ -209,7 +233,7 @@ bool stat(const string path, FileStat &st)
         st.type = UNKNOWN;
     }
 
-#elif LINUX
+#elif POSIX
     struct stat result;
 
     if (stat(path.c_str(), &result) != 0) {
@@ -252,13 +276,13 @@ bool TimeNow(Time &t)
     wintime.LowPart = time.dwLowDateTime;
 
     // Windows time is in 100 nanosecond increments
-    // convert to microseconds and subtract offset
+    // convert to microseconds and subtract offse
     t.epoch_micro = wintime.QuadPart / 10 - 11644473600000000;
 
     // @todo is this compiler hack acceptable?
     t.epoch_sec = (int32)(t.epoch_micro / 1000000);
     t.usec = t.epoch_micro % 1000000;
-#elif LINUX
+#elif POSIX
     struct timeval tv;
     if (gettimeofday(&tv, NULL) != 0) return false;
 
@@ -307,11 +331,11 @@ bool UnixMicroTimeToZippyTime(int64 from, Time &to)
 
 bool MakeDirectory(const string path)
 {
-    // @todo permissions should be passed as argument
+    // @todo permissions should be passed as argumen
 #ifdef WINDOWS
     // @todo use native Windows API
     int result = mkdir(path.c_str());
-#elif LINUX
+#elif POSIX
     int result = mkdir(path.c_str(), 0775);
     if (result == -1) {
         set_system_error();
@@ -522,7 +546,7 @@ bool File::Open(string const &path, int flags)
 
     return true;
 
-#elif LINUX
+#elif POSIX
     int open_flags = 0;
     mode_t mode = 0;
 
@@ -577,7 +601,7 @@ bool File::Close()
 #ifdef WINDOWS
     if (!this->open) return true;
     return CloseHandle(this->handle) == TRUE;
-#elif LINUX
+#elif POSIX
     if (this->fd > 0) {
         close(this->fd);
         this->fd = 0;
@@ -614,7 +638,7 @@ bool File::Seek(int64 offset)
     if (result == INVALID_SET_FILE_POINTER) return false;
 
     return (result == (offset & 0x00000000ffffffff));
-#elif LINUX
+#elif POSIX
     return lseek(this->fd, offset, SEEK_SET) == offset;
 #else
 #error "File::Seek() not implemented on this platform"
@@ -629,7 +653,7 @@ bool File::Write(const void *data, size_t length)
     BOOL result = WriteFile(this->handle, data, length, &written, NULL);
 
     return result == TRUE && written == length;
-#elif LINUX
+#elif POSIX
     ssize_t result = write(this->fd, data, length);
     if (result == -1) {
         set_system_error();
@@ -648,7 +672,7 @@ bool File::Flush()
 {
 #ifdef WINDOWS
     return FlushFileBuffers(this->handle) == TRUE;
-#elif LINUX
+#elif POSIX
     if (fsync(this->fd) == -1) {
         set_system_error();
         return false;
@@ -675,8 +699,8 @@ bool File::WriteLockEntire()
 
 #ifdef WINDOWS
     throw Exception("WriteLockEntire() is not meant to be called on Windows at this time");
-#elif LINUX
-    flock fl;
+#elif POSIX
+    struct flock fl;
     fl.l_type = F_WRLCK;
     fl.l_start = 0;
     fl.l_whence = SEEK_SET;
@@ -707,8 +731,10 @@ string PathJoin(string const &a, string const &b)
     string s = a;
 #ifdef WINDOWS
     s += "\\";
-#elif LINUX
+#elif POSIX
     s += "/";
+#else
+#error "platform::PathJoin() not implemented on this platform"
 #endif
 
     s += b;
@@ -725,13 +751,13 @@ bool CreateUUID(UUID &u)
 
     memcpy(&u, &uuid, 16);
     return true;
-#elif LINUX
+#elif POSIX
     uuid_t uuid;
     uuid_generate_time(uuid);
     memcpy(&u, &uuid, 16);
     return true;
 #else
-#warning "functionality not implemented on this platform"
+#error "platform::CreateUUID() not implemented on this platform"
 #endif
 }
 
@@ -808,6 +834,8 @@ void Timer::Initialize()
         set_system_error();
         throw Exception("could not create timer");
     }
+#elif MACOS
+    // nothing special to do here
 #else
 #error "Timer::Initialize() is not implemented on this platform"
 #endif
@@ -841,6 +869,11 @@ bool Timer::Reset()
         this->running = false;
         return true;
 
+#elif MACOS
+        this->running = false;
+        return true;
+#else
+#error "Timer::Reset() is not implemented on this platform."
 #endif
     }
 
@@ -890,9 +923,14 @@ bool Timer::Start(uint32 microseconds)
 
     this->running = true;
     return true;
-#endif
 
-    return false;
+#elif MACOS
+    this->time_start = mach_absolute_time();
+    this->running = true;
+    return true;
+#else
+#error "Timer::Start() is not implemented on this platform."
+#endif
 }
 
 bool Timer::Signaled()
@@ -923,21 +961,41 @@ bool Timer::Signaled()
     }
 
     return false;
-#endif
 
-    return false;
+#elif MACOS
+    uint64 elapsed = mach_absolute_time() - this->time_start;
+
+    static mach_timebase_info_data_t time_info;
+    if (time_info.denom == 0) mach_timebase_info(&time_info);
+
+    uint64 ns = elapsed * time_info.numer / time_info.denom;
+
+    return ns > 1000 * this->microseconds;
+#else
+#error "Timer::Signaled() is not implemented on this platform"
+#endif
 }
 
 DirectoryChange::DirectoryChange() {}
 
 DirectoryWatcher::~DirectoryWatcher()
 {
-    // @todo implement
+    /// @todo implement on Windows and inotify
+#ifdef MACOS
+    if (this->stream) {
+        FSEventStreamStop(this->stream);
+        FSEventStreamUnscheduleFromRunLoop(this->stream, this->loop, kCFRunLoopDefaultMode);
+        FSEventStreamInvalidate(this->stream);
+        FSEventStreamRelease(this->stream);
+    }
+#endif
 }
 
 DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
 #ifdef WINDOWS
     : directory(NULL), started_waiting(false), completion_port(NULL)
+#elif MACOS
+    : stream(NULL), loop(NULL)
 #endif
 {
     this->path = directory;
@@ -965,14 +1023,14 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
         throw Exception("could not create I/O Completion Port");
     }
 
-#elif LINUX
+#elif HAVE_INOTIFY
     // we use inotify
     this->fd = inotify_init();
     if (this->fd == -1) {
         throw Exception("could not initialize inotify descriptor");
     }
 
-    // add watch for root
+    // add watch for roo
     int watch = inotify_add_watch(this->fd, this->path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
     if (watch == -1) {
         set_system_error();
@@ -998,8 +1056,30 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
         this->directories[watch] = i->substr(this->path.length(), FILENAME_MAX);
     }
 
+#elif MACOS
+    this->context.version = 0;
+    this->context.info = this;
+    this->context.retain = NULL;
+    this->context.release = NULL;
+    this->context.copyDescription = NULL;
+
+    CFStringRef path = CFStringCreateWithCString(NULL, directory.c_str(), kCFStringEncodingUTF8);
+    CFArrayRef watch_paths = CFArrayCreate(NULL, (const void **)&path, 1, NULL);
+
+    this->stream = FSEventStreamCreate(NULL, &DirectoryWatcher::EventStreamCallback,
+                                       &this->context, watch_paths,
+                                       kFSEventStreamEventIdSinceNow,
+                                       FSEVENT_COALESCE_INTERVAL,
+                                       kFSEventStreamCreateFlagNoDefer);
+
+    this->loop = CFRunLoopGetCurrent();
+    FSEventStreamScheduleWithRunLoop(this->stream, this->loop, kCFRunLoopDefaultMode);
+
+    if (!FSEventStreamStart(this->stream)) {
+      throw Exception("could not start event stream.");
+    }
 #else
-#warning "not available on this platform yet"
+#error "DirectoryWatcher constructor not available on this platform yet"
 #endif
 }
 
@@ -1078,9 +1158,9 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     return true;
 
-#elif LINUX
+#elif HAVE_INOTIFY
     // the inotify descriptor is watching the moment it is created
-    // so, we see if data is available and we read it
+    // so, we see if data is available and we read i
 
     struct pollfd pfd = { this->fd, POLLIN, 0 };
     int result = poll(&pfd, 1, timeout / 1000);
@@ -1161,8 +1241,29 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
 
     return true;
 
+#elif MACOS
+    // RunLoopRunInMode doesn't appear to end after an event is received.
+    // Since we want this function to return as soon as data is received, we
+    // call this function with a small timeout until the timeout passed to
+    // this function elapses or events are received.
+    static const double run_timeout = 0.005; // 5 ms
+    Timer t(timeout);
+    t.Start();
+
+    do {
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, run_timeout, false);
+
+        if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
+            return false;
+
+        if (this->changes.size() > 0) break;
+    } while (!t.Signaled());
+
+    // the callback does all the work, so nothing for us to do here
+    return this->changes.size() > 0;
+
 #else
-#error "functionality not implemented on this platform"
+#error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif
 
     return false;
@@ -1181,12 +1282,50 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
     return true;
 }
 
+void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
+                                        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+{
+    char **paths = (char **)eventPaths;
+
+    DirectoryWatcher *watcher = (DirectoryWatcher *)data;
+
+    for (size_t i = 0; i < numEvents; i++) {
+        const FSEventStreamEventFlags flags = eventFlags[i];
+        const char *path = paths[i];
+
+        DirectoryChange change;
+        change.Path = path;
+
+        /*
+        if (flags & kFSEventStreamEventFlagMustScanSubDirs) {
+
+        }
+
+        if (flags & kFSEventStreamEventFlagItemCreated) {
+            change.Action = change.ADDED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemRemoved) {
+            change.Action = change.DELETED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemModified) {
+            change.Action = change.MODIFIED;
+        }
+        else if (flags & kFSEventStreamEventFlagItemRenamed) {
+            /// TODO handle case
+        }
+        */
+
+        watcher->changes.push_back(change);
+
+    }
+}
+
 Thread::Thread(thread_start_func func, void *data)
 {
 #ifdef WINDOWS
     LPTHREAD_START_ROUTINE f = (LPTHREAD_START_ROUTINE)func;
     this->thread = CreateThread(NULL, 0, f, data, 0, NULL);
-#elif LINUX
+#elif HAVE_PTHREAD
     int result = pthread_create(&this->thread, NULL, func, data);
     if (result != 0) {
         throw Exception("error creating thread");
@@ -1209,11 +1348,11 @@ bool Thread::Join()
     DWORD result = WaitForSingleObject(this->thread, INFINITE);
     return WAIT_OBJECT_0 == result;
 
-#elif LINUX
+#elif HAVE_PTHREAD
     int result = pthread_join(this->thread, NULL);
     return result == 0;
 #else
-#error "join_thread() not implemented on your platform yet"
+#error "Thread::Join() not implemented on your platform yet"
 #endif
 
     return false;
@@ -1224,11 +1363,11 @@ bool Thread::Abort()
 #ifdef WINDOWS
     DWORD rc = 1;
     return TerminateThread(this->thread, rc) == TRUE;
-#elif LINUX
+#elif HAVE_PTHREAD
     int result = pthread_cancel(this->thread);
     return result == 0;
 #else
-#error "terminate_thread() not implemented on your platform yet"
+#error "Thread::Abort() not implemented on your platform yet"
 #endif
 
 }
@@ -1243,7 +1382,7 @@ bool Thread::Alive()
     }
 
     return code == STILL_ACTIVE;
-#elif LINUX
+#elif HAVE_PTHREAD
     // @todo not reliable since thread could be recycled
     int result = pthread_kill(this->thread, 0);
     if (result == 0) return true;

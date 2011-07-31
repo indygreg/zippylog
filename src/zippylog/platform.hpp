@@ -27,12 +27,17 @@
 #include <winsock2.h>
 #include <Windows.h>
 
-#elif LINUX
-// @todo should be pulled from build tools
-#define HAVE_OPENDIR 1
-
+#elif POSIX
 #include <signal.h>
 #include <time.h>
+#endif
+
+#ifdef MACOS
+#include <CoreServices/CoreServices.h>
+
+// this is imported in CoreServices land and conflicts with protocol buffer
+// land. it doesn't seem to break anything, so we undef it
+#undef TYPE_BOOL
 #endif
 
 #include <map>
@@ -251,6 +256,8 @@ namespace platform {
         void * handle;
 #elif LINUX
         timer_t timer;
+#elif MACOS
+        uint64 time_start;
 #endif
 
     };
@@ -297,6 +304,11 @@ namespace platform {
         // returns collected changes to directory
         bool GetChanges(::std::vector<DirectoryChange> &changes);
 
+#ifdef MACOS
+        static void EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
+                                        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[]);
+#endif
+
     protected:
         ::std::string path;
         bool recurse;
@@ -313,12 +325,16 @@ namespace platform {
         BYTE results[32768];
         OVERLAPPED overlapped;
         bool started_waiting;
-#elif LINUX
+#elif HAVE_INOTIFY
         // inotify descriptor
         int fd;
 
         // maps watch descriptors to directories
         ::std::map<int, ::std::string> directories;
+#elif MACOS
+        FSEventStreamRef stream;
+        FSEventStreamContext context;
+        CFRunLoopRef loop;
 #endif
     };
 
@@ -339,7 +355,7 @@ namespace platform {
     protected:
 #ifdef WINDOWS
         HANDLE thread;
-#elif LINUX
+#elif HAVE_PTHREAD
         pthread_t thread;
 #endif
 

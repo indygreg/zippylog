@@ -38,6 +38,10 @@ inline BOOL GetMessage(LPMSG msg, HWND hwnd, UINT min, UINT max) {
 
 #endif
 
+#if defined(MACOS) && defined(TYPE_BOOL)
+#undef TYPE_BOOL
+#endif
+
 namespace zippylog {
 
 class ZIPPYLOG_EXPORT Envelope {

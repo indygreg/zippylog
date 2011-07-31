@@ -12,17 +12,25 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <zippylog/testing.hpp>
 #include <zippylog/platform.hpp>
 
 #include <gtest/gtest.h>
 
+#include <string>
+#include <vector>
+
 using namespace ::zippylog::platform;
 using ::std::string;
+using ::std::vector;
 using ::zippylog::platform::ConditionalWait;
 using ::zippylog::platform::Time;
 using ::zippylog::platform::UUID;
 
-TEST(TimerTest, CreateTimers)
+class PlatformTest : public ::zippylog::testing::TestBase
+{ };
+
+TEST_F(PlatformTest, CreateTimers)
 {
     ASSERT_NO_THROW(Timer t(1000000));
     ASSERT_NO_THROW(Timer t());
@@ -49,7 +57,7 @@ TEST(TimerTest, CreateTimers)
     EXPECT_FALSE(t.Signaled());
 }
 
-TEST(TimeTest, TimeConversion)
+TEST_F(PlatformTest, TimeConversion)
 {
     Time t;
     ASSERT_TRUE(UnixMicroTimeToZippyTime(0, t));
@@ -92,7 +100,7 @@ TEST(TimeTest, TimeConversion)
     EXPECT_EQ(5, t.wday);
 }
 
-TEST(UUIDTest, CreateUUID)
+TEST_F(PlatformTest, CreateUUID)
 {
     UUID u1;
     memset(&u1, 0, sizeof(u1));
@@ -113,7 +121,7 @@ TEST(UUIDTest, CreateUUID)
     EXPECT_EQ(36, s.length());
 }
 
-TEST(UUIDTest, FormatUUID)
+TEST_F(PlatformTest, FormatUUID)
 {
     UUID u1;
     memset(&u1, 64, sizeof(u1));
@@ -123,12 +131,12 @@ TEST(UUIDTest, FormatUUID)
     ASSERT_TRUE("40404040-4040-4040-4040-404040404040" == f1);
 }
 
-TEST(PlatformTest, ConditionalWaitConstructor)
+TEST_F(PlatformTest, ConditionalWaitConstructor)
 {
     ASSERT_NO_THROW(ConditionalWait w);
 }
 
-TEST(PlatformTest, ConditionalWaitNoWait)
+TEST_F(PlatformTest, ConditionalWaitNoWait)
 {
     ConditionalWait w;
     Time start;
@@ -141,7 +149,7 @@ TEST(PlatformTest, ConditionalWaitNoWait)
     EXPECT_LE(end.epoch_micro - start.epoch_micro, 10000);
 }
 
-TEST(PlatformTest, ConditionalWaitWaitTimeout)
+TEST_F(PlatformTest, ConditionalWaitWaitTimeout)
 {
     ConditionalWait w;
     Time start;
@@ -171,7 +179,7 @@ void * sleep_n_and_signal(void *d)
     return NULL;
 }
 
-TEST(PlatformTest, ConditionalWaitSimpleSignal)
+TEST_F(PlatformTest, ConditionalWaitSimpleSignal)
 {
     ConditionalWait w;
 
@@ -203,7 +211,7 @@ void * cond_wait_waiter(void *d)
 }
 
 
-TEST(PlatformTest, ConditionalWaitMultipleWaiters)
+TEST_F(PlatformTest, ConditionalWaitMultipleWaiters)
 {
     ConditionalWait w;
 
@@ -215,4 +223,98 @@ TEST(PlatformTest, ConditionalWaitMultipleWaiters)
 
     t1.Join();
     t2.Join();
+}
+
+TEST_F(PlatformTest, DirectoryWatcherConstructor)
+{
+    string path = this->GetTemporaryDirectory();
+
+    EXPECT_NO_THROW(DirectoryWatcher w(path, false)) << "DirectoryWatcher regular ctor doesn't throw";
+    EXPECT_NO_THROW(DirectoryWatcher w(path, true)) << "DirectoryWatcher recursive ctor doesn't throw";
+
+}
+
+TEST_F(PlatformTest, DirectoryWatcherWaitForChanges)
+{
+    string path = this->GetTemporaryDirectory();
+
+    DirectoryWatcher w(path, false);
+    vector<DirectoryChange> changes;
+
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(0, changes.size());
+
+    string path1 = PathJoin(path, "foo");
+    ASSERT_TRUE(MakeDirectory(path1));
+
+    EXPECT_TRUE(w.WaitForChanges(10000));
+
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size()) << "one directory change recorded";
+
+    EXPECT_FALSE(w.WaitForChanges(1000));
+}
+
+TEST_F(PlatformTest, DirectoryWatcherRecursionFiltering)
+{
+    string path = this->GetTemporaryDirectory();
+
+    DirectoryWatcher w(path, false);
+    string s1, s2;
+    s1 = PathJoin(path, "foo");
+    s2 = PathJoin(s1, "bar");
+    ASSERT_TRUE(MakeDirectory(s1));
+    EXPECT_TRUE(w.WaitForChanges(25000));
+
+    vector<DirectoryChange> changes;
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
+
+    ASSERT_TRUE(MakeDirectory(s2));
+    EXPECT_FALSE(w.WaitForChanges(25000)) << "grandchild path is not detected";
+}
+
+TEST_F(PlatformTest, DirectoryWatcherRecursionSeen)
+{
+    string path = this->GetTemporaryDirectory();
+
+    DirectoryWatcher w(path, true);
+    string s1 = PathJoin(path, "foo");
+    string s2 = PathJoin(s1, "bar");
+    string s3 = PathJoin(s2, "baz");
+
+    ASSERT_TRUE(MakeDirectory(s1));
+    EXPECT_TRUE(w.WaitForChanges(25000));
+
+    vector<DirectoryChange> changes;
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
+
+    ASSERT_TRUE(MakeDirectory(s2));
+    EXPECT_TRUE(w.WaitForChanges(25000)) << "grandchild path is detected";
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size()) << "one change detected";
+
+    ASSERT_TRUE(MakeDirectory(s3));
+    EXPECT_TRUE(w.WaitForChanges(25000)) << "great grandchild path detected";
+    EXPECT_TRUE(w.GetChanges(changes));
+    EXPECT_EQ(1, changes.size());
+}
+
+TEST_F(PlatformTest, DirectoryWatcherWaitImmediateTimeout)
+{
+    string path = this->GetTemporaryDirectory();
+    DirectoryWatcher w(path, false);
+    vector<DirectoryChange> changes;
+
+    Timer t(25000);
+    t.Start();
+
+    EXPECT_FALSE(w.WaitForChanges(25000));
+    EXPECT_TRUE(t.Signaled());
+
+    ASSERT_TRUE(MakeDirectory(PathJoin(path, "foo")));
+    t.Start();
+    EXPECT_TRUE(w.WaitForChanges(100000));
+    EXPECT_FALSE(t.Signaled());
 }
