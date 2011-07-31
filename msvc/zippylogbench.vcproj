@@ -24,6 +24,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -95,6 +96,10 @@
 			UniqueIdentifier="{0CDDA4CA-7F9B-4459-B97F-6C63DACA3C6F}"
 			>
 			<File
+				RelativePath="..\src\zippylog\testing.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylogbench.cpp"
 				>
 			</File>
@@ -104,6 +109,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{7FAF8B0C-81EA-4ade-884E-3A4C7153BE12}"
 			>
+			<File
+				RelativePath="..\src\zippylog\testing.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

@@ -52,6 +52,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zippylogbench", "zippylogbench.vcproj", "{87BF00C5-D319-478E-AE95-AFF1013C8BAA}"
 	ProjectSection(ProjectDependencies) = postProject
 		{19AB4E62-FD90-4509-9985-E6FA42BFCBEB} = {19AB4E62-FD90-4509-9985-E6FA42BFCBEB}
+		{C8F6C172-56F2-4E76-B5FA-C3B423B31BE7} = {C8F6C172-56F2-4E76-B5FA-C3B423B31BE7}
 		{67A69A9D-8CEF-46AD-9C11-ECA78F007858} = {67A69A9D-8CEF-46AD-9C11-ECA78F007858}
 		{D3B16BBC-6489-4B89-8B2E-3A0C12720C9A} = {D3B16BBC-6489-4B89-8B2E-3A0C12720C9A}
 		{80CDDDD5-75FA-40E1-ADC8-8C820E485758} = {80CDDDD5-75FA-40E1-ADC8-8C820E485758}
@@ -152,8 +153,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		AMDCaProjectFile = C:\dev\projects\zippylog\msvc\CodeAnalyst\zippylog.caw
-		AMDCaPersistentStartup = zippylog-test
 		AMDCaPersistentConfig = Debug|Win32
+		AMDCaPersistentStartup = zippylog-test
+		AMDCaProjectFile = C:\dev\projects\zippylog\msvc\CodeAnalyst\zippylog.caw
 	EndGlobalSection
 EndGlobal

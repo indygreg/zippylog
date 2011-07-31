@@ -13,6 +13,8 @@
 //  limitations under the License.
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/testing.hpp>
+
 #include <zippylog/client.hpp>
 #include <zippylog/envelope.hpp>
 #include <zippylog/lua.hpp>
@@ -66,61 +68,8 @@ using ::zippylog::lua::LuaState;
     print_result(description, elapsed, TIMER_ITERATIONS); \
     }
 
-class ZippylogbenchParams {
-public:
-    ZippylogbenchParams() :
-        do_all(false),
-        do_lua_function_calls(false)
-    { }
-
-    bool do_all;
-    bool do_lua_function_calls;
-};
-
-static bool ParseCommandArguments(
-    vector<string> args,
-    ZippylogbenchParams &params,
-    string &error)
-{
-    ostringstream usage;
-    usage
-        << "zippylogbench - benchmark various zippylog operations"                         << endl
-        <<                                                                                    endl
-        << "Usage: zippylogbench [options]"                                                << endl
-        <<                                                                                    endl
-        << "Where valid options are the following:"                                        << endl
-        <<                                                                                    endl
-        << "  --all                - Run all benchmarks. This is the default behavior"     << endl
-        << "  --lua-function-calls - Lua function call timing"                             << endl
-    ;
-    // get rid of first element, the program name
-    args.erase(args.begin());
-
-    // no arguments means run with everything
-    if (args.size() == 0) {
-        params.do_all = true;
-        return true;
-    }
-    else if (args.size() == 1) {
-        if (args[0] == "--help" || args[0] == "-h" || args[0] == "-?") {
-            error = usage.str();
-            return false;
-        }
-    }
-
-    for (size_t i = 0; i < args.size(); i++) {
-        string arg = args[i];
-        if (arg == "--all") {
-            params.do_all = true;
-        }
-        else if (arg == "--lua-function-calls") {
-            params.do_lua_function_calls = true;
-        }
-    }
-
-    return true;
-}
-
+class Benchmark : public ::zippylog::testing::TestBase
+{ };
 
 void print_result(string what, uint64 microseconds, uint64 ops)
 {
@@ -130,7 +79,7 @@ void print_result(string what, uint64 microseconds, uint64 ops)
     cout << what << " " << rate << "/s" << endl;
 }
 
-void run_lua_function_calls(ZippylogbenchParams &)
+TEST_F(Benchmark, LuaFunctionCalls)
 {
     lua_State *L = luaL_newstate();
     const char *function = "function test()\n    return nil\nend";
@@ -161,8 +110,7 @@ void zmq_socket_send_recv(const char *address, int sender_type, int receiver_typ
     TIMER_END(name);
 }
 
-
-void run_zmq_benches(ZippylogbenchParams &)
+TEST_F(Benchmark, ZeroMQ)
 {
     TIMER_START(1000000);
     ::zmq::message_t *msg = new ::zmq::message_t();
@@ -197,7 +145,7 @@ void run_zmq_benches(ZippylogbenchParams &)
     zmq_socket_send_recv("inproc://05", ZMQ_PUSH, ZMQ_PULL, 1000000, 100000, "zmq.socket.inproc.pushpull.1000000_byte_message");
 }
 
-void run_envelope_benches(ZippylogbenchParams &)
+TEST_F(Benchmark, Envelope)
 {
     TIMER_START(1000000);
     Envelope *e = new Envelope();
@@ -276,7 +224,8 @@ void client_ping_callback(Client *, void *data) {
     (*i)++;
 }
 
-void run_server_benches(ZippylogbenchParams &)
+/*
+TEST_F(Benchmark, Server)
 {
     ::zmq::context_t ctx(3);
 
@@ -317,65 +266,34 @@ void run_server_benches(ZippylogbenchParams &)
     }
 
     server.Shutdown();
+}
+*/
 
+TEST_F(Benchmark, LuaLoadString)
+{
+    LuaState l;
+    string error;
+    l.LoadLuaCode("function zippylog_load_string(s)\n"
+                  "  e = zippylog.envelope.new()\n"
+                  "  e:set_string_value(s)\n"
+                  "  return e\n"
+                  "end", error);
+
+    ::zippylog::lua::LoadStringResult result;
+    const string input = "foo bar 2k";
+    TIMER_START(10000);
+    l.ExecuteLoadString(input, result);
+    TIMER_END("zippylog.lua.load_string_return_simple_envelope");
 }
 
-void run_lua_zippylog(ZippylogbenchParams &params)
+int main(int argc, char **argv)
 {
-    {
-        LuaState l;
-        string error;
-        l.LoadLuaCode("function zippylog_load_string(s)\n"
-                      "  e = zippylog.envelope.new()\n"
-                      "  e:set_string_value(s)\n"
-                      "  return e\n"
-                      "end", error);
+    ::zippylog::initialize_library();
 
-        ::zippylog::lua::LoadStringResult result;
-        const string input = "foo bar 2k";
-        TIMER_START(10000);
-        l.ExecuteLoadString(input, result);
-        TIMER_END("zippylog.lua.load_string_return_simple_envelope");
-    }
-}
+    ::testing::InitGoogleTest(&argc, argv);
+    int result = RUN_ALL_TESTS();
 
-void run_benchmarks(ZippylogbenchParams &params)
-{
-    if (params.do_lua_function_calls || params.do_all) {
-        run_lua_function_calls(params);
-        run_lua_zippylog(params);
-    }
+    ::zippylog::shutdown_library();
 
-    run_zmq_benches(params);
-    run_envelope_benches(params);
-    //run_server_benches(params);
-}
-
-int main(int argc, const char * const argv[])
-{
-    try {
-        ::zippylog::initialize_library();
-
-        vector<string> args;
-        for (int i = 0; i < argc; i++) {
-            args.push_back(argv[i]);
-        }
-
-        string error;
-        ZippylogbenchParams params;
-        if (!ParseCommandArguments(args, params, error)) {
-            cerr << error << endl;
-            return 1;
-        }
-
-        run_benchmarks(params);
-
-        ::zippylog::shutdown_library();
-    }
-    catch (...) {
-        cout << "received an exception" << endl;
-        return 1;
-    }
-
-    return 0;
+    return result;
 }
