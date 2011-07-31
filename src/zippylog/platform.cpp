@@ -1044,20 +1044,22 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     this->directories[watch] = "";
 
     // inotify doesn't support recursive watches, so we need to do it manually
-    vector<string> paths;
-    if (!DirectoriesInTree(this->path, paths)) {
-        throw Exception("could not obtain directories in tree");
-    }
-
-    vector<string>::iterator i = paths.begin();
-    for (; i != paths.end(); i++) {
-        watch = inotify_add_watch(this->fd, i->c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
-        if (watch == -1) {
-            set_system_error();
-            throw Exception("could not add inotify watch for directory");
+    if (this->recurse) {
+        vector<string> paths;
+        if (!DirectoriesInTree(this->path, paths)) {
+            throw Exception("could not obtain directories in tree");
         }
 
-        this->directories[watch] = i->substr(this->path.length(), FILENAME_MAX);
+        vector<string>::iterator i = paths.begin();
+        for (; i != paths.end(); i++) {
+            watch = inotify_add_watch(this->fd, i->c_str(), IN_CREATE | IN_DELETE | IN_MODIFY);
+            if (watch == -1) {
+                set_system_error();
+                throw Exception("could not add inotify watch for directory");
+            }
+
+            this->directories[watch] = i->substr(this->path.length(), FILENAME_MAX);
+        }
     }
 
 #elif MACOS
@@ -1225,7 +1227,7 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
                 throw Exception("could not stat newly created file. weird");
             }
 
-            if (st.type == DIRECTORY) {
+            if (st.type == DIRECTORY && this->recurse) {
                 int watch = inotify_add_watch(this->fd, fs_path.c_str(), IN_CREATE | IN_DELETE | IN_MODIFY );
                 if (watch == -1) {
                     set_system_error();
