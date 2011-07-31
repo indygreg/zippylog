@@ -18,6 +18,7 @@
 #include <google/protobuf/message.h>
 #include <map>
 #include <utility>
+#include <vector>
 
 namespace zippylog {
 
@@ -44,8 +45,14 @@ class ZIPPYLOG_EXPORT MessageRegistrar {
         /// by the caller.
         ::google::protobuf::Message * GetMessage(uint32 ns, uint32 enumeration);
 
-        // cleans up a registrar instance by removing all registered message types
+        /// Cleans up a registrar instance.
+        ///
+        /// Will remove all registered message types. This is typically called
+        /// automatically.
         void Cleanup();
+
+        /// Obtains a list of all defined enumerations.
+        void GetAllEnumerations(::std::vector< ::std::pair<uint32, uint32> > &list);
 
     protected:
         // @todo lookup time can be improved since map is nlogn

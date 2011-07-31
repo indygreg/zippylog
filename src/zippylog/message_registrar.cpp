@@ -83,4 +83,14 @@ void MessageRegistrar::Cleanup()
     this->_types.clear();
 }
 
+void MessageRegistrar::GetAllEnumerations(std::vector<::std::pair<uint32,uint32> > &list)
+{
+    list.clear();
+
+    map<pair<uint32, uint32>, Message *>::iterator iter = this->_types.begin();
+    for (; iter != this->_types.end(); iter++) {
+        list.push_back(pair<uint32, uint32>(iter->first.first, iter->first.second));
+    }
+}
+
 } // namespace
