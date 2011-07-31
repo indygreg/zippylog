@@ -12,10 +12,10 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <zippylog/testing.hpp>
+
 #include <zippylog/stream.hpp>
 #include <zippylog/envelope.hpp>
-
-#include <gtest/gtest.h>
 
 #include <string>
 
@@ -23,9 +23,12 @@ using ::std::string;
 using ::zippylog::Envelope;
 using ::zippylog::FileInputStream;
 
+class StreamTest : public ::zippylog::testing::TestBase
+{ };
+
 string path = "test/stores/01-singlestream/A/B/2010-11-26-07.zippylog";
 
-TEST(StreamTest, FileInputStreamConstructor)
+TEST_F(StreamTest, FileInputStreamConstructor)
 {
     ASSERT_NO_THROW(FileInputStream fis(path));
 
@@ -33,7 +36,7 @@ TEST(StreamTest, FileInputStreamConstructor)
     EXPECT_EQ(1, fis.CurrentEnvelopeOffset());
 }
 
-TEST(StreamTest, FileInputStreamReading)
+TEST_F(StreamTest, FileInputStreamReading)
 {
     FileInputStream f1(path);
     ASSERT_TRUE(f1.CanSetAbsoluteOffset());
