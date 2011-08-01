@@ -800,7 +800,11 @@ void * Server::RequestProcessorStart(void *d)
     assert(d);
     WorkerStartParams *params = (WorkerStartParams *)d;
     try {
-        Worker processor(*params);
+        Worker *worker = new Worker(*params);
+        params->request_processor_params.implementation = worker;
+
+        RequestProcessor processor(params->request_processor_params);
+
         processor.Run();
     }
     catch (::std::exception e) {

@@ -12,11 +12,12 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
+#include <zippylog/testing.hpp>
+
 #include <zippylog/request_processor.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/zeromq.hpp>
 
-#include <gtest/gtest.h>
 #include <zmq.hpp>
 
 using namespace ::zippylog;
@@ -36,11 +37,10 @@ using ::zmq::message_t;
 }
 
 /// request processor implementation that we use to test things
-class TestRequestProcessor : public RequestProcessor
+class TestRequestProcessor : public RequestProcessorImplementation
 {
 public:
-    TestRequestProcessor(RequestProcessorStartParams &params) :
-      RequestProcessor(params),
+    TestRequestProcessor() :
       subscribe_store_changes_count(0),
       handle_subscribe_envelopes_count(0),
       handle_subscribe_keepalive_count(0),
@@ -51,15 +51,6 @@ public:
     int handle_subscribe_envelopes_count;
     int handle_subscribe_keepalive_count;
     int write_envelopes_count;
-
-protected:
-    void Reset()
-    {
-        this->subscribe_store_changes_count = 0;
-        this->handle_subscribe_envelopes_count = 0;
-        this->handle_subscribe_keepalive_count = 0;
-        this->write_envelopes_count = 0;
-    }
 
     HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) {
         if (subscription.type == ENVELOPE) {
@@ -76,7 +67,7 @@ protected:
         return result;
     }
 
-    ResponseStatus HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)
+    RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)
     {
         this->handle_subscribe_keepalive_count++;
         return AUTHORITATIVE;
@@ -87,6 +78,15 @@ protected:
         this->write_envelopes_count += to_write.size();
         return to_write.size();
     }
+
+protected:
+    void Reset()
+    {
+        this->subscribe_store_changes_count = 0;
+        this->handle_subscribe_envelopes_count = 0;
+        this->handle_subscribe_keepalive_count = 0;
+        this->write_envelopes_count = 0;
+    }
 };
 
 /// Request processor tester
@@ -95,8 +95,9 @@ protected:
 /// zippylog protocol request types. It only verifies incoming protocol
 /// message and the validation component associated with it are working
 /// properly.
-class RequestProcessorTest : public ::testing::Test {
+class RequestProcessorTest : public ::zippylog::testing::TestBase {
 protected:
+    RequestProcessor *rp;
     TestRequestProcessor *p;
     bool active;
     ::zmq::context_t ctx;
@@ -105,6 +106,7 @@ protected:
     Store *store;
 
     RequestProcessorTest() :
+        rp(NULL),
         p(NULL),
         active(true),
         ctx(1),
@@ -117,15 +119,24 @@ protected:
         this->store = Store::CreateStore("simpledirectory://test/stores/00-simple");
     }
 
-    ~RequestProcessorTest()
+    virtual void SetUp()
     {
-        if (this->p) delete this->p;
+        this->ResetProcessor();
+
+        ::zippylog::testing::TestBase::SetUp();
+    }
+
+    virtual void TearDown()
+    {
+        if (this->rp) delete this->rp;
         if (this->store) delete this->store;
+
+        ::zippylog::testing::TestBase::TearDown();
     }
 
     void ResetProcessor(const string store_path = "simpledirectory://test/stores/00-simple")
     {
-        if (this->p) delete this->p;
+        if (this->rp) delete this->rp;
         if (this->store) delete this->store;
 
         RequestProcessorStartParams params;
@@ -135,13 +146,16 @@ protected:
         params.logger_endpoint = "inproc://logger";
         params.client_endpoint = "inproc://client";
 
-        this->p = new TestRequestProcessor(params);
+        this->p = new TestRequestProcessor();
+        params.implementation = this->p;
+        this->rp = new RequestProcessor(params);
+
         this->store = Store::CreateStore(store_path);
     }
 
-    void ExpectErrorResponse(RequestProcessor::ResponseStatus result, protocol::response::ErrorCode code, vector<Envelope> &msgs)
+    void ExpectErrorResponse(RequestProcessorResponseStatus result, protocol::response::ErrorCode code, vector<Envelope> &msgs)
     {
-        EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+        EXPECT_TRUE(AUTHORITATIVE == result);
         this->ExpectErrorResponse(code, msgs);
     }
 
@@ -163,11 +177,6 @@ protected:
         ASSERT_TRUE(m->has_msg());
         ASSERT_EQ(code, m->code());
     }
-
-    void SetUp()
-    {
-        this->ResetProcessor();
-    }
 };
 
 TEST_F(RequestProcessorTest, ConstructorParameterValidation)
@@ -176,17 +185,17 @@ TEST_F(RequestProcessorTest, ConstructorParameterValidation)
     bool active;
     ::zmq::context_t ctx(1);
 
-    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+    EXPECT_THROW(RequestProcessor p(params), invalid_argument);
 
     params.active = &active;
-    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+    EXPECT_THROW(RequestProcessor p(params), invalid_argument);
 
     params.active = NULL;
     params.ctx = &ctx;
-    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+    EXPECT_THROW(RequestProcessor p(params), invalid_argument);
 
     params.active = &active;
-    EXPECT_THROW(TestRequestProcessor p(params), invalid_argument);
+    EXPECT_THROW(RequestProcessor p(params), invalid_argument);
 }
 
 // this test verifies our core message processing routine is robust and functional
@@ -210,28 +219,28 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     vector<Envelope> output;
 
     // no input == no output
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     ASSERT_EQ(0, output.size());
 
     // empty initial message
     message_t * m = new message_t();
     messages.AddMessage(m);
     code = protocol::response::EMPTY_MESSAGE;
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
 
     // bad version
     m->rebuild(1);
     *(char *)(m->data()) = 0;
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
     m->rebuild(1);
     *(char *)(m->data()) = 0x02;
     code = protocol::response::UNKNOWN_MESSAGE_FORMAT_VERSION;
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
@@ -239,7 +248,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     m->rebuild(1);
     *(char *)(m->data()) = 0x01;
     code = protocol::response::PROTOCOL_NO_ENVELOPE;
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
@@ -247,7 +256,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     m->rebuild(10);
     *(char *)(m->data()) = 0x01;
     code = protocol::response::ENVELOPE_PARSE_FAILURE;
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     this->ExpectErrorResponse(code, output);
     output.clear();
 
@@ -256,7 +265,7 @@ TEST_F(RequestProcessorTest, ProcessMessages)
     Envelope request;
     gsi.add_to_envelope(request);
     ASSERT_TRUE(request.ToProtocolZmqMessage(*m));
-    this->p->ProcessMessages(messages, output);
+    this->rp->ProcessMessages(messages, output);
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     ASSERT_EQ(1, response.MessageCount());
@@ -269,7 +278,7 @@ TEST_F(RequestProcessorTest, EmptyEnvelope)
     Envelope e;
 
     vector<Envelope> output;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
     this->ExpectErrorResponse(result, protocol::response::EMPTY_ENVELOPE, output);
 }
 
@@ -280,7 +289,7 @@ TEST_F(RequestProcessorTest, InvalidMessageNamespace)
     EXPECT_TRUE(e.AddMessage(m, 23523, 32145));
 
     vector<Envelope> output;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
     this->ExpectErrorResponse(result, protocol::response::INVALID_MESSAGE_NAMESPACE, output);
 }
 
@@ -291,8 +300,8 @@ TEST_F(RequestProcessorTest, Ping)
     ping.add_to_envelope(e);
 
     vector<Envelope> output;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
-    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
+    EXPECT_TRUE(AUTHORITATIVE == result);
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     EXPECT_EQ(1, response.MessageCount());
@@ -306,8 +315,8 @@ TEST_F(RequestProcessorTest, GetFeatures)
     m.add_to_envelope(e);
 
     vector<Envelope> output;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
-    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
+    EXPECT_TRUE(AUTHORITATIVE == result);
 
     EXPECT_EQ(1, output.size());
     Envelope response = output[0];
@@ -330,8 +339,8 @@ TEST_F(RequestProcessorTest, GetStoreInfo)
     m.add_to_envelope(&e);
 
     vector<Envelope> output;
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
-    EXPECT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == result);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
+    EXPECT_TRUE(AUTHORITATIVE == result);
 
     EXPECT_EQ(1, output.size());
     Envelope response = output[0];
@@ -355,7 +364,7 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
     m2.set_path("/");
     Envelope e2;
     m2.add_to_envelope(&e2);
-    this->ExpectErrorResponse(this->p->ProcessRequest(e2, output), protocol::response::INVALID_PATH, output);
+    this->ExpectErrorResponse(this->rp->ProcessRequest(e2, output), protocol::response::INVALID_PATH, output);
     output.clear();
 
     // this should work
@@ -363,7 +372,7 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
     m3.set_path("/bucketA");
     Envelope e3;
     m3.add_to_envelope(&e3);
-    ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e3, output));
+    ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e3, output));
     ASSERT_EQ(1, output.size());
     Envelope response = output[0];
     EXPECT_ENVELOPE_MESSAGE(0, protocol::BucketInfoV1);
@@ -379,7 +388,7 @@ TEST_F(RequestProcessorTest, GetBucketInfo)
     m4.set_path("/DOESNOTEXIST");
     Envelope e4;
     m4.add_to_envelope(&e4);
-    this->ExpectErrorResponse(this->p->ProcessRequest(e4, output), protocol::response::PATH_NOT_FOUND, output);
+    this->ExpectErrorResponse(this->rp->ProcessRequest(e4, output), protocol::response::PATH_NOT_FOUND, output);
     output.clear();
 }
 
@@ -392,7 +401,7 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
     }
 
     // path contains bucket but not stream set
@@ -402,7 +411,7 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
     }
 
     // this should work
@@ -412,7 +421,7 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
         ASSERT_EQ(1, output.size());
         Envelope response = output[0];
         EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamSetInfoV1);
@@ -430,7 +439,7 @@ TEST_F(RequestProcessorTest, GetStreamSetInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
     }
 }
 
@@ -445,7 +454,7 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
     }
 
     // path contains bucket but not stream set nor stream
@@ -455,7 +464,7 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
     }
 
     // path contains bucket and stream set but not stream
@@ -465,7 +474,7 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
     }
 
     // this should work
@@ -475,7 +484,7 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        ASSERT_TRUE(::zippylog::RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
         ASSERT_EQ(1, output.size());
         Envelope response = output[0];
         EXPECT_ENVELOPE_MESSAGE(0, protocol::StreamInfoV1);
@@ -497,7 +506,7 @@ TEST_F(RequestProcessorTest, GetStreamInfo)
         Envelope e;
         req.add_to_envelope(e);
         vector<Envelope> output;
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
     }
 }
 
@@ -519,7 +528,7 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
         m.add_to_envelope(e);
         vector<Envelope> output;
 
-        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
 
         // response should have stream segment start + content envelope + stream segment end
         ASSERT_EQ(3, output.size());
@@ -555,7 +564,7 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
         m.add_to_envelope(e);
         vector<Envelope> output;
 
-        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+        ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
         ASSERT_EQ(12, output.size());
         EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStartV1);
         EXPECT_ENVELOPE_MESSAGE(11, protocol::response::StreamSegmentEndV1);
@@ -599,7 +608,7 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
         m.add_to_envelope(req);
         vector<Envelope> output;
 
-        ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(req, output));
+        ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(req, output));
         ASSERT_EQ(4, output.size());
         EXPECT_ENVELOPE_MESSAGE(0, protocol::response::StreamSegmentStartV1);
         EXPECT_ENVELOPE_MESSAGE(3, protocol::response::StreamSegmentEndV1);
@@ -615,7 +624,7 @@ TEST_F(RequestProcessorTest, GetStreamSegment)
         m.add_to_envelope(req);
         vector<Envelope> output;
 
-        this->ExpectErrorResponse(this->p->ProcessRequest(req, output), protocol::response::INVALID_STREAM_OFFSET, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(req, output), protocol::response::INVALID_STREAM_OFFSET, output);
     }
 }
 
@@ -630,7 +639,7 @@ TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
         r.set_path("/bucketA");
         Envelope e;
         r.add_to_envelope(e);
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::INVALID_PATH, output);
         output.clear();
     }
 
@@ -640,7 +649,7 @@ TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
         r.set_path("/bucketA/DOESNOTEXIST");
         Envelope e;
         r.add_to_envelope(e);
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::PATH_NOT_FOUND, output);
         output.clear();
     }
 
@@ -650,7 +659,7 @@ TEST_F(RequestProcessorTest, WriteEnvelopeErrorChecking)
         r.set_path(path);
         Envelope e;
         r.add_to_envelope(e);
-        this->ExpectErrorResponse(this->p->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
+        this->ExpectErrorResponse(this->rp->ProcessRequest(e, output), protocol::response::EMPTY_FIELD, output);
         output.clear();
     }
 }
@@ -667,7 +676,7 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeAck)
     w.Serialize(serialized);
     r.add_envelope(serialized);
     r.add_to_envelope(e);
-    ASSERT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+    ASSERT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);
     ASSERT_EQ(1, output.size());
     EXPECT_ENVELOPE_MESSAGE(0, protocol::response::WriteAckV1);
@@ -689,7 +698,7 @@ TEST_F(RequestProcessorTest, WriteEnvelopeSingleEnvelopeNoAck)
     w.Serialize(serialized);
     r.add_envelope(serialized);
     r.add_to_envelope(e);
-    ASSERT_TRUE(RequestProcessor::DEFERRED == this->p->ProcessRequest(e, output));
+    ASSERT_TRUE(DEFERRED == this->rp->ProcessRequest(e, output));
     EXPECT_EQ(1, this->p->write_envelopes_count);
     ASSERT_EQ(0, output.size());
 }
@@ -703,7 +712,7 @@ TEST_F(RequestProcessorTest, SubscribeStoreChangesBasic)
     Envelope e;
     r.add_to_envelope(e);
 
-    EXPECT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+    EXPECT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
     EXPECT_EQ(1, output.size());
     EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscriptionAcceptAckV1);
     protocol::response::SubscriptionAcceptAckV1 *m = (protocol::response::SubscriptionAcceptAckV1 *)output[0].GetMessage(0);
@@ -721,7 +730,7 @@ TEST_F(RequestProcessorTest, SubscribeStoreChangesInvalidPath)
     Envelope e;
     r.add_to_envelope(e);
 
-    RequestProcessor::ResponseStatus result = this->p->ProcessRequest(e, output);
+    RequestProcessorResponseStatus result = this->rp->ProcessRequest(e, output);
     this->ExpectErrorResponse(result, protocol::response::INVALID_PATH, output);
 }
 
@@ -734,7 +743,7 @@ TEST_F(RequestProcessorTest, SubscribeEnvelopesBasic)
     Envelope e;
     r.add_to_envelope(e);
 
-    EXPECT_TRUE(RequestProcessor::AUTHORITATIVE == this->p->ProcessRequest(e, output));
+    EXPECT_TRUE(AUTHORITATIVE == this->rp->ProcessRequest(e, output));
     EXPECT_EQ(1, output.size());
     EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscriptionAcceptAckV1);
     protocol::response::SubscriptionAcceptAckV1 *m = (protocol::response::SubscriptionAcceptAckV1 *)output[0].GetMessage(0);

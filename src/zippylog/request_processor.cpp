@@ -85,6 +85,7 @@ void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::respon
 
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     ctx(params.ctx),
+    impl(params.implementation),
     store_path(params.store_path),
     logger_endpoint(params.logger_endpoint),
     client_endpoint(params.client_endpoint),
@@ -103,6 +104,10 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
 
     if (!this->ctx) {
         throw invalid_argument("ctx parameter cannot be NULL");
+    }
+
+    if (!this->impl) {
+        throw invalid_argument("implementation parameter cannot be NULL");
     }
 
     this->store = Store::CreateStore(params.store_path);
@@ -126,6 +131,8 @@ RequestProcessor::~RequestProcessor()
     if (this->logger_sock) delete this->logger_sock;
     if (this->socket) delete this->socket;
     if (this->store) delete this->store;
+
+    if (this->impl) delete this->impl;
 }
 
 void RequestProcessor::Run()
@@ -215,7 +222,7 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     char msg_version = 0;
     bool have_request_envelope = false;
     Envelope request_envelope;
-    ResponseStatus result;
+    RequestProcessorResponseStatus result;
     bool successful_process = false;
 
     // @todo should we log?
@@ -326,9 +333,9 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     return;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessRequest(Envelope &request_envelope, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessRequest(Envelope &request_envelope, vector<Envelope> &output)
 {
-    RequestProcessor::ResponseStatus result;
+    RequestProcessorResponseStatus result;
     uint32 request_type; // forward declare b/c of goto
 
     if (request_envelope.MessageCount() < 1) {
@@ -449,7 +456,7 @@ SEND_RESPONSE:
     return result;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessPing(Envelope &, vector<Envelope> &output)
 {
     protocol::response::PongV1 pong;
     Envelope out;
@@ -459,7 +466,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessPing(Envelope &, vecto
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessFeatures(Envelope &, vector<Envelope> &output)
 {
     protocol::response::FeatureSpecificationV1 response;
 
@@ -502,7 +509,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessFeatures(Envelope &, v
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessStoreInfo(Envelope &e, vector<Envelope> &output)
 {
     ::zippylog::request_processor::BeginProcessStoreInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
@@ -526,7 +533,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessBucketInfo(Envelope &e, vector<Envelope> &output)
 {
     ::zippylog::request_processor::BeginProcessBucketInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
@@ -561,7 +568,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope &e, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessStreamSetInfo(Envelope &e, vector<Envelope> &output)
 {
     ::zippylog::request_processor::BeginProcessStreamSetInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
@@ -595,7 +602,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessStreamInfo(Envelope &e, vector<Envelope> &output)
 {
     ::zippylog::request_processor::BeginProcessStreamInfo logstart;
     LOG_MESSAGE(logstart, this->logger_sock);
@@ -630,7 +637,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessGetStream(Envelope &request, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessGetStream(Envelope &request, vector<Envelope> &output)
 {
     {
         ::zippylog::request_processor::BeginProcessGetStream log;
@@ -794,7 +801,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
     HandleSubscriptionResult result;
     SubscriptionInfo subscription;
@@ -826,7 +833,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
 {
     SubscriptionInfo subscription;
     HandleSubscriptionResult result;
@@ -899,7 +906,7 @@ LOG_END:
     return AUTHORITATIVE;
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envelope &request, vector<Envelope> &output)
 {
     OBTAIN_MESSAGE(protocol::request::SubscribeKeepaliveV1, m, request, 0);
 
@@ -913,10 +920,10 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Env
 
 LOG_END:
 
-    return this->HandleSubscribeKeepalive(request, output);
+    return this->impl->HandleSubscribeKeepalive(request, output);
 }
 
-RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &request, vector<Envelope> &output)
+RequestProcessorResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &request, vector<Envelope> &output)
 {
     {
         ::zippylog::request_processor::BeginProcessWriteEnvelope log;
@@ -999,7 +1006,7 @@ RequestProcessor::ResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope
         int written = 0;
 
         if (envs.size()) {
-            written = this->HandleWriteEnvelopes(m->path(), envs, synchronous);
+            written = this->impl->HandleWriteEnvelopes(m->path(), envs, synchronous);
         }
 
         if (send_ack) {
@@ -1144,7 +1151,7 @@ void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo &subscript
         subscription.socket_identifiers.erase(subscription.socket_identifiers.begin());
     }
 
-    HandleSubscriptionResult result = this->HandleSubscriptionRequest(subscription);
+    HandleSubscriptionResult result = this->impl->HandleSubscriptionRequest(subscription);
 
     switch (result.result) {
         case HandleSubscriptionResult::ACCEPTED:

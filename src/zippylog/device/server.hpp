@@ -52,7 +52,7 @@ public:
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
 
-/// RequestProcessor implementation for the service device
+/// RequestProcessorImplementation for the server device
 ///
 /// When this request processor receives a request related to streaming, it
 /// forwards it to the stream processors, via 1 of 2 sockets. The built-in
@@ -61,17 +61,19 @@ public:
 /// The former is used when a message only needs to go to 1 streamer and the
 /// latter when all streamers need to see it (e.g. a keepalive message since
 /// the server doesn't know which streamers have which subscriptions).
-class Worker : public ::zippylog::RequestProcessor {
+class Worker : public ::zippylog::RequestProcessorImplementation {
     public:
         Worker(WorkerStartParams &params);
         ~Worker();
 
-    protected:
         // implement virtual functions
         HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription);
 
-        ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
         int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous);
+
+    protected:
+        ::zmq::context_t *ctx;
 
         ::std::string streaming_subscriptions_endpoint;
         ::std::string streaming_updates_endpoint;

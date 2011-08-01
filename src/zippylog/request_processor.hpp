@@ -136,11 +136,71 @@ protected:
     friend class RequestProcessor;
 };
 
+/// Return code from request processors routine
+enum RequestProcessorResponseStatus {
+    /// Processor is authoritative responder for this request.
+    ///
+    /// The Envelopes/messages set in a passed vector should be
+    /// sent to the client
+    AUTHORITATIVE = 1,
+
+    /// Processor deferred/declined to send a response
+    ///
+    /// Caller should not send any response to client, as this will be
+    /// done by some other process
+    DEFERRED = 2,
+};
+
+/// Abstract base class that provides functionality for a RequestProcessor
+///
+/// RequestProcessor instances are associated with instances of classes
+/// derived from this base class. During key events, the RequestProcessor
+/// calls out to functions in this class. The implementation takes care of
+/// the details then tells the request processor what's going on.
+class ZIPPYLOG_EXPORT RequestProcessorImplementation
+{
+public:
+    RequestProcessorImplementation() {}
+    virtual ~RequestProcessorImplementation() {};
+
+    /// Callback to handle a validated request for a subscription
+    ///
+    /// This function is called after a subscription request has been
+    /// received and validated.
+    ///
+    /// @param subscription metadata
+    virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) = 0;
+
+    /// callback to handle a subscription keepalive
+    virtual RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
+
+    /// Callback to handle writing of envelopes
+    ///
+    /// Receives the path we are writing to (already validated to be a
+    /// stream set or stream). If a stream set, it is validated to exist.
+    /// If a stream, it may not exist.
+    ///
+    /// The synchronous parameter says whether to wait for writes before
+    /// returning.
+    ///
+    /// Returns the number of envelopes written or -1 on failure. If not
+    /// performing synchronous writes, it is OK to return 0. However, if
+    /// performing synchronous writes the caller will log an unexpected
+    /// condition if the number of envelopes written is not equal to the
+    /// number requested.
+    virtual int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
+
+private:
+    RequestProcessorImplementation(RequestProcessorImplementation const &orig);
+    RequestProcessorImplementation & operator=(RequestProcessorImplementation const &orig);
+};
+
 /// Used to construct a request processor
 class ZIPPYLOG_EXPORT RequestProcessorStartParams {
 public:
     RequestProcessorStartParams() :
         ctx(NULL),
+        implementation(NULL),
         active(NULL),
         get_stream_max_bytes(256000),
         get_stream_max_envelopes(10000),
@@ -157,6 +217,12 @@ public:
     ///
     /// must not be NULL
     ::zmq::context_t *ctx;
+
+    /// Implementation of a request processor to use for event handling
+    ///
+    /// Ownership of memory is transferred to the request processor upon
+    /// request processor construction.
+    RequestProcessorImplementation *implementation;
 
     /// 0MQ endpoint to which to bind a XREP socket to receive client requests
     ::std::string client_endpoint;
@@ -185,20 +251,22 @@ public:
 
 /// Processes zippylog protocol requests
 ///
-/// This class is designed to be an abstract base class. It implements core
-/// functionality for parsing and verifying protocol requests. However, the
-/// behavior controlling what happens when specific requests are received is
-/// abstracted away in the various Handle* functions. Derived classes should
-/// implement these functions.
+/// This class contains all the logic for processing zippylog protocol
+/// request and response messages. It implements core functionality for
+/// parsing and verifying protocol requests as well as servicing of some
+/// basic request types.
 ///
-/// In other words, this class can be thought of as the library that handles
-/// zippylog protocol processing. The library can be utilized to provide
-/// server capabilities.
+/// Each instance of a request processor is associated with an instance
+/// of RequestProcessorImplementation. The implementation class contains
+/// callbacks which are called by the RequestProcessor to handle specific
+/// events, such as subscription requests and handling of writes.
 ///
-/// Ideally, all code interacting with the zippylog protocol messages is
-/// limited to this class. If done this way, all protocol debugging can occur
-/// within one file. If you find yourself touching protocol messages
-/// elsewhere, you are likely doing it wrong.
+/// This core class can be thought of as a sanitization and filtering gateway
+/// to more core logic. It will transparently convert 0MQ-based zippylog
+/// protocol requests to C++ objects and vice-versa. This means you should
+/// never have to touch the zippylog protocol anywhere outside of this class.
+/// If you find yourself doing things protocol-related outside of this class,
+/// you are likely doing it wrong.
 ///
 /// Currently, we make the assumption that protocol requests arrive via
 /// 0MQ sockets. Strictly speaking, this isn't very loosely coupled. However,
@@ -206,23 +274,14 @@ public:
 /// possible to call into this class without serializing envelopes as 0MQ
 /// messages. That being said, the constructor still requires the 0MQ
 /// parameters (for now, at least).
+///
+/// In previous versions of the code, this was an abstract base class.
+/// It was changed to RequestProcessorImplementation because of the desire
+/// to not deal with inheritance.
 class ZIPPYLOG_EXPORT RequestProcessor {
     public:
-        // return code from the various request processors
-        enum ResponseStatus {
-            // processor is authoritative responder for this request
-            // the Envelopes/messages set in a passed vector should be
-            // sent to the client
-            AUTHORITATIVE = 1,
-
-            // processor deferred to send a response
-            // caller should not send any response to client, as this will be
-            // done by some other process
-            DEFERRED = 2,
-        };
-
         RequestProcessor(RequestProcessorStartParams &params);
-        virtual ~RequestProcessor();
+        ~RequestProcessor();
 
         /// Runs the request processor
         /// Will listen for messages on the 0MQ socket specified in the start parameters
@@ -272,7 +331,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         ///
         /// Most people typically have no need to call this function. However,
         /// it is provided public just in case.
-        ResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
         /// Sends a subscription store change response for an added path
         ///
@@ -315,59 +374,32 @@ class ZIPPYLOG_EXPORT RequestProcessor {
                                                      EnvelopeSubscriptionResponseState &state);
 
     protected:
-        /// Callback to handle a validated request for a subscription
-        ///
-        /// This function is called after a subscription request has been
-        /// received and validated.
-        ///
-        /// @param subscription metadata
-        virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) = 0;
-
-        /// callback to handle a subscription keepalive
-        virtual ResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
-
-        /// Callback to handle writing of envelopes
-        ///
-        /// Receives the path we are writing to (already validated to be a
-        /// stream set or stream). If a stream set, it is validated to exist.
-        /// If a stream, it may not exist.
-        ///
-        /// The synchronous parameter says whether to wait for writes before
-        /// returning.
-        ///
-        /// Returns the number of envelopes written or -1 on failure. If not
-        /// performing synchronous writes, it is OK to return 0. However, if
-        /// performing synchronous writes the caller will log an unexpected
-        /// condition if the number of envelopes written is not equal to the
-        /// number requested.
-        virtual int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
-
         /// Process a ping request
-        ResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetFeatures request
-        ResponseStatus ProcessFeatures(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessFeatures(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetStoreInfo request and populate the passed envelope with the response
         ///
         /// This function is typically called only by ProcessRequest()
-        ResponseStatus ProcessStoreInfo(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessStoreInfo(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessBucketInfo(Envelope &request, ::std::vector<Envelope> &output);
-        ResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &output);
-        ResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessBucketInfo(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetStream request
-        ResponseStatus ProcessGetStream(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessGetStream(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
 
-        ResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a WriteEnvelope request
-        ResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
+        RequestProcessorResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
 
         void CallHandleSubscriptionRequest(SubscriptionInfo &subscription, ::std::vector<Envelope> &output);
 
@@ -391,6 +423,9 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, ::std::string message, ::std::vector<Envelope> &msgs);
 
         ::zmq::context_t *ctx;
+
+        RequestProcessorImplementation *impl;
+
         ::std::string store_path;
         ::std::string logger_endpoint;
         ::std::string client_endpoint;

@@ -51,6 +51,13 @@ protected:
     friend class PersistedStateManager;
 };
 
+/// Represents info about a plugin
+/// @todo Implement
+class ZIPPYLOG_EXPORT PluginInfo
+{
+
+};
+
 /// Constructor arguments for PersistedStateManager
 class ZIPPYLOG_EXPORT PersistedStateManagerStartParams {
 public:
@@ -82,11 +89,16 @@ public:
 /// The class API will evolve as the zippylog protocol evolves, as there is
 /// a strong cohesion between the two.
 ///
-/// Instances of this class are not thread safe.
+/// Instances of this class are not thread safe. Instances of this class are
+/// not in contention with one another. It is recommended to drive an
+/// instance of this class from one thread. If you need parallelization of
+/// the features provided by this class, one can instantiate multiple
+/// instances and distribute subscriptions and plugins acorss instances.
 ///
 /// @todo Add API to retrieve state metadata
 class ZIPPYLOG_EXPORT PersistedStateManager {
 public:
+    /// Construct an instance from parameters
     PersistedStateManager(PersistedStateManagerStartParams const &params);
 
     ~PersistedStateManager();
@@ -128,6 +140,15 @@ public:
 
     /// Removes expired subscriptions from the manager
     int32 RemoveExpiredSubscriptions();
+
+    /// Registers a plugin from the specified plugin record
+    ///
+    /// Plugins are effectively a set of persisted hooks. They live and
+    /// execute until they are unloaded or encounter a serious error.
+    void RegisterPlugin(PluginInfo const &plugin);
+
+    /// Unregister the plugin with the specified id
+    void UnregisterPlugin(::std::string const &id);
 
     /// Processes a path added event
     ///

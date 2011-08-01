@@ -35,7 +35,7 @@ using ::zmq::socket_t;
 using ::zmq::message_t;
 
 Worker::Worker(WorkerStartParams &params) :
-    RequestProcessor(params.request_processor_params),
+    ctx(params.request_processor_params.ctx),
     streaming_subscriptions_endpoint(params.streaming_subscriptions_endpoint),
     streaming_updates_endpoint(params.streaming_updates_endpoint),
     subscriptions_sock(NULL),
@@ -63,7 +63,7 @@ Worker::~Worker()
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
 
-RequestProcessor::ResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
+RequestProcessorResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
 {
     ::zippylog::zeromq::send_envelope(this->subscription_updates_sock, request);
 
