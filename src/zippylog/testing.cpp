@@ -30,6 +30,8 @@ void TestBase::SetUp()
 {
     this->registrar = ::zippylog::MessageRegistrar::instance();
     this->registrar->GetAllEnumerations(this->enumerations);
+
+    ::testing::Test::SetUp();
 }
 
 string TestBase::GetTemporaryDirectory()
@@ -62,6 +64,14 @@ Store * TestBase::GetTemporaryStore()
     return s;
 }
 
+string TestBase::GetTemporaryStreamPath()
+{
+    string dir = this->GetTemporaryDirectory();
+    string uuid = ::zippylog::platform::CreateUUID(true);
+
+    return ::zippylog::platform::PathJoin(dir, uuid + ".zippylog");
+}
+
 void TestBase::TearDown()
 {
     for (vector<Store *>::size_type i = 0; i < this->stores.size(); i++) {
@@ -76,6 +86,8 @@ void TestBase::TearDown()
     }
 
     this->created_store_paths.clear();
+
+    ::testing::Test::TearDown();
 }
 
 Envelope TestBase::GetRandomEnvelope(uint32 max_messages)
@@ -85,19 +97,36 @@ Envelope TestBase::GetRandomEnvelope(uint32 max_messages)
     uint32 message_count = (rand() % max_messages) + 1;
 
     while (message_count) {
-        int32 index = rand() % this->enumerations.size();
-
-        ::std::pair<uint32, uint32> enumeration = this->enumerations[index];
-
-        ::google::protobuf::Message *m = this->GetRandomMessage(enumeration.first, enumeration.second);
-
-        e.AddMessage(*m, enumeration.first, enumeration.second);
-        delete m;
-
+        this->AddRandomMessage(e);
         --message_count;
     }
 
     return e;
+}
+
+Envelope TestBase::GetRandomEnvelope(uint32 min, uint32 max)
+{
+    Envelope e;
+    uint32 message_count = (rand() % max) + min;
+
+    while (message_count) {
+        this->AddRandomMessage(e);
+        --message_count;
+    }
+
+    return e;
+}
+
+void TestBase::AddRandomMessage(Envelope &e)
+{
+    int32 index = rand() % this->enumerations.size();
+
+    ::std::pair<uint32, uint32> enumeration = this->enumerations[index];
+
+    ::google::protobuf::Message *m = this->GetRandomMessage(enumeration.first, enumeration.second);
+
+    e.AddMessage(*m, enumeration.first, enumeration.second);
+    delete m;
 }
 
 ::google::protobuf::Message * TestBase::GetRandomMessage(uint32 ns, uint32 enumeration)

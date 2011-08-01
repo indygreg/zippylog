@@ -20,6 +20,7 @@
 #include <zippylog/envelope.hpp>
 #include <zippylog/message_registrar.hpp>
 #include <zippylog/store.hpp>
+#include <zippylog/stream.hpp>
 
 #include <string>
 #include <utility>
@@ -45,6 +46,12 @@ public:
     /// deleted after test execution.
     ::std::string GetTemporaryDirectory();
 
+    /// Obtains a path to a temporary stream
+    ///
+    /// Does not create the stream. Path should be valid to plug into
+    /// a FileOutputStream and then a FileInputStream.
+    ::std::string GetTemporaryStreamPath();
+
     /// Obtains a temporary store.
     ///
     /// The store is cleaned up automatically when the test is torn down.
@@ -53,11 +60,18 @@ public:
     /// Obtains an envelope containing random messages
     ::zippylog::Envelope GetRandomEnvelope(uint32 max_messages = 10);
 
+    /// Obtains an envelope containing a number of messages between bounds
+    ::zippylog::Envelope GetRandomEnvelope(uint32 min_messages, uint32 max_messages);
+
     /// Obtains a random message of the specified namespace and enumeration
     ///
     /// The memory backing the message is owned by the caller. This is unlike
     /// many other test APIs, which clean up after themselves.
     ::google::protobuf::Message * GetRandomMessage(uint32 ns, uint32 enumeration);
+
+    /// Adds a random message to the specified envelope
+    void AddRandomMessage(::zippylog::Envelope &e);
+
 protected:
     virtual void TearDown();
 

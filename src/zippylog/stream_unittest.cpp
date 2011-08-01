@@ -43,7 +43,7 @@ TEST_F(StreamTest, FileOutputStreamConstructor)
 
 TEST_F(StreamTest, FileOutputStreamStreamFormat)
 {
-    string path = platform::PathJoin(this->GetTemporaryDirectory(), "s1.zippylog");
+    string path = this->GetTemporaryStreamPath();
 
     Envelope e1, e2;
     e1.AddTag("foo");
@@ -77,6 +77,8 @@ TEST_F(StreamTest, FileOutputStreamStreamFormat)
     char *data = new char[fs.size];
     EXPECT_EQ(fs.size, read(fd, data, fs.size));
 
+    EXPECT_TRUE(f.Close());
+
     EXPECT_EQ(0x01, data[0]);
     EXPECT_EQ(33, data[1]);
     EXPECT_EQ(27, data[1 + 1 + 33]);
@@ -91,6 +93,23 @@ TEST_F(StreamTest, FileOutputStreamStreamFormat)
     EXPECT_TRUE(e2 == e2p);
 
     delete [] data;
+}
+
+TEST_F(StreamTest, FileOutputStreamLargeEnvelopes)
+{
+    Envelope e = this->GetRandomEnvelope(100, 100);
+    ASSERT_GT(e.SerializedByteSize(), 127);
+
+    string path = this->GetTemporaryStreamPath();
+
+    {
+        FileOutputStream fos(path);
+        ASSERT_TRUE(fos.WriteEnvelope(e));
+    }
+
+    ASSERT_NO_THROW(FileInputStream fis(path));
+    FileInputStream fis(path);
+    EXPECT_EQ(e.SerializedByteSize(), fis.NextEnvelopeSize());
 }
 
 TEST_F(StreamTest, FileInputStreamConstructor)
