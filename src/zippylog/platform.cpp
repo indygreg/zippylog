@@ -25,6 +25,8 @@
 #endif
 
 #ifdef MACOS
+#include <unistd.h>
+#include <sys/param.h>
 #include <mach/mach_time.h>
 #include <CoreServices/CoreServices.h>
 #endif
@@ -1063,6 +1065,13 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     }
 
 #elif MACOS
+    if (this->path[0] != '/') {
+        char b[MAXPATHLEN];
+        getcwd(&b[0], MAXPATHLEN);
+
+        this->path = platform::PathJoin(&b[0], this->path);
+    }
+
     this->context.version = 0;
     this->context.info = this;
     this->context.retain = NULL;
@@ -1306,12 +1315,21 @@ void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *d
 
     for (size_t i = 0; i < numEvents; i++) {
         const FSEventStreamEventFlags flags = eventFlags[i];
-        const char *path = paths[i];
+        string path = string(paths[i]);
+
+        // filter directories deeper down in tree we don't care about
+        if (!watcher->recurse) {
+            string sub = path.substr(watcher->path.length());
+            if (sub.length() && sub[0] == '/')
+                sub = sub.substr(1);
+
+            if (sub.find('/') != string::npos)
+                continue;
+        }
 
         DirectoryChange change;
         change.Path = path;
 
-        /*
         if (flags & kFSEventStreamEventFlagMustScanSubDirs) {
 
         }
@@ -1328,7 +1346,6 @@ void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *d
         else if (flags & kFSEventStreamEventFlagItemRenamed) {
             /// TODO handle case
         }
-        */
 
         watcher->changes.push_back(change);
 
