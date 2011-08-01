@@ -51,6 +51,9 @@ typedef enum {
 /// These records are populated by the request processor. They are typically
 /// passed along to a persisted state manager.
 ///
+/// Even though the members are public, you likely won't be mucking with them
+/// unless you are part of the core zippylog library.
+///
 /// @todo consider formalizing API
 class ZIPPYLOG_EXPORT SubscriptionInfo {
 public:

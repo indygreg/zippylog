@@ -15,17 +15,22 @@
 #include <zippylog/testing.hpp>
 
 #include <zippylog/request_processor.hpp>
+#include <zippylog/protocol.pb.h>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/zeromq.hpp>
 
 #include <zmq.hpp>
 
+#include <utility>
+
 using namespace ::zippylog;
 
 using ::std::invalid_argument;
+using ::std::pair;
 using ::std::string;
 using ::std::vector;
 using ::zmq::message_t;
+using ::zmq::socket_t;
 
 #define EXPECT_ENVELOPE_MESSAGE(index, msg) { \
     Envelope e = output[index]; \
@@ -750,5 +755,56 @@ TEST_F(RequestProcessorTest, SubscribeEnvelopesBasic)
     EXPECT_TRUE(m->has_id());
     EXPECT_TRUE(m->has_ttl());
     EXPECT_EQ(1, this->p->handle_subscribe_envelopes_count);
+}
 
+TEST_F(RequestProcessorTest, SubscriptionStoreChangePathAddedResponse)
+{
+    pair<socket_t *, socket_t *> sockets = this->GetPushPullSocketPair();
+
+    socket_t * push = sockets.first;
+    socket_t * pull = sockets.second;
+
+    SubscriptionInfo subscription;
+    subscription.id = "subscription_id";
+    subscription.socket_identifiers.push_back("identA");
+    subscription.socket_identifiers.push_back("identB");
+
+    EXPECT_TRUE(RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(*push, subscription, "/foo"));
+
+    zeromq::MessageContainer container;
+    ASSERT_TRUE(zeromq::ReceiveMessage(*pull, container, 0));
+
+    ASSERT_EQ(2, container.IdentitiesSize()) << "2 identity messages received";
+    ASSERT_EQ(1, container.MessagesSize()) << "1 payload message received";
+
+    EXPECT_EQ("identA", container.GetIdentity(0));
+    EXPECT_EQ("identB", container.GetIdentity(1));
+
+    message_t *m = container.GetMessage(0);
+    EXPECT_TRUE(m != NULL);
+
+    ASSERT_NO_THROW(Envelope e(*m, 1));
+
+    vector<Envelope> output;
+    output.push_back(Envelope(*m, 1));
+
+    Envelope e = output[0];
+
+    EXPECT_ENVELOPE_MESSAGE(0, protocol::response::SubscriptionStartV1);
+
+    ASSERT_EQ(2, e.MessageCount());
+
+    protocol::response::SubscriptionStartV1 *ss = (protocol::response::SubscriptionStartV1 *)e.GetMessage(0);
+    ASSERT_TRUE(ss != NULL);
+
+    ASSERT_TRUE(ss->has_id());
+    EXPECT_EQ("subscription_id", ss->id());
+
+    uint32 enumeration = protocol::StoreChangeBucketAddedV1::zippylog_enumeration;
+    ASSERT_EQ(enumeration, e.MessageType(1));
+    protocol::StoreChangeBucketAddedV1 *ba = (protocol::StoreChangeBucketAddedV1 *)e.GetMessage(1);
+    ASSERT_TRUE(ba != NULL);
+
+    EXPECT_TRUE(ba->has_bucket());
+    EXPECT_EQ("foo", ba->bucket());
 }

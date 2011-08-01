@@ -22,6 +22,8 @@
 #include <zippylog/store.hpp>
 #include <zippylog/stream.hpp>
 
+#include <zmq.hpp>
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -72,6 +74,11 @@ public:
     /// Adds a random message to the specified envelope
     void AddRandomMessage(::zippylog::Envelope &e);
 
+    /// Obtains a 0MQ push-pull socket pair
+    ///
+    /// The first socket is the push. The second is the pull socket.
+    ::std::pair< ::zmq::socket_t *, ::zmq::socket_t * > GetPushPullSocketPair();
+
 protected:
     virtual void TearDown();
 
@@ -82,6 +89,9 @@ private:
     ::std::vector< ::std::pair<uint32, uint32> > enumerations;
 
     ::zippylog::MessageRegistrar * registrar;
+
+    ::zmq::context_t *ctx;
+    ::std::vector< ::zmq::socket_t * > sockets;
 };
 
 }} // namespaces

@@ -18,8 +18,10 @@
 
 #include <google/protobuf/descriptor.h>
 
+using ::std::pair;
 using ::std::string;
 using ::std::vector;
+using ::zmq::socket_t;
 
 using namespace zippylog;
 
@@ -30,6 +32,8 @@ void TestBase::SetUp()
 {
     this->registrar = ::zippylog::MessageRegistrar::instance();
     this->registrar->GetAllEnumerations(this->enumerations);
+
+    this->ctx = new ::zmq::context_t(1);
 
     ::testing::Test::SetUp();
 }
@@ -86,6 +90,15 @@ void TestBase::TearDown()
     }
 
     this->created_store_paths.clear();
+
+    vector< ::zmq::socket_t * >::iterator si = this->sockets.begin();
+    for (; si != this->sockets.end(); si++) {
+        if (*si) delete *si;
+        *si = NULL;
+    }
+    this->sockets.clear();
+
+    if (this->ctx) delete this->ctx;
 
     ::testing::Test::TearDown();
 }
@@ -247,6 +260,25 @@ void TestBase::AddRandomMessage(Envelope &e)
     }
 
     return m;
+}
+
+pair<socket_t *, socket_t *> TestBase::GetPushPullSocketPair()
+{
+    pair<socket_t *, socket_t *> result;
+
+    result.first = new socket_t(*this->ctx, ZMQ_PUSH);
+    result.second = new socket_t(*this->ctx, ZMQ_PULL);
+
+    string id = platform::CreateUUID(true);
+    string address = "inproc://" + id;
+
+    result.first->bind(address.c_str());
+    result.second->connect(address.c_str());
+
+    this->sockets.push_back(result.first);
+    this->sockets.push_back(result.second);
+
+    return result;
 }
 
 }} // namespace
