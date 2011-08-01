@@ -87,8 +87,8 @@ TEST_F(StreamTest, FileOutputStreamStreamFormat)
     Envelope e1p((void *)(data + 2), 33);
     Envelope e2p((void *)(data + 2+33+1), 27);
 
-    EXPECT_EQ(e1, e1p);
-    EXPECT_EQ(e2, e2p);
+    EXPECT_TRUE(e1 == e1p);
+    EXPECT_TRUE(e2 == e2p);
 
     delete [] data;
 }
