@@ -158,78 +158,135 @@ TEST_F(Benchmark, ZeroMQ)
     zmq_socket_send_recv("inproc://05", ZMQ_PUSH, ZMQ_PULL, 1000000, 100000, "zmq.socket.inproc.pushpull.1000000_byte_message");
 }
 
-TEST_F(Benchmark, Envelope)
+TEST_F(Benchmark, EnvelopeEmptyAllocations)
 {
     TIMER_START(1000000);
     Envelope *e = new Envelope();
     delete e;
     TIMER_END("zippylog.envelope.empty_allocations");
+}
 
-    {
-        Envelope e;
-        string s;
-        TIMER_START(1000000);
-        e.Serialize(s);
-        TIMER_END("zippylog.envelope.empty_serialize");
-    }
+TEST_F(Benchmark, EnvelopeEmptySerialize)
+{
+    Envelope e;
+    string s;
+    TIMER_START(1000000);
+    e.Serialize(s);
+    TIMER_END("zippylog.envelope.empty_serialize");
+}
 
-    {
-        Envelope e;
-        ::zmq::message_t msg;
-        TIMER_START(1000000);
-        e.ToZmqMessage(msg);
-        TIMER_END("zippylog.envelope.empty_zmq_serialize");
-    }
+TEST_F(Benchmark, EnvelopeEmptyZmqSerialize)
+{
+    Envelope e;
+    ::zmq::message_t msg;
+    TIMER_START(1000000);
+    e.ToZmqMessage(msg);
+    TIMER_END("zippylog.envelope.empty_zmq_serialize");
+}
 
-    {
-        Envelope e;
-        ::zmq::message_t msg;
-        TIMER_START(1000000);
-        e.ToProtocolZmqMessage(msg);
-        TIMER_END("zippylog.envelope.empty_zmq_protocol_serialize");
-    }
+TEST_F(Benchmark, EnvelopeEmptyZmqProtocolSerialize)
+{
+    Envelope e;
+    ::zmq::message_t msg;
+    TIMER_START(1000000);
+    e.ToProtocolZmqMessage(msg);
+    TIMER_END("zippylog.envelope.empty_zmq_protocol_serialize");
+}
 
-    {
-        Envelope empty;
-        string serialized;
-        empty.Serialize(serialized);
-        void * buffer = (void *)serialized.data();
-        int length = serialized.length();
-        TIMER_START(1000000);
-        Envelope e(buffer, length);
-        TIMER_END("zippylog.envelope.empty_construct_from_buffer");
-    }
+TEST_F(Benchmark, EnvelopeEmptyConstructFromBuffer)
+{
+    Envelope empty;
+    string serialized;
+    empty.Serialize(serialized);
+    void * buffer = (void *)serialized.data();
+    int length = serialized.length();
+    TIMER_START(1000000);
+    Envelope e(buffer, length);
+    TIMER_END("zippylog.envelope.empty_construct_from_buffer");
+}
 
-    {
-        Envelope empty;
-        string serialized;
-        empty.Serialize(serialized);
-        TIMER_START(1000000);
-        Envelope e(serialized);
-        TIMER_END("zippylog.envelope.empty_construct_from_string");
-    }
+TEST_F(Benchmark, EnvelopeEmptyConstructFromString)
+{
+    Envelope empty;
+    string serialized;
+    empty.Serialize(serialized);
+    TIMER_START(1000000);
+    Envelope e(serialized);
+    TIMER_END("zippylog.envelope.empty_construct_from_string");
+}
 
-    {
-        Envelope empty;
-        ::zmq::message_t msg;
-        empty.ToZmqMessage(msg);
-        TIMER_START(1000000);
-        Envelope e(msg);
-        TIMER_END("zippylog.envelope.empty.construct_from_zmq");
-    }
+TEST_F(Benchmark, EnvelopeEmptyConstructFromZmq)
+{
+    Envelope empty;
+    ::zmq::message_t msg;
+    empty.ToZmqMessage(msg);
+    TIMER_START(1000000);
+    Envelope e(msg);
+    TIMER_END("zippylog.envelope.empty.construct_from_zmq");
+}
 
-    {
-        Envelope empty;
-        TIMER_START(1000000);
-        Envelope e(empty);
-        TIMER_END("zippylog.envelope.empty_copy_constructor");
-    }
+TEST_F(Benchmark, EnvelopeEmptyCopyConstructor)
+{
+    Envelope empty;
+    TIMER_START(1000000);
+    Envelope e(empty);
+    TIMER_END("zippylog.envelope.empty_copy_constructor");
+}
+
+TEST_F(Benchmark, EnvelopeAddMessage)
+{
+    TIMER_START(1000000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    msg.add_to_envelope(e);
+    TIMER_END("zippylog.envelope.add_1_message");
 
     TIMER_START(1000000);
     Envelope e;
     ::zippylog::request_processor::Destroy msg;
     msg.add_to_envelope(e);
-    TIMER_END("zippylog.envelope.create_and_add_message");
+    msg.add_to_envelope(e);
+    TIMER_END("zippylog.envelope.add_2_messages");
+
+    TIMER_START(1000000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    msg.add_to_envelope(e);
+    msg.add_to_envelope(e);
+    msg.add_to_envelope(e);
+    TIMER_END("zippylog.envelope.add_3_messages");
+
+    TIMER_START(100000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    for (int i = 5; i; --i) {
+        msg.add_to_envelope(e);
+    }
+    TIMER_END("zippylog.envelope.add_5_messages");
+
+    TIMER_START(100000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    for (int i = 10; i; --i) {
+        msg.add_to_envelope(e);
+    }
+    TIMER_END("zippylog.envelope.add_10_messages");
+
+    TIMER_START(10000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    for (int i = 100; i; --i) {
+        msg.add_to_envelope(e);
+    }
+    TIMER_END("zippylog.envelope.add_100_messages");
+
+    TIMER_START(10000);
+    Envelope e;
+    ::zippylog::request_processor::Destroy msg;
+    for (int i = 1000; i; --i) {
+        msg.add_to_envelope(e);
+    }
+    TIMER_END("zippylog.envelope.add_1000_messages");
 }
 
 void client_ping_callback(Client *, void *data) {
