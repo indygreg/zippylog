@@ -301,36 +301,79 @@ TEST_F(Benchmark, LuaLoadString)
 
 TEST_F(Benchmark, SimpleStoreIO)
 {
-    const int32 n = 1000000;
+    {
+        const int32 n = 1000000;
+        Envelope e;
 
-    Envelope *envelopes = new Envelope[n];
-    for (int32 i = 0; i < n; i++) {
-        envelopes[i] = this->GetRandomEnvelope();
+        Store * s = this->GetTemporaryStore();
+        ASSERT_TRUE(s->CreateBucket("foo"));
+        ASSERT_TRUE(s->CreateStreamset("foo", "bar"));
+
+        TIMER_START(n);
+        s->WriteEnvelope("foo", "bar", e);
+        TIMER_END("zippylog.store.write_1M_empty_envelopes");
     }
 
-    Store * s = this->GetTemporaryStore();
-    ASSERT_TRUE(s->CreateBucket("foo"));
-    ASSERT_TRUE(s->CreateStreamset("foo", "bar"));
+    {
+        const int32 n = 1000000;
+        Envelope e;
 
-    TIMER_START_SINGLE();
-    for (int32 i = 0; i < n; i++) {
-        s->WriteEnvelope("foo", "bar", envelopes[i]);
+        string path = ::zippylog::platform::PathJoin(this->GetTemporaryDirectory(), "s.zippylog");
+
+        {
+            ::zippylog::FileOutputStream fos(path);
+            for (int32 i = 0; i < n; i++) {
+                fos.WriteEnvelope(e);
+            }
+        }
+
+        ::zippylog::FileInputStream fis(path);
+        uint32 read;
+        TIMER_START(n);
+        fis.ReadEnvelope(e, read);
+        TIMER_END("zippylog.FileInputStream.read_1M_empty_envelopes");
     }
-    TIMER_END_COUNT("zippylog.store.write_1M_random_envelopes", n);
 
-    delete [] envelopes;
+    {
+        const int32 n = 1000000;
 
-    vector<string> paths;
-    ASSERT_TRUE(s->StreamPaths(paths));
-    ASSERT_EQ(1, paths.size());
+        Envelope *envelopes = new Envelope[n];
+        for (int32 i = 0; i < n; i++) {
+            envelopes[i] = this->GetRandomEnvelope();
+        }
 
-    ::zippylog::InputStream *is = s->GetInputStream(paths[0]);
-    Envelope e;
-    uint32 read;
+        {
+            Store * s = this->GetTemporaryStore();
+            ASSERT_TRUE(s->CreateBucket("foo"));
+            ASSERT_TRUE(s->CreateStreamset("foo", "bar"));
 
-    TIMER_START(n);
-    is->ReadEnvelope(e, read);
-    TIMER_END("zippylog.store.read_1M_random_envelopes");
+            TIMER_START_SINGLE();
+            for (int32 i = 0; i < n; i++) {
+                s->WriteEnvelope("foo", "bar", envelopes[i]);
+            }
+            TIMER_END_COUNT("zippylog.store.write_1M_random_envelopes", n);
+        }
+
+        {
+            string path = ::zippylog::platform::PathJoin(this->GetTemporaryDirectory(), "s.zippylog");
+
+            {
+                ::zippylog::FileOutputStream fos(path);
+                TIMER_START(n);
+                fos.WriteEnvelope(envelopes[TIMER_LOOP_VALUE - 1]);
+                TIMER_END("zippylog.FileOutputStream.write_1M_random_envelopes");
+            }
+
+            Envelope e;
+            ::zippylog::FileInputStream fis(path);
+            uint32 read;
+            TIMER_START(n);
+            fis.ReadEnvelope(e, read);
+            TIMER_END("zippylog.FileInputStream.read_1M_random_envelopes");
+        }
+
+        delete [] envelopes;
+    }
 }
 
 int main(int argc, char **argv)
