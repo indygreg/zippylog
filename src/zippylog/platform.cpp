@@ -1287,8 +1287,12 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
 }
 
 #ifdef MACOS
-void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
-                                        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef,
+                                           void *data,
+                                           size_t numEvents,
+                                           void *eventPaths,
+                                           const FSEventStreamEventFlags eventFlags[],
+                                           const FSEventStreamEventId[])
 {
     char **paths = (char **)eventPaths;
 
