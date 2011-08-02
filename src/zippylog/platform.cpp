@@ -64,13 +64,7 @@ using ::std::string;
 using ::std::vector;
 
 namespace zippylog {
-
 namespace platform {
-
-#ifdef MACOS
-  /// Delay between FSEvent actual change and notification, in seconds
-  const CFAbsoluteTime FSEVENT_COALESCE_INTERVAL = 0.1;
-#endif
 
 #ifdef LINUX
 static __thread int system_error = 0;
@@ -1084,7 +1078,7 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     this->stream = FSEventStreamCreate(NULL, &DirectoryWatcher::EventStreamCallback,
                                        &this->context, watch_paths,
                                        kFSEventStreamEventIdSinceNow,
-                                       FSEVENT_COALESCE_INTERVAL,
+                                       0,
                                        kFSEventStreamCreateFlagNoDefer);
 
     this->loop = CFRunLoopGetCurrent();
@@ -1265,26 +1259,13 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-    // RunLoopRunInMode doesn't appear to end after an event is received.
-    // Since we want this function to return as soon as data is received, we
-    // call this function with a small timeout until the timeout passed to
-    // this function elapses or events are received.
-    static const double run_timeout = 0.005; // 5 ms
-    Timer t(timeout);
-    t.Start();
+    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode,
+                                       (double)timeout / 1000000.0,
+                                       true);
+    if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
+        return false;
 
-    do {
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, run_timeout, false);
-
-        if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
-            return false;
-
-        if (this->changes.size() > 0) break;
-    } while (!t.Signaled());
-
-    // the callback does all the work, so nothing for us to do here
     return this->changes.size() > 0;
-
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif
