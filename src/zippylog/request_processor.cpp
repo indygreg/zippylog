@@ -77,7 +77,7 @@ void EnvelopeSubscriptionResponseState::AddEnvelope(Envelope const &e)
     this->current_size += msg->size();
 }
 
-void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::response::ErrorCode code, std::string const &message)
+void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::response::ErrorCode, std::string const &)
 {
     throw new Exception("not yet implemented");
 }
@@ -1139,6 +1139,8 @@ bool RequestProcessor::SendSubscriptionEnvelopeResponse(socket_t &sock, Envelope
 
     state.messages.clear();
     state.current_size = 0;
+
+    return true;
 }
 
 void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo &subscription, vector<Envelope> &output)

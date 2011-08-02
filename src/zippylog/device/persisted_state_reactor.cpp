@@ -295,7 +295,7 @@ void PersistedStateReactor::ProcessSubscriptionUpdate(zmq::message_t &msg)
         }
 
         vector<string> ids;
-        for (size_t i = 0; i < m->id_size(); i++) {
+        for (int32 i = 0; i < m->id_size(); i++) {
             ids.push_back(m->id(i));
         }
 

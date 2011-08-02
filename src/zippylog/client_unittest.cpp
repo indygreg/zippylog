@@ -103,7 +103,7 @@ class ClientTest : public ::testing::Test
             return &this->ctx;
         }
 
-        static void PingCallback(Client *c, void *d)
+        static void PingCallback(Client *c, void *)
         {
             EXPECT_TRUE(c != NULL) << "client instance is not NULL";
         }
@@ -161,7 +161,7 @@ public:
             this->socket = NULL;
         }
 
-        for (int i = 0; i < messages.size(); i++) {
+        for (size_t i = 0; i < this->messages.size(); i++) {
             delete this->messages[i];
             this->messages[i] = NULL;
         }
@@ -248,7 +248,7 @@ public:
     }
 
     /// Helper to respond to a subscription request message
-    void RespondToSubscriptionRequest(string const &test)
+    void RespondToSubscriptionRequest(string const &)
     {
         vector<string> identities;
         ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));

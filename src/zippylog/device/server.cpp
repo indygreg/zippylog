@@ -392,7 +392,7 @@ void Server::RunAsync()
 
     // don't return until we are running
     // @todo better ways to do this
-    while (!this->initialized);
+    while (!this->initialized) {}
 }
 
 bool Server::SynchronizeStartParams()

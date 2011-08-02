@@ -178,7 +178,7 @@ bool Client::GetFeatures(protocol::response::FeatureSpecificationV1 &features, i
     return this->SendAndProcessSynchronousRequest(e, r, timeout);
 }
 
-void Client::CallbackFeatures(Client *client, protocol::response::FeatureSpecificationV1 &response, void *data)
+void Client::CallbackFeatures(Client *, protocol::response::FeatureSpecificationV1 &response, void *data)
 {
     protocol::response::FeatureSpecificationV1 *features = (protocol::response::FeatureSpecificationV1 *)data;
 
