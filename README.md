@@ -19,7 +19,7 @@ To build zippylog and generate message classes, you'll need:
 
 * Python 2.6 or later
 * CMake (Linux)
-* Visual Studio 2008 or later(Windows)
+* Visual Studio 2008 or later (Windows)
 
 ## Installing
 
