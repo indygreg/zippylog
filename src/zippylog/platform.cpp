@@ -25,6 +25,8 @@
 #endif
 
 #ifdef MACOS
+#include <unistd.h>
+#include <sys/param.h>
 #include <mach/mach_time.h>
 #include <CoreServices/CoreServices.h>
 #endif
@@ -62,13 +64,7 @@ using ::std::string;
 using ::std::vector;
 
 namespace zippylog {
-
 namespace platform {
-
-#ifdef MACOS
-  /// Delay between FSEvent actual change and notification, in seconds
-  const CFAbsoluteTime FSEVENT_COALESCE_INTERVAL = 0.1;
-#endif
 
 #ifdef LINUX
 static __thread int system_error = 0;
@@ -1063,6 +1059,13 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     }
 
 #elif MACOS
+    if (this->path[0] != '/') {
+        char b[MAXPATHLEN];
+        getcwd(&b[0], MAXPATHLEN);
+
+        this->path = platform::PathJoin(&b[0], this->path);
+    }
+
     this->context.version = 0;
     this->context.info = this;
     this->context.retain = NULL;
@@ -1075,7 +1078,7 @@ DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
     this->stream = FSEventStreamCreate(NULL, &DirectoryWatcher::EventStreamCallback,
                                        &this->context, watch_paths,
                                        kFSEventStreamEventIdSinceNow,
-                                       FSEVENT_COALESCE_INTERVAL,
+                                       0,
                                        kFSEventStreamCreateFlagNoDefer);
 
     this->loop = CFRunLoopGetCurrent();
@@ -1256,26 +1259,13 @@ bool DirectoryWatcher::WaitForChanges(int32 timeout)
     return true;
 
 #elif MACOS
-    // RunLoopRunInMode doesn't appear to end after an event is received.
-    // Since we want this function to return as soon as data is received, we
-    // call this function with a small timeout until the timeout passed to
-    // this function elapses or events are received.
-    static const double run_timeout = 0.005; // 5 ms
-    Timer t(timeout);
-    t.Start();
+    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode,
+                                       (double)timeout / 1000000.0,
+                                       true);
+    if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
+        return false;
 
-    do {
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, run_timeout, false);
-
-        if (result == kCFRunLoopRunStopped || result == kCFRunLoopRunFinished)
-            return false;
-
-        if (this->changes.size() > 0) break;
-    } while (!t.Signaled());
-
-    // the callback does all the work, so nothing for us to do here
     return this->changes.size() > 0;
-
 #else
 #error "DirectoryWatcher::WatchForChanges() not supported on this platform"
 #endif
@@ -1297,8 +1287,12 @@ bool DirectoryWatcher::GetChanges(vector<DirectoryChange> &out)
 }
 
 #ifdef MACOS
-void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *data, size_t numEvents, void *eventPaths,
-                                        const FSEventStreamEventFlags eventFlags[], const FSEventStreamEventId eventIds[])
+void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef,
+                                           void *data,
+                                           size_t numEvents,
+                                           void *eventPaths,
+                                           const FSEventStreamEventFlags eventFlags[],
+                                           const FSEventStreamEventId[])
 {
     char **paths = (char **)eventPaths;
 
@@ -1306,12 +1300,21 @@ void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *d
 
     for (size_t i = 0; i < numEvents; i++) {
         const FSEventStreamEventFlags flags = eventFlags[i];
-        const char *path = paths[i];
+        string path = string(paths[i]);
+
+        // filter directories deeper down in tree we don't care about
+        if (!watcher->recurse) {
+            string sub = path.substr(watcher->path.length());
+            if (sub.length() && sub[0] == '/')
+                sub = sub.substr(1);
+
+            if (sub.find('/') != string::npos)
+                continue;
+        }
 
         DirectoryChange change;
         change.Path = path;
 
-        /*
         if (flags & kFSEventStreamEventFlagMustScanSubDirs) {
 
         }
@@ -1328,7 +1331,6 @@ void DirectoryWatcher::EventStreamCallback(ConstFSEventStreamRef stream, void *d
         else if (flags & kFSEventStreamEventFlagItemRenamed) {
             /// TODO handle case
         }
-        */
 
         watcher->changes.push_back(change);
 

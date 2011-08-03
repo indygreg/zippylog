@@ -251,12 +251,12 @@ TEST_F(ServerTest, ClientPing)
     s->Shutdown();
 }
 
-void stream_added(string id, protocol::StoreChangeStreamAddedV1 &r, void *d)
+void stream_added(string, protocol::StoreChangeStreamAddedV1 &, void *)
 {
 
 }
 
-void bucket_added(Client *, string id, protocol::StoreChangeBucketAddedV1 &r, void *d)
+void bucket_added(Client *, string, protocol::StoreChangeBucketAddedV1 &, void *d)
 {
     uint32 *b = (uint32 *)d;
     (*b)++;

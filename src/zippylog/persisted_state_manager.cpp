@@ -183,7 +183,7 @@ bool PersistedStateManager::RenewSubscriptions(vector<string> const &ids)
     return true;
 }
 
-void PersistedStateManager::ProcessStoreChangePathAdded(std::string const &path, PersistedStateManagerPathAddedCallback *cb, void *data)
+void PersistedStateManager::ProcessStoreChangePathAdded(std::string const &path, PersistedStateManagerPathAddedCallback *cb, void *)
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 
@@ -206,7 +206,7 @@ void PersistedStateManager::ProcessStoreChangePathAdded(std::string const &path,
     }
 }
 
-void PersistedStateManager::ProcessStoreChangePathDeleted(std::string const &path, PersistedStateManagerPathDeletedCallback *cb, void *data)
+void PersistedStateManager::ProcessStoreChangePathDeleted(std::string const &path, PersistedStateManagerPathDeletedCallback *cb, void *)
 {
     if (!cb) throw invalid_argument("callback parameter not defined");
 

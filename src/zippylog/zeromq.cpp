@@ -131,10 +131,10 @@ bool send_envelope_with_preceding(socket_t *socket, vector<string> &preceding, E
     for (; msg != preceding.end(); msg++) {
         message_t m(msg->length());
         memcpy(m.data(), msg->c_str(), m.size());
-        while (!socket->send(m, ZMQ_SNDMORE));
+        while (!socket->send(m, ZMQ_SNDMORE)) {}
     }
 
-    while (!socket->send(m, flags));
+    while (!socket->send(m, flags)) {}
 
     return true;
 }
