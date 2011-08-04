@@ -32,6 +32,12 @@ which take the core classes and build something that performs a specific role.
 On top of that are executables, which provide a means to launch devices
 without any extra coding.
 
+# LuaJIT
+
+Theoretically, LuaJIT should work. However, only limited testing on OS X has
+been performed and the presence of LuaJIT caused segmentation faults. Once
+the project matures, full support for LuaJIT will be investigated.
+
 # Message Enumeration Class Members
 
 The generated protocol buffer message classes have static const uint members
