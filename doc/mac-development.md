@@ -59,7 +59,10 @@ To build the version of ZeroMQ that zippylog is optimized for:
 
 zippylog is currently optimized for Protocol Buffers 2.4.1. If your package
 distrubution source has this version, it is probably safe to install. If using
-Homebrew, just:
+Homebrew:
+
+  brew info protobuf
+  (verify version 2.4.1 or later in 2.4.x release)
 
   brew install protobuf
 
