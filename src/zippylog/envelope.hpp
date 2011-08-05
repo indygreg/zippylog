@@ -44,6 +44,14 @@ inline BOOL GetMessage(LPMSG msg, HWND hwnd, UINT min, UINT max) {
 
 namespace zippylog {
 
+/// Represents an envelope, a container for messages and other metadata
+///
+/// Envelopes are the core data element of zippylog. Envelopes are serialized
+/// as protocol buffer messages. However, we purposefully wrap access to the
+/// low-level protocol buffer message class with this class so we can perform
+/// santitization, optimization, and provide overall convenience.
+///
+/// @todo optimize internal messages array so we don't realloc for every add
 class ZIPPYLOG_EXPORT Envelope {
     public:
         /// Construct an empty envelope
