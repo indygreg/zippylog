@@ -218,6 +218,8 @@ protected:
     FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
     FRIEND_TEST(PersistedStateManagerTest, SubscriptionExpiration);
 private:
+    PersistedStateManager(PersistedStateManager const &orig);
+    PersistedStateManager & operator=(PersistedStateManager const &orig);
 };
 
 } // namespace
