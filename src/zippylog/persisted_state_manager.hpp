@@ -64,7 +64,10 @@ public:
     PersistedStateManagerStartParams() :
         subscription_ttl(::zippylog::server_default_subscription_ttl),
         subscription_lua_allow(::zippylog::server_default_lua_allow),
-        subscription_lua_memory_ceiling(lua_default_subscription_memory_ceiling)
+        subscription_lua_memory_ceiling(lua_default_subscription_memory_ceiling),
+        /// @todo these should come from constants elsewhere
+        plugin_allow(true),
+        plugin_lua_memory_ceiling(128000)
     { }
 
     /// URI of store to bind to
@@ -76,7 +79,14 @@ public:
     /// Whether to allow Lua on subscriptions
     bool subscription_lua_allow;
 
+    /// Lua memory ceiling for subscriptions, in bytes
     uint32 subscription_lua_memory_ceiling;
+
+    /// Whether plugins are allowed
+    bool plugin_allow;
+
+    /// Lua memory ceiling for plugins, in bytes
+    uint32 plugin_lua_memory_ceiling;
 };
 
 /// Manages persisted state in a server
