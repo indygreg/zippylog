@@ -12,9 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include <zippylog/lua.hpp>
+#include <zippylog/testing.hpp>
 
-#include <gtest/gtest.h>
+#include <zippylog/lua.hpp>
 
 #include <string>
 
@@ -26,7 +26,10 @@ using ::zippylog::lua::EnvelopeFilterResult;
 namespace zippylog {
 namespace lua {
 
-TEST(LuaTest, SimpleExecution)
+class LuaTest : public ::zippylog::testing::TestBase
+{ };
+
+TEST_F(LuaTest, SimpleExecution)
 {
     LuaState l;
     string error;
@@ -39,14 +42,14 @@ TEST(LuaTest, SimpleExecution)
     EXPECT_FALSE(l.HasSubscriptionTimer());
 }
 
-TEST(LuaTest, LoadStringLibrary)
+TEST_F(LuaTest, LoadStringLibrary)
 {
     LuaState l;
     ASSERT_TRUE(l.LoadStringLibrary());
     EXPECT_EQ(0, l.GetStackSize());
 }
 
-TEST(LuaTest, DetectBadCode)
+TEST_F(LuaTest, DetectBadCode)
 {
     LuaState l;
     string error;
@@ -55,7 +58,7 @@ TEST(LuaTest, DetectBadCode)
     EXPECT_GT(error.length(), 0);
 }
 
-TEST(LuaTest, GetGlobalInteger)
+TEST_F(LuaTest, GetGlobalInteger)
 {
     LuaState l;
     string error;
@@ -68,7 +71,7 @@ TEST(LuaTest, GetGlobalInteger)
     EXPECT_FALSE(l.GetGlobal("bar", value));
 }
 
-TEST(LuaTest, GetGlobalString)
+TEST_F(LuaTest, GetGlobalString)
 {
     LuaState l;
     string error;
@@ -81,7 +84,7 @@ TEST(LuaTest, GetGlobalString)
     EXPECT_FALSE(l.GetGlobal("bar", value));
 }
 
-TEST(LuaTest, MemoryExhaustion)
+TEST_F(LuaTest, MemoryExhaustion)
 {
     LuaState l;
     string error;
@@ -101,7 +104,7 @@ TEST(LuaTest, MemoryExhaustion)
 
 }
 
-TEST(LuaTest, EnvelopeConstruction)
+TEST_F(LuaTest, EnvelopeConstruction)
 {
     LuaState l;
     string error;
@@ -109,7 +112,7 @@ TEST(LuaTest, EnvelopeConstruction)
     EXPECT_EQ(0, l.GetStackSize());
 }
 
-TEST(LuaTest, EnvelopeApi)
+TEST_F(LuaTest, EnvelopeApi)
 {
     LuaState l;
     string error;
@@ -172,7 +175,7 @@ TEST(LuaTest, EnvelopeApi)
     EXPECT_EQ("bar", svalue);
 }
 
-TEST(LuaTest, DetectLoadString)
+TEST_F(LuaTest, DetectLoadString)
 {
     LuaState l;
     string error;
@@ -185,7 +188,7 @@ TEST(LuaTest, DetectLoadString)
     EXPECT_TRUE(l.HasLoadString());
 }
 
-TEST(LuaTest, LoadStringLuaError)
+TEST_F(LuaTest, LoadStringLuaError)
 {
     LuaState l;
     string error;
@@ -203,7 +206,7 @@ TEST(LuaTest, LoadStringLuaError)
     EXPECT_GT(result.lua_error.size(), 0);
 }
 
-TEST(LuaTest, LoadStringSingleNil)
+TEST_F(LuaTest, LoadStringSingleNil)
 {
     LuaState l;
     string error;
@@ -223,7 +226,7 @@ TEST(LuaTest, LoadStringSingleNil)
     EXPECT_EQ(LoadStringResult::NIL, result.return_type);
 }
 
-TEST(LuaTest, LoadStringMultipleNil)
+TEST_F(LuaTest, LoadStringMultipleNil)
 {
     LuaState l;
     string error;
@@ -242,7 +245,7 @@ TEST(LuaTest, LoadStringMultipleNil)
     EXPECT_EQ(LoadStringResult::INVALID, result.return_type);
 }
 
-TEST(LuaTest, LoadStringTrue)
+TEST_F(LuaTest, LoadStringTrue)
 {
     LuaState l;
     string error;
@@ -261,7 +264,7 @@ TEST(LuaTest, LoadStringTrue)
     EXPECT_EQ(LoadStringResult::BOOLTRUE, result.return_type);
 }
 
-TEST(LuaTest, LoadStringMultipleTrue)
+TEST_F(LuaTest, LoadStringMultipleTrue)
 {
     LuaState l;
     string error;
@@ -280,7 +283,7 @@ TEST(LuaTest, LoadStringMultipleTrue)
     EXPECT_EQ(LoadStringResult::INVALID, result.return_type);
 }
 
-TEST(LuaTest, LoadStringFalse)
+TEST_F(LuaTest, LoadStringFalse)
 {
     LuaState l;
     string error;
@@ -299,7 +302,7 @@ TEST(LuaTest, LoadStringFalse)
     EXPECT_EQ(LoadStringResult::BOOLFALSE, result.return_type);
 }
 
-TEST(LuaTest, LoadStringMultipleFalse)
+TEST_F(LuaTest, LoadStringMultipleFalse)
 {
     LuaState l;
     string error;
@@ -318,7 +321,7 @@ TEST(LuaTest, LoadStringMultipleFalse)
     EXPECT_EQ(LoadStringResult::INVALID, result.return_type);
 }
 
-TEST(LuaTest, LoadStringSingleString)
+TEST_F(LuaTest, LoadStringSingleString)
 {
     LuaState l;
     string error;
@@ -340,7 +343,7 @@ TEST(LuaTest, LoadStringSingleString)
     EXPECT_STREQ("bar", result.strings[0].c_str());
 }
 
-TEST(LuaTest, LoadStringMultipleStrings)
+TEST_F(LuaTest, LoadStringMultipleStrings)
 {
     LuaState l;
     string error;
@@ -362,7 +365,7 @@ TEST(LuaTest, LoadStringMultipleStrings)
     EXPECT_STREQ("baz", result.strings[1].c_str());
 }
 
-TEST(LuaTest, LoadStringTableBucketThenString)
+TEST_F(LuaTest, LoadStringTableBucketThenString)
 {
     LuaState l;
     string error;
@@ -384,7 +387,7 @@ TEST(LuaTest, LoadStringTableBucketThenString)
     EXPECT_STREQ("bar", result.strings[0].c_str());
 }
 
-TEST(LuaTest, LoadStringTableBucketAndSetThenString)
+TEST_F(LuaTest, LoadStringTableBucketAndSetThenString)
 {
     LuaState l;
     string error;
@@ -407,7 +410,7 @@ TEST(LuaTest, LoadStringTableBucketAndSetThenString)
     EXPECT_STREQ("bar", result.strings[0].c_str());
 }
 
-TEST(LuaTest, LoadStringTableThenStrings)
+TEST_F(LuaTest, LoadStringTableThenStrings)
 {
     LuaState l;
     string error;
@@ -431,7 +434,7 @@ TEST(LuaTest, LoadStringTableThenStrings)
     EXPECT_STREQ("bar", result.strings[1].c_str());
 }
 
-TEST(LuaTest, LoadStringSingleEnvelope)
+TEST_F(LuaTest, LoadStringSingleEnvelope)
 {
     LuaState l;
     string error;
@@ -457,7 +460,7 @@ TEST(LuaTest, LoadStringSingleEnvelope)
     EXPECT_EQ("oof", result.envelopes[0].GetStringValueField());
 }
 
-TEST(LuaTest, LoadStringMultipleEnvelopes)
+TEST_F(LuaTest, LoadStringMultipleEnvelopes)
 {
     LuaState l;
     string error;
@@ -485,7 +488,7 @@ TEST(LuaTest, LoadStringMultipleEnvelopes)
     EXPECT_EQ("baz", result.envelopes[2].GetStringValueField());
 }
 
-TEST(LuaTest, LoadStringTableThenEnvelopes)
+TEST_F(LuaTest, LoadStringTableThenEnvelopes)
 {
     LuaState l;
     string error;
@@ -517,7 +520,7 @@ TEST(LuaTest, LoadStringTableThenEnvelopes)
 // TODO need tests for protocol buffer message returns
 // but, we need code for that first
 
-TEST(LuaTest, DetectSubscriptionEnvelopeFilter)
+TEST_F(LuaTest, DetectSubscriptionEnvelopeFilter)
 {
     LuaState l;
     string error;
@@ -530,7 +533,7 @@ TEST(LuaTest, DetectSubscriptionEnvelopeFilter)
     EXPECT_EQ(0, l.GetStackSize());
 }
 
-TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
+TEST_F(LuaTest, SubscriptionEnvelopeFilterLuaError)
 {
     LuaState l;
     string error;
@@ -550,7 +553,7 @@ TEST(LuaTest, SubscriptionEnvelopeFilterLuaError)
     EXPECT_GT(result.lua_error.size(), 0);
 }
 
-TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
+TEST_F(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
 {
     LuaState l;
     string error;
@@ -570,7 +573,7 @@ TEST(LuaTest, SubscriptionEnvelopeFilterFilterTrue)
     EXPECT_EQ(EnvelopeFilterResult::BOOLTRUE, result.return_type);
 }
 
-TEST(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
+TEST_F(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
 {
     LuaState l;
     string error;
@@ -590,7 +593,7 @@ TEST(LuaTest, SubscriptionEnvelopeFilterFilterFalse)
     EXPECT_EQ(EnvelopeFilterResult::BOOLFALSE, result.return_type);
 }
 
-TEST(LuaTest, SubscriptionEnvelopeFilterFilterOther)
+TEST_F(LuaTest, SubscriptionEnvelopeFilterFilterOther)
 {
     LuaState l;
     string error;
