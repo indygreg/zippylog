@@ -43,6 +43,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* WriteAckV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   WriteAckV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PluginRegisterAckV1_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PluginRegisterAckV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PluginStatusV1_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PluginStatusV1_reflection_ = NULL;
 const ::google::protobuf::Descriptor* Error_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Error_reflection_ = NULL;
@@ -184,7 +190,37 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WriteAckV1));
-  Error_descriptor_ = file->message_type(8);
+  PluginRegisterAckV1_descriptor_ = file->message_type(8);
+  static const int PluginRegisterAckV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginRegisterAckV1, name_),
+  };
+  PluginRegisterAckV1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      PluginRegisterAckV1_descriptor_,
+      PluginRegisterAckV1::default_instance_,
+      PluginRegisterAckV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginRegisterAckV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginRegisterAckV1, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(PluginRegisterAckV1));
+  PluginStatusV1_descriptor_ = file->message_type(9);
+  static const int PluginStatusV1_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginStatusV1, state_),
+  };
+  PluginStatusV1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      PluginStatusV1_descriptor_,
+      PluginStatusV1::default_instance_,
+      PluginStatusV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginStatusV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PluginStatusV1, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(PluginStatusV1));
+  Error_descriptor_ = file->message_type(10);
   static const int Error_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, code_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Error, msg_),
@@ -230,6 +266,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     WriteAckV1_descriptor_, &WriteAckV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    PluginRegisterAckV1_descriptor_, &PluginRegisterAckV1::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    PluginStatusV1_descriptor_, &PluginStatusV1::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Error_descriptor_, &Error::default_instance());
 }
 
@@ -252,6 +292,10 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto() {
   delete SubscriptionStartV1_reflection_;
   delete WriteAckV1::default_instance_;
   delete WriteAckV1_reflection_;
+  delete PluginRegisterAckV1::default_instance_;
+  delete PluginRegisterAckV1_reflection_;
+  delete PluginStatusV1::default_instance_;
+  delete PluginStatusV1_reflection_;
   delete Error::default_instance_;
   delete Error_reflection_;
 }
@@ -262,37 +306,41 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::zippylog::protocol::protobuf_AddDesc_zippylog_2fprotocol_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n zippylog/protocol/response.proto\022\032zipp"
-    "ylog.protocol.response\"\010\n\006PongV1\"\305\001\n\026Fea"
-    "tureSpecificationV1\022!\n\031supported_message"
-    "_formats\030\001 \003(\r\022\037\n\027supported_request_type"
-    "s\030\002 \003(\r\022\037\n\027supported_request_names\030\003 \003(\t"
-    "\022 \n\030max_stream_segment_bytes\030\004 \001(\r\022$\n\034ma"
-    "x_stream_segment_envelopes\030\005 \001(\r\"4\n\024Stre"
-    "amSegmentStartV1\022\014\n\004path\030\001 \002(\t\022\016\n\006offset"
-    "\030\002 \002(\004\"P\n\022StreamSegmentEndV1\022\016\n\006offset\030\001"
-    " \002(\004\022\022\n\nbytes_sent\030\002 \002(\r\022\026\n\016envelopes_se"
-    "nt\030\003 \002(\r\"2\n\027SubscriptionAcceptAckV1\022\n\n\002i"
-    "d\030\001 \002(\014\022\013\n\003ttl\030\002 \002(\r\"(\n\032SubscriptionKeep"
-    "aliveAckV1\022\n\n\002id\030\001 \002(\014\"!\n\023SubscriptionSt"
-    "artV1\022\n\n\002id\030\001 \002(\014\"\'\n\nWriteAckV1\022\031\n\021envel"
-    "opes_written\030\001 \002(\r\"I\n\005Error\0223\n\004code\030\001 \001("
-    "\0162%.zippylog.protocol.response.ErrorCode"
-    "\022\013\n\003msg\030\002 \001(\t*\206\004\n\tErrorCode\022\032\n\026ENVELOPE_"
-    "PARSE_FAILURE\020\001\022\035\n\031INVALID_MESSAGE_NAMES"
-    "PACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020\003\022\022\n\016EMPT"
-    "Y_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERATIONS\020\005\022\033"
-    "\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013EMPTY_FIE"
-    "LD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT\020\010\022\031\n\025INV"
-    "ALID_STREAM_OFFSET\020\t\022\022\n\016INVALID_OFFSET\020\n"
-    "\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_EXCEEDED\020\014"
-    "\022\"\n\036UNKNOWN_MESSAGE_FORMAT_VERSION\020\r\022\020\n\014"
-    "INVALID_PATH\020\016\022)\n%UNSUPPORTED_OPERATION_"
-    "MESSAGE_VERSION\020\017\022\021\n\rEMPTY_MESSAGE\020\020\022\030\n\024"
-    "PROTOCOL_NO_ENVELOPE\020\021\022\034\n\030GENERAL_ERROR_"
-    "PROCESSING\020\022\022\r\n\tLUA_ERROR\020\023\022\031\n\025SUBSCRIPT"
-    "ION_REJECTED\020\024", 1174);
+    "ylog.protocol.response\032\027zippylog/protoco"
+    "l.proto\"\010\n\006PongV1\"\305\001\n\026FeatureSpecificati"
+    "onV1\022!\n\031supported_message_formats\030\001 \003(\r\022"
+    "\037\n\027supported_request_types\030\002 \003(\r\022\037\n\027supp"
+    "orted_request_names\030\003 \003(\t\022 \n\030max_stream_"
+    "segment_bytes\030\004 \001(\r\022$\n\034max_stream_segmen"
+    "t_envelopes\030\005 \001(\r\"4\n\024StreamSegmentStartV"
+    "1\022\014\n\004path\030\001 \002(\t\022\016\n\006offset\030\002 \002(\004\"P\n\022Strea"
+    "mSegmentEndV1\022\016\n\006offset\030\001 \002(\004\022\022\n\nbytes_s"
+    "ent\030\002 \002(\r\022\026\n\016envelopes_sent\030\003 \002(\r\"2\n\027Sub"
+    "scriptionAcceptAckV1\022\n\n\002id\030\001 \002(\014\022\013\n\003ttl\030"
+    "\002 \002(\r\"(\n\032SubscriptionKeepaliveAckV1\022\n\n\002i"
+    "d\030\001 \002(\014\"!\n\023SubscriptionStartV1\022\n\n\002id\030\001 \002"
+    "(\014\"\'\n\nWriteAckV1\022\031\n\021envelopes_written\030\001 "
+    "\002(\r\"#\n\023PluginRegisterAckV1\022\014\n\004name\030\001 \002(\t"
+    "\"A\n\016PluginStatusV1\022/\n\005state\030\001 \003(\0132 .zipp"
+    "ylog.protocol.PluginStateV1\"I\n\005Error\0223\n\004"
+    "code\030\001 \001(\0162%.zippylog.protocol.response."
+    "ErrorCode\022\013\n\003msg\030\002 \001(\t*\206\004\n\tErrorCode\022\032\n\026"
+    "ENVELOPE_PARSE_FAILURE\020\001\022\035\n\031INVALID_MESS"
+    "AGE_NAMESPACE\020\002\022\030\n\024UNKNOWN_REQUEST_TYPE\020"
+    "\003\022\022\n\016EMPTY_ENVELOPE\020\004\022\030\n\024MISSING_ENUMERA"
+    "TIONS\020\005\022\033\n\027REQUEST_NOT_IMPLEMENTED\020\006\022\017\n\013"
+    "EMPTY_FIELD\020\007\022\033\n\027FIELD_LENGTHS_DIFFERENT"
+    "\020\010\022\031\n\025INVALID_STREAM_OFFSET\020\t\022\022\n\016INVALID"
+    "_OFFSET\020\n\022\022\n\016PATH_NOT_FOUND\020\013\022\022\n\016LIMIT_E"
+    "XCEEDED\020\014\022\"\n\036UNKNOWN_MESSAGE_FORMAT_VERS"
+    "ION\020\r\022\020\n\014INVALID_PATH\020\016\022)\n%UNSUPPORTED_O"
+    "PERATION_MESSAGE_VERSION\020\017\022\021\n\rEMPTY_MESS"
+    "AGE\020\020\022\030\n\024PROTOCOL_NO_ENVELOPE\020\021\022\034\n\030GENER"
+    "AL_ERROR_PROCESSING\020\022\022\r\n\tLUA_ERROR\020\023\022\031\n\025"
+    "SUBSCRIPTION_REJECTED\020\024", 1303);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/response.proto", &protobuf_RegisterTypes);
   PongV1::default_instance_ = new PongV1();
@@ -303,6 +351,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
   SubscriptionKeepaliveAckV1::default_instance_ = new SubscriptionKeepaliveAckV1();
   SubscriptionStartV1::default_instance_ = new SubscriptionStartV1();
   WriteAckV1::default_instance_ = new WriteAckV1();
+  PluginRegisterAckV1::default_instance_ = new PluginRegisterAckV1();
+  PluginStatusV1::default_instance_ = new PluginStatusV1();
   Error::default_instance_ = new Error();
   PongV1::default_instance_->InitAsDefaultInstance();
   FeatureSpecificationV1::default_instance_->InitAsDefaultInstance();
@@ -312,6 +362,8 @@ void protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto() {
   SubscriptionKeepaliveAckV1::default_instance_->InitAsDefaultInstance();
   SubscriptionStartV1::default_instance_->InitAsDefaultInstance();
   WriteAckV1::default_instance_->InitAsDefaultInstance();
+  PluginRegisterAckV1::default_instance_->InitAsDefaultInstance();
+  PluginStatusV1::default_instance_->InitAsDefaultInstance();
   Error::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto);
 }
@@ -2354,6 +2406,436 @@ void WriteAckV1::Swap(WriteAckV1* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int PluginRegisterAckV1::kNameFieldNumber;
+#endif  // !_MSC_VER
+
+PluginRegisterAckV1::PluginRegisterAckV1()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void PluginRegisterAckV1::InitAsDefaultInstance() {
+}
+
+PluginRegisterAckV1::PluginRegisterAckV1(const PluginRegisterAckV1& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void PluginRegisterAckV1::SharedCtor() {
+  _cached_size_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+PluginRegisterAckV1::~PluginRegisterAckV1() {
+  SharedDtor();
+}
+
+void PluginRegisterAckV1::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void PluginRegisterAckV1::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PluginRegisterAckV1::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PluginRegisterAckV1_descriptor_;
+}
+
+const PluginRegisterAckV1& PluginRegisterAckV1::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
+}
+
+PluginRegisterAckV1* PluginRegisterAckV1::default_instance_ = NULL;
+
+PluginRegisterAckV1* PluginRegisterAckV1::New() const {
+  return new PluginRegisterAckV1;
+}
+
+void PluginRegisterAckV1::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool PluginRegisterAckV1::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string name = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void PluginRegisterAckV1::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->name(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* PluginRegisterAckV1::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string name = 1;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->name(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int PluginRegisterAckV1::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string name = 1;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PluginRegisterAckV1::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const PluginRegisterAckV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PluginRegisterAckV1*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void PluginRegisterAckV1::MergeFrom(const PluginRegisterAckV1& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void PluginRegisterAckV1::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PluginRegisterAckV1::CopyFrom(const PluginRegisterAckV1& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PluginRegisterAckV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void PluginRegisterAckV1::Swap(PluginRegisterAckV1* other) {
+  if (other != this) {
+    std::swap(name_, other->name_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata PluginRegisterAckV1::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PluginRegisterAckV1_descriptor_;
+  metadata.reflection = PluginRegisterAckV1_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int PluginStatusV1::kStateFieldNumber;
+#endif  // !_MSC_VER
+
+PluginStatusV1::PluginStatusV1()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void PluginStatusV1::InitAsDefaultInstance() {
+}
+
+PluginStatusV1::PluginStatusV1(const PluginStatusV1& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void PluginStatusV1::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+PluginStatusV1::~PluginStatusV1() {
+  SharedDtor();
+}
+
+void PluginStatusV1::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void PluginStatusV1::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PluginStatusV1::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PluginStatusV1_descriptor_;
+}
+
+const PluginStatusV1& PluginStatusV1::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();  return *default_instance_;
+}
+
+PluginStatusV1* PluginStatusV1::default_instance_ = NULL;
+
+PluginStatusV1* PluginStatusV1::New() const {
+  return new PluginStatusV1;
+}
+
+void PluginStatusV1::Clear() {
+  state_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool PluginStatusV1::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .zippylog.protocol.PluginStateV1 state = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_state:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_state()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(10)) goto parse_state;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void PluginStatusV1::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // repeated .zippylog.protocol.PluginStateV1 state = 1;
+  for (int i = 0; i < this->state_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->state(i), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* PluginStatusV1::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // repeated .zippylog.protocol.PluginStateV1 state = 1;
+  for (int i = 0; i < this->state_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->state(i), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int PluginStatusV1::ByteSize() const {
+  int total_size = 0;
+  
+  // repeated .zippylog.protocol.PluginStateV1 state = 1;
+  total_size += 1 * this->state_size();
+  for (int i = 0; i < this->state_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->state(i));
+  }
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PluginStatusV1::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const PluginStatusV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PluginStatusV1*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void PluginStatusV1::MergeFrom(const PluginStatusV1& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  state_.MergeFrom(from.state_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void PluginStatusV1::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PluginStatusV1::CopyFrom(const PluginStatusV1& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PluginStatusV1::IsInitialized() const {
+  
+  for (int i = 0; i < state_size(); i++) {
+    if (!this->state(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void PluginStatusV1::Swap(PluginStatusV1* other) {
+  if (other != this) {
+    state_.Swap(&other->state_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata PluginStatusV1::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PluginStatusV1_descriptor_;
+  metadata.reflection = PluginStatusV1_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int Error::kCodeFieldNumber;
 const int Error::kMsgFieldNumber;
 #endif  // !_MSC_VER
@@ -2683,6 +3165,22 @@ bool WriteAckV1::add_to_envelope(::zippylog::Envelope *envelope) {
 }
 
 bool WriteAckV1::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool PluginRegisterAckV1::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool PluginRegisterAckV1::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool PluginStatusV1::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool PluginStatusV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 

@@ -23,6 +23,7 @@
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
+#include "zippylog/protocol.pb.h"
 #include <zippylog/envelope.hpp>
 // @@protoc_insertion_point(includes)
 
@@ -43,6 +44,8 @@ class SubscriptionAcceptAckV1;
 class SubscriptionKeepaliveAckV1;
 class SubscriptionStartV1;
 class WriteAckV1;
+class PluginRegisterAckV1;
+class PluginStatusV1;
 class Error;
 
 enum ErrorCode {
@@ -879,6 +882,187 @@ class WriteAckV1 : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class PluginRegisterAckV1 : public ::google::protobuf::Message {
+ public:
+  PluginRegisterAckV1();
+  virtual ~PluginRegisterAckV1();
+  
+  PluginRegisterAckV1(const PluginRegisterAckV1& from);
+  
+  inline PluginRegisterAckV1& operator=(const PluginRegisterAckV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PluginRegisterAckV1& default_instance();
+  
+  void Swap(PluginRegisterAckV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PluginRegisterAckV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PluginRegisterAckV1& from);
+  void MergeFrom(const PluginRegisterAckV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 114;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.PluginRegisterAckV1)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* name_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PluginRegisterAckV1* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PluginStatusV1 : public ::google::protobuf::Message {
+ public:
+  PluginStatusV1();
+  virtual ~PluginStatusV1();
+  
+  PluginStatusV1(const PluginStatusV1& from);
+  
+  inline PluginStatusV1& operator=(const PluginStatusV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PluginStatusV1& default_instance();
+  
+  void Swap(PluginStatusV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PluginStatusV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PluginStatusV1& from);
+  void MergeFrom(const PluginStatusV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated .zippylog.protocol.PluginStateV1 state = 1;
+  inline int state_size() const;
+  inline void clear_state();
+  static const int kStateFieldNumber = 1;
+  inline const ::zippylog::protocol::PluginStateV1& state(int index) const;
+  inline ::zippylog::protocol::PluginStateV1* mutable_state(int index);
+  inline ::zippylog::protocol::PluginStateV1* add_state();
+  inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::PluginStateV1 >&
+      state() const;
+  inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::PluginStateV1 >*
+      mutable_state();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 115;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.response.PluginStatusV1)
+ private:
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::PluginStateV1 > state_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2fresponse_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2fresponse_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PluginStatusV1* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class Error : public ::google::protobuf::Message {
  public:
   Error();
@@ -1513,6 +1697,97 @@ inline ::google::protobuf::uint32 WriteAckV1::envelopes_written() const {
 inline void WriteAckV1::set_envelopes_written(::google::protobuf::uint32 value) {
   set_has_envelopes_written();
   envelopes_written_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PluginRegisterAckV1
+
+// required string name = 1;
+inline bool PluginRegisterAckV1::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PluginRegisterAckV1::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PluginRegisterAckV1::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PluginRegisterAckV1::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& PluginRegisterAckV1::name() const {
+  return *name_;
+}
+inline void PluginRegisterAckV1::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void PluginRegisterAckV1::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void PluginRegisterAckV1::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PluginRegisterAckV1::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* PluginRegisterAckV1::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// PluginStatusV1
+
+// repeated .zippylog.protocol.PluginStateV1 state = 1;
+inline int PluginStatusV1::state_size() const {
+  return state_.size();
+}
+inline void PluginStatusV1::clear_state() {
+  state_.Clear();
+}
+inline const ::zippylog::protocol::PluginStateV1& PluginStatusV1::state(int index) const {
+  return state_.Get(index);
+}
+inline ::zippylog::protocol::PluginStateV1* PluginStatusV1::mutable_state(int index) {
+  return state_.Mutable(index);
+}
+inline ::zippylog::protocol::PluginStateV1* PluginStatusV1::add_state() {
+  return state_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::PluginStateV1 >&
+PluginStatusV1::state() const {
+  return state_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::zippylog::protocol::PluginStateV1 >*
+PluginStatusV1::mutable_state() {
+  return &state_;
 }
 
 // -------------------------------------------------------------------

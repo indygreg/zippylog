@@ -50,6 +50,7 @@ class SubscribeKeepaliveV1;
 class SubscribeCancelV1;
 class RegisterPluginV1;
 class UnregisterPluginV1;
+class GetPluginStatusV1;
 
 // ===================================================================
 
@@ -1565,6 +1566,100 @@ class UnregisterPluginV1 : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static UnregisterPluginV1* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class GetPluginStatusV1 : public ::google::protobuf::Message {
+ public:
+  GetPluginStatusV1();
+  virtual ~GetPluginStatusV1();
+  
+  GetPluginStatusV1(const GetPluginStatusV1& from);
+  
+  inline GetPluginStatusV1& operator=(const GetPluginStatusV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const GetPluginStatusV1& default_instance();
+  
+  void Swap(GetPluginStatusV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  GetPluginStatusV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const GetPluginStatusV1& from);
+  void MergeFrom(const GetPluginStatusV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated string name = 1;
+  inline int name_size() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name(int index) const;
+  inline ::std::string* mutable_name(int index);
+  inline void set_name(int index, const ::std::string& value);
+  inline void set_name(int index, const char* value);
+  inline void set_name(int index, const char* value, size_t size);
+  inline ::std::string* add_name();
+  inline void add_name(const ::std::string& value);
+  inline void add_name(const char* value);
+  inline void add_name(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& name() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_name();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 116;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.GetPluginStatusV1)
+ private:
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::RepeatedPtrField< ::std::string> name_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  void InitAsDefaultInstance();
+  static GetPluginStatusV1* default_instance_;
+};
 // ===================================================================
 
 
@@ -2719,6 +2814,54 @@ inline ::std::string* UnregisterPluginV1::release_name() {
     name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// -------------------------------------------------------------------
+
+// GetPluginStatusV1
+
+// repeated string name = 1;
+inline int GetPluginStatusV1::name_size() const {
+  return name_.size();
+}
+inline void GetPluginStatusV1::clear_name() {
+  name_.Clear();
+}
+inline const ::std::string& GetPluginStatusV1::name(int index) const {
+  return name_.Get(index);
+}
+inline ::std::string* GetPluginStatusV1::mutable_name(int index) {
+  return name_.Mutable(index);
+}
+inline void GetPluginStatusV1::set_name(int index, const ::std::string& value) {
+  name_.Mutable(index)->assign(value);
+}
+inline void GetPluginStatusV1::set_name(int index, const char* value) {
+  name_.Mutable(index)->assign(value);
+}
+inline void GetPluginStatusV1::set_name(int index, const char* value, size_t size) {
+  name_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* GetPluginStatusV1::add_name() {
+  return name_.Add();
+}
+inline void GetPluginStatusV1::add_name(const ::std::string& value) {
+  name_.Add()->assign(value);
+}
+inline void GetPluginStatusV1::add_name(const char* value) {
+  name_.Add()->assign(value);
+}
+inline void GetPluginStatusV1::add_name(const char* value, size_t size) {
+  name_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+GetPluginStatusV1::name() const {
+  return name_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+GetPluginStatusV1::mutable_name() {
+  return &name_;
 }
 
 

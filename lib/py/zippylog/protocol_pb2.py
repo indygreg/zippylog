@@ -12,8 +12,61 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol.proto',
   package='zippylog.protocol',
-  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\",\n\x0cStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"P\n\x0fStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12/\n\x06stream\x18\x02 \x03(\x0b\x32\x1f.zippylog.protocol.StreamInfoV1\"T\n\x0c\x42ucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x36\n\nstream_set\x18\x02 \x03(\x0b\x32\".zippylog.protocol.StreamSetInfoV1\">\n\x0bStoreInfoV1\x12/\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1f.zippylog.protocol.BucketInfoV1\"^\n\x18StoreChangeStreamAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"`\n\x1aStoreChangeStreamDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"a\n\x1bStoreChangeStreamAppendedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"*\n\x18StoreChangeBucketAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\",\n\x1aStoreChangeBucketDeletedV1\x12\x0e\n\x06\x62ucket\x18\x02 \x02(\t\"A\n\x1bStoreChangeStreamSetAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"C\n\x1dStoreChangeStreamSetDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t')
+  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\",\n\x0cStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"P\n\x0fStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12/\n\x06stream\x18\x02 \x03(\x0b\x32\x1f.zippylog.protocol.StreamInfoV1\"T\n\x0c\x42ucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x36\n\nstream_set\x18\x02 \x03(\x0b\x32\".zippylog.protocol.StreamSetInfoV1\">\n\x0bStoreInfoV1\x12/\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1f.zippylog.protocol.BucketInfoV1\"^\n\x18StoreChangeStreamAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"`\n\x1aStoreChangeStreamDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"a\n\x1bStoreChangeStreamAppendedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"*\n\x18StoreChangeBucketAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\",\n\x1aStoreChangeBucketDeletedV1\x12\x0e\n\x06\x62ucket\x18\x02 \x02(\t\"A\n\x1bStoreChangeStreamSetAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"C\n\x1dStoreChangeStreamSetDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"\xd4\x01\n\rPluginStateV1\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x30\n\x05state\x18\x02 \x02(\x0e\x32!.zippylog.protocol.PluginRunState\x12\x38\n\nerror_code\x18\x03 \x01(\x0e\x32$.zippylog.protocol.PluginErrorReason\x12\x15\n\rerror_message\x18\x04 \x01(\t\x12\x1a\n\x12lua_current_memory\x18\x05 \x02(\r\x12\x16\n\x0elua_max_memory\x18\x06 \x02(\r*(\n\x0ePluginRunState\x12\x0b\n\x07RUNNING\x10\x01\x12\t\n\x05\x45RROR\x10\x02*a\n\x11PluginErrorReason\x12\x16\n\x12LUA_MEMORY_CEILING\x10\x01\x12\x1b\n\x17LUA_INSTRUCTION_CEILING\x10\x02\x12\x17\n\x13LUA_EXECUTION_ERROR\x10\x03')
 
+_PLUGINRUNSTATE = descriptor.EnumDescriptor(
+  name='PluginRunState',
+  full_name='zippylog.protocol.PluginRunState',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    descriptor.EnumValueDescriptor(
+      name='RUNNING', index=0, number=1,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='ERROR', index=1, number=2,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1058,
+  serialized_end=1098,
+)
+
+
+_PLUGINERRORREASON = descriptor.EnumDescriptor(
+  name='PluginErrorReason',
+  full_name='zippylog.protocol.PluginErrorReason',
+  filename=None,
+  file=DESCRIPTOR,
+  values=[
+    descriptor.EnumValueDescriptor(
+      name='LUA_MEMORY_CEILING', index=0, number=1,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='LUA_INSTRUCTION_CEILING', index=1, number=2,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='LUA_EXECUTION_ERROR', index=2, number=3,
+      options=None,
+      type=None),
+  ],
+  containing_type=None,
+  options=None,
+  serialized_start=1100,
+  serialized_end=1197,
+)
+
+
+RUNNING = 1
+ERROR = 2
+LUA_MEMORY_CEILING = 1
+LUA_INSTRUCTION_CEILING = 2
+LUA_EXECUTION_ERROR = 3
 
 
 
@@ -422,9 +475,74 @@ _STORECHANGESTREAMSETDELETEDV1 = descriptor.Descriptor(
   serialized_end=841,
 )
 
+
+_PLUGINSTATEV1 = descriptor.Descriptor(
+  name='PluginStateV1',
+  full_name='zippylog.protocol.PluginStateV1',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='name', full_name='zippylog.protocol.PluginStateV1.name', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='state', full_name='zippylog.protocol.PluginStateV1.state', index=1,
+      number=2, type=14, cpp_type=8, label=2,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='error_code', full_name='zippylog.protocol.PluginStateV1.error_code', index=2,
+      number=3, type=14, cpp_type=8, label=1,
+      has_default_value=False, default_value=1,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='error_message', full_name='zippylog.protocol.PluginStateV1.error_message', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='lua_current_memory', full_name='zippylog.protocol.PluginStateV1.lua_current_memory', index=4,
+      number=5, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='lua_max_memory', full_name='zippylog.protocol.PluginStateV1.lua_max_memory', index=5,
+      number=6, type=13, cpp_type=3, label=2,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=844,
+  serialized_end=1056,
+)
+
 _STREAMSETINFOV1.fields_by_name['stream'].message_type = _STREAMINFOV1
 _BUCKETINFOV1.fields_by_name['stream_set'].message_type = _STREAMSETINFOV1
 _STOREINFOV1.fields_by_name['bucket'].message_type = _BUCKETINFOV1
+_PLUGINSTATEV1.fields_by_name['state'].enum_type = _PLUGINRUNSTATE
+_PLUGINSTATEV1.fields_by_name['error_code'].enum_type = _PLUGINERRORREASON
 DESCRIPTOR.message_types_by_name['StreamInfoV1'] = _STREAMINFOV1
 DESCRIPTOR.message_types_by_name['StreamSetInfoV1'] = _STREAMSETINFOV1
 DESCRIPTOR.message_types_by_name['BucketInfoV1'] = _BUCKETINFOV1
@@ -436,6 +554,7 @@ DESCRIPTOR.message_types_by_name['StoreChangeBucketAddedV1'] = _STORECHANGEBUCKE
 DESCRIPTOR.message_types_by_name['StoreChangeBucketDeletedV1'] = _STORECHANGEBUCKETDELETEDV1
 DESCRIPTOR.message_types_by_name['StoreChangeStreamSetAddedV1'] = _STORECHANGESTREAMSETADDEDV1
 DESCRIPTOR.message_types_by_name['StoreChangeStreamSetDeletedV1'] = _STORECHANGESTREAMSETDELETEDV1
+DESCRIPTOR.message_types_by_name['PluginStateV1'] = _PLUGINSTATEV1
 
 class StreamInfoV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -525,6 +644,14 @@ class StoreChangeStreamSetDeletedV1(message.Message):
   ZIPPYLOG_ENUMERATION = 103
   # @@protoc_insertion_point(class_scope:zippylog.protocol.StoreChangeStreamSetDeletedV1)
 
+class PluginStateV1(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _PLUGINSTATEV1
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 113
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.PluginStateV1)
+
 register_message(1, 93, 'zippylog.protocol_pb2', 'StreamInfoV1')
 register_message(1, 94, 'zippylog.protocol_pb2', 'StreamSetInfoV1')
 register_message(1, 95, 'zippylog.protocol_pb2', 'BucketInfoV1')
@@ -536,4 +663,5 @@ register_message(1, 100, 'zippylog.protocol_pb2', 'StoreChangeBucketAddedV1')
 register_message(1, 101, 'zippylog.protocol_pb2', 'StoreChangeBucketDeletedV1')
 register_message(1, 102, 'zippylog.protocol_pb2', 'StoreChangeStreamSetAddedV1')
 register_message(1, 103, 'zippylog.protocol_pb2', 'StoreChangeStreamSetDeletedV1')
+register_message(1, 113, 'zippylog.protocol_pb2', 'PluginStateV1')
 # @@protoc_insertion_point(module_scope)

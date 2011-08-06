@@ -57,6 +57,7 @@ namespace zippylog {
         registrar->register_message(1, 101, new ::zippylog::protocol::StoreChangeBucketDeletedV1());
         registrar->register_message(1, 102, new ::zippylog::protocol::StoreChangeStreamSetAddedV1());
         registrar->register_message(1, 103, new ::zippylog::protocol::StoreChangeStreamSetDeletedV1());
+        registrar->register_message(1, 113, new ::zippylog::protocol::PluginStateV1());
         registrar->register_message(1, 70, new ::zippylog::protocol::response::PongV1());
         registrar->register_message(1, 71, new ::zippylog::protocol::response::FeatureSpecificationV1());
         registrar->register_message(1, 104, new ::zippylog::protocol::response::StreamSegmentStartV1());
@@ -65,6 +66,8 @@ namespace zippylog {
         registrar->register_message(1, 110, new ::zippylog::protocol::response::SubscriptionKeepaliveAckV1());
         registrar->register_message(1, 107, new ::zippylog::protocol::response::SubscriptionStartV1());
         registrar->register_message(1, 108, new ::zippylog::protocol::response::WriteAckV1());
+        registrar->register_message(1, 114, new ::zippylog::protocol::response::PluginRegisterAckV1());
+        registrar->register_message(1, 115, new ::zippylog::protocol::response::PluginStatusV1());
         registrar->register_message(1, 69, new ::zippylog::protocol::response::Error());
         registrar->register_message(1, 91, new ::zippylog::protocol::request::PingV1());
         registrar->register_message(1, 72, new ::zippylog::protocol::request::GetFeaturesV1());
@@ -81,6 +84,7 @@ namespace zippylog {
         registrar->register_message(1, 83, new ::zippylog::protocol::request::SubscribeCancelV1());
         registrar->register_message(1, 111, new ::zippylog::protocol::request::RegisterPluginV1());
         registrar->register_message(1, 112, new ::zippylog::protocol::request::UnregisterPluginV1());
+        registrar->register_message(1, 116, new ::zippylog::protocol::request::GetPluginStatusV1());
         // @@protoc_insertion_point(message_registration)
     }
 }

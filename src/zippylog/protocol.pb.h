@@ -45,7 +45,47 @@ class StoreChangeBucketAddedV1;
 class StoreChangeBucketDeletedV1;
 class StoreChangeStreamSetAddedV1;
 class StoreChangeStreamSetDeletedV1;
+class PluginStateV1;
 
+enum PluginRunState {
+  RUNNING = 1,
+  ERROR = 2
+};
+bool PluginRunState_IsValid(int value);
+const PluginRunState PluginRunState_MIN = RUNNING;
+const PluginRunState PluginRunState_MAX = ERROR;
+const int PluginRunState_ARRAYSIZE = PluginRunState_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PluginRunState_descriptor();
+inline const ::std::string& PluginRunState_Name(PluginRunState value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PluginRunState_descriptor(), value);
+}
+inline bool PluginRunState_Parse(
+    const ::std::string& name, PluginRunState* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PluginRunState>(
+    PluginRunState_descriptor(), name, value);
+}
+enum PluginErrorReason {
+  LUA_MEMORY_CEILING = 1,
+  LUA_INSTRUCTION_CEILING = 2,
+  LUA_EXECUTION_ERROR = 3
+};
+bool PluginErrorReason_IsValid(int value);
+const PluginErrorReason PluginErrorReason_MIN = LUA_MEMORY_CEILING;
+const PluginErrorReason PluginErrorReason_MAX = LUA_EXECUTION_ERROR;
+const int PluginErrorReason_ARRAYSIZE = PluginErrorReason_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PluginErrorReason_descriptor();
+inline const ::std::string& PluginErrorReason_Name(PluginErrorReason value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PluginErrorReason_descriptor(), value);
+}
+inline bool PluginErrorReason_Parse(
+    const ::std::string& name, PluginErrorReason* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PluginErrorReason>(
+    PluginErrorReason_descriptor(), name, value);
+}
 // ===================================================================
 
 class StreamInfoV1 : public ::google::protobuf::Message {
@@ -1223,6 +1263,151 @@ class StoreChangeStreamSetDeletedV1 : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static StoreChangeStreamSetDeletedV1* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PluginStateV1 : public ::google::protobuf::Message {
+ public:
+  PluginStateV1();
+  virtual ~PluginStateV1();
+  
+  PluginStateV1(const PluginStateV1& from);
+  
+  inline PluginStateV1& operator=(const PluginStateV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PluginStateV1& default_instance();
+  
+  void Swap(PluginStateV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PluginStateV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PluginStateV1& from);
+  void MergeFrom(const PluginStateV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  
+  // required .zippylog.protocol.PluginRunState state = 2;
+  inline bool has_state() const;
+  inline void clear_state();
+  static const int kStateFieldNumber = 2;
+  inline zippylog::protocol::PluginRunState state() const;
+  inline void set_state(zippylog::protocol::PluginRunState value);
+  
+  // optional .zippylog.protocol.PluginErrorReason error_code = 3;
+  inline bool has_error_code() const;
+  inline void clear_error_code();
+  static const int kErrorCodeFieldNumber = 3;
+  inline zippylog::protocol::PluginErrorReason error_code() const;
+  inline void set_error_code(zippylog::protocol::PluginErrorReason value);
+  
+  // optional string error_message = 4;
+  inline bool has_error_message() const;
+  inline void clear_error_message();
+  static const int kErrorMessageFieldNumber = 4;
+  inline const ::std::string& error_message() const;
+  inline void set_error_message(const ::std::string& value);
+  inline void set_error_message(const char* value);
+  inline void set_error_message(const char* value, size_t size);
+  inline ::std::string* mutable_error_message();
+  inline ::std::string* release_error_message();
+  
+  // required uint32 lua_current_memory = 5;
+  inline bool has_lua_current_memory() const;
+  inline void clear_lua_current_memory();
+  static const int kLuaCurrentMemoryFieldNumber = 5;
+  inline ::google::protobuf::uint32 lua_current_memory() const;
+  inline void set_lua_current_memory(::google::protobuf::uint32 value);
+  
+  // required uint32 lua_max_memory = 6;
+  inline bool has_lua_max_memory() const;
+  inline void clear_lua_max_memory();
+  static const int kLuaMaxMemoryFieldNumber = 6;
+  inline ::google::protobuf::uint32 lua_max_memory() const;
+  inline void set_lua_max_memory(::google::protobuf::uint32 value);
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 113;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.PluginStateV1)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_state();
+  inline void clear_has_state();
+  inline void set_has_error_code();
+  inline void clear_has_error_code();
+  inline void set_has_error_message();
+  inline void clear_has_error_message();
+  inline void set_has_lua_current_memory();
+  inline void clear_has_lua_current_memory();
+  inline void set_has_lua_max_memory();
+  inline void clear_has_lua_max_memory();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* name_;
+  int state_;
+  int error_code_;
+  ::std::string* error_message_;
+  ::google::protobuf::uint32 lua_current_memory_;
+  ::google::protobuf::uint32 lua_max_memory_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PluginStateV1* default_instance_;
 };
 // ===================================================================
 
@@ -2478,6 +2663,216 @@ inline ::std::string* StoreChangeStreamSetDeletedV1::release_stream_set() {
   }
 }
 
+// -------------------------------------------------------------------
+
+// PluginStateV1
+
+// required string name = 1;
+inline bool PluginStateV1::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PluginStateV1::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PluginStateV1::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PluginStateV1::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& PluginStateV1::name() const {
+  return *name_;
+}
+inline void PluginStateV1::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void PluginStateV1::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void PluginStateV1::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PluginStateV1::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* PluginStateV1::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .zippylog.protocol.PluginRunState state = 2;
+inline bool PluginStateV1::has_state() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PluginStateV1::set_has_state() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PluginStateV1::clear_has_state() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PluginStateV1::clear_state() {
+  state_ = 1;
+  clear_has_state();
+}
+inline zippylog::protocol::PluginRunState PluginStateV1::state() const {
+  return static_cast< zippylog::protocol::PluginRunState >(state_);
+}
+inline void PluginStateV1::set_state(zippylog::protocol::PluginRunState value) {
+  GOOGLE_DCHECK(zippylog::protocol::PluginRunState_IsValid(value));
+  set_has_state();
+  state_ = value;
+}
+
+// optional .zippylog.protocol.PluginErrorReason error_code = 3;
+inline bool PluginStateV1::has_error_code() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PluginStateV1::set_has_error_code() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PluginStateV1::clear_has_error_code() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PluginStateV1::clear_error_code() {
+  error_code_ = 1;
+  clear_has_error_code();
+}
+inline zippylog::protocol::PluginErrorReason PluginStateV1::error_code() const {
+  return static_cast< zippylog::protocol::PluginErrorReason >(error_code_);
+}
+inline void PluginStateV1::set_error_code(zippylog::protocol::PluginErrorReason value) {
+  GOOGLE_DCHECK(zippylog::protocol::PluginErrorReason_IsValid(value));
+  set_has_error_code();
+  error_code_ = value;
+}
+
+// optional string error_message = 4;
+inline bool PluginStateV1::has_error_message() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PluginStateV1::set_has_error_message() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PluginStateV1::clear_has_error_message() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PluginStateV1::clear_error_message() {
+  if (error_message_ != &::google::protobuf::internal::kEmptyString) {
+    error_message_->clear();
+  }
+  clear_has_error_message();
+}
+inline const ::std::string& PluginStateV1::error_message() const {
+  return *error_message_;
+}
+inline void PluginStateV1::set_error_message(const ::std::string& value) {
+  set_has_error_message();
+  if (error_message_ == &::google::protobuf::internal::kEmptyString) {
+    error_message_ = new ::std::string;
+  }
+  error_message_->assign(value);
+}
+inline void PluginStateV1::set_error_message(const char* value) {
+  set_has_error_message();
+  if (error_message_ == &::google::protobuf::internal::kEmptyString) {
+    error_message_ = new ::std::string;
+  }
+  error_message_->assign(value);
+}
+inline void PluginStateV1::set_error_message(const char* value, size_t size) {
+  set_has_error_message();
+  if (error_message_ == &::google::protobuf::internal::kEmptyString) {
+    error_message_ = new ::std::string;
+  }
+  error_message_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PluginStateV1::mutable_error_message() {
+  set_has_error_message();
+  if (error_message_ == &::google::protobuf::internal::kEmptyString) {
+    error_message_ = new ::std::string;
+  }
+  return error_message_;
+}
+inline ::std::string* PluginStateV1::release_error_message() {
+  clear_has_error_message();
+  if (error_message_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = error_message_;
+    error_message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required uint32 lua_current_memory = 5;
+inline bool PluginStateV1::has_lua_current_memory() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PluginStateV1::set_has_lua_current_memory() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PluginStateV1::clear_has_lua_current_memory() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PluginStateV1::clear_lua_current_memory() {
+  lua_current_memory_ = 0u;
+  clear_has_lua_current_memory();
+}
+inline ::google::protobuf::uint32 PluginStateV1::lua_current_memory() const {
+  return lua_current_memory_;
+}
+inline void PluginStateV1::set_lua_current_memory(::google::protobuf::uint32 value) {
+  set_has_lua_current_memory();
+  lua_current_memory_ = value;
+}
+
+// required uint32 lua_max_memory = 6;
+inline bool PluginStateV1::has_lua_max_memory() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PluginStateV1::set_has_lua_max_memory() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PluginStateV1::clear_has_lua_max_memory() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void PluginStateV1::clear_lua_max_memory() {
+  lua_max_memory_ = 0u;
+  clear_has_lua_max_memory();
+}
+inline ::google::protobuf::uint32 PluginStateV1::lua_max_memory() const {
+  return lua_max_memory_;
+}
+inline void PluginStateV1::set_lua_max_memory(::google::protobuf::uint32 value) {
+  set_has_lua_max_memory();
+  lua_max_memory_ = value;
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -2488,6 +2883,14 @@ inline ::std::string* StoreChangeStreamSetDeletedV1::release_stream_set() {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< zippylog::protocol::PluginRunState>() {
+  return zippylog::protocol::PluginRunState_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< zippylog::protocol::PluginErrorReason>() {
+  return zippylog::protocol::PluginErrorReason_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

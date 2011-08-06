@@ -68,6 +68,8 @@
       "zippylog.protocol.request.PingV1": 91, 
       "zippylog.zippylogd.BrokerFlushOutputStreams": 46, 
       "zippylog.request_processor.EndProcessWriteEnvelope": 29, 
+      "zippylog.protocol.response.PluginRegisterAckV1": 114, 
+      "zippylog.protocol.PluginStateV1": 113, 
       "zippylog.request_processor.BeginProcessStreamInfo": 26, 
       "zippylog.protocol.request.GetFeaturesV1": 72, 
       "zippylog.zippylogd.BrokerReceiveClientMessage": 45, 
@@ -112,6 +114,8 @@
       "zippylog.request_processor.EndProcessBucketInfo": 23, 
       "zippylog.protocol.request.GetStoreInfo": 51, 
       "zippylog.protocol.StoreChangeStreamDeleted": 37, 
+      "zippylog.protocol.request.GetPluginStatusV1": 116, 
+      "zippylog.protocol.response.PluginStatusV1": 115, 
       "zippylog.request_processor.EmptyEnvelope": 10, 
       "zippylog.request_processor.EndProcessGetStream": 19
     }, 
