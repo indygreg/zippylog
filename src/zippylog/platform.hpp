@@ -51,88 +51,220 @@ typedef void * (* thread_start_func)(void *);
 
 void windows_error(char *buffer, size_t buffer_size);
 
-// new namespace where all APIs should be
+/// Contains OS compatibility classes and routines.
 namespace platform {
-    // records the last known system error
+    /// Record the last known system error
     void set_system_error();
 
-    // attempts to retrieve the current system error
-    // if the current system error is not defined, returns false
-    // else, returns true and puts the error message in the string variable
-    // will reset the current system error on call
+    /// Retrieve the current system error
+    ///
+    /// If the current system error is not defined, returns false.
+    /// Else, returns true and puts the error message in the string variable.
+    /// Will reset the current system error on call.
+    ///
+    /// @param string Last system error string
+    /// @return Whether a system error was defined.
     bool get_system_error(::std::string &string);
 
-    // sleeps the current thread for specified amount of milliseconds
+    /// Sleeps the current thread for specified amount of milliseconds
+    ///
+    /// @param milliseconds How long to sleep, in milliseconds
     ZIPPYLOG_EXPORT void sleep(uint32 milliseconds);
 
+    /// Defines the type of file
     enum FileType {
+        /// A regular file
         REGULAR = 1,
+
+        /// A directory
         DIRECTORY = 2,
+
+        /// A pipe
         PIPE = 3,
+
+        /// A character device
         CHARACTER = 4,
+
+        /// Other/unknown
         UNKNOWN = 5,
     };
 
+    /// Describes an entry in a directory
     typedef struct DirectoryEntry {
+        /// The file name
         ::std::string name;
+
+        /// The size of the file, in bytes
         uint64 size;
+
+        /// The type of the entry
         enum FileType type;
     } DirectoryEntry;
 
-    ZIPPYLOG_EXPORT bool DirectoryEntries(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir, ::std::vector< ::std::string > &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v);
-    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir, ::std::vector< ::std::string > &v);
+    /// Obtain a list of entries in the directory specified
+    ///
+    /// @return bool Whether the operation completed successfully
+    /// @param dir Path to directory to retrieve
+    /// @param v Holds the results of the operation
+    ZIPPYLOG_EXPORT bool DirectoryEntries(::std::string const &dir,
+                                          ::std::vector<DirectoryEntry> &v);
 
+    /// Obtain information about files in a directory
+    ///
+    /// This can be tought of as a filter for DirectoryEntries() which only
+    /// retrieves info on files.
+    ///
+    /// @return bool Whether the operation completed successfully
+    /// @param dir Path to directory to retrieve
+    /// @param v Holds the result of the operation
+    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir,
+                                          ::std::vector<DirectoryEntry> &v);
+
+    /// Obtain names of files in a directory
+    ///
+    /// This is the same as the other FilesInDirectory() except it stores
+    /// strings instead of rich objects.
+    ///
+    /// @return bool Whether the operation completed successfully
+    /// @param dir Path to directory to retrieve
+    /// @param v Holds the results of the operation
+    ZIPPYLOG_EXPORT bool FilesInDirectory(::std::string const &dir,
+                                          ::std::vector< ::std::string > &v);
+
+    /// Obtains information about directories in a directory
+    ///
+    /// @return bool Whether the operation completed successfully
+    /// @param dir Path of directory to examine
+    /// @param v Holds the results of the operation
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir,
+                                                ::std::vector<DirectoryEntry> &v);
+
+    /// Obtains names of directories inside a directory
+    ///
+    /// @return bool Whether the operation completed successfully
+    /// @param dir Path of directory to examine
+    /// @param v Holds the results of the operation
+    ZIPPYLOG_EXPORT bool DirectoriesInDirectory(::std::string const &dir,
+                                                ::std::vector< ::std::string > &v);
+
+    /// Describes a file
     typedef struct FileStat {
+        /// The type of this file
         FileType type;
+
+        /// Size of the file, in bytes
         int64 size;
     } FileStat;
 
+    /// Stat a given file path
+    ///
+    /// @return bool Whether stat completed without error
+    /// @param path The path to examine
+    /// @param st Result of operation
     ZIPPYLOG_EXPORT bool stat(const ::std::string path, FileStat &st);
 
+    /// Represents a Gregorian time
     typedef struct Time {
+        /// Year (0 index)
         int32 year;
+
+        /// Month of year. January is 1
         int32 mon;
+
+        /// Day of month. 1st day is 1
         int32 mday;
+
+        /// Hour of day. Midnight is 0
         int32 hour;
+
+        /// Minute part of time
         int32 min;
+
+        /// Second part of time
         int32 sec;
+
+        /// Partial seconds, in microseconds
+        ///
+        /// Value should be 0 <= value < 1000000
         int32 usec;
+
+        /// Day of week. 1 is Sunday
         int32 wday;
+
+        /// Day of year. January 1 is 1
         int32 yday;
+
+        /// Whether the time is in daylight savings
         int32 isdst;
+
+        /// Number of microseconds since UNIX epoch
         int64 epoch_micro;
+
+        /// Number of seconds since UNIX epoch
         int32 epoch_sec;
     } Time;
 
     ZIPPYLOG_EXPORT bool TimeNow(Time &t);
 
-    // converts number of microseconds since UNIX epoch into a zippylog Time struct
+    /// Convert the number of microseconds since UNIX epoch to zippylog time
+    ///
+    /// @param from number of microseconds since UNIX epoch
+    /// @param to holds the results of the operation
+    /// @return bool Whether the operation completed without error
     ZIPPYLOG_EXPORT bool UnixMicroTimeToZippyTime(int64 from, Time &to);
 
+    /// Create a directory at the specified path
+    ///
+    /// @param path Path of directory to create
+    /// @return bool Whether the directory was created successfully
     ZIPPYLOG_EXPORT bool MakeDirectory(const ::std::string path);
 
+    /// Test whether a path is a directory
+    ///
+    /// @param path Path to test
+    /// @return bool Whether path exists and is a directory
     ZIPPYLOG_EXPORT bool PathIsDirectory(const ::std::string path);
 
+    /// Test whether a path is a file
+    ///
+    /// @param path Path to test
+    /// @return bool Whether path exists and is a regular file
     ZIPPYLOG_EXPORT bool PathIsRegularFile(::std::string const &path);
 
-    // obtains a list of directories in a directory
-    // recursively descends the path and finds all child directories
-    ZIPPYLOG_EXPORT bool DirectoriesInTree(::std::string const &path, ::std::vector< ::std::string > &paths);
+    /// Recursively find all directories in a given directory
+    ///
+    /// Upon successful completion, the passed vector will be filled with path
+    /// of all child directories. Paths will be relative to path specified.
+    ///
+    /// @param path Path to traverse
+    /// @param paths Holds results of operation
+    /// @param bool Whether operation executed without error
+    ZIPPYLOG_EXPORT bool DirectoriesInTree(::std::string const &path,
+                                           ::std::vector< ::std::string > &paths);
 
     /// Recursively remove a specified directory
+    ///
+    /// @param path Path to directory to remove
+    /// @return bool Whether the directory and all its descendents were removed
     ZIPPYLOG_EXPORT bool RemoveDirectory(::std::string const &path);
 
-    // joins two filesystem paths and returns the result
+    /// Joints two filesystem paths
+    ///
+    /// @param a first path compoent
+    /// @param b second path component
+    /// @return string Joined path
     ZIPPYLOG_EXPORT ::std::string PathJoin(::std::string const &a, ::std::string const &b);
 
+    /// Represents a UUID
     typedef struct UUID {
+        /// Raw UUID byte data
         unsigned char data[16];
     } UUID;
 
-    // creates a new UUID
+    /// Generate a new UUID
+    ///
+    /// @param u Record to hold new UUID
+    /// @return bool Whether new UUID was created successfully
     ZIPPYLOG_EXPORT bool CreateUUID(UUID &u);
 
     /// Creates a new UUID and returns the result in a string
@@ -141,22 +273,34 @@ namespace platform {
     ///
     /// @param format If true, string is a formatted UUID, else it is the raw
     /// 16 bytes
+    /// @return string Result of operation
     ZIPPYLOG_EXPORT ::std::string CreateUUID(bool format = false);
 
     /// Formats the passed UUID data into a string
     ///
     /// String has the common XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX format
+    ///
+    /// @param e UUID to format
+    /// @param s String to hold formatted UUID
+    /// @return Whether operation completed without error
     ZIPPYLOG_EXPORT bool FormatUUID(UUID &e, ::std::string &s);
 
+    /// Represents a hild handle
     class ZIPPYLOG_EXPORT File {
     public:
+        /// Construct a new file handle that points to nothing
         File();
 
-        // open a file at path with the FileFlags specified
-        // returns whether file opened successfully
+        /// Open a file at path with the FileFlags specified
+        ///
+        /// @param path Path to file to open
+        /// @param flags File open flags
+        /// @return Whether the file was opened successfully
         bool Open(::std::string const &path, int flags);
 
-        // close the file
+        /// Close the file
+        ///
+        /// @return Whether the file was closed without issue
         bool Close();
 
         // write data to the file
@@ -180,6 +324,7 @@ namespace platform {
         /// Returns true only if the write lock could be obtained
         bool WriteLockEntire();
 
+    /// Bitflags to specify how to open a file
     enum OpenFlags {
         /// Open file for reading
         READ       = 0x01,
@@ -215,10 +360,12 @@ namespace platform {
         bool open;
     };
 
-    // in the ideal world, timers would be represented as file descriptors and
-    // we could include them in the zmq poll() event loop. this is easily done
-    // on Linux. unfortunately, Windows requires a little bit more effort.
-    // @todo expose timers as file descriptors someday
+    /// Represents a countdown timer
+    ///
+    /// Countdown timers start at a specified value and mark a flag when that
+    /// wall time has elapsed.
+    ///
+    /// @todo expose timers as file descriptors someday
     class ZIPPYLOG_EXPORT Timer {
     public:
         // create a null timer. this does nothing and is present so some structs have
@@ -262,7 +409,7 @@ namespace platform {
 
     };
 
-    // represents a change in a directory
+    /// Represents a change in a directory
     class ZIPPYLOG_EXPORT DirectoryChange {
     public:
         DirectoryChange();
@@ -283,11 +430,23 @@ namespace platform {
         ::std::string OldName;
     };
 
+    /// Entity that watches a directory(tree) for changes
+    ///
+    /// Directory watchers register with the operating system to receive
+    /// notifications when a directory changes.
     class ZIPPYLOG_EXPORT DirectoryWatcher {
     public:
         ~DirectoryWatcher();
 
-        // create a construct that watches the specified directory
+        /// Create a directory watcher that watches a specific path
+        ///
+        /// Directory watchers can watch either single directories or whole
+        /// directory trees. If recursively watching a tree, the watcher will
+        /// automatically watch newly-created directories, as they are
+        /// added.
+        ///
+        /// @param directory Path of directory to watch
+        /// @param recurse Whether to watch all child directories
         DirectoryWatcher(::std::string const &directory, bool recurse=true);
 
         // Wait up to N microseconds for changes to the directory or forever,
@@ -340,12 +499,20 @@ namespace platform {
 #endif
     };
 
+    /// Representation of an operating system thread
     class ZIPPYLOG_EXPORT Thread {
     public:
-        Thread(thread_start_func, void *data);
+        /// Construct a new thread that executes the specified function
+        ///
+        /// @param f Function to execute when thread starts
+        /// @param data Arbitrary data to be passed to thread start function
+        Thread(thread_start_func f, void *data);
         ~Thread();
 
+        /// Wait for the thread to finish execution
         bool Join();
+
+        /// Forcefully abort the thread
         bool Abort();
 
         /// Returns whether the thread is alive (running)

@@ -12,9 +12,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "zippylog/store.hpp"
+#include <zippylog/testing.hpp>
 
-#include <gtest/gtest.h>
+#include <zippylog/store.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -25,7 +25,18 @@ using ::std::vector;
 using ::zippylog::Store;
 using ::zippylog::SimpleDirectoryStore;
 
-TEST(StorePathTest, PathValidation) {
+class StoreTest : public ::zippylog::testing::TestBase
+{
+public:
+    StoreTest() : store("test/stores/00-simple")
+    { }
+
+protected:
+
+    SimpleDirectoryStore store;
+};
+
+TEST_F(StoreTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/"));
     EXPECT_FALSE(Store::ValidatePath(""));
     EXPECT_FALSE(Store::ValidatePath("/a//"));
@@ -46,7 +57,7 @@ TEST(StorePathTest, PathValidation) {
     EXPECT_TRUE(Store::ValidatePath("/a\0"));
 }
 
-TEST(StorePathTest, PathParsing) {
+TEST_F(StoreTest, PathParsing) {
     string path;
     string b, ss, s;
 
@@ -102,7 +113,7 @@ TEST(StorePathTest, PathParsing) {
     EXPECT_STREQ("streamA", s.c_str());
 }
 
-TEST(StorePathTest, PathTesting)
+TEST_F(StoreTest, PathTesting)
 {
     EXPECT_TRUE(Store::IsBucketPath("/foo"));
     EXPECT_FALSE(Store::IsBucketPath("/"));
@@ -123,7 +134,7 @@ TEST(StorePathTest, PathTesting)
     EXPECT_FALSE(Store::IsStreamPath("asf"));
 }
 
-TEST(StorePathTest, StreamNaming)
+TEST_F(StoreTest, StreamNaming)
 {
     EXPECT_STREQ("2010-07-27", Store::StreamNameForTime(1280210699000000, 86400).c_str());
     EXPECT_STREQ("2010-07-27-06", Store::StreamNameForTime(1280212529000000, 3600).c_str());
@@ -131,16 +142,8 @@ TEST(StorePathTest, StreamNaming)
     EXPECT_STREQ("2010-07-28-00-002-060", Store::StreamNameForTime(1280275260000000, 60).c_str());
 }
 
-class StoreContentsTest : public ::testing::Test {
-protected:
-    SimpleDirectoryStore store;
-
-    StoreContentsTest() : store("test/stores/00-simple") { }
-
-};
-
 // verifies that we find files in stores properly
-TEST_F(StoreContentsTest, ContentDiscovery)
+TEST_F(StoreTest, ContentDiscovery)
 {
     ASSERT_STREQ("test/stores/00-simple", store.RootDirectoryPath().c_str());
 

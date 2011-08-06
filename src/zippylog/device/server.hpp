@@ -207,6 +207,34 @@ public:
 /// It is possible for messages to flow back to clients not via the
 /// workers_sock. This is the case for subscriptions and other asynchronous
 /// notifications.
+///
+/// @msc
+///   client [label="Client"],broker [label="Server Broker"],rp [label="Request Processor"], sr [label="Persisted State Reactor"];
+///
+///   --- [label="Simple Request Flow"];
+///   client => broker [label="clients_sock"];
+///   broker => rp [label="workers_sock"];
+///   rp => broker [label="workers_sock"];
+///   broker => client [label="clients_sock"];
+///
+///   --- [label="Persisted State Requests"];
+///   client => broker [label="clients_sock"];
+///   broker => rp [label="workers_sock"];
+///   rp => sr [label="worker_subscriptions_sock"];
+///   sr => broker [label="worker_subscriptions_sock"];
+///   broker => client [label="clients_sock"];
+///
+///   --- [label="Persisted State Update"];
+///   client => broker [label="clients_sock"];
+///   broker => rp [label="workers_sock"];
+///   rp => sr [label="worker_streaming_notify_sock"];
+///   sr => broker [label="worker_subscriptions_sock"];
+///   broker => client [label="clients_sock"];
+///
+///   --- [label="Asynchronous Persisted State Response"];
+///   sr => broker [label="worker_subscriptions_sock"];
+///   broker => client [label="clients_sock"];
+/// @endmsc
 class ZIPPYLOG_EXPORT Server {
     public:
         /// Construct a server from a server config object
