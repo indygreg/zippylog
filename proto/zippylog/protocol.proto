@@ -78,11 +78,11 @@ message StoreChangeStreamSetDeletedV1 {
 
 // Describes running state of a plugin
 enum PluginRunState {
-	// Plugin in running without any issues
-	RUNNING = 1;
+	// Plugin is running without any issues
+	PLUGIN_RUNNING = 1;
 
 	// Plugin has entered an error state and is no longer running
-	ERROR = 2;
+	PLUGIN_ERROR = 2;
 }
 
 enum PluginErrorReason {

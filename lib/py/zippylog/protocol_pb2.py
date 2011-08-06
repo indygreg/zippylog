@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol.proto',
   package='zippylog.protocol',
-  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\",\n\x0cStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"P\n\x0fStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12/\n\x06stream\x18\x02 \x03(\x0b\x32\x1f.zippylog.protocol.StreamInfoV1\"T\n\x0c\x42ucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x36\n\nstream_set\x18\x02 \x03(\x0b\x32\".zippylog.protocol.StreamSetInfoV1\">\n\x0bStoreInfoV1\x12/\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1f.zippylog.protocol.BucketInfoV1\"^\n\x18StoreChangeStreamAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"`\n\x1aStoreChangeStreamDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"a\n\x1bStoreChangeStreamAppendedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"*\n\x18StoreChangeBucketAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\",\n\x1aStoreChangeBucketDeletedV1\x12\x0e\n\x06\x62ucket\x18\x02 \x02(\t\"A\n\x1bStoreChangeStreamSetAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"C\n\x1dStoreChangeStreamSetDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"\xd4\x01\n\rPluginStateV1\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x30\n\x05state\x18\x02 \x02(\x0e\x32!.zippylog.protocol.PluginRunState\x12\x38\n\nerror_code\x18\x03 \x01(\x0e\x32$.zippylog.protocol.PluginErrorReason\x12\x15\n\rerror_message\x18\x04 \x01(\t\x12\x1a\n\x12lua_current_memory\x18\x05 \x02(\r\x12\x16\n\x0elua_max_memory\x18\x06 \x02(\r*(\n\x0ePluginRunState\x12\x0b\n\x07RUNNING\x10\x01\x12\t\n\x05\x45RROR\x10\x02*a\n\x11PluginErrorReason\x12\x16\n\x12LUA_MEMORY_CEILING\x10\x01\x12\x1b\n\x17LUA_INSTRUCTION_CEILING\x10\x02\x12\x17\n\x13LUA_EXECUTION_ERROR\x10\x03')
+  serialized_pb='\n\x17zippylog/protocol.proto\x12\x11zippylog.protocol\",\n\x0cStreamInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06length\x18\x02 \x01(\x04\"P\n\x0fStreamSetInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12/\n\x06stream\x18\x02 \x03(\x0b\x32\x1f.zippylog.protocol.StreamInfoV1\"T\n\x0c\x42ucketInfoV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x36\n\nstream_set\x18\x02 \x03(\x0b\x32\".zippylog.protocol.StreamSetInfoV1\">\n\x0bStoreInfoV1\x12/\n\x06\x62ucket\x18\x01 \x03(\x0b\x32\x1f.zippylog.protocol.BucketInfoV1\"^\n\x18StoreChangeStreamAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"`\n\x1aStoreChangeStreamDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"a\n\x1bStoreChangeStreamAppendedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\x12\x0e\n\x06stream\x18\x03 \x02(\t\x12\x0e\n\x06length\x18\x04 \x01(\x04\"*\n\x18StoreChangeBucketAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\",\n\x1aStoreChangeBucketDeletedV1\x12\x0e\n\x06\x62ucket\x18\x02 \x02(\t\"A\n\x1bStoreChangeStreamSetAddedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"C\n\x1dStoreChangeStreamSetDeletedV1\x12\x0e\n\x06\x62ucket\x18\x01 \x02(\t\x12\x12\n\nstream_set\x18\x02 \x02(\t\"\xd4\x01\n\rPluginStateV1\x12\x0c\n\x04name\x18\x01 \x02(\t\x12\x30\n\x05state\x18\x02 \x02(\x0e\x32!.zippylog.protocol.PluginRunState\x12\x38\n\nerror_code\x18\x03 \x01(\x0e\x32$.zippylog.protocol.PluginErrorReason\x12\x15\n\rerror_message\x18\x04 \x01(\t\x12\x1a\n\x12lua_current_memory\x18\x05 \x02(\r\x12\x16\n\x0elua_max_memory\x18\x06 \x02(\r*6\n\x0ePluginRunState\x12\x12\n\x0ePLUGIN_RUNNING\x10\x01\x12\x10\n\x0cPLUGIN_ERROR\x10\x02*a\n\x11PluginErrorReason\x12\x16\n\x12LUA_MEMORY_CEILING\x10\x01\x12\x1b\n\x17LUA_INSTRUCTION_CEILING\x10\x02\x12\x17\n\x13LUA_EXECUTION_ERROR\x10\x03')
 
 _PLUGINRUNSTATE = descriptor.EnumDescriptor(
   name='PluginRunState',
@@ -21,18 +21,18 @@ _PLUGINRUNSTATE = descriptor.EnumDescriptor(
   file=DESCRIPTOR,
   values=[
     descriptor.EnumValueDescriptor(
-      name='RUNNING', index=0, number=1,
+      name='PLUGIN_RUNNING', index=0, number=1,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='ERROR', index=1, number=2,
+      name='PLUGIN_ERROR', index=1, number=2,
       options=None,
       type=None),
   ],
   containing_type=None,
   options=None,
   serialized_start=1058,
-  serialized_end=1098,
+  serialized_end=1112,
 )
 
 
@@ -57,13 +57,13 @@ _PLUGINERRORREASON = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=1100,
-  serialized_end=1197,
+  serialized_start=1114,
+  serialized_end=1211,
 )
 
 
-RUNNING = 1
-ERROR = 2
+PLUGIN_RUNNING = 1
+PLUGIN_ERROR = 2
 LUA_MEMORY_CEILING = 1
 LUA_INSTRUCTION_CEILING = 2
 LUA_EXECUTION_ERROR = 3

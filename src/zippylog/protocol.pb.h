@@ -48,12 +48,12 @@ class StoreChangeStreamSetDeletedV1;
 class PluginStateV1;
 
 enum PluginRunState {
-  RUNNING = 1,
-  ERROR = 2
+  PLUGIN_RUNNING = 1,
+  PLUGIN_ERROR = 2
 };
 bool PluginRunState_IsValid(int value);
-const PluginRunState PluginRunState_MIN = RUNNING;
-const PluginRunState PluginRunState_MAX = ERROR;
+const PluginRunState PluginRunState_MIN = PLUGIN_RUNNING;
+const PluginRunState PluginRunState_MAX = PLUGIN_ERROR;
 const int PluginRunState_ARRAYSIZE = PluginRunState_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* PluginRunState_descriptor();

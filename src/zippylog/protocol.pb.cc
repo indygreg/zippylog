@@ -367,10 +367,11 @@ void protobuf_AddDesc_zippylog_2fprotocol_2eproto() {
     "ate\0228\n\nerror_code\030\003 \001(\0162$.zippylog.proto"
     "col.PluginErrorReason\022\025\n\rerror_message\030\004"
     " \001(\t\022\032\n\022lua_current_memory\030\005 \002(\r\022\026\n\016lua_"
-    "max_memory\030\006 \002(\r*(\n\016PluginRunState\022\013\n\007RU"
-    "NNING\020\001\022\t\n\005ERROR\020\002*a\n\021PluginErrorReason\022"
-    "\026\n\022LUA_MEMORY_CEILING\020\001\022\033\n\027LUA_INSTRUCTI"
-    "ON_CEILING\020\002\022\027\n\023LUA_EXECUTION_ERROR\020\003", 1197);
+    "max_memory\030\006 \002(\r*6\n\016PluginRunState\022\022\n\016PL"
+    "UGIN_RUNNING\020\001\022\020\n\014PLUGIN_ERROR\020\002*a\n\021Plug"
+    "inErrorReason\022\026\n\022LUA_MEMORY_CEILING\020\001\022\033\n"
+    "\027LUA_INSTRUCTION_CEILING\020\002\022\027\n\023LUA_EXECUT"
+    "ION_ERROR\020\003", 1211);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol.proto", &protobuf_RegisterTypes);
   StreamInfoV1::default_instance_ = new StreamInfoV1();

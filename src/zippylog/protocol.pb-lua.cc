@@ -42,9 +42,9 @@ int lua_protobuf_zippylog_protocol_open(lua_State *L)
     lua_newtable(L); // proxy table
     lua_newtable(L); // main table
     lua_pushnumber(L, 1);
-    lua_setfield(L, -2, "RUNNING");
+    lua_setfield(L, -2, "PLUGIN_RUNNING");
     lua_pushnumber(L, 2);
-    lua_setfield(L, -2, "ERROR");
+    lua_setfield(L, -2, "PLUGIN_ERROR");
     // define metatable on main table
     lua_newtable(L);
     lua_pushcfunction(L, lua_protobuf_enum_index);
