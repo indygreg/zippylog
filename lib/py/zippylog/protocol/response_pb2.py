@@ -13,7 +13,7 @@ import zippylog.protocol_pb2
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/protocol/response.proto',
   package='zippylog.protocol.response',
-  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\x1a\x17zippylog/protocol.proto\"\x08\n\x06PongV1\"\xc5\x01\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\x12 \n\x18max_stream_segment_bytes\x18\x04 \x01(\r\x12$\n\x1cmax_stream_segment_envelopes\x18\x05 \x01(\r\"4\n\x14StreamSegmentStartV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06offset\x18\x02 \x02(\x04\"P\n\x12StreamSegmentEndV1\x12\x0e\n\x06offset\x18\x01 \x02(\x04\x12\x12\n\nbytes_sent\x18\x02 \x02(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x02(\r\"2\n\x17SubscriptionAcceptAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x0b\n\x03ttl\x18\x02 \x02(\r\"(\n\x1aSubscriptionKeepaliveAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"!\n\x13SubscriptionStartV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\'\n\nWriteAckV1\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x02(\r\"#\n\x13PluginRegisterAckV1\x12\x0c\n\x04name\x18\x01 \x02(\t\"A\n\x0ePluginStatusV1\x12/\n\x05state\x18\x01 \x03(\x0b\x32 .zippylog.protocol.PluginStateV1\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\x86\x04\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12\x12\r\n\tLUA_ERROR\x10\x13\x12\x19\n\x15SUBSCRIPTION_REJECTED\x10\x14')
+  serialized_pb='\n zippylog/protocol/response.proto\x12\x1azippylog.protocol.response\x1a\x17zippylog/protocol.proto\"\x08\n\x06PongV1\"\xc5\x01\n\x16\x46\x65\x61tureSpecificationV1\x12!\n\x19supported_message_formats\x18\x01 \x03(\r\x12\x1f\n\x17supported_request_types\x18\x02 \x03(\r\x12\x1f\n\x17supported_request_names\x18\x03 \x03(\t\x12 \n\x18max_stream_segment_bytes\x18\x04 \x01(\r\x12$\n\x1cmax_stream_segment_envelopes\x18\x05 \x01(\r\"4\n\x14StreamSegmentStartV1\x12\x0c\n\x04path\x18\x01 \x02(\t\x12\x0e\n\x06offset\x18\x02 \x02(\x04\"P\n\x12StreamSegmentEndV1\x12\x0e\n\x06offset\x18\x01 \x02(\x04\x12\x12\n\nbytes_sent\x18\x02 \x02(\r\x12\x16\n\x0e\x65nvelopes_sent\x18\x03 \x02(\r\"2\n\x17SubscriptionAcceptAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x0b\n\x03ttl\x18\x02 \x02(\r\"(\n\x1aSubscriptionKeepaliveAckV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"!\n\x13SubscriptionStartV1\x12\n\n\x02id\x18\x01 \x02(\x0c\"\'\n\nWriteAckV1\x12\x19\n\x11\x65nvelopes_written\x18\x01 \x02(\r\"#\n\x13PluginRegisterAckV1\x12\x0c\n\x04name\x18\x01 \x02(\t\"%\n\x15PluginUnregisterAckV1\x12\x0c\n\x04name\x18\x01 \x02(\t\"A\n\x0ePluginStatusV1\x12/\n\x05state\x18\x01 \x03(\x0b\x32 .zippylog.protocol.PluginStateV1\"I\n\x05\x45rror\x12\x33\n\x04\x63ode\x18\x01 \x01(\x0e\x32%.zippylog.protocol.response.ErrorCode\x12\x0b\n\x03msg\x18\x02 \x01(\t*\x86\x04\n\tErrorCode\x12\x1a\n\x16\x45NVELOPE_PARSE_FAILURE\x10\x01\x12\x1d\n\x19INVALID_MESSAGE_NAMESPACE\x10\x02\x12\x18\n\x14UNKNOWN_REQUEST_TYPE\x10\x03\x12\x12\n\x0e\x45MPTY_ENVELOPE\x10\x04\x12\x18\n\x14MISSING_ENUMERATIONS\x10\x05\x12\x1b\n\x17REQUEST_NOT_IMPLEMENTED\x10\x06\x12\x0f\n\x0b\x45MPTY_FIELD\x10\x07\x12\x1b\n\x17\x46IELD_LENGTHS_DIFFERENT\x10\x08\x12\x19\n\x15INVALID_STREAM_OFFSET\x10\t\x12\x12\n\x0eINVALID_OFFSET\x10\n\x12\x12\n\x0ePATH_NOT_FOUND\x10\x0b\x12\x12\n\x0eLIMIT_EXCEEDED\x10\x0c\x12\"\n\x1eUNKNOWN_MESSAGE_FORMAT_VERSION\x10\r\x12\x10\n\x0cINVALID_PATH\x10\x0e\x12)\n%UNSUPPORTED_OPERATION_MESSAGE_VERSION\x10\x0f\x12\x11\n\rEMPTY_MESSAGE\x10\x10\x12\x18\n\x14PROTOCOL_NO_ENVELOPE\x10\x11\x12\x1c\n\x18GENERAL_ERROR_PROCESSING\x10\x12\x12\r\n\tLUA_ERROR\x10\x13\x12\x19\n\x15SUBSCRIPTION_REJECTED\x10\x14')
 
 _ERRORCODE = descriptor.EnumDescriptor(
   name='ErrorCode',
@@ -104,8 +104,8 @@ _ERRORCODE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=785,
-  serialized_end=1303,
+  serialized_start=824,
+  serialized_end=1342,
 )
 
 
@@ -433,6 +433,34 @@ _PLUGINREGISTERACKV1 = descriptor.Descriptor(
 )
 
 
+_PLUGINUNREGISTERACKV1 = descriptor.Descriptor(
+  name='PluginUnregisterAckV1',
+  full_name='zippylog.protocol.response.PluginUnregisterAckV1',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='name', full_name='zippylog.protocol.response.PluginUnregisterAckV1.name', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=642,
+  serialized_end=679,
+)
+
+
 _PLUGINSTATUSV1 = descriptor.Descriptor(
   name='PluginStatusV1',
   full_name='zippylog.protocol.response.PluginStatusV1',
@@ -456,8 +484,8 @@ _PLUGINSTATUSV1 = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=642,
-  serialized_end=707,
+  serialized_start=681,
+  serialized_end=746,
 )
 
 
@@ -491,8 +519,8 @@ _ERROR = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=709,
-  serialized_end=782,
+  serialized_start=748,
+  serialized_end=821,
 )
 
 _PLUGINSTATUSV1.fields_by_name['state'].message_type = zippylog.protocol_pb2._PLUGINSTATEV1
@@ -506,6 +534,7 @@ DESCRIPTOR.message_types_by_name['SubscriptionKeepaliveAckV1'] = _SUBSCRIPTIONKE
 DESCRIPTOR.message_types_by_name['SubscriptionStartV1'] = _SUBSCRIPTIONSTARTV1
 DESCRIPTOR.message_types_by_name['WriteAckV1'] = _WRITEACKV1
 DESCRIPTOR.message_types_by_name['PluginRegisterAckV1'] = _PLUGINREGISTERACKV1
+DESCRIPTOR.message_types_by_name['PluginUnregisterAckV1'] = _PLUGINUNREGISTERACKV1
 DESCRIPTOR.message_types_by_name['PluginStatusV1'] = _PLUGINSTATUSV1
 DESCRIPTOR.message_types_by_name['Error'] = _ERROR
 
@@ -581,6 +610,14 @@ class PluginRegisterAckV1(message.Message):
   ZIPPYLOG_ENUMERATION = 114
   # @@protoc_insertion_point(class_scope:zippylog.protocol.response.PluginRegisterAckV1)
 
+class PluginUnregisterAckV1(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _PLUGINUNREGISTERACKV1
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 117
+  # @@protoc_insertion_point(class_scope:zippylog.protocol.response.PluginUnregisterAckV1)
+
 class PluginStatusV1(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
   DESCRIPTOR = _PLUGINSTATUSV1
@@ -606,6 +643,7 @@ register_message(1, 110, 'zippylog.protocol.response_pb2', 'SubscriptionKeepaliv
 register_message(1, 107, 'zippylog.protocol.response_pb2', 'SubscriptionStartV1')
 register_message(1, 108, 'zippylog.protocol.response_pb2', 'WriteAckV1')
 register_message(1, 114, 'zippylog.protocol.response_pb2', 'PluginRegisterAckV1')
+register_message(1, 117, 'zippylog.protocol.response_pb2', 'PluginUnregisterAckV1')
 register_message(1, 115, 'zippylog.protocol.response_pb2', 'PluginStatusV1')
 register_message(1, 69, 'zippylog.protocol.response_pb2', 'Error')
 # @@protoc_insertion_point(module_scope)

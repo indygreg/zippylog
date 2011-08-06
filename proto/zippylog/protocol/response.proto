@@ -85,6 +85,12 @@ message PluginRegisterAckV1 {
 	required string name = 1;
 }
 
+// Response to an UnregisterPluginV1 request
+message PluginUnregisterAckV1 {
+	// Name of plugin that was unregistered
+	required string name = 1;
+}
+
 message PluginStatusV1 {
 	repeated zippylog.protocol.PluginStateV1 state = 1;
 }

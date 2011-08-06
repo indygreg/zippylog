@@ -55,6 +55,7 @@
       "zippylog.protocol.StoreChangeStreamAppended": 38, 
       "zippylog.device.streamer.ReceiveKeepalive": 87, 
       "zippylog.protocol.request.GetStreamV1": 77, 
+      "zippylog.protocol.response.PluginUnregisterAckV1": 117, 
       "zippylog.request_processor.InvalidMessageEnumeration": 11, 
       "zippylog.protocol.request.UnregisterPluginV1": 112, 
       "zippylog.protocol.request.RegisterPluginV1": 111, 
