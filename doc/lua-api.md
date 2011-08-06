@@ -69,7 +69,7 @@ Messages are protocol buffer message types. Therefore, their behavior is mostly 
 
 # Callback Functions
 
-In this section, we describe the various Lua functions that can be executed during processing. The section name is the function name that needs to exist in the global namespace for the capability to work.
+In this section, we describe the various Lua functions that can be executed during processing. The section name is the function name that needs to exist in the global namespace for the capability to work. Sections are in alphabetical order.
 
 ## zippylog_load_string(string)
 
