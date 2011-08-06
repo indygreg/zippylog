@@ -99,16 +99,30 @@ typedef void (EnvelopeCallback)(Client *, ::std::string const &, Envelope &, voi
 ///
 /// Stream segments have begin and end offsets and contain envelopes.
 /// Segments are returned from requests to obtain parts of streams.
+///
+/// @todo formalize API
 class ZIPPYLOG_EXPORT StreamSegment {
     public:
+        /// Construct a new segment instance
         StreamSegment();
         ~StreamSegment();
 
+        /// Set the path the segment is from
         bool SetPath(const ::std::string path);
+
+        /// Set the start offset of this segment
         bool SetStartOffset(uint64 offset);
+
+        /// Set the end offset of this segment
         bool SetEndOffset(uint64 offset);
+
+        /// Set number of bytes sent in this segment
         bool SetBytesSent(uint32 count);
+
+        /// Set number of envelopes sent in this segment
         bool SetEnvelopesSent(uint32 number);
+
+        /// Add an envelope to the segment
         bool AddEnvelope(Envelope e);
 
         /// Set fields in the stream segment from values in another instance
@@ -125,17 +139,32 @@ class ZIPPYLOG_EXPORT StreamSegment {
 /// Records what parts of a stream have been fetched
 class ZIPPYLOG_EXPORT StreamFetchState {
 public:
+    /// Construct a new state instance
     StreamFetchState() : end_offset(0) { }
 
+    /// The last offset we have fetched
     uint64 end_offset;
 };
 
+/// Records the state of stream fetches for multiple streams
 class ZIPPYLOG_EXPORT StoreMirrorState {
 public:
+    /// Construct a new state instance
     StoreMirrorState() { }
 
+    /// Set the state of a stream to the record specified
+    ///
+    /// @param path Path of stream
+    /// @param state Fetch state record
     void SetStreamState(::std::string const &path, StreamFetchState state);
 
+    /// Update the stream end offset for a specific path
+    ///
+    /// If a record does not exist for the specified stream, it will be
+    /// created automatically.
+    ///
+    /// @param path Path of stream to modify
+    /// @param offset Offset to set to
     void SetStreamEndOffset(::std::string const &path, uint64 offset);
 
     friend class Client;
