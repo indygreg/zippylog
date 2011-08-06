@@ -75,3 +75,48 @@ message StoreChangeStreamSetDeletedV1 {
     required string bucket = 1;
     required string stream_set = 2;
 }
+
+// Describes running state of a plugin
+enum PluginRunState {
+	// Plugin in running without any issues
+	RUNNING = 1;
+
+	// Plugin has entered an error state and is no longer running
+	ERROR = 2;
+}
+
+enum PluginErrorReason {
+	// Plugin has exceeded its Lua memory ceiling allowance
+	LUA_MEMORY_CEILING = 1;
+
+	// Plugin has exceeded its Lua instruction ceiling
+	LUA_INSTRUCTION_CEILING = 2;
+
+	// Lua has encountered an error when executing
+	LUA_EXECUTION_ERROR = 3;
+}
+
+// Describes the state of a single plugin
+message PluginStateV1 {
+	// Registered name of plugin being described
+	required string name = 1;
+
+	// Defines what state the plugin is in
+	required PluginRunState state = 2;
+
+	// Why the plugin is in an error state
+	//
+	// Only defined if state is ERROR
+	optional PluginErrorReason error_code = 3;
+
+	// String describing why the plugin is in an error state
+	//
+	// Only defined if state is ERROR
+	optional string error_message = 4;
+
+	// Current memory used by Lua interpreter, in bytes
+	required uint32 lua_current_memory = 5;
+
+	// Maximum memory used by Lua interpreter, in bytes
+	required uint32 lua_max_memory = 6;
+}

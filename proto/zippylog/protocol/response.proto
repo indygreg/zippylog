@@ -1,5 +1,7 @@
 // this file describes protocol buffer messages sent by the server to clients
 
+import "zippylog/protocol.proto";
+
 package zippylog.protocol.response;
 
 // response to a ping
@@ -75,6 +77,16 @@ message SubscriptionStartV1 {
 message WriteAckV1 {
     // number of envelopes written
     required uint32 envelopes_written = 1;
+}
+
+// Response to a RegisterPluginV1 request
+message PluginRegisterAckV1 {
+	// Name of plugin that was registered successfully
+	required string name = 1;
+}
+
+message PluginStatusV1 {
+	repeated zippylog.protocol.PluginStateV1 state = 1;
 }
 
 message Error {

@@ -1,5 +1,19 @@
-// This file describes protocol buffer messages sent by the client when
-// communicating with a remote server agent
+//  Copyright 2011 Gregory Szorc
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
+// This file defines the protocol buffer messages that constitute requests
+// in the zippylog protocol.
 //
 // Messages should have names of actions/verbs which describe the operation
 // being performed.
@@ -206,3 +220,10 @@ message UnregisterPluginV1 {
     required string name = 1;
 }
 
+// Obtain the status of plugins registered on the remote agent
+message GetPluginStatusV1 {
+	// Names of plugins to obtain information about
+	//
+	// If no elements, obtain information about all plugins
+	repeated string name = 1;
+}
