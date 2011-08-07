@@ -307,14 +307,14 @@ class Create : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -429,14 +429,14 @@ class Destroy : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -520,14 +520,14 @@ class RunStart : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -611,14 +611,14 @@ class RunFinish : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -702,14 +702,14 @@ class FlushOutputStreams : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -793,14 +793,14 @@ class ReceiveClientMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -884,14 +884,14 @@ class SendClientMessage : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string id = 1;
+  // required bytes id = 1;
   inline bool has_id() const;
   inline void clear_id();
   static const int kIdFieldNumber = 1;
   inline const ::std::string& id() const;
   inline void set_id(const ::std::string& value);
   inline void set_id(const char* value);
-  inline void set_id(const char* value, size_t size);
+  inline void set_id(const void* value, size_t size);
   inline ::std::string* mutable_id();
   inline ::std::string* release_id();
   
@@ -1232,7 +1232,7 @@ SubscriptionRecord::mutable_envelope_filter_enumeration_type() {
 
 // Create
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool Create::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1265,7 +1265,7 @@ inline void Create::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void Create::set_id(const char* value, size_t size) {
+inline void Create::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1396,7 +1396,7 @@ Create::mutable_listen_endpoint() {
 
 // Destroy
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool Destroy::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1429,7 +1429,7 @@ inline void Destroy::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void Destroy::set_id(const char* value, size_t size) {
+inline void Destroy::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1458,7 +1458,7 @@ inline ::std::string* Destroy::release_id() {
 
 // RunStart
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool RunStart::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1491,7 +1491,7 @@ inline void RunStart::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void RunStart::set_id(const char* value, size_t size) {
+inline void RunStart::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1520,7 +1520,7 @@ inline ::std::string* RunStart::release_id() {
 
 // RunFinish
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool RunFinish::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1553,7 +1553,7 @@ inline void RunFinish::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void RunFinish::set_id(const char* value, size_t size) {
+inline void RunFinish::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1582,7 +1582,7 @@ inline ::std::string* RunFinish::release_id() {
 
 // FlushOutputStreams
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool FlushOutputStreams::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1615,7 +1615,7 @@ inline void FlushOutputStreams::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void FlushOutputStreams::set_id(const char* value, size_t size) {
+inline void FlushOutputStreams::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1644,7 +1644,7 @@ inline ::std::string* FlushOutputStreams::release_id() {
 
 // ReceiveClientMessage
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool ReceiveClientMessage::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1677,7 +1677,7 @@ inline void ReceiveClientMessage::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void ReceiveClientMessage::set_id(const char* value, size_t size) {
+inline void ReceiveClientMessage::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;
@@ -1706,7 +1706,7 @@ inline ::std::string* ReceiveClientMessage::release_id() {
 
 // SendClientMessage
 
-// required string id = 1;
+// required bytes id = 1;
 inline bool SendClientMessage::has_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1739,7 +1739,7 @@ inline void SendClientMessage::set_id(const char* value) {
   }
   id_->assign(value);
 }
-inline void SendClientMessage::set_id(const char* value, size_t size) {
+inline void SendClientMessage::set_id(const void* value, size_t size) {
   set_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     id_ = new ::std::string;

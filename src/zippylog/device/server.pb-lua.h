@@ -146,7 +146,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_serialized(lu
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_set_id(lua_State *L);
@@ -205,7 +205,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Destroy_serialized(l
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Destroy_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Destroy_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Destroy_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Destroy_set_id(lua_State *L);
@@ -252,7 +252,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunStart_serialized(
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunStart_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunStart_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunStart_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunStart_set_id(lua_State *L);
@@ -299,7 +299,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_serialized
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_set_id(lua_State *L);
@@ -346,7 +346,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_s
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_set_id(lua_State *L);
@@ -393,7 +393,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_set_id(lua_State *L);
@@ -440,7 +440,7 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_se
 // clear all fields in the message
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_clear(lua_State *L);
 
-// required string id = 1
+// required bytes id = 1
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_clear_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_get_id(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_set_id(lua_State *L);
