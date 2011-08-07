@@ -89,6 +89,7 @@ include_directories(BEFORE src)
 set(libzippylog_sources
     src/zippylog/platform.cpp # first b/c most likely to blow up compiler
     src/zippylog/client.cpp
+    src/zippylog/device/device.cpp
     src/zippylog/device/persisted_state_reactor.cpp
     src/zippylog/device/server.cpp
     src/zippylog/device/server.pb.cc

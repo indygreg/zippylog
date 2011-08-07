@@ -18,12 +18,6 @@ namespace zippylogd {
 
 namespace {
 
-const ::google::protobuf::Descriptor* BrokerStartup_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  BrokerStartup_reflection_ = NULL;
-const ::google::protobuf::Descriptor* BrokerShutdown_descriptor_ = NULL;
-const ::google::protobuf::internal::GeneratedMessageReflection*
-  BrokerShutdown_reflection_ = NULL;
 const ::google::protobuf::Descriptor* BrokerReceiveClientMessage_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   BrokerReceiveClientMessage_reflection_ = NULL;
@@ -46,39 +40,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "zippylog/zippylogd.proto");
   GOOGLE_CHECK(file != NULL);
-  BrokerStartup_descriptor_ = file->message_type(0);
-  static const int BrokerStartup_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerStartup, id_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerStartup, store_path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerStartup, listen_endpoints_),
-  };
-  BrokerStartup_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      BrokerStartup_descriptor_,
-      BrokerStartup::default_instance_,
-      BrokerStartup_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerStartup, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerStartup, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(BrokerStartup));
-  BrokerShutdown_descriptor_ = file->message_type(1);
-  static const int BrokerShutdown_offsets_[1] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerShutdown, id_),
-  };
-  BrokerShutdown_reflection_ =
-    new ::google::protobuf::internal::GeneratedMessageReflection(
-      BrokerShutdown_descriptor_,
-      BrokerShutdown::default_instance_,
-      BrokerShutdown_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerShutdown, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerShutdown, _unknown_fields_),
-      -1,
-      ::google::protobuf::DescriptorPool::generated_pool(),
-      ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(BrokerShutdown));
-  BrokerReceiveClientMessage_descriptor_ = file->message_type(2);
+  BrokerReceiveClientMessage_descriptor_ = file->message_type(0);
   static const int BrokerReceiveClientMessage_offsets_[1] = {
   };
   BrokerReceiveClientMessage_reflection_ =
@@ -92,7 +54,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BrokerReceiveClientMessage));
-  BrokerFlushOutputStreams_descriptor_ = file->message_type(3);
+  BrokerFlushOutputStreams_descriptor_ = file->message_type(1);
   static const int BrokerFlushOutputStreams_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BrokerFlushOutputStreams, id_),
   };
@@ -107,7 +69,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(BrokerFlushOutputStreams));
-  StoreWatcherStartup_descriptor_ = file->message_type(4);
+  StoreWatcherStartup_descriptor_ = file->message_type(2);
   static const int StoreWatcherStartup_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherStartup, id_),
   };
@@ -122,7 +84,7 @@ void protobuf_AssignDesc_zippylog_2fzippylogd_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StoreWatcherStartup));
-  StoreWatcherShutdown_descriptor_ = file->message_type(5);
+  StoreWatcherShutdown_descriptor_ = file->message_type(3);
   static const int StoreWatcherShutdown_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StoreWatcherShutdown, id_),
   };
@@ -150,10 +112,6 @@ inline void protobuf_AssignDescriptorsOnce() {
 void protobuf_RegisterTypes(const ::std::string&) {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    BrokerStartup_descriptor_, &BrokerStartup::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    BrokerShutdown_descriptor_, &BrokerShutdown::default_instance());
-  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     BrokerReceiveClientMessage_descriptor_, &BrokerReceiveClientMessage::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     BrokerFlushOutputStreams_descriptor_, &BrokerFlushOutputStreams::default_instance());
@@ -166,10 +124,6 @@ void protobuf_RegisterTypes(const ::std::string&) {
 }  // namespace
 
 void protobuf_ShutdownFile_zippylog_2fzippylogd_2eproto() {
-  delete BrokerStartup::default_instance_;
-  delete BrokerStartup_reflection_;
-  delete BrokerShutdown::default_instance_;
-  delete BrokerShutdown_reflection_;
   delete BrokerReceiveClientMessage::default_instance_;
   delete BrokerReceiveClientMessage_reflection_;
   delete BrokerFlushOutputStreams::default_instance_;
@@ -188,23 +142,16 @@ void protobuf_AddDesc_zippylog_2fzippylogd_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\030zippylog/zippylogd.proto\022\022zippylog.zip"
-    "pylogd\"I\n\rBrokerStartup\022\n\n\002id\030\001 \001(\014\022\022\n\ns"
-    "tore_path\030\002 \001(\t\022\030\n\020listen_endpoints\030\003 \003("
-    "\t\"\034\n\016BrokerShutdown\022\n\n\002id\030\001 \001(\014\"\034\n\032Broke"
-    "rReceiveClientMessage\"&\n\030BrokerFlushOutp"
-    "utStreams\022\n\n\002id\030\001 \001(\014\"!\n\023StoreWatcherSta"
-    "rtup\022\n\n\002id\030\001 \001(\014\"\"\n\024StoreWatcherShutdown"
-    "\022\n\n\002id\030\001 \001(\014", 292);
+    "pylogd\"\034\n\032BrokerReceiveClientMessage\"&\n\030"
+    "BrokerFlushOutputStreams\022\n\n\002id\030\001 \001(\014\"!\n\023"
+    "StoreWatcherStartup\022\n\n\002id\030\001 \001(\014\"\"\n\024Store"
+    "WatcherShutdown\022\n\n\002id\030\001 \001(\014", 187);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/zippylogd.proto", &protobuf_RegisterTypes);
-  BrokerStartup::default_instance_ = new BrokerStartup();
-  BrokerShutdown::default_instance_ = new BrokerShutdown();
   BrokerReceiveClientMessage::default_instance_ = new BrokerReceiveClientMessage();
   BrokerFlushOutputStreams::default_instance_ = new BrokerFlushOutputStreams();
   StoreWatcherStartup::default_instance_ = new StoreWatcherStartup();
   StoreWatcherShutdown::default_instance_ = new StoreWatcherShutdown();
-  BrokerStartup::default_instance_->InitAsDefaultInstance();
-  BrokerShutdown::default_instance_->InitAsDefaultInstance();
   BrokerReceiveClientMessage::default_instance_->InitAsDefaultInstance();
   BrokerFlushOutputStreams::default_instance_->InitAsDefaultInstance();
   StoreWatcherStartup::default_instance_->InitAsDefaultInstance();
@@ -218,540 +165,6 @@ struct StaticDescriptorInitializer_zippylog_2fzippylogd_2eproto {
     protobuf_AddDesc_zippylog_2fzippylogd_2eproto();
   }
 } static_descriptor_initializer_zippylog_2fzippylogd_2eproto_;
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int BrokerStartup::kIdFieldNumber;
-const int BrokerStartup::kStorePathFieldNumber;
-const int BrokerStartup::kListenEndpointsFieldNumber;
-#endif  // !_MSC_VER
-
-BrokerStartup::BrokerStartup()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void BrokerStartup::InitAsDefaultInstance() {
-}
-
-BrokerStartup::BrokerStartup(const BrokerStartup& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void BrokerStartup::SharedCtor() {
-  _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  store_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-BrokerStartup::~BrokerStartup() {
-  SharedDtor();
-}
-
-void BrokerStartup::SharedDtor() {
-  if (id_ != &::google::protobuf::internal::kEmptyString) {
-    delete id_;
-  }
-  if (store_path_ != &::google::protobuf::internal::kEmptyString) {
-    delete store_path_;
-  }
-  if (this != default_instance_) {
-  }
-}
-
-void BrokerStartup::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* BrokerStartup::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return BrokerStartup_descriptor_;
-}
-
-const BrokerStartup& BrokerStartup::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
-}
-
-BrokerStartup* BrokerStartup::default_instance_ = NULL;
-
-BrokerStartup* BrokerStartup::New() const {
-  return new BrokerStartup;
-}
-
-void BrokerStartup::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_id()) {
-      if (id_ != &::google::protobuf::internal::kEmptyString) {
-        id_->clear();
-      }
-    }
-    if (has_store_path()) {
-      if (store_path_ != &::google::protobuf::internal::kEmptyString) {
-        store_path_->clear();
-      }
-    }
-  }
-  listen_endpoints_.Clear();
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool BrokerStartup::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(18)) goto parse_store_path;
-        break;
-      }
-      
-      // optional string store_path = 2;
-      case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_store_path:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_store_path()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->store_path().data(), this->store_path().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_listen_endpoints;
-        break;
-      }
-      
-      // repeated string listen_endpoints = 3;
-      case 3: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_listen_endpoints:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_listen_endpoints()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->listen_endpoints(0).data(), this->listen_endpoints(0).length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_listen_endpoints;
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-      
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void BrokerStartup::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
-  }
-  
-  // optional string store_path = 2;
-  if (has_store_path()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->store_path().data(), this->store_path().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->store_path(), output);
-  }
-  
-  // repeated string listen_endpoints = 3;
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
-  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-    this->listen_endpoints(i).data(), this->listen_endpoints(i).length(),
-    ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->listen_endpoints(i), output);
-  }
-  
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* BrokerStartup::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
-  if (has_id()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
-  }
-  
-  // optional string store_path = 2;
-  if (has_store_path()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->store_path().data(), this->store_path().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->store_path(), target);
-  }
-  
-  // repeated string listen_endpoints = 3;
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->listen_endpoints(i).data(), this->listen_endpoints(i).length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(3, this->listen_endpoints(i), target);
-  }
-  
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int BrokerStartup::ByteSize() const {
-  int total_size = 0;
-  
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
-    if (has_id()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->id());
-    }
-    
-    // optional string store_path = 2;
-    if (has_store_path()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->store_path());
-    }
-    
-  }
-  // repeated string listen_endpoints = 3;
-  total_size += 1 * this->listen_endpoints_size();
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
-    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->listen_endpoints(i));
-  }
-  
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void BrokerStartup::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const BrokerStartup* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const BrokerStartup*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void BrokerStartup::MergeFrom(const BrokerStartup& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  listen_endpoints_.MergeFrom(from.listen_endpoints_);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
-    }
-    if (from.has_store_path()) {
-      set_store_path(from.store_path());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void BrokerStartup::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void BrokerStartup::CopyFrom(const BrokerStartup& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool BrokerStartup::IsInitialized() const {
-  
-  return true;
-}
-
-void BrokerStartup::Swap(BrokerStartup* other) {
-  if (other != this) {
-    std::swap(id_, other->id_);
-    std::swap(store_path_, other->store_path_);
-    listen_endpoints_.Swap(&other->listen_endpoints_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata BrokerStartup::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = BrokerStartup_descriptor_;
-  metadata.reflection = BrokerStartup_reflection_;
-  return metadata;
-}
-
-
-// ===================================================================
-
-#ifndef _MSC_VER
-const int BrokerShutdown::kIdFieldNumber;
-#endif  // !_MSC_VER
-
-BrokerShutdown::BrokerShutdown()
-  : ::google::protobuf::Message() {
-  SharedCtor();
-}
-
-void BrokerShutdown::InitAsDefaultInstance() {
-}
-
-BrokerShutdown::BrokerShutdown(const BrokerShutdown& from)
-  : ::google::protobuf::Message() {
-  SharedCtor();
-  MergeFrom(from);
-}
-
-void BrokerShutdown::SharedCtor() {
-  _cached_size_ = 0;
-  id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-}
-
-BrokerShutdown::~BrokerShutdown() {
-  SharedDtor();
-}
-
-void BrokerShutdown::SharedDtor() {
-  if (id_ != &::google::protobuf::internal::kEmptyString) {
-    delete id_;
-  }
-  if (this != default_instance_) {
-  }
-}
-
-void BrokerShutdown::SetCachedSize(int size) const {
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-}
-const ::google::protobuf::Descriptor* BrokerShutdown::descriptor() {
-  protobuf_AssignDescriptorsOnce();
-  return BrokerShutdown_descriptor_;
-}
-
-const BrokerShutdown& BrokerShutdown::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fzippylogd_2eproto();  return *default_instance_;
-}
-
-BrokerShutdown* BrokerShutdown::default_instance_ = NULL;
-
-BrokerShutdown* BrokerShutdown::New() const {
-  return new BrokerShutdown;
-}
-
-void BrokerShutdown::Clear() {
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_id()) {
-      if (id_ != &::google::protobuf::internal::kEmptyString) {
-        id_->clear();
-      }
-    }
-  }
-  ::memset(_has_bits_, 0, sizeof(_has_bits_));
-  mutable_unknown_fields()->Clear();
-}
-
-bool BrokerShutdown::MergePartialFromCodedStream(
-    ::google::protobuf::io::CodedInputStream* input) {
-#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
-  ::google::protobuf::uint32 tag;
-  while ((tag = input->ReadTag()) != 0) {
-    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional bytes id = 1;
-      case 1: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_id()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectAtEnd()) return true;
-        break;
-      }
-      
-      default: {
-      handle_uninterpreted:
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
-          return true;
-        }
-        DO_(::google::protobuf::internal::WireFormat::SkipField(
-              input, tag, mutable_unknown_fields()));
-        break;
-      }
-    }
-  }
-  return true;
-#undef DO_
-}
-
-void BrokerShutdown::SerializeWithCachedSizes(
-    ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional bytes id = 1;
-  if (has_id()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      1, this->id(), output);
-  }
-  
-  if (!unknown_fields().empty()) {
-    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
-        unknown_fields(), output);
-  }
-}
-
-::google::protobuf::uint8* BrokerShutdown::SerializeWithCachedSizesToArray(
-    ::google::protobuf::uint8* target) const {
-  // optional bytes id = 1;
-  if (has_id()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        1, this->id(), target);
-  }
-  
-  if (!unknown_fields().empty()) {
-    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
-        unknown_fields(), target);
-  }
-  return target;
-}
-
-int BrokerShutdown::ByteSize() const {
-  int total_size = 0;
-  
-  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional bytes id = 1;
-    if (has_id()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->id());
-    }
-    
-  }
-  if (!unknown_fields().empty()) {
-    total_size +=
-      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
-        unknown_fields());
-  }
-  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
-  _cached_size_ = total_size;
-  GOOGLE_SAFE_CONCURRENT_WRITES_END();
-  return total_size;
-}
-
-void BrokerShutdown::MergeFrom(const ::google::protobuf::Message& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  const BrokerShutdown* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const BrokerShutdown*>(
-      &from);
-  if (source == NULL) {
-    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
-  } else {
-    MergeFrom(*source);
-  }
-}
-
-void BrokerShutdown::MergeFrom(const BrokerShutdown& from) {
-  GOOGLE_CHECK_NE(&from, this);
-  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_id()) {
-      set_id(from.id());
-    }
-  }
-  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
-}
-
-void BrokerShutdown::CopyFrom(const ::google::protobuf::Message& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void BrokerShutdown::CopyFrom(const BrokerShutdown& from) {
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool BrokerShutdown::IsInitialized() const {
-  
-  return true;
-}
-
-void BrokerShutdown::Swap(BrokerShutdown* other) {
-  if (other != this) {
-    std::swap(id_, other->id_);
-    std::swap(_has_bits_[0], other->_has_bits_[0]);
-    _unknown_fields_.Swap(&other->_unknown_fields_);
-    std::swap(_cached_size_, other->_cached_size_);
-  }
-}
-
-::google::protobuf::Metadata BrokerShutdown::GetMetadata() const {
-  protobuf_AssignDescriptorsOnce();
-  ::google::protobuf::Metadata metadata;
-  metadata.descriptor = BrokerShutdown_descriptor_;
-  metadata.reflection = BrokerShutdown_reflection_;
-  return metadata;
-}
 
 
 // ===================================================================
@@ -1554,22 +967,6 @@ void StoreWatcherShutdown::Swap(StoreWatcherShutdown* other) {
 }
 
 
-
-bool BrokerStartup::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BrokerStartup::add_to_envelope(::zippylog::Envelope &envelope) {
-    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BrokerShutdown::add_to_envelope(::zippylog::Envelope *envelope) {
-    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
-}
-
-bool BrokerShutdown::add_to_envelope(::zippylog::Envelope &envelope) {
-    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
-}
 
 bool BrokerReceiveClientMessage::add_to_envelope(::zippylog::Envelope *envelope) {
     return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);

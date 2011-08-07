@@ -65,6 +65,10 @@ int lua_protobuf_zippylog_device_server_open(lua_State *L)
     luaL_Reg funcs [] = { { NULL, NULL } };
     luaL_register(L, "protobuf.zippylog.device.server", funcs);
     lua_protobuf_zippylog_device_server_SubscriptionRecord_open(L);
+    lua_protobuf_zippylog_device_server_Create_open(L);
+    lua_protobuf_zippylog_device_server_Destroy_open(L);
+    lua_protobuf_zippylog_device_server_RunStart_open(L);
+    lua_protobuf_zippylog_device_server_RunFinish_open(L);
     return 1;
 }
 
@@ -626,5 +630,760 @@ int lua_protobuf_zippylog_device_server_SubscriptionRecord_size_envelope_filter_
     ::zippylog::device::server::SubscriptionRecord *m = (::zippylog::device::server::SubscriptionRecord *)mud->msg;
     int size = m->envelope_filter_enumeration_type_size();
     lua_pushinteger(L, size);
+    return 1;
+}
+
+static const struct luaL_Reg Create_functions [] = {
+    {"new", lua_protobuf_zippylog_device_server_Create_new},
+    {"parsefromstring", lua_protobuf_zippylog_device_server_Create_parsefromstring},
+    {NULL, NULL}
+};
+
+static const struct luaL_Reg Create_methods [] = {
+    {"serialized", lua_protobuf_zippylog_device_server_Create_serialized},
+    {"clear", lua_protobuf_zippylog_device_server_Create_clear},
+    {"__gc", lua_protobuf_zippylog_device_server_Create_gc},
+    {"clear_id", lua_protobuf_zippylog_device_server_Create_clear_id},
+    {"get_id", lua_protobuf_zippylog_device_server_Create_get_id},
+    {"set_id", lua_protobuf_zippylog_device_server_Create_set_id},
+    {"has_id", lua_protobuf_zippylog_device_server_Create_has_id},
+    {"clear_store_path", lua_protobuf_zippylog_device_server_Create_clear_store_path},
+    {"get_store_path", lua_protobuf_zippylog_device_server_Create_get_store_path},
+    {"set_store_path", lua_protobuf_zippylog_device_server_Create_set_store_path},
+    {"has_store_path", lua_protobuf_zippylog_device_server_Create_has_store_path},
+    {"clear_listen_endpoints", lua_protobuf_zippylog_device_server_Create_clear_listen_endpoints},
+    {"get_listen_endpoints", lua_protobuf_zippylog_device_server_Create_get_listen_endpoints},
+    {"set_listen_endpoints", lua_protobuf_zippylog_device_server_Create_set_listen_endpoints},
+    {"size_listen_endpoints", lua_protobuf_zippylog_device_server_Create_size_listen_endpoints},
+    {NULL, NULL},
+};
+
+int lua_protobuf_zippylog_device_server_Create_open(lua_State *L)
+{
+    luaL_newmetatable(L, "protobuf_.zippylog.device.server.Create");
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    luaL_register(L, NULL, Create_methods);
+    luaL_register(L, "protobuf.zippylog.device.server.Create", Create_functions);
+    lua_pop(L, 1);
+    return 1;
+}
+
+
+bool lua_protobuf_zippylog_device_server_Create_pushcopy(lua_State *L, const ::zippylog::device::server::Create &from)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::Create(from);
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Create");
+    lua_setmetatable(L, -2);
+    return true;
+}
+bool lua_protobuf_zippylog_device_server_Create_pushreference(lua_State *L, ::zippylog::device::server::Create *msg, lua_protobuf_gc_callback f, void *data)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = false;
+    ud->msg = msg;
+    ud->gc_callback = f;
+    ud->callback_data = data;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Create");
+    lua_setmetatable(L, -2);
+    return true;
+}
+int lua_protobuf_zippylog_device_server_Create_new(lua_State *L)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::Create();
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Create");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_parsefromstring(lua_State *L)
+{
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::device::server::Create * msg = new ::zippylog::device::server::Create();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Create");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_Create_gc(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    if (mud->lua_owns) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_Create_clear(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    m->Clear();
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_Create_serialized(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    string s;
+    if (!m->SerializeToString(&s)) {
+        return luaL_error(L, "error serializing message");
+    }
+    lua_pushlstring(L, s.c_str(), s.length());
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_Create_clear_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    m->clear_id();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_get_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    string s = m->id();
+    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_set_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_id();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_id(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_has_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    lua_pushboolean(L, m->has_id());
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_clear_store_path(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    m->clear_store_path();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_get_store_path(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    string s = m->store_path();
+    m->has_store_path() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_set_store_path(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_store_path();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_store_path(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_has_store_path(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    lua_pushboolean(L, m->has_store_path());
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_clear_listen_endpoints(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    m->clear_listen_endpoints();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_get_listen_endpoints(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    if (lua_gettop(L) != 2) {
+        return luaL_error(L, "missing required numeric argument");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    if (index < 1 || index > m->listen_endpoints_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->listen_endpoints_size());
+    }
+    string s = m->listen_endpoints(index - 1);
+    lua_pushlstring(L, s.c_str(), s.size());
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Create_set_listen_endpoints(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    if (lua_gettop(L) != 3) {
+            return luaL_error(L, "required 2 arguments not passed to function");
+    }
+    lua_Integer index = luaL_checkinteger(L, 2);
+    int current_size = m->listen_endpoints_size();
+    if (index < 1 || index > current_size + 1) {
+        return luaL_error(L, "index must be between 1 and %d", current_size + 1);
+    }
+    if (lua_isnil(L, 3)) {
+        return luaL_error(L, "cannot assign nil to repeated fields (yet)");
+    }
+    size_t length = 0;
+    const char *s = luaL_checklstring(L, 3, &length);
+    if (index == current_size + 1) {
+        m->add_listen_endpoints(s, length);
+    }
+    else {
+        m->set_listen_endpoints(index-1, s, length);
+    }
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Create_size_listen_endpoints(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
+    ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
+    int size = m->listen_endpoints_size();
+    lua_pushinteger(L, size);
+    return 1;
+}
+
+static const struct luaL_Reg Destroy_functions [] = {
+    {"new", lua_protobuf_zippylog_device_server_Destroy_new},
+    {"parsefromstring", lua_protobuf_zippylog_device_server_Destroy_parsefromstring},
+    {NULL, NULL}
+};
+
+static const struct luaL_Reg Destroy_methods [] = {
+    {"serialized", lua_protobuf_zippylog_device_server_Destroy_serialized},
+    {"clear", lua_protobuf_zippylog_device_server_Destroy_clear},
+    {"__gc", lua_protobuf_zippylog_device_server_Destroy_gc},
+    {"clear_id", lua_protobuf_zippylog_device_server_Destroy_clear_id},
+    {"get_id", lua_protobuf_zippylog_device_server_Destroy_get_id},
+    {"set_id", lua_protobuf_zippylog_device_server_Destroy_set_id},
+    {"has_id", lua_protobuf_zippylog_device_server_Destroy_has_id},
+    {NULL, NULL},
+};
+
+int lua_protobuf_zippylog_device_server_Destroy_open(lua_State *L)
+{
+    luaL_newmetatable(L, "protobuf_.zippylog.device.server.Destroy");
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    luaL_register(L, NULL, Destroy_methods);
+    luaL_register(L, "protobuf.zippylog.device.server.Destroy", Destroy_functions);
+    lua_pop(L, 1);
+    return 1;
+}
+
+
+bool lua_protobuf_zippylog_device_server_Destroy_pushcopy(lua_State *L, const ::zippylog::device::server::Destroy &from)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::Destroy(from);
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Destroy");
+    lua_setmetatable(L, -2);
+    return true;
+}
+bool lua_protobuf_zippylog_device_server_Destroy_pushreference(lua_State *L, ::zippylog::device::server::Destroy *msg, lua_protobuf_gc_callback f, void *data)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = false;
+    ud->msg = msg;
+    ud->gc_callback = f;
+    ud->callback_data = data;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Destroy");
+    lua_setmetatable(L, -2);
+    return true;
+}
+int lua_protobuf_zippylog_device_server_Destroy_new(lua_State *L)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::Destroy();
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Destroy");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Destroy_parsefromstring(lua_State *L)
+{
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::device::server::Destroy * msg = new ::zippylog::device::server::Destroy();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.Destroy");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_Destroy_gc(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    if (mud->lua_owns) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_Destroy_clear(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    m->Clear();
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_Destroy_serialized(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    string s;
+    if (!m->SerializeToString(&s)) {
+        return luaL_error(L, "error serializing message");
+    }
+    lua_pushlstring(L, s.c_str(), s.length());
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_Destroy_clear_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    m->clear_id();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Destroy_get_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    string s = m->id();
+    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_Destroy_set_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_id();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_id(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_Destroy_has_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Destroy");
+    ::zippylog::device::server::Destroy *m = (::zippylog::device::server::Destroy *)mud->msg;
+    lua_pushboolean(L, m->has_id());
+    return 1;
+}
+
+static const struct luaL_Reg RunStart_functions [] = {
+    {"new", lua_protobuf_zippylog_device_server_RunStart_new},
+    {"parsefromstring", lua_protobuf_zippylog_device_server_RunStart_parsefromstring},
+    {NULL, NULL}
+};
+
+static const struct luaL_Reg RunStart_methods [] = {
+    {"serialized", lua_protobuf_zippylog_device_server_RunStart_serialized},
+    {"clear", lua_protobuf_zippylog_device_server_RunStart_clear},
+    {"__gc", lua_protobuf_zippylog_device_server_RunStart_gc},
+    {"clear_id", lua_protobuf_zippylog_device_server_RunStart_clear_id},
+    {"get_id", lua_protobuf_zippylog_device_server_RunStart_get_id},
+    {"set_id", lua_protobuf_zippylog_device_server_RunStart_set_id},
+    {"has_id", lua_protobuf_zippylog_device_server_RunStart_has_id},
+    {NULL, NULL},
+};
+
+int lua_protobuf_zippylog_device_server_RunStart_open(lua_State *L)
+{
+    luaL_newmetatable(L, "protobuf_.zippylog.device.server.RunStart");
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    luaL_register(L, NULL, RunStart_methods);
+    luaL_register(L, "protobuf.zippylog.device.server.RunStart", RunStart_functions);
+    lua_pop(L, 1);
+    return 1;
+}
+
+
+bool lua_protobuf_zippylog_device_server_RunStart_pushcopy(lua_State *L, const ::zippylog::device::server::RunStart &from)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::RunStart(from);
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunStart");
+    lua_setmetatable(L, -2);
+    return true;
+}
+bool lua_protobuf_zippylog_device_server_RunStart_pushreference(lua_State *L, ::zippylog::device::server::RunStart *msg, lua_protobuf_gc_callback f, void *data)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = false;
+    ud->msg = msg;
+    ud->gc_callback = f;
+    ud->callback_data = data;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunStart");
+    lua_setmetatable(L, -2);
+    return true;
+}
+int lua_protobuf_zippylog_device_server_RunStart_new(lua_State *L)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::RunStart();
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunStart");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_RunStart_parsefromstring(lua_State *L)
+{
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::device::server::RunStart * msg = new ::zippylog::device::server::RunStart();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunStart");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_RunStart_gc(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    if (mud->lua_owns) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_RunStart_clear(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    m->Clear();
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_RunStart_serialized(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    string s;
+    if (!m->SerializeToString(&s)) {
+        return luaL_error(L, "error serializing message");
+    }
+    lua_pushlstring(L, s.c_str(), s.length());
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_RunStart_clear_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    m->clear_id();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_RunStart_get_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    string s = m->id();
+    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_RunStart_set_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_id();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_id(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_RunStart_has_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunStart");
+    ::zippylog::device::server::RunStart *m = (::zippylog::device::server::RunStart *)mud->msg;
+    lua_pushboolean(L, m->has_id());
+    return 1;
+}
+
+static const struct luaL_Reg RunFinish_functions [] = {
+    {"new", lua_protobuf_zippylog_device_server_RunFinish_new},
+    {"parsefromstring", lua_protobuf_zippylog_device_server_RunFinish_parsefromstring},
+    {NULL, NULL}
+};
+
+static const struct luaL_Reg RunFinish_methods [] = {
+    {"serialized", lua_protobuf_zippylog_device_server_RunFinish_serialized},
+    {"clear", lua_protobuf_zippylog_device_server_RunFinish_clear},
+    {"__gc", lua_protobuf_zippylog_device_server_RunFinish_gc},
+    {"clear_id", lua_protobuf_zippylog_device_server_RunFinish_clear_id},
+    {"get_id", lua_protobuf_zippylog_device_server_RunFinish_get_id},
+    {"set_id", lua_protobuf_zippylog_device_server_RunFinish_set_id},
+    {"has_id", lua_protobuf_zippylog_device_server_RunFinish_has_id},
+    {NULL, NULL},
+};
+
+int lua_protobuf_zippylog_device_server_RunFinish_open(lua_State *L)
+{
+    luaL_newmetatable(L, "protobuf_.zippylog.device.server.RunFinish");
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+    luaL_register(L, NULL, RunFinish_methods);
+    luaL_register(L, "protobuf.zippylog.device.server.RunFinish", RunFinish_functions);
+    lua_pop(L, 1);
+    return 1;
+}
+
+
+bool lua_protobuf_zippylog_device_server_RunFinish_pushcopy(lua_State *L, const ::zippylog::device::server::RunFinish &from)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::RunFinish(from);
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunFinish");
+    lua_setmetatable(L, -2);
+    return true;
+}
+bool lua_protobuf_zippylog_device_server_RunFinish_pushreference(lua_State *L, ::zippylog::device::server::RunFinish *msg, lua_protobuf_gc_callback f, void *data)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = false;
+    ud->msg = msg;
+    ud->gc_callback = f;
+    ud->callback_data = data;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunFinish");
+    lua_setmetatable(L, -2);
+    return true;
+}
+int lua_protobuf_zippylog_device_server_RunFinish_new(lua_State *L)
+{
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = new ::zippylog::device::server::RunFinish();
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunFinish");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_RunFinish_parsefromstring(lua_State *L)
+{
+    if (lua_gettop(L) != 1) {
+        return luaL_error(L, "parsefromstring() requires a string argument. none given");
+    }
+    size_t len;
+    const char *s = luaL_checklstring(L, -1, &len);
+    ::zippylog::device::server::RunFinish * msg = new ::zippylog::device::server::RunFinish();
+    if (!msg->ParseFromArray((const void *)s, len)) {
+        return luaL_error(L, "error deserializing message");
+    }
+    msg_udata * ud = (msg_udata *)lua_newuserdata(L, sizeof(msg_udata));
+    ud->lua_owns = true;
+    ud->msg = msg;
+    ud->gc_callback = NULL;
+    ud->callback_data = NULL;
+    luaL_getmetatable(L, "protobuf_.zippylog.device.server.RunFinish");
+    lua_setmetatable(L, -2);
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_RunFinish_gc(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    if (mud->lua_owns) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    if (mud->gc_callback && mud->gc_callback(m, mud->callback_data)) {
+        delete mud->msg;
+        mud->msg = NULL;
+        return 0;
+    }
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_RunFinish_clear(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    m->Clear();
+    return 0;
+}
+int lua_protobuf_zippylog_device_server_RunFinish_serialized(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    string s;
+    if (!m->SerializeToString(&s)) {
+        return luaL_error(L, "error serializing message");
+    }
+    lua_pushlstring(L, s.c_str(), s.length());
+    return 1;
+}
+int lua_protobuf_zippylog_device_server_RunFinish_clear_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    m->clear_id();
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_RunFinish_get_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    string s = m->id();
+    m->has_id() ? lua_pushlstring(L, s.c_str(), s.size()) : lua_pushnil(L);
+    return 1;
+}
+
+int lua_protobuf_zippylog_device_server_RunFinish_set_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    if (lua_isnil(L, 2)) {
+        m->clear_id();
+        return 0;
+    }
+    
+    if (!lua_isstring(L, 2)) return luaL_error(L, "passed value is not a string");
+    size_t len;
+    const char *s = lua_tolstring(L, 2, &len);
+    if (!s) {
+        luaL_error(L, "could not obtain string on stack. weird");
+    }
+    m->set_id(s, len);
+    return 0;
+}
+
+int lua_protobuf_zippylog_device_server_RunFinish_has_id(lua_State *L)
+{
+    msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.RunFinish");
+    ::zippylog::device::server::RunFinish *m = (::zippylog::device::server::RunFinish *)mud->msg;
+    lua_pushboolean(L, m->has_id());
     return 1;
 }

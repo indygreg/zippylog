@@ -17,8 +17,8 @@
 package zippylog.device.server;
 
 enum SubscriptionType {
-	ENVELOPE = 1;
-	STORE_CHANGE = 2;
+    ENVELOPE = 1;
+    STORE_CHANGE = 2;
 }
 
 // Represents a subscription request
@@ -26,25 +26,47 @@ enum SubscriptionType {
 // This is constructed in the ServerRequestProcessor device and passed to
 // a PersistedStateReactor to notify of a new subscription.
 message SubscriptionRecord {
-	// Subscription ID
-	required string id = 1;
+    // Subscription ID
+    required string id = 1;
 
-	// The type of subscription
-	required SubscriptionType type = 2;
+    // The type of subscription
+    required SubscriptionType type = 2;
 
-	// Path(s) to subscribe to
-	repeated string path = 3;
+    // Path(s) to subscribe to
+    repeated string path = 3;
 
-	// Lua code to load
-	optional string lua_code = 4;
+    // Lua code to load
+    optional string lua_code = 4;
 
-	// Socket identifiers for return path routing
-	repeated string socket_identifier = 5;
+    // Socket identifiers for return path routing
+    repeated string socket_identifier = 5;
 
-	// List of namespaces we wish to receive envelopes for
-	repeated uint32 envelope_filter_namespace = 6;
+    // List of namespaces we wish to receive envelopes for
+    repeated uint32 envelope_filter_namespace = 6;
 
-	// Namespace-type pairs for envelope filtering
-	repeated uint32 envelope_filter_enumeration_namespace = 7;
-	repeated uint32 envelope_filter_enumeration_type = 8;
+    // Namespace-type pairs for envelope filtering
+    repeated uint32 envelope_filter_enumeration_namespace = 7;
+    repeated uint32 envelope_filter_enumeration_type = 8;
+}
+
+// Log message when a server device is created
+message Create {
+    required string id = 1;
+    optional string store_path = 2;
+    repeated string listen_endpoints = 3;
+}
+
+// Log message when a server is destroyed
+message Destroy {
+    required string id = 1;
+}
+
+// Log message when a server starts running
+message RunStart {
+    required string id = 1;
+}
+
+// Log message when a server finishes running
+message RunFinish {
+    required string id = 1;
 }
