@@ -328,7 +328,7 @@ PumpResult Server::Pump(int32 wait_time)
         }
 
         SendClientMessage log;
-        LOG_MESSAGE(log, this->log_client_sock);
+        LOG_MESSAGE(log);
     }
 
     // move subscriptions requests to streamer
