@@ -18,10 +18,20 @@ package zippylog.device.store_watcher;
 
 // log message for when a store watcher is created
 message Create {
-    optional bytes id = 1;
+    required bytes id = 1;
 }
 
 // log message for when a store watcher is destroyed
 message Destroy {
-    optional bytes id = 1;
+    required bytes id = 1;
+}
+
+// log message for when device starts running
+message RunStart {
+    required bytes id = 1;
+}
+
+// log message for when device stops running
+message RunFinish {
+    required bytes id = 1;
 }
