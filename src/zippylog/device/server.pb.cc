@@ -71,7 +71,7 @@ void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto() {
   static const int Create_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Create, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Create, store_path_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Create, listen_endpoints_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Create, listen_endpoint_),
   };
   Create_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -184,11 +184,11 @@ void protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto() {
     " \003(\t\022!\n\031envelope_filter_namespace\030\006 \003(\r\022"
     "-\n%envelope_filter_enumeration_namespace"
     "\030\007 \003(\r\022(\n envelope_filter_enumeration_ty"
-    "pe\030\010 \003(\r\"B\n\006Create\022\n\n\002id\030\001 \002(\t\022\022\n\nstore_"
-    "path\030\002 \001(\t\022\030\n\020listen_endpoints\030\003 \003(\t\"\025\n\007"
-    "Destroy\022\n\n\002id\030\001 \002(\t\"\026\n\010RunStart\022\n\n\002id\030\001 "
-    "\002(\t\"\027\n\tRunFinish\022\n\n\002id\030\001 \002(\t*2\n\020Subscrip"
-    "tionType\022\014\n\010ENVELOPE\020\001\022\020\n\014STORE_CHANGE\020\002", 520);
+    "pe\030\010 \003(\r\"A\n\006Create\022\n\n\002id\030\001 \002(\t\022\022\n\nstore_"
+    "path\030\002 \001(\t\022\027\n\017listen_endpoint\030\003 \003(\t\"\025\n\007D"
+    "estroy\022\n\n\002id\030\001 \002(\t\"\026\n\010RunStart\022\n\n\002id\030\001 \002"
+    "(\t\"\027\n\tRunFinish\022\n\n\002id\030\001 \002(\t*2\n\020Subscript"
+    "ionType\022\014\n\010ENVELOPE\020\001\022\020\n\014STORE_CHANGE\020\002", 519);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/device/server.proto", &protobuf_RegisterTypes);
   SubscriptionRecord::default_instance_ = new SubscriptionRecord();
@@ -797,7 +797,7 @@ void SubscriptionRecord::Swap(SubscriptionRecord* other) {
 #ifndef _MSC_VER
 const int Create::kIdFieldNumber;
 const int Create::kStorePathFieldNumber;
-const int Create::kListenEndpointsFieldNumber;
+const int Create::kListenEndpointFieldNumber;
 #endif  // !_MSC_VER
 
 Create::Create()
@@ -869,7 +869,7 @@ void Create::Clear() {
       }
     }
   }
-  listen_endpoints_.Clear();
+  listen_endpoint_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -909,24 +909,24 @@ bool Create::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_listen_endpoints;
+        if (input->ExpectTag(26)) goto parse_listen_endpoint;
         break;
       }
       
-      // repeated string listen_endpoints = 3;
+      // repeated string listen_endpoint = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_listen_endpoints:
+         parse_listen_endpoint:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->add_listen_endpoints()));
+                input, this->add_listen_endpoint()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->listen_endpoints(0).data(), this->listen_endpoints(0).length(),
+            this->listen_endpoint(0).data(), this->listen_endpoint(0).length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_listen_endpoints;
+        if (input->ExpectTag(26)) goto parse_listen_endpoint;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -967,13 +967,13 @@ void Create::SerializeWithCachedSizes(
       2, this->store_path(), output);
   }
   
-  // repeated string listen_endpoints = 3;
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
+  // repeated string listen_endpoint = 3;
+  for (int i = 0; i < this->listen_endpoint_size(); i++) {
   ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-    this->listen_endpoints(i).data(), this->listen_endpoints(i).length(),
+    this->listen_endpoint(i).data(), this->listen_endpoint(i).length(),
     ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->listen_endpoints(i), output);
+      3, this->listen_endpoint(i), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1004,13 +1004,13 @@ void Create::SerializeWithCachedSizes(
         2, this->store_path(), target);
   }
   
-  // repeated string listen_endpoints = 3;
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
+  // repeated string listen_endpoint = 3;
+  for (int i = 0; i < this->listen_endpoint_size(); i++) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->listen_endpoints(i).data(), this->listen_endpoints(i).length(),
+      this->listen_endpoint(i).data(), this->listen_endpoint(i).length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target = ::google::protobuf::internal::WireFormatLite::
-      WriteStringToArray(3, this->listen_endpoints(i), target);
+      WriteStringToArray(3, this->listen_endpoint(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1039,11 +1039,11 @@ int Create::ByteSize() const {
     }
     
   }
-  // repeated string listen_endpoints = 3;
-  total_size += 1 * this->listen_endpoints_size();
-  for (int i = 0; i < this->listen_endpoints_size(); i++) {
+  // repeated string listen_endpoint = 3;
+  total_size += 1 * this->listen_endpoint_size();
+  for (int i = 0; i < this->listen_endpoint_size(); i++) {
     total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
-      this->listen_endpoints(i));
+      this->listen_endpoint(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -1071,7 +1071,7 @@ void Create::MergeFrom(const ::google::protobuf::Message& from) {
 
 void Create::MergeFrom(const Create& from) {
   GOOGLE_CHECK_NE(&from, this);
-  listen_endpoints_.MergeFrom(from.listen_endpoints_);
+  listen_endpoint_.MergeFrom(from.listen_endpoint_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_id()) {
       set_id(from.id());
@@ -1105,7 +1105,7 @@ void Create::Swap(Create* other) {
   if (other != this) {
     std::swap(id_, other->id_);
     std::swap(store_path_, other->store_path_);
-    listen_endpoints_.Swap(&other->listen_endpoints_);
+    listen_endpoint_.Swap(&other->listen_endpoint_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

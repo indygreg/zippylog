@@ -651,10 +651,10 @@ static const struct luaL_Reg Create_methods [] = {
     {"get_store_path", lua_protobuf_zippylog_device_server_Create_get_store_path},
     {"set_store_path", lua_protobuf_zippylog_device_server_Create_set_store_path},
     {"has_store_path", lua_protobuf_zippylog_device_server_Create_has_store_path},
-    {"clear_listen_endpoints", lua_protobuf_zippylog_device_server_Create_clear_listen_endpoints},
-    {"get_listen_endpoints", lua_protobuf_zippylog_device_server_Create_get_listen_endpoints},
-    {"set_listen_endpoints", lua_protobuf_zippylog_device_server_Create_set_listen_endpoints},
-    {"size_listen_endpoints", lua_protobuf_zippylog_device_server_Create_size_listen_endpoints},
+    {"clear_listen_endpoint", lua_protobuf_zippylog_device_server_Create_clear_listen_endpoint},
+    {"get_listen_endpoint", lua_protobuf_zippylog_device_server_Create_get_listen_endpoint},
+    {"set_listen_endpoint", lua_protobuf_zippylog_device_server_Create_set_listen_endpoint},
+    {"size_listen_endpoint", lua_protobuf_zippylog_device_server_Create_size_listen_endpoint},
     {NULL, NULL},
 };
 
@@ -846,15 +846,15 @@ int lua_protobuf_zippylog_device_server_Create_has_store_path(lua_State *L)
     return 1;
 }
 
-int lua_protobuf_zippylog_device_server_Create_clear_listen_endpoints(lua_State *L)
+int lua_protobuf_zippylog_device_server_Create_clear_listen_endpoint(lua_State *L)
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
     ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
-    m->clear_listen_endpoints();
+    m->clear_listen_endpoint();
     return 0;
 }
 
-int lua_protobuf_zippylog_device_server_Create_get_listen_endpoints(lua_State *L)
+int lua_protobuf_zippylog_device_server_Create_get_listen_endpoint(lua_State *L)
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
     ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
@@ -862,15 +862,15 @@ int lua_protobuf_zippylog_device_server_Create_get_listen_endpoints(lua_State *L
         return luaL_error(L, "missing required numeric argument");
     }
     lua_Integer index = luaL_checkinteger(L, 2);
-    if (index < 1 || index > m->listen_endpoints_size()) {
-        return luaL_error(L, "index must be between 1 and current size: %d", m->listen_endpoints_size());
+    if (index < 1 || index > m->listen_endpoint_size()) {
+        return luaL_error(L, "index must be between 1 and current size: %d", m->listen_endpoint_size());
     }
-    string s = m->listen_endpoints(index - 1);
+    string s = m->listen_endpoint(index - 1);
     lua_pushlstring(L, s.c_str(), s.size());
     return 1;
 }
 
-int lua_protobuf_zippylog_device_server_Create_set_listen_endpoints(lua_State *L)
+int lua_protobuf_zippylog_device_server_Create_set_listen_endpoint(lua_State *L)
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
     ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
@@ -878,7 +878,7 @@ int lua_protobuf_zippylog_device_server_Create_set_listen_endpoints(lua_State *L
             return luaL_error(L, "required 2 arguments not passed to function");
     }
     lua_Integer index = luaL_checkinteger(L, 2);
-    int current_size = m->listen_endpoints_size();
+    int current_size = m->listen_endpoint_size();
     if (index < 1 || index > current_size + 1) {
         return luaL_error(L, "index must be between 1 and %d", current_size + 1);
     }
@@ -888,19 +888,19 @@ int lua_protobuf_zippylog_device_server_Create_set_listen_endpoints(lua_State *L
     size_t length = 0;
     const char *s = luaL_checklstring(L, 3, &length);
     if (index == current_size + 1) {
-        m->add_listen_endpoints(s, length);
+        m->add_listen_endpoint(s, length);
     }
     else {
-        m->set_listen_endpoints(index-1, s, length);
+        m->set_listen_endpoint(index-1, s, length);
     }
     return 0;
 }
 
-int lua_protobuf_zippylog_device_server_Create_size_listen_endpoints(lua_State *L)
+int lua_protobuf_zippylog_device_server_Create_size_listen_endpoint(lua_State *L)
 {
     msg_udata * mud = (msg_udata *)luaL_checkudata(L, 1, "protobuf_.zippylog.device.server.Create");
     ::zippylog::device::server::Create *m = (::zippylog::device::server::Create *)mud->msg;
-    int size = m->listen_endpoints_size();
+    int size = m->listen_endpoint_size();
     lua_pushinteger(L, size);
     return 1;
 }
