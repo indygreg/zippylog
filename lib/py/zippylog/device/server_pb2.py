@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/server.proto',
   package='zippylog.device.server',
-  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
+  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"B\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
 
 _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   name='SubscriptionType',
@@ -31,8 +31,8 @@ _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=330,
-  serialized_end=380,
+  serialized_start=470,
+  serialized_end=520,
 )
 
 
@@ -117,8 +117,138 @@ _SUBSCRIPTIONRECORD = descriptor.Descriptor(
   serialized_end=328,
 )
 
+
+_CREATE = descriptor.Descriptor(
+  name='Create',
+  full_name='zippylog.device.server.Create',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.Create.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='store_path', full_name='zippylog.device.server.Create.store_path', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='listen_endpoints', full_name='zippylog.device.server.Create.listen_endpoints', index=2,
+      number=3, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=330,
+  serialized_end=396,
+)
+
+
+_DESTROY = descriptor.Descriptor(
+  name='Destroy',
+  full_name='zippylog.device.server.Destroy',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.Destroy.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=398,
+  serialized_end=419,
+)
+
+
+_RUNSTART = descriptor.Descriptor(
+  name='RunStart',
+  full_name='zippylog.device.server.RunStart',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.RunStart.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=421,
+  serialized_end=443,
+)
+
+
+_RUNFINISH = descriptor.Descriptor(
+  name='RunFinish',
+  full_name='zippylog.device.server.RunFinish',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.RunFinish.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=445,
+  serialized_end=468,
+)
+
 _SUBSCRIPTIONRECORD.fields_by_name['type'].enum_type = _SUBSCRIPTIONTYPE
 DESCRIPTOR.message_types_by_name['SubscriptionRecord'] = _SUBSCRIPTIONRECORD
+DESCRIPTOR.message_types_by_name['Create'] = _CREATE
+DESCRIPTOR.message_types_by_name['Destroy'] = _DESTROY
+DESCRIPTOR.message_types_by_name['RunStart'] = _RUNSTART
+DESCRIPTOR.message_types_by_name['RunFinish'] = _RUNFINISH
 
 class SubscriptionRecord(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -128,5 +258,41 @@ class SubscriptionRecord(message.Message):
   ZIPPYLOG_ENUMERATION = 119
   # @@protoc_insertion_point(class_scope:zippylog.device.server.SubscriptionRecord)
 
+class Create(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _CREATE
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 120
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.Create)
+
+class Destroy(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _DESTROY
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 121
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.Destroy)
+
+class RunStart(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _RUNSTART
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 122
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.RunStart)
+
+class RunFinish(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _RUNFINISH
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 123
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.RunFinish)
+
 register_message(1, 119, 'zippylog.device.server_pb2', 'SubscriptionRecord')
+register_message(1, 120, 'zippylog.device.server_pb2', 'Create')
+register_message(1, 121, 'zippylog.device.server_pb2', 'Destroy')
+register_message(1, 122, 'zippylog.device.server_pb2', 'RunStart')
+register_message(1, 123, 'zippylog.device.server_pb2', 'RunFinish')
 # @@protoc_insertion_point(module_scope)

@@ -36,6 +36,10 @@ void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
 void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
 
 class SubscriptionRecord;
+class Create;
+class Destroy;
+class RunStart;
+class RunFinish;
 
 enum SubscriptionType {
   ENVELOPE = 1,
@@ -243,6 +247,401 @@ class SubscriptionRecord : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static SubscriptionRecord* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Create : public ::google::protobuf::Message {
+ public:
+  Create();
+  virtual ~Create();
+  
+  Create(const Create& from);
+  
+  inline Create& operator=(const Create& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Create& default_instance();
+  
+  void Swap(Create* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Create* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Create& from);
+  void MergeFrom(const Create& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  // optional string store_path = 2;
+  inline bool has_store_path() const;
+  inline void clear_store_path();
+  static const int kStorePathFieldNumber = 2;
+  inline const ::std::string& store_path() const;
+  inline void set_store_path(const ::std::string& value);
+  inline void set_store_path(const char* value);
+  inline void set_store_path(const char* value, size_t size);
+  inline ::std::string* mutable_store_path();
+  inline ::std::string* release_store_path();
+  
+  // repeated string listen_endpoints = 3;
+  inline int listen_endpoints_size() const;
+  inline void clear_listen_endpoints();
+  static const int kListenEndpointsFieldNumber = 3;
+  inline const ::std::string& listen_endpoints(int index) const;
+  inline ::std::string* mutable_listen_endpoints(int index);
+  inline void set_listen_endpoints(int index, const ::std::string& value);
+  inline void set_listen_endpoints(int index, const char* value);
+  inline void set_listen_endpoints(int index, const char* value, size_t size);
+  inline ::std::string* add_listen_endpoints();
+  inline void add_listen_endpoints(const ::std::string& value);
+  inline void add_listen_endpoints(const char* value);
+  inline void add_listen_endpoints(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& listen_endpoints() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_listen_endpoints();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 120;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.Create)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  inline void set_has_store_path();
+  inline void clear_has_store_path();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  ::std::string* store_path_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> listen_endpoints_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Create* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Destroy : public ::google::protobuf::Message {
+ public:
+  Destroy();
+  virtual ~Destroy();
+  
+  Destroy(const Destroy& from);
+  
+  inline Destroy& operator=(const Destroy& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Destroy& default_instance();
+  
+  void Swap(Destroy* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Destroy* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Destroy& from);
+  void MergeFrom(const Destroy& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 121;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.Destroy)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Destroy* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class RunStart : public ::google::protobuf::Message {
+ public:
+  RunStart();
+  virtual ~RunStart();
+  
+  RunStart(const RunStart& from);
+  
+  inline RunStart& operator=(const RunStart& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RunStart& default_instance();
+  
+  void Swap(RunStart* other);
+  
+  // implements Message ----------------------------------------------
+  
+  RunStart* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RunStart& from);
+  void MergeFrom(const RunStart& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 122;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.RunStart)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static RunStart* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class RunFinish : public ::google::protobuf::Message {
+ public:
+  RunFinish();
+  virtual ~RunFinish();
+  
+  RunFinish(const RunFinish& from);
+  
+  inline RunFinish& operator=(const RunFinish& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RunFinish& default_instance();
+  
+  void Swap(RunFinish* other);
+  
+  // implements Message ----------------------------------------------
+  
+  RunFinish* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RunFinish& from);
+  void MergeFrom(const RunFinish& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 123;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.RunFinish)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static RunFinish* default_instance_;
 };
 // ===================================================================
 
@@ -551,6 +950,356 @@ SubscriptionRecord::envelope_filter_enumeration_type() const {
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 SubscriptionRecord::mutable_envelope_filter_enumeration_type() {
   return &envelope_filter_enumeration_type_;
+}
+
+// -------------------------------------------------------------------
+
+// Create
+
+// required string id = 1;
+inline bool Create::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Create::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Create::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Create::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& Create::id() const {
+  return *id_;
+}
+inline void Create::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void Create::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void Create::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Create::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* Create::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional string store_path = 2;
+inline bool Create::has_store_path() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Create::set_has_store_path() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Create::clear_has_store_path() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Create::clear_store_path() {
+  if (store_path_ != &::google::protobuf::internal::kEmptyString) {
+    store_path_->clear();
+  }
+  clear_has_store_path();
+}
+inline const ::std::string& Create::store_path() const {
+  return *store_path_;
+}
+inline void Create::set_store_path(const ::std::string& value) {
+  set_has_store_path();
+  if (store_path_ == &::google::protobuf::internal::kEmptyString) {
+    store_path_ = new ::std::string;
+  }
+  store_path_->assign(value);
+}
+inline void Create::set_store_path(const char* value) {
+  set_has_store_path();
+  if (store_path_ == &::google::protobuf::internal::kEmptyString) {
+    store_path_ = new ::std::string;
+  }
+  store_path_->assign(value);
+}
+inline void Create::set_store_path(const char* value, size_t size) {
+  set_has_store_path();
+  if (store_path_ == &::google::protobuf::internal::kEmptyString) {
+    store_path_ = new ::std::string;
+  }
+  store_path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Create::mutable_store_path() {
+  set_has_store_path();
+  if (store_path_ == &::google::protobuf::internal::kEmptyString) {
+    store_path_ = new ::std::string;
+  }
+  return store_path_;
+}
+inline ::std::string* Create::release_store_path() {
+  clear_has_store_path();
+  if (store_path_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = store_path_;
+    store_path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// repeated string listen_endpoints = 3;
+inline int Create::listen_endpoints_size() const {
+  return listen_endpoints_.size();
+}
+inline void Create::clear_listen_endpoints() {
+  listen_endpoints_.Clear();
+}
+inline const ::std::string& Create::listen_endpoints(int index) const {
+  return listen_endpoints_.Get(index);
+}
+inline ::std::string* Create::mutable_listen_endpoints(int index) {
+  return listen_endpoints_.Mutable(index);
+}
+inline void Create::set_listen_endpoints(int index, const ::std::string& value) {
+  listen_endpoints_.Mutable(index)->assign(value);
+}
+inline void Create::set_listen_endpoints(int index, const char* value) {
+  listen_endpoints_.Mutable(index)->assign(value);
+}
+inline void Create::set_listen_endpoints(int index, const char* value, size_t size) {
+  listen_endpoints_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Create::add_listen_endpoints() {
+  return listen_endpoints_.Add();
+}
+inline void Create::add_listen_endpoints(const ::std::string& value) {
+  listen_endpoints_.Add()->assign(value);
+}
+inline void Create::add_listen_endpoints(const char* value) {
+  listen_endpoints_.Add()->assign(value);
+}
+inline void Create::add_listen_endpoints(const char* value, size_t size) {
+  listen_endpoints_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+Create::listen_endpoints() const {
+  return listen_endpoints_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+Create::mutable_listen_endpoints() {
+  return &listen_endpoints_;
+}
+
+// -------------------------------------------------------------------
+
+// Destroy
+
+// required string id = 1;
+inline bool Destroy::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Destroy::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Destroy::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Destroy::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& Destroy::id() const {
+  return *id_;
+}
+inline void Destroy::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void Destroy::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void Destroy::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Destroy::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* Destroy::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// RunStart
+
+// required string id = 1;
+inline bool RunStart::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RunStart::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RunStart::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RunStart::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& RunStart::id() const {
+  return *id_;
+}
+inline void RunStart::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void RunStart::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void RunStart::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RunStart::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* RunStart::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// RunFinish
+
+// required string id = 1;
+inline bool RunFinish::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void RunFinish::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void RunFinish::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void RunFinish::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& RunFinish::id() const {
+  return *id_;
+}
+inline void RunFinish::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void RunFinish::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void RunFinish::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RunFinish::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* RunFinish::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 
