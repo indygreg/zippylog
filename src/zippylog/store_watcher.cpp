@@ -14,10 +14,10 @@
 
 #include <zippylog/store_watcher.hpp>
 
+#include <zippylog/device/store_watcher.pb.h>
 #include <zippylog/platform.hpp>
 #include <zippylog/protocol.pb.h>
 #include <zippylog/zeromq.hpp>
-#include <zippylog/zippylogd.pb.h>
 
 namespace zippylog {
 
@@ -26,8 +26,10 @@ using ::std::logic_error;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::device::PumpResult;
-using ::zippylog::zippylogd::StoreWatcherStartup;
-using ::zippylog::zippylogd::StoreWatcherShutdown;
+using ::zippylog::device::store_watcher::Create;
+using ::zippylog::device::store_watcher::Destroy;
+using ::zippylog::device::store_watcher::RunStart;
+using ::zippylog::device::store_watcher::RunFinish;
 using ::zmq::socket_t;
 
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
@@ -46,30 +48,45 @@ StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
 
     this->logging_sock = new socket_t(*this->_ctx, ZMQ_PUSH);
     this->logging_sock->connect(this->logging_endpoint.c_str());
+
+    Create log;
+    log.set_id(this->id);
+    Envelope e;
+    log.add_to_envelope(e);
+    zeromq::SendEnvelope(*this->logging_sock, e, false, 0);
 }
 
 StoreWatcher::~StoreWatcher()
 {
-    if (this->logging_sock) delete this->logging_sock;
+    Destroy log;
+    log.set_id(this->id);
+    Envelope e;
+    log.add_to_envelope(e);
+
+    if (this->logging_sock) {
+        zeromq::SendEnvelope(*this->logging_sock, e, false, 0);
+        delete this->logging_sock;
+    }
+
     if (this->_store) delete this->_store;
 }
 
 void StoreWatcher::OnRunStart()
 {
-    StoreWatcherStartup log = StoreWatcherStartup();
+    RunStart log;
     log.set_id(this->id);
-    Envelope logenvelope = Envelope();
-    log.add_to_envelope(&logenvelope);
-    zeromq::send_envelope(this->logging_sock, logenvelope);
+    Envelope e;
+    log.add_to_envelope(e);
+    zeromq::SendEnvelope(*this->logging_sock, e, false, 0);
 }
 
 void StoreWatcher::OnRunFinish()
 {
-    StoreWatcherShutdown log = StoreWatcherShutdown();
+    RunFinish log;
     log.set_id(this->id);
-    Envelope logenvelope = Envelope();
-    log.add_to_envelope(&logenvelope);
-    zeromq::send_envelope(this->logging_sock, logenvelope);
+    Envelope e;
+    log.add_to_envelope(e);
+    zeromq::SendEnvelope(*this->logging_sock, e, false, 0);
 }
 
 PumpResult StoreWatcher::Pump(int32 timeout)

@@ -15,7 +15,6 @@
 #include <zippylog/device/server.hpp>
 
 #include <zippylog/zeromq.hpp>
-#include <zippylog/zippylogd.pb.h>
 
 namespace zippylog {
 namespace device {
@@ -23,8 +22,6 @@ namespace server {
 
 using ::std::string;
 using ::zmq::socket_t;
-using ::zippylog::zippylogd::StoreWatcherStartup;
-using ::zippylog::zippylogd::StoreWatcherShutdown;
 
 Watcher::Watcher(WatcherStartParams &params) :
     StoreWatcher(params.params),

@@ -374,6 +374,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\store_watcher.pb-lua.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_watcher.pb.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\store_writer.cpp"
 				>
 			</File>
@@ -399,10 +407,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\zippylog.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd.pb.cc"
 				>
 			</File>
 		</Filter>
@@ -488,6 +492,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\store_watcher.pb-lua.h"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\store_watcher.pb.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\store_writer.hpp"
 				>
 			</File>
@@ -513,10 +525,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\zippylog.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\zippylogd.pb.h"
 				>
 			</File>
 		</Filter>
