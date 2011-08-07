@@ -63,6 +63,7 @@ protected:
     lua::LuaState *l;
 
     friend class PersistedStateManager;
+    FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
 
 private:
     // disable copy constructor and assignment operator
