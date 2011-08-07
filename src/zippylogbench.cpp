@@ -81,6 +81,8 @@ using ::zippylog::Store;
     print_result(description, elapsed, TIMER_ITERATIONS); \
     }
 
+namespace zippylog {
+
 class Benchmark : public ::zippylog::testing::TestBase
 { };
 
@@ -433,6 +435,8 @@ TEST_F(Benchmark, SimpleStoreIO)
     }
 }
 
+} // namespace
+
 int main(int argc, char **argv)
 {
     ::zippylog::initialize_library();
@@ -444,3 +448,4 @@ int main(int argc, char **argv)
 
     return result;
 }
+
