@@ -89,6 +89,10 @@ public:
     /// This function will spawn a new thread and have the device execute
     /// continuously on that thread.
     ///
+    /// The function does not return until after OnRunStart() finishes.
+    /// This gives devices an opportunity to fully initialize on their new
+    /// thread before program execution continues.
+    ///
     /// To stop this thread, call StopAsync().
     void RunAsync();
 
@@ -108,6 +112,12 @@ public:
     inline bool IsRunning() { return this->running; }
 
 protected:
+
+    /// Called when the device first runs
+    ///
+    /// This can be used to perform one-time object setup. Execution occurs
+    /// on the new thread if running asynchronously.
+    virtual void OnFirstRun();
 
     /// Called at the start of Run() and RunAsync()
     ///
@@ -135,6 +145,13 @@ private:
 
     /// Whether the device is running
     bool running;
+
+    /// Whether Run() has executed before
+    bool has_ran;
+
+    /// Used by RunAsync() so function blocks until after OnRunStart() is
+    /// finished
+    ::zippylog::platform::ConditionalWait async_wait;
 
     /// Disable copy constructor and assignment operator
     Device(Device const &orig);

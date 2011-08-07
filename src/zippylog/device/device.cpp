@@ -14,6 +14,7 @@
 
 #include <zippylog/device/device.hpp>
 
+#include <zmq.hpp>
 #include <string>
 
 using ::std::invalid_argument;
@@ -46,7 +47,11 @@ PumpResult PumpResult::MakeNoWorkDone()
     return result;
 }
 
-Device::Device(ConditionalWait *cw) : thread(NULL), cw(cw)
+Device::Device(ConditionalWait *cw) :
+    thread(NULL),
+    cw(cw),
+    running(false),
+    has_ran(false)
 {
     if (!cw) {
         throw invalid_argument("ConditionalWait parameter not defined");
@@ -66,15 +71,20 @@ Device::~Device()
 
 void Device::OnRunStart() { }
 void Device::OnRunFinish() { }
+void Device::OnFirstRun() { }
 
 void Device::Run()
 {
     // if semaphore is signaled, don't do anything
     if (this->cw->Wait(0)) return;
 
-    this->running = true;
+    if (!this->has_ran) this->OnFirstRun();
 
     this->OnRunStart();
+
+    this->running = true;
+    this->has_ran = true;
+    this->async_wait.Signal();
 
     while (!this->cw->Wait(0)) {
         /// @todo timeout should come from configuration
@@ -90,14 +100,17 @@ void Device::RunAsync()
 {
     if (this->cw->Wait(0)) return;
 
-    // run the setup synchronously
-    this->OnRunStart();
-
     if (this->thread) {
         throw Exception("device is already running asynchronously");
     }
 
+    // just in case
+    this->async_wait.Reset();
+
     this->thread = new Thread(AsyncExecStart, (void *)this);
+
+    // wait for OnRunStart() to finish
+    this->async_wait.Wait(-1);
 }
 
 void Device::StopAsync(int32 timeout)
@@ -122,18 +135,32 @@ void Device::StopAsync(int32 timeout)
 
 void * Device::AsyncExecStart(void *data)
 {
+    Device *device = (Device *)data;
+    void * ret = (void *)0;
+
     /// @todo do error handling properly
     try {
-        Device *device = (Device *)data;
         device->Run();
-        device->OnRunFinish();
+    }
+    catch (::zmq::error_t e) {
+        string error = e.what();
+        ret = (void *)1;
     }
     catch (::std::exception e) {
+        device->running = false;
         string error = e.what();
-        return (void *)1;
+        ret = (void *)1;
     }
+    catch ( ... ) { }
 
-    return (void *)0;
+    try {
+        device->OnRunFinish();
+    }
+    catch ( ... ) {}
+
+    device->running = false;
+
+    return ret;
 }
 
 }} // namespace
