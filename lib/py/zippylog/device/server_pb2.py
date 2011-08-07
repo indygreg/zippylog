@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/server.proto',
   package='zippylog.device.server',
-  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"B\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x18\n\x10listen_endpoints\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
+  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
 
 _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   name='SubscriptionType',
@@ -31,8 +31,8 @@ _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=470,
-  serialized_end=520,
+  serialized_start=469,
+  serialized_end=519,
 )
 
 
@@ -140,7 +140,7 @@ _CREATE = descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     descriptor.FieldDescriptor(
-      name='listen_endpoints', full_name='zippylog.device.server.Create.listen_endpoints', index=2,
+      name='listen_endpoint', full_name='zippylog.device.server.Create.listen_endpoint', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -156,7 +156,7 @@ _CREATE = descriptor.Descriptor(
   is_extendable=False,
   extension_ranges=[],
   serialized_start=330,
-  serialized_end=396,
+  serialized_end=395,
 )
 
 
@@ -183,8 +183,8 @@ _DESTROY = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=398,
-  serialized_end=419,
+  serialized_start=397,
+  serialized_end=418,
 )
 
 
@@ -211,8 +211,8 @@ _RUNSTART = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=421,
-  serialized_end=443,
+  serialized_start=420,
+  serialized_end=442,
 )
 
 
@@ -239,8 +239,8 @@ _RUNFINISH = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=445,
-  serialized_end=468,
+  serialized_start=444,
+  serialized_end=467,
 )
 
 _SUBSCRIPTIONRECORD.fields_by_name['type'].enum_type = _SUBSCRIPTIONTYPE

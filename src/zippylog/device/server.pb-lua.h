@@ -158,11 +158,11 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_get_store_pat
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_set_store_path(lua_State *L);
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_has_store_path(lua_State *L);
 
-// repeated string listen_endpoints = 3
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_clear_listen_endpoints(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_get_listen_endpoints(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_set_listen_endpoints(lua_State *L);
-LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_size_listen_endpoints(lua_State *L);
+// repeated string listen_endpoint = 3
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_clear_listen_endpoint(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_get_listen_endpoint(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_set_listen_endpoint(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_Create_size_listen_endpoint(lua_State *L);
 
 // end of message Create
 

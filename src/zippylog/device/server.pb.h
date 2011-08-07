@@ -326,21 +326,21 @@ class Create : public ::google::protobuf::Message {
   inline ::std::string* mutable_store_path();
   inline ::std::string* release_store_path();
   
-  // repeated string listen_endpoints = 3;
-  inline int listen_endpoints_size() const;
-  inline void clear_listen_endpoints();
-  static const int kListenEndpointsFieldNumber = 3;
-  inline const ::std::string& listen_endpoints(int index) const;
-  inline ::std::string* mutable_listen_endpoints(int index);
-  inline void set_listen_endpoints(int index, const ::std::string& value);
-  inline void set_listen_endpoints(int index, const char* value);
-  inline void set_listen_endpoints(int index, const char* value, size_t size);
-  inline ::std::string* add_listen_endpoints();
-  inline void add_listen_endpoints(const ::std::string& value);
-  inline void add_listen_endpoints(const char* value);
-  inline void add_listen_endpoints(const char* value, size_t size);
-  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& listen_endpoints() const;
-  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_listen_endpoints();
+  // repeated string listen_endpoint = 3;
+  inline int listen_endpoint_size() const;
+  inline void clear_listen_endpoint();
+  static const int kListenEndpointFieldNumber = 3;
+  inline const ::std::string& listen_endpoint(int index) const;
+  inline ::std::string* mutable_listen_endpoint(int index);
+  inline void set_listen_endpoint(int index, const ::std::string& value);
+  inline void set_listen_endpoint(int index, const char* value);
+  inline void set_listen_endpoint(int index, const char* value, size_t size);
+  inline ::std::string* add_listen_endpoint();
+  inline void add_listen_endpoint(const ::std::string& value);
+  inline void add_listen_endpoint(const char* value);
+  inline void add_listen_endpoint(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& listen_endpoint() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_listen_endpoint();
   
   static const ::google::protobuf::uint32 zippylog_namespace = 1;
   static const ::google::protobuf::uint32 zippylog_enumeration = 120;
@@ -358,7 +358,7 @@ class Create : public ::google::protobuf::Message {
   
   ::std::string* id_;
   ::std::string* store_path_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> listen_endpoints_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> listen_endpoint_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
@@ -1072,48 +1072,48 @@ inline ::std::string* Create::release_store_path() {
   }
 }
 
-// repeated string listen_endpoints = 3;
-inline int Create::listen_endpoints_size() const {
-  return listen_endpoints_.size();
+// repeated string listen_endpoint = 3;
+inline int Create::listen_endpoint_size() const {
+  return listen_endpoint_.size();
 }
-inline void Create::clear_listen_endpoints() {
-  listen_endpoints_.Clear();
+inline void Create::clear_listen_endpoint() {
+  listen_endpoint_.Clear();
 }
-inline const ::std::string& Create::listen_endpoints(int index) const {
-  return listen_endpoints_.Get(index);
+inline const ::std::string& Create::listen_endpoint(int index) const {
+  return listen_endpoint_.Get(index);
 }
-inline ::std::string* Create::mutable_listen_endpoints(int index) {
-  return listen_endpoints_.Mutable(index);
+inline ::std::string* Create::mutable_listen_endpoint(int index) {
+  return listen_endpoint_.Mutable(index);
 }
-inline void Create::set_listen_endpoints(int index, const ::std::string& value) {
-  listen_endpoints_.Mutable(index)->assign(value);
+inline void Create::set_listen_endpoint(int index, const ::std::string& value) {
+  listen_endpoint_.Mutable(index)->assign(value);
 }
-inline void Create::set_listen_endpoints(int index, const char* value) {
-  listen_endpoints_.Mutable(index)->assign(value);
+inline void Create::set_listen_endpoint(int index, const char* value) {
+  listen_endpoint_.Mutable(index)->assign(value);
 }
-inline void Create::set_listen_endpoints(int index, const char* value, size_t size) {
-  listen_endpoints_.Mutable(index)->assign(
+inline void Create::set_listen_endpoint(int index, const char* value, size_t size) {
+  listen_endpoint_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Create::add_listen_endpoints() {
-  return listen_endpoints_.Add();
+inline ::std::string* Create::add_listen_endpoint() {
+  return listen_endpoint_.Add();
 }
-inline void Create::add_listen_endpoints(const ::std::string& value) {
-  listen_endpoints_.Add()->assign(value);
+inline void Create::add_listen_endpoint(const ::std::string& value) {
+  listen_endpoint_.Add()->assign(value);
 }
-inline void Create::add_listen_endpoints(const char* value) {
-  listen_endpoints_.Add()->assign(value);
+inline void Create::add_listen_endpoint(const char* value) {
+  listen_endpoint_.Add()->assign(value);
 }
-inline void Create::add_listen_endpoints(const char* value, size_t size) {
-  listen_endpoints_.Add()->assign(reinterpret_cast<const char*>(value), size);
+inline void Create::add_listen_endpoint(const char* value, size_t size) {
+  listen_endpoint_.Add()->assign(reinterpret_cast<const char*>(value), size);
 }
 inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-Create::listen_endpoints() const {
-  return listen_endpoints_;
+Create::listen_endpoint() const {
+  return listen_endpoint_;
 }
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-Create::mutable_listen_endpoints() {
-  return &listen_endpoints_;
+Create::mutable_listen_endpoint() {
+  return &listen_endpoint_;
 }
 
 // -------------------------------------------------------------------

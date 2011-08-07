@@ -53,7 +53,7 @@ message SubscriptionRecord {
 message Create {
     required string id = 1;
     optional string store_path = 2;
-    repeated string listen_endpoints = 3;
+    repeated string listen_endpoint = 3;
 }
 
 // Log message when a server is destroyed
