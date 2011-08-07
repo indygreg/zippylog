@@ -52,10 +52,105 @@ using ::std::pair;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
+using ::zippylog::device::server::SubscriptionRecord;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
-EnvelopeSubscription::EnvelopeSubscription() {}
+void SubscriptionInfo::ToProtocolBuffer(SubscriptionRecord &m)
+{
+    m.Clear();
+
+    switch (this->type) {
+        case ENVELOPE:
+            m.set_type(device::server::ENVELOPE);
+            break;
+
+        case STORE_CHANGE:
+            m.set_type(device::server::STORE_CHANGE);
+            break;
+
+        default:
+            throw Exception("unhandled subscription type");
+    }
+
+    for (vector<string>::iterator i = this->paths.begin();
+         i != this->paths.end();
+         i++) {
+        m.add_path(*i);
+    }
+
+    if (!this->lua_code.empty()) {
+        m.set_lua_code(this->lua_code);
+    }
+
+    for(vector<string>::iterator i = this->socket_identifiers.begin();
+        i != this->socket_identifiers.end();
+        i++) {
+        m.add_socket_identifier(*i);
+    }
+
+    for(vector<uint32>::iterator i = this->envelope_filter_namespaces.begin();
+        i != this->envelope_filter_namespaces.end();
+        i++) {
+        m.add_envelope_filter_namespace(*i);
+    }
+
+    for(vector< pair<uint32, uint32> >::iterator i = this->envelope_filter_enumerations.begin();
+        i != this->envelope_filter_enumerations.end();
+        i++) {
+
+        m.add_envelope_filter_enumeration_namespace(i->first);
+        m.add_envelope_filter_enumeration_type(i->second);
+    }
+}
+
+SubscriptionInfo::SubscriptionInfo(SubscriptionRecord const &m)
+    :type(UNKNOWN)
+{
+    if (m.has_type()) {
+        switch (m.type()) {
+            case device::server::ENVELOPE:
+                this->type = ENVELOPE;
+                break;
+
+            case device::server::STORE_CHANGE:
+                this->type = STORE_CHANGE;
+                break;
+
+            default:
+                throw Exception("Unhandled subscription type enumeration");
+        }
+    }
+
+    if (m.has_id()) this->id = m.id();
+
+    for (int i = 0; i < m.path_size(); i++) {
+        this->paths.push_back(m.path(i));
+    }
+
+    if (m.has_lua_code()) this->lua_code = m.lua_code();
+
+    for (int i = 0; i < m.socket_identifier_size(); i++) {
+        this->socket_identifiers.push_back(m.socket_identifier(i));
+    }
+
+    for (int i = 0; i < m.envelope_filter_namespace_size(); i++) {
+        this->envelope_filter_namespaces.push_back(m.envelope_filter_namespace(i));
+    }
+
+    if (m.envelope_filter_enumeration_namespace_size() != m.envelope_filter_enumeration_type_size()) {
+        throw Exception("length of envelope_filter_enumeration and envelope_filter_type do not agree");
+    }
+
+    for (int i = 0; i < m.envelope_filter_enumeration_namespace_size(); i++) {
+        this->envelope_filter_enumerations.push_back(
+            pair<uint32, uint32>(
+                m.envelope_filter_enumeration_namespace(i),
+                m.envelope_filter_enumeration_type(i)
+            )
+        );
+    }
+}
 
 EnvelopeSubscriptionResponseState::~EnvelopeSubscriptionResponseState()
 {
@@ -344,11 +439,7 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     }
 
     try {
-        request_envelope = Envelope(
-            // we can't do math on sizeless void
-            (void *)((char *)initial->data() + 1),
-            initial->size() - 1
-        );
+        request_envelope = Envelope(*initial, 1);
     } catch ( ... ) {
         // we should only get an exception on parse error
         ::zippylog::request_processor::EnvelopeParseFailure log;
@@ -938,22 +1029,27 @@ RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envel
     }
 
     for (int i = 0; i < m->filter_enumeration_namespace_size(); i++) {
-        subscription.envelope_subscription.filter_enumerations.push_back(
+        subscription.envelope_filter_enumerations.push_back(
             pair<uint32, uint32>(m->filter_enumeration_namespace(i), m->filter_enumeration_type(i))
         );
     }
 
     for (int i = 0; i < m->filter_namespace_size(); i++) {
-        subscription.envelope_subscription.filter_namespaces.push_back(m->filter_namespace(i));
+        subscription.envelope_filter_namespaces.push_back(m->filter_namespace(i));
     }
 
     if (m->has_lua_code()) {
-        // we currently create the state twice. here and the subscription
-        // manager. since Lua is fast and the lifetime of the subscription
-        // long, we live with this overhead. the underlying reason is there
-        // is typically thread separation between the request processor and
-        // the subscription manager and the API for passing pointers around
-        // would be much uglier than simply passing copies.
+        // We currently create the state twice, here and the subscription
+        // manager. Since Lua is fast and the lifetime of the subscription
+        // long, we live with this overhead.
+        //
+        // The underlying reason is there is typically thread separation
+        // between the request processor and the subscription manager and
+        // there is risk that a passed pointer may be lost in transmission,
+        // leading to leaked memory.
+        //
+        /// @todo figure out how to ensure consistent base Lua states between
+        /// here and whatever will really execute the Lua
 
         lua::LuaState l;
         l.SetMemoryCeiling(this->lua_memory_max);

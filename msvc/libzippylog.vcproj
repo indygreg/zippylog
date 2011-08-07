@@ -350,6 +350,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\server.pb.cc"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\server_watcher.cpp"
 				>
 			</File>
@@ -461,6 +465,10 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\device\server.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\server.pb.h"
 				>
 			</File>
 			<File

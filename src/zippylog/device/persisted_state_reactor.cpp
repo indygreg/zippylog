@@ -19,6 +19,8 @@
 using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::device::server::SubscriptionRecord;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -125,22 +127,43 @@ void PersistedStateReactor::Pump(int32 timeout)
     this->manager->RemoveExpiredSubscriptions();
 
     message_t msg;
+    MessageContainer container;
 
     // subscriptions
     if (this->pollitems[1].revents & ZMQ_POLLIN) {
-        if (!this->subscription_sock->recv(&msg, 0)) {
+        if (!::zippylog::zeromq::ReceiveMessage(*this->subscription_sock, container)) {
             throw Exception("error receiving 0MQ message on subscriptions sock");
         }
 
-        if (msg.size() != sizeof(SubscriptionInfo *)) {
-            throw Exception("SubscriptionInfo message not a pointer!");
+        if (!container.MessagesSize()) {
+            throw Exception("didn't receive valid payload on subscriptions sock");
         }
 
-        SubscriptionInfo subscription;
-        memcpy(&subscription, msg.data(), sizeof(subscription));
+        message_t *msg = container.GetMessage(0);
 
-        /// @todo handle errors?
-        this->manager->RegisterSubscription(subscription);
+        Envelope e(*msg);
+
+        if (e.MessageCount() != 1) {
+            throw Exception("unknown envelope payload received");
+        }
+
+        if (e.MessageNamespace(0) != ::zippylog::message_namespace) {
+            throw Exception("invalid namespace seen on first message");
+        }
+
+        switch (e.MessageType(0)) {
+            case SubscriptionRecord::zippylog_enumeration:
+            {
+                SubscriptionRecord *sr = (SubscriptionRecord *)e.GetMessage(0);
+
+                SubscriptionInfo subscription(*sr);
+                this->manager->RegisterSubscription(subscription);
+            }
+                break;
+
+            default:
+                throw Exception("unknown message type seen on subscriptions sock");
+        }
     }
 
     // process store changes and send to subscribers

@@ -56,6 +56,12 @@ public:
 
     inline ::std::vector< ::zmq::message_t *>::size_type MessagesSize() const { return this->messages.size(); }
 
+    /// Obtains the 0MQ message at the specified index
+    ///
+    /// The index of the first message is 0.
+    ///
+    /// The memory backing the message is owned by the container and has a
+    /// lifetime the same as the container's.
     inline ::zmq::message_t * GetMessage(int i) const { return this->messages[i]; }
 
 protected:

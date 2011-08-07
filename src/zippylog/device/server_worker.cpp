@@ -13,7 +13,7 @@
 //  limitations under the License.
 
 #include <zippylog/device/server.hpp>
-#include <zippylog/zippylogd.pb.h>
+#include <zippylog/device/server.pb.h>
 #include <zippylog/zeromq.hpp>
 
 namespace zippylog {
@@ -27,6 +27,7 @@ namespace server {
     zeromq::send_envelope(socketvar, logenvelope); \
 }
 
+using ::std::pair;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::RequestProcessor;
@@ -72,12 +73,22 @@ RequestProcessorHandlerResult ServerRequestProcessor::HandleSubscribeKeepalive(E
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleSubscriptionRequest(zippylog::SubscriptionInfo subscription)
 {
-    string id = platform::CreateUUID(false);
+    SubscriptionRecord m;
+    subscription.ToProtocolBuffer(m);
 
-    /// @todo serialize to protocol buffer message
-    throw Exception("not implemented");
+    m.set_id(platform::CreateUUID(false));
 
-    return RequestProcessorHandlerResult::MakeDeferred();
+    Envelope e;
+    m.add_to_envelope(e);
+
+    if (!::zippylog::zeromq::SendEnvelope(*this->subscriptions_sock, e, false, 0)) {
+        /// @todo need appropriate error code
+        throw Exception("unhandled error");
+        ///return RequestProcessorHandlerResult::MakeError(0, "error sending subscription message");
+    }
+
+    /// @todo need to populate TTL
+    return RequestProcessorHandlerResult::MakeSubscriptionAccepted(m.id(), 0);
 }
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleWriteEnvelopes(::std::string const &, ::std::vector<Envelope> &, bool)

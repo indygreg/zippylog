@@ -21,6 +21,7 @@
 #include <zippylog/store.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/device/server.pb.h>
 #include <zippylog/zeromq.hpp>
 
 #include <zmq.hpp>
@@ -58,19 +59,6 @@ private:
     ResponseMetadata() {}
 };
 
-/// Records information unique to an envelope subscription
-class EnvelopeSubscription {
-public:
-    EnvelopeSubscription();
-
-    ::std::string id;
-    ::std::vector< ::std::string > paths;
-    ::std::vector< ::std::string > socket_identifiers;
-
-    ::std::vector<uint32> filter_namespaces;
-    ::std::vector< ::std::pair<uint32, uint32> > filter_enumerations;
-};
-
 /// Defines the type of a subscription
 typedef enum {
     ENVELOPE = 1,
@@ -92,6 +80,12 @@ public:
     SubscriptionInfo() : type(UNKNOWN)
     { };
 
+    /// Creates an instance from a protocol buffer representation
+    SubscriptionInfo(device::server::SubscriptionRecord const &m);
+
+    /// Copies data from this instance to a protocol buffer message
+    void ToProtocolBuffer(device::server::SubscriptionRecord &m);
+
     /// The type of subscription
     SubscriptionType type;
 
@@ -109,8 +103,11 @@ public:
     /// Used for return path routing
     ::std::vector< ::std::string > socket_identifiers;
 
-    /// Details about envelope subscription
-    EnvelopeSubscription envelope_subscription;
+    /// The namespaces we are interested in, for envelope subscriptions
+    ::std::vector<uint32> envelope_filter_namespaces;
+
+    /// The enumerations we are in, for envelope subscriptions
+    ::std::vector< ::std::pair<uint32, uint32> > envelope_filter_enumerations;
 };
 
 /// Maintains state for a subscription response stream
