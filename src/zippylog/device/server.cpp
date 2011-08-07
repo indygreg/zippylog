@@ -151,24 +151,10 @@ Server::Server(ServerStartParams &params) :
         this->write_logs = true;
 
     if (!this->zctx) {
-        this->zctx = new ::zmq::context_t(3);
+        /// @todo magic constant
+        this->zctx = new ::zmq::context_t(1);
         this->own_context = true;
     }
-
-    this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
-    this->logger_sock->bind(this->logger_endpoint.c_str());
-    this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
-    this->log_client_sock->connect(this->logger_endpoint.c_str());
-
-    Create msg;
-    msg.set_store_path(this->store_path);
-    for (vector<string>::iterator i = this->listen_endpoints.begin();
-         i != this->listen_endpoints.end();
-         i++) {
-         msg.add_listen_endpoint(*i);
-    }
-
-    LOG_MESSAGE(msg);
 }
 
 Server::~Server()
@@ -188,6 +174,21 @@ Server::~Server()
     if (this->log_client_sock) delete this->log_client_sock;
     if (this->store) delete this->store;
     if (this->own_context && this->zctx) delete this->zctx;
+}
+
+void Server::OnFirstRun()
+{
+    this->Start();
+
+    Create msg;
+    msg.set_store_path(this->store_path);
+    for (vector<string>::iterator i = this->listen_endpoints.begin();
+         i != this->listen_endpoints.end();
+         i++) {
+         msg.add_listen_endpoint(*i);
+    }
+
+    LOG_MESSAGE(msg);
 }
 
 void Server::OnRunStart()
@@ -433,6 +434,12 @@ bool Server::Start()
     this->active.Reset();
 
     // create our sockets
+    this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
+    this->logger_sock->bind(this->logger_endpoint.c_str());
+
+    this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
+    this->log_client_sock->connect(this->logger_endpoint.c_str());
+
     this->workers_sock = new socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 

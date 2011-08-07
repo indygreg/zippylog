@@ -303,16 +303,6 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// available before returning. In microseconds.
         ::zippylog::device::PumpResult Pump(int32 wait_microseconds = 250000);
 
-        /// Shut down the server
-        ///
-        /// On first call, will trigger the shutdown semaphore which signals all
-        /// created threads to stop execution. The function call will block
-        /// until all threads have been joined.
-        ///
-        /// On second call, is a no-op.
-        /// @todo need an API to force shutdown
-        void Shutdown();
-
         /// Obtain a list of client 0MQ endpoints
         ///
         /// The list is the set of 0MQ endpoints the server will accept client
@@ -331,6 +321,7 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
     protected:
         void OnRunStart();
         void OnRunFinish();
+        void OnFirstRun();
 
         /// Spins up a new request processor on a new thread
         bool CreateRequestProcessorDevice();
@@ -477,6 +468,16 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         ::std::vector< ::zippylog::device::PersistedStateReactor * > persisted_state_reactors;
 
     private:
+        /// Shut down the server
+        ///
+        /// On first call, will trigger the shutdown semaphore which signals all
+        /// created threads to stop execution. The function call will block
+        /// until all threads have been joined.
+        ///
+        /// On second call, is a no-op.
+        /// @todo need an API to force shutdown
+        void Shutdown();
+
         // copy constructor and assignment operator are not available
         Server(Server const &orig);
         Server & operator=(Server const &orig);

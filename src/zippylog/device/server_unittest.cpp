@@ -48,14 +48,22 @@ class ServerTest : public ::testing::Test
             test00_server(NULL),
             sandbox_server(NULL),
             sandbox_store(NULL),
-            ctx(3)
+            ctx(1)
         { }
 
         ~ServerTest()
         {
-            if (this->test00_server) delete test00_server;
+            if (this->test00_server) {
+                if (this->test00_server->IsRunning())
+                    this->test00_server->StopAsync();
+
+                delete test00_server;
+            }
 
             if (this->sandbox_server) {
+                if (this->sandbox_server->IsRunning())
+                    this->sandbox_server->StopAsync();
+
                 delete this->sandbox_server;
 
                 // and clean up all touched files
@@ -248,7 +256,7 @@ TEST_F(ServerTest, SimpleMessageProcessing)
     ASSERT_NO_THROW(response = Envelope(msg, 1));
     EXPECT_EQ(1, response.MessageCount());
 
-    s->Shutdown();
+    s->StopAsync();
 }
 
 TEST_F(ServerTest, ClientPing)
@@ -260,7 +268,7 @@ TEST_F(ServerTest, ClientPing)
 
     EXPECT_TRUE(c->Ping(100000));
 
-    s->Shutdown();
+    s->StopAsync();
 }
 
 void stream_added(string, protocol::StoreChangeStreamAddedV1 &, void *)
@@ -303,7 +311,7 @@ TEST_F(ServerTest, ClientSubscribeStoreChanges)
     EXPECT_EQ(1, buckets_added);
     */
 
-    s->Shutdown();
+    s->StopAsync();
 }
 
 }}} // namespaces
