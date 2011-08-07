@@ -40,8 +40,6 @@ namespace zippylog {
         registrar->register_message(1, 27, new ::zippylog::request_processor::EndProcessStreamInfo());
         registrar->register_message(1, 28, new ::zippylog::request_processor::BeginProcessWriteEnvelope());
         registrar->register_message(1, 29, new ::zippylog::request_processor::EndProcessWriteEnvelope());
-        registrar->register_message(1, 45, new ::zippylog::zippylogd::BrokerReceiveClientMessage());
-        registrar->register_message(1, 46, new ::zippylog::zippylogd::BrokerFlushOutputStreams());
         registrar->register_message(1, 47, new ::zippylog::zippylogd::StoreWatcherStartup());
         registrar->register_message(1, 48, new ::zippylog::zippylogd::StoreWatcherShutdown());
         registrar->register_message(1, 93, new ::zippylog::protocol::StreamInfoV1());
@@ -61,6 +59,9 @@ namespace zippylog {
         registrar->register_message(1, 121, new ::zippylog::device::server::Destroy());
         registrar->register_message(1, 122, new ::zippylog::device::server::RunStart());
         registrar->register_message(1, 123, new ::zippylog::device::server::RunFinish());
+        registrar->register_message(1, 124, new ::zippylog::device::server::FlushOutputStreams());
+        registrar->register_message(1, 125, new ::zippylog::device::server::ReceiveClientMessage());
+        registrar->register_message(1, 126, new ::zippylog::device::server::SendClientMessage());
         registrar->register_message(1, 70, new ::zippylog::protocol::response::PongV1());
         registrar->register_message(1, 71, new ::zippylog::protocol::response::FeatureSpecificationV1());
         registrar->register_message(1, 104, new ::zippylog::protocol::response::StreamSegmentStartV1());

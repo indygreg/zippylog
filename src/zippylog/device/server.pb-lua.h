@@ -307,6 +307,147 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_RunFinish_has_id(lua
 
 // end of message RunFinish
 
+// Message FlushOutputStreams
+// registers the message type with Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_open(lua_State *L);
+
+
+// push a copy of the message to the Lua stack
+// caller is free to use original message however she wants, but changes will not
+// be reflected in Lua and vice-verse
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_FlushOutputStreams_pushcopy(lua_State *L, const ::zippylog::device::server::FlushOutputStreams &msg);
+
+// push a reference of the message to the Lua stack
+// the 3rd and 4th arguments define a callback that can be invoked just before Lua
+// garbage collects the message. If the 3rd argument is NULL, Lua will *NOT* free
+// memory. If the second argument points to a function, that function is called when
+// Lua garbage collects the object. The function is sent a pointer to the message being
+// collected and the 4th argument to this function. If the function returns true,
+// Lua will free the memory. If false (0), Lua will not free the memory.
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_FlushOutputStreams_pushreference(lua_State *L, ::zippylog::device::server::FlushOutputStreams *msg, lua_protobuf_gc_callback callback, void *data);
+
+
+// The following functions are called by Lua. Many people will not need them,
+// but they are exported for those that do.
+
+
+// constructor called from Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_new(lua_State *L);
+
+// obtain instance from a serialized string
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_parsefromstring(lua_State *L);
+
+// garbage collects message instance in Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_gc(lua_State *L);
+
+// obtain serialized representation of instance
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_serialized(lua_State *L);
+
+// clear all fields in the message
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_clear(lua_State *L);
+
+// required string id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_FlushOutputStreams_has_id(lua_State *L);
+
+// end of message FlushOutputStreams
+
+// Message ReceiveClientMessage
+// registers the message type with Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_open(lua_State *L);
+
+
+// push a copy of the message to the Lua stack
+// caller is free to use original message however she wants, but changes will not
+// be reflected in Lua and vice-verse
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_ReceiveClientMessage_pushcopy(lua_State *L, const ::zippylog::device::server::ReceiveClientMessage &msg);
+
+// push a reference of the message to the Lua stack
+// the 3rd and 4th arguments define a callback that can be invoked just before Lua
+// garbage collects the message. If the 3rd argument is NULL, Lua will *NOT* free
+// memory. If the second argument points to a function, that function is called when
+// Lua garbage collects the object. The function is sent a pointer to the message being
+// collected and the 4th argument to this function. If the function returns true,
+// Lua will free the memory. If false (0), Lua will not free the memory.
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_ReceiveClientMessage_pushreference(lua_State *L, ::zippylog::device::server::ReceiveClientMessage *msg, lua_protobuf_gc_callback callback, void *data);
+
+
+// The following functions are called by Lua. Many people will not need them,
+// but they are exported for those that do.
+
+
+// constructor called from Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_new(lua_State *L);
+
+// obtain instance from a serialized string
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_parsefromstring(lua_State *L);
+
+// garbage collects message instance in Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_gc(lua_State *L);
+
+// obtain serialized representation of instance
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_serialized(lua_State *L);
+
+// clear all fields in the message
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_clear(lua_State *L);
+
+// required string id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_ReceiveClientMessage_has_id(lua_State *L);
+
+// end of message ReceiveClientMessage
+
+// Message SendClientMessage
+// registers the message type with Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_open(lua_State *L);
+
+
+// push a copy of the message to the Lua stack
+// caller is free to use original message however she wants, but changes will not
+// be reflected in Lua and vice-verse
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_SendClientMessage_pushcopy(lua_State *L, const ::zippylog::device::server::SendClientMessage &msg);
+
+// push a reference of the message to the Lua stack
+// the 3rd and 4th arguments define a callback that can be invoked just before Lua
+// garbage collects the message. If the 3rd argument is NULL, Lua will *NOT* free
+// memory. If the second argument points to a function, that function is called when
+// Lua garbage collects the object. The function is sent a pointer to the message being
+// collected and the 4th argument to this function. If the function returns true,
+// Lua will free the memory. If false (0), Lua will not free the memory.
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_device_server_SendClientMessage_pushreference(lua_State *L, ::zippylog::device::server::SendClientMessage *msg, lua_protobuf_gc_callback callback, void *data);
+
+
+// The following functions are called by Lua. Many people will not need them,
+// but they are exported for those that do.
+
+
+// constructor called from Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_new(lua_State *L);
+
+// obtain instance from a serialized string
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_parsefromstring(lua_State *L);
+
+// garbage collects message instance in Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_gc(lua_State *L);
+
+// obtain serialized representation of instance
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_serialized(lua_State *L);
+
+// clear all fields in the message
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_clear(lua_State *L);
+
+// required string id = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_clear_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_get_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_set_id(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_device_server_SendClientMessage_has_id(lua_State *L);
+
+// end of message SendClientMessage
+
 #ifdef __cplusplus
 }
 #endif

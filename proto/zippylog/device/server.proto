@@ -70,3 +70,18 @@ message RunStart {
 message RunFinish {
     required string id = 1;
 }
+
+// Log message when output streams are flushed
+message FlushOutputStreams {
+    required string id = 1;
+}
+
+// Log message when a client message is received
+message ReceiveClientMessage {
+    required string id = 1;
+}
+
+// Log message when a message is sent to a client
+message SendClientMessage {
+    required string id = 1;
+}
