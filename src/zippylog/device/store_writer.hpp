@@ -16,6 +16,7 @@
 #define ZIPPYLOG_DEVICE_STORE_WRITER_HPP_
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/device/device.hpp>
 #include <zippylog/store.hpp>
 
 #include <zmq.hpp>
@@ -67,7 +68,7 @@ public:
     ::std::string envelope_rep_endpoint;
 
     /// Semaphore indicating whether device should remain active
-    bool *active;
+    ::zippylog::platform::ConditionalWait *active;
 };
 
 /// A device that writes data to a zippylog backing store
@@ -85,7 +86,7 @@ public:
 ///
 /// For sending messages to this device, see
 /// ::zippylog::device::StoreWriterSender.
-class ZIPPYLOG_EXPORT StoreWriter {
+class ZIPPYLOG_EXPORT StoreWriter : public ::zippylog::device::Device {
 public:
     /// Construct a new store writer
     StoreWriter(StoreWriterStartParams &params);
@@ -98,20 +99,13 @@ public:
     /// the specified number of microseconds before giving up.
     ///
     /// @param timeout Maximum microseconds we should wait for messages
-    int Pump(long timeout = 0);
-
-    /// Runs the store writer
-    ///
-    /// Will block until the boolean pointed to in the argument goes to false
-    bool Run();
+    ::zippylog::device::PumpResult Pump(int32 timeout = 0);
 
 protected:
     ::zmq::context_t *ctx;
 
     // whether we own the 0MQ context
     bool own_context;
-
-    bool *active;
 
     ::std::string store_path;
     ::zippylog::Store *store;

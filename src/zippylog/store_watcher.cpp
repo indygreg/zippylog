@@ -25,24 +25,21 @@ using ::std::invalid_argument;
 using ::std::logic_error;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::device::PumpResult;
 using ::zippylog::zippylogd::StoreWatcherStartup;
 using ::zippylog::zippylogd::StoreWatcherShutdown;
 using ::zmq::socket_t;
 
 StoreWatcher::StoreWatcher(StoreWatcherStartParams params) :
+    Device(params.active),
     _store(NULL),
     _ctx(params.zctx),
     _endpoint(params.endpoint),
     logging_endpoint(params.logging_endpoint),
     socket(NULL),
     logging_sock(NULL),
-    active(params.active),
     watcher(params.store_path, true)
 {
-    if (!this->active) {
-        throw invalid_argument("active semaphore cannot be NULL");
-    }
-
     this->_store = new SimpleDirectoryStore(params.store_path);
 
     this->id = platform::CreateUUID(false);
@@ -57,74 +54,73 @@ StoreWatcher::~StoreWatcher()
     if (this->_store) delete this->_store;
 }
 
-void StoreWatcher::Run()
+void StoreWatcher::OnRunStart()
 {
-    {
-        StoreWatcherStartup log = StoreWatcherStartup();
-        log.set_id(this->id);
-        Envelope logenvelope = Envelope();
-        log.add_to_envelope(&logenvelope);
-        zeromq::send_envelope(this->logging_sock, logenvelope);
+    StoreWatcherStartup log = StoreWatcherStartup();
+    log.set_id(this->id);
+    Envelope logenvelope = Envelope();
+    log.add_to_envelope(&logenvelope);
+    zeromq::send_envelope(this->logging_sock, logenvelope);
+}
+
+void StoreWatcher::OnRunFinish()
+{
+    StoreWatcherShutdown log = StoreWatcherShutdown();
+    log.set_id(this->id);
+    Envelope logenvelope = Envelope();
+    log.add_to_envelope(&logenvelope);
+    zeromq::send_envelope(this->logging_sock, logenvelope);
+}
+
+PumpResult StoreWatcher::Pump(int32 timeout)
+{
+    if (!this->watcher.WaitForChanges(250000)) return PumpResult::MakeNoWorkDone();
+
+    vector<platform::DirectoryChange> changes;
+
+    if (!this->watcher.GetChanges(changes)) {
+        Exception("could not obtain directory changes... weird");
     }
 
-    while (*this->active) {
-        // wait up to 250 milliseconds for change
-        // this will return immediately if there has been a change, so the
-        // delay likely only impacts thread shutdown
-        if (!this->watcher.WaitForChanges(250000)) continue;
+    vector<platform::DirectoryChange>::iterator itor = changes.begin();
+    for (; itor != changes.end(); itor++) {
+        string store_path;
 
-        vector<platform::DirectoryChange> changes;
-
-        if (!this->watcher.GetChanges(changes)) {
-            Exception("could not obtain directory changes... weird");
+        if (itor->Path[0] == '/') {
+            store_path = itor->Path;
+        }
+        else {
+            store_path = "/" + itor->Path;
         }
 
-        vector<platform::DirectoryChange>::iterator itor = changes.begin();
-        for (; itor != changes.end(); itor++) {
-            string store_path;
+        // replace backslashes with forward slashes (Windows sanity)
+        for (size_t i = store_path.length(); i; i--) {
+            if (store_path[i-1] == '\\') store_path[i-1] = '/';
+        }
 
-            if (itor->Path[0] == '/') {
-                store_path = itor->Path;
-            }
-            else {
-                store_path = "/" + itor->Path;
-            }
+        string fs_path = this->_store->PathToFilesystemPath(itor->Path);
+        platform::FileStat stat;
+        platform::stat(fs_path, stat);
 
-            // replace backslashes with forward slashes (Windows sanity)
-            for (size_t i = store_path.length(); i; i--) {
-                if (store_path[i-1] == '\\') store_path[i-1] = '/';
-            }
+        switch (itor->Action) {
+            case platform::DirectoryChange::ADDED:
+                this->HandleAdded(store_path, stat);
+                break;
 
-            string fs_path = this->_store->PathToFilesystemPath(itor->Path);
-            platform::FileStat stat;
-            platform::stat(fs_path, stat);
+            case platform::DirectoryChange::DELETED:
+                this->HandleDeleted(store_path);
+                break;
 
-            switch (itor->Action) {
-                case platform::DirectoryChange::ADDED:
-                    this->HandleAdded(store_path, stat);
-                    break;
+            case platform::DirectoryChange::MODIFIED:
+                this->HandleModified(store_path, stat);
+                break;
 
-                case platform::DirectoryChange::DELETED:
-                    this->HandleDeleted(store_path);
-                    break;
-
-                case platform::DirectoryChange::MODIFIED:
-                    this->HandleModified(store_path, stat);
-                    break;
-
-                default:
-                    throw logic_error("unknown action seen. buggy code.");
-            }
+            default:
+                throw logic_error("unknown action seen. buggy code.");
         }
     }
 
-    {
-        StoreWatcherShutdown log = StoreWatcherShutdown();
-        log.set_id(this->id);
-        Envelope logenvelope = Envelope();
-        log.add_to_envelope(&logenvelope);
-        zeromq::send_envelope(this->logging_sock, logenvelope);
-    }
+    return PumpResult::MakeWorkDone();
 }
 
 } // namespace

@@ -547,7 +547,7 @@ namespace platform {
     /// ConditionalWait variables are guaranteed to only work within the same
     /// process. If they are used among multiple processes, results are
     /// undefined (possibly explosions).
-    class ConditionalWait {
+    class ZIPPYLOG_EXPORT ConditionalWait {
         public:
             /// Create a new conditional wait variable in the unsignaled state
             ConditionalWait();

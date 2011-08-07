@@ -20,6 +20,7 @@ using ::std::invalid_argument;
 using ::std::string;
 using ::std::vector;
 using ::zippylog::device::server::SubscriptionRecord;
+using ::zippylog::device::PumpResult;
 using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
@@ -29,13 +30,13 @@ namespace zippylog {
 namespace device {
 
 PersistedStateReactor::PersistedStateReactor(PersistedStateReactorStartParams const &params) :
+    Device(params.active),
     ctx(params.ctx),
     store_changes_endpoint(params.store_change_endpoint),
     client_endpoint(params.client_endpoint),
     subscription_endpoint(params.subscription_endpoint),
     subscription_updates_endpoint(params.subscription_updates_endpoint),
     logger_endpoint(params.logger_endpoint),
-    active(params.active),
     manager_params(params.manager_params),
     store_changes_sock(NULL),
     client_sock(NULL),
@@ -45,7 +46,6 @@ PersistedStateReactor::PersistedStateReactor(PersistedStateReactorStartParams co
     manager(NULL)
 {
     if (!this->ctx) throw invalid_argument("0MQ context must be defined");
-    if (!this->active) throw invalid_argument("active semaphore must be defined");
 
     if (this->store_changes_endpoint.empty()) throw invalid_argument("store changes endpoint not defined");
     if (this->client_endpoint.empty()) throw invalid_argument("client endpoint not defined");
@@ -106,7 +106,7 @@ void PersistedStateReactor::Initialize()
     this->pollitems[2].revents = 0;
 }
 
-void PersistedStateReactor::Pump(int32 timeout)
+PumpResult PersistedStateReactor::Pump(int32 timeout)
 {
     // wait for a message to process
     int result = zmq::poll(&this->pollitems[0], 3, timeout);
@@ -114,7 +114,7 @@ void PersistedStateReactor::Pump(int32 timeout)
     // if no data, perform house keeping and nothing else
     if (!result) {
         this->manager->RemoveExpiredSubscriptions();
-        return;
+        return PumpResult::MakeWorkDone();
     }
 
     if (this->pollitems[2].revents & ZMQ_POLLIN) {
@@ -174,13 +174,8 @@ void PersistedStateReactor::Pump(int32 timeout)
 
         this->ProcessStoreChangeMessage(msg);
     }
-}
 
-void PersistedStateReactor::Run()
-{
-    while(*this->active) {
-        this->Pump(100000);
-    }
+    return PumpResult::MakeWorkDone();
 }
 
 void PersistedStateReactor::ProcessStoreChangeMessage(zmq::message_t &msg)

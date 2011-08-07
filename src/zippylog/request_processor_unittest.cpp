@@ -29,6 +29,7 @@ using ::std::invalid_argument;
 using ::std::pair;
 using ::std::string;
 using ::std::vector;
+using ::zippylog::platform::ConditionalWait;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -117,7 +118,7 @@ class RequestProcessorTest : public ::zippylog::testing::TestBase {
 protected:
     RequestProcessor *rp;
     TestRequestProcessor *p;
-    bool active;
+    ConditionalWait active;
     ::zmq::context_t ctx;
     ::zmq::socket_t logger;
     ::zmq::socket_t client;
@@ -126,7 +127,6 @@ protected:
     RequestProcessorTest() :
         rp(NULL),
         p(NULL),
-        active(true),
         ctx(1),
         logger(ctx, ZMQ_PULL),
         client(ctx, ZMQ_XREQ),
@@ -200,7 +200,7 @@ protected:
 TEST_F(RequestProcessorTest, ConstructorParameterValidation)
 {
     RequestProcessorStartParams params;
-    bool active;
+    ConditionalWait active;
     ::zmq::context_t ctx(1);
 
     EXPECT_THROW(RequestProcessor p(params), invalid_argument);

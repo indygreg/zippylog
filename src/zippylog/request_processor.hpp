@@ -21,6 +21,7 @@
 #include <zippylog/store.hpp>
 #include <zippylog/protocol/request.pb.h>
 #include <zippylog/protocol/response.pb.h>
+#include <zippylog/device/device.hpp>
 #include <zippylog/device/server.pb.h>
 #include <zippylog/zeromq.hpp>
 
@@ -66,7 +67,7 @@ typedef enum {
     UNKNOWN = 3,
 } SubscriptionType;
 
-/// Records information about a single subscription
+/// Details about a single subscription
 ///
 /// These records are populated by the request processor. They are typically
 /// passed along to a persisted state manager.
@@ -146,6 +147,7 @@ protected:
 
     ::std::vector< ::zmq::message_t * > messages;
 
+    /// @todo these should come from elsewhere
     static const uint32 max_size = 1048576;
     static const uint32 max_envelopes = 1024;
 
@@ -444,9 +446,9 @@ public:
 
     /// Semaphore indicating whether the processor should remain alive
     ///
-    /// When this goes to false, the request processor will cease processing
+    /// When this signals, the request processor will cease processing
     /// new messages and will return from its run routine.
-    bool *active;
+    ::zippylog::platform::ConditionalWait *active;
 
     /// Maximum number of bytes that can be returned from a GetStream request
     uint32 get_stream_max_bytes;
@@ -492,17 +494,10 @@ public:
 /// to not deal with inheritance.
 ///
 /// @todo Remove device-like API
-class ZIPPYLOG_EXPORT RequestProcessor {
+class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
     public:
         RequestProcessor(RequestProcessorStartParams &params);
         ~RequestProcessor();
-
-        /// Runs the request processor
-        /// Will listen for messages on the 0MQ socket specified in the start parameters
-        /// This function executes forever in an infinite loop until a
-        /// catastrophic error or the active parameter passed in the start
-        /// parameters goes to false
-        void Run();
 
         /// Perform processing activities
         ///
@@ -512,7 +507,7 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// If no messages are available, waits up to the specified number of
         /// microseconds and process any that arrive before that time window
         /// expires.
-        int Pump(long wait_microseconds);
+        ::zippylog::device::PumpResult Pump(int32 wait_microseconds);
 
         /// Processes received 0MQ messages
         ///
@@ -613,6 +608,10 @@ class ZIPPYLOG_EXPORT RequestProcessor {
                                               ResponseMetadata const &md,
                                               const ::std::string &name);
     protected:
+        /// Implement device interface
+        void OnRunStart();
+        void OnRunFinish();
+
         /// Process a ping request
         RequestProcessorResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
 
@@ -706,7 +705,6 @@ class ZIPPYLOG_EXPORT RequestProcessor {
 
         ::std::string id;
         ::std::vector< ::std::string > current_request_identities;
-        bool *active;
 
         /// Maximum number of bytes we're allowed to return per GetStreamSegment request
         uint32 get_stream_max_bytes;

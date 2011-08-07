@@ -21,6 +21,7 @@
 #include <zippylog/request_processor.hpp>
 #include <zippylog/store.hpp>
 #include <zippylog/store_watcher.hpp>
+#include <zippylog/device/device.hpp>
 #include <zippylog/device/persisted_state_reactor.hpp>
 #include <zippylog/device/store_writer.hpp>
 #include <zippylog/device/store_writer_sender.hpp>
@@ -144,6 +145,7 @@ private:
 class ZIPPYLOG_EXPORT ServerStartParams {
 public:
     ServerStartParams() :
+        active(NULL),
         ctx(NULL),
         worker_threads(::zippylog::server_default_worker_threads),
         persisted_state_reactor_threads(::zippylog::server_default_persisted_state_reactor_threads),
@@ -154,6 +156,9 @@ public:
         lua_execute_client_code(::zippylog::server_default_lua_allow),
         lua_streaming_max_memory(::zippylog::server_default_lua_streaming_max_memory)
     { }
+
+    /// Semaphore used to control if device should keep running
+    ::zippylog::platform::ConditionalWait *active;
 
     /// 0MQ context to use
     ///
@@ -258,12 +263,12 @@ public:
 ///   sr => broker [label="worker_subscriptions_sock"];
 ///   broker => client [label="clients_sock"];
 /// @endmsc
-class ZIPPYLOG_EXPORT Server {
+class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
     public:
         /// Construct a server from a server config object
         Server(ServerStartParams &params);
 
-        ~Server();
+        virtual ~Server();
 
         /// Start the server
         ///
@@ -296,17 +301,7 @@ class ZIPPYLOG_EXPORT Server {
         ///
         /// @param wait_microseconds up to how long to wait for work to become
         /// available before returning. In microseconds.
-        int Pump(uint32 wait_microseconds = 250000);
-
-        /// Run the server synchronously
-        ///
-        /// This will block until a fatal error is encountered or until the
-        /// Shutdown() function is called.
-        void Run();
-
-        /// Runs asynchronously
-        /// this creates a new thread, runs the server in that, then returns
-        void RunAsync();
+        ::zippylog::device::PumpResult Pump(int32 wait_microseconds = 250000);
 
         /// Shut down the server
         ///
@@ -334,27 +329,18 @@ class ZIPPYLOG_EXPORT Server {
         static bool ParseConfig(const ::std::string path, ServerStartParams &params, ::std::string &error);
 
     protected:
+        void OnRunStart();
 
-        /// Thread start functions
-        static void * StoreWatcherStart(void *data);
-        static void * PersistedStateReactorStart(void *data);
-        static void * AsyncExecStart(void *data);
-        static void * RequestProcessorStart(void *data);
-        static void * StoreWriterStart(void *data);
+        /// Spins up a new request processor on a new thread
+        bool CreateRequestProcessorDevice();
 
-        /// Populates the *StartParams members with appropriate values
-        bool SynchronizeStartParams();
-
-        /// Spins up a new worker thread
-        bool CreateWorkerThread();
-
-        /// Spins up a new thread to process streaming
-        bool CreatePersistedStateReactorThread();
+        /// Spins up a new persisted state reactor on a new thread
+        bool CreatePersistedStateReactorDevice();
 
         /// Checks that all the threads are still kicking
         ///
         /// Kills the server if any have exited.
-        void CheckThreads();
+        void CheckDevices();
 
         /// the path to the store the server operates against
         ::std::string store_path;
@@ -394,12 +380,12 @@ class ZIPPYLOG_EXPORT Server {
         /// The store we are bound to
         ::zippylog::Store * store;
 
-        /// Whether we are running
-        bool active;
-
         /// Whether the internal structure is set up and ready for running
         bool start_started;
         bool initialized;
+
+        /// Semaphore to signal child devices whether they should be active
+        ::zippylog::platform::ConditionalWait active;
 
         /// 0MQ context to use
         ::zmq::context_t * zctx;
@@ -477,31 +463,17 @@ class ZIPPYLOG_EXPORT Server {
         /// used for identification purposes in logging
         ::std::string id;
 
-        /// Thread running the server
-        ///
-        /// Only present when server is running asynchronously via RunAsync()
-        ::zippylog::platform::Thread * exec_thread;
+        /// Store writer device
+        ::zippylog::device::StoreWriter *store_writer;
 
-        /// Thread writing to the store
-        ::zippylog::platform::Thread * store_writer_thread;
-
-        /// Thread watching the store
-        ::zippylog::platform::Thread * store_watcher_thread;
+        /// Store watcher device
+        ::zippylog::StoreWatcher *store_watcher;
 
         /// Threads running workers/request processors
-        ::std::vector< ::zippylog::platform::Thread * > worker_threads;
+        ::std::vector< ::zippylog::RequestProcessor * > request_processors;
 
         /// Threads running persisted state reactors
-        ::std::vector< ::zippylog::platform::Thread * > persisted_state_reactor_threads;
-
-        /// used to construct child objects
-        ///
-        /// The addresses of these variables are passed when starting the
-        /// threads for these objects.
-        ::zippylog::device::server::ServerRequestProcessorStartParams request_processor_params;
-        ::zippylog::device::PersistedStateReactorStartParams persisted_state_reactor_params;
-        ::zippylog::device::server::WatcherStartParams store_watcher_params;
-        ::zippylog::device::StoreWriterStartParams store_writer_params;
+        ::std::vector< ::zippylog::device::PersistedStateReactor * > persisted_state_reactors;
 
     private:
         // copy constructor and assignment operator are not available

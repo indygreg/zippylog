@@ -22,6 +22,7 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::client::Client;
 using ::zippylog::client::SubscriptionCallbackInfo;
+using ::zippylog::platform::ConditionalWait;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -41,6 +42,7 @@ class ServerTest : public ::testing::Test
         vector<socket_t *> sockets;
         vector<Client *> clients;
         context_t ctx;
+        ConditionalWait cw;
 
         ServerTest() :
             test00_server(NULL),
@@ -79,9 +81,12 @@ class ServerTest : public ::testing::Test
             }
 
             ServerStartParams p1;
+            p1.active = &this->cw;
             p1.listen_endpoints.push_back("inproc://test00");
             p1.store_path = "simpledirectory://test/stores/00-simple";
             p1.ctx = &this->ctx;
+            p1.worker_threads = 1;
+            p1.persisted_state_reactor_threads = 1;
 
             // disable log writing
             p1.log_bucket.clear();
@@ -103,6 +108,7 @@ class ServerTest : public ::testing::Test
             }
 
             ServerStartParams p;
+            p.active = &this->cw;
             p.listen_endpoints.push_back("inproc://sandbox");
             p.store_path = "simpledirectory://" + SANDBOX_PATH;
             p.ctx = &this->ctx;
@@ -161,6 +167,9 @@ TEST_F(ServerTest, StartParamValidation)
 TEST_F(ServerTest, ConstructBadStore)
 {
     ServerStartParams p1;
+    ConditionalWait cw;
+    p1.active = &cw;
+
     p1.listen_endpoints.push_back("inproc://test00");
 
     p1.store_path = "foo";
@@ -176,6 +185,8 @@ TEST_F(ServerTest, ConstructBadStore)
 TEST_F(ServerTest, ConstructSuccess)
 {
     ServerStartParams p1;
+    ConditionalWait cw;
+    p1.active = &cw;
     p1.listen_endpoints.push_back("inproc://test00");
     p1.store_path = "simpledirectory://test/stores/00-simple";
     EXPECT_NO_THROW(Server s(p1));
@@ -198,7 +209,8 @@ TEST_F(ServerTest, SimplePump)
     Server *s = this->GetTest00Server();
     s->Start();
     for (size_t i = 100; i; --i) {
-        ASSERT_NE(-1, s->Pump(0));
+        PumpResult result = s->Pump(0);
+        ASSERT_FALSE(result.IsError());
     }
 }
 

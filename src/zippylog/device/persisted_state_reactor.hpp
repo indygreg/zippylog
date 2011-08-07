@@ -16,6 +16,7 @@
 #define ZIPPYLOG_DEVICE_PERSISTED_STATE_REACTOR_HPP_
 
 #include <zippylog/zippylog.hpp>
+#include <zippylog/device/device.hpp>
 #include <zippylog/persisted_state_manager.hpp>
 #include <zippylog/store.hpp>
 
@@ -43,9 +44,7 @@ public:
     ::std::string logger_endpoint;
 
     /// Semaphore stating whether device should remain active
-    ///
-    /// When the boolean pointed to goes to false, Run() will terminate
-    bool *active;
+    ::zippylog::platform::ConditionalWait *active;
 
     /// Parameters used to construct a persisted state observer
     PersistedStateManagerStartParams manager_params;
@@ -66,22 +65,16 @@ public:
 ///
 /// The general pattern is to instantiate this class on a thread and call
 /// Run(), which will block until the device is shut down.
-class ZIPPYLOG_EXPORT PersistedStateReactor {
+class ZIPPYLOG_EXPORT PersistedStateReactor : public ::zippylog::device::Device {
 public:
     PersistedStateReactor(PersistedStateReactorStartParams const &params);
 
     ~PersistedStateReactor();
 
-    /// Runs the reactor
-    ///
-    /// This function runs in the foreground (blocks) until the semaphore in
-    /// the start parameters tells it not to.
-    void Run();
-
     /// Performs work on the device if there is work to be done
     ///
     /// Waits up to the specified time for work to become available, if none is available
-    void Pump(int32 timeout_microseconds);
+    ::zippylog::device::PumpResult Pump(int32 timeout_microseconds);
 protected:
 
     static void PathAddedCallback(SubscriptionInfo const &subscription, ::std::string const &path, void *data);
@@ -106,8 +99,6 @@ protected:
     ::std::string subscription_endpoint;
     ::std::string subscription_updates_endpoint;
     ::std::string logger_endpoint;
-
-    bool *active;
 
     PersistedStateManagerStartParams manager_params;
 

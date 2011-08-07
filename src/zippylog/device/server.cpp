@@ -39,11 +39,14 @@ using ::std::string;
 using ::std::ostringstream;
 using ::std::vector;
 using ::zippylog::platform::Thread;
+using ::zippylog::StoreWatcherStartParams;
 using ::zippylog::zippylogd::BrokerStartup;
 using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 using ::zippylog::device::PersistedStateReactor;
 using ::zippylog::device::PersistedStateReactorStartParams;
+using ::zippylog::device::PumpResult;
+using ::zippylog::device::StoreWriterStartParams;
 using ::zippylog::device::server::ServerRequestProcessor;
 using ::zippylog::device::server::ServerRequestProcessorStartParams;
 using ::zippylog::device::server::WatcherStartParams;
@@ -59,6 +62,7 @@ using ::zmq::socket_t;
 #define STORE_CHANGES_INPUT_INDEX 6
 
 Server::Server(ServerStartParams &params) :
+    Device(params.active),
     store_path(params.store_path),
     listen_endpoints(params.listen_endpoints),
     number_worker_threads(params.worker_threads),
@@ -71,7 +75,6 @@ Server::Server(ServerStartParams &params) :
     lua_execute_client_code(params.lua_execute_client_code),
     lua_streaming_max_memory(params.lua_streaming_max_memory),
     store(NULL),
-    active(true),
     start_started(false),
     initialized(false),
     zctx(params.ctx),
@@ -89,9 +92,8 @@ Server::Server(ServerStartParams &params) :
     log_client_sock(NULL),
     stream_flush_timer(params.stream_flush_interval * 1000),
     thread_check_timer(5000000),
-    exec_thread(NULL),
-    store_writer_thread(NULL),
-    store_watcher_thread(NULL)
+    store_writer(NULL),
+    store_watcher(NULL)
 {
     // validate input
     if (!params.listen_endpoints.size()) {
@@ -162,24 +164,18 @@ Server::~Server()
     if (this->own_context && this->zctx) delete this->zctx;
 }
 
-void Server::Run()
+void Server::OnRunStart()
 {
     this->Start();
 
-    {
-        BrokerStartup log = BrokerStartup();
-        log.set_id(this->id);
-        Envelope logenvelope = Envelope();
-        log.add_to_envelope(&logenvelope);
-        zeromq::send_envelope(this->log_client_sock, logenvelope);
-    }
-
-    while (this->active) {
-        this->Pump();
-    }
+    BrokerStartup log = BrokerStartup();
+    log.set_id(this->id);
+    Envelope logenvelope = Envelope();
+    log.add_to_envelope(&logenvelope);
+    zeromq::send_envelope(this->log_client_sock, logenvelope);
 }
 
-int Server::Pump(uint32 wait_time)
+PumpResult Server::Pump(int32 wait_time)
 {
     bool work_done = false;
 
@@ -203,7 +199,7 @@ int Server::Pump(uint32 wait_time)
 
     if (thread_check_timer.Signaled()) {
         work_done = true;
-        this->CheckThreads();
+        this->CheckDevices();
         if (!thread_check_timer.Start()) {
             throw Exception("TODO handle failure of timer to start");
         }
@@ -213,7 +209,7 @@ int Server::Pump(uint32 wait_time)
     int rc = zmq::poll(&this->pollitems[0], 7, wait_time);
 
     // if nothing pending, return if we have done anything so far
-    if (rc < 1) return work_done ? 1 : 0;
+    if (rc < 1) return work_done ? PumpResult::MakeWorkDone() : PumpResult::MakeNoWorkDone();
 
     // OK, so we have pending 0MQ messages to process!
     // When processing pending messages, we generally favor shipping messages
@@ -382,70 +378,8 @@ int Server::Pump(uint32 wait_time)
         }
     }
 
-    if (error) return -1;
-    return work_done ? 1 : 0;
-}
-
-void Server::RunAsync()
-{
-    this->exec_thread = new Thread(Server::AsyncExecStart, this);
-
-    // don't return until we are running
-    // @todo better ways to do this
-    while (!this->initialized) {}
-}
-
-bool Server::SynchronizeStartParams()
-{
-    // worker/request processor
-    ::zippylog::RequestProcessorStartParams params;
-    params.active = &this->active;
-    params.ctx = this->zctx;
-    params.client_endpoint = this->worker_endpoint;
-    params.logger_endpoint = this->logger_endpoint;
-    params.store_path = this->store_path;
-
-    this->request_processor_params.request_processor_params = params;
-    this->request_processor_params.streaming_subscriptions_endpoint = this->worker_subscriptions_endpoint;
-    this->request_processor_params.streaming_updates_endpoint = this->worker_streaming_notify_endpoint;
-    this->request_processor_params.store_writer_envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
-    this->request_processor_params.store_writer_envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
-
-    // store watcher
-    StoreWatcherStartParams swparams;
-    swparams.active = &this->active;
-    swparams.logging_endpoint = this->logger_endpoint;
-
-    // @todo this assumes we're using a file-based store, which is a no-no
-    swparams.store_path = ((SimpleDirectoryStore *)(this->store))->RootDirectoryPath();
-    swparams.zctx = this->zctx;
-
-    this->store_watcher_params.params = swparams;
-    this->store_watcher_params.socket_endpoint = this->store_changes_input_endpoint;
-
-    // persisted state reactor
-    this->persisted_state_reactor_params.client_endpoint = this->streaming_endpoint;
-    this->persisted_state_reactor_params.store_change_endpoint = this->store_changes_output_endpoint;
-    this->persisted_state_reactor_params.logger_endpoint = this->logger_endpoint;
-    this->persisted_state_reactor_params.subscription_endpoint = this->streaming_subscriptions_endpoint;
-    this->persisted_state_reactor_params.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
-
-    this->persisted_state_reactor_params.ctx = this->zctx;
-    this->persisted_state_reactor_params.active = &this->active;
-
-    this->persisted_state_reactor_params.manager_params.store_uri = this->store_path;
-    this->persisted_state_reactor_params.manager_params.subscription_ttl = this->subscription_ttl;
-    this->persisted_state_reactor_params.manager_params.subscription_lua_allow = this->lua_execute_client_code;
-    this->persisted_state_reactor_params.manager_params.subscription_lua_memory_ceiling = this->lua_streaming_max_memory;
-
-    // store writer
-    this->store_writer_params.ctx = this->zctx;
-    this->store_writer_params.active = &this->active;
-    this->store_writer_params.store_path = this->store_path;
-    this->store_writer_params.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
-    this->store_writer_params.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
-
-    return true;
+    if (error) return PumpResult::MakeError();
+    return work_done ? PumpResult::MakeWorkDone() : PumpResult::MakeNoWorkDone();
 }
 
 bool Server::Start()
@@ -459,7 +393,7 @@ bool Server::Start()
 
     this->start_started = true;
 
-    this->SynchronizeStartParams();
+    this->active.Reset();
 
     // create all our sockets
     this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
@@ -495,22 +429,41 @@ bool Server::Start()
     // now create child threads
 
     // start with store writer
-    this->store_writer_thread = new Thread(StoreWriterStart, &this->store_writer_params);
+    StoreWriterStartParams swp;
+    swp.ctx = this->zctx;
+    swp.active = &this->active;
+    swp.store_path = this->store_path;
+    swp.envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    swp.envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
 
-    // spin up configured number of workers
+    this->store_writer = new StoreWriter(swp);
+    this->store_writer->RunAsync();
+
+    // store watcher
+    StoreWatcherStartParams swparams;
+    swparams.active = &this->active;
+    swparams.logging_endpoint = this->logger_endpoint;
+
+    // @todo this assumes we're using a file-based store, which is a no-no
+    swparams.store_path = ((SimpleDirectoryStore *)(this->store))->RootDirectoryPath();
+    swparams.zctx = this->zctx;
+
+    WatcherStartParams wsp;
+    wsp.params = swparams;
+    wsp.socket_endpoint = this->store_changes_input_endpoint;
+
+    this->store_watcher = new Watcher(wsp);
+    this->store_watcher->RunAsync();
+
+    // spin up configured number of request processors
     for (int i = this->number_worker_threads; i; --i) {
-        if (!this->CreateWorkerThread()) return false;
+        if (!this->CreateRequestProcessorDevice()) return false;
     }
 
-    // and the streamers
+    // and the persisted state reactors
     for (int i = this->number_persisted_reactor_threads; i; --i) {
-        if (!this->CreatePersistedStateReactorThread()) return false;
+        if (!this->CreatePersistedStateReactorDevice()) return false;
     }
-
-    this->store_watcher_thread = new Thread(StoreWatcherStart, &this->store_watcher_params);
-
-    // @todo wait on threads properly
-    platform::sleep(100);
 
     // bind sockets to listen for client requests
     this->clients_sock = new socket_t(*this->zctx, ZMQ_XREP);
@@ -570,43 +523,79 @@ bool Server::Start()
     return true;
 }
 
-bool Server::CreateWorkerThread()
+bool Server::CreateRequestProcessorDevice()
 {
-    this->worker_threads.push_back(new Thread(Server::RequestProcessorStart, &this->request_processor_params));
+    ::zippylog::RequestProcessorStartParams params;
+    params.active = &this->active;
+    params.ctx = this->zctx;
+    params.client_endpoint = this->worker_endpoint;
+    params.logger_endpoint = this->logger_endpoint;
+    params.store_path = this->store_path;
+
+    ServerRequestProcessorStartParams p;
+    p.request_processor_params = params;
+    p.streaming_subscriptions_endpoint = this->worker_subscriptions_endpoint;
+    p.streaming_updates_endpoint = this->worker_streaming_notify_endpoint;
+    p.store_writer_envelope_pull_endpoint = this->store_writer_envelope_pull_endpoint;
+    p.store_writer_envelope_rep_endpoint = this->store_writer_envelope_rep_endpoint;
+
+    ServerRequestProcessor *srp = new ServerRequestProcessor(p);
+    params.implementation = srp;
+
+    RequestProcessor *rp = new RequestProcessor(params);
+    rp->RunAsync();
+
+    this->request_processors.push_back(rp);
 
     return true;
 }
 
-bool Server::CreatePersistedStateReactorThread()
+bool Server::CreatePersistedStateReactorDevice()
 {
-    this->persisted_state_reactor_threads.push_back(
-        new Thread(Server::PersistedStateReactorStart, &this->persisted_state_reactor_params)
-    );
+    PersistedStateReactorStartParams p;
+    p.client_endpoint = this->streaming_endpoint;
+    p.store_change_endpoint = this->store_changes_output_endpoint;
+    p.logger_endpoint = this->logger_endpoint;
+    p.subscription_endpoint = this->streaming_subscriptions_endpoint;
+    p.subscription_updates_endpoint = this->streaming_streaming_notify_endpoint;
+
+    p.ctx = this->zctx;
+    p.active = &this->active;
+
+    p.manager_params.store_uri = this->store_path;
+    p.manager_params.subscription_ttl = this->subscription_ttl;
+    p.manager_params.subscription_lua_allow = this->lua_execute_client_code;
+    p.manager_params.subscription_lua_memory_ceiling = this->lua_streaming_max_memory;
+
+    PersistedStateReactor *r = new PersistedStateReactor(p);
+    r->RunAsync();
+
+    this->persisted_state_reactors.push_back(r);
 
     return true;
 }
 
-void Server::CheckThreads()
+void Server::CheckDevices()
 {
-    if (this->store_writer_thread && !this->store_writer_thread->Alive()) {
+    if (!this->store_writer || !this->store_writer->IsRunning()) {
         this->Shutdown();
         return;
     }
 
-    if (this->store_watcher_thread && !this->store_watcher_thread->Alive()) {
+    if (!this->store_watcher || !this->store_watcher->IsRunning()) {
         this->Shutdown();
         return;
     }
 
-    for (size_t i = 0; i < this->worker_threads.size(); i++) {
-        if (!this->worker_threads[i]->Alive()) {
+    for (size_t i = 0; i < this->request_processors.size(); i++) {
+        if (!this->request_processors[i]->IsRunning()) {
             this->Shutdown();
             return;
         }
     }
 
-    for (size_t i = 0; i < this->persisted_state_reactor_threads.size(); i++) {
-        if (!this->persisted_state_reactor_threads[i]->Alive()) {
+    for (size_t i = 0; i < this->persisted_state_reactors.size(); i++) {
+        if (!this->persisted_state_reactors[i]->IsRunning()) {
             this->Shutdown();
             return;
         }
@@ -616,41 +605,39 @@ void Server::CheckThreads()
 // @todo consider flushing log socket on shutdown
 void Server::Shutdown()
 {
-    if (!this->active) return;
+    this->active.Signal();
 
-    this->active = false;
-
-    // wait for workers to terminate
-    vector<Thread *>::iterator i;
-    for (i = this->worker_threads.begin(); i < this->worker_threads.end(); i++) {
-        (*i)->Join();
+    // wait for request processors to finish
+    for (vector<RequestProcessor *>::iterator i = this->request_processors.begin();
+         i != this->request_processors.end();
+         i++)
+    {
+        (*i)->StopAsync();
         delete *i;
+        *i = NULL;
     }
-    this->worker_threads.clear();
+    this->request_processors.clear();
 
-    // wait for streaming threads to terminate
-    for (i = this->persisted_state_reactor_threads.begin(); i < this->persisted_state_reactor_threads.end(); i++) {
-        (*i)->Join();
+    // wait for persisted state reactors to finish
+    for (vector<PersistedStateReactor *>::iterator i = this->persisted_state_reactors.begin();
+        i != this->persisted_state_reactors.end();
+        i++) {
+        (*i)->StopAsync();
         delete *i;
+        *i = NULL;
     }
-    this->persisted_state_reactor_threads.clear();
+    this->persisted_state_reactors.clear();
 
-    if (this->store_watcher_thread) {
-        this->store_watcher_thread->Join();
-        delete this->store_watcher_thread;
-        this->store_watcher_thread = NULL;
-    }
-
-    if (this->store_writer_thread) {
-        this->store_writer_thread->Join();
-        delete this->store_writer_thread;
-        this->store_writer_thread = NULL;
+    if (this->store_watcher) {
+        this->store_watcher->StopAsync();
+        delete this->store_watcher;
+        this->store_watcher = NULL;
     }
 
-    if (this->exec_thread) {
-        this->exec_thread->Join();
-        delete this->exec_thread;
-        this->exec_thread = NULL;
+    if (this->store_writer) {
+        this->store_writer->StopAsync();
+        delete this->store_writer;
+        this->store_writer = NULL;
     }
 }
 
@@ -763,87 +750,6 @@ cleanup:
     }
 
     return true;
-}
-
-void * Server::StoreWatcherStart(void *d)
-{
-    WatcherStartParams *params = (WatcherStartParams *)d;
-
-    try {
-        Watcher watcher(*params);
-        watcher.Run();
-    } catch (::std::exception e) {
-        string error = e.what();
-        return (void *)1;
-    }
-
-    return (void *)0;
-}
-
-void * Server::PersistedStateReactorStart(void *d)
-{
-    PersistedStateReactorStartParams *params = (PersistedStateReactorStartParams *)d;
-    try {
-        PersistedStateReactor reactor(*params);
-        reactor.Run();
-    }
-    catch (::std::exception e) {
-        string error = e.what();
-        return (void *)1;
-    }
-
-    return (void *)0;
-}
-
-void * Server::RequestProcessorStart(void *d)
-{
-    assert(d);
-    ServerRequestProcessorStartParams *params = (ServerRequestProcessorStartParams *)d;
-    try {
-        ServerRequestProcessor *worker = new ServerRequestProcessor(*params);
-        params->request_processor_params.implementation = worker;
-
-        RequestProcessor processor(params->request_processor_params);
-
-        processor.Run();
-    }
-    catch (::std::exception e) {
-        string error = e.what();
-        return (void *)1;
-    }
-
-    return (void *)0;
-}
-
-void * Server::StoreWriterStart(void *d)
-{
-    assert(d);
-    StoreWriterStartParams *params = (StoreWriterStartParams *)d;
-    try {
-        StoreWriter writer(*params);
-        writer.Run();
-    }
-    catch (::std::exception e) {
-        string error = e.what();
-        return (void *)1;
-    }
-
-    return (void *)0;
-}
-
-
-void * Server::AsyncExecStart(void *data)
-{
-    try {
-        Server *server = (Server *)data;
-        server->Run();
-    }
-    catch (::std::exception e) {
-        string error = e.what();
-        return (void *)1;
-    }
-
-    return (void *)0;
 }
 
 }} // namespaces

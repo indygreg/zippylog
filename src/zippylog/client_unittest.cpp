@@ -34,6 +34,7 @@ using ::std::vector;
 using ::zippylog::device::Server;
 using ::zippylog::device::ServerStartParams;
 using ::zippylog::Store;
+using ::zippylog::platform::ConditionalWait;
 using ::zippylog::platform::UUID;
 using ::zmq::context_t;
 using ::zmq::message_t;
@@ -48,6 +49,7 @@ class ClientTest : public ::testing::Test
         Server * server;
         Store * store;
         context_t ctx;
+        ConditionalWait cw;
 
         ClientTest() :
             server(NULL),
@@ -57,7 +59,7 @@ class ClientTest : public ::testing::Test
 
         virtual ~ClientTest() {
             if (this->server) {
-                this->server->Shutdown();
+                this->server->StopAsync();
                 delete this->server;
             }
 
@@ -72,6 +74,7 @@ class ClientTest : public ::testing::Test
             }
 
             ServerStartParams p1;
+            p1.active = &this->cw;
             p1.listen_endpoints.push_back("inproc://test00");
             endpoint = "inproc://test00";
             p1.store_path = store_path;
@@ -82,7 +85,7 @@ class ClientTest : public ::testing::Test
             p1.log_stream_set.clear();
 
             this->server = new Server(p1);
-            server->RunAsync();
+            this->server->RunAsync();
 
             return this->server;
         }

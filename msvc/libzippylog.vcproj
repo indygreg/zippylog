@@ -294,6 +294,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\device.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\envelope.cpp"
 				>
 			</File>
@@ -409,6 +413,10 @@
 			>
 			<File
 				RelativePath="..\src\zippylog\client.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\device.hpp"
 				>
 			</File>
 			<File

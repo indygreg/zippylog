@@ -53,6 +53,7 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::lua::LuaState;
 using ::zippylog::device::server::SubscriptionRecord;
+using ::zippylog::device::PumpResult;
 using ::zmq::message_t;
 using ::zmq::socket_t;
 
@@ -249,6 +250,7 @@ RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeWriteResult(
 }
 
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
+    Device(params.active),
     ctx(params.ctx),
     impl(params.implementation),
     store_path(params.store_path),
@@ -257,16 +259,11 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     logger_sock(NULL),
     socket(NULL),
     store(NULL),
-    active(params.active),
     get_stream_max_bytes(params.get_stream_max_bytes),
     get_stream_max_envelopes(params.get_stream_max_envelopes),
     lua_memory_max(params.lua_memory_max),
     subscription_ttl(params.subscription_ttl)
 {
-    if (!this->active) {
-        throw invalid_argument("active parameter cannot be NULL");
-    }
-
     if (!this->ctx) {
         throw invalid_argument("ctx parameter cannot be NULL");
     }
@@ -300,24 +297,19 @@ RequestProcessor::~RequestProcessor()
     if (this->impl) delete this->impl;
 }
 
-void RequestProcessor::Run()
+void RequestProcessor::OnRunStart()
 {
-    {
-        ::zippylog::request_processor::RunStart log;
-        LOG_MESSAGE(log, this->logger_sock);
-    }
-
-    while (*this->active) {
-        this->Pump(250000);
-    }
-
-    ::zippylog::request_processor::RunStop log;
+    ::zippylog::request_processor::RunStart log;
     LOG_MESSAGE(log, this->logger_sock);
-
-    return;
 }
 
-int RequestProcessor::Pump(long wait)
+void RequestProcessor::OnRunFinish()
+{
+    ::zippylog::request_processor::RunStop log;
+    LOG_MESSAGE(log, this->logger_sock);
+}
+
+PumpResult RequestProcessor::Pump(int32 wait)
 {
     zmq::pollitem_t pollitems[1];
     pollitems[0].events = ZMQ_POLLIN;
@@ -326,7 +318,7 @@ int RequestProcessor::Pump(long wait)
     pollitems[0].socket = *this->socket;
 
     if (!zmq::poll(&pollitems[0], 1, wait)) {
-        return 0;
+        return PumpResult::MakeNoWorkDone();
     }
 
     this->current_request_identities.clear();
@@ -375,7 +367,7 @@ int RequestProcessor::Pump(long wait)
         }
     }
 
-    return 1;
+    return PumpResult::MakeWorkDone();
 }
 
 void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vector<Envelope> &output)

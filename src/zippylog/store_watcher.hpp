@@ -16,7 +16,7 @@
 #define STORE_WATCHER_HPP
 
 #include <zippylog/zippylog.hpp>
-
+#include <zippylog/device/device.hpp>
 #include <zippylog/platform.hpp>
 #include <zippylog/store.hpp>
 
@@ -31,7 +31,7 @@ public:
     ::std::string store_path;
     ::std::string endpoint;
     ::std::string logging_endpoint;
-    bool *active;
+    ::zippylog::platform::ConditionalWait *active;
 };
 
 // A directory watcher for file-based stores
@@ -44,7 +44,9 @@ public:
 // thread. Just instantiate a directory watcher and invoke Run(). This
 // function will block until the active semaphore contained in the start
 // parameters goes to false.
-class ZIPPYLOG_EXPORT StoreWatcher {
+///
+/// @todo move to device namespace
+class ZIPPYLOG_EXPORT StoreWatcher : public ::zippylog::device::Device {
 public:
     // Instantiate a store watcher with the given parameters
     //
@@ -53,11 +55,10 @@ public:
     StoreWatcher(StoreWatcherStartParams params);
     virtual ~StoreWatcher();
 
-    // Run the store watcher
-    //
-    // Will not return until a fatal error is encountered or until the
-    // active semaphore from the start parameters goes to false;
-    void Run();
+    ::zippylog::device::PumpResult Pump(int32 timeout = 100000);
+
+    virtual void OnRunStart();
+    virtual void OnRunFinish();
 
 protected:
     // Function that performs actions when something is created
@@ -82,7 +83,6 @@ protected:
     ::std::string id;
     ::zmq::socket_t * socket;
     ::zmq::socket_t * logging_sock;
-    bool *active;
     platform::DirectoryWatcher watcher;
 
 private:

@@ -22,12 +22,13 @@ namespace device {
 
 using ::std::string;
 using ::std::vector;
+using ::zippylog::device::PumpResult;
 using ::zmq::message_t;
 
 StoreWriter::StoreWriter(StoreWriterStartParams &params) :
+    Device(params.active),
     ctx(params.ctx),
     own_context(false),
-    active(params.active),
     store(NULL),
     envelope_pull_endpoint(params.envelope_pull_endpoint),
     envelope_rep_endpoint(params.envelope_rep_endpoint),
@@ -38,14 +39,6 @@ StoreWriter::StoreWriter(StoreWriterStartParams &params) :
     envelope_rep_index(-1),
     active_sockets(0)
 {
-    if (!active) {
-        throw ::std::invalid_argument("active parameter must be non-NULL");
-    }
-
-    if (!*active) {
-        throw ::std::invalid_argument("active parameter must be true at call time");
-    }
-
     if (!this->ctx) {
         this->ctx = new ::zmq::context_t(1);
         this->own_context = true;
@@ -94,29 +87,20 @@ StoreWriter::~StoreWriter()
     if (this->envelope_rep_sock) delete this->envelope_rep_sock;
 }
 
-bool StoreWriter::Run()
-{
-    while (*this->active) {
-        this->Pump(250000);
-    }
-
-    return true;
-}
-
-int StoreWriter::Pump(long timeout)
+PumpResult StoreWriter::Pump(int32 timeout)
 {
     int rc = ::zmq::poll(&this->pollitem[0], this->active_sockets, timeout);
-    if (rc < 1) return 0;
+    if (rc < 1) return PumpResult::MakeNoWorkDone();
 
     if (this->envelope_pull_index >= 0 && this->pollitem[this->envelope_pull_index].revents & ZMQ_POLLIN) {
-        if (!this->ProcessEnvelopePull()) return -1;
+        if (!this->ProcessEnvelopePull()) return PumpResult::MakeError();
     }
 
     if (this->envelope_rep_index >= 0 && this->pollitem[this->envelope_rep_index].revents & ZMQ_POLLIN) {
-        if (!this->ProcessEnvelopeRep()) return -1;
+        if (!this->ProcessEnvelopeRep()) return PumpResult::MakeError();
     }
 
-    return 1;
+    return PumpResult::MakeWorkDone();
 }
 
 bool StoreWriter::ProcessEnvelopePull()
