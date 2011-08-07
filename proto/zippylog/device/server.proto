@@ -1,0 +1,50 @@
+//  Copyright 2011 Gregory Szorc
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+
+// This file defines messages used by the various server devices.
+
+package zippylog.device.server;
+
+enum SubscriptionType {
+	ENVELOPE = 1;
+	STORE_CHANGE = 2;
+}
+
+// Represents a subscription request
+//
+// This is constructed in the ServerRequestProcessor device and passed to
+// a PersistedStateReactor to notify of a new subscription.
+message SubscriptionRecord {
+	// Subscription ID
+	required string id = 1;
+
+	// The type of subscription
+	required SubscriptionType type = 2;
+
+	// Path(s) to subscribe to
+	repeated string path = 3;
+
+	// Lua code to load
+	optional string lua_code = 4;
+
+	// Socket identifiers for return path routing
+	repeated string socket_identifier = 5;
+
+	// List of namespaces we wish to receive envelopes for
+	repeated uint32 envelope_filter_namespace = 6;
+
+	// Namespace-type pairs for envelope filtering
+	repeated uint32 envelope_filter_enumeration_namespace = 7;
+	repeated uint32 envelope_filter_enumeration_type = 8;
+}

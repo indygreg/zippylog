@@ -91,6 +91,8 @@ set(libzippylog_sources
     src/zippylog/client.cpp
     src/zippylog/device/persisted_state_reactor.cpp
     src/zippylog/device/server.cpp
+    src/zippylog/device/server.pb.cc
+    src/zippylog/device/server.pb-lua.cc
     src/zippylog/device/server_watcher.cpp
     src/zippylog/device/server_worker.cpp
     src/zippylog/device/store_writer.cpp
@@ -108,7 +110,8 @@ set(libzippylog_sources
     src/zippylog/protocol/request.pb.cc
     src/zippylog/protocol/request.pb-lua.cc
     src/zippylog/protocol/response.pb.cc
-    src/zippylog/protocol/response.pb-lua.cc
+    # TODO fix bug in lua-protocol where headers from imported files aren't included
+    #src/zippylog/protocol/response.pb-lua.cc
     src/zippylog/request_processor.cpp
     src/zippylog/request_processor.pb.cc
     src/zippylog/request_processor.pb-lua.cc
@@ -162,7 +165,7 @@ set(libzippylog-test_sources
     src/zippylog/platform_unittest.cpp
     src/zippylog/request_processor_unittest.cpp
     src/zippylog/store_unittest.cpp
-	src/zippylog/stream_unittest.cpp
+    src/zippylog/stream_unittest.cpp
 )
 
 add_executable(libzippylog-test ${libzippylog-test_sources})

@@ -58,6 +58,7 @@ namespace zippylog {
         registrar->register_message(1, 102, new ::zippylog::protocol::StoreChangeStreamSetAddedV1());
         registrar->register_message(1, 103, new ::zippylog::protocol::StoreChangeStreamSetDeletedV1());
         registrar->register_message(1, 113, new ::zippylog::protocol::PluginStateV1());
+        registrar->register_message(1, 119, new ::zippylog::device::server::SubscriptionRecord());
         registrar->register_message(1, 70, new ::zippylog::protocol::response::PongV1());
         registrar->register_message(1, 71, new ::zippylog::protocol::response::FeatureSpecificationV1());
         registrar->register_message(1, 104, new ::zippylog::protocol::response::StreamSegmentStartV1());
