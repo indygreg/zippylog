@@ -96,6 +96,8 @@ set(libzippylog_sources
     src/zippylog/device/server.pb-lua.cc
     src/zippylog/device/server_watcher.cpp
     src/zippylog/device/server_worker.cpp
+    src/zippylog/device/store_watcher.pb.cc
+    src/zippylog/device/store_watcher.pb-lua.cc
     src/zippylog/device/store_writer.cpp
     src/zippylog/device/store_writer_sender.cpp
     src/zippylog/device/string_loader.cpp
