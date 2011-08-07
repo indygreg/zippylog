@@ -16,7 +16,7 @@
 
 #include <zippylog/platform.hpp>
 #include <zippylog/zeromq.hpp>
-#include <zippylog/zippylogd.pb.h>
+#include <zippylog/device/server.pb.h>
 
 // Lua is compiled as C most of the time, so import as such to avoid
 // name mangling
@@ -40,18 +40,29 @@ using ::std::ostringstream;
 using ::std::vector;
 using ::zippylog::platform::Thread;
 using ::zippylog::StoreWatcherStartParams;
-using ::zippylog::zippylogd::BrokerStartup;
-using ::zippylog::zippylogd::BrokerShutdown;
-using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 using ::zippylog::device::PersistedStateReactor;
 using ::zippylog::device::PersistedStateReactorStartParams;
 using ::zippylog::device::PumpResult;
 using ::zippylog::device::StoreWriterStartParams;
+using ::zippylog::device::server::Create;
+using ::zippylog::device::server::Destroy;
+using ::zippylog::device::server::FlushOutputStreams;
+using ::zippylog::device::server::RunStart;
+using ::zippylog::device::server::RunFinish;
+using ::zippylog::device::server::ReceiveClientMessage;
+using ::zippylog::device::server::SendClientMessage;
 using ::zippylog::device::server::ServerRequestProcessor;
 using ::zippylog::device::server::ServerRequestProcessorStartParams;
 using ::zippylog::device::server::WatcherStartParams;
 using ::zippylog::device::server::Watcher;
 using ::zmq::socket_t;
+
+#define LOG_MESSAGE(msgvar) { \
+    msgvar.set_id(this->id); \
+    Envelope logenvelope = Envelope(); \
+    msgvar.add_to_envelope(&logenvelope); \
+    zeromq::send_envelope(this->log_client_sock, logenvelope); \
+}
 
 #define CLIENT_INDEX 0
 #define WORKER_INDEX 1
@@ -143,6 +154,21 @@ Server::Server(ServerStartParams &params) :
         this->zctx = new ::zmq::context_t(3);
         this->own_context = true;
     }
+
+    this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
+    this->logger_sock->bind(this->logger_endpoint.c_str());
+    this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
+    this->log_client_sock->connect(this->logger_endpoint.c_str());
+
+    Create msg;
+    msg.set_store_path(this->store_path);
+    for (vector<string>::iterator i = this->listen_endpoints.begin();
+         i != this->listen_endpoints.end();
+         i++) {
+         msg.add_listen_endpoint(*i);
+    }
+
+    LOG_MESSAGE(msg);
 }
 
 Server::~Server()
@@ -168,11 +194,16 @@ void Server::OnRunStart()
 {
     this->Start();
 
-    BrokerStartup log = BrokerStartup();
-    log.set_id(this->id);
-    Envelope logenvelope = Envelope();
-    log.add_to_envelope(&logenvelope);
-    zeromq::send_envelope(this->log_client_sock, logenvelope);
+    RunStart log;
+    LOG_MESSAGE(log);
+}
+
+void Server::OnRunFinish()
+{
+    this->Shutdown();
+
+    RunFinish log;
+    LOG_MESSAGE(log);
 }
 
 PumpResult Server::Pump(int32 wait_time)
@@ -185,11 +216,9 @@ PumpResult Server::Pump(int32 wait_time)
     // @todo move this to writer thread once we isolate all writing to there
     if (this->stream_flush_timer.Signaled()) {
         work_done = true;
-        BrokerFlushOutputStreams log = BrokerFlushOutputStreams();
-        log.set_id(this->id);
-        Envelope e;
-        log.add_to_envelope(&e);
-        zeromq::send_envelope(this->log_client_sock, e);
+
+        FlushOutputStreams log;
+        LOG_MESSAGE(log);
 
         this->store->FlushOutputStreams();
         if (!stream_flush_timer.Start()) {
@@ -273,6 +302,9 @@ PumpResult Server::Pump(int32 wait_time)
 
             if (!more) break;
         }
+
+        SendClientMessage log;
+        LOG_MESSAGE(log);
     }
 
     // move streaming messages to client
@@ -293,6 +325,9 @@ PumpResult Server::Pump(int32 wait_time)
 
             if (!more) break;
         }
+
+        SendClientMessage log;
+        LOG_MESSAGE(log, this->log_client_sock);
     }
 
     // move subscriptions requests to streamer
@@ -355,7 +390,6 @@ PumpResult Server::Pump(int32 wait_time)
         }
     }
 
-
     // forward client stream requests to streaming thread pool
 
     // send client requests to workers
@@ -376,6 +410,9 @@ PumpResult Server::Pump(int32 wait_time)
 
             if (!more) break;
         }
+
+        ReceiveClientMessage log;
+        LOG_MESSAGE(log);
     }
 
     if (error) return PumpResult::MakeError();
@@ -395,13 +432,7 @@ bool Server::Start()
 
     this->active.Reset();
 
-    // create all our sockets
-    this->logger_sock = new socket_t(*this->zctx, ZMQ_PULL);
-    this->logger_sock->bind(this->logger_endpoint.c_str());
-
-    this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
-    this->log_client_sock->connect(this->logger_endpoint.c_str());
-
+    // create our sockets
     this->workers_sock = new socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 

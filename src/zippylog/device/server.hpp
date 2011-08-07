@@ -330,6 +330,7 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
 
     protected:
         void OnRunStart();
+        void OnRunFinish();
 
         /// Spins up a new request processor on a new thread
         bool CreateRequestProcessorDevice();
