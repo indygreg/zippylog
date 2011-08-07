@@ -57,7 +57,7 @@ public:
     int handle_subscribe_keepalive_count;
     int write_envelopes_count;
 
-    HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) {
+    RequestProcessorHandlerResult HandleSubscriptionRequest(SubscriptionInfo subscription) {
         if (subscription.type == ENVELOPE) {
             this->handle_subscribe_envelopes_count++;
         }
@@ -65,23 +65,36 @@ public:
             this->subscribe_store_changes_count++;
         }
 
-        HandleSubscriptionResult result;
-        result.result = HandleSubscriptionResult::ACCEPTED;
-        result.id = "XX";
-
-        return result;
+        return RequestProcessorHandlerResult::MakeSubscriptionAccepted("XX", 0);
     }
 
-    RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)
+    RequestProcessorHandlerResult HandleSubscribeKeepalive(Envelope &, vector<Envelope> &)
     {
         this->handle_subscribe_keepalive_count++;
-        return AUTHORITATIVE;
+        return RequestProcessorHandlerResult::MakeSynchronous();
     }
 
-    int HandleWriteEnvelopes(string const &, vector<Envelope> &to_write, bool)
+    RequestProcessorHandlerResult HandleWriteEnvelopes(string const &, vector<Envelope> &to_write, bool)
     {
         this->write_envelopes_count += to_write.size();
-        return to_write.size();
+
+        return RequestProcessorHandlerResult::MakeWriteResult(to_write.size());
+    }
+
+    RequestProcessorHandlerResult HandleRegisterPlugin(
+        PluginRegistrationRequest const &r)
+    {
+        return RequestProcessorHandlerResult::MakeDeferred();
+    }
+
+    RequestProcessorHandlerResult HandleUnregisterPlugin(string const &name)
+    {
+        return RequestProcessorHandlerResult::MakeDeferred();
+    }
+
+    RequestProcessorHandlerResult HandleGetPluginStatus(vector<string> const &names)
+    {
+        return RequestProcessorHandlerResult::MakeDeferred();
     }
 
 protected:

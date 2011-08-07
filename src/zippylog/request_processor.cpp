@@ -82,6 +82,76 @@ void EnvelopeSubscriptionResponseState::RegisterError(zippylog::protocol::respon
     throw new Exception("not yet implemented");
 }
 
+RequestProcessorHandlerResult::RequestProcessorHandlerResult()
+    : deferred(false), have_error(false), is_subscription(false), is_write(false)
+{ }
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeSynchronous()
+{
+    RequestProcessorHandlerResult result;
+    result.deferred = false;
+
+    return result;
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeError(
+    ::zippylog::protocol::response::ErrorCode code,
+    string const & message)
+{
+    RequestProcessorHandlerResult result;
+
+    result.have_error = true;
+    result.error_code = code;
+    result.error_message = message;
+
+    return result;
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeDeferred()
+{
+    RequestProcessorHandlerResult result;
+    result.deferred = true;
+
+    return result;
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakePluginStatus(
+    vector< ::zippylog::protocol::PluginStateV1 > &states)
+{
+    throw Exception("not yet implemented");
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeSubscriptionAccepted(
+    string const &id,
+    uint32 ttl)
+{
+    RequestProcessorHandlerResult result;
+    result.is_subscription = true;
+    result.subscription_id = id;
+    result.subscription_ttl = ttl;
+
+    return result;
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeSubscriptionRejected(
+    string const &reason)
+{
+    RequestProcessorHandlerResult result;
+    result.is_subscription = true;
+    result.error_message = reason;
+
+    return result;
+}
+
+RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeWriteResult(
+    uint32 written)
+{
+    RequestProcessorHandlerResult result;
+    result.is_write = true;
+    result.envelopes_written = written;
+
+    return result;
+}
 
 RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     ctx(params.ctx),
@@ -420,8 +490,24 @@ RequestProcessorResponseStatus RequestProcessor::ProcessRequest(Envelope &reques
             result = this->ProcessSubscribeKeepalive(request_envelope, output);
             break;
 
+        case protocol::request::SubscribeCancelV1::zippylog_enumeration:
+            result = this->ProcessSubscribeCancel(request_envelope, output);
+            break;
+
         case protocol::request::WriteEnvelopeV1::zippylog_enumeration:
             result = this->ProcessWriteEnvelope(request_envelope, output);
+            break;
+
+        case protocol::request::RegisterPluginV1::zippylog_enumeration:
+            result = this->ProcessRegisterPlugin(request_envelope, output);
+            break;
+
+        case protocol::request::UnregisterPluginV1::zippylog_enumeration:
+            result = this->ProcessUnregisterPlugin(request_envelope, output);
+            break;
+
+        case protocol::request::GetPluginStatusV1::zippylog_enumeration:
+            result = this->ProcessPluginStatus(request_envelope, output);
             break;
 
         default:
@@ -498,6 +584,8 @@ RequestProcessorResponseStatus RequestProcessor::ProcessFeatures(Envelope &, vec
     response.add_supported_request_names("SubscribeKeepaliveV1");
     response.add_supported_request_types(protocol::request::SubscribeCancelV1::zippylog_enumeration);
     response.add_supported_request_names("SubscribeCancelV1");
+
+    /// @todo add plugin types if enabled on server
 
     response.set_max_stream_segment_bytes(this->get_stream_max_bytes);
     response.set_max_stream_segment_envelopes(this->get_stream_max_envelopes);
@@ -803,7 +891,6 @@ LOG_END:
 
 RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeStoreChanges(Envelope &request, vector<Envelope> &output)
 {
-    HandleSubscriptionResult result;
     SubscriptionInfo subscription;
 
     OBTAIN_MESSAGE(protocol::request::SubscribeStoreChangesV1, m, request, 0);
@@ -836,7 +923,6 @@ LOG_END:
 RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeEnvelopes(Envelope &request, vector<Envelope> &output)
 {
     SubscriptionInfo subscription;
-    HandleSubscriptionResult result;
 
     OBTAIN_MESSAGE(protocol::request::SubscribeEnvelopesV1, m, request, 0);
 
@@ -916,11 +1002,23 @@ RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeKeepalive(Envel
         log.set_subscription(m->id(0));
         LOG_MESSAGE(log, this->logger_sock);
     }
-    // @todo validation
+    /// @todo validation
 
 LOG_END:
 
-    return this->impl->HandleSubscribeKeepalive(request, output);
+    RequestProcessorHandlerResult result = this->impl->HandleSubscribeKeepalive(request, output);
+
+    if (result.deferred)
+        return DEFERRED;
+
+    return AUTHORITATIVE;
+}
+
+RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeCancel(
+    Envelope &request,
+    vector<Envelope> &output)
+{
+    throw Exception("not implemented");
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &request, vector<Envelope> &output)
@@ -1003,21 +1101,24 @@ RequestProcessorResponseStatus RequestProcessor::ProcessWriteEnvelope(Envelope &
             }
         }
 
-        int written = 0;
+        RequestProcessorHandlerResult result;
 
         if (envs.size()) {
-            written = this->impl->HandleWriteEnvelopes(m->path(), envs, synchronous);
+            result = this->impl->HandleWriteEnvelopes(m->path(), envs, synchronous);
         }
 
-        if (send_ack) {
+        if (send_ack && !result.deferred) {
+            if (result.have_error) {
+                /// @todo handle error in write handler
+                throw Exception("not implemented");
+            }
+
+            if (!result.is_write) {
+                throw Exception("return from request processor write envelopes implementation not sane");
+            }
+
             protocol::response::WriteAckV1 ack;
-            if (written >= 0) {
-                ack.set_envelopes_written(written);
-            }
-            else {
-                // @todo should have error field in ack
-                throw Exception("TODO implement error reporting on failed write");
-            }
+            ack.set_envelopes_written(result.envelopes_written);
 
             Envelope e;
             ack.add_to_envelope(e);
@@ -1038,7 +1139,32 @@ LOG_END:
     return DEFERRED;
 }
 
-bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(socket_t &sock, SubscriptionInfo const &subscription, string const &path)
+RequestProcessorResponseStatus RequestProcessor::ProcessRegisterPlugin(
+    Envelope &request, vector<Envelope> &output)
+{
+    OBTAIN_MESSAGE(protocol::request::RegisterPluginV1, m, request, 0);
+
+    throw Exception("not implemented");
+
+LOG_END:
+
+    return DEFERRED;
+}
+
+RequestProcessorResponseStatus RequestProcessor::ProcessUnregisterPlugin(
+    Envelope &request, vector<Envelope> &output)
+{
+    throw Exception("not implemented");
+}
+
+RequestProcessorResponseStatus RequestProcessor::ProcessPluginStatus(
+    Envelope &request, vector<Envelope> &output)
+{
+    throw Exception("not implemented");
+}
+
+bool RequestProcessor::SendSubscriptionStoreChangePathAddedResponse(
+    socket_t &sock, SubscriptionInfo const &subscription, string const &path)
 {
     Envelope response;
     protocol::response::SubscriptionStartV1 start;
@@ -1153,37 +1279,41 @@ void RequestProcessor::CallHandleSubscriptionRequest(SubscriptionInfo &subscript
         subscription.socket_identifiers.erase(subscription.socket_identifiers.begin());
     }
 
-    HandleSubscriptionResult result = this->impl->HandleSubscriptionRequest(subscription);
+    RequestProcessorHandlerResult result = this->impl->HandleSubscriptionRequest(subscription);
 
-    switch (result.result) {
-        case HandleSubscriptionResult::ACCEPTED:
-        {
-            protocol::response::SubscriptionAcceptAckV1 ack;
-            ack.set_id(result.id);
-            ack.set_ttl(this->subscription_ttl);
+    // nothing to do if result is deferred
+    if (result.deferred)
+        return;
 
-            Envelope response;
-            ack.add_to_envelope(response);
-
-            output.push_back(response);
-
-            break;
-        }
-
-        case HandleSubscriptionResult::REJECTED:
-            this->PopulateErrorResponse(
-                protocol::response::SUBSCRIPTION_REJECTED,
-                result.reject_reason,
-                output
-            );
-            break;
-
-        case HandleSubscriptionResult::UNKNOWN:
-            throw Exception("Unknown result enumeration from HandleSubscriptionRequest() implementation");
-
-        default:
-            throw Exception("Unhandled result enumeration for HandleSubscriptionResult.result");
+    if (result.have_error) {
+        this->PopulateErrorResponse(result.error_code, result.error_message, output);
+        return;
     }
+
+    // this should only happen if the handler used an inappropriate constructor
+    if (!result.is_subscription) {
+        throw Exception("invalid response seen from request processor implementation");
+    }
+
+    if (!result.subscription_id.empty()) {
+        protocol::response::SubscriptionAcceptAckV1 ack;
+        ack.set_id(result.subscription_id);
+        ack.set_ttl(result.subscription_ttl);
+
+        Envelope response;
+        ack.add_to_envelope(response);
+
+        output.push_back(response);
+
+        return;
+    }
+
+    // else a rejected subscription
+    this->PopulateErrorResponse(
+        protocol::response::SUBSCRIPTION_REJECTED,
+        result.error_message,
+        output
+    );
 }
 
 bool RequestProcessor::PopulateErrorResponse(protocol::response::ErrorCode code, string message, vector<Envelope> &msgs)
