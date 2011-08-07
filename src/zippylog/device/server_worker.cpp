@@ -34,7 +34,7 @@ using ::zippylog::SubscriptionInfo;
 using ::zmq::socket_t;
 using ::zmq::message_t;
 
-Worker::Worker(WorkerStartParams &params) :
+ServerRequestProcessor::ServerRequestProcessor(ServerRequestProcessorStartParams &params) :
     ctx(params.request_processor_params.ctx),
     streaming_subscriptions_endpoint(params.streaming_subscriptions_endpoint),
     streaming_updates_endpoint(params.streaming_updates_endpoint),
@@ -56,41 +56,54 @@ Worker::Worker(WorkerStartParams &params) :
     this->store_sender = new StoreWriterSender(swsp);
 }
 
-Worker::~Worker()
+ServerRequestProcessor::~ServerRequestProcessor()
 {
     if (this->store_sender) delete this->store_sender;
     if (this->subscriptions_sock) delete this->subscriptions_sock;
     if (this->subscription_updates_sock) delete this->subscription_updates_sock;
 }
 
-RequestProcessorResponseStatus Worker::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
+RequestProcessorHandlerResult ServerRequestProcessor::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
 {
     ::zippylog::zeromq::send_envelope(this->subscription_updates_sock, request);
 
-    return DEFERRED;
+    return RequestProcessorHandlerResult::MakeDeferred();
 }
 
-HandleSubscriptionResult Worker::HandleSubscriptionRequest(zippylog::SubscriptionInfo subscription)
+RequestProcessorHandlerResult ServerRequestProcessor::HandleSubscriptionRequest(zippylog::SubscriptionInfo subscription)
 {
-    HandleSubscriptionResult result;
-    result.id = platform::CreateUUID(false);
-    result.result = HandleSubscriptionResult::ACCEPTED;
-    subscription.id = result.id;
+    string id = platform::CreateUUID(false);
 
-    // we send the raw class through the socket
     /// @todo serialize to protocol buffer message
-    message_t m(sizeof(subscription));
-    memcpy(m.data(), &subscription, sizeof(subscription));
+    throw Exception("not implemented");
 
-    this->subscriptions_sock->send(m, 0);
-
-    return result;
+    return RequestProcessorHandlerResult::MakeDeferred();
 }
 
-int Worker::HandleWriteEnvelopes(::std::string const &, ::std::vector<Envelope> &, bool)
+RequestProcessorHandlerResult ServerRequestProcessor::HandleWriteEnvelopes(::std::string const &, ::std::vector<Envelope> &, bool)
 {
     /// @todo implement
     throw Exception("TODO implement Worker::HandleWriteEnvelopes");
+
+    return RequestProcessorHandlerResult::MakeDeferred();
+}
+
+RequestProcessorHandlerResult ServerRequestProcessor::HandleRegisterPlugin(
+    PluginRegistrationRequest const &r)
+{
+    throw Exception("not implemented");
+}
+
+RequestProcessorHandlerResult ServerRequestProcessor::HandleUnregisterPlugin(
+    ::std::string const &name)
+{
+    throw Exception("not implemented");
+}
+
+RequestProcessorHandlerResult ServerRequestProcessor::HandleGetPluginStatus(
+    ::std::vector< ::std::string > const &names)
+{
+    throw Exception("not implemented");
 }
 
 }}} // namespaces

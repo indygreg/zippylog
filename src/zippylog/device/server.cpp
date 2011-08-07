@@ -44,10 +44,10 @@ using ::zippylog::zippylogd::BrokerShutdown;
 using ::zippylog::zippylogd::BrokerFlushOutputStreams;
 using ::zippylog::device::PersistedStateReactor;
 using ::zippylog::device::PersistedStateReactorStartParams;
+using ::zippylog::device::server::ServerRequestProcessor;
+using ::zippylog::device::server::ServerRequestProcessorStartParams;
 using ::zippylog::device::server::WatcherStartParams;
 using ::zippylog::device::server::Watcher;
-using ::zippylog::device::server::Worker;
-using ::zippylog::device::server::WorkerStartParams;
 using ::zmq::socket_t;
 
 #define CLIENT_INDEX 0
@@ -798,9 +798,9 @@ void * Server::PersistedStateReactorStart(void *d)
 void * Server::RequestProcessorStart(void *d)
 {
     assert(d);
-    WorkerStartParams *params = (WorkerStartParams *)d;
+    ServerRequestProcessorStartParams *params = (ServerRequestProcessorStartParams *)d;
     try {
-        Worker *worker = new Worker(*params);
+        ServerRequestProcessor *worker = new ServerRequestProcessor(*params);
         params->request_processor_params.implementation = worker;
 
         RequestProcessor processor(params->request_processor_params);

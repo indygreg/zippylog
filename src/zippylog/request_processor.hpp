@@ -27,6 +27,37 @@
 
 namespace zippylog {
 
+/// Holds metadata necessary for crafting responses to requests
+///
+/// This class is used primarily as an aid for asynchronous response
+/// generation. An instance of this class is passed to the static protocol
+/// response generators in RequestProcessor to craft appropriate responses.
+///
+/// The class is designed as a black box. RequestProcessor is the only thing
+/// that is interested in what's inside.
+class ZIPPYLOG_EXPORT ResponseMetadata {
+protected:
+    /// Construct an instance of the metadata class
+    ///
+    /// Marked as non-public because only the RequestProcessor should be
+    /// instantiating it.
+    ResponseMetadata(Envelope const & e,
+                     ::std::vector< ::std::string > &identities);
+
+    /// Socket identities to route response
+    ::std::vector< ::std::string > identities;
+
+    /// Tags to put on the response envelope
+    ::std::vector< ::std::string > tags;
+
+    friend class RequestProcessor;
+    friend class PluginRegistrationRequest;
+
+private:
+    /// Default constructor disabled
+    ResponseMetadata() {}
+};
+
 /// Records information unique to an envelope subscription
 class EnvelopeSubscription {
 public:
@@ -40,6 +71,7 @@ public:
     ::std::vector< ::std::pair<uint32, uint32> > filter_enumerations;
 };
 
+/// Defines the type of a subscription
 typedef enum {
     ENVELOPE = 1,
     STORE_CHANGE = 2,
@@ -79,22 +111,6 @@ public:
 
     /// Details about envelope subscription
     EnvelopeSubscription envelope_subscription;
-};
-
-/// Encapsulates the result of a request to handle a subscription
-class ZIPPYLOG_EXPORT HandleSubscriptionResult {
-public:
-    HandleSubscriptionResult() : result(UNKNOWN) { }
-
-    enum SubscriptionResult {
-        ACCEPTED,
-        REJECTED,
-        UNKNOWN
-    } result;
-
-    ::std::string id;
-
-    ::std::string reject_reason;
 };
 
 /// Maintains state for a subscription response stream
@@ -139,6 +155,28 @@ protected:
     friend class RequestProcessor;
 };
 
+/// Represents a request to register a plugin
+///
+/// Plugin registration requests are normalized to this type and delivered
+/// to the registration callback
+class ZIPPYLOG_EXPORT PluginRegistrationRequest {
+public:
+    /// Construct a new, empty record
+    PluginRegistrationRequest() { }
+
+    /// Name plugin should be registered under
+    ::std::string name;
+
+    /// Lua code constituting the plugin
+    ::std::string lua_code;
+
+    /// 0MQ socket identities for response routing
+    ::std::vector< ::std::string > identities;
+
+    /// Metadata to help generate response
+    ResponseMetadata md;
+};
+
 /// Return code from request processors routine
 enum RequestProcessorResponseStatus {
     /// Processor is authoritative responder for this request.
@@ -154,28 +192,142 @@ enum RequestProcessorResponseStatus {
     DEFERRED = 2,
 };
 
+/// This class represents the result of a request processor handler invocation
+///
+/// Instances of this class are returned by the various handler functions in
+/// RequestProcessorImplementation classes.
+class ZIPPYLOG_EXPORT RequestProcessorHandlerResult {
+public:
+    /// Construct a response that indicates we processed the request
+    /// successfully
+    static RequestProcessorHandlerResult MakeSynchronous();
+
+    /// Construct a response that indicates an error was encountered
+    static RequestProcessorHandlerResult MakeError(
+        ::zippylog::protocol::response::ErrorCode code,
+        ::std::string const & message);
+
+    /// Construct a response that indicates deferred processing
+    static RequestProcessorHandlerResult MakeDeferred();
+
+    /// Construct a response for a synchronous result to a plugin status query
+    ///
+    /// The plugin states are returned to the request processor and sent as
+    /// part of the response.
+    static RequestProcessorHandlerResult MakePluginStatus(
+        ::std::vector< ::zippylog::protocol::PluginStateV1 > &states);
+
+    /// Construct a response that indicates synchronous handling of an
+    /// accepted subscription.
+    ///
+    /// @param id ID of created subscription
+    /// @param ttl TTL of new subscription
+    static RequestProcessorHandlerResult MakeSubscriptionAccepted(
+        ::std::string const &id,
+        uint32 ttl);
+
+    /// Construct a response that indicates sychronous handling of a rejected
+    /// subscription.
+    ///
+    /// @param reason Why the subscription was rejected
+    static RequestProcessorHandlerResult MakeSubscriptionRejected(
+        ::std::string const &reason);
+
+    /// Construct a response that indicates synchronous handling of a write
+    /// request.
+    ///
+    /// @param written Number of envelopes that were written
+    static RequestProcessorHandlerResult MakeWriteResult(uint32 written);
+
+protected:
+    /// Whether the response is deferred
+    ///
+    /// If true, do not send a response ourselves
+    bool deferred;
+
+    /// Whether an error was registered
+    bool have_error;
+
+    /// Error code
+    ::zippylog::protocol::response::ErrorCode error_code;
+
+    /// Error message
+    ::std::string error_message;
+
+    /// Indicates the response was related to subscriptions
+    bool is_subscription;
+
+    /// Indicates whether the response is related to envelope writing
+    bool is_write;
+
+    /// Id of accepted subscription
+    ::std::string subscription_id;
+
+    /// TTL of accepted subscription
+    uint32 subscription_ttl;
+
+    /// Number of envelopes written
+    uint32 envelopes_written;
+
+    friend class RequestProcessor;
+
+private:
+    /// Default constructor is disabled
+    RequestProcessorHandlerResult();
+};
+
 /// Abstract base class that provides functionality for a RequestProcessor
 ///
 /// RequestProcessor instances are associated with instances of classes
 /// derived from this base class. During key events, the RequestProcessor
-/// calls out to functions in this class. The implementation takes care of
+/// calls out to handlers in this class. The implementation takes care of
 /// the details then tells the request processor what's going on.
-class ZIPPYLOG_EXPORT RequestProcessorImplementation
-{
+///
+/// Callbacks in this class generally have the option of servicing the request
+/// synchronously or asynchronously. In other words, they can either perform
+/// the operation immediately, while blocking the request processor from
+/// sending a response. Or, they can defer immediate processing and tell the
+/// request processor that another entity will take care of generating the
+/// response.
+///
+/// In the case of asynchronous servicing, whatever eventually processes the
+/// request will likely make a call to one of the static Send* functions on
+/// RequestProcessor to generate a response and send that to the client. The
+/// documentation for each handler should document the expected behavior.
+///
+/// It is a best practice to only synchronously perform actions if they can be
+/// done quickly. This way, the request processor thread won't be blocked from
+/// servicing additional requests. Of course, if the request processor and
+/// whatever is eventually servicing the request are on the same thread, it
+/// doesn't make sense to use asynchronous servicing.
+class ZIPPYLOG_EXPORT RequestProcessorImplementation {
 public:
     RequestProcessorImplementation() {}
     virtual ~RequestProcessorImplementation() {};
 
-    /// Callback to handle a validated request for a subscription
+    /// Handler to process a new subscription request
     ///
     /// This function is called after a subscription request has been
-    /// received and validated.
+    /// received and validated. The handler receives a record that describes
+    /// the subscription being desired.
     ///
-    /// @param subscription metadata
-    virtual HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription) = 0;
+    /// This handler has the option of servicing synchronously or
+    /// asynchronously. In the case of synchronous operation, it should call
+    /// RequestProcessorHandlerResult::MakeSubscriptionAccepted() or
+    /// RequestProcessorHandlerResult::MakeSubscriptionRejected(). For
+    /// asynchronous completion, it should return
+    /// RequestProcessorHandlerResult::MakeDeferred() and the eventual handler
+    /// should call RequestProcessor::SendSubscriptionAccepted().
+    ///
+    /// @param subscription Describes the subscription being made
+    /// @return How the request was handled
+    virtual RequestProcessorHandlerResult HandleSubscriptionRequest(
+        SubscriptionInfo subscription) = 0;
 
     /// callback to handle a subscription keepalive
-    virtual RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output) = 0;
+    virtual RequestProcessorHandlerResult HandleSubscribeKeepalive(
+        Envelope &request,
+        ::std::vector<Envelope> &output) = 0;
 
     /// Callback to handle writing of envelopes
     ///
@@ -183,15 +335,75 @@ public:
     /// stream set or stream). If a stream set, it is validated to exist.
     /// If a stream, it may not exist.
     ///
-    /// The synchronous parameter says whether to wait for writes before
-    /// returning.
+    /// The wait_for_write parameter defines whether we should wait for
+    /// writes to complete before returning. This is only relevant for
+    /// synchronous handlers.
     ///
-    /// Returns the number of envelopes written or -1 on failure. If not
-    /// performing synchronous writes, it is OK to return 0. However, if
-    /// performing synchronous writes the caller will log an unexpected
-    /// condition if the number of envelopes written is not equal to the
-    /// number requested.
-    virtual int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous) = 0;
+    /// For synchronous handlers, the implementation should return
+    /// RequestProcessorHandlerResult::MakeWriteResult().
+    ///
+    /// For asynchronous handlers, the implementation should return
+    /// RequestProcessorHandlerResult::MakeDeferred() and ensure that
+    /// ...
+    /// @todo document asynchronous completion requirements
+    ///
+    /// @param path Path to write to
+    /// @param to_write Set of envelopes to write to specified path
+    /// @param wait_for_write Whether to wait for writes before returning
+    ///
+    virtual RequestProcessorHandlerResult HandleWriteEnvelopes(
+        ::std::string const &path,
+        ::std::vector<Envelope> &to_write,
+        bool wait_for_write) = 0;
+
+    /// Callback to handle registration of a plugin
+    ///
+    /// The implementation can register the plugin either synchronously or
+    /// asynchronously.
+    ///
+    /// For synchronous registration, the returned object should be created
+    /// with RequestProcessorHandlerResult::MakeSynchronous().
+    ///
+    /// For asynchronous registration, the returned object should be created
+    /// with RequestProcessorHandlerResult::MakeDeferred() and the eventual
+    /// handler should call RequestProcessor::SendPluginRegistrationAck() to
+    /// send the expected protocol response to the client.
+    ///
+    /// In case of an error during asynchronous registration,
+    /// RequestProcessor::SendErrorResponse() should be called.
+    virtual RequestProcessorHandlerResult HandleRegisterPlugin(
+        PluginRegistrationRequest const &r) = 0;
+
+    /// Callback to handle plugin unregistering
+    ///
+    /// The implementation can unregister the plugin synchronously or
+    /// asynchronously.
+    ///
+    /// @param name Name of plugin being unregistered
+    /// @return How the request was handled
+    virtual RequestProcessorHandlerResult HandleUnregisterPlugin(
+        ::std::string const &name) = 0;
+
+    /// Callback to handle obtaining plugin status
+    ///
+    /// The implementation can obtain state synchronously or asynchronously.
+    ///
+    /// In the case of synchronous functionality,
+    /// RequestProcessorHandlerResult::MakePluginStatus() can be used to
+    /// construct an appropriate return value.
+    ///
+    /// In the case of asynchronous operation,
+    /// RequestProcessorHandlerResult::MakeDeferred() should be used and the
+    /// eventual handler should call
+    /// RequestProcessor::SendPluginStatusResponse().
+    ///
+    /// If the list of names is empty, the handler should obtain information
+    /// on all plugins.
+    ///
+    /// @param names List of plugins to obtain status of
+    /// @return How the request was handled
+    virtual RequestProcessorHandlerResult HandleGetPluginStatus(
+        ::std::vector< ::std::string > const &names) = 0;
 
 private:
     RequestProcessorImplementation(RequestProcessorImplementation const &orig);
@@ -336,6 +548,16 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         /// it is provided public just in case.
         RequestProcessorResponseStatus ProcessRequest(Envelope &e, ::std::vector<Envelope> &output);
 
+        /// Sends an error response
+        ///
+        /// @param sock Socket to send response through
+        /// @param code Error code
+        /// @param message Error message
+        static bool SendErrorResponse(::zmq::socket_t &sock,
+                                      ::zippylog::protocol::response::ErrorCode code,
+                                      ::std::string const & message);
+
+
         /// Sends a subscription store change response for an added path
         ///
         /// @param sock Socket to send response through
@@ -376,6 +598,21 @@ class ZIPPYLOG_EXPORT RequestProcessor {
         static bool SendSubscriptionEnvelopeResponse(::zmq::socket_t &sock,
                                                      EnvelopeSubscriptionResponseState &state);
 
+        /// Sends a plugin registration ack response
+        ///
+        /// This is typically called by asynchronous plugin registration
+        /// handlers.
+        ///
+        /// If the function returns false, there is not much the caller can do
+        /// expect log the error.
+        ///
+        /// @param sock Socket to send response to
+        /// @param md Metadata for response generation
+        /// @param name Name of plugin that was registered
+        /// @return Whether response sent without error
+        static bool SendPluginRegistrationAck(::zmq::socket_t &sock,
+                                              ResponseMetadata const &md,
+                                              const ::std::string &name);
     protected:
         /// Process a ping request
         RequestProcessorResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
@@ -401,8 +638,36 @@ class ZIPPYLOG_EXPORT RequestProcessor {
 
         RequestProcessorResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Process a SubscribeCancel request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response, if authoritative
+        /// @return Processing result
+        RequestProcessorResponseStatus ProcessSubscribeCancel(Envelope &request, ::std::vector<Envelope> &output);
+
         /// Process a WriteEnvelope request
         RequestProcessorResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a RegisterPlugin request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response
+        /// @return Processing result
+        RequestProcessorResponseStatus ProcessRegisterPlugin(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process an UnregisterPlugin request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response
+        /// @return Processing result
+        RequestProcessorResponseStatus ProcessUnregisterPlugin(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a PluginStatus request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response
+        /// @return Processing result
+        RequestProcessorResponseStatus ProcessPluginStatus(Envelope &request, ::std::vector<Envelope> &output);
 
         void CallHandleSubscriptionRequest(SubscriptionInfo &subscription, ::std::vector<Envelope> &output);
 
@@ -425,8 +690,10 @@ class ZIPPYLOG_EXPORT RequestProcessor {
 
         bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, ::std::string message, ::std::vector<Envelope> &msgs);
 
+        /// 0MQ context for internal sockets
         ::zmq::context_t *ctx;
 
+        /// Provider of callbacks for handling
         RequestProcessorImplementation *impl;
 
         ::std::string store_path;

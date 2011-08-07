@@ -34,8 +34,8 @@ namespace device {
 /// contains classes used by server device
 namespace server {
 
-/// Used to construct a server worker
-class WorkerStartParams {
+/// Used to construct a ServerRequestProcessor
+class ServerRequestProcessorStartParams {
 public:
     // where to send client subscription messages
     ::std::string streaming_subscriptions_endpoint;
@@ -61,16 +61,31 @@ public:
 /// The former is used when a message only needs to go to 1 streamer and the
 /// latter when all streamers need to see it (e.g. a keepalive message since
 /// the server doesn't know which streamers have which subscriptions).
-class Worker : public ::zippylog::RequestProcessorImplementation {
+class ServerRequestProcessor : public ::zippylog::RequestProcessorImplementation {
     public:
-        Worker(WorkerStartParams &params);
-        ~Worker();
+        ServerRequestProcessor(ServerRequestProcessorStartParams &params);
+        ~ServerRequestProcessor();
 
-        // implement virtual functions
-        HandleSubscriptionResult HandleSubscriptionRequest(SubscriptionInfo subscription);
+        RequestProcessorHandlerResult HandleSubscriptionRequest(
+            SubscriptionInfo subscription);
 
-        RequestProcessorResponseStatus HandleSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
-        int HandleWriteEnvelopes(::std::string const &path, ::std::vector<Envelope> &to_write, bool synchronous);
+        RequestProcessorHandlerResult HandleSubscribeKeepalive(
+            Envelope &request,
+            ::std::vector<Envelope> &output);
+
+        RequestProcessorHandlerResult HandleWriteEnvelopes(
+            ::std::string const &path,
+            ::std::vector<Envelope> &to_write,
+            bool synchronous);
+
+        RequestProcessorHandlerResult HandleRegisterPlugin(
+            PluginRegistrationRequest const &r);
+
+        RequestProcessorHandlerResult HandleUnregisterPlugin(
+            ::std::string const &name);
+
+        RequestProcessorHandlerResult HandleGetPluginStatus(
+            ::std::vector< ::std::string > const &names);
 
     protected:
         ::zmq::context_t *ctx;
@@ -475,7 +490,7 @@ class ZIPPYLOG_EXPORT Server {
         ///
         /// The addresses of these variables are passed when starting the
         /// threads for these objects.
-        ::zippylog::device::server::WorkerStartParams request_processor_params;
+        ::zippylog::device::server::ServerRequestProcessorStartParams request_processor_params;
         ::zippylog::device::PersistedStateReactorStartParams persisted_state_reactor_params;
         ::zippylog::device::server::WatcherStartParams store_watcher_params;
         ::zippylog::device::StoreWriterStartParams store_writer_params;
