@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/store_watcher.proto',
   package='zippylog.device.store_watcher',
-  serialized_pb='\n#zippylog/device/store_watcher.proto\x12\x1dzippylog.device.store_watcher\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x01(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n#zippylog/device/store_watcher.proto\x12\x1dzippylog.device.store_watcher\"\x14\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\x0c')
 
 
 
@@ -26,7 +26,7 @@ _CREATE = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.store_watcher.Create.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
+      number=1, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -54,7 +54,7 @@ _DESTROY = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.store_watcher.Destroy.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
+      number=1, type=12, cpp_type=9, label=2,
       has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -72,8 +72,66 @@ _DESTROY = descriptor.Descriptor(
   serialized_end=113,
 )
 
+
+_RUNSTART = descriptor.Descriptor(
+  name='RunStart',
+  full_name='zippylog.device.store_watcher.RunStart',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.store_watcher.RunStart.id', index=0,
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=115,
+  serialized_end=137,
+)
+
+
+_RUNFINISH = descriptor.Descriptor(
+  name='RunFinish',
+  full_name='zippylog.device.store_watcher.RunFinish',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.store_watcher.RunFinish.id', index=0,
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=139,
+  serialized_end=162,
+)
+
 DESCRIPTOR.message_types_by_name['Create'] = _CREATE
 DESCRIPTOR.message_types_by_name['Destroy'] = _DESTROY
+DESCRIPTOR.message_types_by_name['RunStart'] = _RUNSTART
+DESCRIPTOR.message_types_by_name['RunFinish'] = _RUNFINISH
 
 class Create(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -91,6 +149,24 @@ class Destroy(message.Message):
   ZIPPYLOG_ENUMERATION = 128
   # @@protoc_insertion_point(class_scope:zippylog.device.store_watcher.Destroy)
 
+class RunStart(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _RUNSTART
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 129
+  # @@protoc_insertion_point(class_scope:zippylog.device.store_watcher.RunStart)
+
+class RunFinish(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _RUNFINISH
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 130
+  # @@protoc_insertion_point(class_scope:zippylog.device.store_watcher.RunFinish)
+
 register_message(1, 127, 'zippylog.device.store_watcher_pb2', 'Create')
 register_message(1, 128, 'zippylog.device.store_watcher_pb2', 'Destroy')
+register_message(1, 129, 'zippylog.device.store_watcher_pb2', 'RunStart')
+register_message(1, 130, 'zippylog.device.store_watcher_pb2', 'RunFinish')
 # @@protoc_insertion_point(module_scope)

@@ -54,6 +54,8 @@ namespace zippylog {
         registrar->register_message(1, 113, new ::zippylog::protocol::PluginStateV1());
         registrar->register_message(1, 127, new ::zippylog::device::store_watcher::Create());
         registrar->register_message(1, 128, new ::zippylog::device::store_watcher::Destroy());
+        registrar->register_message(1, 129, new ::zippylog::device::store_watcher::RunStart());
+        registrar->register_message(1, 130, new ::zippylog::device::store_watcher::RunFinish());
         registrar->register_message(1, 119, new ::zippylog::device::server::SubscriptionRecord());
         registrar->register_message(1, 120, new ::zippylog::device::server::Create());
         registrar->register_message(1, 121, new ::zippylog::device::server::Destroy());
