@@ -50,6 +50,12 @@ private:
 /// defines a core API and a set of functions which must be defined on
 /// all derived devices.
 ///
+/// In 0MQ 2.0.x, 0MQ sockets cannot be migrated between threads. Since
+/// devices are constructed on one thread and can run on another, it is
+/// important for the constructor not to initialize 0MQ sockets. Instead,
+/// it is recommended to initialize sockets inside the OnFirstRun() handler,
+/// which will only be called once.
+///
 class ZIPPYLOG_EXPORT Device {
 public:
     /// Base constructor
