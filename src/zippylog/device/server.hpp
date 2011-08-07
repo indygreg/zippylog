@@ -193,11 +193,19 @@ public:
 
 /// The server is an uber device that provides server functionality
 ///
-/// It has a couple of functions:
+/// It has the following functions:
 ///
 ///   - ZMQ Device - it forwards 0MQ messages to and from the appropriate sockets
 ///   - Thread Manager - manages threads for request processing, store watching, streaming
 ///   - Logging coordinator - all process logging (itself using zippylog) flows through this class
+///
+/// The server device maintains the following:
+///
+///   - A thread pool of RequestProcessor instances that service incoming requests
+///   - A thread pool of PeristedStateManager instances that react to events
+///   - A store watcher that notices changes to the store and notifies
+///     interested parties
+///   - Logging sink for all attached components
 ///
 /// SOCKET FLOWS
 ///
