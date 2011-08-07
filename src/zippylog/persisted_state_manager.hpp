@@ -122,7 +122,16 @@ public:
 /// not in contention with one another. It is recommended to drive an
 /// instance of this class from one thread. If you need parallelization of
 /// the features provided by this class, one can instantiate multiple
-/// instances and distribute subscriptions and plugins acorss instances.
+/// instances and distribute subscriptions and plugins across instances.
+///
+/// The general usage flow of this class is to instantiate an instance, add
+/// plugins and/or subscriptions to it, then call the various Process*
+/// functions after an event of interest has occurred. These functions will
+/// invoke the necessary functions in the subscriptions or plugins. If
+/// additional action is required, the callback supplied to the function will
+/// be invoked with the necessary metadata. Then, the callback does its thing.
+/// Eventually, all the plugins and subscriptions are processed, and the
+/// function returns.
 ///
 /// @todo Add API to retrieve state metadata
 class ZIPPYLOG_EXPORT PersistedStateManager {
