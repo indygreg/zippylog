@@ -51,37 +51,37 @@ message SubscriptionRecord {
 
 // Log message when a server device is created
 message Create {
-    required string id = 1;
+    required bytes id = 1;
     optional string store_path = 2;
     repeated string listen_endpoint = 3;
 }
 
 // Log message when a server is destroyed
 message Destroy {
-    required string id = 1;
+    required bytes id = 1;
 }
 
 // Log message when a server starts running
 message RunStart {
-    required string id = 1;
+    required bytes id = 1;
 }
 
 // Log message when a server finishes running
 message RunFinish {
-    required string id = 1;
+    required bytes id = 1;
 }
 
 // Log message when output streams are flushed
 message FlushOutputStreams {
-    required string id = 1;
+    required bytes id = 1;
 }
 
 // Log message when a client message is received
 message ReceiveClientMessage {
-    required string id = 1;
+    required bytes id = 1;
 }
 
 // Log message when a message is sent to a client
 message SendClientMessage {
-    required string id = 1;
+    required bytes id = 1;
 }

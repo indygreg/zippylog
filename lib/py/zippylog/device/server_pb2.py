@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/server.proto',
   package='zippylog.device.server',
-  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t\" \n\x12\x46lushOutputStreams\x12\n\n\x02id\x18\x01 \x02(\t\"\"\n\x14ReceiveClientMessage\x12\n\n\x02id\x18\x01 \x02(\t\"\x1f\n\x11SendClientMessage\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
+  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\x0c\" \n\x12\x46lushOutputStreams\x12\n\n\x02id\x18\x01 \x02(\x0c\"\"\n\x14ReceiveClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x1f\n\x11SendClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
 
 _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   name='SubscriptionType',
@@ -127,8 +127,8 @@ _CREATE = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.Create.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -169,8 +169,8 @@ _DESTROY = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.Destroy.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -197,8 +197,8 @@ _RUNSTART = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.RunStart.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -225,8 +225,8 @@ _RUNFINISH = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.RunFinish.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -253,8 +253,8 @@ _FLUSHOUTPUTSTREAMS = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.FlushOutputStreams.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -281,8 +281,8 @@ _RECEIVECLIENTMESSAGE = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.ReceiveClientMessage.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -309,8 +309,8 @@ _SENDCLIENTMESSAGE = descriptor.Descriptor(
   fields=[
     descriptor.FieldDescriptor(
       name='id', full_name='zippylog.device.server.SendClientMessage.id', index=0,
-      number=1, type=9, cpp_type=9, label=2,
-      has_default_value=False, default_value=unicode("", "utf-8"),
+      number=1, type=12, cpp_type=9, label=2,
+      has_default_value=False, default_value="",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
