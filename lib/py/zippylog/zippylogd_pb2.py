@@ -12,58 +12,9 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/zippylogd.proto',
   package='zippylog.zippylogd',
-  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"\x1c\n\x1a\x42rokerReceiveClientMessage\"&\n\x18\x42rokerFlushOutputStreams\x12\n\n\x02id\x18\x01 \x01(\x0c\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
+  serialized_pb='\n\x18zippylog/zippylogd.proto\x12\x12zippylog.zippylogd\"!\n\x13StoreWatcherStartup\x12\n\n\x02id\x18\x01 \x01(\x0c\"\"\n\x14StoreWatcherShutdown\x12\n\n\x02id\x18\x01 \x01(\x0c')
 
 
-
-
-_BROKERRECEIVECLIENTMESSAGE = descriptor.Descriptor(
-  name='BrokerReceiveClientMessage',
-  full_name='zippylog.zippylogd.BrokerReceiveClientMessage',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=48,
-  serialized_end=76,
-)
-
-
-_BROKERFLUSHOUTPUTSTREAMS = descriptor.Descriptor(
-  name='BrokerFlushOutputStreams',
-  full_name='zippylog.zippylogd.BrokerFlushOutputStreams',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    descriptor.FieldDescriptor(
-      name='id', full_name='zippylog.zippylogd.BrokerFlushOutputStreams.id', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value="",
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  extension_ranges=[],
-  serialized_start=78,
-  serialized_end=116,
-)
 
 
 _STOREWATCHERSTARTUP = descriptor.Descriptor(
@@ -89,8 +40,8 @@ _STOREWATCHERSTARTUP = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=118,
-  serialized_end=151,
+  serialized_start=48,
+  serialized_end=81,
 )
 
 
@@ -117,30 +68,12 @@ _STOREWATCHERSHUTDOWN = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=153,
-  serialized_end=187,
+  serialized_start=83,
+  serialized_end=117,
 )
 
-DESCRIPTOR.message_types_by_name['BrokerReceiveClientMessage'] = _BROKERRECEIVECLIENTMESSAGE
-DESCRIPTOR.message_types_by_name['BrokerFlushOutputStreams'] = _BROKERFLUSHOUTPUTSTREAMS
 DESCRIPTOR.message_types_by_name['StoreWatcherStartup'] = _STOREWATCHERSTARTUP
 DESCRIPTOR.message_types_by_name['StoreWatcherShutdown'] = _STOREWATCHERSHUTDOWN
-
-class BrokerReceiveClientMessage(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _BROKERRECEIVECLIENTMESSAGE
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 45
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerReceiveClientMessage)
-
-class BrokerFlushOutputStreams(message.Message):
-  __metaclass__ = reflection.GeneratedProtocolMessageType
-  DESCRIPTOR = _BROKERFLUSHOUTPUTSTREAMS
-  
-  ZIPPYLOG_NAMESPACE = 1
-  ZIPPYLOG_ENUMERATION = 46
-  # @@protoc_insertion_point(class_scope:zippylog.zippylogd.BrokerFlushOutputStreams)
 
 class StoreWatcherStartup(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -158,8 +91,6 @@ class StoreWatcherShutdown(message.Message):
   ZIPPYLOG_ENUMERATION = 48
   # @@protoc_insertion_point(class_scope:zippylog.zippylogd.StoreWatcherShutdown)
 
-register_message(1, 45, 'zippylog.zippylogd_pb2', 'BrokerReceiveClientMessage')
-register_message(1, 46, 'zippylog.zippylogd_pb2', 'BrokerFlushOutputStreams')
 register_message(1, 47, 'zippylog.zippylogd_pb2', 'StoreWatcherStartup')
 register_message(1, 48, 'zippylog.zippylogd_pb2', 'StoreWatcherShutdown')
 # @@protoc_insertion_point(module_scope)

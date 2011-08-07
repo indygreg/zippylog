@@ -12,7 +12,7 @@ from zippylog.envelope import register_message
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/server.proto',
   package='zippylog.device.server',
-  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
+  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\t\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\t\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\t\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\t\" \n\x12\x46lushOutputStreams\x12\n\n\x02id\x18\x01 \x02(\t\"\"\n\x14ReceiveClientMessage\x12\n\n\x02id\x18\x01 \x02(\t\"\x1f\n\x11SendClientMessage\x12\n\n\x02id\x18\x01 \x02(\t*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
 
 _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   name='SubscriptionType',
@@ -31,8 +31,8 @@ _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=469,
-  serialized_end=519,
+  serialized_start=572,
+  serialized_end=622,
 )
 
 
@@ -243,12 +243,99 @@ _RUNFINISH = descriptor.Descriptor(
   serialized_end=467,
 )
 
+
+_FLUSHOUTPUTSTREAMS = descriptor.Descriptor(
+  name='FlushOutputStreams',
+  full_name='zippylog.device.server.FlushOutputStreams',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.FlushOutputStreams.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=469,
+  serialized_end=501,
+)
+
+
+_RECEIVECLIENTMESSAGE = descriptor.Descriptor(
+  name='ReceiveClientMessage',
+  full_name='zippylog.device.server.ReceiveClientMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.ReceiveClientMessage.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=503,
+  serialized_end=537,
+)
+
+
+_SENDCLIENTMESSAGE = descriptor.Descriptor(
+  name='SendClientMessage',
+  full_name='zippylog.device.server.SendClientMessage',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='id', full_name='zippylog.device.server.SendClientMessage.id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      has_default_value=False, default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  extension_ranges=[],
+  serialized_start=539,
+  serialized_end=570,
+)
+
 _SUBSCRIPTIONRECORD.fields_by_name['type'].enum_type = _SUBSCRIPTIONTYPE
 DESCRIPTOR.message_types_by_name['SubscriptionRecord'] = _SUBSCRIPTIONRECORD
 DESCRIPTOR.message_types_by_name['Create'] = _CREATE
 DESCRIPTOR.message_types_by_name['Destroy'] = _DESTROY
 DESCRIPTOR.message_types_by_name['RunStart'] = _RUNSTART
 DESCRIPTOR.message_types_by_name['RunFinish'] = _RUNFINISH
+DESCRIPTOR.message_types_by_name['FlushOutputStreams'] = _FLUSHOUTPUTSTREAMS
+DESCRIPTOR.message_types_by_name['ReceiveClientMessage'] = _RECEIVECLIENTMESSAGE
+DESCRIPTOR.message_types_by_name['SendClientMessage'] = _SENDCLIENTMESSAGE
 
 class SubscriptionRecord(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
@@ -290,9 +377,36 @@ class RunFinish(message.Message):
   ZIPPYLOG_ENUMERATION = 123
   # @@protoc_insertion_point(class_scope:zippylog.device.server.RunFinish)
 
+class FlushOutputStreams(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _FLUSHOUTPUTSTREAMS
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 124
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.FlushOutputStreams)
+
+class ReceiveClientMessage(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _RECEIVECLIENTMESSAGE
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 125
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.ReceiveClientMessage)
+
+class SendClientMessage(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _SENDCLIENTMESSAGE
+  
+  ZIPPYLOG_NAMESPACE = 1
+  ZIPPYLOG_ENUMERATION = 126
+  # @@protoc_insertion_point(class_scope:zippylog.device.server.SendClientMessage)
+
 register_message(1, 119, 'zippylog.device.server_pb2', 'SubscriptionRecord')
 register_message(1, 120, 'zippylog.device.server_pb2', 'Create')
 register_message(1, 121, 'zippylog.device.server_pb2', 'Destroy')
 register_message(1, 122, 'zippylog.device.server_pb2', 'RunStart')
 register_message(1, 123, 'zippylog.device.server_pb2', 'RunFinish')
+register_message(1, 124, 'zippylog.device.server_pb2', 'FlushOutputStreams')
+register_message(1, 125, 'zippylog.device.server_pb2', 'ReceiveClientMessage')
+register_message(1, 126, 'zippylog.device.server_pb2', 'SendClientMessage')
 # @@protoc_insertion_point(module_scope)

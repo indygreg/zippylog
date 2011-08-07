@@ -40,6 +40,9 @@ class Create;
 class Destroy;
 class RunStart;
 class RunFinish;
+class FlushOutputStreams;
+class ReceiveClientMessage;
+class SendClientMessage;
 
 enum SubscriptionType {
   ENVELOPE = 1,
@@ -642,6 +645,279 @@ class RunFinish : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static RunFinish* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class FlushOutputStreams : public ::google::protobuf::Message {
+ public:
+  FlushOutputStreams();
+  virtual ~FlushOutputStreams();
+  
+  FlushOutputStreams(const FlushOutputStreams& from);
+  
+  inline FlushOutputStreams& operator=(const FlushOutputStreams& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FlushOutputStreams& default_instance();
+  
+  void Swap(FlushOutputStreams* other);
+  
+  // implements Message ----------------------------------------------
+  
+  FlushOutputStreams* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const FlushOutputStreams& from);
+  void MergeFrom(const FlushOutputStreams& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 124;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.FlushOutputStreams)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static FlushOutputStreams* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ReceiveClientMessage : public ::google::protobuf::Message {
+ public:
+  ReceiveClientMessage();
+  virtual ~ReceiveClientMessage();
+  
+  ReceiveClientMessage(const ReceiveClientMessage& from);
+  
+  inline ReceiveClientMessage& operator=(const ReceiveClientMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ReceiveClientMessage& default_instance();
+  
+  void Swap(ReceiveClientMessage* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ReceiveClientMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ReceiveClientMessage& from);
+  void MergeFrom(const ReceiveClientMessage& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 125;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.ReceiveClientMessage)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ReceiveClientMessage* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SendClientMessage : public ::google::protobuf::Message {
+ public:
+  SendClientMessage();
+  virtual ~SendClientMessage();
+  
+  SendClientMessage(const SendClientMessage& from);
+  
+  inline SendClientMessage& operator=(const SendClientMessage& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SendClientMessage& default_instance();
+  
+  void Swap(SendClientMessage* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SendClientMessage* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SendClientMessage& from);
+  void MergeFrom(const SendClientMessage& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string id = 1;
+  inline bool has_id() const;
+  inline void clear_id();
+  static const int kIdFieldNumber = 1;
+  inline const ::std::string& id() const;
+  inline void set_id(const ::std::string& value);
+  inline void set_id(const char* value);
+  inline void set_id(const char* value, size_t size);
+  inline ::std::string* mutable_id();
+  inline ::std::string* release_id();
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 126;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.device.server.SendClientMessage)
+ private:
+  inline void set_has_id();
+  inline void clear_has_id();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* id_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fdevice_2fserver_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fdevice_2fserver_2eproto();
+  
+  void InitAsDefaultInstance();
+  static SendClientMessage* default_instance_;
 };
 // ===================================================================
 
@@ -1292,6 +1568,192 @@ inline ::std::string* RunFinish::mutable_id() {
   return id_;
 }
 inline ::std::string* RunFinish::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// FlushOutputStreams
+
+// required string id = 1;
+inline bool FlushOutputStreams::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void FlushOutputStreams::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void FlushOutputStreams::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void FlushOutputStreams::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& FlushOutputStreams::id() const {
+  return *id_;
+}
+inline void FlushOutputStreams::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void FlushOutputStreams::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void FlushOutputStreams::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* FlushOutputStreams::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* FlushOutputStreams::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// ReceiveClientMessage
+
+// required string id = 1;
+inline bool ReceiveClientMessage::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ReceiveClientMessage::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ReceiveClientMessage::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ReceiveClientMessage::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& ReceiveClientMessage::id() const {
+  return *id_;
+}
+inline void ReceiveClientMessage::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void ReceiveClientMessage::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void ReceiveClientMessage::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ReceiveClientMessage::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* ReceiveClientMessage::release_id() {
+  clear_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = id_;
+    id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// SendClientMessage
+
+// required string id = 1;
+inline bool SendClientMessage::has_id() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SendClientMessage::set_has_id() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SendClientMessage::clear_has_id() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SendClientMessage::clear_id() {
+  if (id_ != &::google::protobuf::internal::kEmptyString) {
+    id_->clear();
+  }
+  clear_has_id();
+}
+inline const ::std::string& SendClientMessage::id() const {
+  return *id_;
+}
+inline void SendClientMessage::set_id(const ::std::string& value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SendClientMessage::set_id(const char* value) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(value);
+}
+inline void SendClientMessage::set_id(const char* value, size_t size) {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SendClientMessage::mutable_id() {
+  set_has_id();
+  if (id_ == &::google::protobuf::internal::kEmptyString) {
+    id_ = new ::std::string;
+  }
+  return id_;
+}
+inline ::std::string* SendClientMessage::release_id() {
   clear_has_id();
   if (id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;

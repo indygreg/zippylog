@@ -4,19 +4,6 @@
 // others are written to zippylogd's own zippylog stream
 package zippylog.zippylogd;
 
-// -------------------
-// Broker Log Events |
-// -------------------
-
-// when a 0MQ message is received by the broker
-message BrokerReceiveClientMessage {
-
-}
-
-message BrokerFlushOutputStreams {
-    optional bytes id = 1;
-}
-
 // -------------------------|
 // Store Watcher Log Events |
 // -------------------------|
