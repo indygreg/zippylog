@@ -390,7 +390,7 @@ void RequestProcessor::ProcessMessages(zeromq::MessageContainer &container, vect
     RequestProcessorResponseStatus result;
     bool successful_process = false;
 
-    // @todo should we log?
+    /// @todo should we log?
     if (!container.MessagesSize()) return;
 
     message_t *initial = container.GetMessage(0);
@@ -525,7 +525,7 @@ RequestProcessorResponseStatus RequestProcessor::ProcessRequest(Envelope &reques
         goto SEND_RESPONSE;
     }
 
-    /* must be in the zippylog namespace */
+    // must be in the zippylog namespace
     if (request_envelope.MessageNamespace(0) != ::zippylog::message_namespace) {
         ::zippylog::request_processor::InvalidMessageEnumeration log;
         LOG_MESSAGE(log, this->logger_sock);

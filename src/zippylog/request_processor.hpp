@@ -470,7 +470,7 @@ public:
 ///
 /// Each instance of a request processor is associated with an instance
 /// of RequestProcessorImplementation. The implementation class contains
-/// callbacks which are called by the RequestProcessor to handle specific
+/// handlers which are called by the RequestProcessor to handle specific
 /// events, such as subscription requests and handling of writes.
 ///
 /// This core class can be thought of as a sanitization and filtering gateway
@@ -490,6 +490,8 @@ public:
 /// In previous versions of the code, this was an abstract base class.
 /// It was changed to RequestProcessorImplementation because of the desire
 /// to not deal with inheritance.
+///
+/// @todo Remove device-like API
 class ZIPPYLOG_EXPORT RequestProcessor {
     public:
         RequestProcessor(RequestProcessorStartParams &params);

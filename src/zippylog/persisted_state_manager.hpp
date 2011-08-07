@@ -28,33 +28,51 @@
 namespace zippylog {
 
 /// Callback used for individual subscription notification of a path added
-typedef void (PersistedStateManagerPathAddedCallback)(SubscriptionInfo const &, ::std::string const &, void *);
+typedef void (PersistedStateManagerPathAddedCallback)(
+    SubscriptionInfo const &,
+    ::std::string const &,
+    void *);
 
 /// Callback for individual subscription notification of a path deleted
-typedef void (PersistedStateManagerPathDeletedCallback)(SubscriptionInfo const &, ::std::string const &, void *);
+typedef void (PersistedStateManagerPathDeletedCallback)(
+    SubscriptionInfo const &,
+    ::std::string const &,
+    void *);
 
-typedef void (PersistedStateManagerStreamAppendedCallback)(SubscriptionInfo const &, EnvelopeSubscriptionResponseState &, void *);
+/// Callback for individual subscription notification of a stream append
+typedef void (PersistedStateManagerStreamAppendedCallback)(
+    SubscriptionInfo const &,
+    EnvelopeSubscriptionResponseState &,
+    void *);
 
-class PersistedStateManagerSubscriptionRecord
-{
+/// An individual subscription inside a subscription manager
+///
+/// This class is used internally by PersistedStateManager and should not be
+/// used elsewhere.
+class PersistedStateManagerSubscriptionRecord {
 public:
-    PersistedStateManagerSubscriptionRecord();
-
-    PersistedStateManagerSubscriptionRecord(SubscriptionInfo const &subscription, uint32 ttl);
     ~PersistedStateManagerSubscriptionRecord();
 
 protected:
+    PersistedStateManagerSubscriptionRecord();
+
+    PersistedStateManagerSubscriptionRecord(SubscriptionInfo const &subscription, uint32 ttl);
+
     SubscriptionInfo si;
     platform::Timer expiration_timer;
     lua::LuaState *l;
 
     friend class PersistedStateManager;
+
+private:
+    // disable copy constructor and assignment operator
+    PersistedStateManagerSubscriptionRecord(PersistedStateManagerSubscriptionRecord const &orig);
+    PersistedStateManagerSubscriptionRecord & operator=(PersistedStateManagerSubscriptionRecord const &orig);
 };
 
 /// Represents info about a plugin
 /// @todo Implement
-class ZIPPYLOG_EXPORT PluginInfo
-{
+class ZIPPYLOG_EXPORT PluginInfo {
 
 };
 
