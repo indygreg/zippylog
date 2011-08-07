@@ -121,9 +121,6 @@ set(libzippylog_sources
     src/zippylog/stream.cpp
     src/zippylog/util.cpp
     src/zippylog/zeromq.cpp
-    # TODO remove once not needed by source
-    src/zippylog/zippylogd.pb.cc
-    src/zippylog/zippylogd.pb-lua.cc
     src/zippylog/zippylog.cpp
     src/lua-protobuf.cc
 )

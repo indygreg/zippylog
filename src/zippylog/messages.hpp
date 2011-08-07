@@ -5,8 +5,8 @@
 
 #include <zippylog/request_processor.pb.h>
 #include <zippylog/message.pb.h>
-#include <zippylog/zippylogd.pb.h>
 #include <zippylog/protocol.pb.h>
+#include <zippylog/device/store_watcher.pb.h>
 #include <zippylog/device/server.pb.h>
 #include <zippylog/protocol/response.pb.h>
 #include <zippylog/protocol/request.pb.h>
