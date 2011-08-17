@@ -12,7 +12,7 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 
-#include "zippylog/stream.hpp"
+#include <zippylog/stream.hpp>
 
 #include <zippylog/platform.hpp>
 
@@ -26,6 +26,7 @@ namespace zippylog {
 
 InputStream::InputStream() :
     cis(NULL),
+    coded_input_stream_read_bytes(0),
     version(0),
     have_next_size(false),
     next_envelope_size(0),
@@ -56,6 +57,7 @@ bool InputStream::ReadVersion()
     // we read the first byte of the stream
     char v;
     if (!this->cis->ReadRaw(&v, sizeof(v))) {
+        this->coded_input_stream_read_bytes++;
         return false;
     }
 
@@ -77,8 +79,16 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
         return false;
     }
 
+    // We rebuild the coded input stream if we have read more than half its
+    // limit. This is more than generous, but recreation should be a problem
+    // since we are only talking every ~1 billion bytes or so.
+    if (this->coded_input_stream_read_bytes > (INT_MAX >> 1)) {
+        this->RebuildCodedInputStream();
+    }
+
     CodedInputStream::Limit limit = this->cis->PushLimit(size);
     if (!e.ParseFromCodedInputStream(*this->cis)) {
+        this->cis->PopLimit(limit);
         this->have_next_size = false;
         bytes_read = 0;
         return false;
@@ -102,8 +112,25 @@ bool InputStream::ReadEnvelope(::zippylog::Envelope &e, uint32 &bytes_read)
     }
 
     this->offset += bytes_read;
+    this->coded_input_stream_read_bytes += bytes_read;
 
     return true;
+}
+
+void InputStream::RebuildCodedInputStream()
+{
+    if (this->cis) {
+        delete this->cis;
+        this->cis = NULL;
+    }
+
+    CodedInputStream *s = this->ConstructCodedInputStream();
+    assert(s);
+    assert(!this->cis);
+
+    s->SetTotalBytesLimit(INT_MAX, -1);
+    this->cis = s;
+    this->coded_input_stream_read_bytes = 0;
 }
 
 
@@ -115,7 +142,7 @@ FileInputStream::FileInputStream(string const &path, int64 offset) :
     }
 
     this->fis = new ::google::protobuf::io::FileInputStream(this->file.FileDescriptor());
-    this->cis = new CodedInputStream(this->fis);
+    this->RebuildCodedInputStream();
 
     if (!this->ReadVersion()) {
         throw Exception("could not read stream version or stream version not supported");
@@ -165,6 +192,11 @@ bool FileInputStream::SetAbsoluteOffset(int64 offset)
     this->offset = offset;
 
     return true;
+}
+
+CodedInputStream * FileInputStream::ConstructCodedInputStream()
+{
+    return new CodedInputStream(this->fis);
 }
 
 OutputStream::OutputStream() : cos(NULL)

@@ -30,8 +30,23 @@ namespace zippylog {
 
 /// Represents a stream that we read from
 ///
-/// This is the base class for all readable streams. It is not meant to use
-/// this class directly.
+/// This is an abstract base class for all readable streams.
+///
+/// Derived classes must:
+///
+///  - Implement ConstructCodedInputStream()
+///  - Call RebuildCodedInputStream() in their constructor
+///
+/// We have some annoying code to work around a Protocol Buffers limitation
+/// for the total number of bytes that can be read from a CodedInputStream.
+/// CodedInputStream instances can only read a max of INT_MAX or ~2 billion
+/// bytes before they barf. Google people have said on the PB mailing list
+/// that the preferred solution is for CodedInputStream to be short-lived.
+/// I think this is silly, especially for a high performance application
+/// (the alternative message parse APIs construct a CodedInputStream on the
+/// stack for each read message). So, we work around this by rebuilding
+/// CodedInputStreams periodically, well before they will hit their read
+/// limit.
 class ZIPPYLOG_EXPORT InputStream {
     public:
         /// Construct an empty input stream
@@ -79,6 +94,24 @@ class ZIPPYLOG_EXPORT InputStream {
         virtual bool SetAbsoluteOffset(int64 offset) = 0;
 
     protected:
+        /// Constructs the CodedInputStream for the current stream
+        ///
+        /// This function is called when the CodedInputStream that the base
+        /// class reads from needs to be rebuilt. Derived classes should
+        /// return a pointer to a newly allocated CodedInputStream that is
+        /// ready for reading. If the function cannot do this, it should throw
+        /// an exception, as this is a fatal error. The returned memory
+        /// address is owned by this base class and will be freed by it, not
+        /// the derived class.
+        ///
+        /// The implementation should assume that the original
+        /// CodedInputStream has already been destroyed (a side-effect is that
+        /// bytes were returned to wherever they came from). Implementations
+        /// should not set this->cis when called but should let the caller
+        /// (this class) do that.
+        virtual ::google::protobuf::io::CodedInputStream *
+            ConstructCodedInputStream() = 0;
+
         /// Reads the stream version
         ///
         /// Returns true if successful and the stream is supported.
@@ -86,7 +119,20 @@ class ZIPPYLOG_EXPORT InputStream {
         /// they have opened the stream.
         bool ReadVersion();
 
+        /// Rebuilds the CodedInputStream instance on this stream
+        ///
+        /// This is a convenience method, as a number of APIs can invoke
+        /// stream rebuild.
+        void RebuildCodedInputStream();
+
+        /// Low-level stream doing the reading
         ::google::protobuf::io::CodedInputStream *cis;
+
+        /// Number of bytes current input stream has read
+        ///
+        /// This is used to keep track of when to rebuild the input stream due
+        /// to read limits.
+        int32 coded_input_stream_read_bytes;
 
         /// Stream version
         char version;
@@ -127,6 +173,8 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
         bool SetAbsoluteOffset(int64 offset);
 
     protected:
+        ::google::protobuf::io::CodedInputStream * ConstructCodedInputStream();
+
         ::zippylog::platform::File file;
 
         ::google::protobuf::io::FileInputStream *fis;
