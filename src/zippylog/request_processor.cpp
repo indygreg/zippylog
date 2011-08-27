@@ -1240,13 +1240,13 @@ LOG_END:
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessUnregisterPlugin(
-    Envelope &request, vector<Envelope> &)
+    Envelope &, vector<Envelope> &)
 {
     throw Exception("not implemented");
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessPluginStatus(
-    Envelope &request, vector<Envelope> &)
+    Envelope &, vector<Envelope> &)
 {
     throw Exception("not implemented");
 }
