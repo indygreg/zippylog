@@ -221,7 +221,7 @@ TEST_F(EnvelopeTest, MessageCacheResizing)
     EXPECT_EQ(m0, e.GetMessage(0));
 
     ASSERT_EQ(3, e.messages_size);
-    EXPECT_EQ(NULL, e.messages[2]);
+    EXPECT_TRUE(NULL == e.messages[2]);
 }
 
 TEST_F(EnvelopeTest, Clear)
