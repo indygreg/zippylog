@@ -58,7 +58,8 @@ protected:
     /// The ID of the issued request
     ::std::string id;
 
-    /// Callbacks that handle processing each type of response type
+    ///@{
+    /// Callbacks that handle processing each type of response
     PingCallback *                cb_ping;
     GetFeaturesCallback *         cb_features;
     StoreInfoCallback *           cb_store_info;
@@ -67,6 +68,7 @@ protected:
     StreamInfoCallback *          cb_stream_info;
     StreamSegmentCallback *       cb_stream_segment;
     SubscriptionRequestCallback * cb_subscription;
+    ///@}
 
     /// Information about subscription callbacks
     SubscriptionCallbackInfo callbacks;
