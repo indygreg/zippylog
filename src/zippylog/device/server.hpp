@@ -319,8 +319,13 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         static bool ParseConfig(const ::std::string path, ServerStartParams &params, ::std::string &error);
 
     protected:
+        ///@{
+        /// Device handlers that log activity
         void OnRunStart();
         void OnRunFinish();
+        ///@}
+
+        /// Device handler that performs one-time object initialization upon first run
         void OnFirstRun();
 
         /// Spins up a new request processor on a new thread
@@ -374,6 +379,8 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
 
         /// Whether the internal structure is set up and ready for running
         bool start_started;
+
+        /// Whether the device is initialized
         bool initialized;
 
         /// Semaphore to signal child devices whether they should be active
@@ -385,53 +392,72 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// Whether we own the 0MQ context (whether to delete in dtor)
         bool own_context;
 
-        // fans XREQ that fans out to individual worker threads
+        /// XREQ that fans out to individual worker threads
         ::zmq::socket_t * workers_sock;
+
+        /// Endpoint that workers_sock is bound to
         ::std::string worker_endpoint;
 
-        // binds to listen for client requests on configured interfaces
+        /// XREP that talks to clients on all configured endpoints
         ::zmq::socket_t * clients_sock;
 
-        // XREP that receives all streamed envelopes to be sent to clients
+        /// XREP that receives all streamed envelopes to be sent to clients
         ::zmq::socket_t * streaming_sock;
+
+        /// Endpoint that stream_sock is bound to
         ::std::string streaming_endpoint;
 
-        // PULL that receives processed client subscription requests
-        // messages delivered to one random streamer
+        /// PULL that receives processed client subscription requests
+        ///
+        /// Messages are delivered to one random streamer
         ::zmq::socket_t * worker_subscriptions_sock;
+
+        /// Endpoint that worker_subscriptions_sock is bound to
         ::std::string worker_subscriptions_endpoint;
 
-        // PUSH that sends client subscription requests to streamers
+        /// PUSH that sends client subscription requests to streamers
         ::zmq::socket_t * streaming_subscriptions_sock;
+
+        /// Endpoint that streaming_subscriptions_sock is bound to
         ::std::string streaming_subscriptions_endpoint;
 
-        // PULL that receives processed client streaming messages
-        // messages that need to be forwarded to all streamers
-        // we can't send directly from the workers to the streamers
-        // because there is potentially a many to many mapping there
-        // the broker binds to both endpoints and distributes messages
-        // properly
+        /// PULL that receives processed client streaming messages
+        ///
+        /// We can't send directly from the workers to the streamers
+        /// because there is potentially a many to many mapping there.
+        /// The server binds to both endpoints and distributes messages
+        /// properly.
         ::zmq::socket_t * worker_streaming_notify_sock;
+
+        /// Endpoint worker_streaming_notify_sock is bound to
         ::std::string worker_streaming_notify_endpoint;
 
-        // PUB that sends processed client streaming messages to all streamers
+        /// PUB that sends processed client streaming messages to all streamers
         ::zmq::socket_t * streaming_streaming_notify_sock;
+
+        /// Endpoint streaming_streaming_notify_sock is bound to
         ::std::string streaming_streaming_notify_endpoint;
 
-        // PULL that receives store changes
+        /// PULL that receives store changes
         ::zmq::socket_t * store_changes_input_sock;
+
+        /// Endpoint that store_changes_input_sock is bound to
         ::std::string store_changes_input_endpoint;
 
-        // PUB that sends store changes to streamers
+        /// PUB that sends store changes to streamers
         ::zmq::socket_t * store_changes_output_sock;
+
+        /// Endpoint that store_changes_output_sock is bound to
         ::std::string store_changes_output_endpoint;
 
-        // PULL that receives logging messages from other threads
+        /// PULL that receives logging messages from other threads
         ::zmq::socket_t * logger_sock;
+
+        /// Endpoint that logger_sock is bound to
         ::std::string logger_endpoint;
 
-        // PUSH that sends logging messages to main logging sock
-        // yes, we have both a client and server in the same object. this is easier
+        /// PUSH that sends logging messages to main logging sock
+        /// yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
         /// socket endpoints used by store writer

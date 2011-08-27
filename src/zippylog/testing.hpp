@@ -34,6 +34,7 @@ namespace testing {
 /// Base test class that provides numerous helpful routines
 class TestBase : public ::testing::Test {
 public:
+    /// Sets up the test fixture
     virtual void SetUp();
 
     /// Obtains a URI to a temporary store
@@ -80,6 +81,10 @@ public:
     ::std::pair< ::zmq::socket_t *, ::zmq::socket_t * > GetPushPullSocketPair();
 
 protected:
+    /// Clean up the test fixture
+    ///
+    /// In our implementation, we remove temporary files and directories, free
+    /// memory, etc.
     virtual void TearDown();
 
 private:

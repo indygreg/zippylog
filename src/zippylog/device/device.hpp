@@ -26,10 +26,16 @@ namespace device {
 /// See Device::Pump() for more
 class ZIPPYLOG_EXPORT PumpResult {
 public:
+    /// Construct an instance which reflects that work was done
     static PumpResult MakeWorkDone();
+
+    /// Construct an instance which reflects that no work was done
     static PumpResult MakeNoWorkDone();
+
+    /// Construct an instance which relfects an error was encountered
     static PumpResult MakeError();
 
+    /// Whether an error was encountered
     inline bool IsError() { return this->is_error; }
 
 private:

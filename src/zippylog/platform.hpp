@@ -373,37 +373,58 @@ namespace platform {
         Timer();
         ~Timer();
 
-        // create a new timer that fires N microseconds from now
+        /// Create a new timer that fires at some time in the future
+        ///
+        /// @param microseconds Number of microseconds in future to fire at
         Timer(uint32 microseconds);
 
-        // whether the timer has signaled yet
+        /// Whether the timer has signaled yet
+        ///
+        /// @return true if fired or false otherwise
         bool Signaled();
 
-        // reset the timer
-        // this will unarm the timer and prepare it to be executed again
-        // this is called automatically by Start() if restarting an existing timer
-        // it is more of an internal API but exposed in case it is needed
+        /// Reset the timer
+        ///
+        /// This will unarm the timer and prepare it to be executed again.
+        /// This is called automatically by Start() if restarting an existing timer.
+        /// It is more of an internal API but exposed in case it is needed.
+        ///
+        /// @return Whether the operation completed successfully
         bool Reset();
 
-        // starts the timer
-        //
-        // if the parameter is non-zero, the timer will assume the interval
-        // specified
+        /// Starts the timer
+        ///
+        /// If the parameter is non-zero, the timer will assume the interval
+        /// specified. Otherwise, it will use the last-used interval.
+        ///
+        /// @param microseconds When the timer should alarm, in microseconds
+        /// @return Whether the timer was armed successfully
         bool Start(uint32 microseconds = 0);
 
     protected:
+        /// Initialize the internal timer state
         void Initialize();
 
+        /// Configured alarm interval, in microseconds
         uint32 microseconds;
+
+        /// Whether the timer has alarmed
         bool signaled;
+
+        /// Whether the timer is currently armed
         bool running;
+
+        /// Whether the timer state is initialized
         bool initialized;
 
 #ifdef WINDOWS
+        /// Holds timer structure
         void * handle;
 #elif LINUX
+        /// Holds timer structure
         timer_t timer;
 #elif MACOS
+        /// Time we armed the timer
         uint64 time_start;
 #endif
 
@@ -412,13 +433,15 @@ namespace platform {
     /// Represents a change in a directory
     class ZIPPYLOG_EXPORT DirectoryChange {
     public:
+        /// Construct an empty representation
         DirectoryChange();
 
-        // path that was changed
-        // if a rename, this will be the new name
+        /// Path that was changed
+        ///
+        /// If a rename, this will be the new name.
         ::std::string Path;
 
-        // how the path changed
+        /// How the path changed
         enum Action {
             ADDED = 1,
             DELETED = 2,
@@ -426,7 +449,7 @@ namespace platform {
             RENAMED = 4,
         } Action;
 
-        // if path was renamed, this will be set to old name
+        /// If path was renamed, this will be set to old name.
         ::std::string OldName;
     };
 
