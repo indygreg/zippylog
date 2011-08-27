@@ -428,7 +428,7 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously obtain a stream segment starting from an offset
         ///
-        /// @param The stream path to fetch
+        /// @param path The stream path to fetch
         /// @param start_offset The offset from which to start fetching
         /// @param segment Holds result upon successful completion
         /// @param timeout How long to wait for a response, in microseconds
@@ -598,20 +598,28 @@ class ZIPPYLOG_EXPORT Client {
         void RunAsync(bool *active);
 
     protected:
-        // socket connect to server
+        /// Socket connected to server
         ::zmq::socket_t *client_sock;
 
+        /// Mapping of subscription ID to subscription state
         ::std::map< ::std::string, Subscription > subscriptions;
+
+        /// Mapping of request ID to request metadata
         ::std::map< ::std::string, OutstandingRequest > outstanding;
 
+        /// 0MQ poll structure
         ::zmq::pollitem_t pollitem[1];
 
+        /// How long before expiration that we should renew subscriptions
         uint32 subscription_renewal_offset;
 
+        /// Client's execution thread
         ::zippylog::platform::Thread * exec_thread;
 
+        /// Semaphore to determine if client should continue running
         bool *run_flag;
 
+        /// Sends a request to the server
         bool SendRequest(Envelope &e, OutstandingRequest &req);
 
         /// Sends a synchronous request and wait for a response
@@ -627,15 +635,15 @@ class ZIPPYLOG_EXPORT Client {
         /// Processes received response messages
         bool ProcessResponseMessage(::std::vector< ::zmq::message_t * > &msgs);
 
-        // validates that a received SubscriptionStart message is OK
-        // returns false if we don't know how to handle message fields or if
-        // we don't know about the subscription
+        /// validates that a received SubscriptionStart message is OK
+        /// returns false if we don't know how to handle message fields or if
+        /// we don't know about the subscription
         bool ValidateSubscriptionStart(protocol::response::SubscriptionStartV1 &start);
 
-        // handles a response to a subscription
+        /// handles a response to a subscription
         bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStartV1 &start, ::std::vector< ::zmq::message_t * > &msgs);
 
-        // handles a response to a normal/outstanding request
+        /// Handles a response to a normal/outstanding request
         bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
 
         /// Returns if we have an outstanding request with the specified id
