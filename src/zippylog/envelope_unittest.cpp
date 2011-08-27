@@ -291,7 +291,8 @@ TEST_F(EnvelopeTest, RemoveMessage)
     EXPECT_EQ(1, e.MessageCount());
     EXPECT_EQ(1, e.MessageNamespaceSize());
     EXPECT_EQ(1, e.MessageTypeSize());
-    EXPECT_EQ(PongV1::zippylog_enumeration, e.MessageType(0));
+    uint32 enumeration = PongV1::zippylog_enumeration;
+    EXPECT_EQ(enumeration, e.MessageType(0));
     EXPECT_TRUE(NULL != e.GetMessage(0));
     EXPECT_TRUE(NULL == e.GetMessage(1));
 
@@ -321,8 +322,9 @@ TEST_F(EnvelopeTest, RemoveMessage)
     EXPECT_EQ(2, e.MessageNamespaceSize());
     EXPECT_EQ(2, e.MessageTypeSize());
 
-    EXPECT_EQ(PingV1::zippylog_enumeration, e.MessageType(0));
-    EXPECT_EQ(PingV1::zippylog_enumeration, e.MessageType(1));
+    enumeration = PingV1::zippylog_enumeration;
+    EXPECT_EQ(enumeration, e.MessageType(0));
+    EXPECT_EQ(enumeration, e.MessageType(1));
 
     EXPECT_EQ(m0, e.GetMessage(0));
     EXPECT_EQ(m1, e.GetMessage(1));
