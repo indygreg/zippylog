@@ -83,17 +83,17 @@ public:
     }
 
     RequestProcessorHandlerResult HandleRegisterPlugin(
-        PluginRegistrationRequest const &r)
+        PluginRegistrationRequest const &)
     {
         return RequestProcessorHandlerResult::MakeDeferred();
     }
 
-    RequestProcessorHandlerResult HandleUnregisterPlugin(string const &name)
+    RequestProcessorHandlerResult HandleUnregisterPlugin(string const &)
     {
         return RequestProcessorHandlerResult::MakeDeferred();
     }
 
-    RequestProcessorHandlerResult HandleGetPluginStatus(vector<string> const &names)
+    RequestProcessorHandlerResult HandleGetPluginStatus(vector<string> const &)
     {
         return RequestProcessorHandlerResult::MakeDeferred();
     }

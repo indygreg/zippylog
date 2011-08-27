@@ -100,19 +100,19 @@ RequestProcessorHandlerResult ServerRequestProcessor::HandleWriteEnvelopes(::std
 }
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleRegisterPlugin(
-    PluginRegistrationRequest const &r)
+    PluginRegistrationRequest const &)
 {
     throw Exception("not implemented");
 }
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleUnregisterPlugin(
-    ::std::string const &name)
+    ::std::string const &)
 {
     throw Exception("not implemented");
 }
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleGetPluginStatus(
-    ::std::vector< ::std::string > const &names)
+    ::std::vector< ::std::string > const &)
 {
     throw Exception("not implemented");
 }

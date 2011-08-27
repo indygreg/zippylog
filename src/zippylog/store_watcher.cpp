@@ -91,7 +91,7 @@ void StoreWatcher::OnRunFinish()
 
 PumpResult StoreWatcher::Pump(int32 timeout)
 {
-    if (!this->watcher.WaitForChanges(250000)) return PumpResult::MakeNoWorkDone();
+    if (!this->watcher.WaitForChanges(timeout)) return PumpResult::MakeNoWorkDone();
 
     vector<platform::DirectoryChange> changes;
 
