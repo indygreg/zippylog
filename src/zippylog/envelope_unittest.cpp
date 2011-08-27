@@ -16,12 +16,14 @@
 
 #include <zippylog/envelope.hpp>
 #include <zippylog/protocol/request.pb.h>
+#include <zippylog/protocol/response.pb.h>
 
 #include <gtest/gtest.h>
 #include <string>
 #include <utility>
 #include <vector>
 
+using ::google::protobuf::Message;
 using ::std::invalid_argument;
 using ::std::pair;
 using ::std::string;
@@ -29,6 +31,7 @@ using ::std::vector;
 using ::zippylog::Envelope;
 using ::zippylog::protocol::request::GetStreamSegmentV1;
 using ::zippylog::protocol::request::PingV1;
+using ::zippylog::protocol::response::PongV1;
 using ::zmq::message_t;
 
 namespace zippylog {
@@ -199,6 +202,130 @@ TEST_F(EnvelopeTest, MessagesAndCopying)
     PingV1 *p2 = (PingV1 *)e2.GetMessage(0);
     ASSERT_TRUE(NULL != p2);
     EXPECT_TRUE(&p1 != p2);
+}
+
+TEST_F(EnvelopeTest, MessageCacheResizing)
+{
+    Envelope e;
+    PingV1 p1, p2, p3;
+    p1.add_to_envelope(e);
+
+    EXPECT_TRUE(NULL != e.GetMessage(0));
+    Message *m0 = e.GetMessage(0);
+
+    p2.add_to_envelope(e);
+    p3.add_to_envelope(e);
+    EXPECT_TRUE(NULL != e.GetMessage(0));
+    EXPECT_TRUE(NULL != e.GetMessage(1));
+
+    EXPECT_EQ(m0, e.GetMessage(0));
+
+    ASSERT_EQ(3, e.messages_size);
+    EXPECT_EQ(NULL, e.messages[2]);
+}
+
+TEST_F(EnvelopeTest, Clear)
+{
+    Envelope e1;
+    string s1;
+    ASSERT_TRUE(e1.Serialize(s1));
+
+    PingV1 p1;
+    p1.add_to_envelope(e1);
+
+    e1.Clear();
+    EXPECT_EQ(0, e1.MessageCount());
+    EXPECT_TRUE(NULL == e1.GetMessage(0));
+
+    string s2;
+    ASSERT_TRUE(e1.Serialize(s2));
+    EXPECT_EQ(s1, s2);
+
+    // Verify we can add messages again
+    PongV1 pong;
+    pong.add_to_envelope(e1);
+    pong.add_to_envelope(e1);
+    EXPECT_EQ(2, e1.MessageCount());
+    EXPECT_TRUE(NULL != e1.GetMessage(0));
+    EXPECT_TRUE(NULL != e1.GetMessage(1));
+    e1.Clear();
+}
+
+TEST_F(EnvelopeTest, CopyMessage)
+{
+    Envelope e1, e2;
+    PingV1 p1;
+    p1.add_to_envelope(e1);
+
+    EXPECT_FALSE(e1.CopyMessage(1, e2));
+
+    ASSERT_TRUE(e1.CopyMessage(0, e2));
+    ASSERT_EQ(1, e2.MessageCount());
+
+    EXPECT_TRUE(NULL != e1.GetMessage(0));
+    EXPECT_TRUE(NULL != e2.GetMessage(0));
+
+    EXPECT_NE(e1.GetMessage(0), e2.GetMessage(0));
+
+    e1.Clear();
+    EXPECT_TRUE(NULL == e1.GetMessage(0));
+    EXPECT_TRUE(NULL != e2.GetMessage(0));
+}
+
+TEST_F(EnvelopeTest, RemoveMessage)
+{
+    Envelope e;
+    PingV1 ping;
+    PongV1 pong;
+
+    ping.add_to_envelope(e);
+    pong.add_to_envelope(e);
+
+    // populate the cache
+    EXPECT_TRUE(NULL != e.GetMessage(0));
+    EXPECT_TRUE(NULL != e.GetMessage(1));
+
+    EXPECT_FALSE(e.RemoveMessage(2));
+
+    EXPECT_TRUE(e.RemoveMessage(0));
+    EXPECT_EQ(1, e.MessageCount());
+    EXPECT_EQ(1, e.MessageNamespaceSize());
+    EXPECT_EQ(1, e.MessageTypeSize());
+    EXPECT_EQ(PongV1::zippylog_enumeration, e.MessageType(0));
+    EXPECT_TRUE(NULL != e.GetMessage(0));
+    EXPECT_TRUE(NULL == e.GetMessage(1));
+
+    EXPECT_TRUE(e.RemoveMessage(0));
+    EXPECT_EQ(0, e.MessageCount());
+    EXPECT_EQ(0, e.MessageNamespaceSize());
+    EXPECT_EQ(0, e.MessageTypeSize());
+    EXPECT_TRUE(NULL == e.GetMessage(0));
+
+    EXPECT_FALSE(e.RemoveMessage(0));
+
+    e.Clear();
+
+    ping.add_to_envelope(e);
+    pong.add_to_envelope(e);
+    ping.add_to_envelope(e);
+
+    Message * m0 = e.GetMessage(0);
+    Message * m1 = e.GetMessage(2);
+
+    EXPECT_TRUE(NULL != e.GetMessage(0));
+    EXPECT_TRUE(NULL != e.GetMessage(1));
+    EXPECT_TRUE(NULL != e.GetMessage(2));
+
+    EXPECT_TRUE(e.RemoveMessage(1));
+    EXPECT_EQ(2, e.MessageCount());
+    EXPECT_EQ(2, e.MessageNamespaceSize());
+    EXPECT_EQ(2, e.MessageTypeSize());
+
+    EXPECT_EQ(PingV1::zippylog_enumeration, e.MessageType(0));
+    EXPECT_EQ(PingV1::zippylog_enumeration, e.MessageType(1));
+
+    EXPECT_EQ(m0, e.GetMessage(0));
+    EXPECT_EQ(m1, e.GetMessage(1));
 }
 
 TEST_F(EnvelopeTest, RandomGeneration)

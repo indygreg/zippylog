@@ -39,7 +39,7 @@ Envelope::Envelope() : messages(NULL), messages_size(0)
     this->envelope.set_create_time(t.epoch_micro);
 }
 
-Envelope::Envelope(message_t &msg, uint32 offset)
+Envelope::Envelope(message_t &msg, uint32 offset) : messages(NULL), messages_size(0)
 {
     if (!msg.size()) throw invalid_argument("0MQ message is empty");
     if (offset + 1 >= msg.size()) throw invalid_argument("specified offset is larger than message");
@@ -56,9 +56,7 @@ Envelope::Envelope(const void * data, int size) : messages(NULL), messages_size(
     this->InitializeFromBuffer(data, size);
 }
 
-Envelope::Envelope(string const &s) :
-    messages(NULL),
-    messages_size(0)
+Envelope::Envelope(string const &s) : messages(NULL), messages_size(0)
 {
     platform::Time t;
     platform::TimeNow(t);
@@ -81,17 +79,8 @@ Envelope::~Envelope()
     }
 }
 
-Envelope::Envelope(Envelope const &e)
-    : messages(NULL), messages_size(0)
+Envelope::Envelope(Envelope const &e) : messages(NULL), messages_size(0)
 {
-    if (e.messages_size > 0) {
-        this->messages_size = e.messages_size;
-        this->messages = new Message *[this->messages_size];
-        for (int i = 0; i < this->messages_size; i++) {
-            this->messages[i] = NULL;
-        }
-    }
-
     this->envelope.CopyFrom(e.envelope);
 }
 
@@ -99,17 +88,8 @@ Envelope & Envelope::operator=(Envelope const &orig)
 {
     if (this == &orig) return *this;
 
-    if (orig.messages_size > 0) {
-        this->messages_size = orig.messages_size;
-        this->messages = new Message *[this->messages_size];
-        for (int i = 0; i < this->messages_size; i++) {
-            this->messages[i] = NULL;
-        }
-    }
-    else {
-        this->messages_size = 0;
-        this->messages = NULL;
-    }
+    this->messages_size = 0;
+    this->messages = NULL;
 
     this->envelope = orig.envelope;
 
@@ -137,14 +117,6 @@ void Envelope::InitializeFromBuffer(const void * data, int size)
     if (!this->envelope.ParseFromArray(data, size)) {
         throw DeserializeException();
     }
-
-    int count = this->MessageCount();
-
-    this->messages = new Message *[count];
-    this->messages_size = count;
-    for (int i = 0; i < count; i++) {
-        this->messages[i] = NULL;
-    }
 }
 
 bool Envelope::Serialize(string &s) const
@@ -154,30 +126,6 @@ bool Envelope::Serialize(string &s) const
 
 bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 {
-    if (!this->messages) {
-        assert(this->MessageCount() == 0);
-
-        this->messages = new Message *[1];
-        this->messages_size = 1;
-        // don't bother caching it, cuz that would take memory
-        this->messages[0] = NULL;
-    }
-    else {
-        // we need to resize the array
-        Message **old = this->messages;
-
-        this->messages = new Message *[this->messages_size + 1];
-        this->messages[this->messages_size] = NULL;
-
-        for (int i = 0; i < this->messages_size; i++) {
-            this->messages[i] = old[i];
-        }
-
-        this->messages_size++;
-
-        delete [] old;
-    }
-
     string buffer;
     if (!m.SerializeToString(&buffer)) return false;
 
@@ -190,6 +138,7 @@ bool Envelope::AddMessage(Message &m, uint32 ns, uint32 enumeration)
 
 bool Envelope::ParseFromCodedInputStream(::google::protobuf::io::CodedInputStream &cis)
 {
+    // Wipe out existing cached messages.
     if (this->messages) {
         for (int i = 0; i < this->messages_size; i++) {
             if (this->messages[i]) {
@@ -203,16 +152,6 @@ bool Envelope::ParseFromCodedInputStream(::google::protobuf::io::CodedInputStrea
     }
 
     bool result = this->envelope.ParseFromCodedStream(&cis) && cis.ConsumedEntireMessage();
-
-    if (result) {
-        int count = this->MessageCount();
-
-        this->messages = new Message *[count];
-        for (int i = 0; i < count; i++) {
-            this->messages[i] = NULL;
-        }
-        this->messages_size = count;
-    }
 
     return result;
 }
@@ -237,7 +176,7 @@ bool Envelope::ToProtocolZmqMessage(message_t &msg) const
     return true;
 }
 
-int Envelope::MessageCount()
+int Envelope::MessageCount() const
 {
     return this->envelope.message_size();
 }
@@ -246,13 +185,36 @@ Message * Envelope::GetMessage(int index)
 {
     if (index < 0) throw invalid_argument("index must be non-negative");
 
-    if (this->MessageCount() < index + 1) return NULL;
+    if (this->envelope.message_size() < index + 1) return NULL;
     if (this->envelope.message_namespace_size() < index + 1) return NULL;
     if (this->envelope.message_type_size() < index + 1) return NULL;
 
-    // the messages cache should be initialized at construction time and
-    // modified whenever messages are added
-    assert(this->messages);
+    int count = this->envelope.message_size();
+    if (!this->messages) {
+        assert(!this->messages_size);
+
+        this->messages = new Message *[count];
+        this->messages_size = count;
+
+        for (int i = 0; i < count; i++) {
+            this->messages[i] = NULL;
+        }
+    }
+    // Resize messages array as necessary. We only check the greater than case
+    // because RemoveMessage will properly set excess values to NULL upon
+    // removal.
+    else if (count > this->messages_size) {
+        Message **old = this->messages;
+
+        this->messages = new Message *[count];
+
+        for (int i = 0; i < count; i++) {
+            this->messages[i] = i < this->messages_size ? old[i] : NULL;
+        }
+
+        this->messages_size = count;
+        delete [] old;
+    }
 
     if (this->messages[index])
         return this->messages[index];
@@ -276,11 +238,70 @@ Message * Envelope::GetMessage(int index)
 
 bool Envelope::CopyMessage(int index, Envelope &dest) const
 {
+    if (index < 0) throw invalid_argument("index must be non-negative");
+
     if (this->envelope.message_size() < index + 1) return false;
 
     dest.envelope.add_message(this->envelope.message(index));
     dest.envelope.add_message_namespace(this->envelope.message_namespace(index));
     dest.envelope.add_message_type(this->envelope.message_type(index));
+
+    return true;
+}
+
+void Envelope::Clear()
+{
+    uint64 create_time = this->envelope.has_create_time() ?
+        this->envelope.create_time() : 0;
+
+    this->envelope.Clear();
+
+    if (this->messages) {
+        for (int i = 0; i < this->messages_size; i++) {
+            if (this->messages[i]) {
+                delete this->messages[i];
+                this->messages[i] = NULL;
+            }
+        }
+
+        delete [] this->messages;
+        this->messages = NULL;
+    }
+    this->messages_size = 0;
+
+    this->envelope.set_create_time(create_time);
+}
+
+bool Envelope::RemoveMessage(int32 index)
+{
+    if (index < 0) throw invalid_argument("index must be non-negative");
+
+    int initial_size = this->envelope.message_size();
+
+    if (initial_size < index + 1) return false;
+
+    // The protocol buffer API doesn't provide a way to easily remove elements
+    // from a repeated field, hence the complication.
+    for (int i = 0; i < initial_size; i++) {
+        if (i <= index) continue;
+
+        // else we move everything down a slot
+        this->envelope.set_message(i - 1, this->envelope.message(i));
+        this->envelope.set_message_namespace(i - 1, this->envelope.message_namespace(i));
+        this->envelope.set_message_type(i - 1, this->envelope.message_type(i));
+
+        if (this->messages && this->messages_size >= i) {
+            this->messages[i - 1] = this->messages[i];
+        }
+    }
+
+    this->envelope.mutable_message()->RemoveLast();
+    this->envelope.mutable_message_namespace()->RemoveLast();
+    this->envelope.mutable_message_type()->RemoveLast();
+
+    if (this->messages && this->messages_size >= initial_size) {
+        this->messages[initial_size - 1] = NULL;
+    }
 
     return true;
 }
