@@ -437,11 +437,30 @@ TEST_F(Benchmark, SimpleStoreIO)
 
 } // namespace
 
+class BenchmarkListener : public ::testing::EmptyTestEventListener {
+    // Called after a failed assertion or a SUCCEED() invocation.
+    virtual void OnTestPartResult(
+        const ::testing::TestPartResult& result)
+    {
+        if (result.failed()) {
+            printf("UNEXPECTED FAILURE in %s:%d\n%s\n",
+                result.file_name(), result.line_number(), result.summary());
+        }
+    }
+  };
+
 int main(int argc, char **argv)
 {
     ::zippylog::initialize_library();
 
     ::testing::InitGoogleTest(&argc, argv);
+
+    // Use a custom listener for better formatting.
+    ::testing::TestEventListeners& listeners =
+      ::testing::UnitTest::GetInstance()->listeners();
+    delete listeners.Release(listeners.default_result_printer());
+    listeners.Append(new BenchmarkListener);
+
     int result = RUN_ALL_TESTS();
 
     ::zippylog::shutdown_library();
