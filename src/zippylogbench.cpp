@@ -120,8 +120,8 @@ void zmq_socket_send_recv(const char *address, int sender_type, int receiver_typ
     ::zmq::message_t msg(message_size);
     ::zmq::message_t received;
 
-    sender.send(msg, NULL);
-    receiver.recv(&received, NULL);
+    sender.send(msg, 0);
+    receiver.recv(&received, 0);
     TIMER_END(name);
 }
 
