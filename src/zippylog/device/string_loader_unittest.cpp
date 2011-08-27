@@ -36,8 +36,8 @@ TEST(StringLoaderTest, ConstructorTest)
 
     StringLoader l(p);
     EXPECT_EQ(1024 * 1024, l.L.GetMemoryCeiling());
-    EXPECT_EQ(NULL, l.instream);
-    EXPECT_EQ(NULL, l.outstream);
+    EXPECT_TRUE(NULL == l.instream);
+    EXPECT_TRUE(NULL == l.outstream);
     EXPECT_FALSE(l.have_lua_string_loader);
 
     stringstream ss;
