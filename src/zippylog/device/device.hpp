@@ -60,7 +60,14 @@ class ZIPPYLOG_EXPORT Device {
 public:
     /// Base constructor
     ///
-    /// Should be called by child classes in their constructors
+    /// This should be called by child classes in their constructors.
+    ///
+    /// The constructor accepts a pointer to a conditional wait instance which
+    /// is used to determine if the device should run. When this semaphore
+    /// enters the signaled state, the device stops running or will refuse to
+    /// run.
+    ///
+    /// @param cw Semaphore that determines whether device should run
     Device(::zippylog::platform::ConditionalWait *cw);
 
     /// Base class destructor
@@ -147,6 +154,7 @@ private:
     /// This will only be defined if RunAsync() is called.
     ::zippylog::platform::Thread *thread;
 
+    /// Semaphore used to determine if device is active
     ::zippylog::platform::ConditionalWait *cw;
 
     /// Whether the device is running
