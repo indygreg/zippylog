@@ -250,6 +250,7 @@ protected:
         /// reading immediately.
         bool WriteStreamHeader();
 
+        /// Protocol buffer wrapper for output stream
         ::google::protobuf::io::CodedOutputStream *cos;
 };
 
@@ -274,7 +275,10 @@ class ZIPPYLOG_EXPORT FileOutputStream : public OutputStream {
         bool Flush();
 
     protected:
+        /// Underlying file object being used
         platform::File file;
+
+        /// Protobuf buffer wrapper for file writing
         ::google::protobuf::io::FileOutputStream *os;
 };
 
