@@ -512,7 +512,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param path Store path to subscribe to
         /// @param callbacks Defines callbacks to handle subscribed events
         /// @param result Stores the result of the subscription
-        /// @param data Arbitrary data to be passed to callback functions
+        /// @param timeout_microseconds How long to wait for a server response
         bool SubscribeStoreChanges(::std::string const &path,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
