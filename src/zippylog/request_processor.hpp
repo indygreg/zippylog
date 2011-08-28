@@ -761,7 +761,7 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         ///
         /// @param seen_version Message version seen
         /// @param supported_version Specific version we support
-        /// @param Container for response envelopes
+        /// @param output Container for response envelopes
         /// @return Whether the version is supported
         bool CheckMessageVersion(uint32 seen_version, uint32 supported_version, ::std::vector<Envelope> &output);
 
