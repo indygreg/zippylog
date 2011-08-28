@@ -38,10 +38,10 @@ namespace server {
 /// Used to construct a ServerRequestProcessor
 class ServerRequestProcessorStartParams {
 public:
-    // where to send client subscription messages
+    /// Where to send client subscription messages
     ::std::string streaming_subscriptions_endpoint;
 
-    // where to send updates for existing subscriptions
+    /// Where to send updates for existing subscriptions
     ::std::string streaming_updates_endpoint;
 
     /// 0MQ endpoint for store writer's envelope PULL socket
@@ -50,6 +50,7 @@ public:
     /// 0MQ endpoint for store writer's envelope REP socket
     ::std::string store_writer_envelope_rep_endpoint;
 
+    /// Parameters going to the request processor constructor
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
 
@@ -64,48 +65,102 @@ public:
 /// the server doesn't know which streamers have which subscriptions).
 class ServerRequestProcessor : public ::zippylog::RequestProcessorImplementation {
     public:
+        /// Construct an instance from parameters
+        ///
+        /// @param params Parameters controlling behavior
         ServerRequestProcessor(ServerRequestProcessorStartParams &params);
         ~ServerRequestProcessor();
 
+        /// Handle a subscription request
+        ///
+        /// This will forward the request via a 0MQ socket to be processed by
+        /// a persisted state manager.
+        ///
+        /// @param subscription Subscription request record
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleSubscriptionRequest(
             SubscriptionInfo subscription);
 
+        /// Handle a subscription keepalive request
+        ///
+        /// This will forward the keepalive to all persisted state managers.
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response messages
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleSubscribeKeepalive(
             Envelope &request,
             ::std::vector<Envelope> &output);
 
+        /// Handle a write envelope request
+        ///
+        /// @param path The store path to write to
+        /// @param to_write Set of envelopes to write
+        /// @param synchronous Whether we require a response to confirm write
+        /// @param How request processor should handle the result
         RequestProcessorHandlerResult HandleWriteEnvelopes(
             ::std::string const &path,
             ::std::vector<Envelope> &to_write,
             bool synchronous);
 
+        /// Handle a plugin registration request
+        ///
+        /// This will forward the request to a persisted state manager, which
+        /// will take care of the rest.
+        ///
+        /// @param r Plugin request record
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleRegisterPlugin(
             PluginRegistrationRequest const &r);
 
+        /// Handle a plugin unregister request
+        ///
+        /// This will forward the request to all persisted state managers.
+        ///
+        /// @param name Name of plugin to unregister
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleUnregisterPlugin(
             ::std::string const &name);
 
+        /// Handle a get plugin status request
+        ///
+        /// This will forward the request to all persisted state managers.
+        /// The one with the plugin will response.
+        ///
+        /// @param names Names of plugins to query
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleGetPluginStatus(
             ::std::vector< ::std::string > const &names);
 
     protected:
+        /// 0MQ context
         ::zmq::context_t *ctx;
 
+        /// Endpoint that load balancers to 1 persisted state manager
         ::std::string streaming_subscriptions_endpoint;
+
+        /// Endpoint that fans out to all persisted state managers
         ::std::string streaming_updates_endpoint;
 
+        /// PUSH socket that sends subscriptions and plugins to exactly one
+        /// persisted state manager.
         ::zmq::socket_t *subscriptions_sock;
+
+        /// PUB socket that sends persisted state notifications to all
+        /// persisted state managers.
         ::zmq::socket_t *subscription_updates_sock;
 
+        /// Device that sends envelope writes to a central location
         ::zippylog::device::StoreWriterSender * store_sender;
 };
 
 /// Create store watchers tailored for the server device
 class WatcherStartParams {
 public:
+    /// The parameters for the underlying StoreWatcher
     ::zippylog::StoreWatcherStartParams params;
 
-    // 0MQ socket endpoint on which to connect a PUSH socket
+    /// 0MQ socket endpoint on which to connect a PUSH socket
     ::std::string socket_endpoint;
 };
 
@@ -120,15 +175,22 @@ public:
     ~Watcher();
 
 protected:
-    // implement the interface
+    ///@{
+    /// Implement StoreWatcher interface
     void HandleAdded(::std::string path, platform::FileStat &stat);
     void HandleDeleted(::std::string path);
     void HandleModified(::std::string path, platform::FileStat &stat);
+    ///@}
 
-    // sends the change to all interested parties
+    // Sends the change to all interested parties
+    ///
+    /// @param e Envelope to send
     void SendChangeMessage(Envelope &e);
 
+    /// Endpoint we send changes on
     ::std::string endpoint;
+
+    /// PUB socket sending changes
     ::zmq::socket_t * socket;
 
 private:
