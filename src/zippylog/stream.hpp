@@ -158,12 +158,18 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
         /// Construct a stream from an existing file
         ///
         /// Optionally seek to specified offset in stream (in bytes)
+        ///
+        /// @param path Filesystem path to open
+        /// @param start_offset Seek offset within stream
         FileInputStream(::std::string const &path, int64 start_offset = 0);
 
         /// Construct a new stream from a file descriptor
         ///
         /// The file descriptor must be opened for reading. In addition, the
         /// stream version must be obtained before calling this constructor.
+        ///
+        /// @param fd File descriptor to construct stream from
+        /// @param version Stream version
         FileInputStream(int fd, char version);
 
         ~FileInputStream();
@@ -175,8 +181,10 @@ class ZIPPYLOG_EXPORT FileInputStream : public InputStream {
     protected:
         ::google::protobuf::io::CodedInputStream * ConstructCodedInputStream();
 
+        /// The file object representing the underlying stream
         ::zippylog::platform::File file;
 
+        /// Protobuf buffer stream wrapper
         ::google::protobuf::io::FileInputStream *fis;
 
     private:
