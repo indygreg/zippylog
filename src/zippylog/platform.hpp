@@ -303,20 +303,27 @@ namespace platform {
         /// @return Whether the file was closed without issue
         bool Close();
 
-        // write data to the file
-        // returns whether all data was written
+        // Write data to the file
+        ///
+        /// @param data Pointer to data being written
+        /// @param length How much data from source buffer to write
+        /// @return Whether all requested data was written
         bool Write(const void *data, size_t length);
 
-        // flush contents to underlying store
+        /// Flush contents to underlying store
         //
-        // this clear all buffered data
+        /// @return Whether the flush executed successfully
         bool Flush();
 
-        // seeks to the specified offset in the file
+        /// Seeks to the specified offset in the file
+        ///
+        /// @param offset Absolute offset to seek to
+        /// @return Whether seek completed successfully
         bool Seek(int64 offset);
 
-        // obtain a file descriptor for this file
-        // returns 0 if file descriptor not available, file not open, etc
+        /// Obtain a file descriptor for this file
+        ///
+        /// @return non-zero and non-negative filev value on success
         int FileDescriptor();
 
         /// Obtain an exclusive write lock on the entire file
@@ -472,18 +479,24 @@ namespace platform {
         /// @param recurse Whether to watch all child directories
         DirectoryWatcher(::std::string const &directory, bool recurse=true);
 
-        // Wait up to N microseconds for changes to the directory or forever,
-        // if -1 is given as the timeout value
-        //
-        // Returns true if there are changes to the directory. Returns false
-        // otherwise.
-        //
-        // If returns true, call GetChanges() to return the list of changes.
-        // Function may return true immediately if changes are already
-        // available but haven't been collected with GetChanges().
+        /// Wait up to N microseconds for changes to the directory or forever,
+        /// if -1 is given as the timeout value
+        ///
+        /// Returns true if there are changes to the directory. Returns false
+        /// otherwise.
+        ///
+        /// If returns true, call GetChanges() to return the list of changes.
+        /// Function may return true immediately if changes are already
+        /// available but haven't been collected with GetChanges().
+        ///
+        /// @param timeout How long to wait for a change, in microseconds
+        /// @return Whether there were changes
         bool WaitForChanges(int32 timeout);
 
-        // returns collected changes to directory
+        /// Returns collected changes to directory
+        ///
+        /// @param changes Container for results
+        /// @return Whether there is data in the container
         bool GetChanges(::std::vector<DirectoryChange> &changes);
 
 #ifdef MACOS
