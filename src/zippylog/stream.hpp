@@ -254,6 +254,7 @@ protected:
         ::google::protobuf::io::CodedOutputStream *cos;
 };
 
+/// OutputStream that writes to filesystem files
 class ZIPPYLOG_EXPORT FileOutputStream : public OutputStream {
     public:
         /// Opens the file specified by path for writing

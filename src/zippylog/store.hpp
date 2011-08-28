@@ -32,7 +32,12 @@ public:
     /// Construct an empty record
     OpenOutputStream() : stream(NULL), last_write_time(-1) { }
 
+    /// The stream that is open for writing
     OutputStream *stream;
+
+    /// The time the stream was last written to
+    ///
+    /// @todo convert to platform::Time
     int64 last_write_time;
 };
 
@@ -275,10 +280,17 @@ class ZIPPYLOG_EXPORT Store {
         Store & operator=(Store const &orig);
 };
 
+/// Error representing when a store path is not a directory
+///
+/// This exception is thrown by directory-backed stores when their configured
+/// directory isn't actually a directory.
 class ZIPPYLOG_EXPORT StorePathNotDirectoryException : public Exception
 {
-    public:
-        StorePathNotDirectoryException(::std::string const &s) : Exception(s) { }
+public:
+    /// Construct an exception from an error message
+    ///
+    /// @param s Error message
+    StorePathNotDirectoryException(::std::string const &s) : Exception(s) { }
 };
 
 /// A stream store backed by a single directory
