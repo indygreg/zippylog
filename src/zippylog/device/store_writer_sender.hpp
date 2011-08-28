@@ -80,14 +80,22 @@ public:
     bool WriteEnvelope(::std::string const &bucket, ::std::string const &set, ::zippylog::Envelope &e);
 
 protected:
+    /// 0MQ context being used
     ::zmq::context_t *ctx;
 
-    // whether we own the 0MQ context
+    /// Whether we own the 0MQ context
     bool own_context;
 
+    /// 0MQ endpoint to bind a PULL socket to for receiving envelopes
     ::std::string envelope_pull_endpoint;
+
+    /// 0MQ endpoint to bind a REP socket to for receiving envelopes
     ::std::string envelope_rep_endpoint;
+
+    /// PULL socket to receive envelopes that don't need responses
     ::zmq::socket_t * envelope_pull_sock;
+
+    /// REP socket to receive envelopes that do need responses
     ::zmq::socket_t * envelope_rep_sock;
 
 private:
