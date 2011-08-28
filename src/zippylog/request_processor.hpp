@@ -746,8 +746,8 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// @param zippylog path to validate
         /// @param output Container to hold error message on failure
         /// @param require_bucket Whether to require a bucket in the path
-        /// @param require_Set Whether to require a stream set in the path
-        /// @param require_Stream Whether to require a stream in the path
+        /// @param require_set Whether to require a stream set in the path
+        /// @param require_stream Whether to require a stream in the path
         /// @return Whether the path validated
         bool CheckPath(::std::string const &path,
                        ::std::vector<Envelope> &output,
