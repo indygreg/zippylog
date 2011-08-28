@@ -83,6 +83,7 @@ public:
 /// Represents the result of string processing in the string loader
 class ZIPPYLOG_EXPORT StringLoaderProcessingResult {
 public:
+    /// Construct an empty result
     StringLoaderProcessingResult() :
       success(false),
       has_bucket(false),
@@ -95,6 +96,7 @@ public:
         }
     }
 
+    /// Whether the result was successful
     bool success;
 
     /// Error describing what went wrong
@@ -108,10 +110,20 @@ public:
     /// the instance holding them is destroyed.
     ::std::vector<Envelope *> envelopes;
 
+    /// Whether a bucket was set
+    ///
+    /// If true, bucket should have a value
     bool has_bucket;
+
+    /// Whether a stream set was set
+    ///
+    /// If true, set should have a value
     bool has_set;
 
+    /// The bucket to load the envelope into
     ::std::string bucket;
+
+    /// The stream set to load the envelope into
     ::std::string set;
 };
 
@@ -128,6 +140,8 @@ public:
 class ZIPPYLOG_EXPORT StringLoader {
 public:
     /// Construct a string loader from parameters
+    ///
+    /// @param params Parameters to control behavior
     StringLoader(StringLoaderStartParams &params);
 
     ~StringLoader();
