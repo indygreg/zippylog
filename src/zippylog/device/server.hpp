@@ -525,9 +525,11 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
-        /// socket endpoints used by store writer
+        ///@{
+        /// Endpoints used by the store writer
         ::std::string store_writer_envelope_pull_endpoint;
         ::std::string store_writer_envelope_rep_endpoint;
+        ///@}
 
         /// poll structure for 0MQ
         ::zmq::pollitem_t pollitems[7];
