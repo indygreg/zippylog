@@ -520,9 +520,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously subscribes to store changes for the entire store
         ///
-        /// @param callback Callback configuration
+        /// @param callbacks Callback configuration
         /// @param result Stores result of the subscription
-        /// @param data Data to be passed to callback functions
+        /// @param timeout_microseconds How long to wait for response
         bool SubscribeStoreChanges(SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
                                    int32 timeout_microseconds);
@@ -630,9 +630,9 @@ class ZIPPYLOG_EXPORT Client {
         /// Returns true if the response was processed in the time specified.
         bool SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &req, int32 timeout);
 
-        // processe an individual pending zeromq message on the socket
-        // this function assumes messages are available
-        // pending message could be multipart
+        /// Process an individual pending 0MQ message on the socket
+        ///
+        /// This function assumes messages are available.
         bool ProcessPendingMessage();
 
         /// Processes received response messages
