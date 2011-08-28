@@ -78,11 +78,14 @@ public:
     ///@}
 
 protected:
-    // Function that performs actions when something is created
-    //
-    // Receives the path that was added as a store path (e.g.
-    // "/bucket/store/20101107T1615") and a stat record that describes
-    // the filesystem entity.
+    /// Function that performs actions when something is created
+    ///
+    /// Receives the path that was added as a store path (e.g.
+    /// "/bucket/store/20101107T1615") and a stat record that describes
+    /// the filesystem entity.
+    ///
+    /// @param path Store path that was added
+    /// @param stat Filesystem stat result of new path
     virtual void HandleAdded(::std::string path, platform::FileStat &stat) = 0;
 
     /// Function that performs actions when something is deleted
