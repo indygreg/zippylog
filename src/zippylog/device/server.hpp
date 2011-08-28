@@ -172,7 +172,7 @@ class Watcher : public ::zippylog::StoreWatcher {
 public:
     /// Construct a watcher that sends events to a 0MQ PUSH socket
     ///
-    /// @param Parameters to control behavior
+    /// @param params Parameters to control behavior
     Watcher(WatcherStartParams &params);
 
     ~Watcher();
