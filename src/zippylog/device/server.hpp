@@ -97,7 +97,7 @@ class ServerRequestProcessor : public ::zippylog::RequestProcessorImplementation
         /// @param path The store path to write to
         /// @param to_write Set of envelopes to write
         /// @param synchronous Whether we require a response to confirm write
-        /// @param How request processor should handle the result
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleWriteEnvelopes(
             ::std::string const &path,
             ::std::vector<Envelope> &to_write,
@@ -170,8 +170,11 @@ public:
 /// whose endpoint is defined at construction time.
 class Watcher : public ::zippylog::StoreWatcher {
 public:
-    // Construct a watcher that sends events to a 0MQ PUSH socket
+    /// Construct a watcher that sends events to a 0MQ PUSH socket
+    ///
+    /// @param Parameters to control behavior
     Watcher(WatcherStartParams &params);
+
     ~Watcher();
 
 protected:
