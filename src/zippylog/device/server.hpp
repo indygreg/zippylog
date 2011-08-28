@@ -282,7 +282,7 @@ public:
 /// When a client connects to a configured listening socket, messages will
 /// be handled as follows:
 ///
-///   client -> <clients_sock> -> <workers_sock> -> worker thread
+///   client -> :clients_sock -> :workers_sock -> worker thread
 ///
 /// A worker thread will handle the message in one of the following:
 ///
