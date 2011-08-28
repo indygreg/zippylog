@@ -155,9 +155,13 @@ protected:
     /// Container for 0MQ messages
     ::std::vector< ::zmq::message_t * > messages;
 
+    ///@{
+    /// Limit constants
+    ///
     /// @todo these should come from elsewhere
     static const uint32 max_size = 1048576;
     static const uint32 max_envelopes = 1024;
+    ///@}
 
     friend class RequestProcessor;
 };
@@ -504,7 +508,11 @@ public:
 /// @todo Remove device-like API
 class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
     public:
+        /// Construct from parameters
+        ///
+        /// @param params Parameters to control behavior
         RequestProcessor(RequestProcessorStartParams &params);
+
         ~RequestProcessor();
 
         /// Perform processing activities
@@ -743,7 +751,7 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// If the path does not validate, an error response is added to the
         /// output messages with an appropriate description of the failure.
         ///
-        /// @param zippylog path to validate
+        /// @param path zippylog path to validate
         /// @param output Container to hold error message on failure
         /// @param require_bucket Whether to require a bucket in the path
         /// @param require_set Whether to require a stream set in the path
