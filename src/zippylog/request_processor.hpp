@@ -140,11 +140,19 @@ public:
     void RegisterError(protocol::response::ErrorCode code, ::std::string const &message);
 
 protected:
+    /// Whether the final envelope has been seen
     bool finalized;
+
+    /// Subscription id
     ::std::string id;
+
+    /// 0MQ socket identifiers associated with return path
     ::std::vector< ::std::string > identities;
+
+    /// The current size of all 0MQ messages in the set
     uint32 current_size;
 
+    /// Container for 0MQ messages
     ::std::vector< ::zmq::message_t * > messages;
 
     /// @todo these should come from elsewhere
