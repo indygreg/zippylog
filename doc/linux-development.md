@@ -83,6 +83,10 @@ libuuid is not available on all systems by default. On Ubuntu:
 Doxygen is used to build the documentation. On Ubuntu:
 
     apt-get install doxygen
+    
+If this is the first time you've compiled something, you'll need a working compiler. On Ubuntu:
+
+    apt-get install build-essential
 
 # Configuring and Compiling
 
