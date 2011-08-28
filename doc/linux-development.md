@@ -22,17 +22,17 @@ zippylog is currently primarily developed and tested on 64 bit editions of Ubunt
 
 Most of zippylog's library dependencies are included as Git submodules. If you obtain source this way, you should get the most appropriate (i.e. tested) version of the package.
 
-  git submodule update --init
+    git submodule update --init
 
 Currently, only protocol buffers is not included as a submodule. However, you can easily pull it from Subversion:
 
-  svn co -r 391 http://protobuf.googlecode.com/svn/tags/2.4.1 external/protobuf
+    svn co -r 391 http://protobuf.googlecode.com/svn/tags/2.4.1 external/protobuf
 
 ## Protocol Buffers
 
 If you are running Ubuntu 10.10 with a standard APT sources list, you can install the required protocol buffer components as follows:
 
-  apt-get install libprotobuf6 libprotobuf-dev python-protobuf protobuf-compiler
+    apt-get install libprotobuf6 libprotobuf-dev python-protobuf protobuf-compiler
 
 For others, you'll need to obtain the protocol buffer source, compile, and install it. See http://code.google.com/p/protobuf/
 
@@ -42,7 +42,7 @@ Lua 5.1 has been around for a while and chances are your distribution includes i
 
 On Ubuntu:
 
-  apt-get install liblua5.1-0 liblua5.1-0-dev
+    apt-get install liblua5.1-0 liblua5.1-0-dev
 
 If you can't find a package, head over to http://www.lua.org/ to download the sources.
 
@@ -52,7 +52,7 @@ At the time of this writing, ZeroMQ was still pretty new and support in distribu
 
 On Ubuntu 10.10, the packages to install are:
 
-  apt-get install libzmq-dev libzmq0
+    apt-get install libzmq-dev libzmq0
 
 At the time of this writing, they were older than 2.0.10, so check the version before installing.
 
@@ -64,7 +64,7 @@ CMake is an alternate build system. It has been around for a little while, so yo
 
 On Ubuntu:
 
-  apt-get install cmake
+    apt-get install cmake
 
 ## Google Test
 
@@ -72,13 +72,17 @@ Google Test is zippylog's C++ unit testing framework. Some distros have a packag
 
 On Ubuntu:
 
-  apt-get install libgtest0 libgtest-dev
+    apt-get install libgtest0 libgtest-dev
 
 ## Misc
 
 libuuid is not available on all systems by default. On Ubuntu:
 
-  apt-get install uuid-dev
+    apt-get install uuid-dev
+    
+Doxygen is used to build the documentation. On Ubuntu:
+
+    apt-get install doxygen
 
 # Configuring and Compiling
 
