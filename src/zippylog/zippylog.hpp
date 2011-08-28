@@ -61,27 +61,38 @@ namespace zippylog {
 /// std::logic_error if it makes sense (e.g. obvious coding error)
 class ZIPPYLOG_EXPORT Exception : public ::std::runtime_error
 {
-    public:
-        Exception(::std::string const &msg) : ::std::runtime_error(msg) { }
+public:
+    /// Construct an exception from a string message
+    ///
+    /// @param msg Error message
+    Exception(::std::string const &msg) : ::std::runtime_error(msg) { }
 };
 
 /// An error when deserializing a message
 class ZIPPYLOG_EXPORT DeserializeException : public ::std::runtime_error
 {
-    public:
-        DeserializeException() : runtime_error("could not deserialize message") { }
+public:
+    /// Construct an exception
+    DeserializeException() : runtime_error("could not deserialize message") { }
 };
 
-// initializes the zippylog system
-// this should be called at the beginning of every program/library that uses zippylog
+/// Initializes the zippylog system
+///
+/// This should be called once at the beginning of every program/library that
+/// uses zippylog.
+///
+/// The function is not thread safe.
 ZIPPYLOG_EXPORT void initialize_library();
 
-// runs zippylog shutdown procedures
-// This should be executed before process exit or when zippylog is no longer
-// needed by a process.
-//
-// It isn't required to call this function. However, not doing so will result
-// in leaked memory.
+/// Runs zippylog shutdown procedures
+/// This should be executed before process exit or when zippylog is no longer
+/// needed by a process.
+///
+/// It isn't required to call this function. However, not doing so will result
+/// in leaked memory (if the process lingers around). However, if the process
+/// is terminating, it is safe to not call this function.
+///
+/// This function is not thread safe.
 ZIPPYLOG_EXPORT void shutdown_library();
 
 static const uint32 message_namespace = 1;
