@@ -92,7 +92,7 @@ If this is the first time you've compiled something, you'll need a working compi
 
 Configuring and compiling is made possible through CMake. Simply run:
 
-  cmake .
+    cmake .
 
 If this succeeds, on most platforms this will produce a Makefile for the project. Simply run *make* to compile zippylog.
 
