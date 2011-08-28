@@ -307,12 +307,17 @@ class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
 
         ~SimpleDirectoryStore() { };
 
-        // Return the filesystem path to this store
+        /// Return the filesystem path to this store
         const ::std::string RootDirectoryPath() const;
 
+        /// Convert a zippylog path to a filesystem path
+        ///
+        /// @param path zippylog path to convert
+        /// @return filesystem path
         ::std::string PathToFilesystemPath(::std::string const &path) const;
 
-        // implement virtual functions
+        ///@{
+        /// Virtual function implementations for Store interface
         bool BucketNames(::std::vector< ::std::string > &buckets);
         bool StreamSetNames(::std::string const &bucket, ::std::vector< ::std::string > &buckets);
         bool StreamNames(::std::string const &bucket, ::std::string const &set, ::std::vector< ::std::string > &streams);
@@ -323,14 +328,22 @@ class ZIPPYLOG_EXPORT SimpleDirectoryStore : public Store {
         bool BucketExists(::std::string const &bucket);
         bool StreamSetExists(::std::string const &bucket, ::std::string const &stream_set);
         bool StreamExists(::std::string const &bucket, ::std::string const &set, ::std::string const &stream);
+        ///@}
 
     protected:
+        /// The filesystem path to the store root
         ::std::string root_path;
 
+        /// Convert a zippylog stream path to the filesystem path name
+        ///
+        /// @param path Path to convert
+        /// @return Filesystem path
         ::std::string StreamFilesystemPath(::std::string const &path);
 
-        // implement virtual functions
-        OutputStream * CreateOutputStream(::std::string const &bucket, ::std::string const &set, ::std::string const &stream);
+        /// Implement virtual function from Store
+        OutputStream * CreateOutputStream(::std::string const &bucket,
+                                          ::std::string const &set,
+                                          ::std::string const &stream);
 
     private:
         SimpleDirectoryStore(SimpleDirectoryStore const &orig);
