@@ -243,7 +243,7 @@ public:
         ttl(0)
     { }
 
-    /// Result of the subscription request
+    /// Types of results from subscription requests
     enum Result {
         /// Subscription was accepted
         ACCEPTED = 1,
@@ -253,7 +253,10 @@ public:
 
         /// Unknown result
         UNKNOWN  = 3,
-    } result;
+    };
+
+    /// Result of the subscription request
+    Result result;
 
     /// Subscription id
     ::std::string id;
