@@ -362,8 +362,11 @@ namespace platform {
 #ifdef WINDOWS
         void * handle;
 #endif
+
+        /// Underlying file descriptor
         int fd;
 
+        /// Whether the file is open
         bool open;
     };
 
@@ -375,8 +378,10 @@ namespace platform {
     /// @todo expose timers as file descriptors someday
     class ZIPPYLOG_EXPORT Timer {
     public:
-        // create a null timer. this does nothing and is present so some structs have
-        // a default constructor
+        /// Create a null timer.
+        ///
+        /// This does nothing and is present so some structs have a default
+        /// constructor
         Timer();
         ~Timer();
 
@@ -505,8 +510,13 @@ namespace platform {
 #endif
 
     protected:
+        /// The filesystem path being watcher
         ::std::string path;
+
+        /// Whether to look at recursive changes
         bool recurse;
+
+        /// Collection of accumulated changes
         ::std::vector<DirectoryChange> changes;
 #ifdef WINDOWS
         void StartWatching();
@@ -543,6 +553,7 @@ namespace platform {
         /// @param f Function to execute when thread starts
         /// @param data Arbitrary data to be passed to thread start function
         Thread(thread_start_func f, void *data);
+
         ~Thread();
 
         /// Wait for the thread to finish execution
@@ -561,6 +572,7 @@ namespace platform {
 #ifdef WINDOWS
         HANDLE thread;
 #elif HAVE_PTHREAD
+        /// The underlying thread object
         pthread_t thread;
 #endif
 
