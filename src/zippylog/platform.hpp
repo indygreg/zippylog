@@ -238,7 +238,7 @@ namespace platform {
     ///
     /// @param path Path to traverse
     /// @param paths Holds results of operation
-    /// @param bool Whether operation executed without error
+    /// @return bool Whether operation executed without error
     ZIPPYLOG_EXPORT bool DirectoriesInTree(::std::string const &path,
                                            ::std::vector< ::std::string > &paths);
 
