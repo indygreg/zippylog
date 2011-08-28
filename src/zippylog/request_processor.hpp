@@ -621,27 +621,74 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         void OnRunFinish();
 
         /// Process a ping request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessPing(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetFeatures request
+        ///
+        /// @param request Envelope containing request
+        /// @param output Set of response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessFeatures(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetStoreInfo request and populate the passed envelope with the response
         ///
-        /// This function is typically called only by ProcessRequest()
+        /// This function is typically called only by ProcessRequest().
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessStoreInfo(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Process a bucket info request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessBucketInfo(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a stream set request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessStreamSetInfo(Envelope &request, ::std::vector<Envelope> &output);
+
+        /// Process a stream info request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessStreamInfo(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a GetStream request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessGetStream(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Process a store change subscription request
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessSubscribeStoreChanges(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Process a subscribe envelopes request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessSubscribeEnvelopes(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Process a subscribe keepalive request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessSubscribeKeepalive(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a SubscribeCancel request
@@ -652,6 +699,10 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         RequestProcessorResponseStatus ProcessSubscribeCancel(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a WriteEnvelope request
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response envelopes
+        /// @return Processing result
         RequestProcessorResponseStatus ProcessWriteEnvelope(Envelope &request, ::std::vector<Envelope> &output);
 
         /// Process a RegisterPlugin request
@@ -675,6 +726,10 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// @return Processing result
         RequestProcessorResponseStatus ProcessPluginStatus(Envelope &request, ::std::vector<Envelope> &output);
 
+        /// Calls the handler to process a request related to subscriptions
+        ///
+        /// @param subscription Describes the subscription
+        /// @param output Container for response
         void CallHandleSubscriptionRequest(SubscriptionInfo &subscription, ::std::vector<Envelope> &output);
 
         /// Checks that a path supplied by the client is valid
@@ -687,13 +742,37 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         ///
         /// If the path does not validate, an error response is added to the
         /// output messages with an appropriate description of the failure.
-        bool CheckPath(::std::string const &path, ::std::vector<Envelope> &output, bool require_bucket = false, bool require_set = false, bool require_stream = false);
+        ///
+        /// @param zippylog path to validate
+        /// @param output Container to hold error message on failure
+        /// @param require_bucket Whether to require a bucket in the path
+        /// @param require_Set Whether to require a stream set in the path
+        /// @param require_Stream Whether to require a stream in the path
+        /// @return Whether the path validated
+        bool CheckPath(::std::string const &path,
+                       ::std::vector<Envelope> &output,
+                       bool require_bucket = false,
+                       bool require_set = false,
+                       bool require_stream = false);
 
         /// Checks that the version in a message is THE version we support
         ///
         /// If it isn't, an error response is added to the output messages.
+        ///
+        /// @param seen_version Message version seen
+        /// @param supported_version Specific version we support
+        /// @param Container for response envelopes
+        /// @return Whether the version is supported
         bool CheckMessageVersion(uint32 seen_version, uint32 supported_version, ::std::vector<Envelope> &output);
 
+        /// Populates an error response to a request
+        ///
+        /// This is called whenever we wish to send an error to the client.
+        ///
+        /// @param code The error code for the error condition
+        /// @param message Human readable message describing the error
+        /// @param msgs Container for response envelopes
+        /// @return Whether we completed without error
         bool PopulateErrorResponse(::zippylog::protocol::response::ErrorCode code, ::std::string message, ::std::vector<Envelope> &msgs);
 
         /// 0MQ context for internal sockets
@@ -702,16 +781,28 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// Provider of callbacks for handling
         RequestProcessorImplementation *impl;
 
+        /// The path to the store
         ::std::string store_path;
+
+        /// The 0MQ endpoint the logger should send messages to
         ::std::string logger_endpoint;
+
+        /// The 0MQ endpoint on which to receive client requests
         ::std::string client_endpoint;
 
+        /// PUSH socket to send log messages on
         ::zmq::socket_t * logger_sock;
+
+        /// XREP socket that communicates with client
         ::zmq::socket_t * socket;
 
+        /// The store we are bound to
         Store * store;
 
+        /// Unique identifier for this instance
         ::std::string id;
+
+        /// 0MQ socket identities for the current request
         ::std::vector< ::std::string > current_request_identities;
 
         /// Maximum number of bytes we're allowed to return per GetStreamSegment request
