@@ -120,9 +120,15 @@ public:
 /// Represents the result of an envelope filter invocation
 class ZIPPYLOG_EXPORT EnvelopeFilterResult {
 public:
+    /// Result of a filter operation
     enum ReturnType {
+        /// Function returned a boolean true
         BOOLTRUE = 1,
+
+        /// Function returned a boolean false
         BOOLFALSE = 2,
+
+        /// Function returned something else
         OTHER = 3,
     };
 
@@ -213,9 +219,12 @@ public:
 
     /// Custom memory allocatio function for Lua states
     static void * LuaAlloc(void *ud, void *ptr, size_t osize, size_t nsize);
+
+    /// Our custom atpanic handler
     static int LuaPanic(lua_State *L);
 
 protected:
+    /// Determines the capabilities of loaded Lua code
     bool DetermineCapabilities();
 
     /// Initializes a state instance
@@ -239,16 +248,31 @@ protected:
     /// Pushes an envelope onto the Lua stack
     bool PushEnvelope(Envelope const &e);
 
-    /// Member variables
+    /// The underlying Lua state
     lua_State *L;
+
+    /// Whether the memory allocation limit has been exceeded
     bool memory_exceeded;
+
+    /// The configured memory ceiling, in bytes
     uint32 memory_ceiling;
+
+    /// The current memory utilization, in bytes
     uint32 memory_current;
+
+    /// The max amount of memory the state has requested, in bytes
     uint32 memory_max_tried;
+
+    /// The max amount of memory the state has been granted, in bytes
     uint32 memory_max_allowed;
 
+    /// Whether the state has a load string handler
     bool have_load_string;
+
+    /// Whether the state has a subscription envelope filter handler
     bool have_subscription_envelope_filter;
+
+    /// Whether the state has a subscription timer handler
     bool have_subscription_timer;
 
 private:
