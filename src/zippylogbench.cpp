@@ -83,6 +83,7 @@ using ::zippylog::Store;
 
 namespace zippylog {
 
+/// Test fixture for benchmarks
 class Benchmark : public ::zippylog::testing::TestBase
 { };
 
@@ -437,6 +438,10 @@ TEST_F(Benchmark, SimpleStoreIO)
 
 } // namespace
 
+/// Our custom gtest listener for result printing
+///
+/// It swallows all output except for failures, which should never occur
+/// during benchmarking.
 class BenchmarkListener : public ::testing::EmptyTestEventListener {
     // Called after a failed assertion or a SUCCEED() invocation.
     virtual void OnTestPartResult(
