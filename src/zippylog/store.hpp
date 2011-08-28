@@ -28,23 +28,32 @@ namespace zippylog {
 
 /// Record used by store to keep track of open output streams
 class OpenOutputStream {
-    public:
-        OpenOutputStream() : stream(NULL), last_write_time(-1) { }
+public:
+    /// Construct an empty record
+    OpenOutputStream() : stream(NULL), last_write_time(-1) { }
 
-        OutputStream *stream;
-        int64 last_write_time;
+    OutputStream *stream;
+    int64 last_write_time;
 };
 
+/// Exception thrown when an invalid store URI is encountered
 class ZIPPYLOG_EXPORT InvalidStoreUriException : public ::std::invalid_argument
 {
-    public:
-        InvalidStoreUriException(::std::string const &s) : ::std::invalid_argument(s) { }
+public:
+    /// Construct with an error message
+    ///
+    /// @param s Error message
+    InvalidStoreUriException(::std::string const &s) : ::std::invalid_argument(s) { }
 };
 
+/// Exception thown when an unsupported store uri is encountered
 class ZIPPYLOG_EXPORT UnsupportedStoreUriException : public ::std::invalid_argument
 {
-    public:
-        UnsupportedStoreUriException(::std::string const &s) : ::std::invalid_argument(s) { }
+public:
+    /// Construct with an error message
+    ///
+    /// @param s Error message
+    UnsupportedStoreUriException(::std::string const &s) : ::std::invalid_argument(s) { }
 };
 
 /// Represents a stream store
