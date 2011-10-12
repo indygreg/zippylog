@@ -113,13 +113,15 @@ void Device::RunAsync()
     this->async_wait.Wait(-1);
 }
 
-void Device::StopAsync(int32 timeout)
+void Device::StopAsync(int32)
 {
     if (!this->thread) {
         throw Exception("device is not running asynchronously");
     }
 
     this->cw->Signal();
+
+    /// @todo use timeout parameter
 
     if (this->thread->Alive()) {
         if (!this->thread->Join()) {

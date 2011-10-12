@@ -33,9 +33,11 @@ namespace zeromq {
 /// be managed by the caller.
 class ZIPPYLOG_EXPORT MessageContainer {
 public:
+    /// Construct a new, empty container
     MessageContainer();
     ~MessageContainer();
 
+    /// Clear the contents of the container
     void Clear();
 
     /// Adds an identity message to the container
@@ -48,12 +50,23 @@ public:
     /// Ownership of the memory address of the message is transferred to the container
     void AddMessage(::zmq::message_t *msg);
 
+    /// The number of identities for the message sequence
     inline ::std::vector< ::std::string >::size_type IdentitiesSize() const { return this->identities.size(); }
 
+    /// Obtain a specified identity
+    ///
+    /// @param i Offset to retrieve. Initial is 0
+    /// @return Identity string
     inline ::std::string GetIdentity(int i) const { return this->identities[i]; }
 
+    /// Obtain all the identities
+    ///
+    /// @return Set of all the identities
     inline ::std::vector< ::std::string > const & GetIdentities() const { return this->identities; }
 
+    /// Obtain the number of messages in the container
+    ///
+    /// @return The number of messages in the container
     inline ::std::vector< ::zmq::message_t *>::size_type MessagesSize() const { return this->messages.size(); }
 
     /// Obtains the 0MQ message at the specified index
@@ -65,7 +78,10 @@ public:
     inline ::zmq::message_t * GetMessage(int i) const { return this->messages[i]; }
 
 protected:
+    /// Holds the socket identities
     ::std::vector< ::std::string > identities;
+
+    /// Holds the raw payload messages
     ::std::vector< ::zmq::message_t *> messages;
 
 

@@ -212,7 +212,7 @@ RequestProcessorHandlerResult RequestProcessorHandlerResult::MakeDeferred()
 }
 
 RequestProcessorHandlerResult RequestProcessorHandlerResult::MakePluginStatus(
-    vector< ::zippylog::protocol::PluginStateV1 > &states)
+    vector< ::zippylog::protocol::PluginStateV1 > &)
 {
     throw Exception("not yet implemented");
 }
@@ -1103,8 +1103,8 @@ LOG_END:
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessSubscribeCancel(
-    Envelope &request,
-    vector<Envelope> &output)
+    Envelope &,
+    vector<Envelope> &)
 {
     throw Exception("not implemented");
 }
@@ -1240,13 +1240,13 @@ LOG_END:
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessUnregisterPlugin(
-    Envelope &request, vector<Envelope> &output)
+    Envelope &, vector<Envelope> &)
 {
     throw Exception("not implemented");
 }
 
 RequestProcessorResponseStatus RequestProcessor::ProcessPluginStatus(
-    Envelope &request, vector<Envelope> &output)
+    Envelope &, vector<Envelope> &)
 {
     throw Exception("not implemented");
 }

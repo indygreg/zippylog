@@ -83,6 +83,7 @@ using ::zippylog::Store;
 
 namespace zippylog {
 
+/// Test fixture for benchmarks
 class Benchmark : public ::zippylog::testing::TestBase
 { };
 
@@ -120,8 +121,8 @@ void zmq_socket_send_recv(const char *address, int sender_type, int receiver_typ
     ::zmq::message_t msg(message_size);
     ::zmq::message_t received;
 
-    sender.send(msg, NULL);
-    receiver.recv(&received, NULL);
+    sender.send(msg, 0);
+    receiver.recv(&received, 0);
     TIMER_END(name);
 }
 
@@ -437,11 +438,34 @@ TEST_F(Benchmark, SimpleStoreIO)
 
 } // namespace
 
+/// Our custom gtest listener for result printing
+///
+/// It swallows all output except for failures, which should never occur
+/// during benchmarking.
+class BenchmarkListener : public ::testing::EmptyTestEventListener {
+    // Called after a failed assertion or a SUCCEED() invocation.
+    virtual void OnTestPartResult(
+        const ::testing::TestPartResult& result)
+    {
+        if (result.failed()) {
+            printf("UNEXPECTED FAILURE in %s:%d\n%s\n",
+                result.file_name(), result.line_number(), result.summary());
+        }
+    }
+  };
+
 int main(int argc, char **argv)
 {
     ::zippylog::initialize_library();
 
     ::testing::InitGoogleTest(&argc, argv);
+
+    // Use a custom listener for better formatting.
+    ::testing::TestEventListeners& listeners =
+      ::testing::UnitTest::GetInstance()->listeners();
+    delete listeners.Release(listeners.default_result_printer());
+    listeners.Append(new BenchmarkListener);
+
     int result = RUN_ALL_TESTS();
 
     ::zippylog::shutdown_library();

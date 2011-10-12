@@ -22,7 +22,7 @@ int lua_protobuf_enum_newindex(lua_State *L)
     return luaL_error(L, "cannot modify enumeration tables");
 }
 
-int lua_protobuf_gc_always_free(::google::protobuf::Message *msg, void *ud)
+int lua_protobuf_gc_always_free(::google::protobuf::Message *, void *)
 {
     return 1;
 }

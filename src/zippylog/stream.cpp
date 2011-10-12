@@ -134,7 +134,7 @@ void InputStream::RebuildCodedInputStream()
 }
 
 
-FileInputStream::FileInputStream(string const &path, int64 offset) :
+FileInputStream::FileInputStream(string const &path, int64 start_offset) :
     InputStream(), fis(NULL)
 {
     if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
@@ -148,8 +148,8 @@ FileInputStream::FileInputStream(string const &path, int64 offset) :
         throw Exception("could not read stream version or stream version not supported");
     }
 
-    if (offset > 0) {
-        if (!this->SetAbsoluteOffset(offset)) {
+    if (start_offset > 0) {
+        if (!this->SetAbsoluteOffset(start_offset)) {
             throw Exception("could not set stream offset");
         }
     }

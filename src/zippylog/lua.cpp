@@ -40,6 +40,7 @@ extern "C" {
 
 /// Lua userdata type for envelope instances
 typedef struct envelope_udata {
+    /// Envelope instance
     Envelope *e;
 } envelope_udata;
 

@@ -34,6 +34,10 @@ using ::zmq::socket_t;
 namespace zippylog {
 namespace client {
 
+/// Stores client state about requests sent that haven't seen a response.
+///
+/// This class is used internally by the client and should be of little
+/// interest to others.
 class OutstandingRequest {
 public:
     OutstandingRequest() :
@@ -51,8 +55,11 @@ public:
     friend class Client;
 
 protected:
+    /// The ID of the issued request
     ::std::string id;
 
+    ///@{
+    /// Callbacks that handle processing each type of response
     PingCallback *                cb_ping;
     GetFeaturesCallback *         cb_features;
     StoreInfoCallback *           cb_store_info;
@@ -61,24 +68,34 @@ protected:
     StreamInfoCallback *          cb_stream_info;
     StreamSegmentCallback *       cb_stream_segment;
     SubscriptionRequestCallback * cb_subscription;
+    ///@}
 
+    /// Information about subscription callbacks
     SubscriptionCallbackInfo callbacks;
 
+    /// Custom data to pass to callback
     void *data;
 };
 
+/// Holds state of a single subscription for a single client
 class Subscription {
 public:
     Subscription();
 
     friend class Client;
 protected:
+    /// The subscription ID
     ::std::string id;
 
+    /// Timer that keeps track of when the subscription expires.
+    ///
+    /// This is used to determine when to send the subscription keepalive
     platform::Timer expiration_timer;
 
+    /// Describes what callbacks will handle subscription responses
     SubscriptionCallbackInfo cb;
 
+    /// Arbitrary data to pass to callbacks
     void *data;
 };
 

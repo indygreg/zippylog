@@ -128,11 +128,24 @@ class ZIPPYLOG_EXPORT StreamSegment {
         /// Set fields in the stream segment from values in another instance
         bool CopyFrom(StreamSegment const &orig);
 
+        /// Path that the segment belongs to
         ::std::string Path;
+
+        /// The stream offset this segment started at
         uint64 StartOffset;
+
+        /// The stream offset this segment ended at
+        ///
+        /// The next segment should begin at this value + 1.
         uint64 EndOffset;
+
+        /// How many bytes are in the segment
         uint32 BytesSent;
+
+        /// How many envelopes were sent in the segment
         uint32 EnvelopesSent;
+
+        /// The envelopes sent in the segment
         ::std::vector<Envelope> Envelopes;
 };
 
@@ -170,7 +183,7 @@ public:
     friend class Client;
 protected:
 
-    // maps path to fetch state
+    /// Maps path to stream fetch state
     ::std::map< ::std::string, StreamFetchState > states;
 };
 
@@ -224,17 +237,26 @@ public:
 /// Represents the result of a subscription request
 class ZIPPYLOG_EXPORT SubscriptionRequestResult {
 public:
+    /// Create a new result instance
     SubscriptionRequestResult() :
         result(UNKNOWN),
         ttl(0)
     { }
 
-    /// Result of the subscription request
+    /// Types of results from subscription requests
     enum Result {
+        /// Subscription was accepted
         ACCEPTED = 1,
+
+        /// Subscription was rejected
         REJECTED = 2,
+
+        /// Unknown result
         UNKNOWN  = 3,
-    } result;
+    };
+
+    /// Result of the subscription request
+    Result result;
 
     /// Subscription id
     ::std::string id;
@@ -376,12 +398,44 @@ class ZIPPYLOG_EXPORT Client {
         /// Returns true if info retrieved or false if error or timeout.
         bool GetStreamInfo(::std::string const &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
-        /// @todo varying by uint32 and uint64 is pretty stupid
+        /// Fetch a single stream segment asynchronously
+        ///
+        /// @param path The stream path to fetch
+        /// @param start_offset The start offset to start fetching at
+        /// @param callback The function to call when the response is received
+        /// @param data Arbitrary data to be supplied to callback function
+        /// @return Whether the request was issued without error
         bool GetStreamSegment(::std::string const &path, uint64 start_offset, StreamSegmentCallback * callback, void *data = NULL);
+
+        /// Fetch a single stream segment with offset boundaries asynchronously
+        ///
+        /// @param path The stream path to fetch
+        /// @param start_offset The offset to start fetching from
+        /// @param stop_offset The offset to stop fetching at
+        /// @param callback The function to call when the response is received
+        /// @param data Arbitrary data to be supplied to the callback function
+        /// @return Whether the request was issued without error
         bool GetStreamSegment(::std::string const &path, uint64 start_offset, uint64 stop_offset, StreamSegmentCallback * callback, void *data = NULL);
+
+        /// Asynchornously fetch a single stream segment with size limitations
+        ///
+        /// @todo varying by uint32 and uint64 is pretty stupid
+        ///
+        /// @param path The stream path to fetch
+        /// @param start_offset The offset to start fetching from
+        /// @param max_response_bytes Maximum number of bytes to fetch
+        /// @param callback The function to call when the response is received
+        /// @param data Arbitrary data to be supplied to the callback function
+        /// @return Whether the request was issued without error
         bool GetStreamSegment(::std::string const &path, uint64 start_offset, uint32 max_response_bytes, StreamSegmentCallback * callback, void *data = NULL);
 
         /// Synchronously obtain a stream segment starting from an offset
+        ///
+        /// @param path The stream path to fetch
+        /// @param start_offset The offset from which to start fetching
+        /// @param segment Holds result upon successful completion
+        /// @param timeout How long to wait for a response, in microseconds
+        /// @return Whether the response was received without error
         bool GetStreamSegment(::std::string const &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
 
         /// Synchronously fetch all unfetched parts of a stream
@@ -403,6 +457,13 @@ class ZIPPYLOG_EXPORT Client {
         /// to handle received stream segments. If we were to pass in a
         /// store writer, for example, we'd be limiting ourselves to what
         /// callers could do with stream segments.
+        ///
+        /// @param path The stream path to fetch
+        /// @param state The state of the fetch so far
+        /// @param callback Function to be called when response is received
+        /// @param data Arbitrary data to be passed to callback
+        /// @param end_offset Max offset to fetch
+        /// @return Whether the request was issued without error
         bool GetStream(::std::string const &path,
                        StreamFetchState &state,
                        StreamSegmentCallback *callback,
@@ -451,7 +512,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param path Store path to subscribe to
         /// @param callbacks Defines callbacks to handle subscribed events
         /// @param result Stores the result of the subscription
-        /// @param data Arbitrary data to be passed to callback functions
+        /// @param timeout_microseconds How long to wait for a server response
         bool SubscribeStoreChanges(::std::string const &path,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
@@ -459,9 +520,9 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously subscribes to store changes for the entire store
         ///
-        /// @param callback Callback configuration
+        /// @param callbacks Callback configuration
         /// @param result Stores result of the subscription
-        /// @param data Data to be passed to callback functions
+        /// @param timeout_microseconds How long to wait for response
         bool SubscribeStoreChanges(SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
                                    int32 timeout_microseconds);
@@ -540,20 +601,28 @@ class ZIPPYLOG_EXPORT Client {
         void RunAsync(bool *active);
 
     protected:
-        // socket connect to server
+        /// Socket connected to server
         ::zmq::socket_t *client_sock;
 
+        /// Mapping of subscription ID to subscription state
         ::std::map< ::std::string, Subscription > subscriptions;
+
+        /// Mapping of request ID to request metadata
         ::std::map< ::std::string, OutstandingRequest > outstanding;
 
+        /// 0MQ poll structure
         ::zmq::pollitem_t pollitem[1];
 
+        /// How long before expiration that we should renew subscriptions
         uint32 subscription_renewal_offset;
 
+        /// Client's execution thread
         ::zippylog::platform::Thread * exec_thread;
 
+        /// Semaphore to determine if client should continue running
         bool *run_flag;
 
+        /// Sends a request to the server
         bool SendRequest(Envelope &e, OutstandingRequest &req);
 
         /// Sends a synchronous request and wait for a response
@@ -561,23 +630,23 @@ class ZIPPYLOG_EXPORT Client {
         /// Returns true if the response was processed in the time specified.
         bool SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &req, int32 timeout);
 
-        // processe an individual pending zeromq message on the socket
-        // this function assumes messages are available
-        // pending message could be multipart
+        /// Process an individual pending 0MQ message on the socket
+        ///
+        /// This function assumes messages are available.
         bool ProcessPendingMessage();
 
         /// Processes received response messages
         bool ProcessResponseMessage(::std::vector< ::zmq::message_t * > &msgs);
 
-        // validates that a received SubscriptionStart message is OK
-        // returns false if we don't know how to handle message fields or if
-        // we don't know about the subscription
+        /// validates that a received SubscriptionStart message is OK
+        /// returns false if we don't know how to handle message fields or if
+        /// we don't know about the subscription
         bool ValidateSubscriptionStart(protocol::response::SubscriptionStartV1 &start);
 
-        // handles a response to a subscription
+        /// handles a response to a subscription
         bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStartV1 &start, ::std::vector< ::zmq::message_t * > &msgs);
 
-        // handles a response to a normal/outstanding request
+        /// Handles a response to a normal/outstanding request
         bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
 
         /// Returns if we have an outstanding request with the specified id

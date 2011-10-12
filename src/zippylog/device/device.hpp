@@ -26,10 +26,16 @@ namespace device {
 /// See Device::Pump() for more
 class ZIPPYLOG_EXPORT PumpResult {
 public:
+    /// Construct an instance which reflects that work was done
     static PumpResult MakeWorkDone();
+
+    /// Construct an instance which reflects that no work was done
     static PumpResult MakeNoWorkDone();
+
+    /// Construct an instance which relfects an error was encountered
     static PumpResult MakeError();
 
+    /// Whether an error was encountered
     inline bool IsError() { return this->is_error; }
 
 private:
@@ -60,7 +66,14 @@ class ZIPPYLOG_EXPORT Device {
 public:
     /// Base constructor
     ///
-    /// Should be called by child classes in their constructors
+    /// This should be called by child classes in their constructors.
+    ///
+    /// The constructor accepts a pointer to a conditional wait instance which
+    /// is used to determine if the device should run. When this semaphore
+    /// enters the signaled state, the device stops running or will refuse to
+    /// run.
+    ///
+    /// @param cw Semaphore that determines whether device should run
     Device(::zippylog::platform::ConditionalWait *cw);
 
     /// Base class destructor
@@ -147,6 +160,7 @@ private:
     /// This will only be defined if RunAsync() is called.
     ::zippylog::platform::Thread *thread;
 
+    /// Semaphore used to determine if device is active
     ::zippylog::platform::ConditionalWait *cw;
 
     /// Whether the device is running

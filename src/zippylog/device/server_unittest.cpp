@@ -287,6 +287,7 @@ TEST_F(ServerTest, ClientSubscribeStoreChanges)
     Server *s = this->GetSandboxServer();
     s->RunAsync();
 
+    /*
     Client *c = this->GetClient(s);
 
     int32 buckets_added = 0;
@@ -294,7 +295,6 @@ TEST_F(ServerTest, ClientSubscribeStoreChanges)
     SubscriptionCallbackInfo cb;
     cb.BucketAdded = bucket_added;
 
-    /*
     c->SubscribeStoreChanges("/", cb, (void *)&buckets_added);
 
     /// @todo fix the sleep hackiness

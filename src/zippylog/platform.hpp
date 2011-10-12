@@ -238,7 +238,7 @@ namespace platform {
     ///
     /// @param path Path to traverse
     /// @param paths Holds results of operation
-    /// @param bool Whether operation executed without error
+    /// @return bool Whether operation executed without error
     ZIPPYLOG_EXPORT bool DirectoriesInTree(::std::string const &path,
                                            ::std::vector< ::std::string > &paths);
 
@@ -303,20 +303,27 @@ namespace platform {
         /// @return Whether the file was closed without issue
         bool Close();
 
-        // write data to the file
-        // returns whether all data was written
+        // Write data to the file
+        ///
+        /// @param data Pointer to data being written
+        /// @param length How much data from source buffer to write
+        /// @return Whether all requested data was written
         bool Write(const void *data, size_t length);
 
-        // flush contents to underlying store
+        /// Flush contents to underlying store
         //
-        // this clear all buffered data
+        /// @return Whether the flush executed successfully
         bool Flush();
 
-        // seeks to the specified offset in the file
+        /// Seeks to the specified offset in the file
+        ///
+        /// @param offset Absolute offset to seek to
+        /// @return Whether seek completed successfully
         bool Seek(int64 offset);
 
-        // obtain a file descriptor for this file
-        // returns 0 if file descriptor not available, file not open, etc
+        /// Obtain a file descriptor for this file
+        ///
+        /// @return non-zero and non-negative filev value on success
         int FileDescriptor();
 
         /// Obtain an exclusive write lock on the entire file
@@ -355,8 +362,11 @@ namespace platform {
 #ifdef WINDOWS
         void * handle;
 #endif
+
+        /// Underlying file descriptor
         int fd;
 
+        /// Whether the file is open
         bool open;
     };
 
@@ -368,42 +378,65 @@ namespace platform {
     /// @todo expose timers as file descriptors someday
     class ZIPPYLOG_EXPORT Timer {
     public:
-        // create a null timer. this does nothing and is present so some structs have
-        // a default constructor
+        /// Create a null timer.
+        ///
+        /// This does nothing and is present so some structs have a default
+        /// constructor
         Timer();
         ~Timer();
 
-        // create a new timer that fires N microseconds from now
+        /// Create a new timer that fires at some time in the future
+        ///
+        /// @param microseconds Number of microseconds in future to fire at
         Timer(uint32 microseconds);
 
-        // whether the timer has signaled yet
+        /// Whether the timer has signaled yet
+        ///
+        /// @return true if fired or false otherwise
         bool Signaled();
 
-        // reset the timer
-        // this will unarm the timer and prepare it to be executed again
-        // this is called automatically by Start() if restarting an existing timer
-        // it is more of an internal API but exposed in case it is needed
+        /// Reset the timer
+        ///
+        /// This will unarm the timer and prepare it to be executed again.
+        /// This is called automatically by Start() if restarting an existing timer.
+        /// It is more of an internal API but exposed in case it is needed.
+        ///
+        /// @return Whether the operation completed successfully
         bool Reset();
 
-        // starts the timer
-        //
-        // if the parameter is non-zero, the timer will assume the interval
-        // specified
+        /// Starts the timer
+        ///
+        /// If the parameter is non-zero, the timer will assume the interval
+        /// specified. Otherwise, it will use the last-used interval.
+        ///
+        /// @param microseconds When the timer should alarm, in microseconds
+        /// @return Whether the timer was armed successfully
         bool Start(uint32 microseconds = 0);
 
     protected:
+        /// Initialize the internal timer state
         void Initialize();
 
+        /// Configured alarm interval, in microseconds
         uint32 microseconds;
+
+        /// Whether the timer has alarmed
         bool signaled;
+
+        /// Whether the timer is currently armed
         bool running;
+
+        /// Whether the timer state is initialized
         bool initialized;
 
 #ifdef WINDOWS
+        /// Holds timer structure
         void * handle;
 #elif LINUX
+        /// Holds timer structure
         timer_t timer;
 #elif MACOS
+        /// Time we armed the timer
         uint64 time_start;
 #endif
 
@@ -412,13 +445,15 @@ namespace platform {
     /// Represents a change in a directory
     class ZIPPYLOG_EXPORT DirectoryChange {
     public:
+        /// Construct an empty representation
         DirectoryChange();
 
-        // path that was changed
-        // if a rename, this will be the new name
+        /// Path that was changed
+        ///
+        /// If a rename, this will be the new name.
         ::std::string Path;
 
-        // how the path changed
+        /// How the path changed
         enum Action {
             ADDED = 1,
             DELETED = 2,
@@ -426,7 +461,7 @@ namespace platform {
             RENAMED = 4,
         } Action;
 
-        // if path was renamed, this will be set to old name
+        /// If path was renamed, this will be set to old name.
         ::std::string OldName;
     };
 
@@ -449,18 +484,24 @@ namespace platform {
         /// @param recurse Whether to watch all child directories
         DirectoryWatcher(::std::string const &directory, bool recurse=true);
 
-        // Wait up to N microseconds for changes to the directory or forever,
-        // if -1 is given as the timeout value
-        //
-        // Returns true if there are changes to the directory. Returns false
-        // otherwise.
-        //
-        // If returns true, call GetChanges() to return the list of changes.
-        // Function may return true immediately if changes are already
-        // available but haven't been collected with GetChanges().
+        /// Wait up to N microseconds for changes to the directory or forever,
+        /// if -1 is given as the timeout value
+        ///
+        /// Returns true if there are changes to the directory. Returns false
+        /// otherwise.
+        ///
+        /// If returns true, call GetChanges() to return the list of changes.
+        /// Function may return true immediately if changes are already
+        /// available but haven't been collected with GetChanges().
+        ///
+        /// @param timeout How long to wait for a change, in microseconds
+        /// @return Whether there were changes
         bool WaitForChanges(int32 timeout);
 
-        // returns collected changes to directory
+        /// Returns collected changes to directory
+        ///
+        /// @param changes Container for results
+        /// @return Whether there is data in the container
         bool GetChanges(::std::vector<DirectoryChange> &changes);
 
 #ifdef MACOS
@@ -469,8 +510,13 @@ namespace platform {
 #endif
 
     protected:
+        /// The filesystem path being watcher
         ::std::string path;
+
+        /// Whether to look at recursive changes
         bool recurse;
+
+        /// Collection of accumulated changes
         ::std::vector<DirectoryChange> changes;
 #ifdef WINDOWS
         void StartWatching();
@@ -507,6 +553,7 @@ namespace platform {
         /// @param f Function to execute when thread starts
         /// @param data Arbitrary data to be passed to thread start function
         Thread(thread_start_func f, void *data);
+
         ~Thread();
 
         /// Wait for the thread to finish execution
@@ -525,6 +572,7 @@ namespace platform {
 #ifdef WINDOWS
         HANDLE thread;
 #elif HAVE_PTHREAD
+        /// The underlying thread object
         pthread_t thread;
 #endif
 

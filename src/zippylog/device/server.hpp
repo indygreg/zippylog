@@ -38,10 +38,10 @@ namespace server {
 /// Used to construct a ServerRequestProcessor
 class ServerRequestProcessorStartParams {
 public:
-    // where to send client subscription messages
+    /// Where to send client subscription messages
     ::std::string streaming_subscriptions_endpoint;
 
-    // where to send updates for existing subscriptions
+    /// Where to send updates for existing subscriptions
     ::std::string streaming_updates_endpoint;
 
     /// 0MQ endpoint for store writer's envelope PULL socket
@@ -50,6 +50,7 @@ public:
     /// 0MQ endpoint for store writer's envelope REP socket
     ::std::string store_writer_envelope_rep_endpoint;
 
+    /// Parameters going to the request processor constructor
     ::zippylog::RequestProcessorStartParams request_processor_params;
 };
 
@@ -64,48 +65,102 @@ public:
 /// the server doesn't know which streamers have which subscriptions).
 class ServerRequestProcessor : public ::zippylog::RequestProcessorImplementation {
     public:
+        /// Construct an instance from parameters
+        ///
+        /// @param params Parameters controlling behavior
         ServerRequestProcessor(ServerRequestProcessorStartParams &params);
         ~ServerRequestProcessor();
 
+        /// Handle a subscription request
+        ///
+        /// This will forward the request via a 0MQ socket to be processed by
+        /// a persisted state manager.
+        ///
+        /// @param subscription Subscription request record
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleSubscriptionRequest(
             SubscriptionInfo subscription);
 
+        /// Handle a subscription keepalive request
+        ///
+        /// This will forward the keepalive to all persisted state managers.
+        ///
+        /// @param request Request envelope
+        /// @param output Container for response messages
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleSubscribeKeepalive(
             Envelope &request,
             ::std::vector<Envelope> &output);
 
+        /// Handle a write envelope request
+        ///
+        /// @param path The store path to write to
+        /// @param to_write Set of envelopes to write
+        /// @param synchronous Whether we require a response to confirm write
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleWriteEnvelopes(
             ::std::string const &path,
             ::std::vector<Envelope> &to_write,
             bool synchronous);
 
+        /// Handle a plugin registration request
+        ///
+        /// This will forward the request to a persisted state manager, which
+        /// will take care of the rest.
+        ///
+        /// @param r Plugin request record
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleRegisterPlugin(
             PluginRegistrationRequest const &r);
 
+        /// Handle a plugin unregister request
+        ///
+        /// This will forward the request to all persisted state managers.
+        ///
+        /// @param name Name of plugin to unregister
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleUnregisterPlugin(
             ::std::string const &name);
 
+        /// Handle a get plugin status request
+        ///
+        /// This will forward the request to all persisted state managers.
+        /// The one with the plugin will response.
+        ///
+        /// @param names Names of plugins to query
+        /// @return How request processor should handle the result
         RequestProcessorHandlerResult HandleGetPluginStatus(
             ::std::vector< ::std::string > const &names);
 
     protected:
+        /// 0MQ context
         ::zmq::context_t *ctx;
 
+        /// Endpoint that load balancers to 1 persisted state manager
         ::std::string streaming_subscriptions_endpoint;
+
+        /// Endpoint that fans out to all persisted state managers
         ::std::string streaming_updates_endpoint;
 
+        /// PUSH socket that sends subscriptions and plugins to exactly one
+        /// persisted state manager.
         ::zmq::socket_t *subscriptions_sock;
+
+        /// PUB socket that sends persisted state notifications to all
+        /// persisted state managers.
         ::zmq::socket_t *subscription_updates_sock;
 
+        /// Device that sends envelope writes to a central location
         ::zippylog::device::StoreWriterSender * store_sender;
 };
 
 /// Create store watchers tailored for the server device
 class WatcherStartParams {
 public:
+    /// The parameters for the underlying StoreWatcher
     ::zippylog::StoreWatcherStartParams params;
 
-    // 0MQ socket endpoint on which to connect a PUSH socket
+    /// 0MQ socket endpoint on which to connect a PUSH socket
     ::std::string socket_endpoint;
 };
 
@@ -115,20 +170,30 @@ public:
 /// whose endpoint is defined at construction time.
 class Watcher : public ::zippylog::StoreWatcher {
 public:
-    // Construct a watcher that sends events to a 0MQ PUSH socket
+    /// Construct a watcher that sends events to a 0MQ PUSH socket
+    ///
+    /// @param params Parameters to control behavior
     Watcher(WatcherStartParams &params);
+
     ~Watcher();
 
 protected:
-    // implement the interface
+    ///@{
+    /// Implement StoreWatcher interface
     void HandleAdded(::std::string path, platform::FileStat &stat);
     void HandleDeleted(::std::string path);
     void HandleModified(::std::string path, platform::FileStat &stat);
+    ///@}
 
-    // sends the change to all interested parties
+    // Sends the change to all interested parties
+    ///
+    /// @param e Envelope to send
     void SendChangeMessage(Envelope &e);
 
+    /// Endpoint we send changes on
     ::std::string endpoint;
+
+    /// PUB socket sending changes
     ::zmq::socket_t * socket;
 
 private:
@@ -217,7 +282,7 @@ public:
 /// When a client connects to a configured listening socket, messages will
 /// be handled as follows:
 ///
-///   client -> <clients_sock> -> <workers_sock> -> worker thread
+///   client -> :clients_sock -> :workers_sock -> worker thread
 ///
 /// A worker thread will handle the message in one of the following:
 ///
@@ -319,8 +384,13 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         static bool ParseConfig(const ::std::string path, ServerStartParams &params, ::std::string &error);
 
     protected:
+        ///@{
+        /// Device handlers that log activity
         void OnRunStart();
         void OnRunFinish();
+        ///@}
+
+        /// Device handler that performs one-time object initialization upon first run
         void OnFirstRun();
 
         /// Spins up a new request processor on a new thread
@@ -374,6 +444,8 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
 
         /// Whether the internal structure is set up and ready for running
         bool start_started;
+
+        /// Whether the device is initialized
         bool initialized;
 
         /// Semaphore to signal child devices whether they should be active
@@ -385,58 +457,79 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// Whether we own the 0MQ context (whether to delete in dtor)
         bool own_context;
 
-        // fans XREQ that fans out to individual worker threads
+        /// XREQ that fans out to individual worker threads
         ::zmq::socket_t * workers_sock;
+
+        /// Endpoint that workers_sock is bound to
         ::std::string worker_endpoint;
 
-        // binds to listen for client requests on configured interfaces
+        /// XREP that talks to clients on all configured endpoints
         ::zmq::socket_t * clients_sock;
 
-        // XREP that receives all streamed envelopes to be sent to clients
+        /// XREP that receives all streamed envelopes to be sent to clients
         ::zmq::socket_t * streaming_sock;
+
+        /// Endpoint that stream_sock is bound to
         ::std::string streaming_endpoint;
 
-        // PULL that receives processed client subscription requests
-        // messages delivered to one random streamer
+        /// PULL that receives processed client subscription requests
+        ///
+        /// Messages are delivered to one random streamer
         ::zmq::socket_t * worker_subscriptions_sock;
+
+        /// Endpoint that worker_subscriptions_sock is bound to
         ::std::string worker_subscriptions_endpoint;
 
-        // PUSH that sends client subscription requests to streamers
+        /// PUSH that sends client subscription requests to streamers
         ::zmq::socket_t * streaming_subscriptions_sock;
+
+        /// Endpoint that streaming_subscriptions_sock is bound to
         ::std::string streaming_subscriptions_endpoint;
 
-        // PULL that receives processed client streaming messages
-        // messages that need to be forwarded to all streamers
-        // we can't send directly from the workers to the streamers
-        // because there is potentially a many to many mapping there
-        // the broker binds to both endpoints and distributes messages
-        // properly
+        /// PULL that receives processed client streaming messages
+        ///
+        /// We can't send directly from the workers to the streamers
+        /// because there is potentially a many to many mapping there.
+        /// The server binds to both endpoints and distributes messages
+        /// properly.
         ::zmq::socket_t * worker_streaming_notify_sock;
+
+        /// Endpoint worker_streaming_notify_sock is bound to
         ::std::string worker_streaming_notify_endpoint;
 
-        // PUB that sends processed client streaming messages to all streamers
+        /// PUB that sends processed client streaming messages to all streamers
         ::zmq::socket_t * streaming_streaming_notify_sock;
+
+        /// Endpoint streaming_streaming_notify_sock is bound to
         ::std::string streaming_streaming_notify_endpoint;
 
-        // PULL that receives store changes
+        /// PULL that receives store changes
         ::zmq::socket_t * store_changes_input_sock;
+
+        /// Endpoint that store_changes_input_sock is bound to
         ::std::string store_changes_input_endpoint;
 
-        // PUB that sends store changes to streamers
+        /// PUB that sends store changes to streamers
         ::zmq::socket_t * store_changes_output_sock;
+
+        /// Endpoint that store_changes_output_sock is bound to
         ::std::string store_changes_output_endpoint;
 
-        // PULL that receives logging messages from other threads
+        /// PULL that receives logging messages from other threads
         ::zmq::socket_t * logger_sock;
+
+        /// Endpoint that logger_sock is bound to
         ::std::string logger_endpoint;
 
-        // PUSH that sends logging messages to main logging sock
-        // yes, we have both a client and server in the same object. this is easier
+        /// PUSH that sends logging messages to main logging sock
+        /// yes, we have both a client and server in the same object. this is easier
         ::zmq::socket_t * log_client_sock;
 
-        /// socket endpoints used by store writer
+        ///@{
+        /// Endpoints used by the store writer
         ::std::string store_writer_envelope_pull_endpoint;
         ::std::string store_writer_envelope_rep_endpoint;
+        ///@}
 
         /// poll structure for 0MQ
         ::zmq::pollitem_t pollitems[7];

@@ -34,25 +34,29 @@ using ::zippylog::protocol::StoreInfoV1;
 using ::zippylog::Exception;
 using ::zippylog::util::GetArgumentValueAndPop;
 
+/// Holds parsed command line parameters
 class ZippylogclientParams {
 public:
+    /// Construct default command line values
     ZippylogclientParams() :
         store_info(false),
         mirror(false),
         mirror_interval(-1)
     { }
 
+    /// Whether we want store info
     bool store_info;
 
-    /// whether to mirror
+    /// Whether to mirror
     bool mirror;
 
-    /// path to state file (not required)
+    /// Path to state file (not required)
     string mirror_state;
 
-    /// sleep period between mirror operations. if -1, only mirror once
+    /// Sleep period between mirror operations. if -1, only mirror once
     int mirror_interval;
 
+    /// Set of endpoints to connect to
     vector<string> servers;
 };
 

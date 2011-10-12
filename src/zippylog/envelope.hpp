@@ -166,7 +166,7 @@ class ZIPPYLOG_EXPORT Envelope {
         /// The number of messages contained within this envelope
         ///
         /// @return a non-negative number
-        int MessageCount();
+        int MessageCount() const;
 
         /// Returns the namespace enumeration of a message at an index
         ///
@@ -267,7 +267,22 @@ class ZIPPYLOG_EXPORT Envelope {
         ::google::protobuf::Message * GetMessage(int index);
 
         /// Copy an individual message into another envelope
+        ///
+        /// The message will be appended to the destination envelope.
+        ///
+        /// @param index Index of message to copy. Initial index is 0
+        /// @param dest Envelope to copy message to
+        /// @return Whether the copy succeeded
         bool CopyMessage(int index, Envelope &dest) const;
+
+        /// Remove the message at the specified index
+        ///
+        /// @param index Index of message to remove. Initial index is 0.
+        /// @return Whether message was removed successfully
+        bool RemoveMessage(int32 index);
+
+        /// Clears the contents of the envelope
+        void Clear();
 
         /// Returns a human-readable string that describes the envelope
         ///
@@ -287,11 +302,12 @@ class ZIPPYLOG_EXPORT Envelope {
         /// Cache of deserialized, obtained messages
         ::google::protobuf::Message ** messages;
 
-        /// size of messages member
+        /// Size of messages array
         int messages_size;
 
     private:
         FRIEND_TEST(EnvelopeTest, UnknownMessageTypes);
+        FRIEND_TEST(EnvelopeTest, MessageCacheResizing);
 };
 
 } // namespace

@@ -31,18 +31,26 @@ using ::std::vector;
 using ::zippylog::Envelope;
 using ::zippylog::FileInputStream;
 
+/// Defines an input for zippylogcat
 class ZippylogcatSource {
 public:
+    /// The type of source
     enum Type {
+        /// A filename
         FILENAME = 1,
     };
 
+    /// The type of source
     Type type;
+
+    /// The filename of the source
     string filename;
 };
 
+/// Holds result of command line argument parsing
 class ZippylogcatParams {
 public:
+    /// Sources we are reading from
     vector<ZippylogcatSource> sources;
 };
 
