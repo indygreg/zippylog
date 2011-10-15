@@ -325,6 +325,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\zippylog\device\server.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\device\server.pb.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\device\store_watcher.pb-lua.cc"
 				>
 			</File>
@@ -410,14 +418,6 @@
 			</File>
 			<File
 				RelativePath="..\src\zippylog\request_processor.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\server.pb.cc"
-				>
-			</File>
-			<File
-				RelativePath="..\src\zippylog\device\server.pb.h"
 				>
 			</File>
 			<File
