@@ -62,9 +62,9 @@ namespace platform {
     /// Else, returns true and puts the error message in the string variable.
     /// Will reset the current system error on call.
     ///
-    /// @param string Last system error string
+    /// @param s Last system error string
     /// @return Whether a system error was defined.
-    bool get_system_error(::std::string &string);
+    bool get_system_error(::std::string &s);
 
     /// Sleeps the current thread for specified amount of milliseconds
     ///
