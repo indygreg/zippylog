@@ -440,7 +440,7 @@ bool Server::Start()
     this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->log_client_sock->connect(this->logger_endpoint.c_str());
 
-    this->workers_sock = new socket_t(*this->zctx, ZMQ_XREQ);
+    this->workers_sock = new socket_t(*this->zctx, ZMQ_DEALER);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 
     this->streaming_sock = new socket_t(*this->zctx, ZMQ_PULL);
@@ -504,7 +504,7 @@ bool Server::Start()
     }
 
     // bind sockets to listen for client requests
-    this->clients_sock = new socket_t(*this->zctx, ZMQ_XREP);
+    this->clients_sock = new socket_t(*this->zctx, ZMQ_ROUTER);
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?

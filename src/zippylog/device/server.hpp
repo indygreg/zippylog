@@ -233,7 +233,7 @@ public:
     /// the path to the store the server operates against
     ::std::string store_path;
 
-    /// 0MQ endpoints to bind XREP sockets to listen for client messages
+    /// 0MQ endpoints to bind ROUTER sockets to listen for client messages
     ::std::vector< ::std::string > listen_endpoints;
 
     /// The number of worker threads to run
@@ -407,7 +407,7 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// the path to the store the server operates against
         ::std::string store_path;
 
-        /// 0MQ endpoints to bind XREP sockets to listen for client messages
+        /// 0MQ endpoints to bind ROUTER sockets to listen for client messages
         ::std::vector< ::std::string > listen_endpoints;
 
         /// The number of worker threads to run
@@ -457,16 +457,16 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// Whether we own the 0MQ context (whether to delete in dtor)
         bool own_context;
 
-        /// XREQ that fans out to individual worker threads
+        /// DEALER that fans out to individual worker threads
         ::zmq::socket_t * workers_sock;
 
         /// Endpoint that workers_sock is bound to
         ::std::string worker_endpoint;
 
-        /// XREP that talks to clients on all configured endpoints
+        /// ROUTER that talks to clients on all configured endpoints
         ::zmq::socket_t * clients_sock;
 
-        /// XREP that receives all streamed envelopes to be sent to clients
+        /// ROUTER that receives all streamed envelopes to be sent to clients
         ::zmq::socket_t * streaming_sock;
 
         /// Endpoint that stream_sock is bound to

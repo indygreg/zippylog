@@ -450,7 +450,7 @@ public:
     /// request processor construction.
     RequestProcessorImplementation *implementation;
 
-    /// 0MQ endpoint to which to bind a XREP socket to receive client requests
+    /// 0MQ endpoint to which to bind a ROUTER socket to receive client requests
     ::std::string client_endpoint;
 
     /// 0MQ endpoint to which to connect to send log envelopes
@@ -801,7 +801,7 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// PUSH socket to send log messages on
         ::zmq::socket_t * logger_sock;
 
-        /// XREP socket that communicates with client
+        /// ROUTER socket that communicates with client
         ::zmq::socket_t * socket;
 
         /// The store we are bound to

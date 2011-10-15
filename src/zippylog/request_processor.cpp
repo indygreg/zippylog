@@ -278,7 +278,7 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
     this->logger_sock->connect(this->logger_endpoint.c_str());
 
-    this->socket = new socket_t(*this->ctx, ZMQ_XREP);
+    this->socket = new socket_t(*this->ctx, ZMQ_ROUTER);
     this->socket->connect(this->client_endpoint.c_str());
 
     ::zippylog::request_processor::Create log = ::zippylog::request_processor::Create();

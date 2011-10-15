@@ -110,9 +110,9 @@ Client::Client(context_t *ctx, string const &endpoint) :
         throw invalid_argument("ctx parameter cannot be NULL");
     }
 
-    this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
+    this->client_sock = new socket_t(*ctx, ZMQ_DEALER);
 
-    // do we need to set socket identity since we are using XREQ?
+    // do we need to set socket identity since we are using DEALER?
 
     this->client_sock->connect(endpoint.c_str());
 
@@ -988,7 +988,7 @@ bool Client::RenewSubscriptions(bool force)
     Envelope e = Envelope();
     msg.add_to_envelope(&e);
 
-    return zeromq::send_envelope_xreq(this->client_sock, e);
+    return zeromq::send_envelope_dealer(this->client_sock, e);
 }
 
 bool Client::HaveOutstandingRequest(string &id)

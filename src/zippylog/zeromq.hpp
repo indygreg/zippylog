@@ -93,7 +93,7 @@ private:
 };
 
 // receives a multipart message from a socket, with identities
-// this is likely used by XREQ/XREP sockets
+// this is likely used by DEALER/ROUTER sockets
 bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
 
 /// Receives a multipart message into a vector
@@ -130,9 +130,9 @@ bool send_envelopes(::zmq::socket_t *socket, ::std::vector< ::std::string > &ide
 bool send_envelope_more(::zmq::socket_t *socket, Envelope &envelope);
 bool send_envelope_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope);
 
-// sends an envelope, but from an XREQ socket
+// sends an envelope, but from an DEALER socket
 // this inserts an empty message part to cover the missing identity message
-bool send_envelope_xreq(::zmq::socket_t *socket, Envelope &envelope);
+bool send_envelope_dealer(::zmq::socket_t *socket, Envelope &envelope);
 
 /// Sends an envelope over a socket
 ///
@@ -145,7 +145,7 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 
 /// Sends an envelope over a socket with message identities
 ///
-/// This is a convenience method to sends an envelope over an XREQ/XREP socket
+/// This is a convenience method to sends an envelope over an DEALER/ROUTER socket
 /// with message identities.
 ///
 /// If the identities list is empty, an empty message will be sent before

@@ -187,7 +187,7 @@ bool send_envelope_more(socket_t *socket, vector<string> &identities, Envelope &
     return send_multipart_more(socket, identities, msg);
 }
 
-bool send_envelope_xreq(socket_t *socket, Envelope &envelope)
+bool send_envelope_dealer(socket_t *socket, Envelope &envelope)
 {
     message_t empty(0);
     if (!socket->send(empty, ZMQ_SNDMORE)) return false;
