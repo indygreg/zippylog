@@ -124,6 +124,23 @@ message WriteEnvelopeFromMessagesV1 {
     repeated uint32 message_type = 4 [packed=true];
 }
 
+// Writes an envelope with content in the string field only.
+message WriteEnvelopeFromStringV1 {
+    // Store path to write envelope to.
+    required string path = 1;
+
+    // List of strings to put in envelopes.
+    repeated string data = 2;
+
+    // Whether to acknowledge the write with a response.
+    // See WriteEnvelopeV1 for more.
+    optional bool acknowledge = 3 [default=true];
+
+    // Whether to wait for writes before acknowledging.
+    // See WriteEnvelopeV1 for more.
+    optional bool synchronous = 4 [default=false];
+}
+
 // Subscribes the client to store changes
 //
 // Store changes describe changes to the store. This covers creation, deletion,
