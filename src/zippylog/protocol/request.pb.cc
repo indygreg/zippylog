@@ -46,6 +46,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* WriteEnvelopeFromMessagesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   WriteEnvelopeFromMessagesV1_reflection_ = NULL;
+const ::google::protobuf::Descriptor* WriteEnvelopeFromStringV1_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  WriteEnvelopeFromStringV1_reflection_ = NULL;
 const ::google::protobuf::Descriptor* SubscribeStoreChangesV1_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SubscribeStoreChangesV1_reflection_ = NULL;
@@ -218,7 +221,25 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(WriteEnvelopeFromMessagesV1));
-  SubscribeStoreChangesV1_descriptor_ = file->message_type(9);
+  WriteEnvelopeFromStringV1_descriptor_ = file->message_type(9);
+  static const int WriteEnvelopeFromStringV1_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, path_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, data_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, acknowledge_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, synchronous_),
+  };
+  WriteEnvelopeFromStringV1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      WriteEnvelopeFromStringV1_descriptor_,
+      WriteEnvelopeFromStringV1::default_instance_,
+      WriteEnvelopeFromStringV1_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(WriteEnvelopeFromStringV1, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(WriteEnvelopeFromStringV1));
+  SubscribeStoreChangesV1_descriptor_ = file->message_type(10);
   static const int SubscribeStoreChangesV1_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeStoreChangesV1, path_),
   };
@@ -233,7 +254,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeStoreChangesV1));
-  SubscribeEnvelopesV1_descriptor_ = file->message_type(10);
+  SubscribeEnvelopesV1_descriptor_ = file->message_type(11);
   static const int SubscribeEnvelopesV1_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, path_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeEnvelopesV1, lua_code_),
@@ -252,7 +273,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeEnvelopesV1));
-  SubscribeKeepaliveV1_descriptor_ = file->message_type(11);
+  SubscribeKeepaliveV1_descriptor_ = file->message_type(12);
   static const int SubscribeKeepaliveV1_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeKeepaliveV1, id_),
   };
@@ -267,7 +288,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeKeepaliveV1));
-  SubscribeCancelV1_descriptor_ = file->message_type(12);
+  SubscribeCancelV1_descriptor_ = file->message_type(13);
   static const int SubscribeCancelV1_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SubscribeCancelV1, id_),
   };
@@ -282,7 +303,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SubscribeCancelV1));
-  RegisterPluginV1_descriptor_ = file->message_type(13);
+  RegisterPluginV1_descriptor_ = file->message_type(14);
   static const int RegisterPluginV1_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegisterPluginV1, lua_code_),
@@ -298,7 +319,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RegisterPluginV1));
-  UnregisterPluginV1_descriptor_ = file->message_type(14);
+  UnregisterPluginV1_descriptor_ = file->message_type(15);
   static const int UnregisterPluginV1_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(UnregisterPluginV1, name_),
   };
@@ -313,7 +334,7 @@ void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(UnregisterPluginV1));
-  GetPluginStatusV1_descriptor_ = file->message_type(15);
+  GetPluginStatusV1_descriptor_ = file->message_type(16);
   static const int GetPluginStatusV1_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(GetPluginStatusV1, name_),
   };
@@ -359,6 +380,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     WriteEnvelopeFromMessagesV1_descriptor_, &WriteEnvelopeFromMessagesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    WriteEnvelopeFromStringV1_descriptor_, &WriteEnvelopeFromStringV1::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeStoreChangesV1_descriptor_, &SubscribeStoreChangesV1::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     SubscribeEnvelopesV1_descriptor_, &SubscribeEnvelopesV1::default_instance());
@@ -395,6 +418,8 @@ void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto() {
   delete WriteEnvelopeV1_reflection_;
   delete WriteEnvelopeFromMessagesV1::default_instance_;
   delete WriteEnvelopeFromMessagesV1_reflection_;
+  delete WriteEnvelopeFromStringV1::default_instance_;
+  delete WriteEnvelopeFromStringV1_reflection_;
   delete SubscribeStoreChangesV1::default_instance_;
   delete SubscribeStoreChangesV1_reflection_;
   delete SubscribeEnvelopesV1::default_instance_;
@@ -431,17 +456,20 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
     "rue\022\032\n\013synchronous\030\004 \001(\010:\005false\"u\n\033Write"
     "EnvelopeFromMessagesV1\022\014\n\004path\030\001 \002(\t\022\017\n\007"
     "message\030\002 \003(\014\022\035\n\021message_namespace\030\003 \003(\r"
-    "B\002\020\001\022\030\n\014message_type\030\004 \003(\rB\002\020\001\"\'\n\027Subscr"
-    "ibeStoreChangesV1\022\014\n\004path\030\001 \003(\t\"\243\001\n\024Subs"
-    "cribeEnvelopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_co"
-    "de\030\005 \001(\t\022\034\n\020filter_namespace\030\002 \003(\rB\002\020\001\022("
-    "\n\034filter_enumeration_namespace\030\003 \003(\rB\002\020\001"
-    "\022#\n\027filter_enumeration_type\030\004 \003(\rB\002\020\001\"\"\n"
-    "\024SubscribeKeepaliveV1\022\n\n\002id\030\001 \003(\014\"\037\n\021Sub"
-    "scribeCancelV1\022\n\n\002id\030\001 \002(\014\"2\n\020RegisterPl"
-    "uginV1\022\014\n\004name\030\001 \002(\t\022\020\n\010lua_code\030\002 \002(\t\"\""
-    "\n\022UnregisterPluginV1\022\014\n\004name\030\001 \002(\t\"!\n\021Ge"
-    "tPluginStatusV1\022\014\n\004name\030\001 \003(\t", 949);
+    "B\002\020\001\022\030\n\014message_type\030\004 \003(\rB\002\020\001\"n\n\031WriteE"
+    "nvelopeFromStringV1\022\014\n\004path\030\001 \002(\t\022\014\n\004dat"
+    "a\030\002 \003(\t\022\031\n\013acknowledge\030\003 \001(\010:\004true\022\032\n\013sy"
+    "nchronous\030\004 \001(\010:\005false\"\'\n\027SubscribeStore"
+    "ChangesV1\022\014\n\004path\030\001 \003(\t\"\243\001\n\024SubscribeEnv"
+    "elopesV1\022\014\n\004path\030\001 \003(\t\022\020\n\010lua_code\030\005 \001(\t"
+    "\022\034\n\020filter_namespace\030\002 \003(\rB\002\020\001\022(\n\034filter"
+    "_enumeration_namespace\030\003 \003(\rB\002\020\001\022#\n\027filt"
+    "er_enumeration_type\030\004 \003(\rB\002\020\001\"\"\n\024Subscri"
+    "beKeepaliveV1\022\n\n\002id\030\001 \003(\014\"\037\n\021SubscribeCa"
+    "ncelV1\022\n\n\002id\030\001 \002(\014\"2\n\020RegisterPluginV1\022\014"
+    "\n\004name\030\001 \002(\t\022\020\n\010lua_code\030\002 \002(\t\"\"\n\022Unregi"
+    "sterPluginV1\022\014\n\004name\030\001 \002(\t\"!\n\021GetPluginS"
+    "tatusV1\022\014\n\004name\030\001 \003(\t", 1061);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/protocol/request.proto", &protobuf_RegisterTypes);
   PingV1::default_instance_ = new PingV1();
@@ -453,6 +481,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   GetStreamSegmentV1::default_instance_ = new GetStreamSegmentV1();
   WriteEnvelopeV1::default_instance_ = new WriteEnvelopeV1();
   WriteEnvelopeFromMessagesV1::default_instance_ = new WriteEnvelopeFromMessagesV1();
+  WriteEnvelopeFromStringV1::default_instance_ = new WriteEnvelopeFromStringV1();
   SubscribeStoreChangesV1::default_instance_ = new SubscribeStoreChangesV1();
   SubscribeEnvelopesV1::default_instance_ = new SubscribeEnvelopesV1();
   SubscribeKeepaliveV1::default_instance_ = new SubscribeKeepaliveV1();
@@ -469,6 +498,7 @@ void protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto() {
   GetStreamSegmentV1::default_instance_->InitAsDefaultInstance();
   WriteEnvelopeV1::default_instance_->InitAsDefaultInstance();
   WriteEnvelopeFromMessagesV1::default_instance_->InitAsDefaultInstance();
+  WriteEnvelopeFromStringV1::default_instance_->InitAsDefaultInstance();
   SubscribeStoreChangesV1::default_instance_->InitAsDefaultInstance();
   SubscribeEnvelopesV1::default_instance_->InitAsDefaultInstance();
   SubscribeKeepaliveV1::default_instance_->InitAsDefaultInstance();
@@ -2705,6 +2735,354 @@ void WriteEnvelopeFromMessagesV1::Swap(WriteEnvelopeFromMessagesV1* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int WriteEnvelopeFromStringV1::kPathFieldNumber;
+const int WriteEnvelopeFromStringV1::kDataFieldNumber;
+const int WriteEnvelopeFromStringV1::kAcknowledgeFieldNumber;
+const int WriteEnvelopeFromStringV1::kSynchronousFieldNumber;
+#endif  // !_MSC_VER
+
+WriteEnvelopeFromStringV1::WriteEnvelopeFromStringV1()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void WriteEnvelopeFromStringV1::InitAsDefaultInstance() {
+}
+
+WriteEnvelopeFromStringV1::WriteEnvelopeFromStringV1(const WriteEnvelopeFromStringV1& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void WriteEnvelopeFromStringV1::SharedCtor() {
+  _cached_size_ = 0;
+  path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  acknowledge_ = true;
+  synchronous_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+WriteEnvelopeFromStringV1::~WriteEnvelopeFromStringV1() {
+  SharedDtor();
+}
+
+void WriteEnvelopeFromStringV1::SharedDtor() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
+    delete path_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void WriteEnvelopeFromStringV1::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* WriteEnvelopeFromStringV1::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return WriteEnvelopeFromStringV1_descriptor_;
+}
+
+const WriteEnvelopeFromStringV1& WriteEnvelopeFromStringV1::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();  return *default_instance_;
+}
+
+WriteEnvelopeFromStringV1* WriteEnvelopeFromStringV1::default_instance_ = NULL;
+
+WriteEnvelopeFromStringV1* WriteEnvelopeFromStringV1::New() const {
+  return new WriteEnvelopeFromStringV1;
+}
+
+void WriteEnvelopeFromStringV1::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_path()) {
+      if (path_ != &::google::protobuf::internal::kEmptyString) {
+        path_->clear();
+      }
+    }
+    acknowledge_ = true;
+    synchronous_ = false;
+  }
+  data_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool WriteEnvelopeFromStringV1::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string path = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_path()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->path().data(), this->path().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_data;
+        break;
+      }
+      
+      // repeated string data = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_data:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_data()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->data(0).data(), this->data(0).length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_data;
+        if (input->ExpectTag(24)) goto parse_acknowledge;
+        break;
+      }
+      
+      // optional bool acknowledge = 3 [default = true];
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_acknowledge:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &acknowledge_)));
+          set_has_acknowledge();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_synchronous;
+        break;
+      }
+      
+      // optional bool synchronous = 4 [default = false];
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_synchronous:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &synchronous_)));
+          set_has_synchronous();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void WriteEnvelopeFromStringV1::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string path = 1;
+  if (has_path()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->path(), output);
+  }
+  
+  // repeated string data = 2;
+  for (int i = 0; i < this->data_size(); i++) {
+  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    this->data(i).data(), this->data(i).length(),
+    ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->data(i), output);
+  }
+  
+  // optional bool acknowledge = 3 [default = true];
+  if (has_acknowledge()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->acknowledge(), output);
+  }
+  
+  // optional bool synchronous = 4 [default = false];
+  if (has_synchronous()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->synchronous(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* WriteEnvelopeFromStringV1::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string path = 1;
+  if (has_path()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->path().data(), this->path().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->path(), target);
+  }
+  
+  // repeated string data = 2;
+  for (int i = 0; i < this->data_size(); i++) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->data(i).data(), this->data(i).length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(2, this->data(i), target);
+  }
+  
+  // optional bool acknowledge = 3 [default = true];
+  if (has_acknowledge()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->acknowledge(), target);
+  }
+  
+  // optional bool synchronous = 4 [default = false];
+  if (has_synchronous()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->synchronous(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int WriteEnvelopeFromStringV1::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string path = 1;
+    if (has_path()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->path());
+    }
+    
+    // optional bool acknowledge = 3 [default = true];
+    if (has_acknowledge()) {
+      total_size += 1 + 1;
+    }
+    
+    // optional bool synchronous = 4 [default = false];
+    if (has_synchronous()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  // repeated string data = 2;
+  total_size += 1 * this->data_size();
+  for (int i = 0; i < this->data_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->data(i));
+  }
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void WriteEnvelopeFromStringV1::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const WriteEnvelopeFromStringV1* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const WriteEnvelopeFromStringV1*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void WriteEnvelopeFromStringV1::MergeFrom(const WriteEnvelopeFromStringV1& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  data_.MergeFrom(from.data_);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_path()) {
+      set_path(from.path());
+    }
+    if (from.has_acknowledge()) {
+      set_acknowledge(from.acknowledge());
+    }
+    if (from.has_synchronous()) {
+      set_synchronous(from.synchronous());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void WriteEnvelopeFromStringV1::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WriteEnvelopeFromStringV1::CopyFrom(const WriteEnvelopeFromStringV1& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WriteEnvelopeFromStringV1::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void WriteEnvelopeFromStringV1::Swap(WriteEnvelopeFromStringV1* other) {
+  if (other != this) {
+    std::swap(path_, other->path_);
+    data_.Swap(&other->data_);
+    std::swap(acknowledge_, other->acknowledge_);
+    std::swap(synchronous_, other->synchronous_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata WriteEnvelopeFromStringV1::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = WriteEnvelopeFromStringV1_descriptor_;
+  metadata.reflection = WriteEnvelopeFromStringV1_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int SubscribeStoreChangesV1::kPathFieldNumber;
 #endif  // !_MSC_VER
 
@@ -4577,6 +4955,14 @@ bool WriteEnvelopeFromMessagesV1::add_to_envelope(::zippylog::Envelope *envelope
 }
 
 bool WriteEnvelopeFromMessagesV1::add_to_envelope(::zippylog::Envelope &envelope) {
+    return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WriteEnvelopeFromStringV1::add_to_envelope(::zippylog::Envelope *envelope) {
+    return envelope->AddMessage(*this, zippylog_namespace, zippylog_enumeration);
+}
+
+bool WriteEnvelopeFromStringV1::add_to_envelope(::zippylog::Envelope &envelope) {
     return envelope.AddMessage(*this, zippylog_namespace, zippylog_enumeration);
 }
 
