@@ -1,0 +1,8 @@
+import "google/protobuf/descriptor.proto";
+
+package zippylog;
+
+extend google.protobuf.MessageOptions {
+    // Defines a custom formatting string to print message instances
+    optional string formatter = 50000;
+}

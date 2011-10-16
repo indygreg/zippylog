@@ -44,6 +44,7 @@ class GetStreamInfoV1;
 class GetStreamSegmentV1;
 class WriteEnvelopeV1;
 class WriteEnvelopeFromMessagesV1;
+class WriteEnvelopeFromStringV1;
 class SubscribeStoreChangesV1;
 class SubscribeEnvelopesV1;
 class SubscribeKeepaliveV1;
@@ -940,6 +941,134 @@ class WriteEnvelopeFromMessagesV1 : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static WriteEnvelopeFromMessagesV1* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class WriteEnvelopeFromStringV1 : public ::google::protobuf::Message {
+ public:
+  WriteEnvelopeFromStringV1();
+  virtual ~WriteEnvelopeFromStringV1();
+  
+  WriteEnvelopeFromStringV1(const WriteEnvelopeFromStringV1& from);
+  
+  inline WriteEnvelopeFromStringV1& operator=(const WriteEnvelopeFromStringV1& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const WriteEnvelopeFromStringV1& default_instance();
+  
+  void Swap(WriteEnvelopeFromStringV1* other);
+  
+  // implements Message ----------------------------------------------
+  
+  WriteEnvelopeFromStringV1* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const WriteEnvelopeFromStringV1& from);
+  void MergeFrom(const WriteEnvelopeFromStringV1& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string path = 1;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  inline ::std::string* release_path();
+  
+  // repeated string data = 2;
+  inline int data_size() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 2;
+  inline const ::std::string& data(int index) const;
+  inline ::std::string* mutable_data(int index);
+  inline void set_data(int index, const ::std::string& value);
+  inline void set_data(int index, const char* value);
+  inline void set_data(int index, const char* value, size_t size);
+  inline ::std::string* add_data();
+  inline void add_data(const ::std::string& value);
+  inline void add_data(const char* value);
+  inline void add_data(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& data() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_data();
+  
+  // optional bool acknowledge = 3 [default = true];
+  inline bool has_acknowledge() const;
+  inline void clear_acknowledge();
+  static const int kAcknowledgeFieldNumber = 3;
+  inline bool acknowledge() const;
+  inline void set_acknowledge(bool value);
+  
+  // optional bool synchronous = 4 [default = false];
+  inline bool has_synchronous() const;
+  inline void clear_synchronous();
+  static const int kSynchronousFieldNumber = 4;
+  inline bool synchronous() const;
+  inline void set_synchronous(bool value);
+  
+  static const ::google::protobuf::uint32 zippylog_namespace = 1;
+  static const ::google::protobuf::uint32 zippylog_enumeration = 131;
+  
+  bool add_to_envelope(::zippylog::Envelope *envelope);
+  bool add_to_envelope(::zippylog::Envelope &envelope);
+  // @@protoc_insertion_point(class_scope:zippylog.protocol.request.WriteEnvelopeFromStringV1)
+ private:
+  inline void set_has_path();
+  inline void clear_has_path();
+  inline void set_has_acknowledge();
+  inline void clear_has_acknowledge();
+  inline void set_has_synchronous();
+  inline void clear_has_synchronous();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* path_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> data_;
+  bool acknowledge_;
+  bool synchronous_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_AssignDesc_zippylog_2fprotocol_2frequest_2eproto();
+  friend void protobuf_ShutdownFile_zippylog_2fprotocol_2frequest_2eproto();
+  
+  void InitAsDefaultInstance();
+  static WriteEnvelopeFromStringV1* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2293,6 +2422,156 @@ WriteEnvelopeFromMessagesV1::message_type() const {
 inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
 WriteEnvelopeFromMessagesV1::mutable_message_type() {
   return &message_type_;
+}
+
+// -------------------------------------------------------------------
+
+// WriteEnvelopeFromStringV1
+
+// required string path = 1;
+inline bool WriteEnvelopeFromStringV1::has_path() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void WriteEnvelopeFromStringV1::set_has_path() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void WriteEnvelopeFromStringV1::clear_has_path() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void WriteEnvelopeFromStringV1::clear_path() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
+    path_->clear();
+  }
+  clear_has_path();
+}
+inline const ::std::string& WriteEnvelopeFromStringV1::path() const {
+  return *path_;
+}
+inline void WriteEnvelopeFromStringV1::set_path(const ::std::string& value) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::set_path(const char* value) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::set_path(const char* value, size_t size) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WriteEnvelopeFromStringV1::mutable_path() {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+inline ::std::string* WriteEnvelopeFromStringV1::release_path() {
+  clear_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = path_;
+    path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// repeated string data = 2;
+inline int WriteEnvelopeFromStringV1::data_size() const {
+  return data_.size();
+}
+inline void WriteEnvelopeFromStringV1::clear_data() {
+  data_.Clear();
+}
+inline const ::std::string& WriteEnvelopeFromStringV1::data(int index) const {
+  return data_.Get(index);
+}
+inline ::std::string* WriteEnvelopeFromStringV1::mutable_data(int index) {
+  return data_.Mutable(index);
+}
+inline void WriteEnvelopeFromStringV1::set_data(int index, const ::std::string& value) {
+  data_.Mutable(index)->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::set_data(int index, const char* value) {
+  data_.Mutable(index)->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::set_data(int index, const char* value, size_t size) {
+  data_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* WriteEnvelopeFromStringV1::add_data() {
+  return data_.Add();
+}
+inline void WriteEnvelopeFromStringV1::add_data(const ::std::string& value) {
+  data_.Add()->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::add_data(const char* value) {
+  data_.Add()->assign(value);
+}
+inline void WriteEnvelopeFromStringV1::add_data(const char* value, size_t size) {
+  data_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+WriteEnvelopeFromStringV1::data() const {
+  return data_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+WriteEnvelopeFromStringV1::mutable_data() {
+  return &data_;
+}
+
+// optional bool acknowledge = 3 [default = true];
+inline bool WriteEnvelopeFromStringV1::has_acknowledge() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void WriteEnvelopeFromStringV1::set_has_acknowledge() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void WriteEnvelopeFromStringV1::clear_has_acknowledge() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void WriteEnvelopeFromStringV1::clear_acknowledge() {
+  acknowledge_ = true;
+  clear_has_acknowledge();
+}
+inline bool WriteEnvelopeFromStringV1::acknowledge() const {
+  return acknowledge_;
+}
+inline void WriteEnvelopeFromStringV1::set_acknowledge(bool value) {
+  set_has_acknowledge();
+  acknowledge_ = value;
+}
+
+// optional bool synchronous = 4 [default = false];
+inline bool WriteEnvelopeFromStringV1::has_synchronous() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void WriteEnvelopeFromStringV1::set_has_synchronous() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void WriteEnvelopeFromStringV1::clear_has_synchronous() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void WriteEnvelopeFromStringV1::clear_synchronous() {
+  synchronous_ = false;
+  clear_has_synchronous();
+}
+inline bool WriteEnvelopeFromStringV1::synchronous() const {
+  return synchronous_;
+}
+inline void WriteEnvelopeFromStringV1::set_synchronous(bool value) {
+  set_has_synchronous();
+  synchronous_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -477,6 +477,71 @@ LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFrom
 
 // end of message WriteEnvelopeFromMessagesV1
 
+// Message WriteEnvelopeFromStringV1
+// registers the message type with Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_open(lua_State *L);
+
+
+// push a copy of the message to the Lua stack
+// caller is free to use original message however she wants, but changes will not
+// be reflected in Lua and vice-verse
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_pushcopy(lua_State *L, const ::zippylog::protocol::request::WriteEnvelopeFromStringV1 &msg);
+
+// push a reference of the message to the Lua stack
+// the 3rd and 4th arguments define a callback that can be invoked just before Lua
+// garbage collects the message. If the 3rd argument is NULL, Lua will *NOT* free
+// memory. If the second argument points to a function, that function is called when
+// Lua garbage collects the object. The function is sent a pointer to the message being
+// collected and the 4th argument to this function. If the function returns true,
+// Lua will free the memory. If false (0), Lua will not free the memory.
+LUA_PROTOBUF_EXPORT bool lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_pushreference(lua_State *L, ::zippylog::protocol::request::WriteEnvelopeFromStringV1 *msg, lua_protobuf_gc_callback callback, void *data);
+
+
+// The following functions are called by Lua. Many people will not need them,
+// but they are exported for those that do.
+
+
+// constructor called from Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_new(lua_State *L);
+
+// obtain instance from a serialized string
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_parsefromstring(lua_State *L);
+
+// garbage collects message instance in Lua
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_gc(lua_State *L);
+
+// obtain serialized representation of instance
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_serialized(lua_State *L);
+
+// clear all fields in the message
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_clear(lua_State *L);
+
+// required string path = 1
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_clear_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_get_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_set_path(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_has_path(lua_State *L);
+
+// repeated string data = 2
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_clear_data(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_get_data(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_set_data(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_size_data(lua_State *L);
+
+// optional bool acknowledge = 3
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_clear_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_get_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_set_acknowledge(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_has_acknowledge(lua_State *L);
+
+// optional bool synchronous = 4
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_clear_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_get_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_set_synchronous(lua_State *L);
+LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_WriteEnvelopeFromStringV1_has_synchronous(lua_State *L);
+
+// end of message WriteEnvelopeFromStringV1
+
 // Message SubscribeStoreChangesV1
 // registers the message type with Lua
 LUA_PROTOBUF_EXPORT int lua_protobuf_zippylog_protocol_request_SubscribeStoreChangesV1_open(lua_State *L);

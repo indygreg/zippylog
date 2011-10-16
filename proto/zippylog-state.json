@@ -79,6 +79,7 @@
       "zippylog.protocol.request.PingV1": 91, 
       "zippylog.zippylogd.BrokerFlushOutputStreams": 46, 
       "zippylog.request_processor.EndProcessWriteEnvelope": 29, 
+      "zippylog.protocol.request.WriteEnvelopeFromStringV1": 131, 
       "zippylog.protocol.response.PluginRegisterAckV1": 114, 
       "zippylog.protocol.PluginStateV1": 113, 
       "zippylog.request_processor.BeginProcessStreamInfo": 26, 

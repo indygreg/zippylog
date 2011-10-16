@@ -8,11 +8,12 @@ from zippylog.envelope import register_message
 # @@protoc_insertion_point(imports)
 
 
+import zippylog.core_pb2
 
 DESCRIPTOR = descriptor.FileDescriptor(
   name='zippylog/device/server.proto',
   package='zippylog.device.server',
-  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"A\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t\"\x15\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x16\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x17\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\x0c\" \n\x12\x46lushOutputStreams\x12\n\n\x02id\x18\x01 \x02(\x0c\"\"\n\x14ReceiveClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c\"\x1f\n\x11SendClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
+  serialized_pb='\n\x1czippylog/device/server.proto\x12\x16zippylog.device.server\x1a\x13zippylog/core.proto\"\x8f\x02\n\x12SubscriptionRecord\x12\n\n\x02id\x18\x01 \x02(\t\x12\x36\n\x04type\x18\x02 \x02(\x0e\x32(.zippylog.device.server.SubscriptionType\x12\x0c\n\x04path\x18\x03 \x03(\t\x12\x10\n\x08lua_code\x18\x04 \x01(\t\x12\x19\n\x11socket_identifier\x18\x05 \x03(\t\x12!\n\x19\x65nvelope_filter_namespace\x18\x06 \x03(\r\x12-\n%envelope_filter_enumeration_namespace\x18\x07 \x03(\r\x12(\n envelope_filter_enumeration_type\x18\x08 \x03(\r\"t\n\x06\x43reate\x12\n\n\x02id\x18\x01 \x02(\x0c\x12\x12\n\nstore_path\x18\x02 \x01(\t\x12\x17\n\x0flisten_endpoint\x18\x03 \x03(\t:1\x82\xb5\x18-%1 New server created. store=%2; endpoints=%3\".\n\x07\x44\x65stroy\x12\n\n\x02id\x18\x01 \x02(\x0c:\x17\x82\xb5\x18\x13%1 Server destroyed\".\n\x08RunStart\x12\n\n\x02id\x18\x01 \x02(\x0c:\x16\x82\xb5\x18\x12%1 Server starting\"/\n\tRunFinish\x12\n\n\x02id\x18\x01 \x02(\x0c:\x16\x82\xb5\x18\x12%1 Server stopping\"G\n\x12\x46lushOutputStreams\x12\n\n\x02id\x18\x01 \x02(\x0c:%\x82\xb5\x18!%1 Server flushing output streams\"I\n\x14ReceiveClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c:%\x82\xb5\x18!%1 Server received client message\"G\n\x11SendClientMessage\x12\n\n\x02id\x18\x01 \x02(\x0c:&\x82\xb5\x18\"%1 Server sending client a message*2\n\x10SubscriptionType\x12\x0c\n\x08\x45NVELOPE\x10\x01\x12\x10\n\x0cSTORE_CHANGE\x10\x02')
 
 _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   name='SubscriptionType',
@@ -31,8 +32,8 @@ _SUBSCRIPTIONTYPE = descriptor.EnumDescriptor(
   ],
   containing_type=None,
   options=None,
-  serialized_start=572,
-  serialized_end=622,
+  serialized_start=835,
+  serialized_end=885,
 )
 
 
@@ -113,8 +114,8 @@ _SUBSCRIPTIONRECORD = descriptor.Descriptor(
   options=None,
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=57,
-  serialized_end=328,
+  serialized_start=78,
+  serialized_end=349,
 )
 
 
@@ -152,11 +153,11 @@ _CREATE = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030-%1 New server created. store=%2; endpoints=%3'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=330,
-  serialized_end=395,
+  serialized_start=351,
+  serialized_end=467,
 )
 
 
@@ -180,11 +181,11 @@ _DESTROY = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030\023%1 Server destroyed'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=397,
-  serialized_end=418,
+  serialized_start=469,
+  serialized_end=515,
 )
 
 
@@ -208,11 +209,11 @@ _RUNSTART = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030\022%1 Server starting'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=420,
-  serialized_end=442,
+  serialized_start=517,
+  serialized_end=563,
 )
 
 
@@ -236,11 +237,11 @@ _RUNFINISH = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030\022%1 Server stopping'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=444,
-  serialized_end=467,
+  serialized_start=565,
+  serialized_end=612,
 )
 
 
@@ -264,11 +265,11 @@ _FLUSHOUTPUTSTREAMS = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030!%1 Server flushing output streams'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=469,
-  serialized_end=501,
+  serialized_start=614,
+  serialized_end=685,
 )
 
 
@@ -292,11 +293,11 @@ _RECEIVECLIENTMESSAGE = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030!%1 Server received client message'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=503,
-  serialized_end=537,
+  serialized_start=687,
+  serialized_end=760,
 )
 
 
@@ -320,11 +321,11 @@ _SENDCLIENTMESSAGE = descriptor.Descriptor(
   nested_types=[],
   enum_types=[
   ],
-  options=None,
+  options=descriptor._ParseOptions(descriptor_pb2.MessageOptions(), '\202\265\030\"%1 Server sending client a message'),
   is_extendable=False,
   extension_ranges=[],
-  serialized_start=539,
-  serialized_end=570,
+  serialized_start=762,
+  serialized_end=833,
 )
 
 _SUBSCRIPTIONRECORD.fields_by_name['type'].enum_type = _SUBSCRIPTIONTYPE

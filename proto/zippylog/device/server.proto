@@ -14,6 +14,8 @@
 
 // This file defines messages used by the various server devices.
 
+import "zippylog/core.proto";
+
 package zippylog.device.server;
 
 enum SubscriptionType {
@@ -54,34 +56,48 @@ message Create {
     required bytes id = 1;
     optional string store_path = 2;
     repeated string listen_endpoint = 3;
+
+    option (zippylog.formatter) = "%1 New server created. store=%2; endpoints=%3";
 }
 
 // Log message when a server is destroyed
 message Destroy {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server destroyed";
 }
 
 // Log message when a server starts running
 message RunStart {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server starting";
 }
 
 // Log message when a server finishes running
 message RunFinish {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server stopping";
 }
 
 // Log message when output streams are flushed
 message FlushOutputStreams {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server flushing output streams";
 }
 
 // Log message when a client message is received
 message ReceiveClientMessage {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server received client message";
 }
 
 // Log message when a message is sent to a client
 message SendClientMessage {
     required bytes id = 1;
+
+    option (zippylog.formatter) = "%1 Server sending client a message";
 }

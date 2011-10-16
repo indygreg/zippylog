@@ -241,23 +241,31 @@ void protobuf_AddDesc_zippylog_2fdevice_2fserver_2eproto() {
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
+  ::zippylog::protobuf_AddDesc_zippylog_2fcore_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\034zippylog/device/server.proto\022\026zippylog"
-    ".device.server\"\217\002\n\022SubscriptionRecord\022\n\n"
-    "\002id\030\001 \002(\t\0226\n\004type\030\002 \002(\0162(.zippylog.devic"
-    "e.server.SubscriptionType\022\014\n\004path\030\003 \003(\t\022"
-    "\020\n\010lua_code\030\004 \001(\t\022\031\n\021socket_identifier\030\005"
-    " \003(\t\022!\n\031envelope_filter_namespace\030\006 \003(\r\022"
-    "-\n%envelope_filter_enumeration_namespace"
-    "\030\007 \003(\r\022(\n envelope_filter_enumeration_ty"
-    "pe\030\010 \003(\r\"A\n\006Create\022\n\n\002id\030\001 \002(\014\022\022\n\nstore_"
-    "path\030\002 \001(\t\022\027\n\017listen_endpoint\030\003 \003(\t\"\025\n\007D"
-    "estroy\022\n\n\002id\030\001 \002(\014\"\026\n\010RunStart\022\n\n\002id\030\001 \002"
-    "(\014\"\027\n\tRunFinish\022\n\n\002id\030\001 \002(\014\" \n\022FlushOutp"
-    "utStreams\022\n\n\002id\030\001 \002(\014\"\"\n\024ReceiveClientMe"
-    "ssage\022\n\n\002id\030\001 \002(\014\"\037\n\021SendClientMessage\022\n"
-    "\n\002id\030\001 \002(\014*2\n\020SubscriptionType\022\014\n\010ENVELO"
-    "PE\020\001\022\020\n\014STORE_CHANGE\020\002", 622);
+    ".device.server\032\023zippylog/core.proto\"\217\002\n\022"
+    "SubscriptionRecord\022\n\n\002id\030\001 \002(\t\0226\n\004type\030\002"
+    " \002(\0162(.zippylog.device.server.Subscripti"
+    "onType\022\014\n\004path\030\003 \003(\t\022\020\n\010lua_code\030\004 \001(\t\022\031"
+    "\n\021socket_identifier\030\005 \003(\t\022!\n\031envelope_fi"
+    "lter_namespace\030\006 \003(\r\022-\n%envelope_filter_"
+    "enumeration_namespace\030\007 \003(\r\022(\n envelope_"
+    "filter_enumeration_type\030\010 \003(\r\"t\n\006Create\022"
+    "\n\n\002id\030\001 \002(\014\022\022\n\nstore_path\030\002 \001(\t\022\027\n\017liste"
+    "n_endpoint\030\003 \003(\t:1\202\265\030-%1 New server crea"
+    "ted. store=%2; endpoints=%3\".\n\007Destroy\022\n"
+    "\n\002id\030\001 \002(\014:\027\202\265\030\023%1 Server destroyed\".\n\010R"
+    "unStart\022\n\n\002id\030\001 \002(\014:\026\202\265\030\022%1 Server start"
+    "ing\"/\n\tRunFinish\022\n\n\002id\030\001 \002(\014:\026\202\265\030\022%1 Ser"
+    "ver stopping\"G\n\022FlushOutputStreams\022\n\n\002id"
+    "\030\001 \002(\014:%\202\265\030!%1 Server flushing output st"
+    "reams\"I\n\024ReceiveClientMessage\022\n\n\002id\030\001 \002("
+    "\014:%\202\265\030!%1 Server received client message"
+    "\"G\n\021SendClientMessage\022\n\n\002id\030\001 \002(\014:&\202\265\030\"%"
+    "1 Server sending client a message*2\n\020Sub"
+    "scriptionType\022\014\n\010ENVELOPE\020\001\022\020\n\014STORE_CHA"
+    "NGE\020\002", 885);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "zippylog/device/server.proto", &protobuf_RegisterTypes);
   SubscriptionRecord::default_instance_ = new SubscriptionRecord();
