@@ -95,7 +95,10 @@ bool Store::ValidatePath(const string path)
     return true;
 }
 
-bool Store::ParsePath(string const &path, string &bucket, string &set, string &stream)
+bool Store::ParsePath(::std::string const &path,
+                      ::std::string &bucket,
+                      ::std::string &set,
+                      ::std::string &stream)
 {
     if (!Store::ValidatePath(path)) return false;
 

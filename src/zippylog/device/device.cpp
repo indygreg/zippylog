@@ -47,7 +47,7 @@ PumpResult PumpResult::MakeNoWorkDone()
     return result;
 }
 
-Device::Device(ConditionalWait *cw) :
+Device::Device(::zippylog::platform::ConditionalWait *cw) :
     thread(NULL),
     cw(cw),
     running(false),

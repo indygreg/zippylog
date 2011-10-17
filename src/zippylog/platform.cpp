@@ -989,7 +989,7 @@ DirectoryWatcher::~DirectoryWatcher()
 #endif
 }
 
-DirectoryWatcher::DirectoryWatcher(string const &directory, bool recurse)
+DirectoryWatcher::DirectoryWatcher(::std::string const &directory, bool recurse)
 #ifdef WINDOWS
     : directory(NULL), completion_port(NULL)
 #elif MACOS

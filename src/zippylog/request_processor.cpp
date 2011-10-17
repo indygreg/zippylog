@@ -105,7 +105,7 @@ void SubscriptionInfo::ToProtocolBuffer(SubscriptionRecord &m)
     }
 }
 
-SubscriptionInfo::SubscriptionInfo(SubscriptionRecord const &m)
+SubscriptionInfo::SubscriptionInfo(device::server::SubscriptionRecord const &m)
     :type(UNKNOWN)
 {
     if (m.has_type()) {

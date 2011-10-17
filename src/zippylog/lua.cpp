@@ -500,7 +500,7 @@ void LuaState::InitializeState()
     this->RegisterEnvelopeType();
 }
 
-bool LuaState::GetGlobal(string const &s, int64 &value)
+bool LuaState::GetGlobal(::std::string const &s, int64 &value)
 {
     lua_getglobal(this->L, s.c_str());
     bool result = false;
@@ -514,7 +514,7 @@ bool LuaState::GetGlobal(string const &s, int64 &value)
     return result;
 }
 
-bool LuaState::GetGlobal(string const &s, string &value)
+bool LuaState::GetGlobal(::std::string const &s, string &value)
 {
     lua_getglobal(this->L, s.c_str());
     bool result = false;

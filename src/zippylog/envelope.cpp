@@ -42,7 +42,7 @@ Envelope::Envelope() : messages(NULL), messages_size(0)
     this->envelope.set_create_time(t.epoch_micro);
 }
 
-Envelope::Envelope(message_t &msg, uint32 offset) : messages(NULL), messages_size(0)
+Envelope::Envelope(::zmq::message_t &msg, uint32 offset) : messages(NULL), messages_size(0)
 {
     if (!msg.size()) throw invalid_argument("0MQ message is empty");
     if (offset + 1 >= msg.size()) throw invalid_argument("specified offset is larger than message");
@@ -59,7 +59,7 @@ Envelope::Envelope(const void * data, int size) : messages(NULL), messages_size(
     this->InitializeFromBuffer(data, size);
 }
 
-Envelope::Envelope(string const &s) : messages(NULL), messages_size(0)
+Envelope::Envelope(::std::string const &s) : messages(NULL), messages_size(0)
 {
     platform::Time t;
     platform::TimeNow(t);
@@ -122,7 +122,7 @@ void Envelope::InitializeFromBuffer(const void * data, int size)
     }
 }
 
-bool Envelope::Serialize(string &s) const
+bool Envelope::Serialize(::std::string &s) const
 {
     return this->envelope.AppendToString(&s);
 }

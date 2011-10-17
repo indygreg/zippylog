@@ -89,7 +89,7 @@ int32 PersistedStateManager::RemoveExpiredSubscriptions()
     return removed;
 }
 
-bool PersistedStateManager::HaveStoreChangeSubscriptions(std::string const &path) const
+bool PersistedStateManager::HaveStoreChangeSubscriptions(::std::string const &path) const
 {
     map<string, PersistedStateManagerSubscriptionRecord *>::const_iterator i = this->subscriptions.begin();
     for (; i != this->subscriptions.end(); i++) {
