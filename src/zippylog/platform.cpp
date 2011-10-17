@@ -86,7 +86,7 @@ void set_system_error()
 #endif
 }
 
-bool get_system_error(string &s)
+bool get_system_error(::std::string &s)
 {
 #ifdef POSIX
     if (!system_error) return false;
@@ -115,7 +115,7 @@ bool get_system_error(string &s)
 
 // congratulations, this is the 4,234,532,657 time in programming history this
 // function has been written!
-bool DirectoryEntries(string const &dir, vector<DirectoryEntry> &v)
+bool DirectoryEntries(::std::string const &dir, ::std::vector<DirectoryEntry> &v)
 {
     //complicated case firs
 #ifdef WINDOWS
@@ -207,7 +207,7 @@ void sleep(uint32 milliseconds)
 #endif
 }
 
-bool stat(const string path, FileStat &st)
+bool stat(::std::const string path, FileStat &st)
 {
 #ifdef WINDOWS
     struct _stat64 result;
