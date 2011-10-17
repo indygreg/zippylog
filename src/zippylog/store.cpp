@@ -296,7 +296,7 @@ bool Store::PathExists(string const &path)
     }
 }
 
-bool Store::StreamInfo(string const &path, zippylog::protocol::StreamInfoV1 &info)
+bool Store::StreamInfo(::std::string const &path, zippylog::protocol::StreamInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -309,7 +309,10 @@ bool Store::StreamInfo(string const &path, zippylog::protocol::StreamInfoV1 &inf
 
 }
 
-bool Store::StreamInfo(string const &bucket, string const &stream_set, string const &stream, protocol::StreamInfoV1 &info)
+bool Store::StreamInfo(::std::string const &bucket,
+                       ::std::string const &stream_set,
+                       ::std::string const &stream,
+                       protocol::StreamInfoV1 &info)
 {
     info.set_path(stream);
     // @todo verify stream exists and populate other stuff
@@ -325,7 +328,9 @@ bool Store::StreamInfo(string const &bucket, string const &stream_set, string co
     return true;
 }
 
-bool Store::StreamsetInfo(string const &bucket, string const &stream_set, protocol::StreamSetInfoV1 &info)
+bool Store::StreamsetInfo(::std::string const &bucket,
+                          ::std::string const &stream_set,
+                          protocol::StreamSetInfoV1 &info)
 {
     info.set_path(stream_set);
 
@@ -339,7 +344,8 @@ bool Store::StreamsetInfo(string const &bucket, string const &stream_set, protoc
     return true;
 }
 
-bool Store::StreamsetInfo(string const &path, zippylog::protocol::StreamSetInfoV1 &info)
+bool Store::StreamsetInfo(::std::string const &path,
+                          zippylog::protocol::StreamSetInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -349,7 +355,8 @@ bool Store::StreamsetInfo(string const &path, zippylog::protocol::StreamSetInfoV
     return this->StreamsetInfo(bucket, set, info);
 }
 
-bool Store::BucketInfo(string const &bucket, protocol::BucketInfoV1 &info)
+bool Store::BucketInfo(::std::string const &bucket,
+                       protocol::BucketInfoV1 &info)
 {
     info.set_path(bucket);
 
@@ -376,7 +383,7 @@ bool Store::StoreInfo(protocol::StoreInfoV1 &info)
     return true;
 }
 
-InputStream * Store::GetInputStream(string const &path)
+InputStream * Store::GetInputStream(::std::string const &path)
 {
     string bucket, set, stream;
     if (!ParsePath(path, bucket, set, stream)) return NULL;
@@ -384,7 +391,10 @@ InputStream * Store::GetInputStream(string const &path)
     return this->GetInputStream(bucket, set, stream);
 }
 
-bool Store::WriteEnvelope(string const &bucket, string const &set, Envelope &e, int64 time)
+bool Store::WriteEnvelope(::std::string const &bucket,
+                          ::std::string const &set,
+                          Envelope &e,
+                          int64 time)
 {
     OpenOutputStream os;
     if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) {
@@ -394,7 +404,11 @@ bool Store::WriteEnvelope(string const &bucket, string const &set, Envelope &e, 
     return os.stream->WriteEnvelope(e);
 }
 
-bool Store::WriteEnvelope(string const &bucket, string const &set, const void *data, int length, int64 time)
+bool Store::WriteEnvelope(::std::string const &bucket,
+                          ::std::string const &set,
+                          const void *data,
+                          int length,
+                          int64 time)
 {
     OpenOutputStream os;
     if (!this->ObtainOutputStream(bucket, set, 3600, os, time)) return false;
@@ -402,7 +416,11 @@ bool Store::WriteEnvelope(string const &bucket, string const &set, const void *d
     return os.stream->WriteEnvelope(data, length);
 }
 
-bool Store::ObtainOutputStream(string const &bucket, string const &set, int seconds_per_file, OpenOutputStream &os, int64 time)
+bool Store::ObtainOutputStream(::std::string const &bucket,
+                               ::std::string const &set,
+                               int seconds_per_file,
+                               OpenOutputStream &os,
+                               int64 time)
 {
     platform::Time t;
 
@@ -489,7 +507,7 @@ string Store::StreamNameForTime(int64 time, int seconds_per_file)
     return Store::StreamNameForTime(t, seconds_per_file);
 }
 
-SimpleDirectoryStore::SimpleDirectoryStore(string const &path) : root_path(path)
+SimpleDirectoryStore::SimpleDirectoryStore(::std::string const &path) : root_path(path)
 {
     if (!platform::PathIsDirectory(path)) {
         throw StorePathNotDirectoryException(
@@ -503,12 +521,13 @@ const string SimpleDirectoryStore::RootDirectoryPath() const
     return this->root_path;
 }
 
-bool SimpleDirectoryStore::BucketNames(vector<string> &buckets)
+bool SimpleDirectoryStore::BucketNames(::std::vector< ::std::string > &buckets)
 {
     return platform::DirectoriesInDirectory(this->root_path, buckets);
 }
 
-bool SimpleDirectoryStore::StreamSetNames(string const &bucket, vector<string> &sets)
+bool SimpleDirectoryStore::StreamSetNames(::std::string const &bucket,
+                                          vector<string> &sets)
 {
     return platform::DirectoriesInDirectory(
         this->PathToFilesystemPath(this->BucketPath(bucket)),
@@ -516,7 +535,9 @@ bool SimpleDirectoryStore::StreamSetNames(string const &bucket, vector<string> &
     );
 }
 
-bool SimpleDirectoryStore::StreamNames(string const &bucket, string const &set, vector<string> &streams)
+bool SimpleDirectoryStore::StreamNames(::std::string const &bucket,
+                                       ::std::string const &set,
+                                       ::std::vector< ::std::string > &streams)
 {
     platform::FilesInDirectory(
         this->PathToFilesystemPath(this->StreamsetPath(bucket, set)),
@@ -536,7 +557,8 @@ bool SimpleDirectoryStore::StreamNames(string const &bucket, string const &set, 
     return true;
 }
 
-bool SimpleDirectoryStore::StreamLength(string const &path, int64 &length)
+bool SimpleDirectoryStore::StreamLength(::std::string const &path,
+                                        int64 &length)
 {
     if (!ValidatePath(path)) return false;
 
