@@ -271,11 +271,13 @@ protected:
     /// Returns whether a path is subscribed to by a subscription
     static bool IsPathSubscribed(::std::string const &path, PersistedStateManagerSubscriptionRecord const &subscription);
 
-    // params coming from constructor
+    /// URI of store to bind to
     ::std::string store_uri;
 
+    /// TTL of subscriptions, in milliseconds
     uint32 subscription_ttl;
 
+    /// Whether to allow Lua execution in subscriptions
     bool subscription_lua_allow;
 
     /// Maximum memory (in bytes) a Lua state for a subscription can allocate
@@ -283,19 +285,27 @@ protected:
 
     // instance parameters
 
+    /// Store we are bound to
     Store * store;
 
     /// Maps subscription id to details about the subscription
     ::std::map< ::std::string, PersistedStateManagerSubscriptionRecord * > subscriptions;
 
-    // maps read offsets in streams. for envelope streaming
+    /// Maps read offsets in streams. for envelope streaming
     ::std::map< ::std::string, uint64 > stream_read_offsets;
 
+    ///@{
+    /// Allow tests to poke at internals
     FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
     FRIEND_TEST(PersistedStateManagerTest, SubscriptionExpiration);
+    ///@}
 private:
+
+    ///@{
+    /// Disable copy constructor and assignment operator
     PersistedStateManager(PersistedStateManager const &orig);
     PersistedStateManager & operator=(PersistedStateManager const &orig);
+    ///@}
 };
 
 } // namespace

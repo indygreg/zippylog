@@ -734,9 +734,11 @@ class ZIPPYLOG_EXPORT Client {
         static void * AsyncStart(void *data);
 
     private:
-        // disable copy constructor and assignment operator
+        ///@{
+        /// Disable copy constructor and assignment operator
         Client(Client const &orig);
         Client & operator=(Client const &orig);
+        ///@}
 };
 
 }} // namespaces
