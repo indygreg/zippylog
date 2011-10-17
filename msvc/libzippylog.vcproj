@@ -289,6 +289,14 @@
 			Filter="pb.h;pb.cc;pb-lua.h;pb-lua.cc"
 			>
 			<File
+				RelativePath="..\src\zippylog\core.pb.cc"
+				>
+			</File>
+			<File
+				RelativePath="..\src\zippylog\core.pb.h"
+				>
+			</File>
+			<File
 				RelativePath="..\src\zippylog\message.pb.cc"
 				>
 			</File>

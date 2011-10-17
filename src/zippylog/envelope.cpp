@@ -13,9 +13,11 @@
 //  limitations under the License.
 
 #include <zippylog/envelope.hpp>
+#include <zippylog/core.pb.h>
 #include <zippylog/platform.hpp>
 #include <zippylog/message_registrar.hpp>
 
+#include <google/protobuf/descriptor.pb.h>
 #include <google/protobuf/text_format.h>
 
 #include <stdio.h>
@@ -24,6 +26,7 @@
 
 namespace zippylog {
 
+using ::google::protobuf::FieldDescriptor;
 using ::google::protobuf::Message;
 using ::std::invalid_argument;
 using ::std::string;
@@ -332,12 +335,78 @@ string Envelope::ToString()
         string s;
         ::google::protobuf::Message *m = this->GetMessage(i);
         if (m) {
-            printer.PrintToString(*m, &s);
-            ss << "  " << m->GetTypeName() << ::std::endl << s;
+            ss << "  ";
+            if (!CustomPrintMessage(m, ss)) {
+               printer.PrintToString(*m, &s);
+               ss << m->GetTypeName() << ::std::endl << s;
+            }
         }
     }
 
     return ss.str();
+}
+
+/// TODO generate per-message formatting logic at .proto compilation time so
+/// we don't incur run-time penalty
+bool Envelope::CustomPrintMessage(const ::google::protobuf::Message *m,
+                                  ::std::ostream &s)
+{
+    ::google::protobuf::Descriptor const *descriptor = m->GetDescriptor();
+    ::google::protobuf::MessageOptions options = descriptor->options();
+
+    if (!options.HasExtension(zippylog::formatter)) return false;
+
+    ::google::protobuf::Reflection const *reflection = m->GetReflection();
+
+    string formatter = options.GetExtension(zippylog::formatter);
+
+    string::size_type length = formatter.length();
+    string::size_type i = 0;
+    do {
+        string::value_type c = formatter[i];
+
+        if (c != '%') {
+            s << c;
+            i++;
+            continue;
+        }
+
+        // This should never happen, but we guard against stupidity.
+        if (i >= length - 1) {
+            s << c;
+            i++;
+            continue;
+        }
+
+        string::value_type field = formatter[++i];
+        int field_n = atoi(&field);
+
+        FieldDescriptor const * fd = descriptor->FindFieldByNumber(field_n);
+
+        /// TODO implement better formatting
+        /// e.g. protobuf puts double quotes around strings, which we don't
+        /// want.
+        if (fd->is_repeated()) {
+            int size = reflection->FieldSize(*m, fd);
+            for (int fi = 0; fi < size; fi++) {
+                string v;
+                ::google::protobuf::TextFormat::PrintFieldValueToString(*m, fd, fi, &v);
+                s << v;
+            }
+        }
+        else {
+            string v;
+            ::google::protobuf::TextFormat::PrintFieldValueToString(*m, fd, -1, &v);
+            s << v;
+        }
+
+        i++;
+
+    } while (i < length);
+
+    s << ::std::endl;
+
+    return true;
 }
 
 } // namespace

@@ -20,6 +20,7 @@
 #include <gtest/gtest_prod.h>
 #include <zmq.hpp>
 
+#include <ostream>
 #include <string>
 
 // windows.h defines GetMessage() as a macro, which craps on us.
@@ -289,6 +290,13 @@ class ZIPPYLOG_EXPORT Envelope {
         /// The returned string shows all the envelope's fields and messages
         /// within.
         ::std::string ToString();
+
+        /// Try to print a message using its custom formatter
+        ///
+        /// @param m Message to print
+        /// @param s Stream to write message to
+        /// @return Whether message had a custom formatter and we printed
+        static bool CustomPrintMessage(::google::protobuf::Message const *m, ::std::ostream &s);
 
     protected:
         /// The underlying protocol buffer message
