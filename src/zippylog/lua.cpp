@@ -514,7 +514,7 @@ bool LuaState::GetGlobal(::std::string const &s, int64 &value)
     return result;
 }
 
-bool LuaState::GetGlobal(::std::string const &s, string &value)
+bool LuaState::GetGlobal(::std::string const &s, ::std::string &value)
 {
     lua_getglobal(this->L, s.c_str());
     bool result = false;

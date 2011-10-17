@@ -134,7 +134,8 @@ void InputStream::RebuildCodedInputStream()
 }
 
 
-FileInputStream::FileInputStream(string const &path, int64 start_offset) :
+FileInputStream::FileInputStream(::std::string const &path,
+                                 int64 start_offset) :
     InputStream(), fis(NULL)
 {
     if (!this->file.Open(path, platform::File::READ | platform::File::BINARY)) {
