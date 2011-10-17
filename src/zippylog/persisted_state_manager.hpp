@@ -142,24 +142,41 @@ public:
     ~PersistedStateManager();
 
     /// Whether we have a subscription with the specified id
+    ///
+    /// @param id Subscription ID to check presence of
+    /// @return true if subscription with specified is present, false otherwise
     bool HasSubscription(::std::string const &id) const;
 
     /// Whether we have any store change subscriptions
+    ///
+    /// @return true if there are any store change subscriptions registered
     bool HaveStoreChangeSubscriptions() const;
 
     /// Whether we have store change subscriptions for the given path
+    ///
+    /// @param path Path to check for store subscriptions to
+    /// @return true if there are path subsriptions to the path specified
     bool HaveStoreChangeSubscriptions(::std::string const &path) const;
 
     /// Whether we have a subscription for envelopes in the given stream path
+    ///
+    /// @param path Path to check for envelope subscriptions to
+    /// @return true if there are envelope subscriptions for the path specified
     bool HaveEnvelopeSubscription(::std::string const &path) const;
 
     /// Renews a subscription for the specified id
     ///
     /// This is typically called when a server receives a subscription
     /// keepalive request.
+    ///
+    /// @param id Subscription to renew
+    /// @return true if the subscription was renewed successfully
     bool RenewSubscription(::std::string const &id);
 
     /// Renews multiple subscriptions from ids
+    ///
+    /// @param ids Set of subscriptions to renew
+    /// @return true if all the subscriptions were renewed sucessfully
     bool RenewSubscriptions(::std::vector < ::std::string >  const & ids);
 
     /// Registers a new subscription from a subscription record
@@ -171,21 +188,30 @@ public:
     /// This function will start the subscription TTL timer immediately.
     ///
     /// @todo formalize behavior for duplicate subscriptions
+    /// @param subscription Subscription record to register
     void RegisterSubscription(SubscriptionInfo const &subscription);
 
     /// Unregister a subscription with the id specified
+    ///
+    /// @param id Identifier of subscription to remove
     void UnregisterSubscription(::std::string const &id);
 
     /// Removes expired subscriptions from the manager
+    ///
+    /// @return The number of subscriptions removed
     int32 RemoveExpiredSubscriptions();
 
     /// Registers a plugin from the specified plugin record
     ///
     /// Plugins are effectively a set of persisted hooks. They live and
     /// execute until they are unloaded or encounter a serious error.
+    ///
+    /// @param plugin Plugin to register
     void RegisterPlugin(PluginInfo const &plugin);
 
     /// Unregister the plugin with the specified id
+    ///
+    /// @param id Identifier of plugin to remove
     void UnregisterPlugin(::std::string const &id);
 
     /// Processes a path added event
@@ -196,6 +222,10 @@ public:
     /// The function examines existing subscriptions. If anyone is subscribed,
     /// the passed callback will be invoked, receiving details of the
     /// subscription.
+    ///
+    /// @param path The path to process changes for
+    /// @param cb The callback to be invoked
+    /// @param data User data to pass to callback
     void ProcessStoreChangePathAdded(::std::string const &path,
                                      PersistedStateManagerPathAddedCallback *cb,
                                      void *data = NULL);
@@ -204,6 +234,10 @@ public:
     ///
     /// This is very similar to ProcessStoreChangePathAdded(). All the
     /// documentation for that method applies.
+    ///
+    /// @param path The path to process a deletion of
+    /// @param cb The callback to be invoked
+    /// @param data User data to pass to callback
     void ProcessStoreChangePathDeleted(::std::string const &path,
                                        PersistedStateManagerPathDeletedCallback *cb,
                                        void *data = NULL);
@@ -224,6 +258,10 @@ public:
     /// handle response formulation.
     ///
     /// @todo reduce number of times callback is called (tons of call overhead)
+    /// @param path Path to process stream append for
+    /// @param stream_length New length of stream referenced by path
+    /// @param cb Callback to be invoked with change information
+    /// @param data User data to pass to callback
     void ProcessStoreChangeStreamAppended(::std::string const &path,
                                           const uint64 stream_length,
                                           PersistedStateManagerStreamAppendedCallback *cb,
