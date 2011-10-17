@@ -297,7 +297,7 @@ bool Store::PathExists(string const &path)
 }
 
 bool Store::StreamInfo(::std::string const &path,
-                       zippylog::protocol::StreamInfoV1 &info)
+                       protocol::StreamInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
@@ -346,7 +346,7 @@ bool Store::StreamsetInfo(::std::string const &bucket,
 }
 
 bool Store::StreamsetInfo(::std::string const &path,
-                          zippylog::protocol::StreamSetInfoV1 &info)
+                          protocol::StreamSetInfoV1 &info)
 {
     if (!ValidatePath(path)) return false;
 
