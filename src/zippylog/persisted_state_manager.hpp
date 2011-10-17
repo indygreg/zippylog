@@ -54,21 +54,36 @@ public:
     ~PersistedStateManagerSubscriptionRecord();
 
 protected:
+    /// Construct a new, empty record
     PersistedStateManagerSubscriptionRecord();
 
+    /// Construct a record from subscription info
+    ///
+    /// @param subscription Subscription to create record from
+    /// @param ttl TTL of subscription, in milliseconds
     PersistedStateManagerSubscriptionRecord(SubscriptionInfo const &subscription, uint32 ttl);
 
+    /// The original subscription record
     SubscriptionInfo si;
+
+    /// Timer to keep track of TTL
     platform::Timer expiration_timer;
+
+    /// Lua state attached to subscription
     lua::LuaState *l;
 
+    /// Give PersistedStateManager rights to internals
     friend class PersistedStateManager;
+
+    /// Give tests rights to internals
     FRIEND_TEST(PersistedStateManagerTest, IsPathSubscribed);
 
 private:
-    // disable copy constructor and assignment operator
+    ///@{
+    /// Disable copy constructor and assignment operator
     PersistedStateManagerSubscriptionRecord(PersistedStateManagerSubscriptionRecord const &orig);
     PersistedStateManagerSubscriptionRecord & operator=(PersistedStateManagerSubscriptionRecord const &orig);
+    ///@}
 };
 
 /// Represents info about a plugin

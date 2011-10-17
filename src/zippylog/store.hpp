@@ -189,7 +189,20 @@ class ZIPPYLOG_EXPORT Store {
         /// Obtain a stream set info message for the stream set identifier by a path
         bool StreamsetInfo(::std::string const &path, protocol::StreamSetInfoV1 &info);
 
+        /// Obtain stream info for a stream
+        ///
+        /// @param bucket Bucket to examine
+        /// @param set Stream set to examine
+        /// @param stream Name of stream to obtain info for
+        /// @param info Record to hold results
+        /// @return true if info was successfully obtained
         bool StreamInfo(::std::string const &bucket, ::std::string const &set, ::std::string const &stream, protocol::StreamInfoV1 &info);
+
+        /// Obtain stream info from a path
+        ///
+        /// @param path Path to stream
+        /// @param info Record to hold results
+        /// @return true if info was successfully obtained
         bool StreamInfo(::std::string const &path, protocol::StreamInfoV1 &info);
 
         /// Obtain an input stream from the store
@@ -264,7 +277,22 @@ class ZIPPYLOG_EXPORT Store {
 
     protected:
         Store() { };
-        bool ObtainOutputStream(::std::string const &bucket, ::std::string const &set, int seconds_per_file, OpenOutputStream &stream, int64 time=-1);
+
+        /// Obtain an ouptut stream for a stream set
+        ///
+        /// @param bucket Bucket where output stream should be obtained from
+        /// @param set Stream set where output stream should be obtained from
+        /// @param seconds_per_file Number of seconds in each stream file
+        /// @param stream Populated with output stream
+        /// @param time Time to use to calculate which stream to open. -1
+        /// means now.
+        bool ObtainOutputStream(
+            ::std::string const &bucket,
+            ::std::string const &set,
+            int seconds_per_file,
+            OpenOutputStream &stream,
+            int64 time=-1
+        );
 
         /// Create an output stream object
         virtual OutputStream * CreateOutputStream(::std::string const &bucket, ::std::string const &set, ::std::string const &stream) = 0;
