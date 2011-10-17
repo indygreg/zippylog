@@ -557,7 +557,7 @@ bool Client::Mirror(StoreMirrorState &state, StreamSegmentCallback * callback, v
     return true;
 }
 
-bool Client::SubscribeStoreChanges(vector<string> const &paths,
+bool Client::SubscribeStoreChanges(::std::vector< ::std::string > const &paths,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
                                    int32 timeout)
@@ -617,7 +617,7 @@ bool Client::SubscribeEnvelopes(::std::string const &path,
 }
 
 bool Client::SubscribeEnvelopes(::std::string const &path,
-                                string const &lua,
+                                ::std::string const &lua,
                                 SubscriptionCallbackInfo &cb,
                                 void *data)
 {
