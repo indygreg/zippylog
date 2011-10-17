@@ -208,10 +208,8 @@ int main(int argc, const char * const argv[])
             clients.push_back(new Client(&ctx, params.servers[i]));
         }
 
-        int result;
-
         if (params.store_info) {
-            result = ShowStoreInfo(clients);
+            ShowStoreInfo(clients);
         }
         else if (params.mirror) {
             vector<StoreMirrorState> states;
