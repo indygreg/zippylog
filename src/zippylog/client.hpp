@@ -312,6 +312,9 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// The 0MQ context is required. If not set, an exception will be
         /// thrown.
+        ///
+        /// @param ctx 0MQ context
+        /// @param endpoint 0MQ socket endpoint of zippylog server agent
         Client(::zmq::context_t *ctx, ::std::string const &endpoint);
         ~Client();
 
@@ -323,6 +326,10 @@ class ZIPPYLOG_EXPORT Client {
         bool Ping(PingCallback *callback, void *data = NULL);
 
         /// Synchronously send a ping request
+        ///
+        /// @param timeout_microseconds How long to wait for a response before
+        /// giving up
+        /// @return true if response received within timeout threshold
         bool Ping(int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain the server's features
@@ -336,6 +343,7 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// @param features Populated with server's features on success
         /// @param timeout_microseconds How long to wait for response
+        /// @return true if successful response received within timeout window
         bool GetFeatures(protocol::response::FeatureSpecificationV1 &features, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain the store info.
@@ -343,6 +351,10 @@ class ZIPPYLOG_EXPORT Client {
         /// Executes supplied callback when store info response received.
         ///
         /// Returns true if request was sent without error.
+        ///
+        /// @param callback Function to be invoked when response received
+        /// @param data User data to be passed to callback
+        /// @return true if the request sent successfully
         bool GetStoreInfo(StoreInfoCallback * callback, void *data = NULL);
 
         /// Synchronously obtain store info
@@ -350,6 +362,11 @@ class ZIPPYLOG_EXPORT Client {
         /// Will wait up to specified microseconds for store info to be
         /// returned. If we find the store info in the time specified, returns
         /// true. Else, returns false.
+        ///
+        /// @param info Record that will hold results on success
+        /// @param timeout_microseconds How long to wait for a response before
+        /// timing out
+        /// @return true if successful response received before timeout
         bool GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Asynchronously obtain info about a single bucket
@@ -389,13 +406,20 @@ class ZIPPYLOG_EXPORT Client {
         /// Supplied callback will be invoked when stream info response is
         /// received.
         ///
-        /// Returns true if request sent without error.
+        /// @param path Path to stream to obtain info for
+        /// @param callback Function to be called when response received
+        /// @param data User data to be passed to callback
+        /// @return true if request sent without error
         bool GetStreamInfo(::std::string const &path, StreamInfoCallback * callback, void * data = NULL);
 
         /// Synchronously obtain stream info
         ///
         /// Will wait up to specified microseconds for response.
-        /// Returns true if info retrieved or false if error or timeout.
+        ///
+        /// @param path Path to stream to obtain info for
+        /// @param info Record to hold results
+        /// @param timeout_microseconds How long to wait for a response
+        /// @return true if response received within timeout. False on error or timeout
         bool GetStreamInfo(::std::string const &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
 
         /// Fetch a single stream segment asynchronously
@@ -528,20 +552,39 @@ class ZIPPYLOG_EXPORT Client {
                                    int32 timeout_microseconds);
 
         /// Subscribes to new envelopes written on the server
+        ///
+        /// @param path Path in store to subscribe to. Can be whole store (/),
+        /// a bucket, a stream set, or a stream.
+        /// @param callback Function to be called when new envelopes are
+        /// received.
+        /// @param data User data to be passed to callback
+        /// @return true if request sent without error
         bool SubscribeEnvelopes(::std::string const &path, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         /// Subscribes to new envelopes w/ Lua code specifying additional features
+        ///
+        /// @param path path Path in store to subscribe to
+        /// @param lua Lua source code to be uploaded with subscription
+        /// @param callback Function to be called when envelopes are received
+        /// @param data User data to be passed to callback
+        /// @return true if request sent without error
         bool SubscribeEnvelopes(::std::string const &path, ::std::string const &lua, SubscriptionCallbackInfo &callback, void *data = NULL);
 
         /// Cancels the subscription with the specified ID
         ///
         /// @param id Subscription id to cancel
+        /// @return true if request issued without error
         bool CancelSubscription(::std::string const &id);
 
         /// Cancels all subscriptions registered with the client
+        ///
+        /// @return true if request issued without error
         bool CancelAllSubscriptions();
 
         /// Whether the client has a subscription with the specified subscription ID
+        ///
+        /// @param id Subscription identifier to query for
+        /// @return true if the client has a subscription with this identifier
         bool HasSubscription(::std::string const &id);
 
         /// Perform pending operations
@@ -551,8 +594,9 @@ class ZIPPYLOG_EXPORT Client {
         /// Function will wait up to specified microseconds for messages to
         /// become available. -1 is infinite.
         ///
-        /// Returns 1 if messages processed, 0 if no messages processed, or -1
-        /// on error.
+        /// @param timeout_microseconds How long to wait for a pending operation
+        /// @return 1 if messages processed, 0 if no messages processed, or -1
+        /// on error
         int Pump(int32 timeout_microseconds);
 
         /// Renews all subscriptions near expiration
@@ -562,6 +606,7 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// @param force If true, send keepalive to all subscriptions, not
         /// just those about to expire
+        /// @return true if all subscriptions were renewed successfully
         bool RenewSubscriptions(bool force=false);
 
         /// Synchronously mirror the remote server
@@ -581,6 +626,10 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// Under the hood, this function invokes GetStream() for all remote
         /// streams. This function is provided as a convenience API.
+        ///
+        /// @param state Data structure that keeps track of state between calls
+        /// @param callback Function to be called on receipt of data
+        /// @param data User data to be passed to callback
         bool Mirror(StoreMirrorState &state, StreamSegmentCallback *callback, void *data = NULL);
 
         /// Runs the client continuously
@@ -589,6 +638,8 @@ class ZIPPYLOG_EXPORT Client {
         /// flag pointed to by the passed parameter goes to false.
         ///
         /// This function won't return until the flag goes to false.
+        ///
+        /// @param active Semaphore to control when the routine should run
         void Run(bool *active);
 
         /// Runs the client in the background
@@ -598,6 +649,9 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// Keep in mind that the class is not thread safe, so other methods
         /// should not be called when the client is running in the background.
+        ///
+        /// @param active Semaphore to control when background processing
+        /// should run
         void RunAsync(bool *active);
 
     protected:
