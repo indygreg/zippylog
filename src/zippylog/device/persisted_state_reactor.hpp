@@ -80,7 +80,7 @@ class ZIPPYLOG_EXPORT PersistedStateReactor : public ::zippylog::device::Device 
 public:
     /// Construct a persisted state reactor from parameters
     ///
-    /// @params Options to define instance
+    /// @param params Options to define instance
     PersistedStateReactor(PersistedStateReactorStartParams const &params);
 
     ~PersistedStateReactor();
