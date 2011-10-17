@@ -223,7 +223,7 @@ namespace platform {
     ///
     /// @param path Path to test
     /// @return bool Whether path exists and is a directory
-    ZIPPYLOG_EXPORT bool PathIsDirectory(const ::std::string path);
+    ZIPPYLOG_EXPORT bool PathIsDirectory(::std::string const &path);
 
     /// Test whether a path is a file
     ///

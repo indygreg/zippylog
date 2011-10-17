@@ -325,7 +325,7 @@ bool UnixMicroTimeToZippyTime(int64 from, Time &to)
     return true;
 }
 
-bool MakeDirectory(const string path)
+bool MakeDirectory(::std::string const path)
 {
     // @todo permissions should be passed as argumen
 #ifdef WINDOWS
@@ -344,7 +344,7 @@ bool MakeDirectory(const string path)
     return result == 0;
 }
 
-bool PathIsDirectory(const string path)
+bool PathIsDirectory(::std::string const &path)
 {
     FileStat st;
     int result = stat(path, st);
@@ -356,7 +356,7 @@ bool PathIsDirectory(const string path)
     return st.type == DIRECTORY;
 }
 
-bool PathIsRegularFile(string const &path)
+bool PathIsRegularFile(::std::string const &path)
 {
     FileStat st;
     int result = stat(path, st);
@@ -368,7 +368,7 @@ bool PathIsRegularFile(string const &path)
     return st.type == REGULAR;
 }
 
-bool DirectoriesInDirectory(string const &dir, vector<DirectoryEntry> &v)
+bool DirectoriesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -384,7 +384,7 @@ bool DirectoriesInDirectory(string const &dir, vector<DirectoryEntry> &v)
     return true;
 }
 
-bool DirectoriesInDirectory(string const &dir, vector<string> &v)
+bool DirectoriesInDirectory(::std::string const &dir, ::std::vector< ::std::string > &v)
 {
     vector<DirectoryEntry> entries;
     if (!platform::DirectoriesInDirectory(dir, entries)) return false;
@@ -398,7 +398,7 @@ bool DirectoriesInDirectory(string const &dir, vector<string> &v)
     return true;
 }
 
-bool FilesInDirectory(string const &dir, vector<DirectoryEntry> &v)
+bool FilesInDirectory(::std::string const &dir, ::std::vector<DirectoryEntry> &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -414,7 +414,8 @@ bool FilesInDirectory(string const &dir, vector<DirectoryEntry> &v)
     return true;
 }
 
-bool FilesInDirectory(string const &dir, vector<string> &v)
+bool FilesInDirectory(::std::string const &dir,
+                      ::std::vector< ::std::string > &v)
 {
     v.clear();
     vector<DirectoryEntry> entries;
@@ -428,7 +429,8 @@ bool FilesInDirectory(string const &dir, vector<string> &v)
     return true;
 }
 
-bool DirectoriesInTree(string const &path, vector<string> &paths)
+bool DirectoriesInTree(::std::string const &path,
+                       ::std::vector< ::std::string > &paths)
 {
     vector<DirectoryEntry> entries;
 
@@ -453,7 +455,7 @@ bool DirectoriesInTree(string const &path, vector<string> &paths)
 
 }
 
-bool RemoveDirectory(string const &path)
+bool RemoveDirectory(::std::string const &path)
 {
     if (!PathIsDirectory(path)) {
         return false;
@@ -495,7 +497,7 @@ File::File()
     this->fd = 0;
 }
 
-bool File::Open(string const &path, int flags)
+bool File::Open(::std::string const &path, int flags)
 {
 #ifdef WINDOWS
     DWORD access = 0;
@@ -722,7 +724,7 @@ bool File::WriteLockEntire()
 #endif
 }
 
-string PathJoin(string const &a, string const &b)
+string PathJoin(::std::string const &a, ::std::string const &b)
 {
     string s = a;
 #ifdef WINDOWS
