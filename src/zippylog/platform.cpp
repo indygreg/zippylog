@@ -207,7 +207,7 @@ void sleep(uint32 milliseconds)
 #endif
 }
 
-bool stat(::std::const string path, FileStat &st)
+bool stat(const ::std::string path, FileStat &st)
 {
 #ifdef WINDOWS
     struct _stat64 result;
