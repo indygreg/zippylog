@@ -455,9 +455,16 @@ namespace platform {
 
         /// How the path changed
         enum Action {
+            /// Path was added
             ADDED = 1,
+
+            /// Path was deleted
             DELETED = 2,
+
+            /// Path was modified
             MODIFIED = 3,
+
+            /// Path was renamed
             RENAMED = 4,
         } Action;
 

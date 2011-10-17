@@ -140,8 +140,18 @@ class ZIPPYLOG_EXPORT Store {
         /// Return the store path to a stream within a bucket and set
         static ::std::string StreamPath(::std::string const &bucket, ::std::string const &set, ::std::string const &stream);
 
-        /// returns the name of a stream for a particular time value
+        /// Obtain the name of a stream for a particular time value
+        ///
+        /// @param time Time, in microseconds since UNIX epoch
+        /// @param seconds_per_file The number of seconds in each stream
+        /// @return The name of the stream for this time
         static ::std::string StreamNameForTime(int64 time, int seconds_per_file);
+
+        /// Obtain the name of a stream for a particular time value
+        ///
+        /// @param time Time to compute
+        /// @param seconds_per_file The number of seconds in each stream
+        /// @return The name of the stream for this time
         static ::std::string StreamNameForTime(platform::Time &time, int seconds_per_file);
 
         /// Returns whether the entity identified by the path exists
