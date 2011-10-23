@@ -521,9 +521,9 @@ class ZIPPYLOG_EXPORT RequestProcessor : public ::zippylog::device::Device {
         /// processes them.
         ///
         /// If no messages are available, waits up to the specified number of
-        /// microseconds and process any that arrive before that time window
+        /// milliseconds and process any that arrive before that time window
         /// expires.
-        ::zippylog::device::PumpResult Pump(int32 wait_microseconds);
+        ::zippylog::device::PumpResult Pump(int32 wait_milliseconds);
 
         /// Processes received 0MQ messages
         ///

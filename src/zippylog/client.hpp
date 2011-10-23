@@ -327,10 +327,10 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously send a ping request
         ///
-        /// @param timeout_microseconds How long to wait for a response before
+        /// @param timeout_milliseconds How long to wait for a response before
         /// giving up
         /// @return true if response received within timeout threshold
-        bool Ping(int32 timeout_microseconds = -1);
+        bool Ping(int32 timeout_milliseconds = -1);
 
         /// Asynchronously obtain the server's features
         ///
@@ -342,9 +342,9 @@ class ZIPPYLOG_EXPORT Client {
         /// Synchronously obtain the server's features
         ///
         /// @param features Populated with server's features on success
-        /// @param timeout_microseconds How long to wait for response
+        /// @param timeout_milliseconds How long to wait for response
         /// @return true if successful response received within timeout window
-        bool GetFeatures(protocol::response::FeatureSpecificationV1 &features, int32 timeout_microseconds = -1);
+        bool GetFeatures(protocol::response::FeatureSpecificationV1 &features, int32 timeout_milliseconds = -1);
 
         /// Asynchronously obtain the store info.
         ///
@@ -359,15 +359,15 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously obtain store info
         ///
-        /// Will wait up to specified microseconds for store info to be
+        /// Will wait up to specified milliseconds for store info to be
         /// returned. If we find the store info in the time specified, returns
         /// true. Else, returns false.
         ///
         /// @param info Record that will hold results on success
-        /// @param timeout_microseconds How long to wait for a response before
+        /// @param timeout_milliseconds How long to wait for a response before
         /// timing out
         /// @return true if successful response received before timeout
-        bool GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStoreInfo(protocol::StoreInfoV1 &info, int32 timeout_milliseconds = -1);
 
         /// Asynchronously obtain info about a single bucket
         ///
@@ -381,9 +381,9 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// @param path Path to obtain info about
         /// @param info Populated with result on successful response
-        /// @param timeout_microseconds How long to wait for response
+        /// @param timeout_milliseconds How long to wait for response
         /// @return Whether we received a successful response
-        bool GetBucketInfo(::std::string const &path, protocol::BucketInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetBucketInfo(::std::string const &path, protocol::BucketInfoV1 &info, int32 timeout_milliseconds = -1);
 
         /// Asynchronously obtain info about a single stream set at a path
         ///
@@ -397,9 +397,9 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// @param path Path to stream set we want to obtain info about
         /// @param info Populated with result on successful response
-        /// @param timeout_microseconds How long to wait for a response
+        /// @param timeout_milliseconds How long to wait for a response
         /// @return Whether we received a successful response
-        bool GetStreamSetInfo(::std::string const &path, protocol::StreamSetInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStreamSetInfo(::std::string const &path, protocol::StreamSetInfoV1 &info, int32 timeout_milliseconds = -1);
 
         /// Asynchronously obtain stream info.
         ///
@@ -414,13 +414,13 @@ class ZIPPYLOG_EXPORT Client {
 
         /// Synchronously obtain stream info
         ///
-        /// Will wait up to specified microseconds for response.
+        /// Will wait up to specified milliseconds for response.
         ///
         /// @param path Path to stream to obtain info for
         /// @param info Record to hold results
-        /// @param timeout_microseconds How long to wait for a response
+        /// @param timeout_milliseconds How long to wait for a response
         /// @return true if response received within timeout. False on error or timeout
-        bool GetStreamInfo(::std::string const &path, protocol::StreamInfoV1 &info, int32 timeout_microseconds = -1);
+        bool GetStreamInfo(::std::string const &path, protocol::StreamInfoV1 &info, int32 timeout_milliseconds = -1);
 
         /// Fetch a single stream segment asynchronously
         ///
@@ -458,7 +458,7 @@ class ZIPPYLOG_EXPORT Client {
         /// @param path The stream path to fetch
         /// @param start_offset The offset from which to start fetching
         /// @param segment Holds result upon successful completion
-        /// @param timeout How long to wait for a response, in microseconds
+        /// @param timeout How long to wait for a response, in milliseconds
         /// @return Whether the response was received without error
         bool GetStreamSegment(::std::string const &path, uint64 start_offset, StreamSegment &segment, int32 timeout = -1);
 
@@ -516,12 +516,12 @@ class ZIPPYLOG_EXPORT Client {
         /// @param paths Paths to subscribe to
         /// @param callbacks Configures which callbacks are in effect
         /// @param result Holds the result of the subscription request
-        /// @param timeout_microseconds How long to wait for server to respond
+        /// @param timeout_milliseconds How long to wait for server to respond
         /// @return Whether a response from the server was received in time
         bool SubscribeStoreChanges(::std::vector< ::std::string >  const &paths,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
-                                   int32 timeout_microseconds = -1);
+                                   int32 timeout_milliseconds = -1);
 
         /// Synchronously subscribe to store changes
         ///
@@ -536,20 +536,20 @@ class ZIPPYLOG_EXPORT Client {
         /// @param path Store path to subscribe to
         /// @param callbacks Defines callbacks to handle subscribed events
         /// @param result Stores the result of the subscription
-        /// @param timeout_microseconds How long to wait for a server response
+        /// @param timeout_milliseconds How long to wait for a server response
         bool SubscribeStoreChanges(::std::string const &path,
                                    SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
-                                   int32 timeout_microseconds = -1);
+                                   int32 timeout_milliseconds = -1);
 
         /// Synchronously subscribes to store changes for the entire store
         ///
         /// @param callbacks Callback configuration
         /// @param result Stores result of the subscription
-        /// @param timeout_microseconds How long to wait for response
+        /// @param timeout_milliseconds How long to wait for response
         bool SubscribeStoreChanges(SubscriptionCallbackInfo &callbacks,
                                    SubscriptionRequestResult &result,
-                                   int32 timeout_microseconds);
+                                   int32 timeout_milliseconds);
 
         /// Subscribes to new envelopes written on the server
         ///
@@ -591,13 +591,13 @@ class ZIPPYLOG_EXPORT Client {
         ///
         /// This effectively processes responses from the server.
         ///
-        /// Function will wait up to specified microseconds for messages to
+        /// Function will wait up to specified milliseconds for messages to
         /// become available. -1 is infinite.
         ///
-        /// @param timeout_microseconds How long to wait for a pending operation
+        /// @param timeout_milliseconds How long to wait for a pending operation
         /// @return 1 if messages processed, 0 if no messages processed, or -1
         /// on error
-        int Pump(int32 timeout_microseconds);
+        int Pump(int32 timeout_milliseconds);
 
         /// Renews all subscriptions near expiration
         ///

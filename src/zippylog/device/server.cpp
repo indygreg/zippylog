@@ -82,7 +82,7 @@ Server::Server(ServerStartParams &params) :
     log_bucket(params.log_bucket),
     log_stream_set(params.log_stream_set),
     write_logs(false),
-    stream_flush_interval(params.stream_flush_interval),
+    stream_flush_interval(params.stream_flush_interval * 1000),
     lua_execute_client_code(params.lua_execute_client_code),
     lua_streaming_max_memory(params.lua_streaming_max_memory),
     store(NULL),
@@ -101,7 +101,7 @@ Server::Server(ServerStartParams &params) :
     store_changes_output_sock(NULL),
     logger_sock(NULL),
     log_client_sock(NULL),
-    stream_flush_timer(params.stream_flush_interval * 1000),
+    stream_flush_timer(params.stream_flush_interval),
     thread_check_timer(5000000),
     store_writer(NULL),
     store_watcher(NULL)

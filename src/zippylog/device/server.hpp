@@ -353,7 +353,7 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// operations, etc).
         ///
         /// If work is available, it is processed immediately. If not, it can
-        /// wait up to the specified number of microseconds for work to become
+        /// wait up to the specified number of milliseconds for work to become
         /// available. If the configured wait time is 0, the function will
         /// return immediately if no work is ready.
         ///
@@ -364,9 +364,9 @@ class ZIPPYLOG_EXPORT Server : public ::zippylog::device::Device {
         /// Returns 1 if work is performed, 0 if no work is performed, or -1 if
         /// there was an error performing work.
         ///
-        /// @param wait_microseconds up to how long to wait for work to become
-        /// available before returning. In microseconds.
-        ::zippylog::device::PumpResult Pump(int32 wait_microseconds = 250000);
+        /// @param wait_milliseconds up to how long to wait for work to become
+        /// available before returning. In milliseconds.
+        ::zippylog::device::PumpResult Pump(int32 wait_milliseconds = 250);
 
         /// Obtain a list of client 0MQ endpoints
         ///

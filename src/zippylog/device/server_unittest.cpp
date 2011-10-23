@@ -266,7 +266,7 @@ TEST_F(ServerTest, ClientPing)
 
     Client *c = this->GetClient(s);
 
-    EXPECT_TRUE(c->Ping(100000));
+    EXPECT_TRUE(c->Ping(100));
 
     s->StopAsync();
 }

@@ -204,7 +204,7 @@ public:
         pollitem.fd = 0;
         pollitem.revents = 0;
 
-        ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000000))
+        ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000))
             << "Request message sent in orderly manner";
 
         vector<string> identities;
@@ -441,14 +441,14 @@ TEST_F(ClientSendingTest, SynchronousTimeout)
     platform::Time start, end;
     EXPECT_TRUE(platform::TimeNow(start));
 
-    int32 timeout = 50000;
+    int32 timeout = 50;
 
     // it doesn't matter what the timeout is since we have nothing responding
     EXPECT_FALSE(this->client->Ping(timeout)) << "synchronous requests time out";
 
     EXPECT_TRUE(platform::TimeNow(end));
 
-    EXPECT_NEAR(end.epoch_micro, start.epoch_micro, timeout * 2);
+    EXPECT_NEAR(end.epoch_micro, start.epoch_micro, timeout * 2000);
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)

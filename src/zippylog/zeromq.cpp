@@ -212,7 +212,7 @@ int SendEnvelope(socket_t &socket, Envelope &e, bool is_protocol, int flags)
 int SendEnvelope(socket_t &socket, vector<string> const &identities, Envelope &e, bool is_protocol, int flags)
 {
     message_t msg;
-    int initial_flags = ZMQ_SNDMORE | (ZMQ_NOBLOCK & flags);
+    int initial_flags = ZMQ_SNDMORE | (ZMQ_DONTWAIT & flags);
 
     message_t e_msg;
     if (is_protocol) {

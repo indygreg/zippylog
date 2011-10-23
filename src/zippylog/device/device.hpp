@@ -90,9 +90,9 @@ public:
     /// the device breaks its API contract, which may have negative impact on
     /// performance, latency, etc.
     ///
-    /// @param timeout_microseconds How long to wait for work to become
+    /// @param timeout_milliseconds How long to wait for work to become
     /// available before giving up
-    virtual PumpResult Pump(int32 timeout_microseconds) = 0;
+    virtual PumpResult Pump(int32 timeout_milliseconds) = 0;
 
     /// Runs the device forever
     ///

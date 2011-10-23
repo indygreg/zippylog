@@ -102,7 +102,7 @@ bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::s
 /// vector contents.
 ///
 /// Returns true if message(s) received successfully. False if there was an
-/// error or ZMQ_NOBLOCK was set and there were no messages available.
+/// error or ZMQ_DONTWAIT was set and there were no messages available.
 bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::zmq::message_t * > &messages, int flags=0);
 
 // sends a multipart message with identities
@@ -151,7 +151,7 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 /// If the identities list is empty, an empty message will be sent before
 /// the envelope. The send flags for the identities messages and the empty
 /// message always include ZMQ_SNDMORE. The flags for the envelope message
-/// are always from the parameter flags. If the ZMQ_NOBLOCK flag is set, it
+/// are always from the parameter flags. If the ZMQ_DONTWAIT flag is set, it
 /// is set on all message parts.
 int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string >  const &identities, Envelope &e, bool is_protocol, int flags);
 

@@ -139,7 +139,7 @@ bool StoreWriter::ProcessEnvelopeRep()
 StoreWriter::ReceiveResult StoreWriter::ReceiveAndWrite(::zmq::socket_t *sock)
 {
     vector<message_t *> msgs;
-    if (!::zippylog::zeromq::receive_multipart_message(sock, msgs, ZMQ_NOBLOCK)) {
+    if (!::zippylog::zeromq::receive_multipart_message(sock, msgs, ZMQ_DONTWAIT)) {
         return NO_MESSAGES;
     }
 

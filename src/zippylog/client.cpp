@@ -676,7 +676,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
 
     this->outstanding[id] = req;
 
-    platform::Timer timer(timeout);
+    platform::Timer timer(timeout * 1000);
     timer.Start();
 
     bool result = false;
@@ -685,7 +685,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
     // @todo this can be done with fewer system calls
     do {
         // we wait up to 25ms in each iteration
-        this->Pump(25000);
+        this->Pump(25);
 
         // this must mean we processed it
         if (!this->HaveOutstandingRequest(id)) {
@@ -1056,7 +1056,7 @@ void Client::Run(bool *active)
     }
 
     while (*active) {
-        this->Pump(100000);
+        this->Pump(100);
     }
 }
 
