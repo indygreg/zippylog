@@ -180,7 +180,7 @@ public:
 
             string address = "inproc://" + s;
 
-            this->socket = new socket_t(this->ctx, ZMQ_XREP);
+            this->socket = new socket_t(this->ctx, ZMQ_ROUTER);
             this->socket->bind(address.c_str());
 
             this->client = new Client(&this->ctx, address);
