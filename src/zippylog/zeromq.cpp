@@ -39,7 +39,7 @@ bool receive_multipart_message(socket_t * socket, vector<message_t *> &messages,
 
         messages.push_back(msg);
 
-        int64 more;
+        int32 more;
         size_t moresz = sizeof(more);
         socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
 
@@ -81,7 +81,7 @@ bool receive_multipart_message(socket_t * socket, vector<string> &identities, ve
             messages.push_back(msg);
         }
 
-        int64 more;
+        int32 more;
         size_t moresz = sizeof(more);
         socket->getsockopt(ZMQ_RCVMORE, &more, &moresz);
         if (!more) break;
@@ -261,7 +261,7 @@ bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int fl
             container.AddMessage(msg);
         }
 
-        int64 more;
+        int32 more;
         size_t moresz = sizeof(more);
         socket.getsockopt(ZMQ_RCVMORE, &more, &moresz);
         if (!more) break;

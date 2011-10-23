@@ -250,7 +250,7 @@ PumpResult Server::Pump(int32 wait_time)
     // exhaustive, we could easily do that.
 
     zmq::message_t msg;
-    int64 more;
+    int32 more;
     size_t moresz = sizeof(more);
     bool error = false;
 
