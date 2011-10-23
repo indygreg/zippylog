@@ -244,7 +244,7 @@ TEST_F(ServerTest, SimpleMessageProcessing)
     ASSERT_NO_THROW(sock->recv(&msg, 0));
 
     ASSERT_TRUE(msg.size() > 1);
-    int64 more;
+    int32 more;
     size_t moresz = sizeof(more);
     sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
     EXPECT_EQ(0, more);
