@@ -690,7 +690,7 @@ class ZIPPYLOG_EXPORT Client {
         bool ProcessPendingMessage();
 
         /// Processes received response messages
-        bool ProcessResponseMessage(::std::vector< ::zmq::message_t * > &msgs);
+        bool ProcessResponseMessage(::std::vector< ::zmq::message_t * > const &msgs);
 
         /// validates that a received SubscriptionStart message is OK
         /// returns false if we don't know how to handle message fields or if
@@ -701,7 +701,7 @@ class ZIPPYLOG_EXPORT Client {
         bool HandleSubscriptionResponse(Envelope &e, protocol::response::SubscriptionStartV1 &start, ::std::vector< ::zmq::message_t * > &msgs);
 
         /// Handles a response to a normal/outstanding request
-        bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > &msgs);
+        bool HandleRequestResponse(Envelope &e, ::std::vector< ::zmq::message_t * > const &msgs);
 
         /// Returns if we have an outstanding request with the specified id
         bool HaveOutstandingRequest(::std::string &id);

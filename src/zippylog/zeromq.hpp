@@ -77,6 +77,14 @@ public:
     /// lifetime the same as the container's.
     inline ::zmq::message_t * GetMessage(int i) const { return this->messages[i]; }
 
+    /// Obtains all of the payload 0MQ messages in the container
+    ///
+    /// @return vector of messages
+    inline ::std::vector< ::zmq::message_t *> const & GetMessages() const { return this->messages; }
+
+    /// Override subscript operator to return message at offset
+    inline ::zmq::message_t * const operator[](const int index) const { return this->messages[index]; }
+
 protected:
     /// Holds the socket identities
     ::std::vector< ::std::string > identities;
@@ -91,19 +99,6 @@ private:
     MessageContainer(MessageContainer const &orig);
     MessageContainer & operator=(MessageContainer const &orig);
 };
-
-// receives a multipart message from a socket, with identities
-// this is likely used by DEALER/ROUTER sockets
-bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
-
-/// Receives a multipart message into a vector
-///
-/// It is the caller's responsibility to free message_t objects pointed to by
-/// vector contents.
-///
-/// Returns true if message(s) received successfully. False if there was an
-/// error or ZMQ_DONTWAIT was set and there were no messages available.
-bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::zmq::message_t * > &messages, int flags=0);
 
 // sends a multipart message with identities
 bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages, int last_flags=0);
@@ -155,11 +150,26 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 /// is set on all message parts.
 int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string >  const &identities, Envelope &e, bool is_protocol, int flags);
 
+int SendEnvelopes(::zmq::socket_t &socket,
+                  ::std::vector< ::std::string > const &identities,
+                  ::std::vector<Envelope> &envelopes,
+                  bool is_protocol,
+                  int flags);
+
 /// Receives a message on a 0MQ socket
 ///
 /// On success, the message container will be populated with the received
 /// message. The message can be a multipart 0MQ message.
 bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int flags=0);
+
+/// Receives a multi-part message on one socket and sends it to another.
+///
+/// Handles multi-part messages and labels properly.
+///
+/// @param receiver Socket to receive message on
+/// @param sender Socket to send message to
+/// @return bool Whether operation completed without error
+bool TransferMessage(::zmq::socket_t &receiver, ::zmq::socket_t &sender);
 
 }} // end namespaces
 

@@ -26,6 +26,7 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::protocol::response::SubscriptionStartV1;
 using ::zippylog::Store;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::pollitem_t;
@@ -110,9 +111,7 @@ Client::Client(::zmq::context_t *ctx, ::std::string const &endpoint) :
         throw invalid_argument("ctx parameter cannot be NULL");
     }
 
-    this->client_sock = new socket_t(*ctx, ZMQ_DEALER);
-
-    // do we need to set socket identity since we are using DEALER?
+    this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
 
     this->client_sock->connect(endpoint.c_str());
 
@@ -708,26 +707,18 @@ int Client::Pump(int32 timeout)
 
 bool Client::ProcessPendingMessage()
 {
-    vector<message_t *> messages;
-    if (!zeromq::receive_multipart_message(this->client_sock, messages)) {
+    MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*this->client_sock, messages, ZMQ_DONTWAIT)) {
         return false;
     }
 
-    bool result = this->ProcessResponseMessage(messages);
-
-    for (vector<message_t *>::iterator i = messages.begin(); i != messages.end(); i++) {
-        delete *i;
-    }
-
-    return result;
+    return this->ProcessResponseMessage(messages.GetMessages());
 }
 
-bool Client::ProcessResponseMessage(vector<message_t *> &messages)
+bool Client::ProcessResponseMessage(vector<message_t *> const &messages)
 {
     // first message is an empty message. we delete it
-    assert(messages.size() > 1);
-    delete messages[0];
-    messages.erase(messages.begin());
+    assert(messages.size() > 0);
 
     Envelope e(*messages[0], 1);
 
@@ -756,8 +747,12 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
                 return false;
             }
 
-            messages.pop_back();
-            return this->HandleSubscriptionResponse(e, *start, messages);
+            vector<message_t *> copy;
+            for (vector<message_t *>::size_type i = 1; i < messages.size(); i++) {
+                copy.push_back(messages[i]);
+            }
+
+            return this->HandleSubscriptionResponse(e, *start, copy);
             break;
         }
 
@@ -880,7 +875,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStartV1 &start,
     return true;
 }
 
-bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
+bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> const &messages)
 {
     // all requests are tagged with a request identifier, so ignore any responses
     // not for a known tag

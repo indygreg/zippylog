@@ -36,6 +36,7 @@ using ::zippylog::device::ServerStartParams;
 using ::zippylog::Store;
 using ::zippylog::platform::ConditionalWait;
 using ::zippylog::platform::UUID;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -163,11 +164,6 @@ public:
             delete this->socket;
             this->socket = NULL;
         }
-
-        for (size_t i = 0; i < this->messages.size(); i++) {
-            delete this->messages[i];
-            this->messages[i] = NULL;
-        }
     }
 
     Client * GetClient() {
@@ -180,7 +176,7 @@ public:
 
             string address = "inproc://" + s;
 
-            this->socket = new socket_t(this->ctx, ZMQ_ROUTER);
+            this->socket = new socket_t(this->ctx, ZMQ_XREP);
             this->socket->bind(address.c_str());
 
             this->client = new Client(&this->ctx, address);
@@ -207,15 +203,14 @@ public:
         ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000))
             << "Request message sent in orderly manner";
 
-        vector<string> identities;
+        MessageContainer messages;
+        ASSERT_TRUE(zeromq::ReceiveMessage(*this->socket, messages));
 
-        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
-
-        ASSERT_EQ(1, identities.size()) << "client sent identities as part of request";
-        ASSERT_EQ(1, this->messages.size()) << "client sent 1 message with content";
+        ASSERT_EQ(1, messages.IdentitiesSize()) << "client sent identities as part of request";
+        ASSERT_EQ(1, messages.MessagesSize()) << "client sent 1 message with content";
 
         message_t msg;
-        msg.copy(this->messages[0]);
+        msg.copy(messages[0]);
 
         ASSERT_GT(msg.size(), 1) << "sent message has content";
 
@@ -241,23 +236,16 @@ public:
         EXPECT_TRUE(sent->SerializeToString(&serialized_actual));
 
         EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
-
-        for (size_t i = 0; i < this->messages.size(); i++) {
-            delete this->messages[i];
-            this->messages[i] = NULL;
-        }
-
-        this->messages.clear();
     }
 
     /// Helper to respond to a subscription request message
     void RespondToSubscriptionRequest(string const &)
     {
-        vector<string> identities;
-        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
+        MessageContainer messages;
+        ASSERT_TRUE(zeromq::ReceiveMessage(*this->socket, messages));
 
         message_t msg;
-        msg.copy(this->messages[0]);
+        msg.copy(messages[0]);
 
         Envelope request(msg, 1);
 
@@ -272,13 +260,12 @@ public:
 
         ack.add_to_envelope(response);
 
-        zeromq::SendEnvelope(*this->socket, identities, response, true, 0);
+        zeromq::SendEnvelope(*this->socket, messages.GetIdentities(), response, true, 0);
     }
 
 protected:
     Client *client;
     socket_t *socket;
-    vector<message_t *> messages;
 };
 
 TEST_F(ClientTest, StartParamValidation)
