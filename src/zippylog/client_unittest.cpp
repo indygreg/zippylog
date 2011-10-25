@@ -36,6 +36,7 @@ using ::zippylog::device::ServerStartParams;
 using ::zippylog::Store;
 using ::zippylog::platform::ConditionalWait;
 using ::zippylog::platform::UUID;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::socket_t;
@@ -163,11 +164,6 @@ public:
             delete this->socket;
             this->socket = NULL;
         }
-
-        for (size_t i = 0; i < this->messages.size(); i++) {
-            delete this->messages[i];
-            this->messages[i] = NULL;
-        }
     }
 
     Client * GetClient() {
@@ -204,18 +200,17 @@ public:
         pollitem.fd = 0;
         pollitem.revents = 0;
 
-        ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000000))
+        ASSERT_EQ(1, ::zmq::poll(&pollitem, 1, 1000))
             << "Request message sent in orderly manner";
 
-        vector<string> identities;
+        MessageContainer messages;
+        ASSERT_TRUE(zeromq::ReceiveMessage(*this->socket, messages));
 
-        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
-
-        ASSERT_EQ(1, identities.size()) << "client sent identities as part of request";
-        ASSERT_EQ(1, this->messages.size()) << "client sent 1 message with content";
+        ASSERT_EQ(1, messages.IdentitiesSize()) << "client sent identities as part of request";
+        ASSERT_EQ(1, messages.MessagesSize()) << "client sent 1 message with content";
 
         message_t msg;
-        msg.copy(this->messages[0]);
+        msg.copy(messages[0]);
 
         ASSERT_GT(msg.size(), 1) << "sent message has content";
 
@@ -241,23 +236,16 @@ public:
         EXPECT_TRUE(sent->SerializeToString(&serialized_actual));
 
         EXPECT_EQ(serialized_expected, serialized_actual) << "sent request message matches expected";
-
-        for (size_t i = 0; i < this->messages.size(); i++) {
-            delete this->messages[i];
-            this->messages[i] = NULL;
-        }
-
-        this->messages.clear();
     }
 
     /// Helper to respond to a subscription request message
     void RespondToSubscriptionRequest(string const &)
     {
-        vector<string> identities;
-        ASSERT_TRUE(::zippylog::zeromq::receive_multipart_message(this->socket, identities, this->messages));
+        MessageContainer messages;
+        ASSERT_TRUE(zeromq::ReceiveMessage(*this->socket, messages));
 
         message_t msg;
-        msg.copy(this->messages[0]);
+        msg.copy(messages[0]);
 
         Envelope request(msg, 1);
 
@@ -272,13 +260,12 @@ public:
 
         ack.add_to_envelope(response);
 
-        zeromq::SendEnvelope(*this->socket, identities, response, true, 0);
+        zeromq::SendEnvelope(*this->socket, messages.GetIdentities(), response, true, 0);
     }
 
 protected:
     Client *client;
     socket_t *socket;
-    vector<message_t *> messages;
 };
 
 TEST_F(ClientTest, StartParamValidation)
@@ -307,7 +294,7 @@ TEST_F(ClientSendingTest, Ping)
 
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
-    EXPECT_FALSE(this->client->Ping(10000));
+    EXPECT_FALSE(this->client->Ping(10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -320,7 +307,7 @@ TEST_F(ClientSendingTest, GetFeatures)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::response::FeatureSpecificationV1 f;
-    EXPECT_FALSE(this->client->GetFeatures(f, 10000));
+    EXPECT_FALSE(this->client->GetFeatures(f, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -333,7 +320,7 @@ TEST_F(ClientSendingTest, GetStoreInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StoreInfoV1 si;
-    EXPECT_FALSE(this->client->GetStoreInfo(si, 10000));
+    EXPECT_FALSE(this->client->GetStoreInfo(si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -349,7 +336,7 @@ TEST_F(ClientSendingTest, GetBucketInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::BucketInfoV1 bi;
-    EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10000));
+    EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -365,7 +352,7 @@ TEST_F(ClientSendingTest, GetStreamSetInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StreamSetInfoV1 si;
-    EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10000));
+    EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -381,7 +368,7 @@ TEST_F(ClientSendingTest, GetStreamInfo)
     this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
 
     protocol::StreamInfoV1 si;
-    EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10000));
+    EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -426,13 +413,13 @@ TEST_F(ClientSendingTest, SubscribeStoreChanges)
     SubscriptionCallbackInfo cbi;
     SubscriptionRequestResult result;
 
-    EXPECT_FALSE(this->client->SubscribeStoreChanges(cbi, result, 10000));
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(cbi, result, 10));
 
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     m.add_path(path);
 
-    EXPECT_FALSE(this->client->SubscribeStoreChanges(path, cbi, result, 10000));
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(path, cbi, result, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -441,14 +428,14 @@ TEST_F(ClientSendingTest, SynchronousTimeout)
     platform::Time start, end;
     EXPECT_TRUE(platform::TimeNow(start));
 
-    int32 timeout = 50000;
+    int32 timeout = 50;
 
     // it doesn't matter what the timeout is since we have nothing responding
     EXPECT_FALSE(this->client->Ping(timeout)) << "synchronous requests time out";
 
     EXPECT_TRUE(platform::TimeNow(end));
 
-    EXPECT_NEAR(end.epoch_micro, start.epoch_micro, timeout * 2);
+    EXPECT_NEAR(end.epoch_micro, start.epoch_micro, timeout * 2000);
 }
 
 TEST_F(ClientTest, StoreInfoSynchronous)
@@ -478,7 +465,7 @@ TEST_F(ClientTest, GetSynchronous)
     Client c(this->GetContext(), endpoint);
 
     StreamSegment segment;
-    ASSERT_TRUE(c.GetStreamSegment("/A/B/2010-11-26-07", 0, segment, 5000000));
+    ASSERT_TRUE(c.GetStreamSegment("/A/B/2010-11-26-07", 0, segment, 5000));
 
     EXPECT_EQ(segment.EnvelopesSent, segment.Envelopes.size());
     EXPECT_EQ(160, segment.EnvelopesSent);

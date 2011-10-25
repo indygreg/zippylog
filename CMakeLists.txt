@@ -52,7 +52,7 @@ include_directories(${LUA_INCLUDE_DIR})
 
 # ZeroMQ
 # TODO should find ZeroMQ properly
-include_directories(external/zeromq/include)
+include_directories(external/zeromq/include external/cppzmq)
 find_library(ZEROMQ_LIBRARY zmq HINTS external/zeromq/src/.libs)
 
 # Misc

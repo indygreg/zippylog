@@ -61,7 +61,7 @@ using ::zmq::socket_t;
     msgvar.set_id(this->id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
-    zeromq::send_envelope(this->log_client_sock, logenvelope); \
+    zeromq::SendEnvelope(this->log_client_sock, logenvelope, false, ZMQ_DONTWAIT); \
 }
 
 #define CLIENT_INDEX 0
@@ -82,7 +82,7 @@ Server::Server(ServerStartParams &params) :
     log_bucket(params.log_bucket),
     log_stream_set(params.log_stream_set),
     write_logs(false),
-    stream_flush_interval(params.stream_flush_interval),
+    stream_flush_interval(params.stream_flush_interval * 1000),
     lua_execute_client_code(params.lua_execute_client_code),
     lua_streaming_max_memory(params.lua_streaming_max_memory),
     store(NULL),
@@ -250,7 +250,7 @@ PumpResult Server::Pump(int32 wait_time)
     // exhaustive, we could easily do that.
 
     zmq::message_t msg;
-    int64 more;
+    int32 more;
     size_t moresz = sizeof(more);
     bool error = false;
 
@@ -287,133 +287,50 @@ PumpResult Server::Pump(int32 wait_time)
 
     // move ALL worker responses to client
     else if (pollitems[WORKER_INDEX].revents & ZMQ_POLLIN) {
-        while (true) {
-            if (!this->workers_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->workers_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
+        if (zeromq::TransferMessage(*this->workers_sock, *this->clients_sock)) {
             work_done = true;
-
-            if (!more) break;
+            SendClientMessage log;
+            LOG_MESSAGE(log);
         }
-
-        SendClientMessage log;
-        LOG_MESSAGE(log);
     }
 
     // move streaming messages to client
     else if (pollitems[STREAMING_INDEX].revents & ZMQ_POLLIN) {
-        while (true) {
-            if (!this->streaming_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->streaming_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->clients_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
+        if (zeromq::TransferMessage(*this->streaming_sock, *this->clients_sock)) {
             work_done = true;
-
-            if (!more) break;
+            SendClientMessage log;
+            LOG_MESSAGE(log);
         }
-
-        SendClientMessage log;
-        LOG_MESSAGE(log);
     }
 
     // move subscriptions requests to streamer
     else if (pollitems[WORKER_SUBSCRIPTIONS_INDEX].revents & ZMQ_POLLIN) {
-        while (true) {
-            if (!this->worker_subscriptions_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->worker_subscriptions_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->streaming_subscriptions_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
+        if (zeromq::TransferMessage(*this->worker_subscriptions_sock, *this->streaming_subscriptions_sock)) {
             work_done = true;
-
-            if (!more) break;
         }
     }
 
     // move store changes to all subscribed parties
     else if (pollitems[STORE_CHANGES_INPUT_INDEX].revents & ZMQ_POLLIN) {
-        while(true) {
-            if (!this->store_changes_input_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->store_changes_input_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->store_changes_output_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
+        if (zeromq::TransferMessage(*this->store_changes_input_sock, *this->store_changes_output_sock)) {
             work_done = true;
-
-            if (!more) break;
         }
     }
 
     // move subscription general messages to all streamers
     else if (pollitems[STREAMING_NOTIFY_INDEX].revents & ZMQ_POLLIN) {
-        while (true) {
-            if (!this->worker_streaming_notify_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->worker_streaming_notify_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->streaming_streaming_notify_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
-            work_done = true;
-
-            if (!more) break;
-        }
+        work_done = zeromq::TransferMessage(*this->worker_streaming_notify_sock, *this->streaming_streaming_notify_sock);
     }
 
     // forward client stream requests to streaming thread pool
 
     // send client requests to workers
     else if (pollitems[CLIENT_INDEX].revents & ZMQ_POLLIN) {
-        while (true) {
-            if (!this->clients_sock->recv(&msg, 0)) {
-                error = true;
-                break;
-            }
-
-            moresz = sizeof(more);
-            this->clients_sock->getsockopt(ZMQ_RCVMORE, &more, &moresz);
-            if (!this->workers_sock->send(msg, more ? ZMQ_SNDMORE : 0)) {
-                error = true;
-                break;
-            }
+        if (zeromq::TransferMessage(*this->clients_sock, *this->workers_sock)) {
             work_done = true;
-
-            if (!more) break;
+            ReceiveClientMessage log;
+            LOG_MESSAGE(log);
         }
-
-        ReceiveClientMessage log;
-        LOG_MESSAGE(log);
     }
 
     if (error) return PumpResult::MakeError();
@@ -440,7 +357,7 @@ bool Server::Start()
     this->log_client_sock = new socket_t(*this->zctx, ZMQ_PUSH);
     this->log_client_sock->connect(this->logger_endpoint.c_str());
 
-    this->workers_sock = new socket_t(*this->zctx, ZMQ_DEALER);
+    this->workers_sock = new socket_t(*this->zctx, ZMQ_XREQ);
     this->workers_sock->bind(this->worker_endpoint.c_str());
 
     this->streaming_sock = new socket_t(*this->zctx, ZMQ_PULL);
@@ -504,7 +421,7 @@ bool Server::Start()
     }
 
     // bind sockets to listen for client requests
-    this->clients_sock = new socket_t(*this->zctx, ZMQ_ROUTER);
+    this->clients_sock = new socket_t(*this->zctx, ZMQ_XREP);
 
     // 0MQ sockets can bind to multiple endpoints
     // how AWESOME is that?

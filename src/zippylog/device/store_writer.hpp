@@ -97,9 +97,9 @@ public:
     ///
     /// The timeout parameter is passed into zmq_poll(). If messages are
     /// available, will process immediately. Else, it will block for up to
-    /// the specified number of microseconds before giving up.
+    /// the specified number of milliseconds before giving up.
     ///
-    /// @param timeout Maximum microseconds we should wait for messages
+    /// @param timeout Maximum milliseconds we should wait for messages
     ::zippylog::device::PumpResult Pump(int32 timeout = 0);
 
 protected:

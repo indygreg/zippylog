@@ -27,7 +27,7 @@ namespace zippylog {
     msgvar.set_id(this->id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
-    zeromq::send_envelope(socketvar, logenvelope); \
+    zeromq::SendEnvelope(*socketvar, logenvelope, false, 0); \
 }
 
 /// This handy macro obtains the index'th message of an envelope and stores
@@ -278,7 +278,7 @@ RequestProcessor::RequestProcessor(RequestProcessorStartParams &params) :
     this->logger_sock = new socket_t(*this->ctx, ZMQ_PUSH);
     this->logger_sock->connect(this->logger_endpoint.c_str());
 
-    this->socket = new socket_t(*this->ctx, ZMQ_ROUTER);
+    this->socket = new socket_t(*this->ctx, ZMQ_XREP);
     this->socket->connect(this->client_endpoint.c_str());
 
     ::zippylog::request_processor::Create log = ::zippylog::request_processor::Create();

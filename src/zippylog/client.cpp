@@ -26,6 +26,7 @@ using ::std::string;
 using ::std::vector;
 using ::zippylog::protocol::response::SubscriptionStartV1;
 using ::zippylog::Store;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::context_t;
 using ::zmq::message_t;
 using ::zmq::pollitem_t;
@@ -110,9 +111,7 @@ Client::Client(::zmq::context_t *ctx, ::std::string const &endpoint) :
         throw invalid_argument("ctx parameter cannot be NULL");
     }
 
-    this->client_sock = new socket_t(*ctx, ZMQ_DEALER);
-
-    // do we need to set socket identity since we are using DEALER?
+    this->client_sock = new socket_t(*ctx, ZMQ_XREQ);
 
     this->client_sock->connect(endpoint.c_str());
 
@@ -676,7 +675,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
 
     this->outstanding[id] = req;
 
-    platform::Timer timer(timeout);
+    platform::Timer timer(timeout * 1000);
     timer.Start();
 
     bool result = false;
@@ -685,7 +684,7 @@ bool Client::SendAndProcessSynchronousRequest(Envelope &e, OutstandingRequest &r
     // @todo this can be done with fewer system calls
     do {
         // we wait up to 25ms in each iteration
-        this->Pump(25000);
+        this->Pump(25);
 
         // this must mean we processed it
         if (!this->HaveOutstandingRequest(id)) {
@@ -708,26 +707,18 @@ int Client::Pump(int32 timeout)
 
 bool Client::ProcessPendingMessage()
 {
-    vector<message_t *> messages;
-    if (!zeromq::receive_multipart_message(this->client_sock, messages)) {
+    MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*this->client_sock, messages, ZMQ_DONTWAIT)) {
         return false;
     }
 
-    bool result = this->ProcessResponseMessage(messages);
-
-    for (vector<message_t *>::iterator i = messages.begin(); i != messages.end(); i++) {
-        delete *i;
-    }
-
-    return result;
+    return this->ProcessResponseMessage(messages.GetMessages());
 }
 
-bool Client::ProcessResponseMessage(vector<message_t *> &messages)
+bool Client::ProcessResponseMessage(vector<message_t *> const &messages)
 {
     // first message is an empty message. we delete it
-    assert(messages.size() > 1);
-    delete messages[0];
-    messages.erase(messages.begin());
+    assert(messages.size() > 0);
 
     Envelope e(*messages[0], 1);
 
@@ -756,8 +747,12 @@ bool Client::ProcessResponseMessage(vector<message_t *> &messages)
                 return false;
             }
 
-            messages.pop_back();
-            return this->HandleSubscriptionResponse(e, *start, messages);
+            vector<message_t *> copy;
+            for (vector<message_t *>::size_type i = 1; i < messages.size(); i++) {
+                copy.push_back(messages[i]);
+            }
+
+            return this->HandleSubscriptionResponse(e, *start, copy);
             break;
         }
 
@@ -880,7 +875,7 @@ bool Client::HandleSubscriptionResponse(Envelope &e, SubscriptionStartV1 &start,
     return true;
 }
 
-bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
+bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> const &messages)
 {
     // all requests are tagged with a request identifier, so ignore any responses
     // not for a known tag
@@ -968,9 +963,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetPath(start->path());
             segment.SetStartOffset(start->offset());
 
-            void * start_addr = (void *)((const char *)(messages[messages.size()-1]->data()) + 1);
-
-            Envelope footer(start_addr, messages[messages.size()-1]->size() - 1);
+            Envelope footer(*messages[messages.size()-1], 1);
 
             protocol::response::StreamSegmentEndV1 *end =
                 (protocol::response::StreamSegmentEndV1 *)footer.GetMessage(0);
@@ -980,8 +973,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> &messages)
             segment.SetEnvelopesSent(end->envelopes_sent());
 
             for (size_t i = 1; i < messages.size() - 2; i++) {
-                start_addr = (void *)((const char *)(messages[i]->data()) + 1);
-                Envelope payload(start_addr, messages[i]->size() - 1);
+                Envelope payload(*messages[i], 1);
                 segment.AddEnvelope(payload);
             }
 
@@ -1039,7 +1031,7 @@ bool Client::RenewSubscriptions(bool force)
     Envelope e = Envelope();
     msg.add_to_envelope(&e);
 
-    return zeromq::send_envelope_dealer(this->client_sock, e);
+    return zeromq::SendEnvelope(*this->client_sock, e, true, 0);
 }
 
 bool Client::HaveOutstandingRequest(string &id)
@@ -1056,7 +1048,7 @@ void Client::Run(bool *active)
     }
 
     while (*active) {
-        this->Pump(100000);
+        this->Pump(100);
     }
 }
 

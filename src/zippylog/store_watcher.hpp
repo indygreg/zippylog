@@ -69,7 +69,7 @@ public:
     /// Performs work
     ///
     /// @param timeout
-    ::zippylog::device::PumpResult Pump(int32 timeout = 100000);
+    ::zippylog::device::PumpResult Pump(int32 timeout = 100);
 
     ///@{
     /// Device hooks

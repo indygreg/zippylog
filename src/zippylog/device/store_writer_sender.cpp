@@ -23,6 +23,7 @@ namespace device {
 
 using ::std::string;
 using ::std::vector;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::message_t;
 
 StoreWriterSender::StoreWriterSender(StoreWriterSenderStartParams &params) :
@@ -67,11 +68,10 @@ bool StoreWriterSender::DeliverEnvelope(string const &bucket, string const &set,
     if (!this->envelope_pull_sock)
         throw Exception("can not deliver envelopes since the pull socket is not configured");
 
-    vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);
-    preceding.push_back(path);
 
-    return ::zippylog::zeromq::send_envelope_with_preceding(this->envelope_pull_sock, preceding, e);
+    if (!this->envelope_pull_sock->send(path.data(), path.length(), ZMQ_SNDMORE)) return false;
+    return zeromq::SendEnvelope(*this->envelope_pull_sock, e, false, 0);
 }
 
 bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, ::zippylog::Envelope &e)
@@ -79,33 +79,27 @@ bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, :
     if (!this->envelope_rep_sock)
         throw Exception("can not deliver envelopes since the rep sock is not configured");
 
-    vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);
-    preceding.push_back(path);
-
-    if (!::zippylog::zeromq::send_envelope_with_preceding(this->envelope_rep_sock, preceding, e)) {
-        // @todo we might want to reconnect the socket in case the FSM is messed up
+    /// @todo we might want to reconnect the socket in case the FSM is messed up
+    if (!this->envelope_rep_sock->send(path.data(), path.size(), ZMQ_SNDMORE)) {
+        return false;
+    }
+    if (!zeromq::SendEnvelope(*this->envelope_rep_sock, e, false, 0)) {
         return false;
     }
 
     // now wait for the reply
-    vector<message_t *> msgs;
-    if (!::zippylog::zeromq::receive_multipart_message(this->envelope_rep_sock, msgs)) {
-        // @todo recover socket
+    MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*this->envelope_rep_sock, messages)) {
+        /// @todo recover socket
         return false;
     }
 
-    bool result = true;
-
-    if (msgs.size() < 1 || msgs[0]->size() != 0 || msgs.size() > 1) {
-        result = false;
+    if (messages.MessagesSize() < 1 || messages.GetMessage(0)->size() != 0 || messages.MessagesSize() > 1) {
+        return false;
     }
 
-    for (vector<message_t *>::iterator i = msgs.begin(); i != msgs.end(); i++) {
-        delete *i;
-    }
-
-    return result;
+    return true;
 }
 
 }} // namespaces

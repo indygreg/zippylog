@@ -88,7 +88,7 @@ public:
     /// Performs work on the device if there is work to be done
     ///
     /// Waits up to the specified time for work to become available, if none is available
-    ::zippylog::device::PumpResult Pump(int32 timeout_microseconds);
+    ::zippylog::device::PumpResult Pump(int32 timeout_milliseconds);
 protected:
 
     ///@{

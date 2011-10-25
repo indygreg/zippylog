@@ -88,7 +88,7 @@ void Device::Run()
 
     while (!this->cw->Wait(0)) {
         /// @todo timeout should come from configuration
-        this->Pump(10000);
+        this->Pump(10);
     }
 
     this->OnRunFinish();

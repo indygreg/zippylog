@@ -77,6 +77,14 @@ public:
     /// lifetime the same as the container's.
     inline ::zmq::message_t * GetMessage(int i) const { return this->messages[i]; }
 
+    /// Obtains all of the payload 0MQ messages in the container
+    ///
+    /// @return vector of messages
+    inline ::std::vector< ::zmq::message_t *> const & GetMessages() const { return this->messages; }
+
+    /// Override subscriptor operator to return message at offset
+    inline ::zmq::message_t * operator[](const int index) const { return this->messages[index]; }
+
 protected:
     /// Holds the socket identities
     ::std::vector< ::std::string > identities;
@@ -92,48 +100,6 @@ private:
     MessageContainer & operator=(MessageContainer const &orig);
 };
 
-// receives a multipart message from a socket, with identities
-// this is likely used by DEALER/ROUTER sockets
-bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages);
-
-/// Receives a multipart message into a vector
-///
-/// It is the caller's responsibility to free message_t objects pointed to by
-/// vector contents.
-///
-/// Returns true if message(s) received successfully. False if there was an
-/// error or ZMQ_NOBLOCK was set and there were no messages available.
-bool receive_multipart_message(::zmq::socket_t * socket, ::std::vector< ::zmq::message_t * > &messages, int flags=0);
-
-// sends a multipart message with identities
-bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages, int last_flags=0);
-
-bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string> &identities, ::zmq::message_t *message, int last_flags=0);
-
-// sends a multipart message with the last message having ZMQ_SNDMORE
-bool send_multipart_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::zmq::message_t &msg);
-
-/// Sends an envelope with messages coming before
-///
-/// This should really be called send_envelope() and those should have "with_identities_
-/// but that would break backwards compatibility.
-/// @todo break backwards compatibility someday
-bool send_envelope_with_preceding(::zmq::socket_t *, ::std::vector< ::std::string > &preceding, Envelope &envelope, int flags=0);
-
-bool send_envelope(::zmq::socket_t *socket, Envelope &envelope, int flags=0);
-bool send_envelope(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope, int flags=0);
-
-// sends multiple envelopes with identities as part of a multipart message
-bool send_envelopes(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::std::vector<Envelope> &envelopes);
-
-// sends an envelope with ZMQ_SNDMORE flag
-bool send_envelope_more(::zmq::socket_t *socket, Envelope &envelope);
-bool send_envelope_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope);
-
-// sends an envelope, but from an DEALER socket
-// this inserts an empty message part to cover the missing identity message
-bool send_envelope_dealer(::zmq::socket_t *socket, Envelope &envelope);
-
 /// Sends an envelope over a socket
 ///
 /// @param socket Socket to send over
@@ -145,21 +111,76 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 
 /// Sends an envelope over a socket with message identities
 ///
-/// This is a convenience method to sends an envelope over an DEALER/ROUTER socket
+/// This is a convenience method to sends an envelope over an XREQ/XREP socket
 /// with message identities.
 ///
-/// If the identities list is empty, an empty message will be sent before
-/// the envelope. The send flags for the identities messages and the empty
-/// message always include ZMQ_SNDMORE. The flags for the envelope message
-/// are always from the parameter flags. If the ZMQ_NOBLOCK flag is set, it
+/// The identities will be sent as message lebels. The flags for the envelope
+/// message are always from the parameter flags. If the ZMQ_DONTWAIT flag is set, it
 /// is set on all message parts.
-int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string >  const &identities, Envelope &e, bool is_protocol, int flags);
+int SendEnvelope(::zmq::socket_t &socket,
+                 ::std::vector< ::std::string >  const &identities,
+                 Envelope &e,
+                 bool is_protocol,
+                 int flags);
+
+/// Sends an envelope over a socket with identities
+///
+/// This is an overloaded version of the above to support socket pointers, not
+/// references.
+inline int SendEnvelope(::zmq::socket_t * const socket,
+                 ::std::vector< ::std::string > const &identities,
+                 Envelope &e,
+                 bool is_protocol,
+                 int flags)
+{
+    return SendEnvelope(*socket, identities, e, is_protocol, flags);
+}
+
+/// Sends an envelope over a socket
+///
+/// @param socket Socket to send envelope on
+/// @param e Envelope to send over socket
+/// @param is_protocol Whether to serialize the envelope as a zippylog protocol message
+/// @param flags 0MQ send flags
+inline int SendEnvelope(::zmq::socket_t * const socket,
+                        Envelope &e,
+                        bool is_protocol,
+                        int flags)
+{
+    ::std::vector< ::std::string > i;
+    return SendEnvelope(*socket, i, e, is_protocol, flags);
+}
+
+/// Sends multiple envelopes over a socket with identities
+///
+/// This will send a single mutli-part 0MQ message. The specified identities
+/// will be sent as message labels.
+///
+/// @param socket Socket to send data over
+/// @param identities Identities for message routing
+/// @param envelopes Envelopes to send over the socket
+/// @param is_protocol Whether to serialize the envelopes as zippylog protocol messages
+/// @param flags 0MQ send flags
+int SendEnvelopes(::zmq::socket_t &socket,
+                  ::std::vector< ::std::string > const &identities,
+                  ::std::vector<Envelope> &envelopes,
+                  bool is_protocol,
+                  int flags);
 
 /// Receives a message on a 0MQ socket
 ///
 /// On success, the message container will be populated with the received
 /// message. The message can be a multipart 0MQ message.
 bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int flags=0);
+
+/// Receives a multi-part message on one socket and sends it to another.
+///
+/// Handles multi-part messages and labels properly.
+///
+/// @param receiver Socket to receive message on
+/// @param sender Socket to send message to
+/// @return bool Whether operation completed without error
+bool TransferMessage(::zmq::socket_t &receiver, ::zmq::socket_t &sender);
 
 }} // end namespaces
 

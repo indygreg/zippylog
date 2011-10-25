@@ -182,11 +182,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\decoder.cpp"
+				RelativePath="..\external\zeromq\src\dealer.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\device.cpp"
+				RelativePath="..\external\zeromq\src\decoder.cpp"
 				>
 			</File>
 			<File
@@ -235,6 +235,14 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\src\mailbox.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\external\zeromq\src\msg.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\external\zeromq\src\mtrie.cpp"
 				>
 			</File>
 			<File
@@ -294,6 +302,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\external\zeromq\src\random.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\external\zeromq\src\reaper.cpp"
 				>
 			</File>
@@ -303,6 +315,10 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\src\req.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\external\zeromq\src\router.cpp"
 				>
 			</File>
 			<File
@@ -323,10 +339,6 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\src\sub.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\external\zeromq\src\swap.cpp"
 				>
 			</File>
 			<File
@@ -393,6 +405,10 @@
 				RelativePath="..\external\zeromq\src\zmq_listener.cpp"
 				>
 			</File>
+			<File
+				RelativePath="..\external\zeromq\src\zmq_utils.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -436,11 +452,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\decoder.hpp"
+				RelativePath="..\external\zeromq\src\dealer.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\device.hpp"
+				RelativePath="..\external\zeromq\src\decoder.hpp"
 				>
 			</File>
 			<File
@@ -476,10 +492,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\i_inout.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\external\zeromq\src\i_poll_events.hpp"
 				>
 			</File>
@@ -512,7 +524,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\external\zeromq\src\msg_content.hpp"
+				RelativePath="..\external\zeromq\src\msg.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\external\zeromq\src\mtrie.hpp"
 				>
 			</File>
 			<File
@@ -584,6 +600,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\external\zeromq\src\random.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\external\zeromq\src\reaper.hpp"
 				>
 			</File>
@@ -593,6 +613,10 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\src\req.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\external\zeromq\src\router.hpp"
 				>
 			</File>
 			<File
@@ -621,10 +645,6 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\src\sub.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\external\zeromq\src\swap.hpp"
 				>
 			</File>
 			<File
@@ -689,10 +709,6 @@
 			</File>
 			<File
 				RelativePath="..\external\zeromq\include\zmq.h"
-				>
-			</File>
-			<File
-				RelativePath="..\external\zeromq\include\zmq.hpp"
 				>
 			</File>
 			<File
