@@ -963,9 +963,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> const &messa
             segment.SetPath(start->path());
             segment.SetStartOffset(start->offset());
 
-            void * start_addr = (void *)((const char *)(messages[messages.size()-1]->data()) + 1);
-
-            Envelope footer(start_addr, messages[messages.size()-1]->size() - 1);
+            Envelope footer(*messages[messages.size()-1], 1);
 
             protocol::response::StreamSegmentEndV1 *end =
                 (protocol::response::StreamSegmentEndV1 *)footer.GetMessage(0);
@@ -975,8 +973,7 @@ bool Client::HandleRequestResponse(Envelope &e, vector<message_t *> const &messa
             segment.SetEnvelopesSent(end->envelopes_sent());
 
             for (size_t i = 1; i < messages.size() - 2; i++) {
-                start_addr = (void *)((const char *)(messages[i]->data()) + 1);
-                Envelope payload(start_addr, messages[i]->size() - 1);
+                Envelope payload(*messages[i], 1);
                 segment.AddEnvelope(payload);
             }
 
