@@ -294,7 +294,7 @@ TEST_F(ClientSendingTest, Ping)
 
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
-    EXPECT_FALSE(this->client->Ping(10000));
+    EXPECT_FALSE(this->client->Ping(10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -307,7 +307,7 @@ TEST_F(ClientSendingTest, GetFeatures)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::response::FeatureSpecificationV1 f;
-    EXPECT_FALSE(this->client->GetFeatures(f, 10000));
+    EXPECT_FALSE(this->client->GetFeatures(f, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -320,7 +320,7 @@ TEST_F(ClientSendingTest, GetStoreInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StoreInfoV1 si;
-    EXPECT_FALSE(this->client->GetStoreInfo(si, 10000));
+    EXPECT_FALSE(this->client->GetStoreInfo(si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -336,7 +336,7 @@ TEST_F(ClientSendingTest, GetBucketInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::BucketInfoV1 bi;
-    EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10000));
+    EXPECT_FALSE(this->client->GetBucketInfo(path, bi, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -352,7 +352,7 @@ TEST_F(ClientSendingTest, GetStreamSetInfo)
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     protocol::StreamSetInfoV1 si;
-    EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10000));
+    EXPECT_FALSE(this->client->GetStreamSetInfo(path, si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -368,7 +368,7 @@ TEST_F(ClientSendingTest, GetStreamInfo)
     this->ExpectRequestMessage(protocol::request::GetStreamInfoV1::zippylog_enumeration, m);
 
     protocol::StreamInfoV1 si;
-    EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10000));
+    EXPECT_FALSE(this->client->GetStreamInfo(path, si, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
@@ -413,13 +413,13 @@ TEST_F(ClientSendingTest, SubscribeStoreChanges)
     SubscriptionCallbackInfo cbi;
     SubscriptionRequestResult result;
 
-    EXPECT_FALSE(this->client->SubscribeStoreChanges(cbi, result, 10000));
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(cbi, result, 10));
 
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 
     m.add_path(path);
 
-    EXPECT_FALSE(this->client->SubscribeStoreChanges(path, cbi, result, 10000));
+    EXPECT_FALSE(this->client->SubscribeStoreChanges(path, cbi, result, 10));
     this->ExpectRequestMessage(m.zippylog_enumeration, m);
 }
 
