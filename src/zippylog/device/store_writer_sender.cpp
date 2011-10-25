@@ -23,6 +23,7 @@ namespace device {
 
 using ::std::string;
 using ::std::vector;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::message_t;
 
 StoreWriterSender::StoreWriterSender(StoreWriterSenderStartParams &params) :
@@ -89,23 +90,17 @@ bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, :
     }
 
     // now wait for the reply
-    vector<message_t *> msgs;
-    if (!::zippylog::zeromq::receive_multipart_message(this->envelope_rep_sock, msgs)) {
-        // @todo recover socket
+    MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*this->envelope_rep_sock, messages)) {
+        /// @todo recover socket
         return false;
     }
 
-    bool result = true;
-
-    if (msgs.size() < 1 || msgs[0]->size() != 0 || msgs.size() > 1) {
-        result = false;
+    if (messages.MessagesSize() < 1 || messages.GetMessage(0)->size() != 0 || messages.MessagesSize() > 1) {
+        return false;
     }
 
-    for (vector<message_t *>::iterator i = msgs.begin(); i != msgs.end(); i++) {
-        delete *i;
-    }
-
-    return result;
+    return true;
 }
 
 }} // namespaces

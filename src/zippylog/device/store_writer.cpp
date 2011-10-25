@@ -23,6 +23,7 @@ namespace device {
 using ::std::string;
 using ::std::vector;
 using ::zippylog::device::PumpResult;
+using ::zippylog::zeromq::MessageContainer;
 using ::zmq::message_t;
 
 StoreWriter::StoreWriter(StoreWriterStartParams &params) :
@@ -138,53 +139,43 @@ bool StoreWriter::ProcessEnvelopeRep()
 
 StoreWriter::ReceiveResult StoreWriter::ReceiveAndWrite(::zmq::socket_t *sock)
 {
-    vector<message_t *> msgs;
-    if (!::zippylog::zeromq::receive_multipart_message(sock, msgs, ZMQ_DONTWAIT)) {
+    MessageContainer messages;
+    if (!zeromq::ReceiveMessage(*sock, messages, ZMQ_DONTWAIT)) {
         return NO_MESSAGES;
     }
 
-    StoreWriter::ReceiveResult result = OK;
     string path, bucket, set, stream;
 
     // we expect at least 2 messages. the first is the store path. next are
     // payloads
-    if (msgs.size() < 2) {
-        result = RECEIVE_ERROR;
-        goto cleanup;
+    if (messages.MessagesSize() < 2) {
+        return RECEIVE_ERROR;
     }
 
-    if (msgs[0]->size() < 1) {
-        result = RECEIVE_ERROR;
-        goto cleanup;
+    if (messages.GetMessage(0)->size() < 1) {
+        return RECEIVE_ERROR;
     }
 
-    path = string((const char *)msgs[0]->data());
+    path = string((const char *)messages.GetMessage(0)->data());
 
     if (!::zippylog::Store::ParsePath(path, bucket, set, stream)) {
-        result = RECEIVE_ERROR;
-        goto cleanup;
+        return RECEIVE_ERROR;
     }
 
     if (!set.size()) {
-        result = RECEIVE_ERROR;
-        goto cleanup;
+        return RECEIVE_ERROR;
     }
 
     // @todo write to specific stream if instructed?
 
-    for (vector<message_t *>::size_type i = 1; i < msgs.size(); i++) {
-        if (!this->store->WriteEnvelope(bucket, set, msgs[i]->data(), msgs[i]->size())) {
-            result = RECEIVE_ERROR;
-            goto cleanup;
+    /// @todo can be written more optimally
+    for (vector<message_t *>::size_type i = 1; i < messages.MessagesSize(); i++) {
+        if (!this->store->WriteEnvelope(bucket, set, messages.GetMessage(i)->data(), messages.GetMessage(i)->size())) {
+            return RECEIVE_ERROR;
         }
     }
 
-cleanup:
-    for (vector<message_t *>::size_type i = 0; i < msgs.size(); i++) {
-        delete msgs[i];
-    }
-
-    return result;
+    return OK;
 }
 
 }} // namespaces

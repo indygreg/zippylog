@@ -129,7 +129,7 @@ protected:
         p(NULL),
         ctx(1),
         logger(ctx, ZMQ_PULL),
-        client(ctx, ZMQ_DEALER),
+        client(ctx, ZMQ_XREQ),
         store(NULL)
     {
         this->logger.bind("inproc://logger");
