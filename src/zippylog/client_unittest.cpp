@@ -465,7 +465,7 @@ TEST_F(ClientTest, GetSynchronous)
     Client c(this->GetContext(), endpoint);
 
     StreamSegment segment;
-    ASSERT_TRUE(c.GetStreamSegment("/A/B/2010-11-26-07", 0, segment, 5000000));
+    ASSERT_TRUE(c.GetStreamSegment("/A/B/2010-11-26-07", 0, segment, 5000));
 
     EXPECT_EQ(segment.EnvelopesSent, segment.Envelopes.size());
     EXPECT_EQ(160, segment.EnvelopesSent);
