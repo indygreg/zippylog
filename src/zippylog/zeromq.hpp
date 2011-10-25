@@ -108,13 +108,6 @@ bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::stri
 // sends a multipart message with the last message having ZMQ_SNDMORE
 bool send_multipart_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::zmq::message_t &msg);
 
-/// Sends an envelope with messages coming before
-///
-/// This should really be called send_envelope() and those should have "with_identities_
-/// but that would break backwards compatibility.
-/// @todo break backwards compatibility someday
-bool send_envelope_with_preceding(::zmq::socket_t *, ::std::vector< ::std::string > &preceding, Envelope &envelope, int flags=0);
-
 bool send_envelope(::zmq::socket_t *socket, Envelope &envelope, int flags=0);
 bool send_envelope(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope, int flags=0);
 

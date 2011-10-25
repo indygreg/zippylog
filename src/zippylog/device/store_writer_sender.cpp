@@ -68,11 +68,10 @@ bool StoreWriterSender::DeliverEnvelope(string const &bucket, string const &set,
     if (!this->envelope_pull_sock)
         throw Exception("can not deliver envelopes since the pull socket is not configured");
 
-    vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);
-    preceding.push_back(path);
 
-    return ::zippylog::zeromq::send_envelope_with_preceding(this->envelope_pull_sock, preceding, e);
+    if (!this->envelope_pull_sock->send(path.data(), path.length(), ZMQ_SNDMORE)) return false;
+    return zeromq::SendEnvelope(*this->envelope_pull_sock, e, false, 0);
 }
 
 bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, ::zippylog::Envelope &e)
@@ -80,12 +79,12 @@ bool StoreWriterSender::WriteEnvelope(string const &bucket, string const &set, :
     if (!this->envelope_rep_sock)
         throw Exception("can not deliver envelopes since the rep sock is not configured");
 
-    vector<string> preceding;
     string path = ::zippylog::Store::StreamsetPath(bucket, set);
-    preceding.push_back(path);
-
-    if (!::zippylog::zeromq::send_envelope_with_preceding(this->envelope_rep_sock, preceding, e)) {
-        // @todo we might want to reconnect the socket in case the FSM is messed up
+    /// @todo we might want to reconnect the socket in case the FSM is messed up
+    if (!this->envelope_rep_sock->send(path.data(), path.size(), ZMQ_SNDMORE)) {
+        return false;
+    }
+    if (!zeromq::SendEnvelope(*this->envelope_rep_sock, e, false, 0)) {
         return false;
     }
 
