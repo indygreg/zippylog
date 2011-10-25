@@ -66,7 +66,7 @@ ServerRequestProcessor::~ServerRequestProcessor()
 
 RequestProcessorHandlerResult ServerRequestProcessor::HandleSubscribeKeepalive(Envelope &request, vector<Envelope> &)
 {
-    ::zippylog::zeromq::send_envelope(this->subscription_updates_sock, request);
+    zeromq::SendEnvelope(this->subscription_updates_sock, request, false, 0);
 
     return RequestProcessorHandlerResult::MakeDeferred();
 }

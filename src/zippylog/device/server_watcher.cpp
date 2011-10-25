@@ -39,8 +39,8 @@ Watcher::~Watcher()
 
 void Watcher::SendChangeMessage(Envelope &e)
 {
-    zeromq::send_envelope(this->logging_sock, e);
-    zeromq::send_envelope(this->socket, e);
+    zeromq::SendEnvelope(this->logging_sock, e, false, 0);
+    zeromq::SendEnvelope(this->socket, e, false, 0);
 }
 
 void Watcher::HandleAdded(string path, platform::FileStat &)

@@ -61,7 +61,7 @@ using ::zmq::socket_t;
     msgvar.set_id(this->id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
-    zeromq::send_envelope(this->log_client_sock, logenvelope); \
+    zeromq::SendEnvelope(this->log_client_sock, logenvelope, false, ZMQ_DONTWAIT); \
 }
 
 #define CLIENT_INDEX 0

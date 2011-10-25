@@ -100,28 +100,6 @@ private:
     MessageContainer & operator=(MessageContainer const &orig);
 };
 
-// sends a multipart message with identities
-bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string > &identities, ::std::vector< ::zmq::message_t * > &messages, int last_flags=0);
-
-bool send_multipart_message(::zmq::socket_t * socket, ::std::vector< ::std::string> &identities, ::zmq::message_t *message, int last_flags=0);
-
-// sends a multipart message with the last message having ZMQ_SNDMORE
-bool send_multipart_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::zmq::message_t &msg);
-
-bool send_envelope(::zmq::socket_t *socket, Envelope &envelope, int flags=0);
-bool send_envelope(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope, int flags=0);
-
-// sends multiple envelopes with identities as part of a multipart message
-bool send_envelopes(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, ::std::vector<Envelope> &envelopes);
-
-// sends an envelope with ZMQ_SNDMORE flag
-bool send_envelope_more(::zmq::socket_t *socket, Envelope &envelope);
-bool send_envelope_more(::zmq::socket_t *socket, ::std::vector< ::std::string > &identities, Envelope &envelope);
-
-// sends an envelope, but from an DEALER socket
-// this inserts an empty message part to cover the missing identity message
-bool send_envelope_dealer(::zmq::socket_t *socket, Envelope &envelope);
-
 /// Sends an envelope over a socket
 ///
 /// @param socket Socket to send over
@@ -133,16 +111,56 @@ int SendEnvelope(::zmq::socket_t &socket, Envelope &e, bool is_protocol, int fla
 
 /// Sends an envelope over a socket with message identities
 ///
-/// This is a convenience method to sends an envelope over an DEALER/ROUTER socket
+/// This is a convenience method to sends an envelope over an XREQ/XREP socket
 /// with message identities.
 ///
-/// If the identities list is empty, an empty message will be sent before
-/// the envelope. The send flags for the identities messages and the empty
-/// message always include ZMQ_SNDMORE. The flags for the envelope message
-/// are always from the parameter flags. If the ZMQ_DONTWAIT flag is set, it
+/// The identities will be sent as message lebels. The flags for the envelope
+/// message are always from the parameter flags. If the ZMQ_DONTWAIT flag is set, it
 /// is set on all message parts.
-int SendEnvelope(::zmq::socket_t &socket, ::std::vector< ::std::string >  const &identities, Envelope &e, bool is_protocol, int flags);
+int SendEnvelope(::zmq::socket_t &socket,
+                 ::std::vector< ::std::string >  const &identities,
+                 Envelope &e,
+                 bool is_protocol,
+                 int flags);
 
+/// Sends an envelope over a socket with identities
+///
+/// This is an overloaded version of the above to support socket pointers, not
+/// references.
+inline int SendEnvelope(::zmq::socket_t * const socket,
+                 ::std::vector< ::std::string > const &identities,
+                 Envelope &e,
+                 bool is_protocol,
+                 int flags)
+{
+    return SendEnvelope(*socket, identities, e, is_protocol, flags);
+}
+
+/// Sends an envelope over a socket
+///
+/// @param socket Socket to send envelope on
+/// @param e Envelope to send over socket
+/// @param is_protocol Whether to serialize the envelope as a zippylog protocol message
+/// @param flags 0MQ send flags
+inline int SendEnvelope(::zmq::socket_t * const socket,
+                        Envelope &e,
+                        bool is_protocol,
+                        int flags)
+{
+    ::std::vector< ::std::string > i;
+    return SendEnvelope(*socket, i, e, is_protocol, flags);
+}
+
+/// Sends multiple envelopes over a socket with identities
+///
+/// This will send a single mutli-part 0MQ message. The specified identities
+/// will be sent as message labels.
+///
+/// @param socket Socket to send data over
+/// @param identities Identities for message routing
+/// @param envelopes Envelopes to send over the socket
+/// @param is_protocol Whether to serialize the envelopes as zippylog protocol messages
+/// @param flags 0MQ send flags
 int SendEnvelopes(::zmq::socket_t &socket,
                   ::std::vector< ::std::string > const &identities,
                   ::std::vector<Envelope> &envelopes,

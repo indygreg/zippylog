@@ -1031,7 +1031,7 @@ bool Client::RenewSubscriptions(bool force)
     Envelope e = Envelope();
     msg.add_to_envelope(&e);
 
-    return zeromq::send_envelope_dealer(this->client_sock, e);
+    return zeromq::SendEnvelope(*this->client_sock, e, true, 0);
 }
 
 bool Client::HaveOutstandingRequest(string &id)

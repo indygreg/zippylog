@@ -27,7 +27,7 @@ namespace zippylog {
     msgvar.set_id(this->id); \
     Envelope logenvelope = Envelope(); \
     msgvar.add_to_envelope(&logenvelope); \
-    zeromq::send_envelope(socketvar, logenvelope); \
+    zeromq::SendEnvelope(*socketvar, logenvelope, false, 0); \
 }
 
 /// This handy macro obtains the index'th message of an envelope and stores
