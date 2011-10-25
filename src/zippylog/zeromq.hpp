@@ -82,8 +82,8 @@ public:
     /// @return vector of messages
     inline ::std::vector< ::zmq::message_t *> const & GetMessages() const { return this->messages; }
 
-    /// Override subscript operator to return message at offset
-    inline ::zmq::message_t * const operator[](const int index) const { return this->messages[index]; }
+    /// Override subscriptor operator to return message at offset
+    inline ::zmq::message_t * operator[](const int index) const { return this->messages[index]; }
 
 protected:
     /// Holds the socket identities
