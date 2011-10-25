@@ -252,8 +252,6 @@ PumpResult Server::Pump(int32 wait_time)
     zmq::message_t msg;
     int32 more;
     size_t moresz = sizeof(more);
-    int32 label;
-    size_t labelsz = sizeof(label);
     bool error = false;
 
     // logging messages have the highest precedence because we want to ensure
