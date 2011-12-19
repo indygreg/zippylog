@@ -39,7 +39,7 @@ int SendEnvelope(socket_t &socket, Envelope &e, bool is_protocol, int flags)
 int SendEnvelope(socket_t &socket, vector<string> const &identities, Envelope &e, bool is_protocol, int flags)
 {
     message_t msg;
-    int initial_flags = ZMQ_SNDLABEL | (ZMQ_DONTWAIT & flags);
+    int initial_flags = ZMQ_SNDMORE | (ZMQ_DONTWAIT & flags);
 
     message_t e_msg;
     if (is_protocol) {
@@ -56,12 +56,15 @@ int SendEnvelope(socket_t &socket, vector<string> const &identities, Envelope &e
         if (!socket.send(msg, initial_flags)) return 0;
     }
 
+    msg.rebuild(0);
+    if (!socket.send(msg, initial_flags)) return 0;
+
     return socket.send(e_msg, flags) ? 1 : 0;
 }
 
 int SendEnvelopes(socket_t &socket, vector<string> const &identities, vector<Envelope> &envelopes, bool is_protocol, int flags)
 {
-    int initial_flags = ZMQ_SNDLABEL | (ZMQ_DONTWAIT & flags);
+    int initial_flags = ZMQ_SNDMORE | (ZMQ_DONTWAIT & flags);
 
     for (vector<string>::size_type i = 0; i < identities.size(); i++) {
         string identity = identities.at(i);
@@ -71,6 +74,9 @@ int SendEnvelopes(socket_t &socket, vector<string> const &identities, vector<Env
     }
 
     message_t msg;
+    msg.rebuild(0);
+    if (!socket.send(msg, initial_flags)) return -1;
+
     for (vector<Envelope>::size_type i = 0; i < envelopes.size(); i++) {
         if (is_protocol) {
             if (!envelopes.at(i).ToProtocolZmqMessage(msg)) return -1;
@@ -89,8 +95,7 @@ bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int fl
 {
     container.Clear();
 
-    int32 more, label;
-    size_t moresz, labelsz;
+    bool in_identity = true;
 
     while (true) {
         message_t *msg = new message_t();
@@ -99,15 +104,21 @@ bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int fl
             return false;
         }
 
-        labelsz = sizeof(label);
-        socket.getsockopt(ZMQ_RCVLABEL, &label, &labelsz);
-
-        if (label) {
-            container.AddIdentity(msg);
+        if (msg->size() == 0) {
+            in_identity = false;
+            delete msg;
             continue;
         }
 
-        container.AddMessage(msg);
+        if (in_identity) {
+            container.AddIdentity(msg);
+        }
+        else {
+            container.AddMessage(msg);
+        }
+
+        int32 more;
+        size_t moresz;
         moresz = sizeof(more);
         socket.getsockopt(ZMQ_RCVMORE, &more, &moresz);
 
@@ -120,23 +131,12 @@ bool ReceiveMessage(::zmq::socket_t &socket, MessageContainer &container, int fl
 bool TransferMessage(::zmq::socket_t &receiver, ::zmq::socket_t &sender)
 {
     message_t msg;
-
-    int32 more, label;
-    size_t moresz, labelsz;
+    int32 more;
+    size_t moresz;
 
     while (true) {
         if (!receiver.recv(&msg, 0)) {
             return false;
-        }
-
-        labelsz = sizeof(label);
-        receiver.getsockopt(ZMQ_RCVLABEL, &label, &labelsz);
-        if (label) {
-            if (!sender.send(msg, ZMQ_SNDLABEL)) {
-                return false;
-            }
-
-            continue;
         }
 
         moresz = sizeof(more);

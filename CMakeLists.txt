@@ -134,7 +134,7 @@ set(libzippylog_link_libraries
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(libzippylog_link_libraries ${libzippylog_link_libraries} rt)
+    set(libzippylog_link_libraries ${libzippylog_link_libraries} rt uuid)
 endif()
 
 # produce libzippylog shared library
