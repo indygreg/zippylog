@@ -432,7 +432,7 @@ namespace platform {
 #ifdef WINDOWS
         /// Holds timer structure
         void * handle;
-#elif LINUX
+#elif HAVE_RT
         /// Holds timer structure
         timer_t timer;
 #elif MACOS
