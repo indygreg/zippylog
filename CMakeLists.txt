@@ -27,7 +27,7 @@ set(CMAKE_THREAD_PREFER_PTHREADS)
 set(CMAKE_BUILD_TYPE Debug)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 --coverage")
 endif(CMAKE_COMPILER_IS_GNUCXX)
@@ -137,6 +137,7 @@ set(libzippylog_sources
     src/lua-protobuf.cc
 )
 set(libzippylog_link_libraries
+    ${CMAKE_THREAD_LIBS_INIT}
     ${LUA_LIBRARIES}
     ${PROTOBUF_LIBRARY}
     ${ZEROMQ_LIBRARY}
