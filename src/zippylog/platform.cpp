@@ -68,6 +68,8 @@ namespace platform {
 
 #ifdef LINUX
 static __thread int system_error = 0;
+#elif FREEBSD
+static __thread int system_error = 0;
 #elif WINDOWS
 // nothing to do on Windows
 #else
@@ -822,7 +824,7 @@ void Timer::Initialize()
     if (!this->handle) {
         throw Exception("timer could not be created");
     }
-#elif LINUX
+#elif HAVE_RT
     struct sigevent evp;
     memset(&evp, 0, sizeof(evp));
     evp.sigev_notify = SIGEV_NONE;
@@ -855,7 +857,7 @@ bool Timer::Reset()
         }
 
         return false;
-#elif LINUX
+#elif HAVE_RT
         struct itimerspec v;
         memset(&v, 0, sizeof(v));
         int result = timer_settime(this->timer, 0, &v, NULL);
@@ -904,7 +906,7 @@ bool Timer::Start(uint32 microseconds)
     this->running = true;
     return true;
 
-#elif LINUX
+#elif HAVE_RT
     struct itimerspec v;
     memset(&v, 0, sizeof(v));
 
@@ -946,7 +948,7 @@ bool Timer::Signaled()
 
     return false;
 
-#elif LINUX
+#elif HAVE_RT
     struct itimerspec v;
     int result = timer_gettime(this->timer, &v);
     if (result == -1) {
