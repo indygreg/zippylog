@@ -40,8 +40,9 @@ endif(CMAKE_COMPILER_IS_GNUCXX)
 ################
 
 # Google C++ Testing Framework
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+# We build GTest from the submodule checkout.
+add_subdirectory(external/googletest)
+include_directories(${gtest_SOURCE_DIR} ${gtest_SOURCE_DIR}/include)
 
 # Protocol Buffers
 find_package(Protobuf REQUIRED)
@@ -170,7 +171,8 @@ set(libzippylog-test_sources
 )
 
 add_executable(libzippylog-test ${libzippylog-test_sources})
-target_link_libraries(libzippylog-test ${libzippylog_link_libraries} libzippylog ${GTEST_LIBRARIES})
+target_link_libraries(libzippylog-test ${libzippylog_link_libraries}
+  libzippylog gtest gtest_main)
 
 #####################
 # zippylogd program #
@@ -204,5 +206,5 @@ target_link_libraries(zippylog_string_loader libzippylog)
 # zippylogbench program #
 #########################
 add_executable(zippylogbench src/zippylogbench.cpp src/zippylog/testing.cpp)
-target_link_libraries(zippylogbench libzippylog ${GTEST_LIBRARIES})
+target_link_libraries(zippylogbench libzippylog gtest gtest_main)
 
